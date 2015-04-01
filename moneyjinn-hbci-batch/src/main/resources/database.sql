@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `iban` varchar(34) NOT NULL,
   `bic` varchar(11) NOT NULL,
   `valuta` date NOT NULL,
@@ -21,4 +21,4 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 
 
 ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `hbci_i_01` (`valuta`,`bdate`,`value`,`gvcode`,`gvtext`,`customerref`,`saldo_value`,`saldo_timestamp`,`iban`,`bic`);
+  ADD UNIQUE KEY `hbci_i_01` (`valuta`,`bdate`,`value`,`gvcode`,`gvtext`,`customerref`,`saldo_value`,`saldo_timestamp`,`iban`,`bic`);
