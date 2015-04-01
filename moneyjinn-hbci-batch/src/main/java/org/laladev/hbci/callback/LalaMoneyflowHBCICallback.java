@@ -40,7 +40,9 @@ public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
 		this.properties = properties;
 	}
 
-	public void callback(final HBCIPassport passport, final int reason, final String msg, final int dataType, final StringBuffer retData) {
+	@Override
+	public void callback(final HBCIPassport passport, final int reason, final String msg, final int dataType,
+			final StringBuffer retData) {
 		switch (reason) {
 		case NEED_PASSPHRASE_LOAD:
 		case NEED_PASSPHRASE_SAVE:
@@ -49,6 +51,11 @@ public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
 		case NEED_PT_PIN:
 			if (passport != null && passport.getAccounts().length > 0) {
 				final Konto konto = passport.getAccounts()[0];
+				final String pin = properties.getProperty("hbci." + konto.number + ".pin");
+				if (pin == null) {
+					throw new RuntimeException("pin for account " + konto.number + " not defined as property (hbci."
+							+ konto.number + ".pin)");
+				}
 				retData.replace(0, retData.length(), properties.getProperty("hbci." + konto.number + ".pin"));
 			} else {
 				super.callback(passport, reason, msg, dataType, retData);
@@ -63,6 +70,7 @@ public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
 		}
 	}
 
+	@Override
 	public synchronized void status(final HBCIPassport passport, final int statusTag, final Object[] o) {
 		switch (statusTag) {
 		case STATUS_MSG_RAW_RECV:
