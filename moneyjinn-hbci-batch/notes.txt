@@ -1,0 +1,82 @@
+TODOs:
+
+- move "invoicedate" handling from the Subscriber to a part where it is done for the Transaction (enhance entity by "invoicedate")
+- log if a transaction was sent correctly to the registered subscriber and if not implement a retry mechanism
+- compute an "end of month" account value and transfer it via REST
+
+
+
+Renault Bank direkt:
+
+		lowlevel GVs supported by institute and HBCI4Java:
+		  HICCSS (UebSEPA)
+		  HIKANS (KUmsNew)
+		  HIKAZS (KUmsZeitSEPA)
+		  HIPAES (ChangePIN)
+		  HIPINS (PinTan)
+		  HIPROS (Status)
+		  HISALS (SaldoSEPA)
+		  HISPAS (SEPAInfo)
+		  HITABS (TANMediaList)
+		  HITANS (TAN2Step)
+		  HITAZS (TANListList)
+		  HIUEBS (Ueb)
+		
+		lowlevel GVs supported by institute but unknown to HBCI4Java:
+		  HIANAS
+		  HIANLS
+		  HICAZS
+		  HIFRDS
+		  HIPSPS
+		  HITAUS
+		  HITSYS
+
+		  
+VTB Bank:
+
+		lowlevel GVs supported by institute and HBCI4Java:
+		  HICCSS (UebSEPA)
+		  HICDBS (DauerSEPAList)
+		  HICDES (DauerSEPANew)
+		  HICDLS (DauerSEPADel)
+		  HICDNS (DauerSEPAEdit)
+		  HICUMS (UmbSEPA)
+		  HIDABS (DauerList)
+		  HIDMCS (SammelLastCOR1SEPA)
+		  HIDMES (SammelLastSEPA)
+		  HIFGBS (FestList)
+		  HIFGKS (FestCondList)
+		  HIFGNS (FestNew)
+		  HIKANS (KUmsNew)
+		  HIKAZS (KUmsZeitSEPA)
+		  HIPAES (ChangePIN)
+		  HIPINS (PinTan)
+		  HIPROS (Status)
+		  HISALS (SaldoSEPA)
+		  HISPAS (SEPAInfo)
+		  HITABS (TANMediaList)
+		  HITANS (TAN2Step)
+		  HITAZS (TANListList)
+		  HITUAS (TermUebEdit)
+		  HITUBS (TermUebList)
+		  HITUES (TermUeb)
+		  HITULS (TermUebDel)
+		  HIUEBS (Ueb)
+		  HIUMBS (Umb)
+		
+		lowlevel GVs supported by institute but unknown to HBCI4Java:
+		  HIANAS
+		  HIANLS
+		  HIAZSS
+		  HICAZS
+		  HICDUS
+		  HICUBS
+		  HIDMBS
+		  HIDMLS
+		  HIFGAS
+		  HIFRDS
+		  HIPSPS
+		  HITAUS
+		  HITSYS
+		  HIUTAS
+		  HIVISS
