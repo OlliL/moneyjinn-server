@@ -22,3 +22,17 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 
 ALTER TABLE `transactions`
   ADD UNIQUE KEY `hbci_i_01` (`valuta`,`bdate`,`value`,`gvcode`,`gvtext`,`customerref`,`saldo_value`,`saldo_timestamp`,`iban`,`bic`);
+
+  
+  
+CREATE TABLE IF NOT EXISTS `monthlybalance` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `iban` varchar(34) NOT NULL,
+  `bic` varchar(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `month` tinyint(4) NOT NULL,
+  `balance` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `monthlybalance`
+  ADD UNIQUE KEY `hbci_i_02` (`iban`,`bic`,`year`,`month`);

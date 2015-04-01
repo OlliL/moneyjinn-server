@@ -27,17 +27,22 @@
 //
 package org.laladev.hbci.executor;
 
+import java.util.Calendar;
 import java.util.Observable;
 
+import org.hibernate.Criteria;
 import org.hibernate.StatelessSession;
+import org.hibernate.criterion.Property;
 import org.hibernate.exception.ConstraintViolationException;
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
+import org.kapott.hbci.GV_Result.GVRSaldoReq;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
+import org.laladev.hbci.entity.MonthlyBalance;
 import org.laladev.hbci.entity.Transaction;
 import org.laladev.hbci.entity.mapper.TransactionMapper;
 
@@ -55,6 +60,7 @@ public class LalaMoneyflowHBCIExecutor extends Observable {
 		try {
 			hbciHandle = new HBCIHandler(null, hbciPassport);
 			analyzeReportOfTransactions(hbciPassport, hbciHandle);
+			analyzeMonthlyBalance(hbciPassport, hbciHandle);
 		} finally {
 			if (hbciHandle != null) {
 				hbciHandle.close();
@@ -63,6 +69,58 @@ public class LalaMoneyflowHBCIExecutor extends Observable {
 			}
 		}
 
+	}
+
+	/**
+	 * Computes the final balance for the previous month (if not already done) of the given account
+	 * and stores it + notifies all Observers
+	 *
+	 * @param hbciPassport
+	 * @param hbciHandle
+	 */
+	private void analyzeMonthlyBalance(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle) {
+		final Konto konto = hbciPassport.getAccounts()[0];
+
+		final Calendar currentCal = Calendar.getInstance();
+		final Calendar previousMonth = Calendar.getInstance();
+		previousMonth.add(Calendar.MONTH, -1);
+
+		final Criteria cr = session.createCriteria(MonthlyBalance.class);
+		cr.add(Property.forName("iban").eq(konto.iban));
+		cr.add(Property.forName("bic").eq(konto.bic));
+		cr.add(Property.forName("year").eq(previousMonth.get(Calendar.MONTH) + 1));
+		cr.add(Property.forName("month").eq(previousMonth.get(Calendar.YEAR)));
+		if (cr.list().size() == 0) {
+			// Balance for previous month not in DB
+			HBCIJob hbciJob = hbciHandle.newJob("SaldoReq");
+			hbciJob.setParam("my", konto);
+			hbciJob.addToQueue();
+
+			HBCIExecStatus ret = hbciHandle.execute();
+			final GVRSaldoReq resultSaldoReq = (GVRSaldoReq) hbciJob.getJobResult();
+			if (resultSaldoReq.isOK()) {
+				final GVRSaldoReq.Info currentBalance = resultSaldoReq.getEntries()[0];
+
+				hbciJob = hbciHandle.newJob("KUmsAll");
+				final Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.DAY_OF_MONTH, currentCal.get(Calendar.DAY_OF_MONTH) * -1);
+				hbciJob.setParam("startdate", calendar.getTime());
+				hbciJob.setParam("my", konto);
+				hbciJob.addToQueue();
+
+				ret = hbciHandle.execute();
+				final GVRKUms resultKUms = (GVRKUms) hbciJob.getJobResult();
+				if (resultKUms.isOK()) {
+					// now we have the current balance and all movements since the previous month
+					// end - now we can try to determine the balance of the previous month
+				}
+			} else {
+				System.out.println("Job-Error");
+				System.out.println(resultSaldoReq.getJobStatus().getErrorString());
+				System.out.println("Global Error");
+				System.out.println(ret.getErrorString());
+			}
+		}
 	}
 
 	private void analyzeReportOfTransactions(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle) {
