@@ -1,11 +1,3 @@
-TODOs:
-
-- move "invoicedate" handling from the Subscriber to a part where it is done for the Transaction (enhance entity by "invoicedate")
-- log if a transaction was sent correctly to the registered subscriber and if not implement a retry mechanism
-- compute an "end of month" account value and transfer it via REST
-
-
-
 Renault Bank direkt:
 
 		lowlevel GVs supported by institute and HBCI4Java:
