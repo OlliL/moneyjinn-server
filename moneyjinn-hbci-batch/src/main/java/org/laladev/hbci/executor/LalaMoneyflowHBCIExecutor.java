@@ -59,8 +59,12 @@ public class LalaMoneyflowHBCIExecutor extends Observable {
 		HBCIHandler hbciHandle = null;
 		try {
 			hbciHandle = new HBCIHandler(null, hbciPassport);
-			analyzeReportOfTransactions(hbciPassport, hbciHandle);
-			analyzeMonthlyBalance(hbciPassport, hbciHandle);
+			final Konto[] accounts = hbciPassport.getAccounts();
+			for (final Konto account : accounts) {
+				analyzeReportOfTransactions(hbciPassport, hbciHandle, account);
+				analyzeMonthlyBalance(hbciPassport, hbciHandle, account);
+			}
+
 		} finally {
 			if (hbciHandle != null) {
 				hbciHandle.close();
@@ -78,9 +82,8 @@ public class LalaMoneyflowHBCIExecutor extends Observable {
 	 * @param hbciPassport
 	 * @param hbciHandle
 	 */
-	private void analyzeMonthlyBalance(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle) {
-		final Konto konto = hbciPassport.getAccounts()[0];
-
+	private void analyzeMonthlyBalance(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle,
+			final Konto konto) {
 		final Calendar currentCal = Calendar.getInstance();
 		final Calendar previousMonth = Calendar.getInstance();
 		previousMonth.add(Calendar.MONTH, -1);
@@ -123,8 +126,8 @@ public class LalaMoneyflowHBCIExecutor extends Observable {
 		}
 	}
 
-	private void analyzeReportOfTransactions(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle) {
-		final Konto konto = hbciPassport.getAccounts()[0];
+	private void analyzeReportOfTransactions(final HBCIPassport hbciPassport, final HBCIHandler hbciHandle,
+			final Konto konto) {
 		final HBCIJob hbciJob = hbciHandle.newJob("KUmsAll");
 		hbciJob.setParam("my", konto);
 		hbciJob.addToQueue();
