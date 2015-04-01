@@ -56,7 +56,7 @@ public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
 					throw new RuntimeException("pin for account " + konto.number + " not defined as property (hbci."
 							+ konto.number + ".pin)");
 				}
-				retData.replace(0, retData.length(), properties.getProperty("hbci." + konto.number + ".pin"));
+				retData.replace(0, retData.length(), pin);
 			} else {
 				super.callback(passport, reason, msg, dataType, retData);
 
