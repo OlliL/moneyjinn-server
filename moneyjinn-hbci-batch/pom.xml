@@ -11,7 +11,6 @@
 		<hbci4java.version>2.5.13-SNAPSHOT</hbci4java.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<slf4j-log4j12.version>1.7.10</slf4j-log4j12.version>
-		<javassist.version>3.19.0-GA</javassist.version>
 	</properties>
 
 	<dependencies>
@@ -34,11 +33,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j-log4j12.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>${javassist.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.kapott</groupId>
