@@ -36,10 +36,10 @@ public final class Main {
 * you need a hbci.properties file which declares two types of properties
   * hbci.passport.password
     * must be the password to all of your passport files
-  * hbci.ACCOUNTNUMBER.pin
-    * replace ACCOUNTNUMBER with your account number
-    *  must be the pin for logging in to the account with the specified number
-    * specify as much of this properties as you have accounts
+  * hbci.PASSPORT-FILENAME.pin
+    * replace PASSPORT-FILENAME with the filename of your passport file
+    * must be the pin for logging in to the account with the specified number
+    * specify as much of this properties as you have passport files
 * create `a hibernate.cfg.xml` in your project in `src/main/resources`
 
 ```XML
@@ -56,8 +56,7 @@ public final class Main {
 		<property name="hibernate.connection.username">username</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<!-- <property name="show_sql">true</property> -->
-		<mapping class="org.laladev.hbci.entity.Transaction"></mapping>
-		<mapping class="org.laladev.hbci.entity.MonthlyBalance"></mapping>
+		<mapping class="org.laladev.hbci.entity.AccountMovement"></mapping>
 	</session-factory>
 </hibernate-configuration>
 ```

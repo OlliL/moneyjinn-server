@@ -25,19 +25,21 @@
 //
 // $Id: LalaMoneyflowHBCICallback.java,v 1.4 2015/03/31 18:55:58 olivleh1 Exp $
 //
-package org.laladev.hbci.callback;
-
-import java.util.Properties;
+package org.laladev.hbci;
 
 import org.kapott.hbci.callback.HBCICallbackConsole;
 import org.kapott.hbci.passport.HBCIPassport;
-import org.kapott.hbci.structures.Konto;
 
-public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
-	private final Properties properties;
+public class LalaHBCICallback extends HBCICallbackConsole {
+	private String pin;
+	private final String passportPassword;
 
-	public LalaMoneyflowHBCICallback(final Properties properties) {
-		this.properties = properties;
+	public LalaHBCICallback(final String passportPassword) {
+		this.passportPassword = passportPassword;
+	}
+
+	public final void setPin(final String pin) {
+		this.pin = pin;
 	}
 
 	@Override
@@ -46,17 +48,11 @@ public class LalaMoneyflowHBCICallback extends HBCICallbackConsole {
 		switch (reason) {
 		case NEED_PASSPHRASE_LOAD:
 		case NEED_PASSPHRASE_SAVE:
-			retData.replace(0, retData.length(), properties.getProperty("hbci.passport.password"));
+			retData.replace(0, retData.length(), this.passportPassword);
 			break;
 		case NEED_PT_PIN:
 			if (passport != null && passport.getAccounts().length > 0) {
-				final Konto konto = passport.getAccounts()[0];
-				final String pin = properties.getProperty("hbci." + konto.number + ".pin");
-				if (pin == null) {
-					throw new RuntimeException("pin for account " + konto.number + " not defined as property (hbci."
-							+ konto.number + ".pin)");
-				}
-				retData.replace(0, retData.length(), pin);
+				retData.replace(0, retData.length(), this.pin);
 			} else {
 				super.callback(passport, reason, msg, dataType, retData);
 
