@@ -8,7 +8,7 @@ CREATE TABLE `account_movements` (
   `my_bankcode` int(8) unsigned NOT NULL,
   `booking_date` date NOT NULL,
   `value_date` date NOT NULL,
-  `invoice_date` date DEFAULT NULL,
+  `invoice_timestamp` timestamp DEFAULT NULL,
   `other_iban` varchar(34) DEFAULT NULL,
   `other_bic` varchar(11) DEFAULT NULL,
   `other_accountnumber` bigint(10) unsigned DEFAULT NULL,

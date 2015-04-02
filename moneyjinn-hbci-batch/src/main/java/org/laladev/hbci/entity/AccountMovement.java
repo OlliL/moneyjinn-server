@@ -29,6 +29,7 @@ package org.laladev.hbci.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +50,7 @@ public class AccountMovement implements Serializable {
 	private Integer myBankcode;
 	private Date bookingDate;
 	private Date valueDate;
-	private Date invoiceDate;
+	private Timestamp invoiceTimestamp;
 	private String otherIban;
 	private String otherBic;
 	private Long otherAccountnumber;
@@ -140,12 +141,12 @@ public class AccountMovement implements Serializable {
 	}
 
 	@Column
-	public final Date getInvoiceDate() {
-		return invoiceDate;
+	public final Timestamp getInvoiceTimestamp() {
+		return invoiceTimestamp;
 	}
 
-	public final void setInvoiceDate(final Date invoiceDate) {
-		this.invoiceDate = invoiceDate;
+	public final void setInvoiceTimestamp(final Timestamp invoiceTimestamp) {
+		this.invoiceTimestamp = invoiceTimestamp;
 	}
 
 	@Column
@@ -353,6 +354,28 @@ public class AccountMovement implements Serializable {
 
 	public final void setBalanceCurrency(final String balanceCurrency) {
 		this.balanceCurrency = balanceCurrency;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("AccountMovement [id=").append(id).append(", myIban=").append(myIban).append(", myBic=")
+				.append(myBic).append(", myAccountnumber=").append(myAccountnumber).append(", myBankcode=")
+				.append(myBankcode).append(", bookingDate=").append(bookingDate).append(", valueDate=")
+				.append(valueDate).append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=").append(otherIban)
+				.append(", otherBic=").append(otherBic).append(", otherAccountnumber=").append(otherAccountnumber)
+				.append(", otherBankcode=").append(otherBankcode).append(", otherName=").append(otherName)
+				.append(", chargeValue=").append(chargeValue).append(", chargeCurrency=").append(chargeCurrency)
+				.append(", originalValue=").append(originalValue).append(", originalCurrency=").append(originalCurrency)
+				.append(", movementValue=").append(movementValue).append(", movementCurrency=").append(movementCurrency)
+				.append(", movementReason=").append(movementReason).append(", movementTypeCode=")
+				.append(movementTypeCode).append(", movementTypeText=").append(movementTypeText)
+				.append(", customerReference=").append(customerReference).append(", bankReference=")
+				.append(bankReference).append(", cancellation=").append(cancellation).append(", additionalInformation=")
+				.append(additionalInformation).append(", additionalKey=").append(additionalKey).append(", primaNota=")
+				.append(primaNota).append(", balanceDate=").append(balanceDate).append(", balanceValue=")
+				.append(balanceValue).append(", balanceCurrency=").append(balanceCurrency).append("]");
+		return builder.toString();
 	}
 
 }

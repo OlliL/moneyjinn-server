@@ -23,11 +23,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: TransactionMapper.java,v 1.4 2015/03/31 18:55:58 olivleh1 Exp $
+// $Id: AccountMovementMapper.java,v 1.4 2015/03/31 18:55:58 olivleh1 Exp $
 //
 package org.laladev.hbci.entity.mapper;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,7 +40,6 @@ import org.laladev.hbci.entity.AccountMovement;
 public class AccountMovementMapper {
 	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");
 	private final DateFormat dateTimeWithoutYearSpaceFormatter = new SimpleDateFormat("dd.MM HH.mm");
-	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
 	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
@@ -111,65 +111,55 @@ public class AccountMovementMapper {
 		accountMovement.setBalanceValue(entry.saldo.value.getBigDecimalValue());
 		accountMovement.setBalanceCurrency(entry.saldo.value.getCurr());
 
-		final java.util.Date invoiceDate = getInvoiceDate(accountMovement);
+		final Timestamp invoiceDate = getInvoiceTimestamp(accountMovement);
 		if (invoiceDate != null) {
-			accountMovement.setInvoiceDate(new Date(invoiceDate.getTime()));
+			accountMovement.setInvoiceTimestamp(invoiceDate);
 		}
 
 		return accountMovement;
 	}
 
 	/**
-	 * This method tries to compute the Invoice date of a {@link Transaction} by analysing its usage
-	 * text based on the used Business-Transaction-Code + Text. <br>
+	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
+	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
 	 *
 	 * @param {@link
-	 * 			Transaction} transaction
+	 * 			AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
-	private java.util.Date getInvoiceDate(final AccountMovement accountMovement) {
+	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
 		java.util.Date invoiceDate = null;
 		try {
-			if (accountMovement.getMovementReason() != null && accountMovement.getMovementTypeText() != null
-					&& accountMovement.getMovementTypeCode() != null) {
+			if (accountMovement.getMovementReason() != null && accountMovement.getMovementTypeCode() != null) {
 				final String movementReason = accountMovement.getMovementReason();
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
-				final String movementTypeText = accountMovement.getMovementTypeText();
-				if (movementTypeCode.equals(5)) {
+				if (movementTypeCode.equals(Short.valueOf((short) 5))) {
 
-					// check GvText as it could be also "KREDKARTUMS"
-					if ("LASTSCHRIFT".equals(movementTypeText)) {
-						if (movementReason.startsWith("ELV")) {
-							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatter
-									.parse(movementReason.substring(12, 23));
-						} else {
-							// Usage text starts with 01121802XXXXXXXXXXXXXXXXXXX
-							invoiceDate = this.dateTimeWithoutYearFormatter.parse(movementReason.substring(0, 8));
-						}
-
-					} else if ("KARTENVERFÜG".equals(movementTypeText)) {
-						if (movementReason.startsWith("EC ")) {
-							// Usage text starts with EC XXXXXXXX 090215165422IC1
-							invoiceDate = this.dateTimeWithYearFormatter.parse(movementReason.substring(12, 24));
-						}
-
-					}
-				} else if (movementTypeCode.equals(83)) {
 					final String[] lines = movementReason.split("\r\n|\r|\n");
 					for (final String line : lines) {
-						if ("AUSZAHLUNG".equals(movementTypeText)) {
-							if (line.contains("TA-NR")) {
-								// 10.02 16.56 TA-NR. XXXXXX
-								invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(0, 11));
-								break;
-							}
-						} else if ("KARTENVERFÜG".equals(movementTypeText)) {
-							if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
-								// 16.02/07.49UHR XXXXXXXXXX
-								invoiceDate = this.dateTimeWithoutYearSlashFormatter.parse(line.substring(0, 11));
-								break;
-							}
+						if (line.startsWith("ELV") || line.startsWith("OLV")) {
+							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
+							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(12, 23));
+							setYear(accountMovement.getBookingDate(), invoiceDate);
+							break;
+						} else if (movementReason.startsWith("EC ")) {
+							// Usage text starts with EC XXXXXXXX 090215165422IC1
+							invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
+							break;
+						}
+					}
+
+				} else if (movementTypeCode.equals(Short.valueOf((short) 83))) {
+					final String[] lines = movementReason.split("\r\n|\r|\n");
+					for (final String line : lines) {
+						if (line.contains("TA-NR.")) {
+							// 10.02 16.56 TA-NR. XXXXXX
+							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(0, 11));
+							break;
+						} else if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
+							// 16.02/07.49UHR XXXXXXXXXX
+							invoiceDate = this.dateTimeWithoutYearSlashFormatter.parse(line.substring(0, 11));
+							break;
 						}
 					}
 					if (invoiceDate != null) {
@@ -182,7 +172,11 @@ public class AccountMovementMapper {
 			e.printStackTrace();
 		}
 
-		return invoiceDate;
+		if (invoiceDate == null) {
+			return null;
+		} else {
+			return new Timestamp(invoiceDate.getTime());
+		}
 	}
 
 	private void setYear(final Date bookingDate, final java.util.Date invoiceDate) {
