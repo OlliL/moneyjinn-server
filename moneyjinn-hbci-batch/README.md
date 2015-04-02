@@ -16,17 +16,23 @@ lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect s
 ```Java
 public final class Main {
 	public static void main(final String[] args) throws Exception {
-		final org.laladev.hbci.Main main = new org.laladev.hbci.Main();
+
+		final FileInputStream propertyFile = new FileInputStream(
+				System.getProperty("user.home") + File.separator + "hbci_pass.properties");
+		final Properties properties = new Properties();
+		properties.load(propertyFile);
+		propertyFile.close();
+
+		final LalaHBCI lalaHBCI = new LalaHBCI(properties);
 		final List<String> passports = new ArrayList<String>(3);
 		passports.add(System.getProperty("user.home") + File.separator + "hbci_account_1.dat");
 		passports.add(System.getProperty("user.home") + File.separator + "hbci_account_2.dat");
 		passports.add(System.getProperty("user.home") + File.separator + "hbci_account_3.dat");
 
-		final String propertyFilename = System.getProperty("user.home") + File.separator + "hbci_pass.properties";
 		final List<Observer> observers = new ArrayList<Observer>(1);
 		observers.add(new LalaMoneyflowSubscriber());
 
-		main.main(passports, propertyFilename, observers);
+		lalaHBCI.main(passports, observers);
 
 	}
 }
