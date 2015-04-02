@@ -1,3 +1,45 @@
+Postbank:
+
+		lowlevel GVs supported by institute and HBCI4Java:
+		  DIPAES (ChangePINOld)
+		  DIPINS (PinTan)
+		  HIBMES (SammelLastB2BSEPA)
+		  HICCMS (SammelUebSEPA)
+		  HICCSS (UebSEPA)
+		  HICDBS (DauerSEPAList)
+		  HICDES (DauerSEPANew)
+		  HICDLS (DauerSEPADel)
+		  HICDNS (DauerSEPAEdit)
+		  HICSBS (TermUebSEPAList)
+		  HICSES (TermUebSEPA)
+		  HIDMCS (SammelLastCOR1SEPA)
+		  HIDMES (SammelLastSEPA)
+		  HIDSCS (LastCOR1SEPA)
+		  HIEKAS (Kontoauszug)
+		  HIKAZS (KUmsZeit)
+		  HIPAES (ChangePIN)
+		  HIPINS (PinTan)
+		  HIPROS (Status)
+		  HISALS (Saldo)
+		  HISPAS (SEPAInfo)
+		  HITABS (TANMediaList)
+		  HITANS (TAN2Step)
+		
+		lowlevel GVs supported by institute but unknown to HBCI4Java:
+		  DIPSAS
+		  DITSPS
+		  HICMBS
+		  HICMES
+		  HICMLS
+		  HICSLS
+		  HICVBS
+		  HIKAUS
+		  HIPSAS
+		  HITSPS
+		
+		finished.
+
+
 Renault Bank direkt:
 
 		lowlevel GVs supported by institute and HBCI4Java:
