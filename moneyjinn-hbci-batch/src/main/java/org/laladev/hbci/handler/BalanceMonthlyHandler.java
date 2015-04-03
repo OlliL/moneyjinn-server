@@ -112,10 +112,31 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				final GVRSaldoReq resultSaldoReq = (GVRSaldoReq) hbciJob.getJobResult();
 				if (resultSaldoReq.isOK()) {
 					final GVRSaldoReq.Info currentBalance = resultSaldoReq.getEntries()[0];
+
 					final Calendar previousCalendar = Calendar.getInstance();
-					previousCalendar.add(Calendar.MONTH, -1);
-					balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, calendar, account);
-					insertBalanceMonthly(balanceMonthly);
+					previousCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) * -1);
+					previousCalendar.set(Calendar.HOUR_OF_DAY, 23);
+					previousCalendar.set(Calendar.MINUTE, 59);
+					previousCalendar.set(Calendar.SECOND, 59);
+					previousCalendar.set(Calendar.MILLISECOND, 999);
+
+					final Calendar readyCalendar = Calendar.getInstance();
+					readyCalendar.setTime(currentBalance.ready.timestamp);
+
+					/*
+					 * some banks always send the current day as balance date. some banks send the
+					 * date of the last booking.
+					 */
+					if (readyCalendar.before(previousCalendar)) {
+						// last date of booking
+						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, readyCalendar, account);
+						insertBalanceMonthly(balanceMonthly);
+						this.prolongBalance(balanceMonthly, calendar);
+					} else {
+						// current day
+						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, previousCalendar, account);
+						insertBalanceMonthly(balanceMonthly);
+					}
 				}
 			}
 		} else {
