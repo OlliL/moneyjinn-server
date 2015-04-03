@@ -1,8 +1,31 @@
-package org.laladev.hbci.entity;
-
 //
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+//
+package org.laladev.hbci.entity;
+//All rights reserved.
+
 //
 //Redistribution and use in source and binary forms, with or without
 //modification, are permitted provided that the following conditions
@@ -362,19 +385,20 @@ public class AccountMovement implements Serializable {
 		builder.append("AccountMovement [id=").append(id).append(", myIban=").append(myIban).append(", myBic=")
 				.append(myBic).append(", myAccountnumber=").append(myAccountnumber).append(", myBankcode=")
 				.append(myBankcode).append(", bookingDate=").append(bookingDate).append(", valueDate=")
-				.append(valueDate).append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=").append(otherIban)
-				.append(", otherBic=").append(otherBic).append(", otherAccountnumber=").append(otherAccountnumber)
-				.append(", otherBankcode=").append(otherBankcode).append(", otherName=").append(otherName)
-				.append(", chargeValue=").append(chargeValue).append(", chargeCurrency=").append(chargeCurrency)
-				.append(", originalValue=").append(originalValue).append(", originalCurrency=").append(originalCurrency)
-				.append(", movementValue=").append(movementValue).append(", movementCurrency=").append(movementCurrency)
-				.append(", movementReason=").append(movementReason).append(", movementTypeCode=")
-				.append(movementTypeCode).append(", movementTypeText=").append(movementTypeText)
-				.append(", customerReference=").append(customerReference).append(", bankReference=")
-				.append(bankReference).append(", cancellation=").append(cancellation).append(", additionalInformation=")
-				.append(additionalInformation).append(", additionalKey=").append(additionalKey).append(", primaNota=")
-				.append(primaNota).append(", balanceDate=").append(balanceDate).append(", balanceValue=")
-				.append(balanceValue).append(", balanceCurrency=").append(balanceCurrency).append("]");
+				.append(valueDate).append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=")
+				.append(otherIban).append(", otherBic=").append(otherBic).append(", otherAccountnumber=")
+				.append(otherAccountnumber).append(", otherBankcode=").append(otherBankcode).append(", otherName=")
+				.append(otherName).append(", chargeValue=").append(chargeValue).append(", chargeCurrency=")
+				.append(chargeCurrency).append(", originalValue=").append(originalValue).append(", originalCurrency=")
+				.append(originalCurrency).append(", movementValue=").append(movementValue).append(", movementCurrency=")
+				.append(movementCurrency).append(", movementReason=").append(movementReason)
+				.append(", movementTypeCode=").append(movementTypeCode).append(", movementTypeText=")
+				.append(movementTypeText).append(", customerReference=").append(customerReference)
+				.append(", bankReference=").append(bankReference).append(", cancellation=").append(cancellation)
+				.append(", additionalInformation=").append(additionalInformation).append(", additionalKey=")
+				.append(additionalKey).append(", primaNota=").append(primaNota).append(", balanceDate=")
+				.append(balanceDate).append(", balanceValue=").append(balanceValue).append(", balanceCurrency=")
+				.append(balanceCurrency).append("]");
 		return builder.toString();
 	}
 

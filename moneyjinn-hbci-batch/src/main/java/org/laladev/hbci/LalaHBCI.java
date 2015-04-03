@@ -23,8 +23,6 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: Main.java,v 1.14 2015/03/31 18:55:59 olivleh1 Exp $
-//
 package org.laladev.hbci;
 
 import java.io.File;
@@ -47,6 +45,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.hbci.handler.AbstractHandler;
 import org.laladev.hbci.handler.AccountMovementHandler;
+import org.laladev.hbci.handler.BalanceMonthlyHandler;
 
 public final class LalaHBCI {
 	private final Properties properties;
@@ -96,6 +95,7 @@ public final class LalaHBCI {
 			final Konto[] accounts = hbciPassport.getAccounts();
 
 			executeHandler(new AccountMovementHandler(session), hbciHandler, observerList, accounts);
+			executeHandler(new BalanceMonthlyHandler(session), hbciHandler, observerList, accounts);
 
 		} finally {
 			if (hbciHandler != null) {

@@ -23,8 +23,6 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AccountMovementMapper.java,v 1.4 2015/03/31 18:55:58 olivleh1 Exp $
-//
 package org.laladev.hbci.entity.mapper;
 
 import java.sql.Date;
