@@ -1,6 +1,6 @@
 # lalaHBCI
 
-lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect several data from the bank accounts specified. It stores collected information in a database and notifies all given Observers to for further handling of the data.
+lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect several data from the bank accounts specified. It stores the collected information in a database and notifies all given Observers to for further data processing.
 
 ## Setup
 
