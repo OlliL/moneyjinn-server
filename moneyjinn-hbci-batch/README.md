@@ -1,17 +1,18 @@
 # lalaHBCI
 
-lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect serveral data from given bank accounts, stores this information in a database and notifies given Observer to handle the fetched data.
+lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect several data from the bank accounts specified. It stores collected information in a database and notifies all given Observers to for further handling of the data.
 
 ## Setup
 
-- create a Database
+- create a database
 - execute `src/main/resources/database.sql` to create all needed tables
 - create a user with insert/select rights on the created tables
 
 ## Usage
 
 * create a new java project and add lalaHBCI as a dependency to it
-* create a `static Main` class which executes `lala.hbci.Main` it could look like this:
+* create a `static Main` class which executes the `main` method of `lala.hbci.lalaHBCI`
+* it could look like this:
 
 ```Java
 public final class Main {
@@ -39,12 +40,12 @@ public final class Main {
 ```
 
 
-* you need a hbci.properties file which declares two types of properties
+* you further need to hand over the following properties during instantiation of `lalaHBCI`
   * hbci.passport.password
     * must be the password to all of your passport files
   * hbci.PASSPORT-FILENAME.pin
     * replace PASSPORT-FILENAME with the filename of your passport file
-    * must be the pin for logging in to the account with the specified number
+    * must contain the pin for logging in to the bank account specified in the passport file
     * specify as much of this properties as you have passport files
 * create `a hibernate.cfg.xml` in your project in `src/main/resources`
 
