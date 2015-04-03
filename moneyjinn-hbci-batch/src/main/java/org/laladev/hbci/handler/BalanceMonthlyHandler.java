@@ -25,7 +25,6 @@
 //
 package org.laladev.hbci.handler;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import org.hibernate.StatelessSession;
@@ -68,9 +67,6 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 		final GVRKUms umsResult = (GVRKUms) hbciJob.getJobResult();
 
 		if (umsResult.isOK()) {
-			final Date earliestDate = null;
-			final Date latestDate = null;
-
 			final Calendar calendar = Calendar.getInstance();
 			BalanceMonthly balanceMonthly = null;
 
@@ -122,10 +118,6 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 					insertBalanceMonthly(balanceMonthly);
 				}
 			}
-
-			System.out.println("----------------------------" + account.iban + "----" + account.bic);
-			System.out.println(earliestDate);
-			System.out.println(latestDate);
 		} else {
 			System.out.println("Job-Error");
 			System.out.println(umsResult.getJobStatus().getErrorString());
