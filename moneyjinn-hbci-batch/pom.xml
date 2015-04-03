@@ -11,6 +11,7 @@
 		<hbci4java.version>2.5.13-SNAPSHOT</hbci4java.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<slf4j-log4j12.version>1.7.10</slf4j-log4j12.version>
+		<junit.version>4.12</junit.version>
 	</properties>
 
 	<dependencies>
@@ -38,6 +39,12 @@
 			<groupId>org.kapott</groupId>
 			<artifactId>hbci4java</artifactId>
 			<version>${hbci4java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
