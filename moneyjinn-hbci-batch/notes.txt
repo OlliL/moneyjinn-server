@@ -37,8 +37,6 @@ Postbank:
 		  HIPSAS
 		  HITSPS
 		
-		finished.
-
 
 Renault Bank direkt:
 
