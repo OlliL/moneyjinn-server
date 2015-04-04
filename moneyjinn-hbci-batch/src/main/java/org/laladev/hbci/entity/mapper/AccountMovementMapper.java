@@ -51,7 +51,7 @@ public class AccountMovementMapper {
 		accountMovement.setValueDate(new Date(entry.valuta.getTime()));
 
 		if (entry.other != null) {
-			if (entry.other.isSEPAAccount()) {
+			if (entry.other.isSEPAAccount() && entry.other.iban != null && !entry.other.iban.isEmpty()) {
 				if (Character.isDigit(entry.other.iban.toCharArray()[0])) {
 					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.iban));
 					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.bic));
@@ -59,7 +59,8 @@ public class AccountMovementMapper {
 					accountMovement.setOtherIban(entry.other.iban);
 					accountMovement.setOtherBic(entry.other.bic);
 				}
-			} else {
+
+			} else if (entry.other.number != null && !entry.other.number.isEmpty()) {
 				if (Character.isDigit(entry.other.number.toCharArray()[0])) {
 					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.number));
 					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.blz));
@@ -69,9 +70,9 @@ public class AccountMovementMapper {
 				}
 			}
 			if (entry.other.name2 != null) {
-				accountMovement.setOtherName(entry.other.name + entry.other.name2);
+				accountMovement.setOtherName(entry.other.name.trim() + entry.other.name2.trim());
 			} else {
-				accountMovement.setOtherName(entry.other.name);
+				accountMovement.setOtherName(entry.other.name.trim());
 			}
 		}
 
@@ -91,9 +92,9 @@ public class AccountMovementMapper {
 		for (final String usageline : entry.usage) {
 			usage = usage == null ? new String(usageline) : usage + '\n' + usageline;
 		}
-		accountMovement.setMovementReason(usage);
+		accountMovement.setMovementReason(usage.trim());
 		accountMovement.setMovementTypeCode(Short.valueOf(entry.gvcode));
-		accountMovement.setMovementTypeText(entry.text);
+		accountMovement.setMovementTypeText(entry.text.trim());
 
 		accountMovement.setCustomerReference(entry.customerref);
 		accountMovement.setBankReference(entry.instref);

@@ -32,7 +32,7 @@ CREATE TABLE account_movements (
   movement_currency varchar(3) NOT NULL,
   movement_reason text,
   movement_type_code int(3) NOT NULL,
-  movement_type_text varchar(27) DEFAULT NULL,
+  movement_type_text varchar(31) DEFAULT NULL,
   customer_reference varchar(16) NOT NULL,
   bank_reference varchar(16) DEFAULT NULL,
   cancellation int(1) unsigned NOT NULL,
