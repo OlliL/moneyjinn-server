@@ -64,7 +64,9 @@ public class BalanceDailyHandler extends AbstractHandler {
 			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
 				final BalanceDaily balanceDaily = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
 						account);
-				insertBalanceDaily(balanceDaily);
+				if (balanceDaily != null && balanceDaily.getMyIban() != null && balanceDaily.getMyBic() != null) {
+					insertBalanceDaily(balanceDaily);
+				}
 			}
 
 		} else {
