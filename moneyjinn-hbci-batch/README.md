@@ -64,6 +64,8 @@ public final class Main {
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<!-- <property name="show_sql">true</property> -->
 		<mapping class="org.laladev.hbci.entity.AccountMovement"></mapping>
+		<mapping class="org.laladev.hbci.entity.BalanceDaily"></mapping>
+		<mapping class="org.laladev.hbci.entity.BalanceMonthly"></mapping>
 	</session-factory>
 </hibernate-configuration>
 ```
