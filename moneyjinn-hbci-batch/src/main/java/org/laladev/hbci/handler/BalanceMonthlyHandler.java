@@ -67,10 +67,10 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 		final GVRKUms umsResult = (GVRKUms) hbciJob.getJobResult();
 
 		if (umsResult.isOK()) {
-			final Calendar calendar = Calendar.getInstance();
 			BalanceMonthly balanceMonthly = null;
 
 			if (umsResult.getFlatData().size() > 0) {
+				final Calendar calendar = Calendar.getInstance();
 				for (final UmsLine entry : umsResult.getFlatData()) {
 					calendar.setTime(entry.saldo.timestamp);
 
@@ -143,7 +143,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 						// last date of booking
 						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, readyCalendar, account);
 						insertBalanceMonthly(balanceMonthly);
-						this.prolongBalance(balanceMonthly, calendar);
+						final Calendar currentCalendar = Calendar.getInstance();
+						this.prolongBalance(balanceMonthly, currentCalendar);
 					} else {
 						// current day
 						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, previousCalendar, account);
