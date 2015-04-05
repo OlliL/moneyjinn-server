@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015 Dennis Garske <d.garske@gmx.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -35,75 +35,66 @@ import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.hbci.entity.BalanceDaily;
-import org.laladev.hbci.entity.BalanceMonthly;
 import org.laladev.hbci.entity.mapper.BalanceDailyMapper;
 
-import java.util.List;
-
 /**
- * This Handler determines the monthly balance of all previous month. This is done by collecting all
- * movements of an account and determine the balance for each month by crawling through them. If no
- * movements could be retrived at all, it is assumed that at least the previous month had the same
- * balance as the current balance is.
- *
- * @author Oliver Lehmann
+ * @author Dennis Garske
  */
 public class BalanceDailyHandler extends AbstractHandler {
-    private final StatelessSession session;
-    private final BalanceDailyMapper balanceDailyMapper;
+	private final StatelessSession session;
+	private final BalanceDailyMapper balanceDailyMapper;
 
-    public BalanceDailyHandler(final StatelessSession session) {
-        this.session = session;
-        this.balanceDailyMapper = new BalanceDailyMapper();
-    }
+	public BalanceDailyHandler(final StatelessSession session) {
+		this.session = session;
+		this.balanceDailyMapper = new BalanceDailyMapper();
+	}
 
-    @Override
-    public void handle(final HBCIHandler hbciHandler, final Konto account) {
-        HBCIJob hbciJob = hbciHandler.newJob("SaldoReq");
-        hbciJob.setParam("my", account);
-        hbciJob.addToQueue();
+	@Override
+	public void handle(final HBCIHandler hbciHandler, final Konto account) {
+		final HBCIJob hbciJob = hbciHandler.newJob("SaldoReq");
+		hbciJob.setParam("my", account);
+		hbciJob.addToQueue();
 
-        HBCIExecStatus ret = hbciHandler.execute();
-        final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
+		final HBCIExecStatus ret = hbciHandler.execute();
+		final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
 
-        if (saldoResult.isOK()) {
+		if (saldoResult.isOK()) {
 
-            final Info balanceInfo = saldoResult.getEntries()[0];
-            if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
-                final BalanceDaily balanceDaily = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit, account);
-                insertBalanceDaily(balanceDaily);
-            }
+			final Info balanceInfo = saldoResult.getEntries()[0];
+			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
+				final BalanceDaily balanceDaily = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
+						account);
+				insertBalanceDaily(balanceDaily);
+			}
 
-        } else {
-            System.out.println("Job-Error");
-            System.out.println(saldoResult.getJobStatus().getErrorString());
-            System.out.println("Global Error");
-            System.out.println(ret.getErrorString());
-        }
-    }
+		} else {
+			System.out.println("Job-Error");
+			System.out.println(saldoResult.getJobStatus().getErrorString());
+			System.out.println("Global Error");
+			System.out.println(ret.getErrorString());
+		}
+	}
 
+	private void insertBalanceDaily(BalanceDaily currentBalance) {
+		try {
+			session.insert(currentBalance);
+		} catch (final ConstraintViolationException e) {
+			// here is already a balance value for today in the database, update it
+			final BalanceDaily oldBalance = getBalanceFromDB(currentBalance);
+			currentBalance = balanceDailyMapper.mergeSaldoResult(oldBalance, currentBalance);
+			session.update(currentBalance);
+		}
+		setChanged();
+		notifyObservers(currentBalance);
+	}
 
-    private void insertBalanceDaily(BalanceDaily currentBalance) {
-        try {
-            session.insert(currentBalance);
-        } catch (final ConstraintViolationException e) {
-            //here is already a balance value for today in the database, update it
-            BalanceDaily oldBalance = getBalanceFromDB(currentBalance);
-            currentBalance = balanceDailyMapper.mergeSaldoResult(oldBalance, currentBalance);
-            session.update(currentBalance);
-        }
-        setChanged();
-        notifyObservers(currentBalance);
-    }
+	private BalanceDaily getBalanceFromDB(final BalanceDaily currentBalance) {
+		final Query query = session.getNamedQuery("findDailyBalance").setString("myIban", currentBalance.getMyIban())
+				.setString("myBic", currentBalance.getMyBic())
+				.setLong("myAccountnumber", currentBalance.getMyAccountnumber())
+				.setLong("myBankcode", currentBalance.getMyBankcode())
+				.setDate("balanceDate", currentBalance.getBalanceDate());
 
-    private BalanceDaily getBalanceFromDB(BalanceDaily currentBalance) {
-        Query query = session.getNamedQuery("findDailyBalance")
-                .setString("myIban", currentBalance.getMyIban())
-                .setString("myBic", currentBalance.getMyBic())
-                .setLong("myAccountnumber", currentBalance.getMyAccountnumber())
-                .setLong("myBankcode", currentBalance.getMyBankcode())
-                .setDate("balanceDate", currentBalance.getBalanceDate());
-
-        return (BalanceDaily) query.uniqueResult();
-    }
+		return (BalanceDaily) query.uniqueResult();
+	}
 }
