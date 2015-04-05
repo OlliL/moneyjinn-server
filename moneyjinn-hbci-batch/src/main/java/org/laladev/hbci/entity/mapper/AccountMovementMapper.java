@@ -92,7 +92,11 @@ public class AccountMovementMapper {
 		for (final String usageline : entry.usage) {
 			usage = usage == null ? new String(usageline) : usage + '\n' + usageline;
 		}
-		accountMovement.setMovementReason(usage.trim());
+
+		if (usage != null) {
+			usage = usage.trim();
+		}
+		accountMovement.setMovementReason(usage);
 		accountMovement.setMovementTypeCode(Short.valueOf(entry.gvcode));
 		accountMovement.setMovementTypeText(entry.text.trim());
 
