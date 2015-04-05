@@ -101,6 +101,18 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				}
 
 				final Calendar currentCalendar = Calendar.getInstance();
+				/*
+				 * If the last processed movement is not from the current month, we can assume that
+				 * for the month of the last movement, the end of month balance can be written.
+				 */
+				if (!balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
+						|| !balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
+					insertBalanceMonthly(balanceMonthly);
+				}
+				/*
+				 * now also write the balance of the last movement for all following month until the
+				 * current month is reached
+				 */
 				this.prolongBalance(balanceMonthly, currentCalendar);
 			} else {
 				// no movement data available - assume that the current balance is also the end of
