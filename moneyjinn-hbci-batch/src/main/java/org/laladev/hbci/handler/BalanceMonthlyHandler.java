@@ -105,8 +105,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				 * If the last processed movement is not from the current month, we can assume that
 				 * for the month of the last movement, the end of month balance can be written.
 				 */
-				if (!balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
-						|| !balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
+				if (!balanceMonthly.getBalanceYear().equals(currentCalendar.get(Calendar.YEAR))
+						|| !balanceMonthly.getBalanceMonth().equals(currentCalendar.get(Calendar.MONTH))) {
 					insertBalanceMonthly(balanceMonthly);
 				}
 				/*
