@@ -45,6 +45,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.hbci.handler.AbstractHandler;
 import org.laladev.hbci.handler.AccountMovementHandler;
+import org.laladev.hbci.handler.BalanceDailyHandler;
 import org.laladev.hbci.handler.BalanceMonthlyHandler;
 
 public final class LalaHBCI {
@@ -96,6 +97,7 @@ public final class LalaHBCI {
 
 			executeHandler(new AccountMovementHandler(session), hbciHandler, observerList, accounts);
 			executeHandler(new BalanceMonthlyHandler(session), hbciHandler, observerList, accounts);
+			executeHandler(new BalanceDailyHandler(session), hbciHandler, observerList, accounts);
 
 		} finally {
 			if (hbciHandler != null) {
