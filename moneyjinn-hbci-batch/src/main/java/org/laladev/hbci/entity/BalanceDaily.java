@@ -25,178 +25,115 @@
 //
 package org.laladev.hbci.entity;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
 @NamedQueries({
-        @NamedQuery(
-                name = "findDailyBalance",
-                query = "FROM BalanceDaily b WHERE b.myIban = :myIban AND b.myBic = :myBic AND b.myAccountnumber = :myAccountnumber" +
-                        " AND  b.myBankcode = :myBankcode AND b.balanceDate = :balanceDate"
-        )
-})
+		@NamedQuery(name = "findDailyBalance", query = "FROM BalanceDaily b WHERE b.myIban = :myIban AND b.myBic = :myBic AND b.myAccountnumber = :myAccountnumber"
+				+ " AND  b.myBankcode = :myBankcode AND b.balanceDate = :balanceDate") })
 
 @Entity
 @Table(name = "balance_daily")
-public class BalanceDaily {
-    private int id;
-    private String myIban;
-    private String myBic;
-    private long myAccountnumber;
-    private int myBankcode;
-    private Date balanceDate;
-    private Timestamp lastTransactionDate;
-    private BigDecimal balanceAvailableValue;
-    private BigDecimal lineOfCreditValue;
-    private String balanceCurrency;
-    private Timestamp lastBalanceUpdate;
+public class BalanceDaily extends AbstractAccountEntitiy implements Serializable {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
-        return id;
-    }
+	private static final long serialVersionUID = 1L;
+	private Date balanceDate;
+	private Timestamp lastTransactionDate;
+	private BigDecimal balanceAvailableValue;
+	private BigDecimal lineOfCreditValue;
+	private String balanceCurrency;
+	private Timestamp lastBalanceUpdate;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@Column
+	public Date getBalanceDate() {
+		return balanceDate;
+	}
 
-    @Column
-    public String getMyIban() {
-        return myIban;
-    }
+	public void setBalanceDate(final Date balanceDate) {
+		this.balanceDate = balanceDate;
+	}
 
-    public void setMyIban(String myIban) {
-        this.myIban = myIban;
-    }
+	@Column
+	public Timestamp getLastTransactionDate() {
+		return lastTransactionDate;
+	}
 
-    @Column
-    public String getMyBic() {
-        return myBic;
-    }
+	public void setLastTransactionDate(final Timestamp lastTransactionDate) {
+		this.lastTransactionDate = lastTransactionDate;
+	}
 
-    public void setMyBic(String myBic) {
-        this.myBic = myBic;
-    }
+	@Column
+	public BigDecimal getBalanceAvailableValue() {
+		return balanceAvailableValue;
+	}
 
-    @Column
-    public long getMyAccountnumber() {
-        return myAccountnumber;
-    }
+	public void setBalanceAvailableValue(final BigDecimal balanceAvailableValue) {
+		this.balanceAvailableValue = balanceAvailableValue;
+	}
 
-    public void setMyAccountnumber(long myAccountnumber) {
-        this.myAccountnumber = myAccountnumber;
-    }
+	@Column
+	public BigDecimal getLineOfCreditValue() {
+		return lineOfCreditValue;
+	}
 
+	public void setLineOfCreditValue(final BigDecimal lineOfCreditValue) {
+		this.lineOfCreditValue = lineOfCreditValue;
+	}
 
-    @Column
-    public int getMyBankcode() {
-        return myBankcode;
-    }
+	@Column
+	public String getBalanceCurrency() {
+		return balanceCurrency;
+	}
 
-    public void setMyBankcode(int myBankcode) {
-        this.myBankcode = myBankcode;
-    }
+	public void setBalanceCurrency(final String balanceCurrency) {
+		this.balanceCurrency = balanceCurrency;
+	}
 
-    @Column
-    public Date getBalanceDate() {
-        return balanceDate;
-    }
+	@Column
+	public Timestamp getLastBalanceUpdate() {
+		return lastBalanceUpdate;
+	}
 
-    public void setBalanceDate(Date balanceDate) {
-        this.balanceDate = balanceDate;
-    }
+	public void setLastBalanceUpdate(final Timestamp lastBalanceUpdate) {
+		this.lastBalanceUpdate = lastBalanceUpdate;
+	}
 
-    @Column
-    public Timestamp getLastTransactionDate() {
-        return lastTransactionDate;
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof BalanceDaily)) {
+			return false;
+		}
 
-    public void setLastTransactionDate(Timestamp lastTransactionDate) {
-        this.lastTransactionDate = lastTransactionDate;
-    }
+		final BalanceDaily that = (BalanceDaily) o;
 
-    @Column
-    public BigDecimal getBalanceAvailableValue() {
-        return balanceAvailableValue;
-    }
+		return super.equals(that);
+	}
 
-    public void setBalanceAvailableValue(BigDecimal balanceAvailableValue) {
-        this.balanceAvailableValue = balanceAvailableValue;
-    }
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + balanceDate.hashCode();
+		return result;
+	}
 
-    @Column
-    public BigDecimal getLineOfCreditValue() {
-        return lineOfCreditValue;
-    }
-
-    public void setLineOfCreditValue(BigDecimal lineOfCreditValue) {
-        this.lineOfCreditValue = lineOfCreditValue;
-    }
-
-    @Column
-    public String getBalanceCurrency() {
-        return balanceCurrency;
-    }
-
-    public void setBalanceCurrency(String balanceCurrency) {
-        this.balanceCurrency = balanceCurrency;
-    }
-
-    @Column
-    public Timestamp getLastBalanceUpdate() {
-        return lastBalanceUpdate;
-    }
-
-    public void setLastBalanceUpdate(Timestamp lastBalanceUpdate) {
-        this.lastBalanceUpdate = lastBalanceUpdate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BalanceDaily)) return false;
-
-        BalanceDaily that = (BalanceDaily) o;
-
-        if (id != that.id) return false;
-        if (myAccountnumber != that.myAccountnumber) return false;
-        if (myBankcode != that.myBankcode) return false;
-        if (!balanceDate.equals(that.balanceDate)) return false;
-        if (!myBic.equals(that.myBic)) return false;
-        if (myIban != null ? !myIban.equals(that.myIban) : that.myIban != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (myIban != null ? myIban.hashCode() : 0);
-        result = 31 * result + myBic.hashCode();
-        result = 31 * result + (int) (myAccountnumber ^ (myAccountnumber >>> 32));
-        result = 31 * result + myBankcode;
-        result = 31 * result + balanceDate.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "BalanceDaily{" +
-                "id=" + id +
-                ", myIban='" + myIban + '\'' +
-                ", myBic='" + myBic + '\'' +
-                ", myAccountnumber=" + myAccountnumber +
-                ", myBankcode=" + myBankcode +
-                ", balanceDate=" + balanceDate +
-                ", lastTransactionDate=" + lastTransactionDate +
-                ", balanceAvailableValue=" + balanceAvailableValue +
-                ", lineOfCreditValue=" + lineOfCreditValue +
-                ", balanceCurrency='" + balanceCurrency + '\'' +
-                ", lastBalanceUpdate=" + lastBalanceUpdate +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "BalanceDaily{" + "id=" + super.getId() + ", myIban='" + super.getMyIban() + '\'' + ", myBic='"
+				+ super.getMyBic() + '\'' + ", myAccountnumber=" + super.getMyAccountnumber() + ", myBankcode="
+				+ super.getMyBankcode() + ", balanceDate=" + balanceDate + ", lastTransactionDate="
+				+ lastTransactionDate + ", balanceAvailableValue=" + balanceAvailableValue + ", lineOfCreditValue="
+				+ lineOfCreditValue + ", balanceCurrency='" + balanceCurrency + '\'' + ", lastBalanceUpdate="
+				+ lastBalanceUpdate + '}';
+	}
 }

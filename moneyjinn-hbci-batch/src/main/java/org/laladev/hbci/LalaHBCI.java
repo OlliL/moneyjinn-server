@@ -43,6 +43,10 @@ import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
+import org.laladev.hbci.collector.AccountMovementCollector;
+import org.laladev.hbci.collector.BalanceDailyCollector;
+import org.laladev.hbci.entity.AccountMovement;
+import org.laladev.hbci.entity.BalanceDaily;
 import org.laladev.hbci.handler.AbstractHandler;
 import org.laladev.hbci.handler.AccountMovementHandler;
 import org.laladev.hbci.handler.BalanceDailyHandler;
@@ -95,9 +99,17 @@ public final class LalaHBCI {
 			hbciHandler = new HBCIHandler(null, hbciPassport);
 			final Konto[] accounts = hbciPassport.getAccounts();
 
-			executeHandler(new AccountMovementHandler(session), hbciHandler, observerList, accounts);
-			executeHandler(new BalanceMonthlyHandler(session), hbciHandler, observerList, accounts);
-			executeHandler(new BalanceDailyHandler(session), hbciHandler, observerList, accounts);
+			for (final Konto account : accounts) {
+				final AccountMovementCollector accountMovementCollector = new AccountMovementCollector();
+				final BalanceDailyCollector balanceDailyCollector = new BalanceDailyCollector();
+
+				final List<AccountMovement> accountMovements = accountMovementCollector.collect(hbciHandler, account);
+				final BalanceDaily balanceDaily = balanceDailyCollector.collect(hbciHandler, account);
+
+				executeHandler(new AccountMovementHandler(session, accountMovements), observerList);
+				executeHandler(new BalanceDailyHandler(session, balanceDaily), observerList);
+				executeHandler(new BalanceMonthlyHandler(session, balanceDaily, accountMovements), observerList);
+			}
 
 		} finally {
 			if (hbciHandler != null) {
@@ -119,14 +131,12 @@ public final class LalaHBCI {
 	 * @param observerList
 	 * @param accounts
 	 */
-	private void executeHandler(final AbstractHandler handler, final HBCIHandler hbciHandler,
-			final List<Observer> observerList, final Konto[] accounts) {
+	private void executeHandler(final AbstractHandler handler, final List<Observer> observerList) {
+
 		for (final Observer observer : observerList) {
 			handler.addObserver(observer);
 		}
-		for (final Konto account : accounts) {
-			handler.handle(hbciHandler, account);
-		}
+		handler.handle();
 
 	}
 

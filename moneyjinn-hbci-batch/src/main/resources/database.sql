@@ -38,7 +38,7 @@ CREATE TABLE account_movements (
   cancellation int(1) unsigned NOT NULL,
   additional_information varchar(512) DEFAULT NULL,
   additional_key int(3) DEFAULT NULL,
-  prima_nota varchar(10) DEFAULT NULL,
+  prima_nota varchar(16) DEFAULT NULL,
   balance_date date NOT NULL,
   balance_value decimal(15,2) NOT NULL,
   balance_currency varchar(3) NOT NULL,
@@ -65,9 +65,9 @@ CREATE TABLE balance_monthly (
   UNIQUE KEY hbci_i_02 (my_iban,my_bic,my_accountnumber,my_bankcode,balance_year,balance_month)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
--- Dump completed on 2015-04-03 19:22:36
-
+--
+-- Table structure for table `balance_daily`
+--
 
 DROP TABLE IF EXISTS balance_daily;
 CREATE TABLE balance_daily (
@@ -76,17 +76,15 @@ CREATE TABLE balance_daily (
   my_bic varchar(11) NOT NULL,
   my_accountnumber bigint(10) NOT NULL,
   my_bankcode int(8) NOT NULL,
-  balance_date  date NOT NULL,
-  last_transaction_date timestamp NOT NULL,
+  balance_date date NOT NULL,
+  last_transaction_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   balance_available_value decimal(10,2) NOT NULL,
   line_of_credit_value decimal(10,2) NOT NULL,
   balance_currency varchar(3) NOT NULL,
-  last_balance_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_balance_update timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY hbci_i_04 (my_iban,my_bic,my_accountnumber,my_bankcode,balance_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-
-
-
+-- Dump completed on 2015-04-10 23:23:49

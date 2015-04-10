@@ -1,6 +1,7 @@
 mysqldump --skip-quote-names --skip-triggers --default-character-set=latin1 --tables --add-drop-table --single-transaction --no-data moneyflow_hbci \
 	account_movements \
 	balance_monthly \
+	balance_daily \
 		| awk '
 	{
 		if( $1 == ")" ) {

@@ -28,12 +28,6 @@ package org.laladev.hbci.handler;
 import org.hibernate.Query;
 import org.hibernate.StatelessSession;
 import org.hibernate.exception.ConstraintViolationException;
-import org.kapott.hbci.GV.HBCIJob;
-import org.kapott.hbci.GV_Result.GVRSaldoReq;
-import org.kapott.hbci.GV_Result.GVRSaldoReq.Info;
-import org.kapott.hbci.manager.HBCIHandler;
-import org.kapott.hbci.status.HBCIExecStatus;
-import org.kapott.hbci.structures.Konto;
 import org.laladev.hbci.entity.BalanceDaily;
 import org.laladev.hbci.entity.mapper.BalanceDailyMapper;
 
@@ -42,52 +36,27 @@ import org.laladev.hbci.entity.mapper.BalanceDailyMapper;
  */
 public class BalanceDailyHandler extends AbstractHandler {
 	private final StatelessSession session;
-	private final BalanceDailyMapper balanceDailyMapper;
+	private final BalanceDaily balanceDaily;
 
-	public BalanceDailyHandler(final StatelessSession session) {
+	public BalanceDailyHandler(final StatelessSession session, final BalanceDaily balanceDaily) {
 		this.session = session;
-		this.balanceDailyMapper = new BalanceDailyMapper();
+		this.balanceDaily = balanceDaily;
 	}
 
 	@Override
-	public void handle(final HBCIHandler hbciHandler, final Konto account) {
-		final HBCIJob hbciJob = hbciHandler.newJob("SaldoReq");
-		hbciJob.setParam("my", account);
-		hbciJob.addToQueue();
-
-		final HBCIExecStatus ret = hbciHandler.execute();
-		final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
-
-		if (saldoResult.isOK()) {
-
-			final Info balanceInfo = saldoResult.getEntries()[0];
-			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
-				final BalanceDaily balanceDaily = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
-						account);
-				if (balanceDaily != null && balanceDaily.getMyIban() != null && balanceDaily.getMyBic() != null) {
-					insertBalanceDaily(balanceDaily);
-				}
+	public void handle() {
+		final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
+		if (this.balanceDaily != null) {
+			try {
+				session.insert(balanceDaily);
+			} catch (final ConstraintViolationException e) {
+				// here is already a balance value for today in the database, update it
+				final BalanceDaily oldBalance = getBalanceFromDB(balanceDaily);
+				session.update(balanceDailyMapper.mergeSaldoResult(oldBalance, balanceDaily));
 			}
-
-		} else {
-			System.out.println("Job-Error");
-			System.out.println(saldoResult.getJobStatus().getErrorString());
-			System.out.println("Global Error");
-			System.out.println(ret.getErrorString());
+			setChanged();
+			notifyObservers(balanceDaily);
 		}
-	}
-
-	private void insertBalanceDaily(BalanceDaily currentBalance) {
-		try {
-			session.insert(currentBalance);
-		} catch (final ConstraintViolationException e) {
-			// here is already a balance value for today in the database, update it
-			final BalanceDaily oldBalance = getBalanceFromDB(currentBalance);
-			currentBalance = balanceDailyMapper.mergeSaldoResult(oldBalance, currentBalance);
-			session.update(currentBalance);
-		}
-		setChanged();
-		notifyObservers(currentBalance);
 	}
 
 	private BalanceDaily getBalanceFromDB(final BalanceDaily currentBalance) {

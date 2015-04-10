@@ -30,72 +30,17 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "balance_monthly")
-public class BalanceMonthly implements Serializable {
+public class BalanceMonthly extends AbstractAccountEntitiy implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private String myIban;
-	private String myBic;
-	private Long myAccountnumber;
-	private Integer myBankcode;
 	private Integer balanceYear;
 	private Integer balanceMonth;
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
-	public final Integer getId() {
-		return id;
-	}
-
-	public final void setId(final Integer id) {
-		this.id = id;
-	}
-
-	@Column
-	public final String getMyIban() {
-		return myIban;
-	}
-
-	public final void setMyIban(final String myIban) {
-		this.myIban = myIban;
-	}
-
-	@Column
-	public final String getMyBic() {
-		return myBic;
-	}
-
-	public final void setMyBic(final String myBic) {
-		this.myBic = myBic;
-	}
-
-	@Column
-	public final Long getMyAccountnumber() {
-		return myAccountnumber;
-	}
-
-	public final void setMyAccountnumber(final Long myAccountnumber) {
-		this.myAccountnumber = myAccountnumber;
-	}
-
-	@Column
-	public final Integer getMyBankcode() {
-		return myBankcode;
-	}
-
-	public final void setMyBankcode(final Integer myBankcode) {
-		this.myBankcode = myBankcode;
-	}
 
 	@Column
 	public final Integer getBalanceYear() {
@@ -136,11 +81,12 @@ public class BalanceMonthly implements Serializable {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("BalanceMonthly [id=").append(id).append(", myIban=").append(myIban).append(", myBic=")
-				.append(myBic).append(", myAccountnumber=").append(myAccountnumber).append(", myBankcode=")
-				.append(myBankcode).append(", balanceYear=").append(balanceYear).append(", balanceMonth=")
-				.append(balanceMonth).append(", balanceValue=").append(balanceValue).append(", balanceCurrency=")
-				.append(balanceCurrency).append("]");
+		builder.append("BalanceMonthly [id=").append(super.getId()).append(", myIban=").append(super.getMyIban())
+				.append(", myBic=").append(super.getMyBic()).append(", myAccountnumber=")
+				.append(super.getMyAccountnumber()).append(", myBankcode=").append(super.getMyBankcode())
+				.append(", balanceYear=").append(balanceYear).append(", balanceMonth=").append(balanceMonth)
+				.append(", balanceValue=").append(balanceValue).append(", balanceCurrency=").append(balanceCurrency)
+				.append("]");
 		return builder.toString();
 	}
 

@@ -56,21 +56,13 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "account_movements")
-public class AccountMovement implements Serializable {
+public class AccountMovement extends AbstractAccountEntitiy implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private String myIban;
-	private String myBic;
-	private Long myAccountnumber;
-	private Integer myBankcode;
 	private Date bookingDate;
 	private Date valueDate;
 	private Timestamp invoiceTimestamp;
@@ -97,53 +89,6 @@ public class AccountMovement implements Serializable {
 	private Date balanceDate;
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
-	public final Integer getId() {
-		return id;
-	}
-
-	public final void setId(final Integer id) {
-		this.id = id;
-	}
-
-	@Column
-	public final String getMyIban() {
-		return myIban;
-	}
-
-	public final void setMyIban(final String myIban) {
-		this.myIban = myIban;
-	}
-
-	@Column
-	public final String getMyBic() {
-		return myBic;
-	}
-
-	public final void setMyBic(final String myBic) {
-		this.myBic = myBic;
-	}
-
-	@Column
-	public final Long getMyAccountnumber() {
-		return myAccountnumber;
-	}
-
-	public final void setMyAccountnumber(final Long myAccountnumber) {
-		this.myAccountnumber = myAccountnumber;
-	}
-
-	@Column
-	public final Integer getMyBankcode() {
-		return myBankcode;
-	}
-
-	public final void setMyBankcode(final Integer myBankcode) {
-		this.myBankcode = myBankcode;
-	}
 
 	@Column
 	public final Date getBookingDate() {
@@ -382,23 +327,23 @@ public class AccountMovement implements Serializable {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("AccountMovement [id=").append(id).append(", myIban=").append(myIban).append(", myBic=")
-				.append(myBic).append(", myAccountnumber=").append(myAccountnumber).append(", myBankcode=")
-				.append(myBankcode).append(", bookingDate=").append(bookingDate).append(", valueDate=")
-				.append(valueDate).append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=")
-				.append(otherIban).append(", otherBic=").append(otherBic).append(", otherAccountnumber=")
-				.append(otherAccountnumber).append(", otherBankcode=").append(otherBankcode).append(", otherName=")
-				.append(otherName).append(", chargeValue=").append(chargeValue).append(", chargeCurrency=")
-				.append(chargeCurrency).append(", originalValue=").append(originalValue).append(", originalCurrency=")
-				.append(originalCurrency).append(", movementValue=").append(movementValue).append(", movementCurrency=")
-				.append(movementCurrency).append(", movementReason=").append(movementReason)
-				.append(", movementTypeCode=").append(movementTypeCode).append(", movementTypeText=")
-				.append(movementTypeText).append(", customerReference=").append(customerReference)
-				.append(", bankReference=").append(bankReference).append(", cancellation=").append(cancellation)
-				.append(", additionalInformation=").append(additionalInformation).append(", additionalKey=")
-				.append(additionalKey).append(", primaNota=").append(primaNota).append(", balanceDate=")
-				.append(balanceDate).append(", balanceValue=").append(balanceValue).append(", balanceCurrency=")
-				.append(balanceCurrency).append("]");
+		builder.append("AccountMovement [id=").append(super.getId()).append(", myIban=").append(super.getMyIban())
+				.append(", myBic=").append(super.getMyBic()).append(", myAccountnumber=")
+				.append(super.getMyAccountnumber()).append(", myBankcode=").append(super.getMyBankcode())
+				.append(", bookingDate=").append(bookingDate).append(", valueDate=").append(valueDate)
+				.append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=").append(otherIban)
+				.append(", otherBic=").append(otherBic).append(", otherAccountnumber=").append(otherAccountnumber)
+				.append(", otherBankcode=").append(otherBankcode).append(", otherName=").append(otherName)
+				.append(", chargeValue=").append(chargeValue).append(", chargeCurrency=").append(chargeCurrency)
+				.append(", originalValue=").append(originalValue).append(", originalCurrency=").append(originalCurrency)
+				.append(", movementValue=").append(movementValue).append(", movementCurrency=").append(movementCurrency)
+				.append(", movementReason=").append(movementReason).append(", movementTypeCode=")
+				.append(movementTypeCode).append(", movementTypeText=").append(movementTypeText)
+				.append(", customerReference=").append(customerReference).append(", bankReference=")
+				.append(bankReference).append(", cancellation=").append(cancellation).append(", additionalInformation=")
+				.append(additionalInformation).append(", additionalKey=").append(additionalKey).append(", primaNota=")
+				.append(primaNota).append(", balanceDate=").append(balanceDate).append(", balanceValue=")
+				.append(balanceValue).append(", balanceCurrency=").append(balanceCurrency).append("]");
 		return builder.toString();
 	}
 

@@ -26,16 +26,12 @@
 package org.laladev.hbci.handler;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.hibernate.StatelessSession;
 import org.hibernate.exception.ConstraintViolationException;
-import org.kapott.hbci.GV.HBCIJob;
-import org.kapott.hbci.GV_Result.GVRKUms;
-import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
-import org.kapott.hbci.GV_Result.GVRSaldoReq;
-import org.kapott.hbci.manager.HBCIHandler;
-import org.kapott.hbci.status.HBCIExecStatus;
-import org.kapott.hbci.structures.Konto;
+import org.laladev.hbci.entity.AccountMovement;
+import org.laladev.hbci.entity.BalanceDaily;
 import org.laladev.hbci.entity.BalanceMonthly;
 import org.laladev.hbci.entity.mapper.BalanceMonthlyMapper;
 
@@ -50,29 +46,26 @@ import org.laladev.hbci.entity.mapper.BalanceMonthlyMapper;
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
 	private final StatelessSession session;
-	private final BalanceMonthlyMapper balanceMonthlyMapper;
+	private final BalanceDaily balanceDaily;
+	private final List<AccountMovement> accountMovements;
 
-	public BalanceMonthlyHandler(final StatelessSession session) {
+	public BalanceMonthlyHandler(final StatelessSession session, final BalanceDaily balanceDaily,
+			final List<AccountMovement> accountMovements) {
 		this.session = session;
-		this.balanceMonthlyMapper = new BalanceMonthlyMapper();
+		this.accountMovements = accountMovements;
+		this.balanceDaily = balanceDaily;
 	}
 
 	@Override
-	public void handle(final HBCIHandler hbciHandler, final Konto account) {
-		HBCIJob hbciJob = hbciHandler.newJob("KUmsAll");
-		hbciJob.setParam("my", account);
-		hbciJob.addToQueue();
-
-		HBCIExecStatus ret = hbciHandler.execute();
-		final GVRKUms umsResult = (GVRKUms) hbciJob.getJobResult();
-
-		if (umsResult.isOK()) {
+	public void handle() {
+		if (this.balanceDaily != null) {
+			final BalanceMonthlyMapper balanceMonthlyMapper = new BalanceMonthlyMapper();
 			BalanceMonthly balanceMonthly = null;
 
-			if (umsResult.getFlatData().size() > 0) {
+			if (accountMovements != null && accountMovements.size() > 0) {
 				final Calendar calendar = Calendar.getInstance();
-				for (final UmsLine entry : umsResult.getFlatData()) {
-					calendar.setTime(entry.saldo.timestamp);
+				for (final AccountMovement accountMovement : accountMovements) {
+					calendar.setTime(accountMovement.getBalanceDate());
 
 					if (balanceMonthly != null) {
 						if (!balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))
@@ -97,7 +90,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 							this.prolongBalance(balanceMonthly, calendar);
 						}
 					}
-					balanceMonthly = this.balanceMonthlyMapper.map(entry.saldo, calendar, account);
+					balanceMonthly = balanceMonthlyMapper.map(accountMovement, calendar, accountMovement.getBalanceCurrency(),
+							accountMovement.getBalanceValue());
 				}
 
 				final Calendar currentCalendar = Calendar.getInstance();
@@ -115,48 +109,34 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				 */
 				this.prolongBalance(balanceMonthly, currentCalendar);
 			} else {
-				// no movement data available - assume that the current balance is also the end of
-				// month balance for the previous month
-				hbciJob = hbciHandler.newJob("SaldoReq");
-				hbciJob.setParam("my", account);
-				hbciJob.addToQueue();
-				ret = hbciHandler.execute();
-				final GVRSaldoReq resultSaldoReq = (GVRSaldoReq) hbciJob.getJobResult();
-				if (resultSaldoReq.isOK()) {
-					final GVRSaldoReq.Info currentBalance = resultSaldoReq.getEntries()[0];
+				final Calendar previousCalendar = Calendar.getInstance();
+				previousCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) * -1);
+				previousCalendar.set(Calendar.HOUR_OF_DAY, 23);
+				previousCalendar.set(Calendar.MINUTE, 59);
+				previousCalendar.set(Calendar.SECOND, 59);
+				previousCalendar.set(Calendar.MILLISECOND, 999);
 
-					final Calendar previousCalendar = Calendar.getInstance();
-					previousCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) * -1);
-					previousCalendar.set(Calendar.HOUR_OF_DAY, 23);
-					previousCalendar.set(Calendar.MINUTE, 59);
-					previousCalendar.set(Calendar.SECOND, 59);
-					previousCalendar.set(Calendar.MILLISECOND, 999);
+				final Calendar readyCalendar = Calendar.getInstance();
+				readyCalendar.setTime(this.balanceDaily.getLastTransactionDate());
 
-					final Calendar readyCalendar = Calendar.getInstance();
-					readyCalendar.setTime(currentBalance.ready.timestamp);
-
-					/*
-					 * some banks always send the current day as balance date. some banks send the
-					 * date of the last booking.
-					 */
-					if (readyCalendar.before(previousCalendar)) {
-						// last date of booking
-						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, readyCalendar, account);
-						insertBalanceMonthly(balanceMonthly);
-						final Calendar currentCalendar = Calendar.getInstance();
-						this.prolongBalance(balanceMonthly, currentCalendar);
-					} else {
-						// current day
-						balanceMonthly = this.balanceMonthlyMapper.map(currentBalance.ready, previousCalendar, account);
-						insertBalanceMonthly(balanceMonthly);
-					}
+				/*
+				 * some banks always send the current day as balance date. some banks send the date
+				 * of the last booking.
+				 */
+				if (readyCalendar.before(previousCalendar)) {
+					// last date of booking
+					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, readyCalendar,
+							balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
+					insertBalanceMonthly(balanceMonthly);
+					final Calendar currentCalendar = Calendar.getInstance();
+					this.prolongBalance(balanceMonthly, currentCalendar);
+				} else {
+					// current day
+					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, previousCalendar,
+							balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
+					insertBalanceMonthly(balanceMonthly);
 				}
 			}
-		} else {
-			System.out.println("Job-Error");
-			System.out.println(umsResult.getJobStatus().getErrorString());
-			System.out.println("Global Error");
-			System.out.println(ret.getErrorString());
 		}
 	}
 
