@@ -52,7 +52,11 @@ public class BalanceDailyHandler extends AbstractHandler {
 			} catch (final ConstraintViolationException e) {
 				// here is already a balance value for today in the database, update it
 				final BalanceDaily oldBalance = getBalanceFromDB(balanceDaily);
-				session.update(balanceDailyMapper.mergeSaldoResult(oldBalance, balanceDaily));
+				if (oldBalance != null) {
+					session.update(balanceDailyMapper.mergeSaldoResult(oldBalance, balanceDaily));
+				} else {
+					throw e;
+				}
 			}
 			setChanged();
 			notifyObservers(balanceDaily);
