@@ -37,6 +37,7 @@ import org.laladev.hbci.entity.AccountMovement;
 
 public class AccountMovementMapper {
 	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");
+	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
 	private final DateFormat dateTimeWithoutYearSpaceFormatter = new SimpleDateFormat("dd.MM HH.mm");
 	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
 
@@ -139,16 +140,35 @@ public class AccountMovementMapper {
 				if (movementTypeCode.equals(Short.valueOf((short) 5))) {
 
 					final String[] lines = movementReason.split("\r\n|\r|\n");
-					for (final String line : lines) {
+					lineloop: for (final String line : lines) {
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
 							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
 							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(12, 23));
 							setYear(accountMovement.getBookingDate(), invoiceDate);
 							break;
-						} else if (movementReason.startsWith("EC ")) {
+						} else if (line.startsWith("EC ")) {
 							// Usage text starts with EC XXXXXXXX 090215165422IC1
 							invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
 							break;
+						} else {
+							for (int i = 0; i < line.length(); i++) {
+								if (!Character.isDigit(line.charAt(i))) {
+									continue lineloop;
+								}
+							}
+							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 9));
+							setYear(accountMovement.getBookingDate(), invoiceDate);
+							/*
+							 * the invoice date must be before or equal than the bookingdate and not
+							 * more than two weeks before the bookingdate
+							 */
+							if (invoiceDate.after(accountMovement.getBookingDate())
+									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
+											* 86400000) {
+								invoiceDate = null;
+
+							}
+
 						}
 					}
 
