@@ -90,8 +90,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 							this.prolongBalance(balanceMonthly, calendar);
 						}
 					}
-					balanceMonthly = balanceMonthlyMapper.map(accountMovement, calendar, accountMovement.getBalanceCurrency(),
-							accountMovement.getBalanceValue());
+					balanceMonthly = balanceMonthlyMapper.map(accountMovement, calendar,
+							accountMovement.getBalanceCurrency(), accountMovement.getBalanceValue());
 				}
 
 				final Calendar currentCalendar = Calendar.getInstance();
@@ -168,9 +168,10 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			session.insert(balanceMonthly);
 			setChanged();
 			notifyObservers(balanceMonthly);
-			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() - 1);
 
 		} catch (final ConstraintViolationException e) {
+		} finally {
+			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() - 1);
 		}
 
 	}
