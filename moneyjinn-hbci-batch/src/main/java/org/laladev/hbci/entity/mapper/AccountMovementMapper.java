@@ -156,7 +156,7 @@ public class AccountMovementMapper {
 									continue lineloop;
 								}
 							}
-							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 9));
+							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
 							setYear(accountMovement.getBookingDate(), invoiceDate);
 							/*
 							 * the invoice date must be before or equal than the bookingdate and not
