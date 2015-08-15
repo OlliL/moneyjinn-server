@@ -43,6 +43,7 @@ public class AccountMovementMapper {
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
+		accountMovement.setCreationTime(new Timestamp(System.currentTimeMillis()));
 		accountMovement.setMyIban(myAccount.iban);
 		accountMovement.setMyBic(myAccount.bic);
 		accountMovement.setMyAccountnumber(Long.valueOf(myAccount.number));
@@ -99,7 +100,9 @@ public class AccountMovementMapper {
 		}
 		accountMovement.setMovementReason(usage);
 		accountMovement.setMovementTypeCode(Short.valueOf(entry.gvcode));
-		accountMovement.setMovementTypeText(entry.text.trim());
+		if (entry.text != null) {
+			accountMovement.setMovementTypeText(entry.text.trim());
+		}
 
 		accountMovement.setCustomerReference(entry.customerref);
 		accountMovement.setBankReference(entry.instref);

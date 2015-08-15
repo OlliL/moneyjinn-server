@@ -94,6 +94,15 @@ public class AccountMovementMapperTest {
 	}
 
 	@Test
+	public void test_InvoiceTimestamp5Lastschrift() {
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "100601031885492151200031520";
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "5");
+	}
+
+	@Test
 	public void test_InvoiceTimestamp83TaNr() {
 		final List<String> usage = new ArrayList<String>();
 		final String usageLine = "10.06 01.03 TA-NR. XXXXXX";

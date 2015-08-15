@@ -1,20 +1,20 @@
 mysqldump --skip-quote-names --skip-triggers --default-character-set=latin1 --tables --add-drop-table --single-transaction --no-data moneyflow_hbci \
-	account_movements \
-	balance_monthly \
-	balance_daily \
-		| awk '
-	{
-		if( $1 == ")" ) {
-			printf("%s",$1)
-			for( i=2 ; i <= NF ; i++ ) {
-				if( $i !~ /AUTO_INCREMENT=[0-9]*/ )
-					printf (" %s",$i)
-			}
-			printf("\n")
-		} else {
-			print
-		}
-	}' | grep -v '^/\*'
+    account_movements \
+    balance_monthly \
+    balance_daily \
+        | awk '
+    {
+        if( $1 == ")" ) {
+            printf("%s",$1)
+            for( i=2 ; i <= NF ; i++ ) {
+                if( $i !~ /AUTO_INCREMENT=[0-9]*/ )
+                    printf (" %s",$i)
+            }
+            printf("\n")
+        } else {
+            print
+        }
+    }' | grep -v '^/\*'
 
 
 

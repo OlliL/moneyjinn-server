@@ -39,6 +39,7 @@ import javax.persistence.Table;
 public class AccountMovement extends AbstractAccountEntitiy implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Timestamp creationTime;
 	private Date bookingDate;
 	private Date valueDate;
 	private Timestamp invoiceTimestamp;
@@ -65,6 +66,15 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 	private Date balanceDate;
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
+
+	@Column
+	public final Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public final void setCreationTime(final Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
 
 	@Column
 	public final Date getBookingDate() {

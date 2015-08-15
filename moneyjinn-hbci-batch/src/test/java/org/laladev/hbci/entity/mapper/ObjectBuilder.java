@@ -10,7 +10,7 @@ import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
 
-public class ObjectBuilder {
+class ObjectBuilder {
 
 	public static Konto getKonto() {
 		final Konto account = new Konto("10001000", "30000000");

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.23, for FreeBSD10.1 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.25, for FreeBSD10.1 (amd64)
 --
 -- Host: localhost    Database: moneyflow_hbci
 -- ------------------------------------------------------
--- Server version       5.6.23
+-- Server version       5.6.25
 
 
 --
@@ -12,6 +12,7 @@
 DROP TABLE IF EXISTS account_movements;
 CREATE TABLE account_movements (
   account_movement_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  creation_time datetime NOT NULL,
   my_iban varchar(34) NOT NULL,
   my_bic varchar(11) NOT NULL,
   my_accountnumber bigint(10) unsigned NOT NULL,
@@ -87,4 +88,4 @@ CREATE TABLE balance_daily (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- Dump completed on 2015-04-10 23:23:49
+-- Dump completed on 2015-08-15 22:17:13
