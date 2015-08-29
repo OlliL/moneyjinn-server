@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}
- * where it would be normally not be possible. Unfortunally the Interceptor is needed because raised
- * Exceptions here are NOT handled by {@see ErrorResponseExceptionHandler}
+ * where it would be normally not be possible. Unfortunately the Interceptor is needed because
+ * raised Exceptions here are NOT handled by {@see ErrorResponseExceptionHandler}
  *
  * @author olivleh1
  *
