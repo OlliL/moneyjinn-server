@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.laladev.moneyjinn.businesslogic.dao.mapper.IAccessRelationDaoMapper">
+
+        <sql id="accessRelationColumns">
+		 id
+		,ref_id     as refId
+		,validfrom  as validFrom
+		,validtil   as validTil
+	</sql>
+    
+        <select id="getAccessRelationById" 
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData">
+		SELECT <include refid="accessRelationColumns" />
+		  FROM access_relation
+		 WHERE id = #{id}
+		   AND #{date} BETWEEN validfrom AND validtil
+		 LIMIT 1
+	</select>
+        
+        <select id="getAllAccessRelationsById"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData">
+		SELECT <include refid="accessRelationColumns" />
+		  FROM access_relation
+		 WHERE id = #{id}
+		 ORDER BY validfrom
+	</select>
+	
+        <select id="getAllAccessRelationsByIdDate"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData">
+		SELECT <include refid="accessRelationColumns" />
+		  FROM access_relation
+		 WHERE id = #{id}
+		   AND validtil >= #{date}
+		 ORDER BY validfrom
+	</select>
+        
+        <delete id="deleteAllAccessRelation">
+		DELETE
+		  FROM access_relation
+		 WHERE id = #{id}
+        </delete>
+        
+        <delete id="deleteAccessRelationByDate">
+		DELETE
+		  FROM access_relation
+		 WHERE id        = #{id}
+		   AND validfrom = #{date}
+        </delete>
+        
+        <update id="updateAccessRelation">
+		UPDATE access_relation
+		   SET ref_id    = #{accessRelationData.refId}
+		      ,validfrom = #{accessRelationData.validFrom}
+		      ,validtil  = #{accessRelationData.validTil}
+		 WHERE id        = #{id}
+		   AND validfrom = #{date}
+        </update>
+        
+        <insert id="createAccessRelation"
+        	parameterType="org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData">
+        	INSERT
+		  INTO access_relation
+		      (id
+		      ,ref_id
+		      ,validfrom
+		      ,validtil
+		      )
+		VALUES
+		      (#{id}
+		      ,#{refId}
+		      ,#{validFrom}
+		      ,#{validTil}
+		      )
+        </insert>
+        
+        <delete id="deleteAllAccessFlattened">
+		DELETE
+		  FROM access_flattened
+		 WHERE id = #{id}
+        </delete>
+        
+        <delete id="deleteAccessFlattenedAfter">
+		DELETE
+		  FROM access_flattened
+		 WHERE id        = #{id}
+		   AND validtil >= #{date}
+        </delete>
+        
+        <insert id="createAccessFlattened"
+        	parameterType="org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData">
+        	INSERT
+		  INTO access_flattened
+		      (id
+		      ,validfrom
+		      ,validtil
+		      ,id_level_1
+		      ,id_level_2
+		      ,id_level_3
+		      ,id_level_4
+		      ,id_level_5
+		      )
+		VALUES
+		      (#{id}
+		      ,#{validFrom}
+		      ,#{validTil}
+		      ,#{idLevel1}
+		      ,#{idLevel2}
+		      ,#{idLevel3}
+		      ,#{idLevel4}
+		      ,#{idLevel5}
+		      )
+        </insert>
+</mapper>
+ 
