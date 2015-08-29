@@ -107,4 +107,19 @@ public class ShowUserListResponse extends AbstractResponse {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ShowUserListResponse [initials=");
+		builder.append(this.initials);
+		builder.append(", userTransports=");
+		builder.append(this.userTransports);
+		builder.append(", groupTransports=");
+		builder.append(this.groupTransports);
+		builder.append(", accessRelationTransports=");
+		builder.append(this.accessRelationTransports);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

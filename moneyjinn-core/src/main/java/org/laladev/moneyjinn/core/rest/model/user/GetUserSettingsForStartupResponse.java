@@ -164,9 +164,19 @@ public class GetUserSettingsForStartupResponse extends AbstractResponse {
 
 	@Override
 	public String toString() {
-		return "GetUserSettingsForStartupResponse [userId=" + this.userId + ", settingDateFormat="
-				+ this.settingDateFormat + ", settingDisplayedLanguage=" + this.settingDisplayedLanguage
-				+ ", permissionAdmin=" + this.permissionAdmin + ", attributeNew=" + this.attributeNew + "]";
+		final StringBuilder builder = new StringBuilder();
+		builder.append("GetUserSettingsForStartupResponse [userId=");
+		builder.append(this.userId);
+		builder.append(", settingDateFormat=");
+		builder.append(this.settingDateFormat);
+		builder.append(", settingDisplayedLanguage=");
+		builder.append(this.settingDisplayedLanguage);
+		builder.append(", permissionAdmin=");
+		builder.append(this.permissionAdmin);
+		builder.append(", attributeNew=");
+		builder.append(this.attributeNew);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

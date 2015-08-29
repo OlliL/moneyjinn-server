@@ -94,4 +94,19 @@ public class AccessRelationTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("AccessRelationTransport [id=");
+		builder.append(this.id);
+		builder.append(", refId=");
+		builder.append(this.refId);
+		builder.append(", validfrom=");
+		builder.append(this.validfrom);
+		builder.append(", validtil=");
+		builder.append(this.validtil);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

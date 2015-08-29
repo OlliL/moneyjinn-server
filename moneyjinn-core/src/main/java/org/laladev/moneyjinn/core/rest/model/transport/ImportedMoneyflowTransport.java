@@ -171,4 +171,27 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ImportedMoneyflowTransport [accountNumber=");
+		builder.append(this.accountNumber);
+		builder.append(", bankCode=");
+		builder.append(this.bankCode);
+		builder.append(", externalid=");
+		builder.append(this.externalid);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append(", usage=");
+		builder.append(this.usage);
+		builder.append(", accountNumberCapitalsource=");
+		builder.append(this.accountNumberCapitalsource);
+		builder.append(", bankCodeCapitalsource=");
+		builder.append(this.bankCodeCapitalsource);
+		builder.append(", toString()=");
+		builder.append(super.toString());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

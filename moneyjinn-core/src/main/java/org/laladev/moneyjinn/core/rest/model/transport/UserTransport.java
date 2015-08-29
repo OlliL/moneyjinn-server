@@ -126,4 +126,23 @@ public class UserTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("UserTransport [id=");
+		builder.append(this.id);
+		builder.append(", userName=");
+		builder.append(this.userName);
+		builder.append(", userPassword=");
+		builder.append(this.userPassword);
+		builder.append(", userIsAdmin=");
+		builder.append(this.userIsAdmin);
+		builder.append(", userIsNew=");
+		builder.append(this.userIsNew);
+		builder.append(", userCanLogin=");
+		builder.append(this.userCanLogin);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

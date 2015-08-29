@@ -162,4 +162,27 @@ public class MonthlySettlementTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("MonthlySettlementTransport [id=");
+		builder.append(this.id);
+		builder.append(", userid=");
+		builder.append(this.userid);
+		builder.append(", year=");
+		builder.append(this.year);
+		builder.append(", month=");
+		builder.append(this.month);
+		builder.append(", amount=");
+		builder.append(this.amount);
+		builder.append(", capitalsourceid=");
+		builder.append(this.capitalsourceid);
+		builder.append(", capitalsourcecomment=");
+		builder.append(this.capitalsourcecomment);
+		builder.append(", capitalsourcegroupuse=");
+		builder.append(this.capitalsourcegroupuse);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

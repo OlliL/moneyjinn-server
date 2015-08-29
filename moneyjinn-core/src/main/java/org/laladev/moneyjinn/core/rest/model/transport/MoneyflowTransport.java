@@ -295,4 +295,39 @@ public class MoneyflowTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("MoneyflowTransport [id=");
+		builder.append(this.id);
+		builder.append(", userid=");
+		builder.append(this.userid);
+		builder.append(", bookingdate=");
+		builder.append(this.bookingdate);
+		builder.append(", invoicedate=");
+		builder.append(this.invoicedate);
+		builder.append(", amount=");
+		builder.append(this.amount);
+		builder.append(", capitalsourceid=");
+		builder.append(this.capitalsourceid);
+		builder.append(", capitalsourcecomment=");
+		builder.append(this.capitalsourcecomment);
+		builder.append(", capitalsourcetype=");
+		builder.append(this.capitalsourcetype);
+		builder.append(", contractpartnerid=");
+		builder.append(this.contractpartnerid);
+		builder.append(", contractpartnername=");
+		builder.append(this.contractpartnername);
+		builder.append(", comment=");
+		builder.append(this.comment);
+		builder.append(", privat=");
+		builder.append(this.privat);
+		builder.append(", postingaccountid=");
+		builder.append(this.postingaccountid);
+		builder.append(", postingaccountname=");
+		builder.append(this.postingaccountname);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

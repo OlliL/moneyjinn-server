@@ -85,4 +85,15 @@ public class PostingAccountTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("PostingAccountTransport [id=");
+		builder.append(this.id);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

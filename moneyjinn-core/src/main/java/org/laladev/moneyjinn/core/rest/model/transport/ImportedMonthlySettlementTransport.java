@@ -103,4 +103,19 @@ public class ImportedMonthlySettlementTransport extends MonthlySettlementTranspo
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ImportedMonthlySettlementTransport [externalid=");
+		builder.append(this.externalid);
+		builder.append(", accountNumberCapitalsource=");
+		builder.append(this.accountNumberCapitalsource);
+		builder.append(", bankCodeCapitalsource=");
+		builder.append(this.bankCodeCapitalsource);
+		builder.append(", toString()=");
+		builder.append(super.toString());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

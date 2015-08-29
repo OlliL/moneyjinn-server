@@ -107,4 +107,17 @@ public class ValidationItemTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ValidationItemTransport [key=");
+		builder.append(this.key);
+		builder.append(", error=");
+		builder.append(this.error);
+		builder.append(", variableArray=");
+		builder.append(this.variableArray);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

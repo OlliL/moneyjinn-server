@@ -257,4 +257,35 @@ public class ContractpartnerTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ContractpartnerTransport [id=");
+		builder.append(this.id);
+		builder.append(", userid=");
+		builder.append(this.userid);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append(", street=");
+		builder.append(this.street);
+		builder.append(", postcode=");
+		builder.append(this.postcode);
+		builder.append(", town=");
+		builder.append(this.town);
+		builder.append(", validTil=");
+		builder.append(this.validTil);
+		builder.append(", validFrom=");
+		builder.append(this.validFrom);
+		builder.append(", country=");
+		builder.append(this.country);
+		builder.append(", moneyflowComment=");
+		builder.append(this.moneyflowComment);
+		builder.append(", postingAccountName=");
+		builder.append(this.postingAccountName);
+		builder.append(", postingAccountId=");
+		builder.append(this.postingAccountId);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

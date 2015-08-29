@@ -240,4 +240,33 @@ public class CapitalsourceTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("CapitalsourceTransport [id=");
+		builder.append(this.id);
+		builder.append(", userid=");
+		builder.append(this.userid);
+		builder.append(", type=");
+		builder.append(this.type);
+		builder.append(", state=");
+		builder.append(this.state);
+		builder.append(", accountNumber=");
+		builder.append(this.accountNumber);
+		builder.append(", bankCode=");
+		builder.append(this.bankCode);
+		builder.append(", comment=");
+		builder.append(this.comment);
+		builder.append(", validTil=");
+		builder.append(this.validTil);
+		builder.append(", validFrom=");
+		builder.append(this.validFrom);
+		builder.append(", groupUse=");
+		builder.append(this.groupUse);
+		builder.append(", importAllowed=");
+		builder.append(this.importAllowed);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

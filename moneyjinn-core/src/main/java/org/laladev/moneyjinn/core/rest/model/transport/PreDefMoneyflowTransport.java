@@ -275,4 +275,37 @@ public class PreDefMoneyflowTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("PreDefMoneyflowTransport [id=");
+		builder.append(this.id);
+		builder.append(", userid=");
+		builder.append(this.userid);
+		builder.append(", amount=");
+		builder.append(this.amount);
+		builder.append(", capitalsourceid=");
+		builder.append(this.capitalsourceid);
+		builder.append(", capitalsourcecomment=");
+		builder.append(this.capitalsourcecomment);
+		builder.append(", contractpartnerid=");
+		builder.append(this.contractpartnerid);
+		builder.append(", contractpartnername=");
+		builder.append(this.contractpartnername);
+		builder.append(", comment=");
+		builder.append(this.comment);
+		builder.append(", createdate=");
+		builder.append(this.createdate);
+		builder.append(", onceAMonth=");
+		builder.append(this.onceAMonth);
+		builder.append(", lastUsed=");
+		builder.append(this.lastUsed);
+		builder.append(", postingaccountid=");
+		builder.append(this.postingaccountid);
+		builder.append(", postingaccountname=");
+		builder.append(this.postingaccountname);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

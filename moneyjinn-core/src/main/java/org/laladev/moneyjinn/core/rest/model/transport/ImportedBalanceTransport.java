@@ -105,4 +105,17 @@ public class ImportedBalanceTransport {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ImportedBalanceTransport [balance=");
+		builder.append(this.balance);
+		builder.append(", accountNumberCapitalsource=");
+		builder.append(this.accountNumberCapitalsource);
+		builder.append(", bankCodeCapitalsource=");
+		builder.append(this.bankCodeCapitalsource);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
