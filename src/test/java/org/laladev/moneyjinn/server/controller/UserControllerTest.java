@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 public class UserControllerTest extends AbstractControllerTest {
 
 	@Override
-	protected String getDomain() {
+	protected String getUsecaseRoot() {
 		return "user";
 	}
 
@@ -45,6 +45,25 @@ public class UserControllerTest extends AbstractControllerTest {
 		expected.setAccessRelationTransports(accessRelationTransports);
 
 		final ShowEditUserResponse actual = super.callUsecaseStatusOkWithResponse("/showEditUser/3",
+				ShowEditUserResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void showEditUser_User2_completeResponseObject() throws Exception {
+		final ShowEditUserResponse expected = new ShowEditUserResponse();
+		expected.setUserTransport(new UserTransportBuilder().forUser2().build());
+		final List<GroupTransport> groupTransports = new ArrayList<>();
+		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+		expected.setGroupTransports(groupTransports);
+		final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
+		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
+		expected.setAccessRelationTransports(accessRelationTransports);
+
+		final ShowEditUserResponse actual = super.callUsecaseStatusOkWithResponse("/showEditUser/4",
 				ShowEditUserResponse.class);
 
 		Assert.assertEquals(expected, actual);

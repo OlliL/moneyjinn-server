@@ -346,23 +346,6 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-29 15:30:36
-INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
-INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
-INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03','camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admingroup',NULL,0,0,0,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('root','NULL',0,0,0,0);
-UPDATE access SET id=0 WHERE name='root';
-UPDATE access SET id=3 WHERE name='admin';
-UPDATE access SET id=1 WHERE name='admingroup';
-UPDATE access SET id=2 WHERE name='admin';
-INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'0001-01-01','2999-12-31');
-INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (2,1,'0001-01-01','2999-12-31');
-INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) VALUES (2,'0001-01-01','2999-12-31',2,1,0);
-INSERT INTO settings VALUES (0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
-INSERT INTO settings (SELECT 2,name,value FROM settings WHERE mac_id=0);
 CREATE   PRIMARY KEY ON predefmoneyflows (predefmoneyflowid);
 CREATE   INDEX mcs_mac_pk_01 ON capitalsources (mac_id_creator);
 CREATE   PRIMARY KEY ON access_relation (id,validfrom);

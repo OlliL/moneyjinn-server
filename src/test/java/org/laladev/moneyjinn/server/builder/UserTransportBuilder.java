@@ -28,11 +28,11 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forUser2() {
 		super.setId(4l);
-		super.setUserCanLogin(SHORT_0);
-		super.setUserIsAdmin(SHORT_0);
-		super.setUserIsNew(SHORT_0);
+		super.setUserCanLogin(null);
+		super.setUserIsAdmin(null);
+		super.setUserIsNew(null);
 		super.setUserName("user2");
-		super.setUserPassword("111");
+		super.setUserPassword("222");
 		return this;
 	}
 

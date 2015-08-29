@@ -13,10 +13,6 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserPermission;
 public class UserDataMapper implements IMapper<User, UserData> {
 	@Override
 	public User mapBToA(final UserData b) {
-		if (b == null) {
-			return null;
-		}
-
 		final Collection<UserAttribute> attributes = new ArrayList<UserAttribute>();
 		final Collection<UserPermission> permissions = new ArrayList<UserPermission>();
 		if (b.isPermAdmin()) {
@@ -42,10 +38,6 @@ public class UserDataMapper implements IMapper<User, UserData> {
 
 	@Override
 	public UserData mapAToB(final User a) {
-		if (a == null) {
-			return null;
-		}
-
 		final UserData userData = new UserData();
 		userData.setId(a.getId().getId());
 		userData.setName(a.getName());

@@ -111,6 +111,10 @@ BEGIN {
 	next
 }
 
+/^-- Dump completed/ {
+	exit
+}
+
 {
 	print
 }
@@ -121,6 +125,29 @@ END {
 	}
 }
 ' <mysqldump.sql >h2dump.sql
+
+
+grep 'CREATE TABLE' mysqldump.sql | awk '
+BEGIN { 
+	i=0
+}
+
+{
+	a[i]="DELETE FROM "$3";"
+	i++
+}
+
+END {
+	for(;i>=0;i--) {
+		print a[i]
+	}
+}' > h2defaults.sql
+
+awk '
+/^(INSERT|UPDATE) / {
+	print
+}
+' <mysqldump.sql >>h2defaults.sql
 
 awk '
 / SQL SECURITY INVOKER/ {

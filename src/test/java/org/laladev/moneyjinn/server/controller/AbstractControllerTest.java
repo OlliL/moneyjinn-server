@@ -14,6 +14,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +32,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebAppConfiguration
 @EnableAutoConfiguration
 @ActiveProfiles(MoneyjinnProfiles.TEST)
+@SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
+		"classpath:testdata.sql" }) })
 public abstract class AbstractControllerTest {
 	@Inject
 	private ObjectMapper objectMapper;
@@ -44,11 +49,11 @@ public abstract class AbstractControllerTest {
 		return this.objectMapper.readValue(string, clazz);
 	}
 
-	protected abstract String getDomain();
+	protected abstract String getUsecaseRoot();
 
 	protected <T> T callUsecaseStatusOkWithResponse(final String uri, final Class<T> clazz) throws Exception {
-		final MvcResult result = this.mvc().perform(
-				MockMvcRequestBuilders.get("/moneyflow/" + this.getDomain() + uri).accept(MediaType.APPLICATION_JSON))
+		final MvcResult result = this.mvc().perform(MockMvcRequestBuilders
+				.get("/moneyflow/" + this.getUsecaseRoot() + uri).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		final String content = result.getResponse().getContentAsString();
