@@ -27,7 +27,7 @@ public class TestDatabaseConfiguration {
 	@Bean
 	public EmbeddedDatabase dataSource() {
 		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript("h2dump.sql")
-				.addScript("h2ext.sql").build();
+				.addScript("h2ext.sql").addScript("testdata.sql").build();
 	}
 
 	@Bean

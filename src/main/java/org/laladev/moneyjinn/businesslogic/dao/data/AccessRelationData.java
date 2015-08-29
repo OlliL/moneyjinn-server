@@ -8,16 +8,8 @@ public class AccessRelationData {
 	private Date validFrom;
 	private Date validTil;
 
-	public AccessRelationData(final Long id, final Long refId, final Date validFrom, final Date validTil) {
-		super();
-		this.id = id;
-		this.refId = refId;
-		this.validFrom = validFrom;
-		this.validTil = validTil;
-	}
-
 	public final Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public final void setId(final Long id) {
@@ -25,7 +17,7 @@ public class AccessRelationData {
 	}
 
 	public final Long getRefId() {
-		return refId;
+		return this.refId;
 	}
 
 	public final void setRefId(final Long refId) {
@@ -33,7 +25,7 @@ public class AccessRelationData {
 	}
 
 	public final Date getValidFrom() {
-		return validFrom;
+		return this.validFrom;
 	}
 
 	public final void setValidFrom(final Date validFrom) {
@@ -41,7 +33,7 @@ public class AccessRelationData {
 	}
 
 	public final Date getValidTil() {
-		return validTil;
+		return this.validTil;
 	}
 
 	public final void setValidTil(final Date validTil) {

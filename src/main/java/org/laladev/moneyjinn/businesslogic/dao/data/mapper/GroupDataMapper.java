@@ -22,7 +22,9 @@ public class GroupDataMapper implements IMapper<Group, GroupData> {
 			return null;
 		}
 
-		final GroupData groupData = new GroupData(group.getId().getId(), group.getName());
+		final GroupData groupData = new GroupData();
+		groupData.setId(group.getId().getId());
+		groupData.setName(group.getName());
 		return groupData;
 	}
 }

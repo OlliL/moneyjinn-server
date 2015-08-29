@@ -37,8 +37,10 @@ public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessR
 		final Date validFrom = Date.valueOf(accessRelation.getValidFrom());
 		final Date validTil = Date.valueOf(accessRelation.getValidTil());
 
-		final AccessRelationData accessRelationData = new AccessRelationData(accessRelation.getId().getId(), null,
-				validFrom, validTil);
+		final AccessRelationData accessRelationData = new AccessRelationData();
+		accessRelationData.setId(accessRelation.getId().getId());
+		accessRelationData.setValidFrom(validFrom);
+		accessRelationData.setValidTil(validTil);
 		if (accessRelation.getParentAccessRelation() != null) {
 			accessRelationData.setRefId(accessRelation.getParentAccessRelation().getId().getId());
 		}

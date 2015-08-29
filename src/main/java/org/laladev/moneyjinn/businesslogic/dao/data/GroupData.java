@@ -4,14 +4,8 @@ public class GroupData {
 	private Long id;
 	private String name;
 
-	public GroupData(final Long id, final String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
 	public final Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public final void setId(final Long id) {
@@ -19,7 +13,7 @@ public class GroupData {
 	}
 
 	public final String getName() {
-		return name;
+		return this.name;
 	}
 
 	public final void setName(final String name) {
