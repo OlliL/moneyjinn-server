@@ -7,10 +7,12 @@ import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.laladev.moneyjinn.api.MoneyjinnProfiles;
 import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringApplicationConfiguration(classes = { MoneyjinnConfiguration.class })
 @WebAppConfiguration
 @EnableAutoConfiguration
+@ActiveProfiles(MoneyjinnProfiles.TEST)
 public class UserControllerTest {
 
 	private MockMvc mvc;
