@@ -50,7 +50,7 @@ public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	private Integer settingNumberOfFreeMoneyflows;
 
 	public final List<PreDefMoneyflowTransport> getPreDefMoneyflowTransports() {
-		return preDefMoneyflowTransports;
+		return this.preDefMoneyflowTransports;
 	}
 
 	public final void setPreDefMoneyflowTransports(final List<PreDefMoneyflowTransport> preDefMoneyflowTransports) {
@@ -58,7 +58,7 @@ public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	}
 
 	public final List<CapitalsourceTransport> getCapitalsourceTransports() {
-		return capitalsourceTransports;
+		return this.capitalsourceTransports;
 	}
 
 	public final void setCapitalsourceTransports(final List<CapitalsourceTransport> capitalsourceTransports) {
@@ -66,7 +66,7 @@ public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	}
 
 	public final List<ContractpartnerTransport> getContractpartnerTransports() {
-		return contractpartnerTransports;
+		return this.contractpartnerTransports;
 	}
 
 	public final void setContractpartnerTransports(final List<ContractpartnerTransport> contractpartnerTransports) {
@@ -74,7 +74,7 @@ public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	}
 
 	public final List<PostingAccountTransport> getPostingAccountTransports() {
-		return postingAccountTransports;
+		return this.postingAccountTransports;
 	}
 
 	public final void setPostingAccountTransports(final List<PostingAccountTransport> postingAccountTransports) {
@@ -82,11 +82,78 @@ public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	}
 
 	public final Integer getSettingNumberOfFreeMoneyflows() {
-		return settingNumberOfFreeMoneyflows;
+		return this.settingNumberOfFreeMoneyflows;
 	}
 
 	public final void setSettingNumberOfFreeMoneyflows(final Integer settingNumberOfFreeMoneyflows) {
 		this.settingNumberOfFreeMoneyflows = settingNumberOfFreeMoneyflows;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
+		result = prime * result
+				+ ((this.contractpartnerTransports == null) ? 0 : this.contractpartnerTransports.hashCode());
+		result = prime * result
+				+ ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
+		result = prime * result
+				+ ((this.preDefMoneyflowTransports == null) ? 0 : this.preDefMoneyflowTransports.hashCode());
+		result = prime * result
+				+ ((this.settingNumberOfFreeMoneyflows == null) ? 0 : this.settingNumberOfFreeMoneyflows.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ShowAddMoneyflowsResponse other = (ShowAddMoneyflowsResponse) obj;
+		if (this.capitalsourceTransports == null) {
+			if (other.capitalsourceTransports != null) {
+				return false;
+			}
+		} else if (!this.capitalsourceTransports.equals(other.capitalsourceTransports)) {
+			return false;
+		}
+		if (this.contractpartnerTransports == null) {
+			if (other.contractpartnerTransports != null) {
+				return false;
+			}
+		} else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
+			return false;
+		}
+		if (this.postingAccountTransports == null) {
+			if (other.postingAccountTransports != null) {
+				return false;
+			}
+		} else if (!this.postingAccountTransports.equals(other.postingAccountTransports)) {
+			return false;
+		}
+		if (this.preDefMoneyflowTransports == null) {
+			if (other.preDefMoneyflowTransports != null) {
+				return false;
+			}
+		} else if (!this.preDefMoneyflowTransports.equals(other.preDefMoneyflowTransports)) {
+			return false;
+		}
+		if (this.settingNumberOfFreeMoneyflows == null) {
+			if (other.settingNumberOfFreeMoneyflows != null) {
+				return false;
+			}
+		} else if (!this.settingNumberOfFreeMoneyflows.equals(other.settingNumberOfFreeMoneyflows)) {
+			return false;
+		}
+		return true;
 	}
 
 }

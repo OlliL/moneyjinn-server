@@ -4,4 +4,5 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("createUserResponse")
 public class CreateUserResponse extends AbstractCreateUserResponse {
+
 }

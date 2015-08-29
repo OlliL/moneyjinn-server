@@ -36,11 +36,42 @@ public class CreateImportedBalanceRequest extends AbstractRequest {
 	private ImportedBalanceTransport importedBalanceTransport;
 
 	public final ImportedBalanceTransport getImportedBalanceTransport() {
-		return importedBalanceTransport;
+		return this.importedBalanceTransport;
 	}
 
 	public final void setImportedBalanceTransport(final ImportedBalanceTransport importedBalanceTransport) {
 		this.importedBalanceTransport = importedBalanceTransport;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.importedBalanceTransport == null) ? 0 : this.importedBalanceTransport.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final CreateImportedBalanceRequest other = (CreateImportedBalanceRequest) obj;
+		if (this.importedBalanceTransport == null) {
+			if (other.importedBalanceTransport != null) {
+				return false;
+			}
+		} else if (!this.importedBalanceTransport.equals(other.importedBalanceTransport)) {
+			return false;
+		}
+		return true;
 	}
 
 }

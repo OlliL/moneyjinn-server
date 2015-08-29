@@ -36,12 +36,43 @@ public class CreateImportedMonthlySettlementRequest extends AbstractRequest {
 	private ImportedMonthlySettlementTransport importedMonthlySettlementTransport;
 
 	public final ImportedMonthlySettlementTransport getImportedMonthlySettlementTransport() {
-		return importedMonthlySettlementTransport;
+		return this.importedMonthlySettlementTransport;
 	}
 
 	public final void setImportedMonthlySettlementTransport(
 			final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
 		this.importedMonthlySettlementTransport = importedMonthlySettlementTransport;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.importedMonthlySettlementTransport == null) ? 0
+				: this.importedMonthlySettlementTransport.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final CreateImportedMonthlySettlementRequest other = (CreateImportedMonthlySettlementRequest) obj;
+		if (this.importedMonthlySettlementTransport == null) {
+			if (other.importedMonthlySettlementTransport != null) {
+				return false;
+			}
+		} else if (!this.importedMonthlySettlementTransport.equals(other.importedMonthlySettlementTransport)) {
+			return false;
+		}
+		return true;
 	}
 
 }

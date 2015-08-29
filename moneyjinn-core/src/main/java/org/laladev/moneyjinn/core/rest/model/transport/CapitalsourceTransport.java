@@ -43,7 +43,7 @@ public class CapitalsourceTransport {
 	private Boolean importAllowed;
 
 	public final Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public final void setId(final Integer id) {
@@ -51,7 +51,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Integer getUserid() {
-		return userid;
+		return this.userid;
 	}
 
 	public final void setUserid(final Integer userid) {
@@ -59,7 +59,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Integer getType() {
-		return type;
+		return this.type;
 	}
 
 	public final void setType(final Integer type) {
@@ -67,7 +67,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Integer getState() {
-		return state;
+		return this.state;
 	}
 
 	public final void setState(final Integer state) {
@@ -75,7 +75,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final String getAccountNumber() {
-		return accountNumber;
+		return this.accountNumber;
 	}
 
 	public final void setAccountNumber(final String accountNumber) {
@@ -83,7 +83,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final String getBankCode() {
-		return bankCode;
+		return this.bankCode;
 	}
 
 	public final void setBankCode(final String bankCode) {
@@ -91,7 +91,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	public final void setComment(final String comment) {
@@ -99,7 +99,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Date getValidTil() {
-		return validTil;
+		return this.validTil;
 	}
 
 	public final void setValidTil(final Date validTil) {
@@ -107,7 +107,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Date getValidFrom() {
-		return validFrom;
+		return this.validFrom;
 	}
 
 	public final void setValidFrom(final Date validFrom) {
@@ -115,7 +115,7 @@ public class CapitalsourceTransport {
 	}
 
 	public final Boolean getGroupUse() {
-		return groupUse;
+		return this.groupUse;
 	}
 
 	public final void setGroupUse(final Boolean groupUse) {
@@ -123,11 +123,121 @@ public class CapitalsourceTransport {
 	}
 
 	public final Boolean getImportAllowed() {
-		return importAllowed;
+		return this.importAllowed;
 	}
 
 	public final void setImportAllowed(final Boolean importAllowed) {
 		this.importAllowed = importAllowed;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.accountNumber == null) ? 0 : this.accountNumber.hashCode());
+		result = prime * result + ((this.bankCode == null) ? 0 : this.bankCode.hashCode());
+		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
+		result = prime * result + ((this.groupUse == null) ? 0 : this.groupUse.hashCode());
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((this.importAllowed == null) ? 0 : this.importAllowed.hashCode());
+		result = prime * result + ((this.state == null) ? 0 : this.state.hashCode());
+		result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+		result = prime * result + ((this.userid == null) ? 0 : this.userid.hashCode());
+		result = prime * result + ((this.validFrom == null) ? 0 : this.validFrom.hashCode());
+		result = prime * result + ((this.validTil == null) ? 0 : this.validTil.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final CapitalsourceTransport other = (CapitalsourceTransport) obj;
+		if (this.accountNumber == null) {
+			if (other.accountNumber != null) {
+				return false;
+			}
+		} else if (!this.accountNumber.equals(other.accountNumber)) {
+			return false;
+		}
+		if (this.bankCode == null) {
+			if (other.bankCode != null) {
+				return false;
+			}
+		} else if (!this.bankCode.equals(other.bankCode)) {
+			return false;
+		}
+		if (this.comment == null) {
+			if (other.comment != null) {
+				return false;
+			}
+		} else if (!this.comment.equals(other.comment)) {
+			return false;
+		}
+		if (this.groupUse == null) {
+			if (other.groupUse != null) {
+				return false;
+			}
+		} else if (!this.groupUse.equals(other.groupUse)) {
+			return false;
+		}
+		if (this.id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!this.id.equals(other.id)) {
+			return false;
+		}
+		if (this.importAllowed == null) {
+			if (other.importAllowed != null) {
+				return false;
+			}
+		} else if (!this.importAllowed.equals(other.importAllowed)) {
+			return false;
+		}
+		if (this.state == null) {
+			if (other.state != null) {
+				return false;
+			}
+		} else if (!this.state.equals(other.state)) {
+			return false;
+		}
+		if (this.type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!this.type.equals(other.type)) {
+			return false;
+		}
+		if (this.userid == null) {
+			if (other.userid != null) {
+				return false;
+			}
+		} else if (!this.userid.equals(other.userid)) {
+			return false;
+		}
+		if (this.validFrom == null) {
+			if (other.validFrom != null) {
+				return false;
+			}
+		} else if (!this.validFrom.equals(other.validFrom)) {
+			return false;
+		}
+		if (this.validTil == null) {
+			if (other.validTil != null) {
+				return false;
+			}
+		} else if (!this.validTil.equals(other.validTil)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -100,6 +100,69 @@ public class GetUserSettingsForStartupResponse extends AbstractResponse {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.attributeNew == null) ? 0 : this.attributeNew.hashCode());
+		result = prime * result + ((this.permissionAdmin == null) ? 0 : this.permissionAdmin.hashCode());
+		result = prime * result + ((this.settingDateFormat == null) ? 0 : this.settingDateFormat.hashCode());
+		result = prime * result
+				+ ((this.settingDisplayedLanguage == null) ? 0 : this.settingDisplayedLanguage.hashCode());
+		result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final GetUserSettingsForStartupResponse other = (GetUserSettingsForStartupResponse) obj;
+		if (this.attributeNew == null) {
+			if (other.attributeNew != null) {
+				return false;
+			}
+		} else if (!this.attributeNew.equals(other.attributeNew)) {
+			return false;
+		}
+		if (this.permissionAdmin == null) {
+			if (other.permissionAdmin != null) {
+				return false;
+			}
+		} else if (!this.permissionAdmin.equals(other.permissionAdmin)) {
+			return false;
+		}
+		if (this.settingDateFormat == null) {
+			if (other.settingDateFormat != null) {
+				return false;
+			}
+		} else if (!this.settingDateFormat.equals(other.settingDateFormat)) {
+			return false;
+		}
+		if (this.settingDisplayedLanguage == null) {
+			if (other.settingDisplayedLanguage != null) {
+				return false;
+			}
+		} else if (!this.settingDisplayedLanguage.equals(other.settingDisplayedLanguage)) {
+			return false;
+		}
+		if (this.userId == null) {
+			if (other.userId != null) {
+				return false;
+			}
+		} else if (!this.userId.equals(other.userId)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "GetUserSettingsForStartupResponse [userId=" + this.userId + ", settingDateFormat="
 				+ this.settingDateFormat + ", settingDisplayedLanguage=" + this.settingDisplayedLanguage

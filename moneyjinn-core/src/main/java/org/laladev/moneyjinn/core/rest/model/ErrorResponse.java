@@ -35,7 +35,7 @@ public class ErrorResponse {
 	private String message;
 
 	public final Integer getCode() {
-		return code;
+		return this.code;
 	}
 
 	public final void setCode(final Integer code) {
@@ -43,11 +43,49 @@ public class ErrorResponse {
 	}
 
 	public final String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	public final void setMessage(final String message) {
 		this.message = message;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.code == null) ? 0 : this.code.hashCode());
+		result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ErrorResponse other = (ErrorResponse) obj;
+		if (this.code == null) {
+			if (other.code != null) {
+				return false;
+			}
+		} else if (!this.code.equals(other.code)) {
+			return false;
+		}
+		if (this.message == null) {
+			if (other.message != null) {
+				return false;
+			}
+		} else if (!this.message.equals(other.message)) {
+			return false;
+		}
+		return true;
 	}
 
 }

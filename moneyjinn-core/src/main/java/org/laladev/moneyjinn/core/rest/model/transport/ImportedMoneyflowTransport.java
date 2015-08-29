@@ -37,7 +37,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	private String bankCodeCapitalsource;
 
 	public final String getAccountNumber() {
-		return accountNumber;
+		return this.accountNumber;
 	}
 
 	public final void setAccountNumber(final String accountNumber) {
@@ -45,7 +45,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getBankCode() {
-		return bankCode;
+		return this.bankCode;
 	}
 
 	public final void setBankCode(final String bankCode) {
@@ -53,7 +53,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getExternalid() {
-		return externalid;
+		return this.externalid;
 	}
 
 	public final void setExternalid(final String externalid) {
@@ -61,7 +61,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getName() {
-		return name;
+		return this.name;
 	}
 
 	public final void setName(final String name) {
@@ -69,7 +69,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getUsage() {
-		return usage;
+		return this.usage;
 	}
 
 	public final void setUsage(final String usage) {
@@ -77,7 +77,7 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getAccountNumberCapitalsource() {
-		return accountNumberCapitalsource;
+		return this.accountNumberCapitalsource;
 	}
 
 	public final void setAccountNumberCapitalsource(final String accountNumberCapitalsource) {
@@ -85,11 +85,90 @@ public class ImportedMoneyflowTransport extends MoneyflowTransport {
 	}
 
 	public final String getBankCodeCapitalsource() {
-		return bankCodeCapitalsource;
+		return this.bankCodeCapitalsource;
 	}
 
 	public final void setBankCodeCapitalsource(final String bankCodeCapitalsource) {
 		this.bankCodeCapitalsource = bankCodeCapitalsource;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.accountNumber == null) ? 0 : this.accountNumber.hashCode());
+		result = prime * result
+				+ ((this.accountNumberCapitalsource == null) ? 0 : this.accountNumberCapitalsource.hashCode());
+		result = prime * result + ((this.bankCode == null) ? 0 : this.bankCode.hashCode());
+		result = prime * result + ((this.bankCodeCapitalsource == null) ? 0 : this.bankCodeCapitalsource.hashCode());
+		result = prime * result + ((this.externalid == null) ? 0 : this.externalid.hashCode());
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + ((this.usage == null) ? 0 : this.usage.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ImportedMoneyflowTransport other = (ImportedMoneyflowTransport) obj;
+		if (this.accountNumber == null) {
+			if (other.accountNumber != null) {
+				return false;
+			}
+		} else if (!this.accountNumber.equals(other.accountNumber)) {
+			return false;
+		}
+		if (this.accountNumberCapitalsource == null) {
+			if (other.accountNumberCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.accountNumberCapitalsource.equals(other.accountNumberCapitalsource)) {
+			return false;
+		}
+		if (this.bankCode == null) {
+			if (other.bankCode != null) {
+				return false;
+			}
+		} else if (!this.bankCode.equals(other.bankCode)) {
+			return false;
+		}
+		if (this.bankCodeCapitalsource == null) {
+			if (other.bankCodeCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.bankCodeCapitalsource.equals(other.bankCodeCapitalsource)) {
+			return false;
+		}
+		if (this.externalid == null) {
+			if (other.externalid != null) {
+				return false;
+			}
+		} else if (!this.externalid.equals(other.externalid)) {
+			return false;
+		}
+		if (this.name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!this.name.equals(other.name)) {
+			return false;
+		}
+		if (this.usage == null) {
+			if (other.usage != null) {
+				return false;
+			}
+		} else if (!this.usage.equals(other.usage)) {
+			return false;
+		}
+		return true;
 	}
 
 }

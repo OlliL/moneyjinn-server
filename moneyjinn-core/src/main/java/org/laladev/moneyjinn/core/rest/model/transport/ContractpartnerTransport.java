@@ -44,7 +44,7 @@ public class ContractpartnerTransport {
 	private Integer postingAccountId;
 
 	public final Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public final void setId(final Integer id) {
@@ -52,7 +52,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final Integer getUserid() {
-		return userid;
+		return this.userid;
 	}
 
 	public final void setUserid(final Integer userid) {
@@ -60,7 +60,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getName() {
-		return name;
+		return this.name;
 	}
 
 	public final void setName(final String name) {
@@ -68,7 +68,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getStreet() {
-		return street;
+		return this.street;
 	}
 
 	public final void setStreet(final String street) {
@@ -76,7 +76,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final Integer getPostcode() {
-		return postcode;
+		return this.postcode;
 	}
 
 	public final void setPostcode(final Integer postcode) {
@@ -84,7 +84,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getTown() {
-		return town;
+		return this.town;
 	}
 
 	public final void setTown(final String town) {
@@ -92,7 +92,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final Date getValidTil() {
-		return validTil;
+		return this.validTil;
 	}
 
 	public final void setValidTil(final Date validTil) {
@@ -100,7 +100,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final Date getValidFrom() {
-		return validFrom;
+		return this.validFrom;
 	}
 
 	public final void setValidFrom(final Date validFrom) {
@@ -108,7 +108,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getCountry() {
-		return country;
+		return this.country;
 	}
 
 	public final void setCountry(final String country) {
@@ -116,7 +116,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getMoneyflowComment() {
-		return moneyflowComment;
+		return this.moneyflowComment;
 	}
 
 	public final void setMoneyflowComment(final String moneyflowComment) {
@@ -124,7 +124,7 @@ public class ContractpartnerTransport {
 	}
 
 	public final String getPostingAccountName() {
-		return postingAccountName;
+		return this.postingAccountName;
 	}
 
 	public final void setPostingAccountName(final String postingAccountName) {
@@ -132,11 +132,129 @@ public class ContractpartnerTransport {
 	}
 
 	public final Integer getPostingAccountId() {
-		return postingAccountId;
+		return this.postingAccountId;
 	}
 
 	public final void setPostingAccountId(final Integer postingAccountId) {
 		this.postingAccountId = postingAccountId;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.country == null) ? 0 : this.country.hashCode());
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((this.moneyflowComment == null) ? 0 : this.moneyflowComment.hashCode());
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + ((this.postcode == null) ? 0 : this.postcode.hashCode());
+		result = prime * result + ((this.postingAccountId == null) ? 0 : this.postingAccountId.hashCode());
+		result = prime * result + ((this.postingAccountName == null) ? 0 : this.postingAccountName.hashCode());
+		result = prime * result + ((this.street == null) ? 0 : this.street.hashCode());
+		result = prime * result + ((this.town == null) ? 0 : this.town.hashCode());
+		result = prime * result + ((this.userid == null) ? 0 : this.userid.hashCode());
+		result = prime * result + ((this.validFrom == null) ? 0 : this.validFrom.hashCode());
+		result = prime * result + ((this.validTil == null) ? 0 : this.validTil.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ContractpartnerTransport other = (ContractpartnerTransport) obj;
+		if (this.country == null) {
+			if (other.country != null) {
+				return false;
+			}
+		} else if (!this.country.equals(other.country)) {
+			return false;
+		}
+		if (this.id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!this.id.equals(other.id)) {
+			return false;
+		}
+		if (this.moneyflowComment == null) {
+			if (other.moneyflowComment != null) {
+				return false;
+			}
+		} else if (!this.moneyflowComment.equals(other.moneyflowComment)) {
+			return false;
+		}
+		if (this.name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!this.name.equals(other.name)) {
+			return false;
+		}
+		if (this.postcode == null) {
+			if (other.postcode != null) {
+				return false;
+			}
+		} else if (!this.postcode.equals(other.postcode)) {
+			return false;
+		}
+		if (this.postingAccountId == null) {
+			if (other.postingAccountId != null) {
+				return false;
+			}
+		} else if (!this.postingAccountId.equals(other.postingAccountId)) {
+			return false;
+		}
+		if (this.postingAccountName == null) {
+			if (other.postingAccountName != null) {
+				return false;
+			}
+		} else if (!this.postingAccountName.equals(other.postingAccountName)) {
+			return false;
+		}
+		if (this.street == null) {
+			if (other.street != null) {
+				return false;
+			}
+		} else if (!this.street.equals(other.street)) {
+			return false;
+		}
+		if (this.town == null) {
+			if (other.town != null) {
+				return false;
+			}
+		} else if (!this.town.equals(other.town)) {
+			return false;
+		}
+		if (this.userid == null) {
+			if (other.userid != null) {
+				return false;
+			}
+		} else if (!this.userid.equals(other.userid)) {
+			return false;
+		}
+		if (this.validFrom == null) {
+			if (other.validFrom != null) {
+				return false;
+			}
+		} else if (!this.validFrom.equals(other.validFrom)) {
+			return false;
+		}
+		if (this.validTil == null) {
+			if (other.validTil != null) {
+				return false;
+			}
+		} else if (!this.validTil.equals(other.validTil)) {
+			return false;
+		}
+		return true;
 	}
 
 }

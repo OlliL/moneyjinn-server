@@ -41,7 +41,7 @@ public class ValidationResponse extends AbstractResponse {
 	private List<ValidationItemTransport> validationItemTransports;
 
 	public final Boolean getResult() {
-		return result;
+		return this.result;
 	}
 
 	public final void setResult(final Boolean result) {
@@ -49,11 +49,50 @@ public class ValidationResponse extends AbstractResponse {
 	}
 
 	public final List<ValidationItemTransport> getValidationItemTransports() {
-		return validationItemTransports;
+		return this.validationItemTransports;
 	}
 
 	public final void setValidationItemTransports(final List<ValidationItemTransport> validationItemTransports) {
 		this.validationItemTransports = validationItemTransports;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
+		result = prime * result
+				+ ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ValidationResponse other = (ValidationResponse) obj;
+		if (this.result == null) {
+			if (other.result != null) {
+				return false;
+			}
+		} else if (!this.result.equals(other.result)) {
+			return false;
+		}
+		if (this.validationItemTransports == null) {
+			if (other.validationItemTransports != null) {
+				return false;
+			}
+		} else if (!this.validationItemTransports.equals(other.validationItemTransports)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -33,7 +33,7 @@ public class ImportedMonthlySettlementTransport extends MonthlySettlementTranspo
 	private String bankCodeCapitalsource;
 
 	public final String getExternalid() {
-		return externalid;
+		return this.externalid;
 	}
 
 	public final void setExternalid(final String externalid) {
@@ -41,7 +41,7 @@ public class ImportedMonthlySettlementTransport extends MonthlySettlementTranspo
 	}
 
 	public final String getAccountNumberCapitalsource() {
-		return accountNumberCapitalsource;
+		return this.accountNumberCapitalsource;
 	}
 
 	public final void setAccountNumberCapitalsource(final String accountNumberCapitalsource) {
@@ -49,11 +49,58 @@ public class ImportedMonthlySettlementTransport extends MonthlySettlementTranspo
 	}
 
 	public final String getBankCodeCapitalsource() {
-		return bankCodeCapitalsource;
+		return this.bankCodeCapitalsource;
 	}
 
 	public final void setBankCodeCapitalsource(final String bankCodeCapitalsource) {
 		this.bankCodeCapitalsource = bankCodeCapitalsource;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((this.accountNumberCapitalsource == null) ? 0 : this.accountNumberCapitalsource.hashCode());
+		result = prime * result + ((this.bankCodeCapitalsource == null) ? 0 : this.bankCodeCapitalsource.hashCode());
+		result = prime * result + ((this.externalid == null) ? 0 : this.externalid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ImportedMonthlySettlementTransport other = (ImportedMonthlySettlementTransport) obj;
+		if (this.accountNumberCapitalsource == null) {
+			if (other.accountNumberCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.accountNumberCapitalsource.equals(other.accountNumberCapitalsource)) {
+			return false;
+		}
+		if (this.bankCodeCapitalsource == null) {
+			if (other.bankCodeCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.bankCodeCapitalsource.equals(other.bankCodeCapitalsource)) {
+			return false;
+		}
+		if (this.externalid == null) {
+			if (other.externalid != null) {
+				return false;
+			}
+		} else if (!this.externalid.equals(other.externalid)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -11,11 +11,42 @@ public abstract class AbstractUpdateUserResponse extends AbstractCreateUserRespo
 	private List<AccessRelationTransport> accessRelationTransports;
 
 	public final List<AccessRelationTransport> getAccessRelationTransports() {
-		return accessRelationTransports;
+		return this.accessRelationTransports;
 	}
 
 	public final void setAccessRelationTransports(final List<AccessRelationTransport> accessRelationTransports) {
 		this.accessRelationTransports = accessRelationTransports;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((this.accessRelationTransports == null) ? 0 : this.accessRelationTransports.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final AbstractUpdateUserResponse other = (AbstractUpdateUserResponse) obj;
+		if (this.accessRelationTransports == null) {
+			if (other.accessRelationTransports != null) {
+				return false;
+			}
+		} else if (!this.accessRelationTransports.equals(other.accessRelationTransports)) {
+			return false;
+		}
+		return true;
 	}
 
 }

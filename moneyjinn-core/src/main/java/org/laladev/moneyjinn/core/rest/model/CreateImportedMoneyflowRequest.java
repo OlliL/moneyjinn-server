@@ -36,11 +36,42 @@ public class CreateImportedMoneyflowRequest extends AbstractRequest {
 	private ImportedMoneyflowTransport importedMoneyflowTransport;
 
 	public final ImportedMoneyflowTransport getImportedMoneyflowTransport() {
-		return importedMoneyflowTransport;
+		return this.importedMoneyflowTransport;
 	}
 
 	public final void setImportedMoneyflowTransport(final ImportedMoneyflowTransport importedMoneyflowTransport) {
 		this.importedMoneyflowTransport = importedMoneyflowTransport;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.importedMoneyflowTransport == null) ? 0 : this.importedMoneyflowTransport.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final CreateImportedMoneyflowRequest other = (CreateImportedMoneyflowRequest) obj;
+		if (this.importedMoneyflowTransport == null) {
+			if (other.importedMoneyflowTransport != null) {
+				return false;
+			}
+		} else if (!this.importedMoneyflowTransport.equals(other.importedMoneyflowTransport)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -35,7 +35,7 @@ public class ImportedBalanceTransport {
 	private String bankCodeCapitalsource;
 
 	public final BigDecimal getBalance() {
-		return balance;
+		return this.balance;
 	}
 
 	public final void setBalance(final BigDecimal balance) {
@@ -43,7 +43,7 @@ public class ImportedBalanceTransport {
 	}
 
 	public final String getAccountNumberCapitalsource() {
-		return accountNumberCapitalsource;
+		return this.accountNumberCapitalsource;
 	}
 
 	public final void setAccountNumberCapitalsource(final String accountNumberCapitalsource) {
@@ -51,11 +51,58 @@ public class ImportedBalanceTransport {
 	}
 
 	public final String getBankCodeCapitalsource() {
-		return bankCodeCapitalsource;
+		return this.bankCodeCapitalsource;
 	}
 
 	public final void setBankCodeCapitalsource(final String bankCodeCapitalsource) {
 		this.bankCodeCapitalsource = bankCodeCapitalsource;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.accountNumberCapitalsource == null) ? 0 : this.accountNumberCapitalsource.hashCode());
+		result = prime * result + ((this.balance == null) ? 0 : this.balance.hashCode());
+		result = prime * result + ((this.bankCodeCapitalsource == null) ? 0 : this.bankCodeCapitalsource.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final ImportedBalanceTransport other = (ImportedBalanceTransport) obj;
+		if (this.accountNumberCapitalsource == null) {
+			if (other.accountNumberCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.accountNumberCapitalsource.equals(other.accountNumberCapitalsource)) {
+			return false;
+		}
+		if (this.balance == null) {
+			if (other.balance != null) {
+				return false;
+			}
+		} else if (!this.balance.equals(other.balance)) {
+			return false;
+		}
+		if (this.bankCodeCapitalsource == null) {
+			if (other.bankCodeCapitalsource != null) {
+				return false;
+			}
+		} else if (!this.bankCodeCapitalsource.equals(other.bankCodeCapitalsource)) {
+			return false;
+		}
+		return true;
 	}
 
 }
