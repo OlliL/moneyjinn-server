@@ -108,7 +108,8 @@ public class UserService extends AbstractService implements IUserService {
 	public UserID createUser(final User user) {
 		final ValidationResult validationResult = this.validateUser(user);
 
-		this.cryptPassword(user);
+		final String cryptedPassword = this.cryptPassword(user.getPassword());
+		user.setPassword(cryptedPassword);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
@@ -139,16 +140,16 @@ public class UserService extends AbstractService implements IUserService {
 	public void setPassword(final UserID userId, final String password) {
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
-		this.cryptPassword(user);
-		this.userDao.setPassword(userId.getId(), password);
+		final String cryptedPassword = this.cryptPassword(password);
+		this.userDao.setPassword(userId.getId(), cryptedPassword);
 	}
 
 	@Override
 	public void resetPassword(final UserID userId, final String password) {
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
-		this.cryptPassword(user);
-		this.userDao.resetPassword(userId.getId(), password);
+		final String cryptedPassword = this.cryptPassword(password);
+		this.userDao.resetPassword(userId.getId(), cryptedPassword);
 	}
 
 	@Override
@@ -164,12 +165,11 @@ public class UserService extends AbstractService implements IUserService {
 		}
 	}
 
-	private void cryptPassword(final User user) {
+	private String cryptPassword(final String password) {
 		this.sha1MD.reset();
 
-		String userPassword = user.getPassword();
-		userPassword = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes()));
-		user.setPassword(userPassword);
+		final String userPassword = BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
+		return userPassword;
 	}
 
 	private void evictUserCache(final User user) {

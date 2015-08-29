@@ -13,23 +13,19 @@ import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 public class UserTransportMapper implements IMapper<User, UserTransport> {
 	@Override
 	public User mapBToA(final UserTransport userTransport) {
-		if (userTransport == null) {
-			return null;
-		}
-
 		final Collection<UserAttribute> attributes = new ArrayList<UserAttribute>();
 		final Collection<UserPermission> permissions = new ArrayList<UserPermission>();
-		if (isTrue(userTransport.getUserIsAdmin())) {
+		if (this.isTrue(userTransport.getUserIsAdmin())) {
 			permissions.add(UserPermission.ADMIN);
 		}
-		if (isTrue(userTransport.getUserCanLogin())) {
+		if (this.isTrue(userTransport.getUserCanLogin())) {
 			permissions.add(UserPermission.LOGIN);
 		}
 		if (permissions.isEmpty()) {
 			permissions.add(UserPermission.NONE);
 		}
 
-		if (isTrue(userTransport.getUserIsNew())) {
+		if (this.isTrue(userTransport.getUserIsNew())) {
 			attributes.add(UserAttribute.IS_NEW);
 		}
 		if (attributes.isEmpty()) {
@@ -47,14 +43,9 @@ public class UserTransportMapper implements IMapper<User, UserTransport> {
 
 	@Override
 	public UserTransport mapAToB(final User user) {
-		if (user == null) {
-			return null;
-		}
-
 		final UserTransport userTransport = new UserTransport();
 		userTransport.setId(user.getId().getId());
 		userTransport.setUserName(user.getName());
-		userTransport.setUserPassword(user.getPassword());
 
 		if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
 			userTransport.setUserIsNew(Short.valueOf(((short) 1)));

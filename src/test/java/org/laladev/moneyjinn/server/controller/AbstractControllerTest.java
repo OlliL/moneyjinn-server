@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -49,11 +50,16 @@ public abstract class AbstractControllerTest {
 		return this.objectMapper.readValue(string, clazz);
 	}
 
-	protected abstract String getUsecaseRoot();
+	protected abstract String getUsecase();
 
-	protected <T> T callUsecaseStatusOkWithResponse(final String uri, final Class<T> clazz) throws Exception {
+	protected String getUsecaseFromTestClassName(final String prefix, final Class<?> clazz) {
+		final String usecase = clazz.getSimpleName().replace("Test", "");
+		return prefix + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
+	}
+
+	protected <T> T callUsecaseWithGET(final String uriParameters, final Class<T> clazz) throws Exception {
 		final MvcResult result = this.mvc().perform(MockMvcRequestBuilders
-				.get("/moneyflow/" + this.getUsecaseRoot() + uri).accept(MediaType.APPLICATION_JSON))
+				.get("/moneyflow/" + this.getUsecase() + uriParameters).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		final String content = result.getResponse().getContentAsString();
@@ -65,4 +71,35 @@ public abstract class AbstractControllerTest {
 		return actual;
 
 	}
+
+	protected <T> T callUsecaseWithPUT(final String uriParameters, final Object body, final boolean noResult,
+			final Class<T> clazz) throws Exception {
+		final String bodyStr = this.objectMapper.writeValueAsString(body);
+
+		ResultMatcher status = status().isOk();
+		if (noResult) {
+			status = status().isNoContent();
+		}
+
+		final MvcResult result = this.mvc()
+				.perform(MockMvcRequestBuilders.put("/moneyflow/" + this.getUsecase() + uriParameters).content(bodyStr)
+						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status).andReturn();
+
+		final String content = result.getResponse().getContentAsString();
+		Assert.assertNotNull(content);
+
+		if (!noResult) {
+			Assert.assertTrue(content.length() > 0);
+
+			final T actual = this.map(content, clazz);
+
+			return actual;
+		} else {
+			Assert.assertTrue(content.length() == 0);
+			return null;
+		}
+
+	}
+
 }

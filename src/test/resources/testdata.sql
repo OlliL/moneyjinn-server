@@ -13,3 +13,8 @@ insert into access_relation (id,ref_id,validfrom,validtil) values (3,5,'2700-01-
 insert into access_relation (id,ref_id,validfrom,validtil) values (3,6,'2800-01-01','2999-12-31');
 
 insert into access_relation (id,ref_id,validfrom,validtil) values (4,5,'2000-01-01','2999-12-31');
+
+INSERT INTO settings (SELECT 3,name,value FROM settings WHERE mac_id=0);
+INSERT INTO settings (SELECT 4,name,value FROM settings WHERE mac_id=0);
+
+UPDATE settings set value = '1' where mac_id=4 and name = 'max_rows';

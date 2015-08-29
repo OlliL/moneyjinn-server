@@ -86,7 +86,8 @@ public class UserController extends AbstractController implements IUserControlle
 			if (user.getPassword() != null) {
 				this.userService.resetPassword(user.getId(), user.getPassword());
 			}
-			if (accessRelation.getParentAccessRelation() != null && accessRelation.getValidFrom() != null) {
+			if (accessRelation != null && accessRelation.getParentAccessRelation() != null
+					&& accessRelation.getValidFrom() != null) {
 				validationResult = this.accessRelationService.setAccessRelationForExistingUser(accessRelation);
 			}
 		}
