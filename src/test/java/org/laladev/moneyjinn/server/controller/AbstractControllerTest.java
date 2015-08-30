@@ -28,13 +28,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MoneyjinnConfiguration.class })
 @WebAppConfiguration
 @EnableAutoConfiguration
 @ActiveProfiles(MoneyjinnProfiles.TEST)
-@SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
-		"classpath:testdata.sql" }) })
+@SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2prepare.sql",
+		"classpath:h2dump.sql", "classpath:h2ext.sql", "classpath:h2defaults.sql", "classpath:testdata.sql" }) })
 public abstract class AbstractControllerTest {
 	@Inject
 	private ObjectMapper objectMapper;
