@@ -4,8 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ShowCreateUserTest.class, ShowDeleteUserTest.class, ShowEditUserTest.class,
-		GetUserSettingsForStartupTest.class, UpdateUserTest.class, CreateUserTest.class })
+@Suite.SuiteClasses({ CreateUserTest.class, DeleteUserByIdTest.class, GetUserSettingsForStartupTest.class,
+		ShowCreateUserTest.class, ShowDeleteUserTest.class, ShowEditUserTest.class, UpdateUserTest.class })
 public class TestSuiteUser {
 
 }
