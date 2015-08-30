@@ -23,7 +23,7 @@ public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandle
 		errorResponse.setCode(ex.getErrorCode().getErrorCode());
 		errorResponse.setMessage(ex.getErrorMessage());
 
-		return new ResponseEntity<Object>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<Object>(errorResponse, HttpStatus.OK);
 	}
 
 	@Override

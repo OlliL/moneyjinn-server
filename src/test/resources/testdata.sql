@@ -18,3 +18,6 @@ INSERT INTO settings (SELECT 3,name,value FROM settings WHERE mac_id=0);
 INSERT INTO settings (SELECT 4,name,value FROM settings WHERE mac_id=0);
 
 UPDATE settings set value = '1' where mac_id=4 and name = 'max_rows';
+
+INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment,validtil,validfrom,att_group_use,import_allowed)
+                    VALUES (4             ,5              ,1   ,1    ,'1234567'    ,'765432','Source1','2999-12-31','1980-01-01',0   ,1); 
