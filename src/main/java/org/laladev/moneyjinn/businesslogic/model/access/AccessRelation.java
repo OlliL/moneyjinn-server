@@ -22,6 +22,11 @@ public class AccessRelation extends AbstractEntity<AccessID> implements Cloneabl
 		this.validTil = validTil;
 	}
 
+	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation) {
+		super.setId(id);
+		this.parentAccessRelation = parentAccessRelation;
+	}
+
 	public AccessRelation() {
 	}
 

@@ -89,22 +89,27 @@ public class UserController extends AbstractController implements IUserControlle
 			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
+		if (validationResult.isValid()) {
+			this.userService.updateUser(user);
+			if (user.getPassword() != null) {
+				this.userService.resetPassword(user.getId(), user.getPassword());
+			}
+			if (accessRelation != null) {
+				validationResult.mergeValidationResult(
+						this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
+			}
+		}
+
 		if (!validationResult.isValid()) {
+			// TODO Rollback
 			final UpdateUserResponse response = new UpdateUserResponse();
 			this.fillAbstractUpdateUserResponse(user.getId(), response);
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
-		} else {
-			this.userService.updateUser(user);
-			if (user.getPassword() != null) {
-				this.userService.resetPassword(user.getId(), user.getPassword());
-			}
-			if (accessRelation != null) {
-				this.accessRelationService.setAccessRelationForExistingUser(accessRelation);
-			}
 		}
+
 		return null;
 	}
 
