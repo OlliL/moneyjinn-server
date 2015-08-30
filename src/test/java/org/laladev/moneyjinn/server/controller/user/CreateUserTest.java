@@ -24,6 +24,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
@@ -147,7 +148,7 @@ public class CreateUserTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_AccessRelation_SuccessfullNoContent() throws Exception {
+	public void test_AccessRelationEmptyValidTil_SuccessfullNoContent() throws Exception {
 		final CreateUserRequest request = new CreateUserRequest();
 
 		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
@@ -170,6 +171,33 @@ public class CreateUserTest extends AbstractControllerTest {
 				accessRelation.getParentAccessRelation().getId().getId());
 		Assert.assertEquals(accessRelationTransport.getValidfrom().getTime(),
 				accessRelation.getValidFrom().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+		// default if validTil is empty
+		Assert.assertEquals(DateUtil.getGMTDate("2999-12-31").getTime(),
+				accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+	}
+
+	@Test
+	public void test_AccessRelationWithValidTil_SuccessfullNoContent() throws Exception {
+		final CreateUserRequest request = new CreateUserRequest();
+
+		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
+		request.setUserTransport(transport);
+
+		final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
+				.forNewUser_2000_01_01().build();
+		accessRelationTransport.setValidtil(DateUtil.getGMTDate("2900-12-31"));
+		request.setAccessRelationTransport(accessRelationTransport);
+
+		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+				CreateUserResponse.class);
+
+		Assert.assertNull(actual);
+
+		final AccessRelation accessRelation = this.accessRelationService
+				.getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
+
+		Assert.assertNotNull(accessRelation);
+		// default did not overwrite
 		Assert.assertEquals(accessRelationTransport.getValidtil().getTime(),
 				accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 	}
