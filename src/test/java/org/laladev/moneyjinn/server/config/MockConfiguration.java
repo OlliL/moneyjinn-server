@@ -16,6 +16,11 @@ public class MockConfiguration {
 
 	@Bean
 	public MockMvc mockMvc() {
+		// TODO: this will only work if we get the RequestFilter to work to set the Auth
+		// headers.....
+		// return MockMvcBuilders.webAppContextSetup(this.applicationContext).addFilter(new
+		// BufferFilter(), "/moneyflow/*")
+		// .build();
 		return MockMvcBuilders.webAppContextSetup(this.applicationContext).build();
 	}
 

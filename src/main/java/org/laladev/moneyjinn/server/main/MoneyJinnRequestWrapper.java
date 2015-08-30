@@ -19,7 +19,9 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 		BufferedReader bufferedReader = null;
 		try {
 			final ServletInputStream inputStream = request.getInputStream();
-			if (inputStream != null && !inputStream.isFinished()) {
+			// problematic for unittests (DelegatingServletInputStream does not implement isFinished
+			// violating javax.servlet API 3.1) - thats why uncommenting that for now
+			if (inputStream != null /* && !inputStream.isFinished() */) {
 				bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 				final char[] charBuffer = new char[128];
 				int bytesRead = -1;
@@ -40,12 +42,12 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 				}
 			}
 		}
-		body = stringBuilder.toString();
+		this.body = stringBuilder.toString();
 	}
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body.getBytes());
+		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body.getBytes());
 		final ServletInputStream servletInputStream = new ServletInputStream() {
 			@Override
 			public int read() throws IOException {
