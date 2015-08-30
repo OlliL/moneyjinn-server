@@ -106,15 +106,16 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public UserID createUser(final User user) {
+		user.setId(null);
 		final ValidationResult validationResult = this.validateUser(user);
-
-		final String cryptedPassword = this.cryptPassword(user.getPassword());
-		user.setPassword(cryptedPassword);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
 			throw new BusinessException("User creation failed!", validationResultItem.getError());
 		}
+
+		final String cryptedPassword = this.cryptPassword(user.getPassword());
+		user.setPassword(cryptedPassword);
 
 		final UserData userData = super.map(user, UserData.class);
 		final Long userIDLong = this.userDao.createUser(userData);
@@ -122,18 +123,20 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public ValidationResult updateUser(final User user) {
+	public void updateUser(final User user) {
 		final ValidationResult validationResult = this.validateUser(user);
 
-		if (validationResult.isValid()) {
-			final User oldUser = this.getUserById(user.getId());
-			this.evictUserCache(oldUser);
-			this.evictUserCache(user);
-
-			final UserData userData = super.map(user, UserData.class);
-			this.userDao.updateUser(userData);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("User update failed!", validationResultItem.getError());
 		}
-		return validationResult;
+
+		final User oldUser = this.getUserById(user.getId());
+		this.evictUserCache(oldUser);
+		this.evictUserCache(user);
+
+		final UserData userData = super.map(user, UserData.class);
+		this.userDao.updateUser(userData);
 	}
 
 	@Override
@@ -166,17 +169,24 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	private String cryptPassword(final String password) {
-		this.sha1MD.reset();
+		if (password != null) {
+			this.sha1MD.reset();
 
-		final String userPassword = BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
-		return userPassword;
+			final String userPassword = BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
+			return userPassword;
+		}
+		return null;
 	}
 
 	private void evictUserCache(final User user) {
 		final Cache userByNameCache = this.cacheManager.getCache(CacheNames.USER_BY_NAME);
 		final Cache userByIdCache = this.cacheManager.getCache(CacheNames.USER_BY_ID);
-		userByNameCache.evict(user.getName());
-		userByIdCache.evict(user.getId());
+		if (userByNameCache != null) {
+			userByNameCache.evict(user.getName());
+		}
+		if (userByIdCache != null) {
+			userByIdCache.evict(user.getId());
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -23,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,8 +73,8 @@ public abstract class AbstractControllerTest {
 
 	}
 
-	protected <T> T callUsecaseWithPUT(final String uriParameters, final Object body, final boolean noResult,
-			final Class<T> clazz) throws Exception {
+	protected <T> T callUsecaseWithContent(final String uriParameters, final HttpMethod httpMethod, final Object body,
+			final boolean noResult, final Class<T> clazz) throws Exception {
 		final String bodyStr = this.objectMapper.writeValueAsString(body);
 
 		ResultMatcher status = status().isOk();
@@ -80,9 +82,20 @@ public abstract class AbstractControllerTest {
 			status = status().isNoContent();
 		}
 
-		final MvcResult result = this.mvc
-				.perform(MockMvcRequestBuilders.put("/moneyflow/" + this.getUsecase() + uriParameters).content(bodyStr)
-						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+		MockHttpServletRequestBuilder builder = null;
+		switch (httpMethod) {
+		case PUT:
+			builder = MockMvcRequestBuilders.put("/moneyflow/" + this.getUsecase() + uriParameters);
+			break;
+		case POST:
+			builder = MockMvcRequestBuilders.post("/moneyflow/" + this.getUsecase() + uriParameters);
+			break;
+		default:
+			break;
+
+		}
+		final MvcResult result = this.mvc.perform(
+				builder.content(bodyStr).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status).andReturn();
 
 		final String content = result.getResponse().getContentAsString();

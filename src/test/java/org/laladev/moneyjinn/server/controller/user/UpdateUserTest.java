@@ -16,6 +16,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserPermission;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
@@ -24,21 +25,26 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.springframework.http.HttpMethod;
 
 public class UpdateUserTest extends AbstractControllerTest {
 
 	@Inject
 	IUserService userService;
 
+	private final HttpMethod method = HttpMethod.PUT;
+
 	@Override
 	protected String getUsecase() {
 		return super.getUsecaseFromTestClassName("user", this.getClass());
 	}
 
-	private void testError(final UserTransportBuilder transport, final ErrorCode errorCode) throws Exception {
+	private void testError(final UserTransport transport, final AccessRelationTransport accessRelationTransport,
+			final ErrorCode errorCode) throws Exception {
 		final UpdateUserRequest request = new UpdateUserRequest();
 
 		request.setUserTransport(transport);
+		request.setAccessRelationTransport(accessRelationTransport);
 
 		final UpdateUserResponse expected = new UpdateUserResponse();
 		final List<GroupTransport> groupTransports = new ArrayList<>();
@@ -60,7 +66,8 @@ public class UpdateUserTest extends AbstractControllerTest {
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 
-		final UpdateUserResponse actual = super.callUsecaseWithPUT("", request, false, UpdateUserResponse.class);
+		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				UpdateUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 
@@ -69,43 +76,44 @@ public class UpdateUserTest extends AbstractControllerTest {
 	@Test
 	public void test_UsernameAlreadyExisting_Error() throws Exception {
 
-		final UserTransportBuilder transport = new UserTransportBuilder().forUser1();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
 		transport.setUserName(UserTransportBuilder.USER2_NAME);
 
-		this.testError(transport, ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS);
+		this.testError(transport, null, ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS);
 	}
 
 	@Test
 	public void test_EmptyUsername_Error() throws Exception {
-		final UserTransportBuilder transport = new UserTransportBuilder().forUser1();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
 		transport.setUserName("");
 
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+		this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 	}
 
 	@Test
-	public void test_AccessRelationAndPasswordEmpty_SuccessfullNoContent() throws Exception {
+	public void test_AccessRelationAndPasswordEmpty_SuccessfullNoContentPasswordNotChanged() throws Exception {
 		final UpdateUserRequest request = new UpdateUserRequest();
 
-		final UserTransportBuilder transport = new UserTransportBuilder().forUser1();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
 		transport.setUserIsNew(Short.valueOf((short) 0));
 		request.setUserTransport(transport);
 
-		final UpdateUserResponse actual = super.callUsecaseWithPUT("", request, true, UpdateUserResponse.class);
+		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+				UpdateUserResponse.class);
 
 		Assert.assertNull(actual);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
 
-		Assert.assertEquals(user.getPassword(), UserTransportBuilder.USER1_PASSWORD);
-		Assert.assertEquals(user.getAttributes(), Arrays.asList(UserAttribute.NONE));
+		Assert.assertEquals(UserTransportBuilder.USER1_PASSWORD, user.getPassword());
+		Assert.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
 	}
 
 	@Test
 	public void test_AccessRelationEmpty_SuccessfullNoContent() throws Exception {
 		final UpdateUserRequest request = new UpdateUserRequest();
 
-		final UserTransportBuilder transport = new UserTransportBuilder().forUser1();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
 		transport.setUserPassword("123");
 		transport.setUserName("hugo");
 		transport.setUserCanLogin(Short.valueOf((short) 0));
@@ -119,17 +127,38 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 		request.setUserTransport(transport);
 
-		final UpdateUserResponse actual = super.callUsecaseWithPUT("", request, true, UpdateUserResponse.class);
+		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+				UpdateUserResponse.class);
 
 		Assert.assertNull(actual);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		// sha1 of 123 --------------------------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-		Assert.assertEquals(user.getPassword(), "40bd001563085fc35165329ea1ff5c5ecbdbbeef");
-		Assert.assertEquals(user.getName(), "hugo");
-		// instead of NONE ---------------------------------------------------vvvvvv
-		Assert.assertEquals(user.getAttributes(), Arrays.asList(UserAttribute.IS_NEW));
-		Assert.assertEquals(user.getPermissions(), Arrays.asList(UserPermission.NONE));
+		// sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		Assert.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
+		Assert.assertEquals("hugo", user.getName());
+		// instead of NONE -----------------------------vvvvvv
+		Assert.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		Assert.assertEquals(Arrays.asList(UserPermission.NONE), user.getPermissions());
+	}
+
+	@Test
+	public void test_NoValidFromForAccessRelation_Error() throws Exception {
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
+		final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
+				.forUser1_2000_01_01().build();
+		accessRelationTransport.setValidfrom(null);
+
+		this.testError(transport, accessRelationTransport, ErrorCode.VALIDFROM_NOT_DEFINED);
+	}
+
+	@Test
+	public void test_NoGroupForAccessRelation_Error() throws Exception {
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
+		final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
+				.forUser1_2000_01_01().build();
+		accessRelationTransport.setRefId(null);
+
+		this.testError(transport, accessRelationTransport, ErrorCode.GROUP_MUST_BE_SPECIFIED);
 	}
 
 }

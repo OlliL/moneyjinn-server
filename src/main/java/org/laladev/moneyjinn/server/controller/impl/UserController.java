@@ -76,35 +76,36 @@ public class UserController extends AbstractController implements IUserControlle
 
 	@Override
 	public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
-		final UpdateUserResponse response = new UpdateUserResponse();
 		final User user = super.map(request.getUserTransport(), User.class);
+
+		final ValidationResult validationResultUser = this.userService.validateUser(user);
+		final ValidationResult validationResult = new ValidationResult();
+		validationResult.mergeValidationResult(validationResultUser);
+
 		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
-
-		ValidationResult validationResult = this.userService.updateUser(user);
-
-		if (validationResult.isValid()) {
-			if (user.getPassword() != null) {
-				this.userService.resetPassword(user.getId(), user.getPassword());
-			}
-			if (accessRelation != null && accessRelation.getParentAccessRelation() != null
-					&& accessRelation.getValidFrom() != null) {
-				validationResult = this.accessRelationService.setAccessRelationForExistingUser(accessRelation);
-			}
+		if (accessRelation != null) {
+			final ValidationResult validationResultAccess = this.accessRelationService
+					.validateAccessRelation(accessRelation);
+			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
-		if (validationResult.isValid()) {
-			return null;
-		} else {
+		if (!validationResult.isValid()) {
+			final UpdateUserResponse response = new UpdateUserResponse();
 			this.fillAbstractUpdateUserResponse(user.getId(), response);
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			return response;
+		} else {
+			this.userService.updateUser(user);
+			if (user.getPassword() != null) {
+				this.userService.resetPassword(user.getId(), user.getPassword());
+			}
+			if (accessRelation != null) {
+				this.accessRelationService.setAccessRelationForExistingUser(accessRelation);
+			}
 		}
-
-		this.fillAbstractUpdateUserResponse(user.getId(), response);
-
-		return response;
-
+		return null;
 	}
 
 	@Override
@@ -163,9 +164,20 @@ public class UserController extends AbstractController implements IUserControlle
 	@Override
 	public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
 		final User user = super.map(request.getUserTransport(), User.class);
-		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
+		user.setId(null);
 
-		final ValidationResult validationResult = this.userService.validateUser(user);
+		final ValidationResult validationResultUser = this.userService.validateUser(user);
+		final ValidationResult validationResult = new ValidationResult();
+		validationResult.mergeValidationResult(validationResultUser);
+
+		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
+		if (accessRelation != null) {
+			accessRelation.setId(null);
+
+			final ValidationResult validationResultAccess = this.accessRelationService
+					.validateAccessRelation(accessRelation);
+			validationResult.mergeValidationResult(validationResultAccess);
+		}
 
 		if (!validationResult.isValid()) {
 			final CreateUserResponse response = new CreateUserResponse();
@@ -178,8 +190,10 @@ public class UserController extends AbstractController implements IUserControlle
 			final UserID newUserID = this.userService.createUser(user);
 			if (newUserID != null) {
 				this.settingService.initSettings(newUserID);
-				accessRelation.setId(newUserID);
-				this.accessRelationService.setAccessRelationForNewUser(accessRelation);
+				if (accessRelation != null) {
+					accessRelation.setId(newUserID);
+					this.accessRelationService.setAccessRelationForNewUser(accessRelation);
+				}
 			}
 		}
 		return null;

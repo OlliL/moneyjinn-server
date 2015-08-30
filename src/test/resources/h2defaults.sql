@@ -1,3 +1,15 @@
+ALTER TABLE access ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE capitalsources ALTER COLUMN capitalsourceid RESTART WITH 1;
+ALTER TABLE contractpartners ALTER COLUMN contractpartnerid RESTART WITH 1;
+ALTER TABLE contractpartneraccounts ALTER COLUMN contractpartneraccountid RESTART WITH 1;
+ALTER TABLE moneyflows ALTER COLUMN moneyflowid RESTART WITH 1;
+ALTER TABLE monthlysettlements ALTER COLUMN monthlysettlementid RESTART WITH 1;
+ALTER TABLE postingaccounts ALTER COLUMN postingaccountid RESTART WITH 1;
+ALTER TABLE predefmoneyflows ALTER COLUMN predefmoneyflowid RESTART WITH 1;
+ALTER TABLE impmoneyflows ALTER COLUMN impmoneyflowid RESTART WITH 1;
+ALTER TABLE impmonthlysettlements ALTER COLUMN impmonthlysettlementid RESTART WITH 1;
+ALTER TABLE imp_data ALTER COLUMN dataid RESTART WITH 1;
+ALTER TABLE cmp_data_formats ALTER COLUMN formatid RESTART WITH 1;
 
 DELETE FROM cmp_data_formats;
 DELETE FROM imp_mapping_partner;

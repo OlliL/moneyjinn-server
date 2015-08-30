@@ -127,21 +127,26 @@ END {
 ' <mysqldump.sql >h2dump.sql
 
 
-grep 'CREATE TABLE' mysqldump.sql | awk '
+awk '
 BEGIN { 
 	i=0
 }
 
-{
+/^CREATE TABLE / {
 	a[i]="DELETE FROM "$3";"
+	table=$3
 	i++
+}
+
+/ AUTO_INCREMENT/ {
+	print "ALTER TABLE " table " ALTER COLUMN " $1 " RESTART WITH 1;";
 }
 
 END {
 	for(;i>=0;i--) {
 		print a[i]
 	}
-}' > h2defaults.sql
+}' < mysqldump.sql > h2defaults.sql
 
 awk '
 /^(INSERT|UPDATE) / {

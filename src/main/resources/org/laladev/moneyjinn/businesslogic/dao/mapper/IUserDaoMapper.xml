@@ -79,7 +79,7 @@
 		      ,#{password}
 		      ,#{permLogin}
 		      ,#{permAdmin}
-		      ,#{attChangePassword}
+		      ,1
 		      ,1
 		      )
 	</insert>

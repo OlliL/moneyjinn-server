@@ -39,7 +39,10 @@ public class UserDataMapper implements IMapper<User, UserData> {
 	@Override
 	public UserData mapAToB(final User a) {
 		final UserData userData = new UserData();
-		userData.setId(a.getId().getId());
+		// might be null for new users
+		if (a.getId() != null) {
+			userData.setId(a.getId().getId());
+		}
 		userData.setName(a.getName());
 		userData.setPassword(a.getPassword());
 

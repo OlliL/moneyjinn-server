@@ -13,7 +13,10 @@ public class ValidationItemTransportMapper implements IMapper<ValidationItemTran
 	@Override
 	public ValidationItemTransport mapBToA(final ValidationResultItem b) {
 		final ValidationItemTransport a = new ValidationItemTransport();
-		a.setKey(b.getKey().getId());
+		// key is not set when reporting errors for objects to be created as they have no id yet
+		if (b.getKey() != null) {
+			a.setKey(b.getKey().getId());
+		}
 		a.setError(b.getError().getErrorCode());
 		a.setVariableArray(b.getVariableArray());
 		return a;

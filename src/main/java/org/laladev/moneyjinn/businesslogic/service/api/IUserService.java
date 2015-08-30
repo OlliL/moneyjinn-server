@@ -102,7 +102,7 @@ public interface IUserService {
 	 *            the new User attributes
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult updateUser(final User user);
+	public void updateUser(final User user);
 
 	/**
 	 * This service sets a new User-Password for the given User-Id. The password has to be given in
