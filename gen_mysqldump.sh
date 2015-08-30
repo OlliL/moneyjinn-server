@@ -16,11 +16,11 @@ mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --de
 	access_flattened \
 	settings \
 	capitalsources \
+	postingaccounts \
 	contractpartners \
 	contractpartneraccounts \
 	moneyflows \
 	monthlysettlements \
-	postingaccounts \
 	predefmoneyflows \
 	impbalance \
 	impmoneyflows \
@@ -65,17 +65,9 @@ EOF
 sed -i.bak "s/\\\'/''/g" ${PROGPATH}/mysqldump.sql && rm -f ${PROGPATH}/mysqldump.sql.bak
 
 awk '
-BEGIN {
-	i=0
-} 
-
 /\) ENGINE/ {
 	print ");"
 	next
-}
-
-/^CREATE TABLE/ {
-	table=$3
 }
 
 / COLLATE / {
@@ -94,35 +86,12 @@ BEGIN {
 	sub(/ USING BTREE/,"")
 }
 
-/ KEY / {
-	line = $0
-	if($1 == "KEY" ||$1 == "UNIQUE") {
-		sub(/ KEY /," INDEX ",line)
-	}
-	sub(/,$/,"",line)
-	if($1 == "CONSTRAINT") {
-		line = "ALTER TABLE "table" ADD "line";"
-	} else {
-		sub(/ \(/," ON "table" (",line)
-		line="CREATE "line";"
-	};
-	keys[i]=line
-	i++
-	next
-}
-
 /^-- Dump completed/ {
 	exit
 }
 
 {
 	print
-}
-
-END {
-	for( key in keys) {
-		print keys[key]
-	}
 }
 ' <mysqldump.sql >h2dump.sql
 

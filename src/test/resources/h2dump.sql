@@ -30,6 +30,8 @@ CREATE TABLE access (
   att_change_password tinyint(1) unsigned NOT NULL,
   perm_login tinyint(1) unsigned NOT NULL,
   perm_admin tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY mac_i_01 (`name`,att_user)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -45,6 +47,10 @@ CREATE TABLE access_relation (
   ref_id int(10) unsigned NOT NULL,
   validfrom date NOT NULL,
   validtil date NOT NULL,
+  PRIMARY KEY (id,validfrom),
+  KEY mar_i_01 (ref_id),
+  CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
+  CONSTRAINT mar_mac_pk_02 FOREIGN KEY (ref_id) REFERENCES access (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,6 +70,18 @@ CREATE TABLE access_flattened (
   id_level_3 int(10) unsigned DEFAULT NULL,
   id_level_4 int(10) unsigned DEFAULT NULL,
   id_level_5 int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (id,validfrom),
+  KEY maf_i_01 (id_level_1),
+  KEY maf_i_02 (id_level_2),
+  KEY maf_i_03 (id_level_3),
+  KEY maf_i_04 (id_level_4),
+  KEY maf_i_05 (id_level_5),
+  CONSTRAINT maf_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_02 FOREIGN KEY (id_level_1) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_03 FOREIGN KEY (id_level_2) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_04 FOREIGN KEY (id_level_3) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_05 FOREIGN KEY (id_level_4) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_06 FOREIGN KEY (id_level_5) REFERENCES access (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,6 +96,9 @@ CREATE TABLE settings (
   mac_id int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT '',
   `value` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`name`,mac_id),
+  KEY mse_mac_pk (mac_id),
+  CONSTRAINT mse_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -101,6 +122,25 @@ CREATE TABLE capitalsources (
   validfrom date NOT NULL DEFAULT '1970-01-01',
   att_group_use tinyint(1) unsigned NOT NULL DEFAULT '0',
   import_allowed tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (capitalsourceid,mac_id_accessor),
+  KEY mcs_mac_pk_01 (mac_id_creator),
+  KEY mcs_mac_pk_02 (mac_id_accessor),
+  CONSTRAINT mcs_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mcs_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `postingaccounts`
+--
+
+DROP TABLE IF EXISTS postingaccounts;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE postingaccounts (
+  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  postingaccountname varchar(20) NOT NULL,
+  PRIMARY KEY (postingaccountid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -124,6 +164,14 @@ CREATE TABLE contractpartners (
   validtil date NOT NULL,
   mmf_comment varchar(100) DEFAULT NULL,
   mpa_postingaccountid int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (contractpartnerid),
+  UNIQUE KEY mcp_i_01 (mac_id_accessor,`name`),
+  KEY mcp_mac_pk_01 (mac_id_creator),
+  KEY mcp_mac_pk_02 (mac_id_accessor),
+  KEY mcp_mpa_pk_01 (mpa_postingaccountid),
+  CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
+  CONSTRAINT mcp_mpa_pk_01 FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,6 +187,10 @@ CREATE TABLE contractpartneraccounts (
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   accountnumber varchar(34) NOT NULL,
   bankcode varchar(11) DEFAULT NULL,
+  PRIMARY KEY (contractpartneraccountid),
+  UNIQUE KEY mca_i_01 (accountnumber,bankcode),
+  KEY mca_mcp_pk_01 (mcp_contractpartnerid),
+  CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,6 +213,18 @@ CREATE TABLE moneyflows (
   `comment` varchar(100) NOT NULL DEFAULT '',
   mpa_postingaccountid int(10) unsigned NOT NULL,
   private tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (moneyflowid),
+  KEY mmf_i_01 (bookingdate,mac_id_accessor,moneyflowid),
+  KEY mmf_mac_pk_01 (mac_id_creator),
+  KEY ` mmf_mac_pk_02` (mac_id_accessor),
+  KEY mmf_mcs_pk (mcs_capitalsourceid),
+  KEY mmf_mcp_pk (mcp_contractpartnerid),
+  KEY mmf_mpa_pk (mpa_postingaccountid),
+  CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
+  CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid),
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid),
+  CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,19 +243,14 @@ CREATE TABLE monthlysettlements (
   `month` tinyint(4) unsigned NOT NULL,
   `year` year(4) NOT NULL,
   amount decimal(8,2) NOT NULL,
-);
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `postingaccounts`
---
-
-DROP TABLE IF EXISTS postingaccounts;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE postingaccounts (
-  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  postingaccountname varchar(20) NOT NULL,
+  PRIMARY KEY (monthlysettlementid),
+  UNIQUE KEY mms_i_01 (`month`,`year`,mcs_capitalsourceid),
+  KEY mms_mac_pk_01 (mac_id_creator),
+  KEY mms_mac_pk_02 (mac_id_accessor),
+  KEY mms_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mms_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mms_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
+  CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,6 +272,13 @@ CREATE TABLE predefmoneyflows (
   once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
   last_used date DEFAULT NULL,
   mpa_postingaccountid int(10) unsigned NOT NULL,
+  PRIMARY KEY (predefmoneyflowid),
+  KEY mpm_mac_pk (mac_id),
+  KEY mpm_mpa_pk (mpa_postingaccountid),
+  KEY mpm_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id),
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid),
+  CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -227,6 +293,7 @@ CREATE TABLE impbalance (
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   balance decimal(8,2) NOT NULL,
   changedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (mcs_capitalsourceid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -248,6 +315,10 @@ CREATE TABLE impmoneyflows (
   bankcode varchar(11) NOT NULL,
   `comment` varchar(512) DEFAULT NULL,
   amount decimal(8,2) NOT NULL,
+  PRIMARY KEY (impmoneyflowid),
+  UNIQUE KEY mim_i_01 (externalid),
+  KEY mim_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mim_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -265,6 +336,10 @@ CREATE TABLE impmonthlysettlements (
   `month` tinyint(4) unsigned NOT NULL,
   `year` year(4) NOT NULL,
   amount decimal(8,2) NOT NULL,
+  PRIMARY KEY (impmonthlysettlementid),
+  UNIQUE KEY mit_i_01 (externalid),
+  KEY mis_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mis_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -283,6 +358,7 @@ CREATE TABLE imp_data (
   partner varchar(100) NOT NULL,
   `comment` varchar(100) NOT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (dataid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,6 +372,7 @@ DROP TABLE IF EXISTS imp_mapping_source;
 CREATE TABLE imp_mapping_source (
   source_from varchar(100) NOT NULL,
   source_to varchar(100) NOT NULL,
+  UNIQUE KEY mis_i_01 (source_from)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -309,6 +386,7 @@ DROP TABLE IF EXISTS imp_mapping_partner;
 CREATE TABLE imp_mapping_partner (
   partner_from varchar(100) NOT NULL,
   partner_to varchar(100) NOT NULL,
+  UNIQUE KEY mip_i_01 (partner_from)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -334,6 +412,8 @@ CREATE TABLE cmp_data_formats (
   pos_partner_alt tinyint(2) DEFAULT NULL,
   pos_partner_alt_pos_key tinyint(2) DEFAULT NULL,
   pos_partner_alt_keyword varchar(255) DEFAULT NULL,
+  PRIMARY KEY (formatid),
+  UNIQUE KEY `name` (`name`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -346,83 +426,3 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-CREATE   PRIMARY KEY ON predefmoneyflows (predefmoneyflowid);
-CREATE   INDEX mcs_mac_pk_01 ON capitalsources (mac_id_creator);
-CREATE   PRIMARY KEY ON access_relation (id,validfrom);
-CREATE   INDEX mcs_mac_pk_02 ON capitalsources (mac_id_accessor);
-CREATE   INDEX mar_i_01 ON access_relation (ref_id);
-ALTER TABLE capitalsources ADD   CONSTRAINT mcs_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id);
-ALTER TABLE access_relation ADD   CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id);
-ALTER TABLE impmoneyflows ADD   CONSTRAINT mim_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid);
-ALTER TABLE capitalsources ADD   CONSTRAINT mcs_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id);
-ALTER TABLE access_relation ADD   CONSTRAINT mar_mac_pk_02 FOREIGN KEY (ref_id) REFERENCES access (id);
-CREATE   PRIMARY KEY ON impmonthlysettlements (impmonthlysettlementid);
-CREATE   PRIMARY KEY ON contractpartners (contractpartnerid);
-CREATE   PRIMARY KEY ON access_flattened (id,validfrom);
-CREATE   UNIQUE INDEX mit_i_01 ON impmonthlysettlements (externalid);
-CREATE   UNIQUE INDEX mcp_i_01 ON contractpartners (mac_id_accessor,`name`);
-CREATE   INDEX maf_i_01 ON access_flattened (id_level_1);
-CREATE   INDEX mis_mcs_pk ON impmonthlysettlements (mcs_capitalsourceid);
-CREATE   INDEX mcp_mac_pk_01 ON contractpartners (mac_id_creator);
-CREATE   INDEX maf_i_02 ON access_flattened (id_level_2);
-ALTER TABLE impmonthlysettlements ADD   CONSTRAINT mis_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid);
-CREATE   INDEX mcp_mac_pk_02 ON contractpartners (mac_id_accessor);
-CREATE   INDEX maf_i_03 ON access_flattened (id_level_3);
-CREATE   PRIMARY KEY ON imp_data (dataid);
-CREATE   UNIQUE INDEX mis_i_01 ON imp_mapping_source (source_from);
-CREATE   UNIQUE INDEX mip_i_01 ON imp_mapping_partner (partner_from);
-CREATE   INDEX mmf_mac_pk_01 ON moneyflows (mac_id_creator);
-CREATE   PRIMARY KEY ON cmp_data_formats (formatid);
-CREATE   INDEX ` mmf_mac_pk_02` ON moneyflows (mac_id_accessor);
-CREATE   UNIQUE INDEX `name` ON cmp_data_formats (`name`);
-CREATE   INDEX mmf_mcs_pk ON moneyflows (mcs_capitalsourceid);
-CREATE   INDEX mmf_mcp_pk ON moneyflows (mcp_contractpartnerid);
-CREATE   INDEX mmf_mpa_pk ON moneyflows (mpa_postingaccountid);
-ALTER TABLE moneyflows ADD   CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id);
-ALTER TABLE moneyflows ADD   CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id);
-ALTER TABLE moneyflows ADD   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid);
-CREATE   INDEX maf_i_04 ON access_flattened (id_level_4);
-ALTER TABLE moneyflows ADD   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid);
-CREATE   INDEX maf_i_05 ON access_flattened (id_level_5);
-ALTER TABLE moneyflows ADD   CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_02 FOREIGN KEY (id_level_1) REFERENCES access (id);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_03 FOREIGN KEY (id_level_2) REFERENCES access (id);
-CREATE   INDEX mpm_mac_pk ON predefmoneyflows (mac_id);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_04 FOREIGN KEY (id_level_3) REFERENCES access (id);
-CREATE   INDEX mpm_mpa_pk ON predefmoneyflows (mpa_postingaccountid);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_05 FOREIGN KEY (id_level_4) REFERENCES access (id);
-CREATE   INDEX mpm_mcs_pk ON predefmoneyflows (mcs_capitalsourceid);
-ALTER TABLE access_flattened ADD   CONSTRAINT maf_mac_pk_06 FOREIGN KEY (id_level_5) REFERENCES access (id);
-ALTER TABLE predefmoneyflows ADD   CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id);
-CREATE   PRIMARY KEY ON settings (`name`,mac_id);
-ALTER TABLE predefmoneyflows ADD   CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid);
-CREATE   INDEX mse_mac_pk ON settings (mac_id);
-ALTER TABLE predefmoneyflows ADD   CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid);
-CREATE   PRIMARY KEY ON impbalance (mcs_capitalsourceid);
-CREATE   PRIMARY KEY ON impmoneyflows (impmoneyflowid);
-CREATE   INDEX mcp_mpa_pk_01 ON contractpartners (mpa_postingaccountid);
-CREATE   UNIQUE INDEX mim_i_01 ON impmoneyflows (externalid);
-ALTER TABLE contractpartners ADD   CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id);
-CREATE   INDEX mim_mcs_pk ON impmoneyflows (mcs_capitalsourceid);
-ALTER TABLE contractpartners ADD   CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id);
-ALTER TABLE contractpartners ADD   CONSTRAINT mcp_mpa_pk_01 FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid);
-CREATE   PRIMARY KEY ON contractpartneraccounts (contractpartneraccountid);
-CREATE   UNIQUE INDEX mca_i_01 ON contractpartneraccounts (accountnumber,bankcode);
-CREATE   INDEX mca_mcp_pk_01 ON contractpartneraccounts (mcp_contractpartnerid);
-ALTER TABLE contractpartneraccounts ADD   CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid);
-CREATE   PRIMARY KEY ON moneyflows (moneyflowid);
-CREATE   INDEX mmf_i_01 ON moneyflows (bookingdate,mac_id_accessor,moneyflowid);
-CREATE   PRIMARY KEY ON monthlysettlements (monthlysettlementid);
-CREATE   UNIQUE INDEX mms_i_01 ON monthlysettlements (`month`,`year`,mcs_capitalsourceid);
-CREATE   INDEX mms_mac_pk_01 ON monthlysettlements (mac_id_creator);
-CREATE   INDEX mms_mac_pk_02 ON monthlysettlements (mac_id_accessor);
-CREATE   INDEX mms_mcs_pk ON monthlysettlements (mcs_capitalsourceid);
-ALTER TABLE monthlysettlements ADD   CONSTRAINT mms_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id);
-ALTER TABLE monthlysettlements ADD   CONSTRAINT mms_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id);
-ALTER TABLE monthlysettlements ADD   CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid);
-ALTER TABLE settings ADD   CONSTRAINT mse_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id);
-CREATE   PRIMARY KEY ON access (id);
-CREATE   PRIMARY KEY ON postingaccounts (postingaccountid);
-CREATE   PRIMARY KEY ON capitalsources (capitalsourceid,mac_id_accessor);
-CREATE   UNIQUE INDEX mac_i_01 ON access (`name`,att_user);
