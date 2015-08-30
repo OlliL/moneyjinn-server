@@ -179,13 +179,15 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	private void evictUserCache(final User user) {
-		final Cache userByNameCache = this.cacheManager.getCache(CacheNames.USER_BY_NAME);
-		final Cache userByIdCache = this.cacheManager.getCache(CacheNames.USER_BY_ID);
-		if (userByNameCache != null) {
-			userByNameCache.evict(user.getName());
-		}
-		if (userByIdCache != null) {
-			userByIdCache.evict(user.getId());
+		if (user != null) {
+			final Cache userByNameCache = this.cacheManager.getCache(CacheNames.USER_BY_NAME);
+			final Cache userByIdCache = this.cacheManager.getCache(CacheNames.USER_BY_ID);
+			if (userByNameCache != null) {
+				userByNameCache.evict(user.getName());
+			}
+			if (userByIdCache != null) {
+				userByIdCache.evict(user.getId());
+			}
 		}
 	}
 

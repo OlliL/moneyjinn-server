@@ -12,8 +12,11 @@ import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.springframework.http.HttpMethod;
 
 public class ShowDeleteUserTest extends AbstractControllerTest {
+
+	private final HttpMethod method = HttpMethod.GET;
 
 	@Override
 	protected String getUsecase() {
@@ -23,7 +26,8 @@ public class ShowDeleteUserTest extends AbstractControllerTest {
 	@Test
 	public void test_unknownUser_emptyResponseObject() throws Exception {
 		final ShowDeleteUserResponse expected = new ShowDeleteUserResponse();
-		final ShowDeleteUserResponse actual = super.callUsecaseWithGET("/666", ShowDeleteUserResponse.class);
+		final ShowDeleteUserResponse actual = super.callUsecaseWithoutContent(
+				"/" + UserTransportBuilder.NON_EXISTING_ID, this.method, false, ShowDeleteUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -44,8 +48,8 @@ public class ShowDeleteUserTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2800_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 
-		final ShowDeleteUserResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER1_ID,
-				ShowDeleteUserResponse.class);
+		final ShowDeleteUserResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER1_ID,
+				this.method, false, ShowDeleteUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -63,8 +67,8 @@ public class ShowDeleteUserTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 
-		final ShowDeleteUserResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER2_ID,
-				ShowDeleteUserResponse.class);
+		final ShowDeleteUserResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID,
+				this.method, false, ShowDeleteUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

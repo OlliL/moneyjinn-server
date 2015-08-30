@@ -13,7 +13,7 @@ public class UserTransportBuilder extends UserTransport {
 	public static final Long ADMIN_ID = 2l;
 	public static final Long USER1_ID = 3l;
 	public static final Long USER2_ID = 4l;
-	public static final Long NEWUSER_ID = 666l;
+	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 7l;
 
 	public static final String USER1_PASSWORD = "111";
@@ -46,7 +46,7 @@ public class UserTransportBuilder extends UserTransport {
 	}
 
 	public UserTransportBuilder forNewUser() {
-		super.setId(NEWUSER_ID);
+		super.setId(NON_EXISTING_ID);
 		super.setUserCanLogin(SHORT_1);
 		super.setUserIsAdmin(SHORT_1);
 		super.setUserIsNew(null);

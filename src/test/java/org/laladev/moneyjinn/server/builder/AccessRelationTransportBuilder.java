@@ -45,7 +45,7 @@ public class AccessRelationTransportBuilder extends AccessRelationTransport {
 	}
 
 	public AccessRelationTransportBuilder forNewUser_2000_01_01() {
-		super.setId(UserTransportBuilder.NEWUSER_ID);
+		super.setId(UserTransportBuilder.NON_EXISTING_ID);
 		super.setRefId(GroupTransportBuilder.GROUP1_ID);
 		super.setValidfrom(DateUtil.getGMTDate("2000-01-01"));
 		return this;

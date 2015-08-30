@@ -58,18 +58,41 @@ public abstract class AbstractControllerTest {
 		return prefix + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
 	}
 
-	protected <T> T callUsecaseWithGET(final String uriParameters, final Class<T> clazz) throws Exception {
-		final MvcResult result = this.mvc.perform(MockMvcRequestBuilders
-				.get("/moneyflow/" + this.getUsecase() + uriParameters).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
+	protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,
+			final boolean noResult, final Class<T> clazz) throws Exception {
+		ResultMatcher status = status().isOk();
+		if (noResult) {
+			status = status().isNoContent();
+		}
+
+		MockHttpServletRequestBuilder builder = null;
+		switch (httpMethod) {
+		case GET:
+			builder = MockMvcRequestBuilders.get("/moneyflow/" + this.getUsecase() + uriParameters);
+			break;
+		case DELETE:
+			builder = MockMvcRequestBuilders.delete("/moneyflow/" + this.getUsecase() + uriParameters);
+			break;
+		default:
+			break;
+
+		}
+		final MvcResult result = this.mvc.perform(builder.accept(MediaType.APPLICATION_JSON)).andExpect(status)
+				.andReturn();
 
 		final String content = result.getResponse().getContentAsString();
-
 		Assert.assertNotNull(content);
 
-		final T actual = this.objectMapper.readValue(content, clazz);
+		if (!noResult) {
+			Assert.assertTrue(content.length() > 0);
 
-		return actual;
+			final T actual = this.objectMapper.readValue(content, clazz);
+
+			return actual;
+		} else {
+			Assert.assertTrue(content.length() == 0);
+			return null;
+		}
 
 	}
 

@@ -12,8 +12,11 @@ import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.springframework.http.HttpMethod;
 
 public class ShowEditUserTest extends AbstractControllerTest {
+
+	private final HttpMethod method = HttpMethod.GET;
 
 	@Override
 	protected String getUsecase() {
@@ -23,7 +26,8 @@ public class ShowEditUserTest extends AbstractControllerTest {
 	@Test
 	public void test_unknownUser_emptyResponseObject() throws Exception {
 		final ShowEditUserResponse expected = new ShowEditUserResponse();
-		final ShowEditUserResponse actual = super.callUsecaseWithGET("/666", ShowEditUserResponse.class);
+		final ShowEditUserResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.NON_EXISTING_ID,
+				this.method, false, ShowEditUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -44,8 +48,8 @@ public class ShowEditUserTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2800_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 
-		final ShowEditUserResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER1_ID,
-				ShowEditUserResponse.class);
+		final ShowEditUserResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER1_ID,
+				this.method, false, ShowEditUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -63,8 +67,8 @@ public class ShowEditUserTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 
-		final ShowEditUserResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER2_ID,
-				ShowEditUserResponse.class);
+		final ShowEditUserResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID,
+				this.method, false, ShowEditUserResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

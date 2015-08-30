@@ -5,8 +5,11 @@ import org.junit.Test;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.springframework.http.HttpMethod;
 
 public class GetUserSettingsForStartupTest extends AbstractControllerTest {
+
+	private final HttpMethod method = HttpMethod.GET;
 
 	@Override
 	protected String getUsecase() {
@@ -16,7 +19,7 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 	@Test
 	public void test_unknownUser_emptyResponseObject() throws Exception {
 		final GetUserSettingsForStartupResponse expected = new GetUserSettingsForStartupResponse();
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithGET("/xxx",
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/xxx", this.method, false,
 				GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
@@ -31,8 +34,8 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setSettingDisplayedLanguage(1);
 		expected.setUserId(3l);
 
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER1_NAME,
-				GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
+				"/" + UserTransportBuilder.USER1_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -46,8 +49,8 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setSettingDisplayedLanguage(1);
 		expected.setUserId(4l);
 
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithGET("/" + UserTransportBuilder.USER2_NAME,
-				GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
+				"/" + UserTransportBuilder.USER2_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
