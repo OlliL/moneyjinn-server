@@ -31,20 +31,25 @@ public class HttpHeadersBuilder {
 		}
 	}
 
+	public HttpHeaders getDateHeader(final ZonedDateTime dateTime) {
+		final String date = this.dateFormatter.format(dateTime);
+		final HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add(RESTAuthorization.dateHeaderName, date);
+		return httpHeaders;
+	}
+
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
 			final String uri, final String body, final HttpMethod httpMethod) {
 		this.sha1MD.reset();
 
-		final String date = this.dateFormatter.format(dateTime);
+		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);
 
 		final String contentType = MediaType.APPLICATION_JSON_VALUE;
 		final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
 
 		final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
-				contentType, uri, date, body.getBytes(), userName);
+				contentType, uri, httpHeaders.getFirst(RESTAuthorization.dateHeaderName), body.getBytes(), userName);
 
-		final HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(RESTAuthorization.dateHeaderName, date);
 		httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
 
 		return httpHeaders;

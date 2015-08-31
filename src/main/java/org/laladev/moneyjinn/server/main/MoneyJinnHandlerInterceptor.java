@@ -57,8 +57,9 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 				String hmacHash = null;
 
 				if (clientAuthorization != null) {
-					if (clientAuthorization.substring(0, 3).equals("MNF")) {
-						final String[] authorizationArray = clientAuthorization.substring(3).split(":");
+					if (clientAuthorization.substring(0, 3).equals(RESTAuthorization.authenticationHeaderPrefix)) {
+						final String[] authorizationArray = clientAuthorization.substring(3)
+								.split(RESTAuthorization.authenticationHeaderSeparator);
 						if (authorizationArray.length == 2) {
 							userName = authorizationArray[0];
 							hmacHash = authorizationArray[1];
@@ -66,7 +67,8 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 					}
 				}
 
-				if (userName == null || hmacHash == null || dateHeaderString == null) {
+				if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0
+						|| dateHeaderString == null) {
 					throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
 				}
 
