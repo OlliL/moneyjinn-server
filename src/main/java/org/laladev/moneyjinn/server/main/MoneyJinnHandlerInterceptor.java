@@ -1,9 +1,9 @@
 package org.laladev.moneyjinn.server.main;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,11 +43,15 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		if (!request.getRequestURI().equals("/error")) {
 			if (request instanceof MoneyJinnRequestWrapper) {
-				final String dateHeaderString = ((MoneyJinnRequestWrapper) request).getHeader("Requestdate");
-				final LocalDateTime dateHeaderLocalDateTime = LocalDateTime.ofInstant(
-						Instant.ofEpochMilli(((MoneyJinnRequestWrapper) request).getDateHeader("Requestdate")),
-						ZoneId.systemDefault());
-				final String clientAuthorization = ((MoneyJinnRequestWrapper) request).getHeader("Authentication");
+				final String dateHeaderString = ((MoneyJinnRequestWrapper) request)
+						.getHeader(RESTAuthorization.dateHeaderName);
+
+				final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.dateHeaderFormat,
+						Locale.US);
+				final ZonedDateTime dateHeaderLocalDateTime = ZonedDateTime.parse(dateHeaderString, formatter);
+
+				final String clientAuthorization = ((MoneyJinnRequestWrapper) request)
+						.getHeader(RESTAuthorization.authenticationHeaderName);
 
 				String userName = null;
 				String hmacHash = null;
@@ -66,7 +70,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 					throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
 				}
 
-				final long minutes = ChronoUnit.MINUTES.between(LocalDateTime.now(), dateHeaderLocalDateTime);
+				final long minutes = ChronoUnit.MINUTES.between(ZonedDateTime.now(), dateHeaderLocalDateTime);
 				if (Math.abs(minutes) > 15l) {
 					throw new BusinessException("Your clock is more than 15 minutes off", ErrorCode.CLIENT_CLOCK_OFF);
 				}

@@ -136,7 +136,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
 
-		Assert.assertEquals(UserTransportBuilder.USER1_PASSWORD, user.getPassword());
+		Assert.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
 		Assert.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
 	}
 

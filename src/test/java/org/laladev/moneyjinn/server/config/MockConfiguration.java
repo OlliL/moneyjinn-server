@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.config;
 
 import javax.inject.Inject;
 
+import org.laladev.moneyjinn.server.main.BufferFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,10 +19,9 @@ public class MockConfiguration {
 	public MockMvc mockMvc() {
 		// TODO: this will only work if we get the RequestFilter to work to set the Auth
 		// headers.....
-		// return MockMvcBuilders.webAppContextSetup(this.applicationContext).addFilter(new
-		// BufferFilter(), "/moneyflow/*")
-		// .build();
-		return MockMvcBuilders.webAppContextSetup(this.applicationContext).build();
+		return MockMvcBuilders.webAppContextSetup(this.applicationContext).addFilter(new BufferFilter(), "/moneyflow/*")
+				.build();
+		// return MockMvcBuilders.webAppContextSetup(this.applicationContext).build();
 	}
 
 }

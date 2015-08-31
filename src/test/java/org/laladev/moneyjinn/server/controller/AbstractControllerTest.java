@@ -2,17 +2,29 @@ package org.laladev.moneyjinn.server.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.laladev.moneyjinn.api.MoneyjinnProfiles;
+import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
+import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -43,6 +55,50 @@ public abstract class AbstractControllerTest {
 	private MockMvc mvc;
 	@Inject
 	private CacheManager cacheManager;
+	private final RESTAuthorization restAuthorization;
+	private final DateTimeFormatter dateFormatter;
+	private MessageDigest sha1MD;
+
+	protected AbstractControllerTest() {
+		this.restAuthorization = new RESTAuthorization();
+		this.dateFormatter = DateTimeFormatter.ofPattern(RESTAuthorization.dateHeaderFormat, Locale.US)
+				.withZone(ZoneId.of("GMT"));
+		try {
+			this.sha1MD = MessageDigest.getInstance("SHA1");
+		} catch (final NoSuchAlgorithmException e) {
+		}
+	}
+
+	protected String getUsername() {
+		return UserTransportBuilder.USER1_NAME;
+	}
+
+	protected String getPassword() {
+		return UserTransportBuilder.USER1_PASSWORD;
+	}
+
+	private HttpHeaders getAuthHeaders(final String uri, final String body, final HttpMethod httpMethod) {
+		this.sha1MD.reset();
+
+		final Date now = new Date(System.currentTimeMillis());
+		final String date = this.dateFormatter.format(ZonedDateTime.now());
+
+		final String userName = this.getUsername();
+		final String userPassword = this.getPassword();
+
+		final String contentType = MediaType.APPLICATION_JSON_VALUE;
+		final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
+
+		final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
+				contentType, uri, date, body.getBytes(), userName);
+
+		final HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add(RESTAuthorization.dateHeaderName, date);
+		httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
+
+		return httpHeaders;
+
+	}
 
 	protected abstract String getUsecase();
 
@@ -60,45 +116,17 @@ public abstract class AbstractControllerTest {
 
 	protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,
 			final boolean noResult, final Class<T> clazz) throws Exception {
-		ResultMatcher status = status().isOk();
-		if (noResult) {
-			status = status().isNoContent();
-		}
-
-		MockHttpServletRequestBuilder builder = null;
-		switch (httpMethod) {
-		case GET:
-			builder = MockMvcRequestBuilders.get("/moneyflow/" + this.getUsecase() + uriParameters);
-			break;
-		case DELETE:
-			builder = MockMvcRequestBuilders.delete("/moneyflow/" + this.getUsecase() + uriParameters);
-			break;
-		default:
-			break;
-
-		}
-		final MvcResult result = this.mvc.perform(builder.accept(MediaType.APPLICATION_JSON)).andExpect(status)
-				.andReturn();
-
-		final String content = result.getResponse().getContentAsString();
-		Assert.assertNotNull(content);
-
-		if (!noResult) {
-			Assert.assertTrue(content.length() > 0);
-
-			final T actual = this.objectMapper.readValue(content, clazz);
-
-			return actual;
-		} else {
-			Assert.assertTrue(content.length() == 0);
-			return null;
-		}
-
+		return this.callUsecase(uriParameters, httpMethod, "", noResult, clazz);
 	}
 
 	protected <T> T callUsecaseWithContent(final String uriParameters, final HttpMethod httpMethod, final Object body,
 			final boolean noResult, final Class<T> clazz) throws Exception {
 		final String bodyStr = this.objectMapper.writeValueAsString(body);
+		return this.callUsecase(uriParameters, httpMethod, bodyStr, noResult, clazz);
+	}
+
+	private <T> T callUsecase(final String uriParameters, final HttpMethod httpMethod, final String body,
+			final boolean noResult, final Class<T> clazz) throws Exception {
 
 		ResultMatcher status = status().isOk();
 		if (noResult) {
@@ -106,19 +134,30 @@ public abstract class AbstractControllerTest {
 		}
 
 		MockHttpServletRequestBuilder builder = null;
+		final String uri = "/moneyflow/" + this.getUsecase() + uriParameters;
+
 		switch (httpMethod) {
+		case GET:
+			builder = MockMvcRequestBuilders.get(uri);
+			break;
+		case DELETE:
+			builder = MockMvcRequestBuilders.delete(uri);
+			break;
 		case PUT:
-			builder = MockMvcRequestBuilders.put("/moneyflow/" + this.getUsecase() + uriParameters);
+			builder = MockMvcRequestBuilders.put(uri).content(body);
 			break;
 		case POST:
-			builder = MockMvcRequestBuilders.post("/moneyflow/" + this.getUsecase() + uriParameters);
+			builder = MockMvcRequestBuilders.post(uri).content(body);
 			break;
 		default:
 			break;
 
 		}
-		final MvcResult result = this.mvc.perform(
-				builder.content(bodyStr).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+
+		builder.headers(this.getAuthHeaders(uri, body, httpMethod));
+
+		final MvcResult result = this.mvc
+				.perform(builder.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status).andReturn();
 
 		final String content = result.getResponse().getContentAsString();

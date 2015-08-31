@@ -1,5 +1,5 @@
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (3,'user1','111',1,1,1,1);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (4,'user2','222',1,0,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2',1,1,1,1);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,0,0);
 
 insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (5,'group1',null,0,0,0,0);
 insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (6,'group2',null,0,0,0,0);
