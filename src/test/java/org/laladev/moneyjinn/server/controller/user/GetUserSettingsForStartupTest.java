@@ -26,13 +26,28 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_User1_completeResponseObject() throws Exception {
+	public void test_AdminUser_completeResponseObject() throws Exception {
 		final GetUserSettingsForStartupResponse expected = new GetUserSettingsForStartupResponse();
 		expected.setAttributeNew(Boolean.TRUE);
 		expected.setPermissionAdmin(Boolean.TRUE);
 		expected.setSettingDateFormat("YYYY-MM-DD");
 		expected.setSettingDisplayedLanguage(1);
-		expected.setUserId(3l);
+		expected.setUserId(UserTransportBuilder.ADMIN_ID);
+
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
+				"/" + UserTransportBuilder.ADMIN_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_User1_completeResponseObject() throws Exception {
+		final GetUserSettingsForStartupResponse expected = new GetUserSettingsForStartupResponse();
+		expected.setAttributeNew(Boolean.TRUE);
+		expected.setPermissionAdmin(Boolean.FALSE);
+		expected.setSettingDateFormat("YYYY-MM-DD");
+		expected.setSettingDisplayedLanguage(1);
+		expected.setUserId(UserTransportBuilder.USER1_ID);
 
 		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
 				"/" + UserTransportBuilder.USER1_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
@@ -47,7 +62,7 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setPermissionAdmin(Boolean.FALSE);
 		expected.setSettingDateFormat("YYYY-MM-DD");
 		expected.setSettingDisplayedLanguage(1);
-		expected.setUserId(4l);
+		expected.setUserId(UserTransportBuilder.USER2_ID);
 
 		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
 				"/" + UserTransportBuilder.USER2_NAME, this.method, false, GetUserSettingsForStartupResponse.class);

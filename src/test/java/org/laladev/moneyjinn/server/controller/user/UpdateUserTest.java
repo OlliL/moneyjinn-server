@@ -148,7 +148,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		transport.setUserPassword("123");
 		transport.setUserName("hugo");
 		transport.setUserCanLogin(Short.valueOf((short) 0));
-		transport.setUserIsAdmin(Short.valueOf((short) 0));
+		transport.setUserIsAdmin(Short.valueOf((short) 1));
 
 		/*
 		 * this must be ignored by the server as the password is changed (which is done by the admin
@@ -169,7 +169,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		Assert.assertEquals("hugo", user.getName());
 		// instead of NONE -----------------------------vvvvvv
 		Assert.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assert.assertEquals(Arrays.asList(UserPermission.NONE), user.getPermissions());
+		Assert.assertEquals(Arrays.asList(UserPermission.ADMIN), user.getPermissions());
 	}
 
 	@Test

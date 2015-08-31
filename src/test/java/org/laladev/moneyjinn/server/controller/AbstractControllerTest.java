@@ -70,11 +70,11 @@ public abstract class AbstractControllerTest {
 	}
 
 	protected String getUsername() {
-		return UserTransportBuilder.USER1_NAME;
+		return UserTransportBuilder.ADMIN_NAME;
 	}
 
 	protected String getPassword() {
-		return UserTransportBuilder.USER1_PASSWORD;
+		return UserTransportBuilder.ADMIN_PASSWORD;
 	}
 
 	private HttpHeaders getAuthHeaders(final String uri, final String body, final HttpMethod httpMethod) {
