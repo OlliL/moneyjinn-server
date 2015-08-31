@@ -38,6 +38,11 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class RESTAuthorization {
+
+	public static final String dateHeaderFormat = "EEE, dd MMM yyyy HH:mm:ss z";
+	public static final String dateHeaderName = "Requestdate";
+	public static final String authenticationHeaderName = "Authentication";
+
 	private MessageDigest md5MD;
 	private Mac hmacSHA1Mac;
 	private final Base64 base64 = new Base64();
