@@ -2,37 +2,20 @@ package org.laladev.moneyjinn.server.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.laladev.moneyjinn.api.MoneyjinnProfiles;
-import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
-import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
+import org.laladev.moneyjinn.server.AbstractMvcTest;
+import org.laladev.moneyjinn.server.builder.HttpHeadersBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -41,33 +24,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MoneyjinnConfiguration.class })
-@WebAppConfiguration
-@EnableAutoConfiguration
-@ActiveProfiles(MoneyjinnProfiles.TEST)
-@SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
-		"classpath:testdata.sql" }) })
-public abstract class AbstractControllerTest {
+public abstract class AbstractControllerTest extends AbstractMvcTest {
 	@Inject
 	private ObjectMapper objectMapper;
 	@Inject
 	private MockMvc mvc;
 	@Inject
 	private CacheManager cacheManager;
-	private final RESTAuthorization restAuthorization;
-	private final DateTimeFormatter dateFormatter;
-	private MessageDigest sha1MD;
-
-	protected AbstractControllerTest() {
-		this.restAuthorization = new RESTAuthorization();
-		this.dateFormatter = DateTimeFormatter.ofPattern(RESTAuthorization.dateHeaderFormat, Locale.US)
-				.withZone(ZoneId.of("GMT"));
-		try {
-			this.sha1MD = MessageDigest.getInstance("SHA1");
-		} catch (final NoSuchAlgorithmException e) {
-		}
-	}
+	@Inject
+	private HttpHeadersBuilder httpHeadersBuilder;
 
 	protected String getUsername() {
 		return UserTransportBuilder.ADMIN_NAME;
@@ -78,25 +43,10 @@ public abstract class AbstractControllerTest {
 	}
 
 	private HttpHeaders getAuthHeaders(final String uri, final String body, final HttpMethod httpMethod) {
-		this.sha1MD.reset();
-
-		final Date now = new Date(System.currentTimeMillis());
-		final String date = this.dateFormatter.format(ZonedDateTime.now());
-
 		final String userName = this.getUsername();
 		final String userPassword = this.getPassword();
-
-		final String contentType = MediaType.APPLICATION_JSON_VALUE;
-		final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
-
-		final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
-				contentType, uri, date, body.getBytes(), userName);
-
-		final HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(RESTAuthorization.dateHeaderName, date);
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
-
-		return httpHeaders;
+		return this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, ZonedDateTime.now(), uri, body,
+				httpMethod);
 
 	}
 
