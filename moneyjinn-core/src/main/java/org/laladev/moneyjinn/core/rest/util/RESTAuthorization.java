@@ -42,6 +42,8 @@ public class RESTAuthorization {
 	public static final String dateHeaderFormat = "EEE, dd MMM yyyy HH:mm:ss z";
 	public static final String dateHeaderName = "Requestdate";
 	public static final String authenticationHeaderName = "Authentication";
+	public static final String authenticationHeaderPrefix = "MNF";
+	public static final String authenticationHeaderSeparator = ":";
 
 	private MessageDigest md5MD;
 	private Mac hmacSHA1Mac;
@@ -117,6 +119,6 @@ public class RESTAuthorization {
 		} catch (final UnsupportedEncodingException e) {
 		}
 
-		return "MNF" + ident + ":" + authString;
+		return authenticationHeaderPrefix + ident + authenticationHeaderSeparator + authString;
 	}
 }
