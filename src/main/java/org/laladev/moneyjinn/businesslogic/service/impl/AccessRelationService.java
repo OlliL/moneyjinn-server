@@ -178,7 +178,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		try {
 			insertAccessRelation = accessRelation.clone();
 		} catch (final CloneNotSupportedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
