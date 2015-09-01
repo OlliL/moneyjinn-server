@@ -13,11 +13,9 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
  * looking up a specific entity
  * </p>
  *
- * @deprecated Client Settings should be stored on client side!
  * @author olivleh1
  *
  */
-@Deprecated
 public class ClientMaxRowsSetting extends AbstractSetting<Integer> {
 
 	public ClientMaxRowsSetting(final Integer setting) {

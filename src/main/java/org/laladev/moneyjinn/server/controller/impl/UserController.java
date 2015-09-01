@@ -38,17 +38,22 @@ import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
-import org.laladev.moneyjinn.server.controller.IUserController;
 import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController extends AbstractController implements IUserController {
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+@RequestMapping("/moneyflow/user/")
+public class UserController extends AbstractController {
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -67,14 +72,14 @@ public class UserController extends AbstractController implements IUserControlle
 
 	}
 
-	@Override
+	@RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
 	public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
 		final ShowEditUserResponse response = new ShowEditUserResponse();
 		this.fillAbstractShowUserResponse(new UserID(userId), response);
 		return response;
 	}
 
-	@Override
+	@RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
 	public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
 		final User user = super.map(request.getUserTransport(), User.class);
 
@@ -113,12 +118,12 @@ public class UserController extends AbstractController implements IUserControlle
 		return null;
 	}
 
-	@Override
+	@RequestMapping(value = "showUserList", method = { RequestMethod.GET })
 	public ShowUserListResponse showUserList() {
 		return this.showUserList(null);
 	}
 
-	@Override
+	@RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
 	public ShowUserListResponse showUserList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
@@ -159,14 +164,14 @@ public class UserController extends AbstractController implements IUserControlle
 		return response;
 	}
 
-	@Override
+	@RequestMapping(value = "showCreateUser", method = { RequestMethod.GET })
 	public ShowCreateUserResponse showCreateUser() {
 		final ShowCreateUserResponse response = new ShowCreateUserResponse();
 		this.fillAbstractCreateUserResponse(response);
 		return response;
 	}
 
-	@Override
+	@RequestMapping(value = "createUser", method = { RequestMethod.POST })
 	public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
 		final User user = super.map(request.getUserTransport(), User.class);
 		user.setId(null);
@@ -204,7 +209,7 @@ public class UserController extends AbstractController implements IUserControlle
 		return null;
 	}
 
-	@Override
+	@RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
 	public void deleteUserById(@PathVariable(value = "id") final Long id) {
 		final UserID userId = new UserID(id);
 		this.accessRelationService.deleteAllAccessRelation(userId);
@@ -212,7 +217,7 @@ public class UserController extends AbstractController implements IUserControlle
 		this.userService.deleteUser(userId);
 	}
 
-	@Override
+	@RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
 	public GetUserSettingsForStartupResponse getUserSettingsForStartup(
 			@PathVariable(value = "name") final String name) {
 		final User user = this.userService.getUserByName(name);
@@ -236,7 +241,7 @@ public class UserController extends AbstractController implements IUserControlle
 		return response;
 	}
 
-	@Override
+	@RequestMapping(value = "showDeleteUser/{id}", method = { RequestMethod.GET })
 	public ShowDeleteUserResponse showDeleteUser(@PathVariable(value = "id") final Long userId) {
 		final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
 		this.fillAbstractShowUserResponse(new UserID(userId), response);

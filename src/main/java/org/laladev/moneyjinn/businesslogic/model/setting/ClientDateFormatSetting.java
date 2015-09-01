@@ -13,11 +13,9 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
  * looking up a specific entity
  * </p>
  *
- * @deprecated Client Settings should be stored on client side!
  * @author olivleh1
  *
  */
-@Deprecated
 public class ClientDateFormatSetting extends AbstractSetting<String> {
 
 	public ClientDateFormatSetting(final String setting) {

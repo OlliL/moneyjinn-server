@@ -126,7 +126,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	@Override
 	public ValidationResult setAccessRelationForNewUser(final AccessRelation accessRelation) {
 		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-
 		if (validationResult.isValid()) {
 			this.setAccessRelation(accessRelation);
 		}

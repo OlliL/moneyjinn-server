@@ -33,9 +33,7 @@ public interface ISettingService {
 	 * @param userID
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientMaxRowsSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId);
 
 	/**
@@ -45,9 +43,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @param setting
 	 *            the {@link ClientMaxRowsSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public void setClientMaxRowsSetting(final AccessID accessId, final ClientMaxRowsSetting setting);
 
 	/**
@@ -56,9 +52,7 @@ public interface ISettingService {
 	 * @param userID
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientDateFormatSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId);
 
 	/**
@@ -68,9 +62,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @param setting
 	 *            the {@link ClientDateFormatSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public void setClientDateFormatSetting(final AccessID accessId, final ClientDateFormatSetting setting);
 
 	/**
@@ -79,9 +71,7 @@ public interface ISettingService {
 	 * @param userID
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientDisplayedLanguageSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public ClientDisplayedLanguageSetting getClientDisplayedLanguageSetting(final AccessID accessId);
 
 	/**
@@ -91,9 +81,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @param setting
 	 *            the {@link ClientDisplayedLanguageSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public void setClientDisplayedLanguageSetting(final AccessID accessId,
 			final ClientDisplayedLanguageSetting setting);
 
@@ -117,9 +105,7 @@ public interface ISettingService {
 	 * @param userID
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientNumFreeMoneyflowsSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public ClientNumFreeMoneyflowsSetting getClientNumFreeMoneyflowsSetting(final AccessID accessId);
 
 	/**
@@ -129,9 +115,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @param setting
 	 *            the {@link ClientNumFreeMoneyflowsSetting}
-	 * @deprecated Client Settings should be stored on client side!
 	 */
-	@Deprecated
 	public void setClientNumFreeMoneyflowsSetting(final AccessID accessId,
 			final ClientNumFreeMoneyflowsSetting setting);
 

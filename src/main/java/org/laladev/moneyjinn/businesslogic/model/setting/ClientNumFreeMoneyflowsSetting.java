@@ -5,11 +5,9 @@ package org.laladev.moneyjinn.businesslogic.model.setting;
  * This Setting describes the number of empty rows displayed for adding moneyflows
  * </p>
  *
- * @deprecated Client Settings should be stored on client side!
  * @author olivleh1
  *
  */
-@Deprecated
 public class ClientNumFreeMoneyflowsSetting extends AbstractSetting<Integer> {
 
 	public ClientNumFreeMoneyflowsSetting(final Integer setting) {

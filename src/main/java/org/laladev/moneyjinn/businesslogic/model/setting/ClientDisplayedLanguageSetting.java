@@ -5,11 +5,9 @@ package org.laladev.moneyjinn.businesslogic.model.setting;
  * This Setting describes the client language the user has choosen.
  * </p>
  *
- * @deprecated Client Settings should be stored on client side!
  * @author olivleh1
  *
  */
-@Deprecated
 public class ClientDisplayedLanguageSetting extends AbstractSetting<Integer> {
 
 	public ClientDisplayedLanguageSetting(final Integer setting) {
