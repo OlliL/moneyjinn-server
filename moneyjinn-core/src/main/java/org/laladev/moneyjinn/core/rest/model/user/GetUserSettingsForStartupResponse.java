@@ -47,38 +47,18 @@ public class GetUserSettingsForStartupResponse extends AbstractResponse {
 		this.userId = userId;
 	}
 
-	/**
-	 * @deprecated the client should hold that information
-	 * @param settingDateFormat
-	 */
-	@Deprecated
 	public String getSettingDateFormat() {
 		return this.settingDateFormat;
 	}
 
-	/**
-	 * @deprecated the client should hold that information
-	 * @param settingDateFormat
-	 */
-	@Deprecated
 	public void setSettingDateFormat(final String settingDateFormat) {
 		this.settingDateFormat = settingDateFormat;
 	}
 
-	/**
-	 * @deprecated the client should hold that information
-	 * @param settingDateFormat
-	 */
-	@Deprecated
 	public Integer getSettingDisplayedLanguage() {
 		return this.settingDisplayedLanguage;
 	}
 
-	/**
-	 * @deprecated the client should hold that information
-	 * @param settingDateFormat
-	 */
-	@Deprecated
 	public void setSettingDisplayedLanguage(final Integer settingDisplayedLanguage) {
 		this.settingDisplayedLanguage = settingDisplayedLanguage;
 	}
