@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
+import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
+import org.laladev.moneyjinn.businesslogic.service.impl.SettingService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -19,6 +26,9 @@ import org.springframework.http.HttpMethod;
 
 public class ShowUserListTest extends AbstractControllerTest {
 
+	@Inject
+	private SettingService settingService;
+
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
 	private String userPassword;
@@ -30,11 +40,6 @@ public class ShowUserListTest extends AbstractControllerTest {
 	}
 
 	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("user", this.getClass());
-	}
-
-	@Override
 	protected String getUsername() {
 		return this.userName;
 	}
@@ -42,6 +47,11 @@ public class ShowUserListTest extends AbstractControllerTest {
 	@Override
 	protected String getPassword() {
 		return this.userPassword;
+	}
+
+	@Override
+	protected String getUsecase() {
+		return super.getUsecaseFromTestClassName("user", this.getClass());
 	}
 
 	private ShowUserListResponse getCompleteResponse() {
@@ -79,11 +89,11 @@ public class ShowUserListTest extends AbstractControllerTest {
 
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
 		final ShowUserListResponse expected = new ShowUserListResponse();
 		expected.setInitials(Arrays.asList('A', 'U'));
+
+		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
+		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
 		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowUserListResponse.class);
@@ -93,9 +103,10 @@ public class ShowUserListTest extends AbstractControllerTest {
 
 	@Test
 	public void test_explicitAll_FullResponseObject() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 		final ShowUserListResponse expected = this.getCompleteResponse();
+
+		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
+		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
 		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
 				ShowUserListResponse.class);
@@ -124,6 +135,17 @@ public class ShowUserListTest extends AbstractControllerTest {
 				ShowUserListResponse.class);
 
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
 	}
 
 }

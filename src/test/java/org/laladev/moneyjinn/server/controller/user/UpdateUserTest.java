@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
@@ -20,6 +21,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserPermission;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -42,7 +44,6 @@ public class UpdateUserTest extends AbstractControllerTest {
 	@Inject
 	IAccessRelationService accessRelationService;
 
-	private final HttpMethod method = HttpMethod.PUT;
 	private final AccessID accessIDUser1 = new AccessID(UserTransportBuilder.USER1_ID);
 	private final AccessID accessIDUser2 = new AccessID(UserTransportBuilder.USER2_ID);
 	private final AccessRelation accessRelationRoot = new AccessRelation(new AccessID(0l));
@@ -64,6 +65,26 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 	private final AccessRelation accessRelationUser2Default = new AccessRelation(this.accessIDUser2,
 			this.accessRelationGroup1, LocalDate.parse("2000-01-01"), LocalDate.parse("2999-12-31"));
+
+	private final HttpMethod method = HttpMethod.PUT;
+	private String userName;
+	private String userPassword;
+
+	@Before
+	public void setUp() {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	}
+
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
+
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
 	@Override
 	protected String getUsecase() {
@@ -417,4 +438,17 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
 	}
+
+	@Test
+	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
+	}
+
 }

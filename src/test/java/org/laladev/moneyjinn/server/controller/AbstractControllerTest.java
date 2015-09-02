@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.laladev.moneyjinn.server.AbstractMvcTest;
 import org.laladev.moneyjinn.server.builder.HttpHeadersBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpHeaders;
@@ -34,13 +33,9 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 	@Inject
 	private HttpHeadersBuilder httpHeadersBuilder;
 
-	protected String getUsername() {
-		return UserTransportBuilder.ADMIN_NAME;
-	}
+	protected abstract String getUsername();
 
-	protected String getPassword() {
-		return UserTransportBuilder.ADMIN_PASSWORD;
-	}
+	protected abstract String getPassword();
 
 	private HttpHeaders getAuthHeaders(final String uri, final String body, final HttpMethod httpMethod) {
 		final String userName = this.getUsername();

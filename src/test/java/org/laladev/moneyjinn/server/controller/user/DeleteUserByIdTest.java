@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.user;
 import javax.inject.Inject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
@@ -23,6 +24,24 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 	IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
+	private String userName;
+	private String userPassword;
+
+	@Before
+	public void setUp() {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	}
+
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
+
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
 	@Override
 	protected String getUsecase() {
@@ -73,6 +92,18 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 		Assert.assertNotNull(user);
 
 		Assert.assertEquals(expected, response);
+	}
+
+	@Test
+	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method,
+				false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
 	}
 
 }

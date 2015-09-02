@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
@@ -17,6 +18,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserAttribute;
 import org.laladev.moneyjinn.businesslogic.model.access.UserPermission;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -40,6 +42,24 @@ public class CreateUserTest extends AbstractControllerTest {
 	IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
+	private String userName;
+	private String userPassword;
+
+	@Before
+	public void setUp() {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	}
+
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
+
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
 	@Override
 	protected String getUsecase() {
@@ -220,6 +240,18 @@ public class CreateUserTest extends AbstractControllerTest {
 		accessRelationTransport.setRefId(null);
 
 		this.testError(transport, accessRelationTransport, ErrorCode.GROUP_MUST_BE_SPECIFIED);
+	}
+
+	@Test
+	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final CreateUserRequest request = new CreateUserRequest();
+		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
 	}
 
 }
