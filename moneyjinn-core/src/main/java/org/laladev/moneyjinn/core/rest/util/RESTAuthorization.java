@@ -44,17 +44,11 @@ public class RESTAuthorization {
 	public static final String authenticationHeaderName = "Authentication";
 	public static final String authenticationHeaderPrefix = "MNF";
 	public static final String authenticationHeaderSeparator = ":";
+	private static final String MAC_ALGORITHM = "HmacSHA1";
 
-	private MessageDigest md5MD;
-	private Mac hmacSHA1Mac;
 	private final Base64 base64 = new Base64();
 
 	public RESTAuthorization() {
-		try {
-			this.md5MD = MessageDigest.getInstance("MD5");
-			this.hmacSHA1Mac = Mac.getInstance("HmacSHA1");
-		} catch (final NoSuchAlgorithmException e) {
-		}
 
 	}
 
@@ -71,9 +65,10 @@ public class RESTAuthorization {
 	 * @param body
 	 * @param ident
 	 * @return
+	 * @throws NoSuchAlgorithmException
 	 */
 	public final String getRESTAuthorization(byte[] secret, final String httpVerb, final String contentType,
-			final String url, final String date, final byte[] body, String ident) {
+			final String url, final String date, final byte[] body, String ident) throws NoSuchAlgorithmException {
 		String authString = null;
 		if (secret == null) {
 			secret = new String(" ").getBytes();
@@ -83,25 +78,19 @@ public class RESTAuthorization {
 			ident = new String();
 		}
 
-		this.md5MD.reset();
-		try {
-			this.hmacSHA1Mac.reset();
-		} catch (final NullPointerException e) {
-			// The android implementation of OpenSSLMac does not check if the
-			// mac was initialized before it resets. The first reset before an
-			// init was called always raises a NPE
-		}
-
 		final StringBuilder stringToSign = new StringBuilder(httpVerb);
 		stringToSign.append("\n");
+
 		if (body.length > 0) {
-			final byte[] md5 = BytesToHexConverter.convert(this.md5MD.digest(body)).getBytes();
-			stringToSign.append(new String(md5));
+			stringToSign.append(this.getMD5(body));
 		}
+
 		stringToSign.append("\n");
+
 		if (contentType != null) {
 			stringToSign.append(contentType);
 		}
+
 		stringToSign.append("\n");
 		stringToSign.append(date);
 		stringToSign.append("\n");
@@ -109,9 +98,7 @@ public class RESTAuthorization {
 		stringToSign.append(url);
 
 		try {
-			final SecretKeySpec signingKey = new SecretKeySpec(secret, this.hmacSHA1Mac.getAlgorithm());
-			this.hmacSHA1Mac.init(signingKey);
-			final byte[] rawHmac = this.hmacSHA1Mac.doFinal(stringToSign.toString().getBytes("UTF-8"));
+			final byte[] rawHmac = this.getRawHmac(stringToSign, secret);
 			final byte[] hexBytes = BytesToHexConverter.convert(rawHmac).getBytes();
 			final byte[] base64Bytes = this.base64.encode(hexBytes);
 			authString = new String(base64Bytes);
@@ -120,5 +107,17 @@ public class RESTAuthorization {
 		}
 
 		return authenticationHeaderPrefix + ident + authenticationHeaderSeparator + authString;
+	}
+
+	private String getMD5(final byte[] body) throws NoSuchAlgorithmException {
+		final MessageDigest md5MD = MessageDigest.getInstance("MD5");
+		return BytesToHexConverter.convert(md5MD.digest(body));
+	}
+
+	private byte[] getRawHmac(final StringBuilder stringToSign, final byte[] secret)
+			throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException {
+		final Mac hmacSHA1Mac = Mac.getInstance(MAC_ALGORITHM);
+		hmacSHA1Mac.init(new SecretKeySpec(secret, MAC_ALGORITHM));
+		return hmacSHA1Mac.doFinal(stringToSign.toString().getBytes("UTF-8"));
 	}
 }

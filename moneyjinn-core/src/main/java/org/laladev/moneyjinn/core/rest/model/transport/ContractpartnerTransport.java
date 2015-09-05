@@ -30,8 +30,8 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 import java.sql.Date;
 
 public class ContractpartnerTransport {
-	private Integer id;
-	private Integer userid;
+	private Long id;
+	private Long userid;
 	private String name;
 	private String street;
 	private Integer postcode;
@@ -41,21 +41,21 @@ public class ContractpartnerTransport {
 	private String country;
 	private String moneyflowComment;
 	private String postingAccountName;
-	private Integer postingAccountId;
+	private Long postingAccountId;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public final Integer getUserid() {
+	public final Long getUserid() {
 		return this.userid;
 	}
 
-	public final void setUserid(final Integer userid) {
+	public final void setUserid(final Long userid) {
 		this.userid = userid;
 	}
 
@@ -131,11 +131,11 @@ public class ContractpartnerTransport {
 		this.postingAccountName = postingAccountName;
 	}
 
-	public final Integer getPostingAccountId() {
+	public final Long getPostingAccountId() {
 		return this.postingAccountId;
 	}
 
-	public final void setPostingAccountId(final Integer postingAccountId) {
+	public final void setPostingAccountId(final Long postingAccountId) {
 		this.postingAccountId = postingAccountId;
 	}
 

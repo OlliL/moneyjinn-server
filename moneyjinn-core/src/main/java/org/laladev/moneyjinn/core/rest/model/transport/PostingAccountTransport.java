@@ -28,14 +28,14 @@
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 public class PostingAccountTransport {
-	private Integer id;
+	private Long id;
 	private String name;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 

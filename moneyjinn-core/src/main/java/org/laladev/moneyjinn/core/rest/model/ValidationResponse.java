@@ -95,4 +95,15 @@ public class ValidationResponse extends AbstractResponse {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ValidationResponse [result=");
+		builder.append(this.result);
+		builder.append(", validationItemTransports=");
+		builder.append(this.validationItemTransports);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

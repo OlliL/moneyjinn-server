@@ -33,35 +33,35 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MoneyflowTransport {
-	private Integer id;
-	private Integer userid;
+	private Long id;
+	private Long userid;
 	private Date bookingdate;
 	private Date invoicedate;
 	private BigDecimal amount;
-	private Integer capitalsourceid;
+	private Long capitalsourceid;
 	private String capitalsourcecomment;
 	private Integer capitalsourcetype;
-	private Integer contractpartnerid;
+	private Long contractpartnerid;
 	private String contractpartnername;
 	private String comment;
 	@JsonProperty("private")
 	private Boolean privat;
-	private Integer postingaccountid;
+	private Long postingaccountid;
 	private String postingaccountname;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public final Integer getUserid() {
+	public final Long getUserid() {
 		return this.userid;
 	}
 
-	public final void setUserid(final Integer userid) {
+	public final void setUserid(final Long userid) {
 		this.userid = userid;
 	}
 
@@ -89,11 +89,11 @@ public class MoneyflowTransport {
 		this.amount = amount;
 	}
 
-	public final Integer getCapitalsourceid() {
+	public final Long getCapitalsourceid() {
 		return this.capitalsourceid;
 	}
 
-	public final void setCapitalsourceid(final Integer capitalsourceid) {
+	public final void setCapitalsourceid(final Long capitalsourceid) {
 		this.capitalsourceid = capitalsourceid;
 	}
 
@@ -113,11 +113,11 @@ public class MoneyflowTransport {
 		this.capitalsourcecomment = capitalsourcecomment;
 	}
 
-	public final Integer getContractpartnerid() {
+	public final Long getContractpartnerid() {
 		return this.contractpartnerid;
 	}
 
-	public final void setContractpartnerid(final Integer contractpartnerid) {
+	public final void setContractpartnerid(final Long contractpartnerid) {
 		this.contractpartnerid = contractpartnerid;
 	}
 
@@ -145,11 +145,11 @@ public class MoneyflowTransport {
 		this.privat = privat;
 	}
 
-	public final Integer getPostingaccountid() {
+	public final Long getPostingaccountid() {
 		return this.postingaccountid;
 	}
 
-	public final void setPostingaccountid(final Integer postingaccountid) {
+	public final void setPostingaccountid(final Long postingaccountid) {
 		this.postingaccountid = postingaccountid;
 	}
 

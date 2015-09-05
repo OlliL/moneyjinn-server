@@ -30,47 +30,47 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 import java.sql.Date;
 
 public class CapitalsourceTransport {
-	private Integer id;
-	private Integer userid;
-	private Integer type;
-	private Integer state;
+	private Long id;
+	private Long userid;
+	private Short type;
+	private Short state;
 	private String accountNumber;
 	private String bankCode;
 	private String comment;
 	private Date validTil;
 	private Date validFrom;
-	private Boolean groupUse;
-	private Boolean importAllowed;
+	private Short groupUse;
+	private Short importAllowed;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public final Integer getUserid() {
+	public final Long getUserid() {
 		return this.userid;
 	}
 
-	public final void setUserid(final Integer userid) {
+	public final void setUserid(final Long userid) {
 		this.userid = userid;
 	}
 
-	public final Integer getType() {
+	public final Short getType() {
 		return this.type;
 	}
 
-	public final void setType(final Integer type) {
+	public final void setType(final Short type) {
 		this.type = type;
 	}
 
-	public final Integer getState() {
+	public final Short getState() {
 		return this.state;
 	}
 
-	public final void setState(final Integer state) {
+	public final void setState(final Short state) {
 		this.state = state;
 	}
 
@@ -114,19 +114,19 @@ public class CapitalsourceTransport {
 		this.validFrom = validFrom;
 	}
 
-	public final Boolean getGroupUse() {
+	public final Short getGroupUse() {
 		return this.groupUse;
 	}
 
-	public final void setGroupUse(final Boolean groupUse) {
+	public final void setGroupUse(final Short groupUse) {
 		this.groupUse = groupUse;
 	}
 
-	public final Boolean getImportAllowed() {
+	public final Short getImportAllowed() {
 		return this.importAllowed;
 	}
 
-	public final void setImportAllowed(final Boolean importAllowed) {
+	public final void setImportAllowed(final Short importAllowed) {
 		this.importAllowed = importAllowed;
 	}
 
