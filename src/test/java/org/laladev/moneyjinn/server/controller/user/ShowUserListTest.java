@@ -62,6 +62,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 		userTransports.add(new UserTransportBuilder().forAdmin().build());
 		userTransports.add(new UserTransportBuilder().forUser1().build());
 		userTransports.add(new UserTransportBuilder().forUser2().build());
+		userTransports.add(new UserTransportBuilder().forUser3().build());
 		expected.setUserTransports(userTransports);
 
 		final List<GroupTransport> groupTransports = new ArrayList<>();

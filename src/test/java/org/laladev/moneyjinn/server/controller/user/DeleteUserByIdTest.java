@@ -50,13 +50,13 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 
 	@Test
 	public void test_regularUserNoData_SuccessfullNoContent() throws Exception {
-		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
+		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
 		Assert.assertNotNull(user);
 
-		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER1_ID, this.method, true, Object.class);
+		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER3_ID, this.method, true, Object.class);
 
-		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
+		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
 		Assert.assertNull(user);
 	}
