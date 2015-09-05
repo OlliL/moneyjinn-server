@@ -1,8 +1,33 @@
 package org.laladev.moneyjinn.businesslogic.service.api;
 
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.setting.AbstractSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
@@ -10,11 +35,11 @@ import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflows
 
 /**
  * <p>
- * SettingService is the Domain Service handling everything around a {@link AbstractSetting}.
+ * SettingService is the Core Service handling everything around a {@link AbstractSetting}.
  * </p>
  *
  * <p>
- * SettingService is the Domain Service handling operations around an {@link AbstractSetting} like
+ * SettingService is the Core Service handling operations around an {@link AbstractSetting} like
  * getting, creating, updating, deleting.
  * </p>
  * <p>
@@ -118,5 +143,27 @@ public interface ISettingService {
 	 */
 	public void setClientNumFreeMoneyflowsSetting(final AccessID accessId,
 			final ClientNumFreeMoneyflowsSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientCurrentlyValidCapitalsourcesSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientNumFreeMoneyflowsSetting}
+	 */
+	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(AccessID accessId);
+
+	/**
+	 * This Service sets the {@link ClientCurrentlyValidCapitalsourcesSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientCurrentlyValidCapitalsourcesSetting}
+	 */
+	public void setClientCurrentlyValidCapitalsourcesSetting(AccessID accessId,
+			ClientCurrentlyValidCapitalsourcesSetting setting);
 
 }

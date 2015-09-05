@@ -14,11 +14,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @Configuration
 public class TestDatabaseConfiguration {
-	// @Bean
-	// public EmbeddedDatabase dataSource() {
-	// return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript("h2dump.sql")
-	// .addScript("h2ext.sql").build();
-	// }
+
 	@Bean
 	public DataSource getDataSource() {
 		final DataSource dataSource = this.simpleDriverDataSource();
@@ -29,6 +25,7 @@ public class TestDatabaseConfiguration {
 	private SimpleDriverDataSource simpleDriverDataSource() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(Driver.class);
+		// for debugging add: ;TRACE_LEVEL_FIle=4;TRACE_LEVEL_SYSTEM_OUT=3
 		ds.setUrl("jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 		ds.setUsername("sa");
 		ds.setPassword("");

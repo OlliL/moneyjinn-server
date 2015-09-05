@@ -1,5 +1,29 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -23,6 +47,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
@@ -48,6 +73,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public ValidationResult validateUser(final User user) {
+		Assert.notNull(user);
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (user.getName() == null || user.getName().trim().isEmpty()) {
@@ -69,6 +95,7 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	@Cacheable(CacheNames.USER_BY_ID)
 	public User getUserById(final UserID userId) {
+		Assert.notNull(userId);
 		final UserData userData = this.userDao.getUserById(userId.getId());
 		final User user = super.map(userData, User.class);
 		return user;
@@ -92,6 +119,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public List<User> getAllUsersByInitial(final Character initial) {
+		Assert.notNull(initial);
 		final List<UserData> userDataList = this.userDao.getAllUsersByInitial(initial);
 		return super.mapList(userDataList, User.class);
 	}
@@ -99,6 +127,7 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	@Cacheable(CacheNames.USER_BY_NAME)
 	public User getUserByName(final String name) {
+		Assert.notNull(name);
 		final UserData userData = this.userDao.getUserByName(name);
 		final User user = super.map(userData, User.class);
 		return user;
@@ -106,6 +135,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public UserID createUser(final User user) {
+		Assert.notNull(user);
 		user.setId(null);
 		final ValidationResult validationResult = this.validateUser(user);
 
@@ -124,6 +154,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void updateUser(final User user) {
+		Assert.notNull(user);
 		final ValidationResult validationResult = this.validateUser(user);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -141,6 +172,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void setPassword(final UserID userId, final String password) {
+		Assert.notNull(userId);
+		Assert.notNull(password);
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
 		final String cryptedPassword = this.cryptPassword(password);
@@ -149,6 +182,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void resetPassword(final UserID userId, final String password) {
+		Assert.notNull(userId);
+		Assert.notNull(password);
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
 		final String cryptedPassword = this.cryptPassword(password);
@@ -157,6 +192,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void deleteUser(final UserID userId) {
+		Assert.notNull(userId);
 		try {
 			final User user = this.getUserById(userId);
 			this.evictUserCache(user);

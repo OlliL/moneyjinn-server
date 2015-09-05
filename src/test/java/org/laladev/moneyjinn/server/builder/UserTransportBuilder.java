@@ -14,7 +14,7 @@ public class UserTransportBuilder extends UserTransport {
 	public static final Long USER1_ID = 3l;
 	public static final Long USER2_ID = 4l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 7l;
+	public static final Long NEXT_ID = 8l;
 
 	public static final String USER1_PASSWORD = "111";
 	public static final String USER1_PASSWORD_SHA1 = "6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2";

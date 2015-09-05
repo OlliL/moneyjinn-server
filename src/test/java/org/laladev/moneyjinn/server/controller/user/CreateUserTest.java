@@ -78,6 +78,7 @@ public class CreateUserTest extends AbstractControllerTest {
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup3().build());
 		expected.setGroupTransports(groupTransports);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();

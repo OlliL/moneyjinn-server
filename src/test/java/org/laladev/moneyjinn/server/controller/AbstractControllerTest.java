@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
 
 import javax.inject.Inject;
@@ -40,9 +41,14 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 	private HttpHeaders getAuthHeaders(final String uri, final String body, final HttpMethod httpMethod) {
 		final String userName = this.getUsername();
 		final String userPassword = this.getPassword();
-		return this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, ZonedDateTime.now(), uri, body,
-				httpMethod);
-
+		try {
+			return this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, ZonedDateTime.now(), uri, body,
+					httpMethod);
+		} catch (final NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	protected abstract String getUsecase();
@@ -79,7 +85,7 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 		}
 
 		MockHttpServletRequestBuilder builder = null;
-		final String uri = "/moneyflow/" + this.getUsecase() + uriParameters;
+		final String uri = "/moneyflow/server/" + this.getUsecase() + uriParameters;
 
 		switch (httpMethod) {
 		case GET:

@@ -103,6 +103,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup3().build());
 		expected.setGroupTransports(groupTransports);
 		final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
@@ -112,8 +113,8 @@ public class UpdateUserTest extends AbstractControllerTest {
 		expected.setAccessRelationTransports(accessRelationTransports);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems
-				.add(new ValidationItemTransportBuilder().withKey(3).withError(errorCode.getErrorCode()).build());
+		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+				.withError(errorCode.getErrorCode()).build());
 
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);

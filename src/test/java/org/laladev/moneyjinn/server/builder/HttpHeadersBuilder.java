@@ -39,7 +39,7 @@ public class HttpHeadersBuilder {
 	}
 
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
-			final String uri, final String body, final HttpMethod httpMethod) {
+			final String uri, final String body, final HttpMethod httpMethod) throws NoSuchAlgorithmException {
 		this.sha1MD.reset();
 
 		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);

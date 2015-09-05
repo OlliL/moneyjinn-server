@@ -44,7 +44,6 @@
 		 WHERE att_user = 1
 	</select>
 
-
 	<select id="getAllUsers" 
 		resultType="org.laladev.moneyjinn.businesslogic.dao.data.UserData">
 

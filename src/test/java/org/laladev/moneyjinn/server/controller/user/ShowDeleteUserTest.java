@@ -61,6 +61,7 @@ public class ShowDeleteUserTest extends AbstractControllerTest {
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup3().build());
 		expected.setGroupTransports(groupTransports);
 		final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
@@ -83,6 +84,7 @@ public class ShowDeleteUserTest extends AbstractControllerTest {
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
 		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+		groupTransports.add(new GroupTransportBuilder().forGroup3().build());
 		expected.setGroupTransports(groupTransports);
 		final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());

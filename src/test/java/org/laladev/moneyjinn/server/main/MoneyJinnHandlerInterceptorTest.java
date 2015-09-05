@@ -36,7 +36,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
 	private <T> T callUsecase(final ZonedDateTime dateTime, final String userName, final String userPassword,
 			final boolean noResult, final Class<T> clazz, HttpHeaders httpHeaders) throws Exception {
 
-		final String uri = "/moneyflow/user/getUserSettingsForStartup/admin";
+		final String uri = "/moneyflow/server/user/getUserSettingsForStartup/admin";
 
 		if (httpHeaders == null) {
 			httpHeaders = this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, dateTime, uri, "",

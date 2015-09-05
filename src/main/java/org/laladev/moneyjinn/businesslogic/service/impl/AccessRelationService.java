@@ -1,5 +1,29 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,6 +70,10 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	}
 
+	public LocalDate now() {
+		return LocalDate.now();
+	}
+
 	@Override
 	public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
 		final ValidationResult validationResult = new ValidationResult();
@@ -64,13 +92,13 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.concat('-').concat(LocalDate.now().toString())")
+	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.toString().concat('-').concat(#root.target.now().toString())")
 	public Group getAccessor(final AccessID accessId) {
-		return this.getAccessor(accessId, LocalDate.now());
+		return this.getAccessor(accessId, this.now());
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.concat('-').concat(#date.toString())")
+	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.toString().concat('-').concat(#date.toString())")
 	public Group getAccessor(final AccessID accessId, final LocalDate date) {
 		final List<Group> groups = this.getAllUserGroupsByUserIdDate(accessId, date);
 		Group accessor = null;
@@ -92,7 +120,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 			accessRelationData = this.accessRelationDao
 					.getAccessRelationById(accessRelation.getParentAccessRelation().getId().getId(), dateSQL);
 			accessRelation = super.map(accessRelationData, AccessRelation.class);
-			final Group groupById = this.groupService.getGroupById((GroupID) accessRelation.getId());
+			final Group groupById = this.groupService.getGroupById(new GroupID(accessRelation.getId().getId()));
 			if (groupById != null) {
 				groupList.add(groupById);
 			}
@@ -112,7 +140,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	@Override
 	public ValidationResult setAccessRelationForExistingUser(final AccessRelation accessRelation) {
 		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-		if (accessRelation.getValidFrom().isBefore(LocalDate.now())) {
+		if (accessRelation.getValidFrom().isBefore(this.now())) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_EARLIER_THAN_TOMORROW));
 		}
@@ -134,7 +162,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public AccessRelation getAccessRelationById(final AccessID accessRelationID) {
-		return this.getAccessRelationById(accessRelationID, LocalDate.now());
+		return this.getAccessRelationById(accessRelationID, this.now());
 	}
 
 	@Override

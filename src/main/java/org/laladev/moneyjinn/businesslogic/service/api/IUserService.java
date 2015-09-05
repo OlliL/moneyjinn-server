@@ -1,5 +1,29 @@
 package org.laladev.moneyjinn.businesslogic.service.api;
 
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.User;
@@ -9,11 +33,11 @@ import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
  * <p>
- * UserService is the Domain Service handling everything around an {@link User}.
+ * UserService is the Core Service handling everything around an {@link User}.
  * </p>
  *
  * <p>
- * UserService is the Domain Service handling operations around an {@link User} like getting,
+ * UserService is the Core Service handling operations around an {@link User} like getting,
  * creating, updating, deleting. Before an {@link User} is created or updated, the {@link User} is
  * validated for correctness.
  * </p>
@@ -37,7 +61,7 @@ public interface IUserService {
 	public ValidationResult validateUser(final User user);
 
 	/**
-	 * This Service returns the User for the specified id
+	 * This Service returns the {@link User} for the given {@link UserID}.
 	 *
 	 * @param id
 	 *            the {@link UserID}
@@ -48,59 +72,64 @@ public interface IUserService {
 	/**
 	 * This Service returns the distinct initials of all usernames in the database in uppercase.
 	 *
-	 * @return array all uppercased initials
+	 * @return all uppercased initials
 	 */
 	public List<Character> getAllUserInitials();
 
 	/**
 	 * This Service returns the number of all existing users
 	 *
-	 * @return int number of users
+	 * @return number of {@link User}s
 	 */
 	public Integer countAllUsers();
 
 	/**
-	 * This Service returns all existing Users
+	 * This Service returns all existing {@link User}s
 	 *
-	 * @return array a list of User objects
+	 * @return list of all {@link User}s
 	 */
 	public List<User> getAllUsers();
 
 	/**
-	 * This Service returns all existing Users which name start with the specified initial
+	 * This Service returns all existing {@link User}s which name start with the specified initial
 	 * case-insensitive
 	 *
 	 * @param initial
-	 *            the first letter of the Users name
-	 * @return a list of User objects
+	 *            the first letter of the {@link User}s name
+	 * @return a list of {@link User}s
 	 */
 	public List<User> getAllUsersByInitial(final Character initial);
 
 	/**
-	 * This Service returns the User for the specified name
+	 * This Service returns the {@link User} for the specified name
 	 *
 	 * @param name
 	 *            the User-Name
-	 * @return User
+	 * @return {@link User}
 	 */
 	public User getUserByName(final String name);
 
 	/**
-	 * This service creates a User. Before the User is created it is validated for correctness.
+	 * This service creates a {@link User}. Before the {@link User} is created it is validated for
+	 * correctness.
 	 *
 	 * @param user
-	 *            the User to be created
-	 * @return {@link ValidationResult}
+	 *            the {@link User} to be created
+	 * @throws BusinessException
+	 *             If the validation of the given {@link User} failed.
+	 * @return {@link UserID} of the created {@link User}
 	 */
 	public UserID createUser(final User user);
 
 	/**
-	 * This service changes a User. Before the User is changed, the new values are validated for
-	 * correctness. Attention: The password is ignored _not_ updated by this Service.
+	 * This service changes a {@link User}. Before the {@link User} is changed, the new values are
+	 * validated for correctness. Attention: If given, the password is ignored and _not_ updated by
+	 * this Service.
 	 *
 	 * @param user
-	 *            the new User attributes
-	 * @return {@link ValidationResult}
+	 *            the new {@link User} attributes
+	 * @throws BusinessException
+	 *             If the validation of the given {@link User} failed.
 	 */
 	public void updateUser(final User user);
 
@@ -129,7 +158,7 @@ public interface IUserService {
 	public void resetPassword(final UserID userId, final String password);
 
 	/**
-	 * This service deletes a user from the system
+	 * This service deletes a {@link User} from the system
 	 *
 	 * @param userId
 	 *            The {@link UserID} of the to-be-deleted {@link User}
