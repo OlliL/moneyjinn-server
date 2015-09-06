@@ -36,10 +36,6 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 
 	@Override
 	public AccessRelation mapBToA(final AccessFlattenedData accessFlattenedData) {
-		if (accessFlattenedData == null) {
-			return null;
-		}
-
 		final AccessID accessId = new AccessID(accessFlattenedData.getId());
 		final LocalDate validFrom = accessFlattenedData.getValidFrom().toLocalDate();
 		final LocalDate validTil = accessFlattenedData.getValidTil().toLocalDate();
@@ -83,10 +79,6 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 
 	@Override
 	public AccessFlattenedData mapAToB(final AccessRelation accessRelation) {
-		if (accessRelation == null) {
-			return null;
-		}
-
 		Date validFrom = null;
 		if (accessRelation.getValidFrom() != null) {
 			validFrom = Date.valueOf(accessRelation.getValidFrom());

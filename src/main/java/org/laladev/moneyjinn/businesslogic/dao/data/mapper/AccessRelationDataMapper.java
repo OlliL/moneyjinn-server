@@ -36,10 +36,6 @@ public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessR
 
 	@Override
 	public AccessRelation mapBToA(final AccessRelationData accessRelationData) {
-		if (accessRelationData == null) {
-			return null;
-		}
-
 		final LocalDate validFrom = accessRelationData.getValidFrom().toLocalDate();
 		final LocalDate validTil = accessRelationData.getValidTil().toLocalDate();
 
@@ -54,10 +50,6 @@ public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessR
 
 	@Override
 	public AccessRelationData mapAToB(final AccessRelation accessRelation) {
-		if (accessRelation == null) {
-			return null;
-		}
-
 		final Date validFrom = Date.valueOf(accessRelation.getValidFrom());
 		final Date validTil = Date.valueOf(accessRelation.getValidTil());
 
