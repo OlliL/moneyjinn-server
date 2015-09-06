@@ -51,7 +51,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	private ShowCapitalsourceListResponse getCompleteResponse() {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('S'));
+		expected.setInitials(Arrays.asList('A', 'S', 'X'));
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
@@ -59,27 +59,56 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
+		expected.setCurrentlyValid(false);
+
+		return expected;
+	}
+
+	private ShowCapitalsourceListResponse getCurrentlyValidResponse() {
+		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
+		expected.setInitials(Arrays.asList('A', 'S'));
+
+		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+		expected.setCapitalsourceTransports(capitalsourceTransports);
+		expected.setCurrentlyValid(true);
 
 		return expected;
 	}
 
 	@Test
 	public void test_default_FullResponseObject() throws Exception {
-		final ShowCapitalsourceListResponse expected = this.getCompleteResponse();
-
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(10);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
 
-		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method,
-				false, ShowCapitalsourceListResponse.class);
+		// set default to 0
+		ShowCapitalsourceListResponse expected = this.getCompleteResponse();
+		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
 
+		// now the new default 0 must be taken
+		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// this must change the default-setting to 1
+		expected = this.getCurrentlyValidResponse();
+		actual = super.callUsecaseWithoutContent("/currentlyValid/1", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// now the default 1 must be taken
+		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
 		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('S'));
+		expected.setInitials(Arrays.asList('A', 'S', 'X'));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
@@ -92,33 +121,68 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	@Test
 	public void test_explicitAll_FullResponseObject() throws Exception {
-		final ShowCapitalsourceListResponse expected = this.getCompleteResponse();
-
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
 
-		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0",
-				this.method, false, ShowCapitalsourceListResponse.class);
-
+		// set default to 0
+		ShowCapitalsourceListResponse expected = this.getCompleteResponse();
+		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0", this.method,
+				false, ShowCapitalsourceListResponse.class);
 		Assert.assertEquals(expected, actual);
+
+		// now the new default 0 must be taken
+		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// this must change the default-setting to 1
+		expected = this.getCurrentlyValidResponse();
+		actual = super.callUsecaseWithoutContent("/all/currentlyValid/1", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// now the default 1 must be taken
+		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
 	}
 
 	@Test
 	public void test_initialS_AResponseObject() throws Exception {
-		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('S'));
-
-		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
-		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
+		// set default to 0
+		ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
+		expected.setInitials(Arrays.asList('A', 'S', 'X'));
+		List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
-		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
-
-		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/S/currentlyValid/0", this.method,
+		expected.setCurrentlyValid(false);
+		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/S/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
-
 		Assert.assertEquals(expected, actual);
+
+		// now the new default 0 must be taken
+		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// this must change the default-setting to 1
+		expected = new ShowCapitalsourceListResponse();
+		expected.setInitials(Arrays.asList('A', 'S'));
+		capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+		expected.setCapitalsourceTransports(capitalsourceTransports);
+		expected.setCurrentlyValid(true);
+		actual = super.callUsecaseWithoutContent("/S/currentlyValid/1", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+		// now the default 1 must be taken
+		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
+				ShowCapitalsourceListResponse.class);
+		Assert.assertEquals(expected, actual);
+
 	}
 
 }

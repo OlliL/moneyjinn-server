@@ -33,16 +33,19 @@ INSERT INTO postingaccounts (postingaccountname) VALUES ('postingaccount2');
 INSERT INTO postingaccounts (postingaccountname) VALUES ('xostingaccount3');
 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (3             ,6              ,1   ,1    ,'1234567'    ,'765432','Source1','2999-12-31','1980-01-01',0            ,1             ); 
+                    VALUES (3             ,6              ,1   ,1    ,'1234567'    ,'765432','Aource1','2999-12-31','1980-01-01',0            ,1             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (3             ,6              ,2   ,2    ,'1234567'    ,'ABCDEFG','Source2','2799-12-31','1981-01-01',1            ,0             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (4             ,6              ,3   ,1    ,'ZUTVEGT'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,1             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (4             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Source4','2010-12-31','1983-01-01',1            ,1             ); 
+                    VALUES (4             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','1983-01-01',1            ,1             ); 
                     
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (4             ,6              ,'Partner1','Street1',12345   ,'Town1','Country1','2000-01-01','2999-12-31','Default Comment 1',1                   );
                       
 INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
                       VALUES (3     ,10.10 ,1                  ,1                    ,'pre1' ,'2000-10-10',1           ,null     ,1                   );
+
+INSERT INTO moneyflows (mac_id_creator,mac_id_accessor,bookingdate ,invoicedate ,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,mpa_postingaccountid,private)
+                VALUES (3             ,6              ,'2009-01-01','2009-01-01',-1.10 ,1                  ,1                    ,'flow1',1                   ,0);

@@ -94,12 +94,14 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 
 		capitalsource.setUser(new User(new UserID(capitalsourceTransport.getUserid())));
 
-		final LocalDate validFrom = capitalsourceTransport.getValidFrom().toLocalDate();
-		final LocalDate validTil = capitalsourceTransport.getValidTil().toLocalDate();
-
-		capitalsource.setValidFrom(validFrom);
-		capitalsource.setValidTil(validTil);
-
+		if (capitalsourceTransport.getValidFrom() != null) {
+			final LocalDate validFrom = capitalsourceTransport.getValidFrom().toLocalDate();
+			capitalsource.setValidFrom(validFrom);
+		}
+		if (capitalsourceTransport.getValidTil() != null) {
+			final LocalDate validTil = capitalsourceTransport.getValidTil().toLocalDate();
+			capitalsource.setValidTil(validTil);
+		}
 		return capitalsource;
 	}
 

@@ -4,10 +4,10 @@ import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 
-	public static final String CAPITALSOURCE1_COMMENT = "Source1";
+	public static final String CAPITALSOURCE1_COMMENT = "Aource1";
 	public static final String CAPITALSOURCE2_COMMENT = "Source2";
 	public static final String CAPITALSOURCE3_COMMENT = "Source3";
-	public static final String CAPITALSOURCE4_COMMENT = "Source4";
+	public static final String CAPITALSOURCE4_COMMENT = "Xource4";
 	public static final String NEWCAPITALSOURCE_COMMENT = "SourceNew";
 
 	public static final Long CAPITALSOURCE1_ID = 1l;

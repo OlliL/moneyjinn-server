@@ -130,7 +130,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 				capitalsource.getComment(), capitalsource.getValidFrom());
 		if (checkCapitalsource != null) {
 			// new Capitalsource || update existing Capitalsource
-			if (capitalsource.getId() != null || !checkCapitalsource.getId().equals(capitalsource.getId())) {
+			if ((capitalsource.getId() == null && checkCapitalsource != null)
+					|| (checkCapitalsource != null && !checkCapitalsource.getId().equals(capitalsource.getId()))) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
 			}

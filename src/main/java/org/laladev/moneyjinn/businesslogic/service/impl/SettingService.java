@@ -76,7 +76,7 @@ public class SettingService extends AbstractService implements ISettingService {
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES));
 		Boolean setting = null;
-		if ("1".equals(settingData.getValue())) {
+		if (settingData != null && "1".equals(settingData.getValue())) {
 			setting = Boolean.TRUE;
 		} else {
 			setting = Boolean.FALSE;

@@ -20,6 +20,7 @@ import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRe
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
@@ -94,6 +95,23 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 		transport.setComment("");
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_ValidTilBeforeValidFrom_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2().build();
+		transport.setValidTil(DateUtil.getGMTDate("2000-01-01"));
+		transport.setValidFrom(DateUtil.getGMTDate("2010-01-01"));
+
+		this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
+	}
+
+	@Test
+	public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1().build();
+		transport.setValidFrom(DateUtil.getGMTDate("2010-01-01"));
+
+		this.testError(transport, ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
 	}
 
 	@Test

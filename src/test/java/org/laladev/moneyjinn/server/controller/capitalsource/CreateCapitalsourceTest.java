@@ -1,5 +1,6 @@
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -97,6 +100,38 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_ToLongAccountnumber_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setAccountNumber("12345678901234567890123456789012345");
+
+		this.testError(transport, ErrorCode.ACCOUNT_NUMBER_TO_LONG);
+	}
+
+	@Test
+	public void test_ToLongBankcode_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setBankCode("123456789012");
+
+		this.testError(transport, ErrorCode.BANK_CODE_TO_LONG);
+	}
+
+	@Test
+	public void test_AccountnumberInvalidChar_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setAccountNumber("+");
+
+		this.testError(transport, ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS);
+	}
+
+	@Test
+	public void test_BankcodeInvalidChar_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setBankCode("+");
+
+		this.testError(transport, ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS);
+	}
+
+	@Test
 	public void test_standardRequest_SuccessfullNoContent() throws Exception {
 		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
 
@@ -114,6 +149,36 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
 		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+	}
+
+	@Test
+	public void test_checkDefaults_SuccessfullNoContent() throws Exception {
+		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setValidFrom(null);
+		transport.setValidTil(null);
+		transport.setState(null);
+		transport.setType(null);
+		transport.setAccountNumber(null);
+		transport.setBankCode(null);
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.NEXT_ID);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assert.assertEquals(CapitalsourceState.CACHE, capitalsource.getState());
+		Assert.assertEquals(CapitalsourceType.CURRENT_ASSET, capitalsource.getType());
+		Assert.assertEquals(LocalDate.now(), capitalsource.getValidFrom());
+		Assert.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
+		Assert.assertEquals(null, capitalsource.getBankAccount());
 	}
 
 }
