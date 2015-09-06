@@ -43,6 +43,8 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
@@ -53,6 +55,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
 @Named
@@ -104,6 +107,12 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		if (capitalsource.getValidTil() == null) {
 			// TODO Enviornment for "max year"
 			capitalsource.setValidTil(LocalDate.parse("2999-12-31"));
+		}
+		if (capitalsource.getType() == null) {
+			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
+		}
+		if (capitalsource.getState() == null) {
+			capitalsource.setState(CapitalsourceState.CACHE);
 		}
 	}
 
@@ -235,7 +244,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
 		this.capitalsourceDao.updateCapitalsource(capitalsourceData);
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getId());
+		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
+				capitalsource.getId());
 	}
 
 	@Override
@@ -251,7 +261,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
 		final Long capitalsourceId = this.capitalsourceDao.createCapitalsource(capitalsourceData);
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), new CapitalsourceID(capitalsourceId));
+		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
+				new CapitalsourceID(capitalsourceId));
 	}
 
 	@Override
@@ -259,7 +270,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(capitalsourceId);
 		try {
 			this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
-			this.evictCapitalsourceCache(userId, capitalsourceId);
+			this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
 		} catch (final Exception e) {
 			throw new BusinessException(
 					"You may not delete a source of capital while it is referenced by a flow of money!",
@@ -268,7 +279,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	}
 
-	private void evictCapitalsourceCache(final UserID userId, final CapitalsourceID capitalsourceId) {
+	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
+			final CapitalsourceID capitalsourceId) {
 		if (capitalsourceId != null) {
 			final Cache allCapitalsourcesCache = this.cacheManager.getCache(CacheNames.ALL_CAPITALSOURCES);
 			final Cache capitalsourceByIdCache = this.cacheManager.getCache(CacheNames.CAPITALSOURCE_BY_ID);
@@ -276,7 +288,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 				allCapitalsourcesCache.evict(userId);
 			}
 			if (capitalsourceByIdCache != null) {
-				capitalsourceByIdCache.evict(capitalsourceId);
+				capitalsourceByIdCache.evict(new SimpleKey(userId, groupId, capitalsourceId));
 			}
 		}
 	}

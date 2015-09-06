@@ -28,12 +28,12 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
-	private String postingAccountPassword;
+	private String userPassword;
 
 	@Before
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.postingAccountPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 	@Override
 	protected String getPassword() {
-		return this.postingAccountPassword;
+		return this.userPassword;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	@Test
 	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
 		this.userName = UserTransportBuilder.USER1_NAME;
-		this.postingAccountPassword = UserTransportBuilder.USER1_PASSWORD;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
 

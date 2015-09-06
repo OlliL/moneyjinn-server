@@ -85,6 +85,7 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 		}
 
 		MockHttpServletRequestBuilder builder = null;
+		// final URI uri = new URI("/moneyflow/server/" + this.getUsecase() + uriParameters);
 		final String uri = "/moneyflow/server/" + this.getUsecase() + uriParameters;
 
 		switch (httpMethod) {
@@ -105,6 +106,7 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 
 		}
 
+		// builder.headers(this.getAuthHeaders(uri.getPath(), body, httpMethod));
 		builder.headers(this.getAuthHeaders(uri, body, httpMethod));
 
 		final MvcResult result = this.mvc

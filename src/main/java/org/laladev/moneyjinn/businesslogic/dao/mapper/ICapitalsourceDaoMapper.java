@@ -66,7 +66,7 @@ public interface ICapitalsourceDaoMapper {
 	public void deleteCapitalsource(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
 			@Param("id") Long id);
 
-	public boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
+	public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
 			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
 
 }

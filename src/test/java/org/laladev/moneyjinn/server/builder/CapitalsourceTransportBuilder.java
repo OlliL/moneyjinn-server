@@ -19,7 +19,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 
 	public CapitalsourceTransportBuilder forCapitalsource1() {
 		super.setId(CAPITALSOURCE1_ID);
-		super.setUserid(UserTransportBuilder.USER2_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setType((short) 1);
 		super.setState((short) 1);
 		super.setComment(CAPITALSOURCE1_COMMENT);
@@ -27,7 +27,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode("765432");
 		super.setValidFrom(DateUtil.getGMTDate("1980-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2999-12-31"));
-		super.setGroupUse((short) 0);
+		super.setGroupUse(null);
 		super.setImportAllowed((short) 1);
 		return this;
 	}
@@ -43,15 +43,15 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setValidFrom(DateUtil.getGMTDate("1981-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2799-12-31"));
 		super.setGroupUse((short) 1);
-		super.setImportAllowed((short) 0);
+		super.setImportAllowed(null);
 		return this;
 	}
 
 	public CapitalsourceTransportBuilder forCapitalsource3() {
 		super.setId(CAPITALSOURCE3_ID);
 		super.setUserid(UserTransportBuilder.USER2_ID);
-		super.setType((short) 1);
-		super.setState((short) 3);
+		super.setType((short) 3);
+		super.setState((short) 1);
 		super.setComment(CAPITALSOURCE3_COMMENT);
 		super.setAccountNumber("ZUTVEGT");
 		super.setBankCode("765432");
@@ -65,8 +65,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public CapitalsourceTransportBuilder forCapitalsource4() {
 		super.setId(CAPITALSOURCE4_ID);
 		super.setUserid(UserTransportBuilder.USER2_ID);
-		super.setType((short) 1);
-		super.setState((short) 4);
+		super.setType((short) 4);
+		super.setState((short) 1);
 		super.setComment(CAPITALSOURCE4_COMMENT);
 		super.setAccountNumber("ZUTVEGT");
 		super.setBankCode("765432");
@@ -80,8 +80,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public CapitalsourceTransportBuilder forNewCapitalsource() {
 		super.setId(NON_EXISTING_ID);
 		super.setUserid(UserTransportBuilder.USER2_ID);
-		super.setType((short) 1);
-		super.setState((short) 3);
+		super.setType((short) 3);
+		super.setState((short) 1);
 		super.setComment(NEWCAPITALSOURCE_COMMENT);
 		super.setAccountNumber("1234567");
 		super.setBankCode("765432");
@@ -96,6 +96,9 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		final CapitalsourceTransport transport = new CapitalsourceTransport();
 
 		transport.setId(super.getId());
+		transport.setUserid(super.getUserid());
+		transport.setType(super.getType());
+		transport.setState(super.getState());
 		transport.setComment(super.getComment());
 		transport.setAccountNumber(super.getAccountNumber());
 		transport.setBankCode(super.getBankCode());

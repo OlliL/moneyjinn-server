@@ -64,28 +64,34 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 			capitalsource.setImportAllowed(true);
 		}
 
-		switch (capitalsourceTransport.getState()) {
-		case 1:
-			capitalsource.setState(CapitalsourceState.NON_CACHE);
-			break;
-		case 2:
-			capitalsource.setState(CapitalsourceState.CACHE);
-			break;
+		if (capitalsourceTransport.getState() != null) {
+			switch (capitalsourceTransport.getState()) {
+			case 1:
+				capitalsource.setState(CapitalsourceState.NON_CACHE);
+				break;
+			case 2:
+				capitalsource.setState(CapitalsourceState.CACHE);
+				break;
+			}
 		}
-		switch (capitalsourceTransport.getType()) {
-		case 1:
-			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
-			break;
-		case 2:
-			capitalsource.setType(CapitalsourceType.LONG_TERM_ASSET);
-			break;
-		case 3:
-			capitalsource.setType(CapitalsourceType.RESERVE_ASSET);
-			break;
-		case 4:
-			capitalsource.setType(CapitalsourceType.PROVISION_ASSET);
-			break;
+
+		if (capitalsourceTransport.getType() != null) {
+			switch (capitalsourceTransport.getType()) {
+			case 1:
+				capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
+				break;
+			case 2:
+				capitalsource.setType(CapitalsourceType.LONG_TERM_ASSET);
+				break;
+			case 3:
+				capitalsource.setType(CapitalsourceType.RESERVE_ASSET);
+				break;
+			case 4:
+				capitalsource.setType(CapitalsourceType.PROVISION_ASSET);
+				break;
+			}
 		}
+
 		capitalsource.setUser(new User(new UserID(capitalsourceTransport.getUserid())));
 
 		final LocalDate validFrom = capitalsourceTransport.getValidFrom().toLocalDate();

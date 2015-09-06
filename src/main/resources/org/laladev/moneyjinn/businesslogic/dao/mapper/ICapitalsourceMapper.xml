@@ -166,7 +166,9 @@
 		      ,validfrom      =	#{validFrom}
 		      ,att_group_use  =	#{attGroupUse}
 		      ,import_allowed =	#{importAllowed}
-		 WHERE capitalsourceid   = #{id}
+		 WHERE capitalsourceid = #{id}
+		   AND mac_id_creator  = #{macIdCreator}
+		   AND mac_id_accessor = #{macIdAccessor}
 		 LIMIT 1
 	</update>
 
