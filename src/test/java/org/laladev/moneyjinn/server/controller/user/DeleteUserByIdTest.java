@@ -50,13 +50,13 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 
 	@Test
 	public void test_regularUserNoData_SuccessfullNoContent() throws Exception {
-		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
+		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
 
 		Assert.assertNotNull(user);
 
-		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER3_ID, this.method, true, Object.class);
+		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method, true, Object.class);
 
-		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
+		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
 
 		Assert.assertNull(user);
 	}
@@ -80,14 +80,14 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 		expected.setCode(ErrorCode.USER_HAS_DATA.getErrorCode());
 		expected.setMessage("This user has already entered data and may therefore not be deleted!");
 
-		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
+		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
 		Assert.assertNotNull(user);
 
-		final ErrorResponse response = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method,
+		final ErrorResponse response = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER3_ID, this.method,
 				false, ErrorResponse.class);
 
-		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
+		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
 		Assert.assertNotNull(user);
 

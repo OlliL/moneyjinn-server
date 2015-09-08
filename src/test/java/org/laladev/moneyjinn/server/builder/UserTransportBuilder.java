@@ -22,6 +22,7 @@ public class UserTransportBuilder extends UserTransport {
 	public static final String USER1_PASSWORD_SHA1 = "6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2";
 	public static final String USER2_PASSWORD = "222";
 	public static final String USER2_PASSWORD_SHA1 = "1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9";
+	public static final String USER3_PASSWORD = "222";
 	public static final String ADMIN_PASSWORD = "admin";
 
 	public UserTransportBuilder forAdmin() {
@@ -53,7 +54,7 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forUser3() {
 		super.setId(USER3_ID);
-		super.setUserCanLogin(null);
+		super.setUserCanLogin(SHORT_1);
 		super.setUserIsAdmin(null);
 		super.setUserIsNew(null);
 		super.setUserName(USER3_NAME);

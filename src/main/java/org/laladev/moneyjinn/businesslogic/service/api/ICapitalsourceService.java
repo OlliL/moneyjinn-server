@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -138,7 +137,7 @@ public interface ICapitalsourceService {
 	 * @param userId
 	 *            {@link UserID}
 	 * @param initial
-	 *            the first letter of the {@link Group}s name
+	 *            the first letter of the {@link Capitalsource}s name
 	 * @return a list of {@link Capitalsource}s
 	 */
 	public List<Capitalsource> getAllCapitalsourcesByInitial(UserID userId, Character initial);
@@ -154,7 +153,7 @@ public interface ICapitalsourceService {
 	 * @param validTil
 	 *            {@link LocalDate}
 	 * @param initial
-	 *            the first letter of the {@link Group}s name
+	 *            the first letter of the {@link Capitalsource}s name
 	 * @return a list of {@link Capitalsource}s
 	 */
 	public List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(UserID userId, Character initial,

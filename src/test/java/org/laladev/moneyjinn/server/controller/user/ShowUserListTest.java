@@ -74,6 +74,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forAdminUser().build());
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
+		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser3_2000_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 		return expected;
 	}

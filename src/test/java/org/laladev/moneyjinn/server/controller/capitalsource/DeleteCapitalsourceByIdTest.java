@@ -85,7 +85,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_regularCapitalsourceWithData_SuccessfullNoContent() throws Exception {
+	public void test_regularCapitalsourceWithData_ErrorResponse() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -105,5 +105,23 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
 
 		Assert.assertNotNull(capitalsource);
 		Assert.assertEquals(expected, response);
+	}
+
+	@Test
+	public void test_deleteCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
+
+		Assert.assertNotNull(capitalsource);
+
+		super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method, true,
+				Object.class);
+
+		capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
+
+		Assert.assertNotNull(capitalsource);
 	}
 }

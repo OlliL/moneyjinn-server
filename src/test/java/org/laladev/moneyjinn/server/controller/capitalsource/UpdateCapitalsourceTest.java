@@ -134,4 +134,70 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, capitalsource.getId().getId());
 		Assert.assertEquals("hugo", capitalsource.getComment());
 	}
+
+	@Test
+	public void test_ProvisionAsset_SuccessfullNoContent() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
+
+		final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource4().build();
+		transport.setComment("hugo");
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID, capitalsource.getId().getId());
+		Assert.assertEquals("hugo", capitalsource.getComment());
+	}
+
+	@Test
+	public void test_LongTermAsset_SuccessfullNoContent() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+
+		final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2().build();
+		transport.setComment("hugo");
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, capitalsource.getId().getId());
+		Assert.assertEquals("hugo", capitalsource.getComment());
+	}
+
+	@Test
+	public void test_editCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1().build();
+		transport.setComment("hugo");
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, capitalsource.getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE3_COMMENT, capitalsource.getComment());
+	}
+
 }

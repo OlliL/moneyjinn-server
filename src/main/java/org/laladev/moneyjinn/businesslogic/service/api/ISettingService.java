@@ -28,6 +28,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
@@ -165,5 +166,27 @@ public interface ISettingService {
 	 */
 	public void setClientCurrentlyValidCapitalsourcesSetting(AccessID accessId,
 			ClientCurrentlyValidCapitalsourcesSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientCurrentlyValidContractpartnerSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientNumFreeMoneyflowsSetting}
+	 */
+	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(AccessID accessId);
+
+	/**
+	 * This Service sets the {@link ClientCurrentlyValidContractpartnerSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientCurrentlyValidContractpartnerSetting}
+	 */
+	public void setClientCurrentlyValidContractpartnerSetting(AccessID accessId,
+			ClientCurrentlyValidContractpartnerSetting setting);
 
 }

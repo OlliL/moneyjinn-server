@@ -93,7 +93,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	/**
 	 * This method takes a Capitalsource as argument and sets the properties validFrom and validTil
-	 * if they are NULL to default values
+	 * if they are NULL to default values as well as type and state.
 	 *
 	 * @param capitalsource
 	 *            {@link Capitalsource}
@@ -124,20 +124,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		if (capitalsource.getValidTil().isBefore(capitalsource.getValidFrom())) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(capitalsource.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
-		}
-
-		final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
-				capitalsource.getComment(), capitalsource.getValidFrom());
-		if (checkCapitalsource != null) {
-			// new Capitalsource || update existing Capitalsource
-			if ((capitalsource.getId() == null && checkCapitalsource != null)
-					|| (checkCapitalsource != null && !checkCapitalsource.getId().equals(capitalsource.getId()))) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
-			}
-		}
-		// update existing Capitalsource
-		if (capitalsource.getId() != null) {
+		} else if (capitalsource.getId() != null) {
+			// update existing Capitalsource
 			if (this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(capitalsource.getUser().getId().getId(),
 					capitalsource.getId().getId(), Date.valueOf(capitalsource.getValidFrom()),
 					Date.valueOf(capitalsource.getValidTil()))) {
@@ -145,15 +133,26 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 						new ValidationResultItem(capitalsource.getId(), ErrorCode.CAPITALSOURCE_IN_USE_PERIOD));
 			}
 		}
-		if (capitalsource.getBankAccount() != null) {
-			for (final ErrorCode errorCode : capitalsource.getBankAccount().checkValidity()) {
-				validationResult.addValidationResultItem(new ValidationResultItem(capitalsource.getId(), errorCode));
-			}
-		}
 
 		if (capitalsource.getComment() == null || capitalsource.getComment().trim().isEmpty()) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(capitalsource.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+		} else {
+			final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
+					capitalsource.getComment(), capitalsource.getValidFrom());
+			if (checkCapitalsource != null) {
+				// new Capitalsource || update existing Capitalsource
+				if (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId())) {
+					validationResult.addValidationResultItem(
+							new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
+				}
+			}
+		}
+
+		if (capitalsource.getBankAccount() != null) {
+			for (final ErrorCode errorCode : capitalsource.getBankAccount().checkValidity()) {
+				validationResult.addValidationResultItem(new ValidationResultItem(capitalsource.getId(), errorCode));
+			}
 		}
 
 		return validationResult;

@@ -71,11 +71,11 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		} else {
 			final PostingAccount checkPostingAccount = this.getPostingAccountByName(postingAccount.getName());
 			// Update OR Create
-
-			if ((postingAccount.getId() == null && checkPostingAccount != null)
-					|| (checkPostingAccount != null && !checkPostingAccount.getId().equals(postingAccount.getId()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
-						ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
+			if (checkPostingAccount != null) {
+				if (postingAccount.getId() == null || !checkPostingAccount.getId().equals(postingAccount.getId())) {
+					validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
+							ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
+				}
 			}
 		}
 

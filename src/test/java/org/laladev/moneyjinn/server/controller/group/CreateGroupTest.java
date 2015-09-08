@@ -86,9 +86,17 @@ public class CreateGroupTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_EmptyGroupname_Error() throws Exception {
+	public void test_emptyGroupname_Error() throws Exception {
 		final GroupTransport transport = new GroupTransportBuilder().forNewGroup().build();
 		transport.setName("");
+
+		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+	}
+
+	@Test
+	public void test_nullGroupname_Error() throws Exception {
+		final GroupTransport transport = new GroupTransportBuilder().forNewGroup().build();
+		transport.setName(null);
 
 		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 	}

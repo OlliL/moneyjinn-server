@@ -92,9 +92,17 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_EmptyCapitalsourcename_Error() throws Exception {
+	public void test_emptyCapitalsourcename_Error() throws Exception {
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
 		transport.setComment("");
+
+		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_nullCapitalsourcename_Error() throws Exception {
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setComment(null);
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
 	}
@@ -178,7 +186,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		Assert.assertEquals(CapitalsourceType.CURRENT_ASSET, capitalsource.getType());
 		Assert.assertEquals(LocalDate.now(), capitalsource.getValidFrom());
 		Assert.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
-		Assert.assertEquals(null, capitalsource.getBankAccount());
+		Assert.assertNull(capitalsource.getBankAccount());
 	}
-
 }

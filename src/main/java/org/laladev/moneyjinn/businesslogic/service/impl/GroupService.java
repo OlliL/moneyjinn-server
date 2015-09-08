@@ -71,11 +71,11 @@ public class GroupService extends AbstractService implements IGroupService {
 		} else {
 			final Group checkGroup = this.getGroupByName(group.getName());
 			// Update OR Create
-
-			if ((group.getId() == null && checkGroup != null)
-					|| (checkGroup != null && !checkGroup.getId().equals(group.getId()))) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
+			if (checkGroup != null) {
+				if (group.getId() == null || !checkGroup.getId().equals(group.getId())) {
+					validationResult.addValidationResultItem(
+							new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
+				}
 			}
 		}
 

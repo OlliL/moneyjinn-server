@@ -75,4 +75,48 @@ public class AccessFlattenedDataMapperTest {
 		Assert.assertEquals(accessRelation.getValidFrom(), validFrom);
 		Assert.assertEquals(accessRelation.getValidTil(), validTil);
 	}
+
+	@Test
+	public void testEmptyAccessRelationToData() {
+		final LocalDate validFrom = LocalDate.parse("2015-01-01");
+		final LocalDate validTil = LocalDate.parse("2015-12-01");
+
+		final AccessRelation accessRelationMain = new AccessRelation(new AccessID(0l));
+		accessRelationMain.setValidFrom(validFrom);
+		accessRelationMain.setValidTil(validTil);
+
+		final AccessFlattenedDataMapper mapper = new AccessFlattenedDataMapper();
+
+		final AccessFlattenedData accessFlattenedData = mapper.mapAToB(accessRelationMain);
+
+		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getId());
+		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getIdLevel1());
+		Assert.assertNull(accessFlattenedData.getIdLevel2());
+		Assert.assertNull(accessFlattenedData.getIdLevel3());
+		Assert.assertNull(accessFlattenedData.getIdLevel4());
+		Assert.assertNull(accessFlattenedData.getIdLevel5());
+		Assert.assertEquals(Date.valueOf(validFrom), accessFlattenedData.getValidFrom());
+		Assert.assertEquals(Date.valueOf(validTil), accessFlattenedData.getValidTil());
+	}
+
+	@Test
+	public void testEmptyAccessFlattenedDataToModel() {
+		final LocalDate validFrom = LocalDate.parse("2015-01-01");
+		final LocalDate validTil = LocalDate.parse("2015-12-01");
+
+		final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
+		accessFlattenedData.setId(0l);
+		accessFlattenedData.setIdLevel1(0l);
+		accessFlattenedData.setValidFrom(Date.valueOf(validFrom));
+		accessFlattenedData.setValidTil(Date.valueOf(validTil));
+
+		final AccessFlattenedDataMapper mapper = new AccessFlattenedDataMapper();
+
+		final AccessRelation accessRelation = mapper.mapBToA(accessFlattenedData);
+
+		Assert.assertEquals(Long.valueOf(0l), accessRelation.getId().getId());
+		Assert.assertNull(accessRelation.getParentAccessRelation());
+		Assert.assertEquals(accessRelation.getValidFrom(), validFrom);
+		Assert.assertEquals(accessRelation.getValidTil(), validTil);
+	}
 }

@@ -105,9 +105,17 @@ public class CreateUserTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_EmptyUsername_Error() throws Exception {
+	public void test_emptyUsername_Error() throws Exception {
 		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
 		transport.setUserName("");
+
+		this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+	}
+
+	@Test
+	public void test_nullUsername_Error() throws Exception {
+		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
+		transport.setUserName(null);
 
 		this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 	}

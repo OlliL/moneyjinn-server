@@ -33,10 +33,6 @@ public class PostingAccountTransportMapper implements IMapper<PostingAccount, Po
 
 	@Override
 	public PostingAccount mapBToA(final PostingAccountTransport postingAccountTransport) {
-		if (postingAccountTransport == null) {
-			return null;
-		}
-
 		final PostingAccount postingAccount = new PostingAccount(new PostingAccountID(postingAccountTransport.getId()),
 				postingAccountTransport.getName());
 		return postingAccount;
@@ -44,10 +40,6 @@ public class PostingAccountTransportMapper implements IMapper<PostingAccount, Po
 
 	@Override
 	public PostingAccountTransport mapAToB(final PostingAccount postingAccount) {
-		if (postingAccount == null) {
-			return null;
-		}
-
 		final PostingAccountTransport postingAccountTransport = new PostingAccountTransport();
 		postingAccountTransport.setId(postingAccount.getId().getId());
 		postingAccountTransport.setName(postingAccount.getName());

@@ -86,9 +86,17 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_EmptyPostingAccountname_Error() throws Exception {
+	public void test_emptyPostingAccountname_Error() throws Exception {
 		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
 		transport.setName("");
+
+		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+	}
+
+	@Test
+	public void test_nullPostingAccountname_Error() throws Exception {
+		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
+		transport.setName(null);
 
 		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 	}

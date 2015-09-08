@@ -49,7 +49,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 
 	public CapitalsourceTransportBuilder forCapitalsource3() {
 		super.setId(CAPITALSOURCE3_ID);
-		super.setUserid(UserTransportBuilder.USER2_ID);
+		super.setUserid(UserTransportBuilder.USER3_ID);
 		super.setType((short) 3);
 		super.setState((short) 1);
 		super.setComment(CAPITALSOURCE3_COMMENT);
@@ -64,7 +64,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 
 	public CapitalsourceTransportBuilder forCapitalsource4() {
 		super.setId(CAPITALSOURCE4_ID);
-		super.setUserid(UserTransportBuilder.USER2_ID);
+		super.setUserid(UserTransportBuilder.USER3_ID);
 		super.setType((short) 4);
 		super.setState((short) 1);
 		super.setComment(CAPITALSOURCE4_COMMENT);
@@ -79,7 +79,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 
 	public CapitalsourceTransportBuilder forNewCapitalsource() {
 		super.setId(NON_EXISTING_ID);
-		super.setUserid(UserTransportBuilder.USER2_ID);
+		super.setUserid(UserTransportBuilder.USER3_ID);
 		super.setType((short) 3);
 		super.setState((short) 1);
 		super.setComment(NEWCAPITALSOURCE_COMMENT);

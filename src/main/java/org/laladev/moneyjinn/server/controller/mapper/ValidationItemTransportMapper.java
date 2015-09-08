@@ -31,7 +31,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 public class ValidationItemTransportMapper implements IMapper<ValidationItemTransport, ValidationResultItem> {
 	@Override
 	public ValidationResultItem mapAToB(final ValidationItemTransport a) {
-		throw new UnsupportedOperationException("Mapping not implemented!");
+		throw new UnsupportedOperationException("Mapping not supported!");
 	}
 
 	@Override

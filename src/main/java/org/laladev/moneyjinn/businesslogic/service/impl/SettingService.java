@@ -33,6 +33,7 @@ import org.laladev.moneyjinn.businesslogic.dao.data.mapper.SettingTypeConverter;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
@@ -96,6 +97,37 @@ public class SettingService extends AbstractService implements ISettingService {
 		}
 		final SettingData settingData = new SettingData(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES),
+				settingValue);
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(
+			final AccessID accessId) {
+		Assert.notNull(accessId);
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER));
+		Boolean setting = null;
+		if (settingData != null && "1".equals(settingData.getValue())) {
+			setting = Boolean.TRUE;
+		} else {
+			setting = Boolean.FALSE;
+		}
+		return new ClientCurrentlyValidContractpartnerSetting(setting);
+	}
+
+	@Override
+	public void setClientCurrentlyValidContractpartnerSetting(final AccessID accessId,
+			final ClientCurrentlyValidContractpartnerSetting setting) {
+		Assert.notNull(accessId);
+		Assert.notNull(setting);
+		Assert.notNull(setting.getSetting());
+		String settingValue = "0";
+		if (Boolean.TRUE.equals(setting.getSetting())) {
+			settingValue = "1";
+		}
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER),
 				settingValue);
 		this.settingDao.setSetting(settingData);
 	}

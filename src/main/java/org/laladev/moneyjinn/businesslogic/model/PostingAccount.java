@@ -4,6 +4,10 @@ public class PostingAccount extends AbstractEntity<PostingAccountID> {
 	private static final long serialVersionUID = 1L;
 	private String name;
 
+	public PostingAccount(final PostingAccountID postingAccountID) {
+		super.setId(postingAccountID);
+	}
+
 	public PostingAccount(final PostingAccountID postingAccountID, final String name) {
 		super.setId(postingAccountID);
 		this.name = name;

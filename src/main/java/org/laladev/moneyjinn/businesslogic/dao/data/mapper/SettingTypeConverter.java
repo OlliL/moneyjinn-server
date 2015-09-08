@@ -41,6 +41,8 @@ public class SettingTypeConverter {
 			return "num_free_moneyflows";
 		case CLIENT_CURRENTLY_VALID_CAPITALSOURCES:
 			return "currently_valid_capitalsources";
+		case CLIENT_CURRENTLY_VALID_CONTRACTPARTNER:
+			return "currently_valid_contractpartner";
 		default:
 			throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
 		}

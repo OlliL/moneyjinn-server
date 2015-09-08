@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.mapper;
+package org.laladev.moneyjinn.businesslogic.model;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -24,25 +24,15 @@ package org.laladev.moneyjinn.server.controller.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import org.laladev.moneyjinn.api.IMapper;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
+/**
+ * The unique ID of a {@link Contractpartner}
+ *
+ * @author olivleh1
+ *
+ */
+public class ContractpartnerID extends AbstractEntityID<Long> {
 
-public class GroupTransportMapper implements IMapper<Group, GroupTransport> {
-
-	@Override
-	public Group mapBToA(final GroupTransport groupTransport) {
-		final Group group = new Group(new GroupID(groupTransport.getId()), groupTransport.getName());
-		return group;
-	}
-
-	@Override
-	public GroupTransport mapAToB(final Group group) {
-		final GroupTransport groupTransport = new GroupTransport();
-		groupTransport.setId(group.getId().getId());
-		groupTransport.setName(group.getName());
-
-		return groupTransport;
+	public ContractpartnerID(final Long id) {
+		super(id);
 	}
 }
