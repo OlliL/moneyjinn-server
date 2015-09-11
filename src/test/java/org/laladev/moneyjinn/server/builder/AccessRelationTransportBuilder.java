@@ -7,7 +7,7 @@ public class AccessRelationTransportBuilder extends AccessRelationTransport {
 	public AccessRelationTransportBuilder forAdminUser() {
 		super.setId(UserTransportBuilder.ADMIN_ID);
 		super.setRefId(GroupTransportBuilder.ADMINGROUP_ID);
-		super.setValidfrom(DateUtil.getGMTDate("0001-01-03")); // H2 bug?
+		super.setValidfrom(DateUtil.getGMTDate("2000-01-01"));
 		super.setValidtil(DateUtil.getGMTDate("2999-12-31"));
 		return this;
 	}
