@@ -15,10 +15,5 @@ public class MyObjectMapper extends ObjectMapper {
 		super.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 		super.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		// final SimpleModule module = new SimpleModule("UnixTimestamp", new Version(0, 0, 1, null,
-		// null, null));
-		// module.addDeserializer(Date.class, new UnixTimestampDeserializer());
-		// module.addSerializer(Date.class, new UnixTimestampSerializer());
-		// super.registerModule(module);
 	}
 }
