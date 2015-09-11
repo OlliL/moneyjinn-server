@@ -23,24 +23,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CreateImportedBalanceRequest.java,v 1.1 2015/08/15 18:25:50 olivleh1 Exp $
+// $Id: CreateImportedMoneyflowRequest.java,v 1.1 2015/02/08 00:26:04 olivleh1 Exp $
 //
-package org.laladev.moneyjinn.core.rest.model;
+package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("createImportedBalanceRequest")
-public class CreateImportedBalanceRequest extends AbstractRequest {
-	private ImportedBalanceTransport importedBalanceTransport;
+@JsonRootName("createImportedMoneyflowRequest")
+public class CreateImportedMoneyflowRequest extends AbstractRequest {
+	private ImportedMoneyflowTransport importedMoneyflowTransport;
 
-	public final ImportedBalanceTransport getImportedBalanceTransport() {
-		return this.importedBalanceTransport;
+	public final ImportedMoneyflowTransport getImportedMoneyflowTransport() {
+		return this.importedMoneyflowTransport;
 	}
 
-	public final void setImportedBalanceTransport(final ImportedBalanceTransport importedBalanceTransport) {
-		this.importedBalanceTransport = importedBalanceTransport;
+	public final void setImportedMoneyflowTransport(final ImportedMoneyflowTransport importedMoneyflowTransport) {
+		this.importedMoneyflowTransport = importedMoneyflowTransport;
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class CreateImportedBalanceRequest extends AbstractRequest {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((this.importedBalanceTransport == null) ? 0 : this.importedBalanceTransport.hashCode());
+				+ ((this.importedMoneyflowTransport == null) ? 0 : this.importedMoneyflowTransport.hashCode());
 		return result;
 	}
 
@@ -63,12 +64,12 @@ public class CreateImportedBalanceRequest extends AbstractRequest {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final CreateImportedBalanceRequest other = (CreateImportedBalanceRequest) obj;
-		if (this.importedBalanceTransport == null) {
-			if (other.importedBalanceTransport != null) {
+		final CreateImportedMoneyflowRequest other = (CreateImportedMoneyflowRequest) obj;
+		if (this.importedMoneyflowTransport == null) {
+			if (other.importedMoneyflowTransport != null) {
 				return false;
 			}
-		} else if (!this.importedBalanceTransport.equals(other.importedBalanceTransport)) {
+		} else if (!this.importedMoneyflowTransport.equals(other.importedMoneyflowTransport)) {
 			return false;
 		}
 		return true;

@@ -23,12 +23,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CreateMoneyflowResponse.java,v 1.3 2015/08/22 23:38:28 olivleh1 Exp $
+// $Id: ShowAddMoneyflowsResponse.java,v 1.2 2015/02/13 00:04:05 olivleh1 Exp $
 //
-package org.laladev.moneyjinn.core.rest.model;
+package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
@@ -37,8 +38,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("createMoneyflowsResponse")
-public class CreateMoneyflowResponse extends ValidationResponse {
+@JsonRootName("showAddMoneyflowsResponse")
+public class ShowAddMoneyflowsResponse extends AbstractResponse {
 	@JsonProperty("preDefMoneyflowTransport")
 	private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
 	@JsonProperty("capitalsourceTransport")
@@ -117,7 +118,7 @@ public class CreateMoneyflowResponse extends ValidationResponse {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final CreateMoneyflowResponse other = (CreateMoneyflowResponse) obj;
+		final ShowAddMoneyflowsResponse other = (ShowAddMoneyflowsResponse) obj;
 		if (this.capitalsourceTransports == null) {
 			if (other.capitalsourceTransports != null) {
 				return false;

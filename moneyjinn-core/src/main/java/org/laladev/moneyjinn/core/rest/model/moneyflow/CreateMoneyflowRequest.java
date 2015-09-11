@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,32 +23,34 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CreateImportedMoneyflowRequest.java,v 1.1 2015/02/08 00:26:04 olivleh1 Exp $
+// $Id: CreateMoneyflowRequest.java,v 1.2 2015/02/13 00:04:05 olivleh1 Exp $
 //
-package org.laladev.moneyjinn.core.rest.model;
+package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
+import java.util.List;
+
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("createImportedMoneyflowRequest")
-public class CreateImportedMoneyflowRequest extends AbstractRequest {
-	private ImportedMoneyflowTransport importedMoneyflowTransport;
+@JsonRootName("createMoneyflowsRequest")
+public class CreateMoneyflowRequest extends AbstractRequest {
+	private List<MoneyflowTransport> moneyflowTransport;
 
-	public final ImportedMoneyflowTransport getImportedMoneyflowTransport() {
-		return this.importedMoneyflowTransport;
+	public final List<MoneyflowTransport> getMoneyflowTransport() {
+		return this.moneyflowTransport;
 	}
 
-	public final void setImportedMoneyflowTransport(final ImportedMoneyflowTransport importedMoneyflowTransport) {
-		this.importedMoneyflowTransport = importedMoneyflowTransport;
+	public final void setMoneyflowTransport(final List<MoneyflowTransport> moneyflowTransport) {
+		this.moneyflowTransport = moneyflowTransport;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((this.importedMoneyflowTransport == null) ? 0 : this.importedMoneyflowTransport.hashCode());
+		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
 		return result;
 	}
 
@@ -63,12 +65,12 @@ public class CreateImportedMoneyflowRequest extends AbstractRequest {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final CreateImportedMoneyflowRequest other = (CreateImportedMoneyflowRequest) obj;
-		if (this.importedMoneyflowTransport == null) {
-			if (other.importedMoneyflowTransport != null) {
+		final CreateMoneyflowRequest other = (CreateMoneyflowRequest) obj;
+		if (this.moneyflowTransport == null) {
+			if (other.moneyflowTransport != null) {
 				return false;
 			}
-		} else if (!this.importedMoneyflowTransport.equals(other.importedMoneyflowTransport)) {
+		} else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
 			return false;
 		}
 		return true;

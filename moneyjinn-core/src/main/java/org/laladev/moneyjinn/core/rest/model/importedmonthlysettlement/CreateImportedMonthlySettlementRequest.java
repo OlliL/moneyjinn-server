@@ -25,8 +25,9 @@
 //
 // $Id: CreateImportedMonthlySettlementRequest.java,v 1.1 2015/04/05 18:52:38 olivleh1 Exp $
 //
-package org.laladev.moneyjinn.core.rest.model;
+package org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
