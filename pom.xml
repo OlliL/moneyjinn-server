@@ -17,6 +17,7 @@
 
 		<mybatis.version>3.3.0</mybatis.version>
 		<mybatis-spring.version>1.2.3</mybatis-spring.version>
+		<jackson.version>2.6.1</jackson.version>
 	</properties>
 
 	<dependencies>
