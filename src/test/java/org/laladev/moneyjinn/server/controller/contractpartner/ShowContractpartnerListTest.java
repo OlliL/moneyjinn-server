@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.businesslogic.service.impl.SettingService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
@@ -184,6 +185,42 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 				ShowContractpartnerListResponse.class);
 		Assert.assertEquals(expected, actual);
 
+	}
+
+	@Test
+	public void test_AuthorizationRequired1_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/", this.method, false,
+				ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired2_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+				ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired3_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/0", this.method, false,
+				ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired4_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0", this.method, false,
+				ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

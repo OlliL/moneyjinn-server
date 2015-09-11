@@ -61,4 +61,12 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 
 	}
 
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
 }

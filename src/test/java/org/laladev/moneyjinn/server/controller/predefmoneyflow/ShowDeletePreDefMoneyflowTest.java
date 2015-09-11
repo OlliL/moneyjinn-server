@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowDeletePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -68,6 +69,14 @@ public class ShowDeletePreDefMoneyflowTest extends AbstractControllerTest {
 				ShowDeletePreDefMoneyflowResponse.class);
 
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

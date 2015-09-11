@@ -29,12 +29,12 @@ public class ShowGroupListTest extends AbstractControllerTest {
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
-	private String groupPassword;
+	private String userPassword;
 
 	@Before
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.groupPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 
 	@Override
 	protected String getPassword() {
-		return this.groupPassword;
+		return this.userPassword;
 	}
 
 	@Override
@@ -121,12 +121,20 @@ public class ShowGroupListTest extends AbstractControllerTest {
 	@Test
 	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
 		this.userName = UserTransportBuilder.USER1_NAME;
-		this.groupPassword = UserTransportBuilder.USER1_PASSWORD;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
 
 		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

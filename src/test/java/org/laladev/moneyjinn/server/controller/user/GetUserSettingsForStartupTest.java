@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.user;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -88,4 +89,13 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 
 		Assert.assertEquals(expected, actual);
 	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
 }

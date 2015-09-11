@@ -15,6 +15,7 @@ import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPreDefMoneyflowService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -252,6 +253,14 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 				preDefMoneyflowId);
 
 		Assert.assertNull(preDefMoneyflow);
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

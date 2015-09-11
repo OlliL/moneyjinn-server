@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.setting;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.ShowPersonalSettingsResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -46,6 +47,14 @@ public class ShowPersonalSettingsTest extends AbstractControllerTest {
 				ShowPersonalSettingsResponse.class);
 
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.capitalsource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowDeleteCapitalsourceResponse;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -68,6 +69,14 @@ public class ShowDeleteCapitalsourceTest extends AbstractControllerTest {
 				ShowDeleteCapitalsourceResponse.class);
 
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

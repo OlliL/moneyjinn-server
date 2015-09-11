@@ -15,6 +15,7 @@ import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
@@ -134,6 +135,26 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
+		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+
+		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
+				.build();
+		transport.setUserid(UserTransportBuilder.ADMIN_ID);
+		request.setContractpartnerTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerId);
+
+		Assert.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
+		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+	}
+
+	@Test
 	public void test_checkDefaults_SuccessfullNoContent() throws Exception {
 		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
 
@@ -185,6 +206,14 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		Assert.assertNull(contractpartner.getCountry());
 		Assert.assertNull(contractpartner.getMoneyflowComment());
 		Assert.assertNull(contractpartner.getPostingAccount());
+	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

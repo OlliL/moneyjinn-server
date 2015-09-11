@@ -18,6 +18,7 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceStat
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -160,6 +161,27 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
+		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setUserid(UserTransportBuilder.ADMIN_ID);
+
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.NEXT_ID);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+	}
+
+	@Test
 	public void test_checkDefaults_SuccessfullNoContent() throws Exception {
 		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
 
@@ -188,4 +210,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		Assert.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
 		Assert.assertNull(capitalsource.getBankAccount());
 	}
+
+	@Test
+	public void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
 }

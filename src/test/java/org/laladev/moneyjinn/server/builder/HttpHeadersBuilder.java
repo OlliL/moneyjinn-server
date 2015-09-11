@@ -41,17 +41,19 @@ public class HttpHeadersBuilder {
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
 			final String uri, final String body, final HttpMethod httpMethod) throws NoSuchAlgorithmException {
 		this.sha1MD.reset();
-
 		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);
+		if (userName != null && userPassword != null) {
 
-		final String contentType = MediaType.APPLICATION_JSON_VALUE;
-		final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
+			final String contentType = MediaType.APPLICATION_JSON_VALUE;
+			final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
 
-		final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
-				contentType, uri, httpHeaders.getFirst(RESTAuthorization.dateHeaderName), body.getBytes(), userName);
+			final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
+					contentType, uri, httpHeaders.getFirst(RESTAuthorization.dateHeaderName), body.getBytes(),
+					userName);
 
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
+			httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
 
+		}
 		return httpHeaders;
 
 	}
