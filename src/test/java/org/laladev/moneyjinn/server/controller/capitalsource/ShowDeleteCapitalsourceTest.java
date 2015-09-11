@@ -47,6 +47,18 @@ public class ShowDeleteCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_CapitalsourceOwnedBySomeoneElse_emptyResponseObject() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ShowDeleteCapitalsourceResponse expected = new ShowDeleteCapitalsourceResponse();
+		final ShowDeleteCapitalsourceResponse actual = super.callUsecaseWithoutContent(
+				"/" + CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, this.method, false,
+				ShowDeleteCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_Capitalsource1_completeResponseObject() throws Exception {
 		final ShowDeleteCapitalsourceResponse expected = new ShowDeleteCapitalsourceResponse();
 		expected.setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource1().build());

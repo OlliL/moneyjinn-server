@@ -27,6 +27,7 @@ import java.sql.Date;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerData;
@@ -44,9 +45,9 @@ public interface IContractpartnerDaoMapper {
 	public Integer countAllContractpartnersByDateRange(@Param("userId") Long userId, @Param("validFrom") Date validFrom,
 			@Param("validTil") Date validTil);
 
-	public List<Character> getAllContractpartnerInitials(@Param("userId") Long userId);
+	public Set<Character> getAllContractpartnerInitials(@Param("userId") Long userId);
 
-	public List<Character> getAllContractpartnerInitialsByDateRange(@Param("userId") Long userId,
+	public Set<Character> getAllContractpartnerInitialsByDateRange(@Param("userId") Long userId,
 			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
 
 	public List<ContractpartnerData> getAllContractpartnersByInitial(@Param("userId") Long userId,

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -118,6 +119,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	@Override
 	public ValidationResult validateCapitalsource(final Capitalsource capitalsource) {
+		Assert.notNull(capitalsource);
 		this.prepareCapitalsource(capitalsource);
 		final ValidationResult validationResult = new ValidationResult();
 
@@ -162,31 +164,42 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Cacheable(CacheNames.CAPITALSOURCE_BY_ID)
 	public Capitalsource getCapitalsourceById(final UserID userId, final GroupID groupId,
 			final CapitalsourceID capitalsourceId) {
+		Assert.notNull(userId);
+		Assert.notNull(groupId);
+		Assert.notNull(capitalsourceId);
 		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceById(userId.getId(),
 				groupId.getId(), capitalsourceId.getId());
 		return this.mapCapitalsourceData(capitalsourceData);
 	}
 
 	@Override
-	public List<Character> getAllCapitalsourceInitials(final UserID userId) {
+	public Set<Character> getAllCapitalsourceInitials(final UserID userId) {
+		Assert.notNull(userId);
 		return this.capitalsourceDao.getAllCapitalsourceInitials(userId.getId());
 	}
 
 	@Override
-	public List<Character> getAllCapitalsourceInitialsByDateRange(final UserID userId, final LocalDate validFrom,
+	public Set<Character> getAllCapitalsourceInitialsByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		return this.capitalsourceDao.getAllCapitalsourceInitialsByDateRange(userId.getId(), Date.valueOf(validFrom),
 				Date.valueOf(validTil));
 	}
 
 	@Override
 	public Integer countAllCapitalsources(final UserID userId) {
+		Assert.notNull(userId);
 		return this.capitalsourceDao.countAllCapitalsources(userId.getId());
 	}
 
 	@Override
 	public Integer countAllCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		return this.capitalsourceDao.countAllCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom),
 				Date.valueOf(validTil));
 	}
@@ -194,6 +207,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Override
 	@Cacheable(CacheNames.ALL_CAPITALSOURCES)
 	public List<Capitalsource> getAllCapitalsources(final UserID userId) {
+		Assert.notNull(userId);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getAllCapitalsources(userId.getId());
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
@@ -202,6 +216,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Override
 	public List<Capitalsource> getAllCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getAllCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
@@ -209,6 +226,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	@Override
 	public List<Capitalsource> getAllCapitalsourcesByInitial(final UserID userId, final Character initial) {
+		Assert.notNull(userId);
 		Assert.notNull(initial);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getAllCapitalsourcesByInitial(userId.getId(), initial);
@@ -218,6 +236,10 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Override
 	public List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(final UserID userId, final Character initial,
 			final LocalDate validFrom, final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
+		Assert.notNull(initial);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getAllCapitalsourcesByInitialAndDateRange(userId.getId(), initial, Date.valueOf(validFrom),
 						Date.valueOf(validTil));
@@ -226,6 +248,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	@Override
 	public Capitalsource getCapitalsourceByComment(final UserID userId, final String name, final LocalDate date) {
+		Assert.notNull(userId);
+		Assert.notNull(date);
 		Assert.notNull(name);
 		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
 				name, Date.valueOf(date));
@@ -267,6 +291,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	@Override
 	public void deleteCapitalsource(final UserID userId, final GroupID groupId, final CapitalsourceID capitalsourceId) {
+		Assert.notNull(userId);
+		Assert.notNull(groupId);
 		Assert.notNull(capitalsourceId);
 		try {
 			this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
@@ -277,6 +303,25 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 					ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
 		}
 
+	}
+
+	@Override
+	public List<Capitalsource> getGroupCapitalsources(final UserID userId) {
+		Assert.notNull(userId);
+		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
+				.getGroupCapitalsources(userId.getId());
+		return this.mapCapitalsourceDataList(capitalsourceDataList);
+	}
+
+	@Override
+	public List<Capitalsource> getGroupCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
+			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
+		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
+				.getGroupCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+		return this.mapCapitalsourceDataList(capitalsourceDataList);
 	}
 
 	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,

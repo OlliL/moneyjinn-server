@@ -51,6 +51,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
@@ -76,6 +77,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
+		Assert.notNull(accessRelation);
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (accessRelation.getParentAccessRelation() == null) {
@@ -100,6 +102,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	@Override
 	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.toString().concat('-').concat(#date.toString())")
 	public Group getAccessor(final AccessID accessId, final LocalDate date) {
+		Assert.notNull(accessId);
+		Assert.notNull(date);
 		final List<Group> groups = this.getAllUserGroupsByUserIdDate(accessId, date);
 		Group accessor = null;
 
@@ -108,6 +112,63 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		}
 
 		return accessor;
+	}
+
+	@Override
+	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id")
+	public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
+		Assert.notNull(accessId);
+		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
+				.getAllAccessRelationsById(accessId.getId());
+		return super.mapList(accessRelationDataList, AccessRelation.class);
+	}
+
+	@Override
+	public ValidationResult setAccessRelationForExistingUser(final AccessRelation accessRelation) {
+		Assert.notNull(accessRelation);
+		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
+		if (accessRelation.getValidFrom().isBefore(this.now())) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_EARLIER_THAN_TOMORROW));
+		}
+
+		if (validationResult.isValid()) {
+			this.setAccessRelation(accessRelation);
+		}
+		return validationResult;
+	}
+
+	@Override
+	public ValidationResult setAccessRelationForNewUser(final AccessRelation accessRelation) {
+		Assert.notNull(accessRelation);
+		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
+		if (validationResult.isValid()) {
+			this.setAccessRelation(accessRelation);
+		}
+		return validationResult;
+	}
+
+	@Override
+	public AccessRelation getAccessRelationById(final AccessID accessRelationId) {
+		Assert.notNull(accessRelationId);
+		return this.getAccessRelationById(accessRelationId, this.now());
+	}
+
+	@Override
+	public AccessRelation getAccessRelationById(final AccessID accessRelationId, final LocalDate date) {
+		Assert.notNull(accessRelationId);
+		Assert.notNull(date);
+		final AccessRelationData accessRelationData = this.accessRelationDao
+				.getAccessRelationById(accessRelationId.getId(), Date.valueOf(date));
+		return super.map(accessRelationData, AccessRelation.class);
+	}
+
+	@Override
+	public void deleteAllAccessRelation(final AccessID accessRelationId) {
+		Assert.notNull(accessRelationId);
+		this.evictAccessRelationCache(accessRelationId);
+		this.accessRelationDao.deleteAllAccessFlattened(accessRelationId.getId());
+		this.accessRelationDao.deleteAllAccessRelation(accessRelationId.getId());
 	}
 
 	private List<Group> getAllUserGroupsByUserIdDate(final AccessID accessId, final LocalDate date) {
@@ -129,60 +190,10 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	}
 
-	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id")
-	public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
+	private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId, final LocalDate date) {
 		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-				.getAllAccessRelationsById(accessId.getId());
+				.getAllAccessRelationsByIdDate(accessRelationId.getId(), Date.valueOf(date));
 		return super.mapList(accessRelationDataList, AccessRelation.class);
-	}
-
-	@Override
-	public ValidationResult setAccessRelationForExistingUser(final AccessRelation accessRelation) {
-		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-		if (accessRelation.getValidFrom().isBefore(this.now())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_EARLIER_THAN_TOMORROW));
-		}
-
-		if (validationResult.isValid()) {
-			this.setAccessRelation(accessRelation);
-		}
-		return validationResult;
-	}
-
-	@Override
-	public ValidationResult setAccessRelationForNewUser(final AccessRelation accessRelation) {
-		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-		if (validationResult.isValid()) {
-			this.setAccessRelation(accessRelation);
-		}
-		return validationResult;
-	}
-
-	@Override
-	public AccessRelation getAccessRelationById(final AccessID accessRelationID) {
-		return this.getAccessRelationById(accessRelationID, this.now());
-	}
-
-	@Override
-	public AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date) {
-		final AccessRelationData accessRelationData = this.accessRelationDao
-				.getAccessRelationById(accessRelationID.getId(), Date.valueOf(date));
-		return super.map(accessRelationData, AccessRelation.class);
-	}
-
-	public List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID userId, final LocalDate date) {
-		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-				.getAllAccessRelationsByIdDate(userId.getId(), Date.valueOf(date));
-		return super.mapList(accessRelationDataList, AccessRelation.class);
-	}
-
-	@Override
-	public void deleteAllAccessRelation(final AccessID accessRelationID) {
-		this.evictAccessRelationCache(accessRelationID);
-		this.accessRelationDao.deleteAllAccessFlattened(accessRelationID.getId());
-		this.accessRelationDao.deleteAllAccessRelation(accessRelationID.getId());
 	}
 
 	private void setAccessRelation(final AccessRelation accessRelation) {

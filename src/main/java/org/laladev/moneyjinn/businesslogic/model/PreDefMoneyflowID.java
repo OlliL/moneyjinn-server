@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.businesslogic.dao.mapper;
+package org.laladev.moneyjinn.businesslogic.model;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -24,28 +24,15 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
-import java.util.Set;
+/**
+ * The unique ID of a {@link PreDefMoneyflow}
+ *
+ * @author olivleh1
+ *
+ */
+public class PreDefMoneyflowID extends AbstractEntityID<Long> {
 
-import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountData;
-
-public interface IPostingAccountDaoMapper {
-	public List<PostingAccountData> getAllPostingAccounts();
-
-	public PostingAccountData getPostingAccountById(Long id);
-
-	public Integer countAllPostingAccounts();
-
-	public Set<Character> getAllPostingAccountInitials();
-
-	public List<PostingAccountData> getAllPostingAccountsByInitial(Character initial);
-
-	public PostingAccountData getPostingAccountByName(String name);
-
-	public void createPostingAccount(PostingAccountData postingAccountData);
-
-	public void updatePostingAccount(PostingAccountData postingAccountData);
-
-	public void deletePostingAccount(Long id);
-
+	public PreDefMoneyflowID(final Long id) {
+		super(id);
+	}
 }

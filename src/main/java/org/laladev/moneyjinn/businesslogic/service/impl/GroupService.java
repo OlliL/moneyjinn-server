@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -63,6 +64,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public ValidationResult validateGroup(final Group group) {
+		Assert.notNull(group);
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (group.getName() == null || group.getName().trim().isEmpty()) {
@@ -85,12 +87,13 @@ public class GroupService extends AbstractService implements IGroupService {
 	@Override
 	@Cacheable(CacheNames.GROUP_BY_ID)
 	public Group getGroupById(final GroupID groupId) {
+		Assert.notNull(groupId);
 		final GroupData groupData = this.groupDao.getGroupById(groupId.getId());
 		return super.map(groupData, Group.class);
 	}
 
 	@Override
-	public List<Character> getAllGroupInitials() {
+	public Set<Character> getAllGroupInitials() {
 		return this.groupDao.getAllGroupInitials();
 	}
 

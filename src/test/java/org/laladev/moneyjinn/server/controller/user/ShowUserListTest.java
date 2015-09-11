@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 
 	private ShowUserListResponse getCompleteResponse() {
 		final ShowUserListResponse expected = new ShowUserListResponse();
-		expected.setInitials(Arrays.asList('A', 'U'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'U')));
 
 		final List<UserTransport> userTransports = new ArrayList<>();
 		userTransports.add(new UserTransportBuilder().forAdmin().build());
@@ -92,7 +93,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowUserListResponse expected = new ShowUserListResponse();
-		expected.setInitials(Arrays.asList('A', 'U'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'U')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
@@ -119,7 +120,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 	@Test
 	public void test_initialA_AResponseObject() throws Exception {
 		final ShowUserListResponse expected = new ShowUserListResponse();
-		expected.setInitials(Arrays.asList('A', 'U'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'U')));
 
 		final List<UserTransport> userTransports = new ArrayList<>();
 		userTransports.add(new UserTransportBuilder().forAdmin().build());

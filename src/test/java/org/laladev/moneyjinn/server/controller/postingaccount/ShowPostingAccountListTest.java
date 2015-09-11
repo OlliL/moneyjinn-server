@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,7 +54,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 	private ShowPostingAccountListResponse getCompleteResponse() {
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
-		expected.setInitials(Arrays.asList('P', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'X')));
 
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
@@ -77,7 +78,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
-		expected.setInitials(Arrays.asList('P', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'X')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
@@ -104,7 +105,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	@Test
 	public void test_initialA_AResponseObject() throws Exception {
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
-		expected.setInitials(Arrays.asList('P', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'X')));
 
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());

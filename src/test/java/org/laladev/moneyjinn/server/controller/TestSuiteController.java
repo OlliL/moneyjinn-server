@@ -6,12 +6,13 @@ import org.laladev.moneyjinn.server.controller.capitalsource.TestSuiteCapitalsou
 import org.laladev.moneyjinn.server.controller.contractpartner.TestSuiteContractpartner;
 import org.laladev.moneyjinn.server.controller.group.TestSuiteGroup;
 import org.laladev.moneyjinn.server.controller.postingaccount.TestSuitePostingAccount;
+import org.laladev.moneyjinn.server.controller.predefmoneyflow.TestSuitePreDefMoneyflow;
 import org.laladev.moneyjinn.server.controller.setting.TestSuiteSetting;
 import org.laladev.moneyjinn.server.controller.user.TestSuiteUser;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TestSuiteCapitalsource.class, TestSuiteContractpartner.class, TestSuiteGroup.class,
-		TestSuitePostingAccount.class, TestSuiteSetting.class, TestSuiteUser.class })
+		TestSuitePostingAccount.class, TestSuitePreDefMoneyflow.class, TestSuiteSetting.class, TestSuiteUser.class })
 public class TestSuiteController {
 
 }

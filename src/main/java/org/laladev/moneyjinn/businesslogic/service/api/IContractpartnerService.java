@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
@@ -65,7 +66,7 @@ public interface IContractpartnerService {
 	 *            {@link UserID}
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllContractpartnerInitials(UserID userId);
+	public Set<Character> getAllContractpartnerInitials(UserID userId);
 
 	/**
 	 * This method returns all initials of all {@link Contractpartner}s valid between the given
@@ -79,7 +80,7 @@ public interface IContractpartnerService {
 	 *            {@link LocalDate}
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllContractpartnerInitialsByDateRange(UserID userId, LocalDate validFrom,
+	public Set<Character> getAllContractpartnerInitialsByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
 
 	/**

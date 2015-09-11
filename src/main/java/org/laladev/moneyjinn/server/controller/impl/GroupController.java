@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -79,11 +80,12 @@ public class GroupController extends AbstractController {
 	}
 
 	@RequestMapping(value = "showGroupList/{restriction}", method = { RequestMethod.GET })
+	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public ShowGroupListResponse showGroupList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userID = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userID);
-		final List<Character> initials = this.groupService.getAllGroupInitials();
+		final Set<Character> initials = this.groupService.getAllGroupInitials();
 		final Integer count = this.groupService.countAllGroups();
 
 		List<Group> groups = null;

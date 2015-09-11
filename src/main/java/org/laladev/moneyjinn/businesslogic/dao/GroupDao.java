@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.dao;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,7 +51,7 @@ public class GroupDao {
 		return this.mapper.countAllGroups();
 	}
 
-	public List<Character> getAllGroupInitials() {
+	public Set<Character> getAllGroupInitials() {
 		return this.mapper.getAllGroupInitials();
 	}
 

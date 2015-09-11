@@ -27,6 +27,7 @@ import java.sql.Date;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
@@ -45,9 +46,9 @@ public interface ICapitalsourceDaoMapper {
 	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId, @Param("validFrom") Date validFrom,
 			@Param("validTil") Date validTil);
 
-	public List<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
+	public Set<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
 
-	public List<Character> getAllCapitalsourceInitialsByDateRange(@Param("userId") Long userId,
+	public Set<Character> getAllCapitalsourceInitialsByDateRange(@Param("userId") Long userId,
 			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitial(@Param("userId") Long userId,
@@ -67,6 +68,11 @@ public interface ICapitalsourceDaoMapper {
 			@Param("id") Long id);
 
 	public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
+			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+
+	public List<CapitalsourceData> getGroupCapitalsources(@Param("userId") Long userId);
+
+	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
 			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
 
 }

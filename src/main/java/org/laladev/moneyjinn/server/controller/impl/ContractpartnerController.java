@@ -27,6 +27,7 @@ import java.time.LocalDate;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -45,14 +46,16 @@ import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.AbstractContractpartnerResponse;
+import org.laladev.moneyjinn.core.rest.model.contractpartner.AbstractCreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowCreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowDeleteContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowEditContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.UpdateContractpartnerRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartner.UpdateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -150,7 +153,7 @@ public class ContractpartnerController extends AbstractController {
 			final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
-		List<Character> initials = null;
+		Set<Character> initials = null;
 		Integer count = null;
 		if (currentlyValid) {
 			initials = this.contractpartnerService.getAllContractpartnerInitialsByDateRange(userId, now, now);
@@ -191,7 +194,8 @@ public class ContractpartnerController extends AbstractController {
 
 	@RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public ValidationResponse createContractpartner(@RequestBody final CreateContractpartnerRequest request) {
+	public CreateContractpartnerResponse createContractpartner(
+			@RequestBody final CreateContractpartnerRequest request) {
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
 
@@ -205,7 +209,8 @@ public class ContractpartnerController extends AbstractController {
 		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
 
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
+			final CreateContractpartnerResponse response = new CreateContractpartnerResponse();
+			this.fillAbstractCreateContractpartnerResponse(response);
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
@@ -218,7 +223,8 @@ public class ContractpartnerController extends AbstractController {
 
 	@RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public ValidationResponse updateContractpartner(@RequestBody final UpdateContractpartnerRequest request) {
+	public UpdateContractpartnerResponse updateContractpartner(
+			@RequestBody final UpdateContractpartnerRequest request) {
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
 		final User user = this.userService.getUserById(userId);
@@ -232,7 +238,8 @@ public class ContractpartnerController extends AbstractController {
 		if (validationResult.isValid()) {
 			this.contractpartnerService.updateContractpartner(contractpartner);
 		} else {
-			final ValidationResponse response = new ValidationResponse();
+			final UpdateContractpartnerResponse response = new UpdateContractpartnerResponse();
+			this.fillAbstractCreateContractpartnerResponse(response);
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
@@ -240,15 +247,6 @@ public class ContractpartnerController extends AbstractController {
 		}
 
 		return null;
-	}
-
-	@RequestMapping(value = "showCreateContractpartner", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowCreateContractpartnerResponse showCreateContractpartner() {
-		final ShowCreateContractpartnerResponse response = new ShowCreateContractpartnerResponse();
-		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		return response;
 	}
 
 	@RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
@@ -261,6 +259,14 @@ public class ContractpartnerController extends AbstractController {
 
 		this.contractpartnerAccountService.deleteContractpartnerAccounts(userId, contractpartnerId);
 		this.contractpartnerService.deleteContractpartner(userId, accessor.getId(), contractpartnerId);
+	}
+
+	@RequestMapping(value = "showCreateContractpartner", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowCreateContractpartnerResponse showCreateContractpartner() {
+		final ShowCreateContractpartnerResponse response = new ShowCreateContractpartnerResponse();
+		this.fillAbstractCreateContractpartnerResponse(response);
+		return response;
 	}
 
 	@RequestMapping(value = "showEditContractpartner/{id}", method = { RequestMethod.GET })
@@ -291,5 +297,10 @@ public class ContractpartnerController extends AbstractController {
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 		response.setContractpartnerTransport(super.map(contractpartner, ContractpartnerTransport.class));
+	}
+
+	private void fillAbstractCreateContractpartnerResponse(final AbstractCreateContractpartnerResponse response) {
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 	}
 }

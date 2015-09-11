@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.GroupData;
 
@@ -35,7 +36,7 @@ public interface IGroupDaoMapper {
 
 	public Integer countAllGroups();
 
-	public List<Character> getAllGroupInitials();
+	public Set<Character> getAllGroupInitials();
 
 	public List<GroupData> getAllGroupsByInitial(Character initial);
 

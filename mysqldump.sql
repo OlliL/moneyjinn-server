@@ -131,6 +131,20 @@ CREATE TABLE capitalsources (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `postingaccounts`
+--
+
+DROP TABLE IF EXISTS postingaccounts;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE postingaccounts (
+  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  postingaccountname varchar(20) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (postingaccountid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mpa';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `contractpartners`
 --
 
@@ -191,8 +205,8 @@ CREATE TABLE moneyflows (
   moneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
   mac_id_creator int(10) unsigned NOT NULL,
   mac_id_accessor int(10) unsigned NOT NULL,
-  bookingdate date NOT NULL DEFAULT '0000-00-00',
-  invoicedate date NOT NULL DEFAULT '0000-00-00',
+  bookingdate date NOT NULL DEFAULT '1970-01-01',
+  invoicedate date NOT NULL DEFAULT '1970-01-01',
   amount float(8,2) NOT NULL DEFAULT '0.00',
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
@@ -241,20 +255,6 @@ CREATE TABLE monthlysettlements (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `postingaccounts`
---
-
-DROP TABLE IF EXISTS postingaccounts;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE postingaccounts (
-  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  postingaccountname varchar(20) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (postingaccountid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mpa';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `predefmoneyflows`
 --
 
@@ -268,7 +268,7 @@ CREATE TABLE predefmoneyflows (
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
-  createdate date NOT NULL,
+  createdate date NOT NULL DEFAULT '1970-01-01',
   once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
   last_used date DEFAULT NULL,
   mpa_postingaccountid int(10) unsigned NOT NULL,
@@ -426,7 +426,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-29 19:39:37
+-- Dump completed on 2015-09-10 12:57:50
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');

@@ -25,8 +25,10 @@ public class TestDatabaseConfiguration {
 	private SimpleDriverDataSource simpleDriverDataSource() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(Driver.class);
-		// for debugging add: ;TRACE_LEVEL_FIle=4;TRACE_LEVEL_SYSTEM_OUT=3
 		ds.setUrl("jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+		// for debugging:
+		ds.setUrl(
+				"jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FIle=4;TRACE_LEVEL_SYSTEM_OUT=3");
 		ds.setUsername("sa");
 		ds.setPassword("");
 

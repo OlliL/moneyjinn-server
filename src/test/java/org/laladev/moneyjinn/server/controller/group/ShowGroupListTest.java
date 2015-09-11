@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.group;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,7 +54,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 
 	private ShowGroupListResponse getCompleteResponse() {
 		final ShowGroupListResponse expected = new ShowGroupListResponse();
-		expected.setInitials(Arrays.asList('A', 'G'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'G')));
 
 		final List<GroupTransport> groupTransports = new ArrayList<>();
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
@@ -78,7 +79,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowGroupListResponse expected = new ShowGroupListResponse();
-		expected.setInitials(Arrays.asList('A', 'G'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'G')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
@@ -105,7 +106,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 	@Test
 	public void test_initialA_AResponseObject() throws Exception {
 		final ShowGroupListResponse expected = new ShowGroupListResponse();
-		expected.setInitials(Arrays.asList('A', 'G'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'G')));
 
 		final List<GroupTransport> groupTransports = new ArrayList<>();
 		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());

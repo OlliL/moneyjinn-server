@@ -27,6 +27,7 @@ import java.sql.Date;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -61,11 +62,11 @@ public class ContractpartnerDao {
 		return this.mapper.countAllContractpartnersByDateRange(userId, validFrom, validTil);
 	}
 
-	public List<Character> getAllContractpartnerInitials(final Long userId) {
+	public Set<Character> getAllContractpartnerInitials(final Long userId) {
 		return this.mapper.getAllContractpartnerInitials(userId);
 	}
 
-	public List<Character> getAllContractpartnerInitialsByDateRange(final Long userId, final Date validFrom,
+	public Set<Character> getAllContractpartnerInitialsByDateRange(final Long userId, final Date validFrom,
 			final Date validTil) {
 		return this.mapper.getAllContractpartnerInitialsByDateRange(userId, validFrom, validTil);
 	}

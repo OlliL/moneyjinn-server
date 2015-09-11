@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
@@ -74,7 +75,7 @@ public interface IPostingAccountService {
 	 *
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllPostingAccountInitials();
+	public Set<Character> getAllPostingAccountInitials();
 
 	/**
 	 * This Service returns the number of all existing postingAccounts

@@ -25,55 +25,50 @@ package org.laladev.moneyjinn.businesslogic.dao;
 //SUCH DAMAGE.
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountData;
-import org.laladev.moneyjinn.businesslogic.dao.mapper.IPostingAccountDaoMapper;
+import org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.mapper.IPreDefMoneyflowDaoMapper;
 
 @Named
-public class PostingAccountDao {
+public class PreDefMoneyflowDao {
 
 	@Inject
-	IPostingAccountDaoMapper mapper;
+	IPreDefMoneyflowDaoMapper mapper;
 
-	public List<PostingAccountData> getAllPostingAccounts() {
-		return this.mapper.getAllPostingAccounts();
+	public List<PreDefMoneyflowData> getAllPreDefMoneyflows(final Long userId) {
+		return this.mapper.getAllPreDefMoneyflows(userId);
 	}
 
-	public PostingAccountData getPostingAccountById(final Long id) {
-		return this.mapper.getPostingAccountById(id);
+	public PreDefMoneyflowData getPreDefMoneyflowById(final Long userId, final Long id) {
+		return this.mapper.getPreDefMoneyflowById(userId, id);
 	}
 
-	public Integer countAllPostingAccounts() {
-		return this.mapper.countAllPostingAccounts();
+	public Integer countAllPreDefMoneyflows(final Long userId) {
+		return this.mapper.countAllPreDefMoneyflows(userId);
 	}
 
-	public Set<Character> getAllPostingAccountInitials() {
-		return this.mapper.getAllPostingAccountInitials();
+	public Long createPreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
+		this.mapper.createPreDefMoneyflow(preDefMoneyflowData);
+		return preDefMoneyflowData.getId();
 	}
 
-	public List<PostingAccountData> getAllPostingAccountsByInitial(final Character initial) {
-		return this.mapper.getAllPostingAccountsByInitial(initial);
+	public void updatePreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
+		this.mapper.updatePreDefMoneyflow(preDefMoneyflowData);
 	}
 
-	public PostingAccountData getPostingAccountByName(final String name) {
-		return this.mapper.getPostingAccountByName(name);
+	public void deletePreDefMoneyflow(final Long userId, final Long id) {
+		this.mapper.deletePreDefMoneyflow(userId, id);
 	}
 
-	public Long createPostingAccount(final PostingAccountData postingAccountData) {
-		this.mapper.createPostingAccount(postingAccountData);
-		return postingAccountData.getId();
+	public List<Long> getAllContractpartnerIds(final Long userId) {
+		return this.mapper.getAllContractpartnerIds(userId);
 	}
 
-	public void updatePostingAccount(final PostingAccountData postingAccountData) {
-		this.mapper.updatePostingAccount(postingAccountData);
-	}
-
-	public void deletePostingAccount(final Long id) {
-		this.mapper.deletePostingAccount(id);
+	public void setLastUsed(final Long userId, final Long id) {
+		this.mapper.setLastUsed(userId, id);
 	}
 
 }

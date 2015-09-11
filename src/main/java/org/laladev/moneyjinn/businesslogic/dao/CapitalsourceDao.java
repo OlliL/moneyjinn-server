@@ -27,6 +27,7 @@ import java.sql.Date;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -61,11 +62,11 @@ public class CapitalsourceDao {
 		return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
-	public List<Character> getAllCapitalsourceInitials(final Long userId) {
+	public Set<Character> getAllCapitalsourceInitials(final Long userId) {
 		return this.mapper.getAllCapitalsourceInitials(userId);
 	}
 
-	public List<Character> getAllCapitalsourceInitialsByDateRange(final Long userId, final Date validFrom,
+	public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId, final Date validFrom,
 			final Date validTil) {
 		return this.mapper.getAllCapitalsourceInitialsByDateRange(userId, validFrom, validTil);
 	}
@@ -104,6 +105,15 @@ public class CapitalsourceDao {
 		} else {
 			return result;
 		}
+	}
+
+	public List<CapitalsourceData> getGroupCapitalsources(final Long userId) {
+		return this.mapper.getGroupCapitalsources(userId);
+	}
+
+	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId, final Date validFrom,
+			final Date validTil) {
+		return this.mapper.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
 }

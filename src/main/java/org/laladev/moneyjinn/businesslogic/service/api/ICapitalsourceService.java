@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -69,7 +70,7 @@ public interface ICapitalsourceService {
 	 *            {@link UserID}
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllCapitalsourceInitials(UserID userId);
+	public Set<Character> getAllCapitalsourceInitials(UserID userId);
 
 	/**
 	 * This method returns all initials of all {@link Capitalsource}s valid between the given Dates.
@@ -82,7 +83,7 @@ public interface ICapitalsourceService {
 	 *            {@link LocalDate}
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom,
+	public Set<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
 
 	/**
@@ -201,5 +202,30 @@ public interface ICapitalsourceService {
 	 * @throws BusinessException
 	 */
 	public void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
+
+	/**
+	 * This method returns all {@link Capitalsource}s where the given {@link User} has usage
+	 * permissions like creating a Moneyflow.
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	public List<Capitalsource> getGroupCapitalsources(UserID userId);
+
+	/**
+	 * This method returns all {@link Capitalsource}s where the {@link User} has usage permissions
+	 * like creating a Moneyflow and which valid between the given Dates.
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @param validFrom
+	 *            {@link LocalDate}
+	 * @param validTil
+	 *            {@link LocalDate}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	public List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+			LocalDate validTil);
 
 }

@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -63,6 +64,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
+		Assert.notNull(postingAccount);
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
@@ -85,13 +87,14 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	@Override
 	@Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
 	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
+		Assert.notNull(postingAccountId);
 		final PostingAccountData postingAccountData = this.postingAccountDao
 				.getPostingAccountById(postingAccountId.getId());
 		return super.map(postingAccountData, PostingAccount.class);
 	}
 
 	@Override
-	public List<Character> getAllPostingAccountInitials() {
+	public Set<Character> getAllPostingAccountInitials() {
 		return this.postingAccountDao.getAllPostingAccountInitials();
 	}
 

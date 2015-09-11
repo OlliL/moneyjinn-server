@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.contractpartner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,7 +52,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 	private ShowContractpartnerListResponse getCompleteResponse() {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(Arrays.asList('P', 'Q', 'S'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
 
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
@@ -66,7 +67,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 	private ShowContractpartnerListResponse getCurrentlyValidResponse() {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(Arrays.asList('P', 'Q'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
 
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
@@ -108,7 +109,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(Arrays.asList('P', 'Q', 'S'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
@@ -152,7 +153,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 	public void test_initialQ_AResponseObject() throws Exception {
 		// set default to 0
 		ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(Arrays.asList('P', 'Q', 'S'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
 		List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner3().build());
@@ -169,7 +170,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 		// this must change the default-setting to 1
 		expected = new ShowContractpartnerListResponse();
-		expected.setInitials(Arrays.asList('P', 'Q'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
 		contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
 		expected.setContractpartnerTransports(contractpartnerTransports);

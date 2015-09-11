@@ -160,7 +160,7 @@ public class UserController extends AbstractController {
 	public ShowUserListResponse showUserList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-		final List<Character> initials = this.userService.getAllUserInitials();
+		final Set<Character> initials = this.userService.getAllUserInitials();
 		final Integer count = this.userService.countAllUsers();
 
 		List<User> users = null;

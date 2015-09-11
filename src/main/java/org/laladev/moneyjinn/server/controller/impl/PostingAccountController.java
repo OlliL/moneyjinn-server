@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -79,12 +80,13 @@ public class PostingAccountController extends AbstractController {
 	}
 
 	@RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
+	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public ShowPostingAccountListResponse showPostingAccountList(
 			@PathVariable(value = "restriction") final String restriction) {
 		final UserID userID = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userID);
-		final List<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
+		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
 		final Integer count = this.postingAccountService.countAllPostingAccounts();
 
 		List<PostingAccount> postingAccounts = null;

@@ -69,6 +69,7 @@ public abstract class AbstractMapperSupport {
 					return clazz.cast(result);
 				}
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
 				throw new TechnicalException("Mapper undefined!", ErrorCode.MAPPER_UNDEFINED);
 			}
 		}

@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.dao;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,7 +44,7 @@ public class UserDao {
 		return userData;
 	}
 
-	public List<Character> getAllUserInitials() {
+	public Set<Character> getAllUserInitials() {
 		return this.mapper.getAllUserInitials();
 	}
 

@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -74,7 +75,7 @@ public interface IUserService {
 	 *
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllUserInitials();
+	public Set<Character> getAllUserInitials();
 
 	/**
 	 * This Service returns the number of all existing users

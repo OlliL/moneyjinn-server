@@ -15,11 +15,13 @@ import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -67,12 +69,17 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		validationItems
 				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
-		final ValidationResponse expected = new ValidationResponse();
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
+		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
+		expected.setPostingAccountTransports(postingAccountTransports);
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
 
 		Assert.assertEquals(expected, actual);
 

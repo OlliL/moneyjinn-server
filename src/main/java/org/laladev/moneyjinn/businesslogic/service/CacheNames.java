@@ -42,4 +42,7 @@ public class CacheNames {
 
 	public static final String ALL_CONTRACTPARTNERS = "allContractpartner";
 	public static final String CONTRACTPARTNER_BY_ID = "contractpartnerById";
+
+	public static final String ALL_PRE_DEF_MONEYFLOWS = "allPreDefMoneyflows";
+	public static final String PRE_DEF_MONEYFLOW_BY_ID = "preDefMoneyflowById";
 }

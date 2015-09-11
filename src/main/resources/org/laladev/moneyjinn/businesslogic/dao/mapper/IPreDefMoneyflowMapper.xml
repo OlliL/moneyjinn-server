@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.businesslogic.dao.mapper.IPreDefMoneyflowDaoMapper">
+
+    	<sql id="preDefMoneyflowColumns">
+		 predefmoneyflowid	AS id
+		,mac_id			AS macId
+		,amount
+		,mcs_capitalsourceid	AS mcsCapitalsourceId
+		,mcp_contractpartnerid	AS mcpContractpartnerId
+		,comment
+		,createdate
+		,once_a_month		AS onceAMonth
+		,last_used		AS lastUsed
+		,mpa_postingaccountid	AS mpaPostingAccountId
+	</sql>
+    
+    	<select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData">
+		SELECT <include refid="preDefMoneyflowColumns" />
+		  FROM predefmoneyflows
+		 WHERE predefmoneyflowid = #{id}
+		   AND mac_id            = #{userId}
+		 LIMIT 1
+	</select>
+
+	<select id="countAllPreDefMoneyflows" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM predefmoneyflows
+		 WHERE mac_id = #{userId}
+	</select>
+
+	<select id="getAllPreDefMoneyflows"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData">
+		SELECT <include refid="preDefMoneyflowColumns" />
+		  FROM predefmoneyflows
+		 WHERE mac_id = #{userId}
+		 ORDER BY predefmoneyflowid
+	</select>
+	
+
+	<insert id="createPreDefMoneyflow"
+		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
+		INSERT
+		  INTO predefmoneyflows
+		      (mac_id
+		      ,amount
+		      ,mcs_capitalsourceid
+		      ,mcp_contractpartnerid
+		      ,comment
+		      ,once_a_month
+		      ,mpa_postingaccountid
+		      )
+		VALUES
+		      (#{macId}
+		      ,#{amount}
+		      ,#{mcsCapitalsourceId}
+		      ,#{mcpContractpartnerId}
+		      ,#{comment}
+		      ,#{onceAMonth}
+		      ,#{mpaPostingAccountId}
+		      )
+	</insert>
+	
+	<update id="updatePreDefMoneyflow" parameterType="org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData">
+		UPDATE predefmoneyflows
+		   SET amount			= #{amount}
+		      ,mcs_capitalsourceid	= #{mcsCapitalsourceId}
+		      ,mcp_contractpartnerid	= #{mcpContractpartnerId}
+		      ,comment			= #{comment}
+		      ,once_a_month		= #{onceAMonth}
+		      ,mpa_postingaccountid	= #{mpaPostingAccountId}
+		 WHERE predefmoneyflowid = #{id}
+		   AND mac_id            = #{macId}
+		 LIMIT 1
+	</update>
+	
+	<delete id="deletePreDefMoneyflow">
+		DELETE
+		  FROM predefmoneyflows
+		 WHERE predefmoneyflowid = #{id}
+		   AND mac_id            = #{userId}
+		 LIMIT 1
+	</delete>
+	
+	<select id="getAllContractpartnerIds" resultType="java.lang.Long">
+		SELECT DISTINCT mcp_contractpartnerid
+		  FROM predefmoneyflows
+	 	 WHERE mac_id = #{userId}
+	</select>	
+	 
+	<update id="setLastUsed">
+		UPDATE predefmoneyflows
+		   SET last_used         = NOW()
+		 WHERE predefmoneyflowid = #{id}
+		   AND mac_id            = #{userId}
+		 LIMIT 1
+	</update>
+</mapper>
+ 

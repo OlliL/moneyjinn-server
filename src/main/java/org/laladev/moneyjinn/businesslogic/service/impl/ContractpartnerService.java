@@ -29,6 +29,7 @@ import java.util.ArrayList;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -124,6 +125,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
+		Assert.notNull(contractpartner);
 		this.prepareContractpartner(contractpartner);
 		final ValidationResult validationResult = new ValidationResult();
 
@@ -161,31 +163,41 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	@Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
 	public Contractpartner getContractpartnerById(final UserID userId, final ContractpartnerID contractpartnerId) {
+		Assert.notNull(userId);
+		Assert.notNull(contractpartnerId);
 		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerById(userId.getId(),
 				contractpartnerId.getId());
 		return this.mapContractpartnerData(contractpartnerData);
 	}
 
 	@Override
-	public List<Character> getAllContractpartnerInitials(final UserID userId) {
+	public Set<Character> getAllContractpartnerInitials(final UserID userId) {
+		Assert.notNull(userId);
 		return this.contractpartnerDao.getAllContractpartnerInitials(userId.getId());
 	}
 
 	@Override
-	public List<Character> getAllContractpartnerInitialsByDateRange(final UserID userId, final LocalDate validFrom,
+	public Set<Character> getAllContractpartnerInitialsByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		return this.contractpartnerDao.getAllContractpartnerInitialsByDateRange(userId.getId(), Date.valueOf(validFrom),
 				Date.valueOf(validTil));
 	}
 
 	@Override
 	public Integer countAllContractpartners(final UserID userId) {
+		Assert.notNull(userId);
 		return this.contractpartnerDao.countAllContractpartners(userId.getId());
 	}
 
 	@Override
 	public Integer countAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		return this.contractpartnerDao.countAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom),
 				Date.valueOf(validTil));
 	}
@@ -193,6 +205,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	@Cacheable(CacheNames.ALL_CONTRACTPARTNERS)
 	public List<Contractpartner> getAllContractpartners(final UserID userId) {
+		Assert.notNull(userId);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartners(userId.getId());
 		return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -201,6 +214,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public List<Contractpartner> getAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
 		return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -208,6 +224,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public List<Contractpartner> getAllContractpartnersByInitial(final UserID userId, final Character initial) {
+		Assert.notNull(userId);
 		Assert.notNull(initial);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartnersByInitial(userId.getId(), initial);
@@ -217,6 +234,10 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public List<Contractpartner> getAllContractpartnersByInitialAndDateRange(final UserID userId,
 			final Character initial, final LocalDate validFrom, final LocalDate validTil) {
+		Assert.notNull(userId);
+		Assert.notNull(validFrom);
+		Assert.notNull(validTil);
+		Assert.notNull(initial);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartnersByInitialAndDateRange(userId.getId(), initial, Date.valueOf(validFrom),
 						Date.valueOf(validTil));
@@ -225,6 +246,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
+		Assert.notNull(userId);
 		Assert.notNull(name);
 		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerByName(userId.getId(),
 				name);
@@ -265,6 +287,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public void deleteContractpartner(final UserID userId, final GroupID groupId,
 			final ContractpartnerID contractpartnerId) {
+		Assert.notNull(userId);
+		Assert.notNull(groupId);
 		Assert.notNull(contractpartnerId);
 		try {
 			this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());

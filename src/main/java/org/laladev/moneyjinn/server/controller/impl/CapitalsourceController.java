@@ -27,6 +27,7 @@ import java.time.LocalDate;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -138,7 +139,7 @@ public class CapitalsourceController extends AbstractController {
 			final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
-		List<Character> initials = null;
+		Set<Character> initials = null;
 		Integer count = null;
 		if (currentlyValid) {
 			initials = this.capitalsourceService.getAllCapitalsourceInitialsByDateRange(userId, now, now);
@@ -262,6 +263,9 @@ public class CapitalsourceController extends AbstractController {
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
 				capitalsourceId);
-		response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
+		if (capitalsource != null && capitalsource.getUser().getId().equals(userId)) {
+			// only the creator of a Capitalsource may edit or delete it
+			response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
+		}
 	}
 }

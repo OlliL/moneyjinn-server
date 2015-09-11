@@ -25,27 +25,25 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //SUCH DAMAGE.
 
 import java.util.List;
-import java.util.Set;
 
-import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountData;
+import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData;
 
-public interface IPostingAccountDaoMapper {
-	public List<PostingAccountData> getAllPostingAccounts();
+public interface IPreDefMoneyflowDaoMapper {
+	public List<PreDefMoneyflowData> getAllPreDefMoneyflows(Long userId);
 
-	public PostingAccountData getPostingAccountById(Long id);
+	public PreDefMoneyflowData getPreDefMoneyflowById(@Param("userId") Long userId, @Param("id") Long id);
 
-	public Integer countAllPostingAccounts();
+	public Integer countAllPreDefMoneyflows(Long userId);
 
-	public Set<Character> getAllPostingAccountInitials();
+	public void createPreDefMoneyflow(PreDefMoneyflowData postingAccountData);
 
-	public List<PostingAccountData> getAllPostingAccountsByInitial(Character initial);
+	public void updatePreDefMoneyflow(PreDefMoneyflowData postingAccountData);
 
-	public PostingAccountData getPostingAccountByName(String name);
+	public void deletePreDefMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
 
-	public void createPostingAccount(PostingAccountData postingAccountData);
+	public List<Long> getAllContractpartnerIds(Long userId);
 
-	public void updatePostingAccount(PostingAccountData postingAccountData);
-
-	public void deletePostingAccount(Long id);
+	public void setLastUsed(@Param("userId") Long userId, @Param("id") Long id);
 
 }

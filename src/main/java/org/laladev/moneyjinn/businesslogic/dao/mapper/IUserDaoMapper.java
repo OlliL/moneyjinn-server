@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.UserData;
@@ -36,7 +37,7 @@ public interface IUserDaoMapper {
 
 	public Integer countAllUsers();
 
-	public List<Character> getAllUserInitials();
+	public Set<Character> getAllUserInitials();
 
 	public List<UserData> getAllUsersByInitial(Character initial);
 

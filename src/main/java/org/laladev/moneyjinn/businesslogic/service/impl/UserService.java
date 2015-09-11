@@ -27,6 +27,7 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -103,7 +104,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public List<Character> getAllUserInitials() {
+	public Set<Character> getAllUserInitials() {
 		return this.userDao.getAllUserInitials();
 	}
 

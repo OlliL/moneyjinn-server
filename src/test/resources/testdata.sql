@@ -55,7 +55,11 @@ INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street  
                       VALUES (2             ,1              ,'AdminPartner','Street',12345   ,'Town','Country','2000-01-01','2999-12-31',NULL               ,NULL                );
                       
 INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
-                      VALUES (3     ,10.10 ,1                  ,1                    ,'pre1' ,'2000-10-10',1           ,null     ,1                   );
+                      VALUES (3     ,10.10 ,1                  ,1                    ,'Pre1' ,'2000-10-10',1           ,null     ,1                   );
+INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
+                      VALUES (5     ,11    ,4                  ,3                    ,'Qre2' ,'2000-10-10',1           ,null     ,2                   );
+INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
+                      VALUES (3     ,-10   ,2                  ,2                    ,'Rre3' ,'2000-10-10',0           ,null     ,2                   );
 
 INSERT INTO moneyflows (mac_id_creator,mac_id_accessor,bookingdate ,invoicedate ,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,mpa_postingaccountid,private)
                 VALUES (3             ,6              ,'2009-01-01','2009-01-01',-1.10 ,1                  ,1                    ,'flow1',1                   ,0);

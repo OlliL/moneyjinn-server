@@ -63,9 +63,6 @@ public class UpdateUserTest extends AbstractControllerTest {
 	private final AccessRelation accessRelationUser1Default4 = new AccessRelation(this.accessIDUser1,
 			this.accessRelationGroup2, LocalDate.parse("2800-01-01"), LocalDate.parse("2999-12-31"));
 
-	private final AccessRelation accessRelationUser2Default = new AccessRelation(this.accessIDUser2,
-			this.accessRelationGroup1, LocalDate.parse("2000-01-01"), LocalDate.parse("2999-12-31"));
-
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;
 	private String userPassword;

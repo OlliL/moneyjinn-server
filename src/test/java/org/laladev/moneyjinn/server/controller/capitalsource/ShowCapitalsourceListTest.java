@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.capitalsource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,7 +52,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	private ShowCapitalsourceListResponse getCompleteResponse() {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('A', 'S', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S', 'X')));
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
@@ -66,7 +67,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	private ShowCapitalsourceListResponse getCurrentlyValidResponse() {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('A', 'S'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S')));
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
@@ -108,7 +109,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('A', 'S', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S', 'X')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
@@ -152,7 +153,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	public void test_initialS_AResponseObject() throws Exception {
 		// set default to 0
 		ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('A', 'S', 'X'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S', 'X')));
 		List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
@@ -169,7 +170,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 		// this must change the default-setting to 1
 		expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(Arrays.asList('A', 'S'));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S')));
 		capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);

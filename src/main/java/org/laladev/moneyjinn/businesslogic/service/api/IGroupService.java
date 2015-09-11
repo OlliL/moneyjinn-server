@@ -25,6 +25,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 //SUCH DAMAGE.
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
@@ -73,7 +74,7 @@ public interface IGroupService {
 	 *
 	 * @return all uppercased initials
 	 */
-	public List<Character> getAllGroupInitials();
+	public Set<Character> getAllGroupInitials();
 
 	/**
 	 * This Service returns the number of all existing groups

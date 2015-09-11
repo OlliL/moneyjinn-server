@@ -50,15 +50,17 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
 
 	@Test
 	public void test_regularCapitalsourceNoData_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
-		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
 
 		Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
 
 		Assert.assertNotNull(capitalsource);
 
-		super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, this.method, true,
+		super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method, true,
 				Object.class);
 
 		capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
