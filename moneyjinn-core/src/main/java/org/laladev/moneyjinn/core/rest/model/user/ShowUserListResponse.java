@@ -1,6 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("showUserListResponse")
 public class ShowUserListResponse extends AbstractResponse {
-	private List<Character> initials;
+	private Set<Character> initials;
 	@JsonProperty("userTransport")
 	private List<UserTransport> userTransports;
 	@JsonProperty("groupTransport")
@@ -20,11 +21,11 @@ public class ShowUserListResponse extends AbstractResponse {
 	@JsonProperty("accessRelationTransport")
 	private List<AccessRelationTransport> accessRelationTransports;
 
-	public final List<Character> getInitials() {
+	public final Set<Character> getInitials() {
 		return this.initials;
 	}
 
-	public final void setInitials(final List<Character> initials) {
+	public final void setInitials(final Set<Character> initials) {
 		this.initials = initials;
 	}
 

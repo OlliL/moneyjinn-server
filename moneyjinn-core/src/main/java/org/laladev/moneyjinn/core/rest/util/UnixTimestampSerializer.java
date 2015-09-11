@@ -39,24 +39,25 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 public class UnixTimestampSerializer extends JsonSerializer<Date> {
+	TimeZone tzGMT = TimeZone.getTimeZone("GMT");
+	int systemTzOffset = TimeZone.getDefault().getRawOffset();
 
 	@Override
 	public void serialize(final Date value, final JsonGenerator jgen, final SerializerProvider provider)
 			throws IOException, JsonProcessingException {
+		// does not work for dates before 1582 (Change from Julian to Gregorian calendar)
+		// jgen.writeNumber((value.getTime() - value.getTimezoneOffset() * 60 * 1000) / 1000);
 
-		final Calendar cal = Calendar.getInstance();
-		cal.setTime(value);
-		final int year = cal.get(Calendar.YEAR);
-		final int month = cal.get(Calendar.MONTH);
-		final int day = cal.get(Calendar.DAY_OF_MONTH);
+		// Java 8:
+		// jgen.writeString(String.valueOf(value.toLocalDate().atStartOfDay(ZoneId.of("GMT")).toEpochSecond()));
 
-		final GregorianCalendar c = new GregorianCalendar();
-		c.clear();
+		// does work for dates before 1582 but is slower than the both above
+		final GregorianCalendar c = new GregorianCalendar(this.tzGMT);
 		c.setGregorianChange(new Date(Long.MIN_VALUE));
-		c.setTimeZone(TimeZone.getTimeZone("GMT"));
-		c.set(Calendar.YEAR, year);
-		c.set(Calendar.MONTH, month);
-		c.set(Calendar.DAY_OF_MONTH, day);
+		c.set(value.getYear() + 1900, value.getMonth(), value.getDate(), 0, 0, 0);
+		c.clear(Calendar.MILLISECOND);
+
 		jgen.writeString(String.valueOf(c.getTimeInMillis() / 1000));
+
 	}
 }

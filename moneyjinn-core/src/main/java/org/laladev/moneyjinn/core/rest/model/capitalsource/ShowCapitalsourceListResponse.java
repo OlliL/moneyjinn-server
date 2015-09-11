@@ -1,6 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.capitalsource;
 
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -10,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("showCapitalsourceListResponse")
 public class ShowCapitalsourceListResponse extends AbstractResponse {
-	private List<Character> initials;
+	private Set<Character> initials;
 	@JsonProperty("capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
 	private boolean currentlyValid;
 
-	public final List<Character> getInitials() {
+	public final Set<Character> getInitials() {
 		return this.initials;
 	}
 
-	public final void setInitials(final List<Character> initials) {
+	public final void setInitials(final Set<Character> initials) {
 		this.initials = initials;
 	}
 

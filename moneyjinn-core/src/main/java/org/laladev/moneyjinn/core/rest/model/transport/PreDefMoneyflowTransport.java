@@ -31,33 +31,33 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class PreDefMoneyflowTransport {
-	private Integer id;
-	private Integer userid;
+	private Long id;
+	private Long userid;
 	private BigDecimal amount;
-	private Integer capitalsourceid;
+	private Long capitalsourceid;
 	private String capitalsourcecomment;
-	private Integer contractpartnerid;
+	private Long contractpartnerid;
 	private String contractpartnername;
 	private String comment;
 	private Date createdate;
-	private Boolean onceAMonth;
+	private Short onceAMonth;
 	private Date lastUsed;
-	private Integer postingaccountid;
+	private Long postingaccountid;
 	private String postingaccountname;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public final Integer getUserid() {
+	public final Long getUserid() {
 		return this.userid;
 	}
 
-	public final void setUserid(final Integer userid) {
+	public final void setUserid(final Long userid) {
 		this.userid = userid;
 	}
 
@@ -69,11 +69,11 @@ public class PreDefMoneyflowTransport {
 		this.amount = amount;
 	}
 
-	public final Integer getCapitalsourceid() {
+	public final Long getCapitalsourceid() {
 		return this.capitalsourceid;
 	}
 
-	public final void setCapitalsourceid(final Integer capitalsourceid) {
+	public final void setCapitalsourceid(final Long capitalsourceid) {
 		this.capitalsourceid = capitalsourceid;
 	}
 
@@ -85,11 +85,11 @@ public class PreDefMoneyflowTransport {
 		this.capitalsourcecomment = capitalsourcecomment;
 	}
 
-	public final Integer getContractpartnerid() {
+	public final Long getContractpartnerid() {
 		return this.contractpartnerid;
 	}
 
-	public final void setContractpartnerid(final Integer contractpartnerid) {
+	public final void setContractpartnerid(final Long contractpartnerid) {
 		this.contractpartnerid = contractpartnerid;
 	}
 
@@ -117,11 +117,11 @@ public class PreDefMoneyflowTransport {
 		this.createdate = createdate;
 	}
 
-	public final Boolean getOnceAMonth() {
+	public final Short getOnceAMonth() {
 		return this.onceAMonth;
 	}
 
-	public final void setOnceAMonth(final Boolean onceAMonth) {
+	public final void setOnceAMonth(final Short onceAMonth) {
 		this.onceAMonth = onceAMonth;
 	}
 
@@ -133,11 +133,11 @@ public class PreDefMoneyflowTransport {
 		this.lastUsed = lastUsed;
 	}
 
-	public final Integer getPostingaccountid() {
+	public final Long getPostingaccountid() {
 		return this.postingaccountid;
 	}
 
-	public final void setPostingaccountid(final Integer postingaccountid) {
+	public final void setPostingaccountid(final Long postingaccountid) {
 		this.postingaccountid = postingaccountid;
 	}
 
