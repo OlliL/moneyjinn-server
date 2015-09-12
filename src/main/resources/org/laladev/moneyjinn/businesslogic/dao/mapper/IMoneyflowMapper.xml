@@ -5,7 +5,6 @@
     	<sql id="moneyflowColumns">
 		 moneyflowid		AS id
 		,mac_id_creator		AS macIdCreator
-		,mac_id_accessor	AS macIdAccessor
 		,bookingdate
 		,invoicedate
 		,amount
@@ -16,7 +15,21 @@
 		,private		AS privat
 	</sql>
     
-	<insert id="createMoneyflow"
+    	<select id="getMoneyflowById"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE moneyflowid         = #{id}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 LIMIT 1
+	</select>
+    	
+    	<insert id="createMoneyflow"
 		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
 		INSERT
@@ -45,5 +58,29 @@
 		      ,#{privat}
 		      )
 	</insert>
+
+	<update id="updateMoneyflow" parameterType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		UPDATE moneyflows
+		   SET bookingdate           = #{bookingdate}
+		      ,invoicedate           = #{invoicedate}
+		      ,amount                = #{amount}
+		      ,mcs_capitalsourceid   = #{mcsCapitalsourceId}
+		      ,mcp_contractpartnerid = #{mcpContractpartnerId}
+		      ,comment               = #{comment}
+		      ,mpa_postingaccountid  = #{mpaPostingAccountId}
+		      ,private               = #{privat}
+		 WHERE mac_id_creator = #{macIdCreator}
+		   AND moneyflowid    = #{id}
+		 LIMIT 1
+	</update>
+
+	<delete id="deleteMoneyflow">
+		DELETE
+		  FROM moneyflows
+		 WHERE mac_id_creator = #{userId}
+		   AND moneyflowid    = #{id}
+		 LIMIT 1
+	</delete>
+    	
 </mapper>
  

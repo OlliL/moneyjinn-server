@@ -16,6 +16,7 @@ import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
@@ -25,15 +26,20 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
+import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
 @Named
@@ -196,24 +202,54 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
+	@Cacheable(value = CacheNames.MONEYFLOW_BY_ID)
+	public Moneyflow getMoneyflowById(final UserID userId, final MoneyflowID moneyflowId) {
+		Assert.notNull(userId);
+		Assert.notNull(moneyflowId);
+		final MoneyflowData moneyflowData = this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId());
+		return this.mapMoneyflowData(moneyflowData);
+	}
+
+	@Override
 	public void createMoneyflows(final List<Moneyflow> moneyflows) {
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflows.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
-		// final boolean flushYearPool = false;
 		if (validationResult.isValid()) {
-			for (final Moneyflow moneyflow : moneyflows) {
-				// if (! flushYearPool && ! this.moneyflowDao.checkYearHasMoneyflows(
-				// moneyflow.getUser().getId(), moneyflow.getBookingDate().format( 'Y' ) )) {
-				// flushYearPool = true;
-				// }
-				final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
-				this.moneyflowDao.createMoneyflow(moneyflowData);
+			final List<MoneyflowData> moneyflowDatas = super.mapList(moneyflows, MoneyflowData.class);
+			moneyflowDatas.stream().forEach(mfd -> this.moneyflowDao.createMoneyflow(mfd));
+		}
+	}
+
+	@Override
+	public void updateMoneyflow(final Moneyflow moneyflow) {
+		Assert.notNull(moneyflow);
+		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
+
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
+		}
+
+		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
+		this.moneyflowDao.updateMoneyflow(moneyflowData);
+		this.evictMoneyflowCache(moneyflow.getUser().getId(), moneyflow.getId());
+	}
+
+	@Override
+	public void deleteMoneyflow(final UserID userId, final MoneyflowID moneyflowId) {
+		Assert.notNull(userId);
+		Assert.notNull(moneyflowId);
+		this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
+
+	}
+
+	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
+		if (moneyflowId != null) {
+			final Cache moneyflowIdCache = super.getCache(CacheNames.MONEYFLOW_BY_ID);
+			if (moneyflowIdCache != null) {
+				moneyflowIdCache.evict(new SimpleKey(userId, moneyflowId));
 			}
 		}
-		// if (flushYearPool) {
-		// parent::cache_flush_cachepool( self::CACHE_POOL_YEARS_NAME );
-		// }
-		// parent::cache_flush_cachepool( self::CACHE_POOL_NAME );
 	}
 
 }

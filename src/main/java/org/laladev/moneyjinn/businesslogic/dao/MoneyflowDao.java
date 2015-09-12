@@ -41,4 +41,16 @@ public class MoneyflowDao {
 		return moneyflowData.getId();
 	}
 
+	public MoneyflowData getMoneyflowById(final Long userId, final Long id) {
+		return this.mapper.getMoneyflowById(userId, id);
+	}
+
+	public void updateMoneyflow(final MoneyflowData moneyflowData) {
+		this.mapper.updateMoneyflow(moneyflowData);
+	}
+
+	public void deleteMoneyflow(final Long groupId, final Long id) {
+		this.mapper.deleteMoneyflow(groupId, id);
+	}
+
 }

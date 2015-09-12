@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflowID;
@@ -27,11 +28,17 @@ import org.laladev.moneyjinn.businesslogic.service.api.IPreDefMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractAddMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -44,6 +51,7 @@ import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMa
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,6 +123,41 @@ public class MoneyflowController extends AbstractController {
 				&& lastUsedDate.getYear() == today.getYear();
 	}
 
+	private void fillAbstractEditMoneyflowResponse(final Moneyflow moneyflow,
+			final AbstractEditMoneyflowResponse response) {
+		Assert.notNull(moneyflow.getUser());
+		Assert.notNull(moneyflow.getBookingDate());
+		Assert.notNull(moneyflow.getCapitalsource());
+		Assert.notNull(moneyflow.getCapitalsource().getValidFrom());
+		Assert.notNull(moneyflow.getContractpartner());
+		Assert.notNull(moneyflow.getContractpartner().getValidFrom());
+
+		final UserID userId = moneyflow.getUser().getId();
+
+		List<Capitalsource> capitalsources = null;
+		if (moneyflow.getBookingDate().isBefore(moneyflow.getCapitalsource().getValidFrom())
+				|| moneyflow.getBookingDate().isAfter(moneyflow.getCapitalsource().getValidTil())) {
+			capitalsources = this.capitalsourceService.getGroupCapitalsources(userId);
+		} else {
+			capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
+					moneyflow.getBookingDate(), moneyflow.getBookingDate());
+		}
+		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+
+		List<Contractpartner> contractpartner = null;
+		if (moneyflow.getBookingDate().isBefore(moneyflow.getContractpartner().getValidFrom())
+				|| moneyflow.getBookingDate().isAfter(moneyflow.getContractpartner().getValidTil())) {
+			contractpartner = this.contractpartnerService.getAllContractpartners(userId);
+		} else {
+			contractpartner = this.contractpartnerService.getAllContractpartnersByDateRange(userId,
+					moneyflow.getBookingDate(), moneyflow.getBookingDate());
+		}
+		response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
+
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+	}
+
 	@RequestMapping(value = "showAddMoneyflows", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowAddMoneyflowsResponse showAddMoneyflows() {
@@ -128,14 +171,34 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "showEditMoneyflow/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public void showEditMoneyflow(@PathVariable(value = "id") final Long id) {
-		// TODO implementation
+	public ShowEditMoneyflowResponse showEditMoneyflow(@PathVariable(value = "id") final Long id) {
+
+		final UserID userId = super.getUserId();
+		final ShowEditMoneyflowResponse response = new ShowEditMoneyflowResponse();
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, new MoneyflowID(id));
+
+		if (moneyflow != null) {
+			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
+			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
+		}
+
+		return response;
 	}
 
 	@RequestMapping(value = "showDeleteMoneyflow/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public void showDeleteMoneyflow(@PathVariable(value = "id") final Long id) {
-		// TODO implementation
+	public ShowDeleteMoneyflowResponse showDeleteMoneyflow(@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final MoneyflowID moneyflowId = new MoneyflowID(id);
+		final ShowDeleteMoneyflowResponse response = new ShowDeleteMoneyflowResponse();
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+		if (moneyflow != null) {
+			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
+		}
+
+		return response;
 	}
 
 	@RequestMapping(value = "showSearchMoneyflowForm", method = { RequestMethod.GET })
@@ -188,13 +251,44 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public void updateMoneyflow() {
-		// TODO implementation
+	public UpdateMoneyflowResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
+		final UserID userId = super.getUserId();
+		final User user = this.userService.getUserById(userId);
+		final Group group = this.accessRelationService.getAccessor(userId);
+
+		final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
+		moneyflow.setUser(user);
+		moneyflow.setGroup(group);
+
+		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+
+		if (validationResult.isValid()) {
+			this.moneyflowService.updateMoneyflow(moneyflow);
+		} else {
+			final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
+					moneyflow.getCapitalsource().getId());
+			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+					moneyflow.getContractpartner().getId());
+
+			moneyflow.setCapitalsource(capitalsource);
+			moneyflow.setContractpartner(contractpartner);
+
+			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
+			response.setResult(validationResult.isValid());
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			return response;
+		}
+
+		return null;
 	}
 
 	@RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
 	@RequiresAuthorization
 	public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
-		// TODO implementation
+		final UserID userId = super.getUserId();
+		final MoneyflowID moneyflowId = new MoneyflowID(id);
+		this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
 	}
 }

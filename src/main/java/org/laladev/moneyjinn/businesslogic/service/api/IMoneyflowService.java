@@ -3,6 +3,8 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
@@ -43,4 +45,19 @@ public interface IMoneyflowService {
 	 */
 
 	public void createMoneyflows(List<Moneyflow> moneyflows);
+
+	/**
+	 * This method returns the {@link Moneyflow} specified by its Id
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @param moneyflowId
+	 *            {@link MoneyflowID}
+	 * @return {@link Moneyflow}
+	 */
+	public Moneyflow getMoneyflowById(UserID userId, MoneyflowID moneyflowId);
+
+	void updateMoneyflow(Moneyflow moneyflow);
+
+	void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 }

@@ -27,7 +27,9 @@ package org.laladev.moneyjinn.server.controller.impl;
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.api.AbstractMapperSupport;
+import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 import org.laladev.moneyjinn.server.main.SessionEnvironment;
 
 public abstract class AbstractController extends AbstractMapperSupport {
@@ -35,6 +37,9 @@ public abstract class AbstractController extends AbstractMapperSupport {
 	private SessionEnvironment sessionEnvironment;
 
 	protected UserID getUserId() {
+		if (this.sessionEnvironment.getUserID() == null) {
+			throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
+		}
 		return this.sessionEnvironment.getUserID();
 	}
 

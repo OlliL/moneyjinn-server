@@ -35,8 +35,6 @@ import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -60,7 +58,6 @@ public class MoneyflowDataMapper implements IMapper<Moneyflow, MoneyflowData> {
 				new Contractpartner(new ContractpartnerID(moneyflowData.getMcpContractpartnerId())));
 		moneyflow.setComment(moneyflowData.getComment());
 		moneyflow.setUser(new User(new UserID(moneyflowData.getMacIdCreator())));
-		moneyflow.setGroup(new Group(new GroupID(moneyflowData.getMacIdAccessor())));
 		moneyflow.setPrivat(moneyflowData.isPrivat());
 		moneyflow.setPostingAccount(new PostingAccount(new PostingAccountID(moneyflowData.getMpaPostingAccountId())));
 
