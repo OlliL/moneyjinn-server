@@ -32,25 +32,37 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("createMoneyflowsRequest")
 public class CreateMoneyflowRequest extends AbstractRequest {
-	private List<MoneyflowTransport> moneyflowTransport;
+	@JsonProperty("moneyflowTransport")
+	private List<MoneyflowTransport> moneyflowTransports;
+	private List<Long> usedPreDefMoneyflowIds;
 
-	public final List<MoneyflowTransport> getMoneyflowTransport() {
-		return this.moneyflowTransport;
+	public final List<MoneyflowTransport> getMoneyflowTransports() {
+		return this.moneyflowTransports;
 	}
 
-	public final void setMoneyflowTransport(final List<MoneyflowTransport> moneyflowTransport) {
-		this.moneyflowTransport = moneyflowTransport;
+	public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
+		this.moneyflowTransports = moneyflowTransports;
+	}
+
+	public final List<Long> getUsedPreDefMoneyflowIds() {
+		return this.usedPreDefMoneyflowIds;
+	}
+
+	public final void setUsedPreDefMoneyflowIds(final List<Long> usedPreDefMoneyflowIds) {
+		this.usedPreDefMoneyflowIds = usedPreDefMoneyflowIds;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
+		result = prime * result + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
+		result = prime * result + ((this.usedPreDefMoneyflowIds == null) ? 0 : this.usedPreDefMoneyflowIds.hashCode());
 		return result;
 	}
 
@@ -66,14 +78,32 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 			return false;
 		}
 		final CreateMoneyflowRequest other = (CreateMoneyflowRequest) obj;
-		if (this.moneyflowTransport == null) {
-			if (other.moneyflowTransport != null) {
+		if (this.moneyflowTransports == null) {
+			if (other.moneyflowTransports != null) {
 				return false;
 			}
-		} else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
+		} else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
+			return false;
+		}
+		if (this.usedPreDefMoneyflowIds == null) {
+			if (other.usedPreDefMoneyflowIds != null) {
+				return false;
+			}
+		} else if (!this.usedPreDefMoneyflowIds.equals(other.usedPreDefMoneyflowIds)) {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("CreateMoneyflowRequest [moneyflowTransports=");
+		builder.append(this.moneyflowTransports);
+		builder.append(", usedPreDefMoneyflowIds=");
+		builder.append(this.usedPreDefMoneyflowIds);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

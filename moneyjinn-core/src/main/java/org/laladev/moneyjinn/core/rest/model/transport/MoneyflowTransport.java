@@ -40,12 +40,11 @@ public class MoneyflowTransport {
 	private BigDecimal amount;
 	private Long capitalsourceid;
 	private String capitalsourcecomment;
-	private Integer capitalsourcetype;
 	private Long contractpartnerid;
 	private String contractpartnername;
 	private String comment;
 	@JsonProperty("private")
-	private Boolean privat;
+	private Short privat;
 	private Long postingaccountid;
 	private String postingaccountname;
 
@@ -101,14 +100,6 @@ public class MoneyflowTransport {
 		return this.capitalsourcecomment;
 	}
 
-	public final Integer getCapitalsourcetype() {
-		return this.capitalsourcetype;
-	}
-
-	public final void setCapitalsourcetype(final Integer capitalsourcetype) {
-		this.capitalsourcetype = capitalsourcetype;
-	}
-
 	public final void setCapitalsourcecomment(final String capitalsourcecomment) {
 		this.capitalsourcecomment = capitalsourcecomment;
 	}
@@ -137,11 +128,11 @@ public class MoneyflowTransport {
 		this.comment = comment;
 	}
 
-	public final Boolean getPrivat() {
+	public final Short getPrivat() {
 		return this.privat;
 	}
 
-	public final void setPrivat(final Boolean privat) {
+	public final void setPrivat(final Short privat) {
 		this.privat = privat;
 	}
 
@@ -169,7 +160,6 @@ public class MoneyflowTransport {
 		result = prime * result + ((this.bookingdate == null) ? 0 : this.bookingdate.hashCode());
 		result = prime * result + ((this.capitalsourcecomment == null) ? 0 : this.capitalsourcecomment.hashCode());
 		result = prime * result + ((this.capitalsourceid == null) ? 0 : this.capitalsourceid.hashCode());
-		result = prime * result + ((this.capitalsourcetype == null) ? 0 : this.capitalsourcetype.hashCode());
 		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
 		result = prime * result + ((this.contractpartnerid == null) ? 0 : this.contractpartnerid.hashCode());
 		result = prime * result + ((this.contractpartnername == null) ? 0 : this.contractpartnername.hashCode());
@@ -220,13 +210,6 @@ public class MoneyflowTransport {
 				return false;
 			}
 		} else if (!this.capitalsourceid.equals(other.capitalsourceid)) {
-			return false;
-		}
-		if (this.capitalsourcetype == null) {
-			if (other.capitalsourcetype != null) {
-				return false;
-			}
-		} else if (!this.capitalsourcetype.equals(other.capitalsourcetype)) {
 			return false;
 		}
 		if (this.comment == null) {
@@ -312,8 +295,6 @@ public class MoneyflowTransport {
 		builder.append(this.capitalsourceid);
 		builder.append(", capitalsourcecomment=");
 		builder.append(this.capitalsourcecomment);
-		builder.append(", capitalsourcetype=");
-		builder.append(this.capitalsourcetype);
 		builder.append(", contractpartnerid=");
 		builder.append(this.contractpartnerid);
 		builder.append(", contractpartnername=");

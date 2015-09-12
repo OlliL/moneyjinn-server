@@ -43,6 +43,28 @@ public class ContractpartnerTransport {
 	private String postingAccountName;
 	private Long postingAccountId;
 
+	public ContractpartnerTransport() {
+		super();
+	}
+
+	public ContractpartnerTransport(final Long id, final Long userid, final String name, final String street,
+			final Integer postcode, final String town, final Date validTil, final Date validFrom, final String country,
+			final String moneyflowComment, final String postingAccountName, final Long postingAccountId) {
+		super();
+		this.id = id;
+		this.userid = userid;
+		this.name = name;
+		this.street = street;
+		this.postcode = postcode;
+		this.town = town;
+		this.validTil = validTil;
+		this.validFrom = validFrom;
+		this.country = country;
+		this.moneyflowComment = moneyflowComment;
+		this.postingAccountName = postingAccountName;
+		this.postingAccountId = postingAccountId;
+	}
+
 	public final Long getId() {
 		return this.id;
 	}
