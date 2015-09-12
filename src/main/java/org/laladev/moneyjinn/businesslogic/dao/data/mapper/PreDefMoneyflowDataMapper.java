@@ -87,7 +87,7 @@ public class PreDefMoneyflowDataMapper implements IMapper<PreDefMoneyflow, PreDe
 			final Date lastUserDate = Date.valueOf(preDefMoneyflow.getLastUsedDate());
 			preDefMoneyflowData.setLastUsed(lastUserDate);
 		}
-		if (preDefMoneyflow.getUser() instanceof User) {
+		if (preDefMoneyflow.getUser() != null) {
 			preDefMoneyflowData.setMacId(preDefMoneyflow.getUser().getId().getId());
 		}
 		preDefMoneyflowData.setOnceAMonth(preDefMoneyflow.isOnceAMonth());

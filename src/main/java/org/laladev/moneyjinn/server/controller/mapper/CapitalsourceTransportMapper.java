@@ -33,19 +33,11 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 public class CapitalsourceTransportMapper implements IMapper<Capitalsource, CapitalsourceTransport> {
 	private static final Short GROUP_USE_SHORT = Short.valueOf((short) 1);
 	private static final Short IMPORT_ALLOWED_SHORT = Short.valueOf((short) 1);
-	private static final Short NON_CACHE_SHORT = Short.valueOf((short) 1);
-	private static final Short CACHE_SHORT = Short.valueOf((short) 2);
-	private static final Short CURRENT_ASSET_SHORT = Short.valueOf((short) 1);
-	private static final Short LONG_TERM_ASSET_SHORT = Short.valueOf((short) 2);
-	private static final Short RESERVE_ASSET_SHORT = Short.valueOf((short) 3);
-	private static final Short PROVISION_ASSET_SHORT = Short.valueOf((short) 4);
 
 	@Override
 	public Capitalsource mapBToA(final CapitalsourceTransport capitalsourceTransport) {
@@ -64,33 +56,8 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 			capitalsource.setImportAllowed(true);
 		}
 
-		if (capitalsourceTransport.getState() != null) {
-			switch (capitalsourceTransport.getState()) {
-			case 1:
-				capitalsource.setState(CapitalsourceState.NON_CACHE);
-				break;
-			case 2:
-				capitalsource.setState(CapitalsourceState.CACHE);
-				break;
-			}
-		}
-
-		if (capitalsourceTransport.getType() != null) {
-			switch (capitalsourceTransport.getType()) {
-			case 1:
-				capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
-				break;
-			case 2:
-				capitalsource.setType(CapitalsourceType.LONG_TERM_ASSET);
-				break;
-			case 3:
-				capitalsource.setType(CapitalsourceType.RESERVE_ASSET);
-				break;
-			case 4:
-				capitalsource.setType(CapitalsourceType.PROVISION_ASSET);
-				break;
-			}
-		}
+		capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceTransport.getState()));
+		capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceTransport.getType()));
 
 		capitalsource.setUser(new User(new UserID(capitalsourceTransport.getUserid())));
 
@@ -124,28 +91,8 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 			capitalsourceTransport.setImportAllowed(IMPORT_ALLOWED_SHORT);
 		}
 
-		switch (capitalsource.getState()) {
-		case NON_CACHE:
-			capitalsourceTransport.setState(NON_CACHE_SHORT);
-			break;
-		case CACHE:
-			capitalsourceTransport.setState(CACHE_SHORT);
-			break;
-		}
-		switch (capitalsource.getType()) {
-		case CURRENT_ASSET:
-			capitalsourceTransport.setType(CURRENT_ASSET_SHORT);
-			break;
-		case LONG_TERM_ASSET:
-			capitalsourceTransport.setType(LONG_TERM_ASSET_SHORT);
-			break;
-		case RESERVE_ASSET:
-			capitalsourceTransport.setType(RESERVE_ASSET_SHORT);
-			break;
-		case PROVISION_ASSET:
-			capitalsourceTransport.setType(PROVISION_ASSET_SHORT);
-			break;
-		}
+		capitalsourceTransport.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
+		capitalsourceTransport.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 
 		final User user = capitalsource.getUser();
 		if (user != null) {

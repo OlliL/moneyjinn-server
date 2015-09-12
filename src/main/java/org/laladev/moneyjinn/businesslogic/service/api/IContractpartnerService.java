@@ -174,7 +174,7 @@ public interface IContractpartnerService {
 	 * This method persists (updates) the given {@link Contractpartner}.
 	 *
 	 * @param contractpartner
-	 *            updateContractpartner
+	 *            {@link Contractpartner}
 	 * @throws BusinessException
 	 */
 	public void updateContractpartner(Contractpartner contractpartner);
@@ -183,7 +183,7 @@ public interface IContractpartnerService {
 	 * This method persists (creates) the given {@link Contractpartner}.
 	 *
 	 * @param contractpartner
-	 *            updateContractpartner
+	 *            {@link Contractpartner}
 	 * @throws BusinessException
 	 */
 	public void createContractpartner(Contractpartner contractpartner);

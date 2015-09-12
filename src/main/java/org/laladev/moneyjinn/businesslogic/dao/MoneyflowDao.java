@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.businesslogic.dao.mapper;
+package org.laladev.moneyjinn.businesslogic.dao;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -24,26 +24,21 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.mapper.IMoneyflowDaoMapper;
 
-public interface IPreDefMoneyflowDaoMapper {
-	public List<PreDefMoneyflowData> getAllPreDefMoneyflows(Long userId);
+@Named
+public class MoneyflowDao {
 
-	public PreDefMoneyflowData getPreDefMoneyflowById(@Param("userId") Long userId, @Param("id") Long id);
+	@Inject
+	IMoneyflowDaoMapper mapper;
 
-	public Integer countAllPreDefMoneyflows(Long userId);
-
-	public void createPreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
-
-	public void updatePreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
-
-	public void deletePreDefMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
-
-	public List<Long> getAllContractpartnerIds(Long userId);
-
-	public void setLastUsed(@Param("userId") Long userId, @Param("id") Long id);
+	public Long createMoneyflow(final MoneyflowData moneyflowData) {
+		this.mapper.createMoneyflow(moneyflowData);
+		return moneyflowData.getId();
+	}
 
 }

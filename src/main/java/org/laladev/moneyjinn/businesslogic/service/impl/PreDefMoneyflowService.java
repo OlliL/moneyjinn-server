@@ -63,7 +63,6 @@ import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPreDefMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
@@ -86,8 +85,6 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
 	@Inject
 	private PreDefMoneyflowDao preDefMoneyflowDao;
-	@Inject
-	private CacheManager cacheManager;
 
 	@Override
 	protected void addBeanMapper() {
@@ -307,8 +304,8 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
 	private void evictPreDefMoneyflowCache(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
 		if (preDefMoneyflowId != null) {
-			final Cache allPreDefMoneyflowsCache = this.cacheManager.getCache(CacheNames.ALL_POSTINGACCOUNTS);
-			final Cache preDefMoneyflowByIdCache = this.cacheManager.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
+			final Cache allPreDefMoneyflowsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
+			final Cache preDefMoneyflowByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
 			if (allPreDefMoneyflowsCache != null) {
 				allPreDefMoneyflowsCache.evict(userId);
 			}

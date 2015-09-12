@@ -45,7 +45,6 @@ import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
@@ -55,8 +54,6 @@ import org.springframework.util.Assert;
 public class UserService extends AbstractService implements IUserService {
 	@Inject
 	private UserDao userDao;
-	@Inject
-	private CacheManager cacheManager;
 	private MessageDigest sha1MD;
 
 	public UserService() {
@@ -218,8 +215,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	private void evictUserCache(final User user) {
 		if (user != null) {
-			final Cache userByNameCache = this.cacheManager.getCache(CacheNames.USER_BY_NAME);
-			final Cache userByIdCache = this.cacheManager.getCache(CacheNames.USER_BY_ID);
+			final Cache userByNameCache = super.getCache(CacheNames.USER_BY_NAME);
+			final Cache userByIdCache = super.getCache(CacheNames.USER_BY_ID);
 			if (userByNameCache != null) {
 				userByNameCache.evict(user.getName());
 			}

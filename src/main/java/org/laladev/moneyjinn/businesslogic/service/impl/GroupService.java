@@ -42,7 +42,6 @@ import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
@@ -53,8 +52,6 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Inject
 	private GroupDao groupDao;
-	@Inject
-	private CacheManager cacheManager;
 
 	@Override
 	protected void addBeanMapper() {
@@ -170,8 +167,8 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	private void evictGroupCache(final GroupID groupId) {
 		if (groupId != null) {
-			final Cache allGroupsCache = this.cacheManager.getCache(CacheNames.ALL_GROUPS);
-			final Cache groupByIdCache = this.cacheManager.getCache(CacheNames.GROUP_BY_ID);
+			final Cache allGroupsCache = super.getCache(CacheNames.ALL_GROUPS);
+			final Cache groupByIdCache = super.getCache(CacheNames.GROUP_BY_ID);
 			if (allGroupsCache != null) {
 				allGroupsCache.clear();
 			}

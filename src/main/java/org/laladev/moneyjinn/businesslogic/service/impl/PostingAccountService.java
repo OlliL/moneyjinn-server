@@ -42,7 +42,6 @@ import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
@@ -53,8 +52,6 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Inject
 	private PostingAccountDao postingAccountDao;
-	@Inject
-	private CacheManager cacheManager;
 
 	@Override
 	protected void addBeanMapper() {
@@ -173,8 +170,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	private void evictPostingAccountCache(final PostingAccountID postingAccountId) {
 		if (postingAccountId != null) {
-			final Cache allPostingAccountsCache = this.cacheManager.getCache(CacheNames.ALL_POSTINGACCOUNTS);
-			final Cache postingAccountByIdCache = this.cacheManager.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
+			final Cache allPostingAccountsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
+			final Cache postingAccountByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
 			if (allPostingAccountsCache != null) {
 				allPostingAccountsCache.clear();
 			}

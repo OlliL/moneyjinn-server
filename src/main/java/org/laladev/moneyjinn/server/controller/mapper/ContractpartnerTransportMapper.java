@@ -72,34 +72,25 @@ public class ContractpartnerTransportMapper implements IMapper<Contractpartner, 
 
 	@Override
 	public ContractpartnerTransport mapAToB(final Contractpartner contractpartner) {
-		final ContractpartnerTransport contractpartnerTransport = new ContractpartnerTransport();
-
-		if (contractpartner.getId() != null) {
-			contractpartnerTransport.setId(contractpartner.getId().getId());
-		}
-
-		if (contractpartner.getUser() != null) {
-			contractpartnerTransport.setUserid(contractpartner.getUser().getId().getId());
-		}
+		final ContractpartnerID contractpartnerId = contractpartner.getId();
+		final User user = contractpartner.getUser();
+		final Long id = contractpartnerId == null ? null : contractpartnerId.getId();
+		final Long userId = user == null ? null : user.getId().getId();
 		final Date validFrom = Date.valueOf(contractpartner.getValidFrom());
 		final Date validTil = Date.valueOf(contractpartner.getValidTil());
 
-		contractpartnerTransport.setValidFrom(validFrom);
-		contractpartnerTransport.setValidTil(validTil);
-
-		contractpartnerTransport.setName(contractpartner.getName());
-		contractpartnerTransport.setStreet(contractpartner.getStreet());
-		contractpartnerTransport.setPostcode(contractpartner.getPostcode());
-		contractpartnerTransport.setTown(contractpartner.getTown());
-		contractpartnerTransport.setCountry(contractpartner.getCountry());
-
-		contractpartnerTransport.setMoneyflowComment(contractpartner.getMoneyflowComment());
-
+		Long postingAccountId = null;
+		String postingAccountName = null;
 		final PostingAccount postingAccount = contractpartner.getPostingAccount();
 		if (postingAccount != null) {
-			contractpartnerTransport.setPostingAccountId(postingAccount.getId().getId());
-			contractpartnerTransport.setPostingAccountName(postingAccount.getName());
+			postingAccountId = postingAccount.getId().getId();
+			postingAccountName = postingAccount.getName();
 		}
+
+		final ContractpartnerTransport contractpartnerTransport = new ContractpartnerTransport(id, userId,
+				contractpartner.getName(), contractpartner.getStreet(), contractpartner.getPostcode(),
+				contractpartner.getTown(), validTil, validFrom, contractpartner.getCountry(),
+				contractpartner.getMoneyflowComment(), postingAccountName, postingAccountId);
 
 		return contractpartnerTransport;
 	}

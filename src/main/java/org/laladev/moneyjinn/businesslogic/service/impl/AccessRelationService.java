@@ -48,7 +48,6 @@ import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
@@ -59,8 +58,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Inject
 	private AccessRelationDao accessRelationDao;
-	@Inject
-	private CacheManager cacheManager;
 	@Inject
 	private IGroupService groupService;
 
@@ -94,28 +91,32 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.toString().concat('-').concat(#root.target.now().toString())")
 	public Group getAccessor(final AccessID accessId) {
 		return this.getAccessor(accessId, this.now());
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id.toString().concat('-').concat(#date.toString())")
 	public Group getAccessor(final AccessID accessId, final LocalDate date) {
 		Assert.notNull(accessId);
 		Assert.notNull(date);
-		final List<Group> groups = this.getAllUserGroupsByUserIdDate(accessId, date);
-		Group accessor = null;
 
-		if (!groups.isEmpty()) {
-			accessor = groups.get(0);
+		final Cache cache = super.getCache(CacheNames.ACCESS_RELATION_BY_USER_ID_AND_DATE, accessId.getId().toString());
+		Group group = cache.get(date, Group.class);
+
+		if (group == null) {
+			final List<Group> groups = this.getAllUserGroupsByUserIdDate(accessId, date);
+
+			if (!groups.isEmpty()) {
+				group = groups.get(0);
+				cache.put(date, group);
+			}
 		}
 
-		return accessor;
+		return group;
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#accessId.id")
+	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID)
 	public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
 		Assert.notNull(accessId);
 		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
@@ -378,8 +379,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	private void evictAccessRelationCache(final AccessID accessID) {
-		final Cache cache = this.cacheManager.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-		cache.evict(accessID.getId());
+		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
+		cache.evict(accessID);
 	}
 
 }

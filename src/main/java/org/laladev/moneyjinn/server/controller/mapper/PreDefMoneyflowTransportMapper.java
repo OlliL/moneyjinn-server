@@ -11,7 +11,6 @@ import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
@@ -72,9 +71,6 @@ public class PreDefMoneyflowTransportMapper implements IMapper<PreDefMoneyflow, 
 		if (preDefMoneyflowTransport.getOnceAMonth() != null
 				&& ONCE_A_MONTH_SHORT.equals(preDefMoneyflowTransport.getOnceAMonth())) {
 			preDefMoneyflow.setOnceAMonth(true);
-		}
-		if (preDefMoneyflowTransport.getUserid() != null) {
-			preDefMoneyflow.setUser(new User(new UserID(preDefMoneyflowTransport.getUserid())));
 		}
 		if (preDefMoneyflowTransport.getPostingaccountid() != null) {
 			final PostingAccount postingAccount = new PostingAccount(

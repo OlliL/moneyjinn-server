@@ -37,7 +37,6 @@
 		 WHERE mac_id = #{userId}
 		 ORDER BY predefmoneyflowid
 	</select>
-	
 
 	<insert id="createPreDefMoneyflow"
 		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.PreDefMoneyflowData"

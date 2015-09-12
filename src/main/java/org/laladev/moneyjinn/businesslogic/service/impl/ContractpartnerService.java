@@ -54,7 +54,6 @@ import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
@@ -66,8 +65,6 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Inject
 	private ContractpartnerDao contractpartnerDao;
-	@Inject
-	private CacheManager cacheManager;
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -203,7 +200,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_CONTRACTPARTNERS)
+	@Cacheable(CacheNames.ALL_CONTRACTPARTNER)
 	public List<Contractpartner> getAllContractpartners(final UserID userId) {
 		Assert.notNull(userId);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
@@ -211,15 +208,27 @@ public class ContractpartnerService extends AbstractService implements IContract
 		return this.mapContractpartnerDataList(contractpartnerDataList);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Contractpartner> getAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-				.getAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
-		return this.mapContractpartnerDataList(contractpartnerDataList);
+
+		final Cache cache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE, userId.getId().toString());
+		List<Contractpartner> contractpartners = null;
+		final SimpleKey key = new SimpleKey(validFrom, validTil);
+		contractpartners = cache.get(key, List.class);
+
+		if (contractpartners == null) {
+			final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
+					.getAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+			contractpartners = this.mapContractpartnerDataList(contractpartnerDataList);
+			cache.put(key, contractpartners);
+		}
+
+		return contractpartners;
 	}
 
 	@Override
@@ -303,13 +312,18 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	private void evictContractpartnerCache(final UserID userId, final ContractpartnerID contractpartnerId) {
 		if (contractpartnerId != null) {
-			final Cache allContractpartnersCache = this.cacheManager.getCache(CacheNames.ALL_CONTRACTPARTNERS);
-			final Cache contractpartnerByIdCache = this.cacheManager.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
+			final Cache allContractpartnersCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER);
+			final Cache contractpartnerByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
+			final Cache allContractpartnerByCDateCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
+					userId.getId().toString());
 			if (allContractpartnersCache != null) {
 				allContractpartnersCache.evict(userId);
 			}
 			if (contractpartnerByIdCache != null) {
 				contractpartnerByIdCache.evict(new SimpleKey(userId, contractpartnerId));
+			}
+			if (allContractpartnerByCDateCache != null) {
+				allContractpartnerByCDateCache.clear();
 			}
 		}
 	}

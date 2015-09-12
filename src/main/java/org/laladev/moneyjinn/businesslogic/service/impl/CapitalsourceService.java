@@ -53,7 +53,6 @@ import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
@@ -65,8 +64,6 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	@Inject
 	private CapitalsourceDao capitalsourceDao;
-	@Inject
-	private CacheManager cacheManager;
 	@Inject
 	private IUserService userService;
 
@@ -313,27 +310,44 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Capitalsource> getGroupCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-				.getGroupCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
-		return this.mapCapitalsourceDataList(capitalsourceDataList);
+
+		final Cache cache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId().toString());
+		List<Capitalsource> capitalsources = null;
+		final SimpleKey key = new SimpleKey(validFrom, validTil);
+		capitalsources = cache.get(key, List.class);
+
+		if (capitalsources == null) {
+			final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
+					.getGroupCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+			capitalsources = this.mapCapitalsourceDataList(capitalsourceDataList);
+			cache.put(key, capitalsources);
+		}
+
+		return capitalsources;
 	}
 
 	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
 			final CapitalsourceID capitalsourceId) {
 		if (capitalsourceId != null) {
-			final Cache allCapitalsourcesCache = this.cacheManager.getCache(CacheNames.ALL_CAPITALSOURCES);
-			final Cache capitalsourceByIdCache = this.cacheManager.getCache(CacheNames.CAPITALSOURCE_BY_ID);
+			final Cache allCapitalsourcesCache = super.getCache(CacheNames.ALL_CAPITALSOURCES);
+			final Cache capitalsourceByIdCache = super.getCache(CacheNames.CAPITALSOURCE_BY_ID);
+			final Cache groupCapitalsourcesByDateCache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE,
+					userId.getId().toString());
 			if (allCapitalsourcesCache != null) {
 				allCapitalsourcesCache.evict(userId);
 			}
 			if (capitalsourceByIdCache != null) {
 				capitalsourceByIdCache.evict(new SimpleKey(userId, groupId, capitalsourceId));
+			}
+			if (groupCapitalsourcesByDateCache != null) {
+				groupCapitalsourcesByDateCache.clear();
 			}
 		}
 	}

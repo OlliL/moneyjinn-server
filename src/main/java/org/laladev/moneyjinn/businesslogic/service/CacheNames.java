@@ -29,7 +29,7 @@ public class CacheNames {
 	public static final String USER_BY_NAME = "userByName";
 
 	public static final String ALL_ACCESS_RELATIONS_BY_USER_ID = "allAccessRelationsByUserId";
-	public static final String ACCESSRELATION_ALL_BY_ID_DATE = "accessRelationsByUserIdDate";
+	public static final String ACCESS_RELATION_BY_USER_ID_AND_DATE = "accessRelationsByUserIdDate";
 
 	public static final String ALL_GROUPS = "allGroups";
 	public static final String GROUP_BY_ID = "groupById";
@@ -38,9 +38,11 @@ public class CacheNames {
 	public static final String POSTINGACCOUNT_BY_ID = "postingAccountById";
 
 	public static final String ALL_CAPITALSOURCES = "allCapitalsources";
+	public static final String GROUP_CAPITALSOURCES_BY_DATE = "groupCapitalsourcesByDate";
 	public static final String CAPITALSOURCE_BY_ID = "capitalsourceById";
 
-	public static final String ALL_CONTRACTPARTNERS = "allContractpartner";
+	public static final String ALL_CONTRACTPARTNER = "allContractpartner";
+	public static final String ALL_CONTRACTPARTNER_BY_DATE = "allContractpartnerByDate";
 	public static final String CONTRACTPARTNER_BY_ID = "contractpartnerById";
 
 	public static final String ALL_PRE_DEF_MONEYFLOWS = "allPreDefMoneyflows";
