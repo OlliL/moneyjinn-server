@@ -53,7 +53,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("group", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final GroupTransport transport, final ErrorCode errorCode) throws Exception {

@@ -48,7 +48,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("capitalsource", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private ShowCapitalsourceListResponse getCompleteResponse() {

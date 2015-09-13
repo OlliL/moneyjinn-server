@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
@@ -57,7 +58,22 @@ public interface IMoneyflowService {
 	 */
 	public Moneyflow getMoneyflowById(UserID userId, MoneyflowID moneyflowId);
 
-	void updateMoneyflow(Moneyflow moneyflow);
+	/**
+	 * This service changes a {@link Moneyflow}. Before the {@link Moneyflow} is changed, the new
+	 * values are validated for correctness.
+	 *
+	 * @param moneyflow
+	 *            the new {@link Moneyflow} attributes
+	 */
+	public void updateMoneyflow(Moneyflow moneyflow);
 
-	void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
+	/**
+	 * This service deletes a {@link Moneyflow} from the system
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @param moneyflowId
+	 *            The {@link MoneyflowID} of the to-be-deleted {@link PostingAccount}
+	 */
+	public void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 }

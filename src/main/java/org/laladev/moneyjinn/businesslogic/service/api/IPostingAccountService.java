@@ -54,7 +54,7 @@ public interface IPostingAccountService {
 	/**
 	 * Checks the validity of the given {@link PostingAccount}
 	 *
-	 * @param user
+	 * @param postingAccount
 	 *            the {@link PostingAccount}
 	 * @return {@link ValidationResult}
 	 */
@@ -125,7 +125,7 @@ public interface IPostingAccountService {
 	 * This service changes a {@link PostingAccount}. Before the {@link PostingAccount} is changed,
 	 * the new values are validated for correctness.
 	 *
-	 * @param user
+	 * @param postingAccount
 	 *            the new {@link PostingAccount} attributes
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PostingAccount} failed.

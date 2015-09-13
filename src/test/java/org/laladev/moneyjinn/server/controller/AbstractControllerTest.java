@@ -47,7 +47,6 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 			return this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, ZonedDateTime.now(), uri, body,
 					httpMethod);
 		} catch (final NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -62,9 +61,12 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 	 * @param clazz
 	 * @return
 	 */
-	protected String getUsecaseFromTestClassName(final String prefix, final Class<?> clazz) {
+	protected String getUsecaseFromTestClassName(final Class<?> clazz) {
 		final String usecase = clazz.getSimpleName().replace("Test", "");
-		return prefix + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
+		final String packageName = clazz.getPackage().getName();
+		final String module = packageName.substring(packageName.lastIndexOf(".") + 1);
+
+		return module + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
 	}
 
 	protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,

@@ -43,7 +43,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("contractpartner", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	@Test

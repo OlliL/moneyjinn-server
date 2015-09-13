@@ -58,7 +58,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("contractpartner", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode) throws Exception {

@@ -52,7 +52,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("user", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private ShowUserListResponse getCompleteResponse() {

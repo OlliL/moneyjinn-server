@@ -50,7 +50,7 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("setting", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	@Test

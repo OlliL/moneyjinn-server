@@ -49,7 +49,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("postingaccount", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private ShowPostingAccountListResponse getCompleteResponse() {

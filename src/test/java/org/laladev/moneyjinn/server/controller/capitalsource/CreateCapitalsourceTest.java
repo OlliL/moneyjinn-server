@@ -60,7 +60,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("capitalsource", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final CapitalsourceTransport transport, final ErrorCode errorCode) throws Exception {

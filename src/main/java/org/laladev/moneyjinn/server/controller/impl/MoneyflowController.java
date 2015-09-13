@@ -34,6 +34,7 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -178,7 +179,7 @@ public class MoneyflowController extends AbstractController {
 
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, new MoneyflowID(id));
 
-		if (moneyflow != null) {
+		if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
 			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
 			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
 		}
@@ -194,7 +195,7 @@ public class MoneyflowController extends AbstractController {
 		final ShowDeleteMoneyflowResponse response = new ShowDeleteMoneyflowResponse();
 
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-		if (moneyflow != null) {
+		if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
 			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
 		}
 
@@ -203,8 +204,22 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "showSearchMoneyflowForm", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public void showSearchMoneyflowForm() {
-		// TODO implementation
+	public ShowSearchMoneyflowFormResponse showSearchMoneyflowForm() {
+		final UserID userId = super.getUserId();
+
+		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
+		final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
+				ContractpartnerTransport.class);
+
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
+				PostingAccountTransport.class);
+
+		final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
+		response.setContractpartnerTransports(contractpartnerTransports);
+		response.setPostingAccountTransports(postingAccountTransports);
+
+		return response;
 	}
 
 	@RequestMapping(value = "searchMoneyflows", method = { RequestMethod.PUT })

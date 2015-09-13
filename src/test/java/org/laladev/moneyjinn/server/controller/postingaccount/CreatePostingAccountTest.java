@@ -53,7 +53,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("postingaccount", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final PostingAccountTransport transport, final ErrorCode errorCode) throws Exception {

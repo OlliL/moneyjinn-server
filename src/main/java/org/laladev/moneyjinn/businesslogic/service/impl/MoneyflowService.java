@@ -240,7 +240,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(userId);
 		Assert.notNull(moneyflowId);
 		this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
-
+		this.evictMoneyflowCache(userId, moneyflowId);
 	}
 
 	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {

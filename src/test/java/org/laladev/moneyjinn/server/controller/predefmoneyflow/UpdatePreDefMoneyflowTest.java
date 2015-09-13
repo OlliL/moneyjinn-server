@@ -62,7 +62,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("predefmoneyflow", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode,

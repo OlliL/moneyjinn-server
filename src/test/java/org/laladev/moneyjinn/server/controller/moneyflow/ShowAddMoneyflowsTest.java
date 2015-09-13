@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.predefmoneyflow;
+package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowEditPreDefMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
@@ -19,7 +20,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 
-public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
+public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
@@ -47,31 +48,8 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_unknownPreDefMoneyflow_emptyResponseObject() throws Exception {
-		final ShowEditPreDefMoneyflowResponse expected = new ShowEditPreDefMoneyflowResponse();
-		final ShowEditPreDefMoneyflowResponse actual = super.callUsecaseWithoutContent(
-				"/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false,
-				ShowEditPreDefMoneyflowResponse.class);
-
-		Assert.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_PreDefMoneyflowOwnedBySomeoneElse_emptyResponseObject() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
-		final ShowEditPreDefMoneyflowResponse expected = new ShowEditPreDefMoneyflowResponse();
-		final ShowEditPreDefMoneyflowResponse actual = super.callUsecaseWithoutContent(
-				"/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, false,
-				ShowEditPreDefMoneyflowResponse.class);
-
-		Assert.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_PreDefMoneyflow1_completeResponseObject() throws Exception {
-		final ShowEditPreDefMoneyflowResponse expected = new ShowEditPreDefMoneyflowResponse();
-		expected.setPreDefMoneyflowTransport(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
+	public void test_completeResponseObject() throws Exception {
+		final ShowAddMoneyflowsResponse expected = new ShowAddMoneyflowsResponse();
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
@@ -88,9 +66,15 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 
-		final ShowEditPreDefMoneyflowResponse actual = super.callUsecaseWithoutContent(
-				"/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, false,
-				ShowEditPreDefMoneyflowResponse.class);
+		final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
+		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
+		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow3().build());
+		expected.setPreDefMoneyflowTransports(preDefMoneyflowTransports);
+
+		expected.setSettingNumberOfFreeMoneyflows(1);
+
+		final ShowAddMoneyflowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowAddMoneyflowsResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -99,7 +83,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 }

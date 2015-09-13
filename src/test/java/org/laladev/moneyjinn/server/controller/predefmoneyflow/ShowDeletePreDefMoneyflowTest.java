@@ -34,7 +34,7 @@ public class ShowDeletePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("predefmoneyflow", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	@Test

@@ -42,7 +42,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("postingaccount", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	@Test

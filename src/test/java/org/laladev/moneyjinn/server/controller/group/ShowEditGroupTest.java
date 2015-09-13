@@ -35,7 +35,7 @@ public class ShowEditGroupTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("group", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	@Test

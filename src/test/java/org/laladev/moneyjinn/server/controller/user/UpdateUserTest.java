@@ -85,7 +85,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 	@Override
 	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName("user", this.getClass());
+		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
 	private void testError(final UserTransport transport, final AccessRelationTransport accessRelationTransport,
