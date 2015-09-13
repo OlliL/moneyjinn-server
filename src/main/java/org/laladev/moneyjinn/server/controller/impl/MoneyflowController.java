@@ -127,32 +127,13 @@ public class MoneyflowController extends AbstractController {
 	private void fillAbstractEditMoneyflowResponse(final Moneyflow moneyflow,
 			final AbstractEditMoneyflowResponse response) {
 		Assert.notNull(moneyflow.getUser());
-		Assert.notNull(moneyflow.getBookingDate());
-		Assert.notNull(moneyflow.getCapitalsource());
-		Assert.notNull(moneyflow.getCapitalsource().getValidFrom());
-		Assert.notNull(moneyflow.getContractpartner());
-		Assert.notNull(moneyflow.getContractpartner().getValidFrom());
 
 		final UserID userId = moneyflow.getUser().getId();
 
-		List<Capitalsource> capitalsources = null;
-		if (moneyflow.getBookingDate().isBefore(moneyflow.getCapitalsource().getValidFrom())
-				|| moneyflow.getBookingDate().isAfter(moneyflow.getCapitalsource().getValidTil())) {
-			capitalsources = this.capitalsourceService.getGroupCapitalsources(userId);
-		} else {
-			capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
-					moneyflow.getBookingDate(), moneyflow.getBookingDate());
-		}
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsources(userId);
 		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 
-		List<Contractpartner> contractpartner = null;
-		if (moneyflow.getBookingDate().isBefore(moneyflow.getContractpartner().getValidFrom())
-				|| moneyflow.getBookingDate().isAfter(moneyflow.getContractpartner().getValidTil())) {
-			contractpartner = this.contractpartnerService.getAllContractpartners(userId);
-		} else {
-			contractpartner = this.contractpartnerService.getAllContractpartnersByDateRange(userId,
-					moneyflow.getBookingDate(), moneyflow.getBookingDate());
-		}
+		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
 		response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
@@ -281,14 +262,6 @@ public class MoneyflowController extends AbstractController {
 			this.moneyflowService.updateMoneyflow(moneyflow);
 		} else {
 			final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
-					moneyflow.getCapitalsource().getId());
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-					moneyflow.getContractpartner().getId());
-
-			moneyflow.setCapitalsource(capitalsource);
-			moneyflow.setContractpartner(contractpartner);
-
 			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
