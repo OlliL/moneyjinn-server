@@ -86,6 +86,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 

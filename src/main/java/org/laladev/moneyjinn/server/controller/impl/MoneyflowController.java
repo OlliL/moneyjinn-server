@@ -29,8 +29,8 @@ import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractAddMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
@@ -211,7 +211,7 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "createMoneyflows", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreateMoneyflowResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
+	public CreateMoneyflowsResponse createMoneyflows(@RequestBody final CreateMoneyflowsRequest request) {
 		final UserID userId = super.getUserId();
 
 		final List<Moneyflow> moneyflows = super.mapList(request.getMoneyflowTransports(), Moneyflow.class);
@@ -227,8 +227,7 @@ public class MoneyflowController extends AbstractController {
 			validationResult.mergeValidationResult(this.moneyflowService.validateMoneyflow(mf));
 		});
 
-		final CreateMoneyflowResponse response = new CreateMoneyflowResponse();
-		this.fillAbstractAddMoneyflowResponse(userId, response);
+		final CreateMoneyflowsResponse response = new CreateMoneyflowsResponse();
 
 		if (validationResult.isValid() == true) {
 			this.moneyflowService.createMoneyflows(moneyflows);
@@ -241,6 +240,10 @@ public class MoneyflowController extends AbstractController {
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		}
+
+		// important to do it here and not before as first, LastUsed of any used PreDefMoneyflow
+		// must have been updated
+		this.fillAbstractAddMoneyflowResponse(userId, response);
 
 		return response;
 	}

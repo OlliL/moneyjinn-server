@@ -151,7 +151,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		} else {
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 					moneyflow.getCapitalsource().getId());
-			if (capitalsource == null) {
+			if (capitalsource == null || (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId())
+					&& !capitalsource.isGroupUse())) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 			} else if (today.isBefore(capitalsource.getValidFrom()) || today.isAfter(capitalsource.getValidTil())) {
@@ -215,8 +216,11 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflows.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
 		if (validationResult.isValid()) {
-			final List<MoneyflowData> moneyflowDatas = super.mapList(moneyflows, MoneyflowData.class);
-			moneyflowDatas.stream().forEach(mfd -> this.moneyflowDao.createMoneyflow(mfd));
+			for (final Moneyflow moneyflow : moneyflows) {
+				final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
+				final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);
+				this.evictMoneyflowCache(moneyflow.getUser().getId(), new MoneyflowID(moneyflowId));
+			}
 		}
 	}
 

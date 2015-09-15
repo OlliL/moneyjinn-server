@@ -67,8 +67,8 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	private void testError(final MoneyflowTransport transport, final ErrorCode errorCode,
-			final CapitalsourceTransport extraCapitalsource, final ContractpartnerTransport extraContractpartner)
-					throws Exception {
+			final List<CapitalsourceTransport> overrideCapitalsources,
+			final List<ContractpartnerTransport> overrideContractpartner) throws Exception {
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 
 		request.setMoneyflowTransport(transport);
@@ -96,10 +96,17 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
-
 		expected.setCapitalsourceTransports(capitalsourceTransports);
+
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
+
+		if (overrideCapitalsources != null) {
+			expected.setCapitalsourceTransports(overrideCapitalsources);
+		}
+		if (overrideContractpartner != null) {
+			expected.setContractpartnerTransports(overrideContractpartner);
+		}
 
 		final UpdateMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				UpdateMoneyflowResponse.class);
@@ -142,20 +149,16 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	public void test_notExistingCapitalsource_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
-		final CapitalsourceTransport extraCapitalsource = new CapitalsourceTransportBuilder().forCapitalsource3()
-				.build();
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, extraCapitalsource, null);
+		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, null, null);
 	}
 
 	@Test
 	public void test_noLongerValidCapitalsource_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
-		final CapitalsourceTransport extraCapitalsource = new CapitalsourceTransportBuilder().forCapitalsource3()
-				.build();
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, extraCapitalsource, null);
+		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, null, null);
 	}
 
 	@Test
@@ -227,20 +230,16 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	public void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
 		transport.setBookingdate(DateUtil.getGMTDate("1970-01-01"));
-		final CapitalsourceTransport extraCapitalsource = new CapitalsourceTransportBuilder().forCapitalsource3()
-				.build();
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, extraCapitalsource, null);
+		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, null, null);
 	}
 
 	@Test
 	public void test_BookingDateAfterGroupAssignment_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
 		transport.setBookingdate(DateUtil.getGMTDate("2600-01-01"));
-		final CapitalsourceTransport extraCapitalsource = new CapitalsourceTransportBuilder().forCapitalsource3()
-				.build();
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, extraCapitalsource, null);
+		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, null, null);
 	}
 
 	@Test
@@ -266,6 +265,68 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
 		Assert.assertNull(moneyflow);
+	}
+
+	@Test
+	public void test_existing_UpdateDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+
+		transport.setAmount(BigDecimal.valueOf(1020, 2));
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		transport.setComment("hugo");
+		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
+		transport.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		transport.setPrivat(Short.valueOf("1"));
+		transport.setBookingdate(DateUtil.getGMTDate("2009-01-02"));
+		transport.setInvoicedate(DateUtil.getGMTDate("2009-01-03"));
+
+		request.setMoneyflowTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+	}
+
+	@Test
+	public void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+
+		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
+		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, capitalsourceTransports, null);
 	}
 
 	@Test

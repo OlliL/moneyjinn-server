@@ -66,8 +66,8 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	}
 
 	private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode,
-			final CapitalsourceTransport extraCapitalsource, final ContractpartnerTransport extraContractpartner)
-					throws Exception {
+			final List<CapitalsourceTransport> overrideCapitalsources,
+			final List<ContractpartnerTransport> overrideContractpartner) throws Exception {
 		final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
 
 		request.setPreDefMoneyflowTransport(transport);
@@ -86,20 +86,22 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
-		if (extraContractpartner != null) {
-			contractpartnerTransports.add(extraContractpartner);
-		}
 		expected.setContractpartnerTransports(contractpartnerTransports);
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
-		if (extraCapitalsource != null) {
-			capitalsourceTransports.add(extraCapitalsource);
-		}
 		expected.setCapitalsourceTransports(capitalsourceTransports);
+
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
+
+		if (overrideCapitalsources != null) {
+			expected.setCapitalsourceTransports(overrideCapitalsources);
+		}
+		if (overrideContractpartner != null) {
+			expected.setContractpartnerTransports(overrideContractpartner);
+		}
 
 		final CreatePreDefMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreatePreDefMoneyflowResponse.class);
@@ -155,10 +157,12 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
 				.build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
-		final CapitalsourceTransport extraCapitalsource = new CapitalsourceTransportBuilder().forCapitalsource3()
-				.build();
+		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, extraCapitalsource, null);
+		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, capitalsourceTransports, null);
 	}
 
 	@Test
@@ -184,10 +188,12 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
 				.build();
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
-		final ContractpartnerTransport extraContractpartner = new ContractpartnerTransportBuilder()
-				.forContractpartner3().build();
+		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
+		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
+		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
+		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner3().build());
 
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID, null, extraContractpartner);
+		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID, null, contractpartnerTransports);
 	}
 
 	@Test
@@ -275,6 +281,21 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEXT_ID, preDefMoneyflow.getId().getId());
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEWPRE_DEF_MONEYFLOW_COMMENT, preDefMoneyflow.getComment());
+	}
+
+	@Test
+	public void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+				.build();
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+
+		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
+		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, capitalsourceTransports, null);
 	}
 
 	@Test

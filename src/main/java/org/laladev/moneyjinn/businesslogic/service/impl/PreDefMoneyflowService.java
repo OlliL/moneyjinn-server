@@ -150,7 +150,8 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final Group accessor = this.accessRelationService.getAccessor(userId);
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
 					preDefMoneyflow.getCapitalsource().getId());
-			if (capitalsource == null) {
+			if (capitalsource == null || (!capitalsource.getUser().getId().equals(preDefMoneyflow.getUser().getId())
+					&& !capitalsource.isGroupUse())) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 			} else if (today.isBefore(capitalsource.getValidFrom()) || today.isAfter(capitalsource.getValidTil())) {
@@ -300,6 +301,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		Assert.notNull(userId);
 		Assert.notNull(preDefMoneyflowId);
 		this.preDefMoneyflowDao.setLastUsed(userId.getId(), preDefMoneyflowId.getId());
+		this.evictPreDefMoneyflowCache(userId, preDefMoneyflowId);
 	}
 
 	private void evictPreDefMoneyflowCache(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
