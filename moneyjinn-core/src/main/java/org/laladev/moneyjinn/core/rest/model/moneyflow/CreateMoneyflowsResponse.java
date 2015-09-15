@@ -29,5 +29,5 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 //
 
 @JsonRootName("createMoneyflowsResponse")
-public class CreateMoneyflowResponse extends AbstractAddMoneyflowResponse {
+public class CreateMoneyflowsResponse extends AbstractAddMoneyflowResponse {
 }

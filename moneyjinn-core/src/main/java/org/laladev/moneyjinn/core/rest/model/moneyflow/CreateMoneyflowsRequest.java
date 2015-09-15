@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 //
 
 @JsonRootName("createMoneyflowsRequest")
-public class CreateMoneyflowRequest extends AbstractRequest {
+public class CreateMoneyflowsRequest extends AbstractRequest {
 	@JsonProperty("moneyflowTransport")
 	private List<MoneyflowTransport> moneyflowTransports;
 	private List<Long> usedPreDefMoneyflowIds;
@@ -76,7 +76,7 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final CreateMoneyflowRequest other = (CreateMoneyflowRequest) obj;
+		final CreateMoneyflowsRequest other = (CreateMoneyflowsRequest) obj;
 		if (this.moneyflowTransports == null) {
 			if (other.moneyflowTransports != null) {
 				return false;
