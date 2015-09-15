@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.businesslogic.model.validation;
 
+import java.io.Serializable;
+
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -30,11 +32,11 @@ import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 
 public class ValidationResultItem {
-	private AbstractEntityID<?> key;
+	private AbstractEntityID<? extends Serializable> key;
 	private ErrorCode error;
 	private List<String> variableArray;
 
-	public ValidationResultItem(final AbstractEntityID<?> key, final ErrorCode error,
+	public ValidationResultItem(final AbstractEntityID<? extends Serializable> key, final ErrorCode error,
 			final List<String> variableArray) {
 		super();
 		this.key = key;
@@ -48,7 +50,7 @@ public class ValidationResultItem {
 		this.error = error;
 	}
 
-	public final AbstractEntityID<?> getKey() {
+	public final AbstractEntityID<? extends Serializable> getKey() {
 		return this.key;
 	}
 
