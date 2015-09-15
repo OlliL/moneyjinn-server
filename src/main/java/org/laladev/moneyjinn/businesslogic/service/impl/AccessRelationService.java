@@ -32,6 +32,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.AccessRelationDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData;
@@ -55,6 +57,8 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
+
+	private final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Inject
 	private AccessRelationDao accessRelationDao;
@@ -217,8 +221,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		AccessRelation insertAccessRelation = null;
 		try {
 			insertAccessRelation = accessRelation.clone();
-		} catch (final CloneNotSupportedException e1) {
-			e1.printStackTrace();
+		} catch (final CloneNotSupportedException e) {
+			this.LOG.error(e);
 		}
 
 		// new user, no existing relations
@@ -311,7 +315,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 						try {
 							updateAccessRelationItem = currentAccessRelation.clone();
 						} catch (final CloneNotSupportedException e) {
-							e.printStackTrace();
+							this.LOG.error(e);
 						}
 						updateAccessRelationItem.setValidTil(previousValidTil);
 						updateAccessRelationItems.add(updateAccessRelationItem);

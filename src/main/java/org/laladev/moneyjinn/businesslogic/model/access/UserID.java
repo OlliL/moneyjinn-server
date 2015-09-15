@@ -32,6 +32,8 @@ package org.laladev.moneyjinn.businesslogic.model.access;
  */
 public class UserID extends AccessID {
 
+	private static final long serialVersionUID = 1L;
+
 	public UserID(final Long id) {
 		super(id);
 	}

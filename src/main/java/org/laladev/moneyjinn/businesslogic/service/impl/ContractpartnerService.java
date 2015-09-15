@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.ContractpartnerDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ContractpartnerDataMapper;
@@ -62,6 +64,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
+	private final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Inject
 	private ContractpartnerDao contractpartnerDao;
@@ -303,6 +306,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
 			this.evictContractpartnerCache(userId, contractpartnerId);
 		} catch (final Exception e) {
+			this.LOG.info(e);
 			throw new BusinessException(
 					"You may not delete a contractual partner who is still referenced by a flow of money!",
 					ErrorCode.CONTRACTPARTNER_IN_USE);

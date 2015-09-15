@@ -26,15 +26,15 @@ package org.laladev.moneyjinn.businesslogic.model;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
-public abstract class AbstractEntity<ID extends AbstractEntityID<?>> implements Serializable {
-	private ID id;
+public abstract class AbstractEntity<I extends AbstractEntityID<?>> implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private I id;
 
-	public final ID getId() {
+	public final I getId() {
 		return this.id;
 	}
 
-	public final void setId(final ID id) {
+	public final void setId(final I id) {
 		this.id = id;
 	}
 

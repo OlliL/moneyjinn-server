@@ -30,6 +30,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.PostingAccountDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.PostingAccountDataMapper;
@@ -49,6 +51,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
+	private final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Inject
 	private PostingAccountDao postingAccountDao;
@@ -161,6 +164,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 			this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
 			this.evictPostingAccountCache(postingAccountId);
 		} catch (final Exception e) {
+			this.LOG.info(e);
 			throw new BusinessException(
 					"The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
 					ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class BankAccount {
-	public static Short ACCOUNT_NUMBER_MAX_LENGTH = 34;
-	public static Short BANK_CODE_MAX_LENGTH = 11;
+	private static final Short ACCOUNT_NUMBER_MAX_LENGTH = 34;
+	private static final Short BANK_CODE_MAX_LENGTH = 11;
 	private String accountNumber;
 	private String bankCode;
 	private final Pattern p = Pattern.compile("[^a-zA-Z0-9]");

@@ -27,6 +27,11 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 import org.laladev.moneyjinn.businesslogic.model.setting.SettingType;
 
 public class SettingTypeConverter {
+
+	private SettingTypeConverter() {
+
+	}
+
 	public static String getSettingNameByType(final SettingType type) {
 		switch (type) {
 		case CLIENT_MAX_ROWS:

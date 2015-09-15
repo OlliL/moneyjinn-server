@@ -100,4 +100,129 @@ public class Moneyflow extends AbstractEntity<MoneyflowID> {
 		this.postingAccount = postingAccount;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+		result = prime * result + ((this.bookingDate == null) ? 0 : this.bookingDate.hashCode());
+		result = prime * result + ((this.capitalsource == null) ? 0 : this.capitalsource.hashCode());
+		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
+		result = prime * result + ((this.contractpartner == null) ? 0 : this.contractpartner.hashCode());
+		result = prime * result + ((this.group == null) ? 0 : this.group.hashCode());
+		result = prime * result + ((this.invoiceDate == null) ? 0 : this.invoiceDate.hashCode());
+		result = prime * result + ((this.postingAccount == null) ? 0 : this.postingAccount.hashCode());
+		result = prime * result + (this.privat ? 1231 : 1237);
+		result = prime * result + ((this.user == null) ? 0 : this.user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final Moneyflow other = (Moneyflow) obj;
+		if (this.amount == null) {
+			if (other.amount != null) {
+				return false;
+			}
+		} else if (!this.amount.equals(other.amount)) {
+			return false;
+		}
+		if (this.bookingDate == null) {
+			if (other.bookingDate != null) {
+				return false;
+			}
+		} else if (!this.bookingDate.equals(other.bookingDate)) {
+			return false;
+		}
+		if (this.capitalsource == null) {
+			if (other.capitalsource != null) {
+				return false;
+			}
+		} else if (!this.capitalsource.equals(other.capitalsource)) {
+			return false;
+		}
+		if (this.comment == null) {
+			if (other.comment != null) {
+				return false;
+			}
+		} else if (!this.comment.equals(other.comment)) {
+			return false;
+		}
+		if (this.contractpartner == null) {
+			if (other.contractpartner != null) {
+				return false;
+			}
+		} else if (!this.contractpartner.equals(other.contractpartner)) {
+			return false;
+		}
+		if (this.group == null) {
+			if (other.group != null) {
+				return false;
+			}
+		} else if (!this.group.equals(other.group)) {
+			return false;
+		}
+		if (this.invoiceDate == null) {
+			if (other.invoiceDate != null) {
+				return false;
+			}
+		} else if (!this.invoiceDate.equals(other.invoiceDate)) {
+			return false;
+		}
+		if (this.postingAccount == null) {
+			if (other.postingAccount != null) {
+				return false;
+			}
+		} else if (!this.postingAccount.equals(other.postingAccount)) {
+			return false;
+		}
+		if (this.privat != other.privat) {
+			return false;
+		}
+		if (this.user == null) {
+			if (other.user != null) {
+				return false;
+			}
+		} else if (!this.user.equals(other.user)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Moneyflow [user=");
+		builder.append(this.user);
+		builder.append(", group=");
+		builder.append(this.group);
+		builder.append(", bookingDate=");
+		builder.append(this.bookingDate);
+		builder.append(", invoiceDate=");
+		builder.append(this.invoiceDate);
+		builder.append(", amount=");
+		builder.append(this.amount);
+		builder.append(", capitalsource=");
+		builder.append(this.capitalsource);
+		builder.append(", contractpartner=");
+		builder.append(this.contractpartner);
+		builder.append(", comment=");
+		builder.append(this.comment);
+		builder.append(", privat=");
+		builder.append(this.privat);
+		builder.append(", postingAccount=");
+		builder.append(this.postingAccount);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

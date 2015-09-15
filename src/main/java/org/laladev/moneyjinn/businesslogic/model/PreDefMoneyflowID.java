@@ -32,6 +32,8 @@ package org.laladev.moneyjinn.businesslogic.model;
  */
 public class PreDefMoneyflowID extends AbstractEntityID<Long> {
 
+	private static final long serialVersionUID = 1L;
+
 	public PreDefMoneyflowID(final Long id) {
 		super(id);
 	}

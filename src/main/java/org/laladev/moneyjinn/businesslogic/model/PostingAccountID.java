@@ -32,6 +32,8 @@ package org.laladev.moneyjinn.businesslogic.model;
  */
 public class PostingAccountID extends AbstractEntityID<Long> {
 
+	private static final long serialVersionUID = 1L;
+
 	public PostingAccountID(final Long id) {
 		super(id);
 	}

@@ -59,6 +59,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		case 2:
 			capitalsource.setState(CapitalsourceState.CACHE);
 			break;
+		default:
+			throw new UnsupportedOperationException("State " + capitalsourceData.getState() + " not supported!");
 		}
 		switch (capitalsourceData.getType()) {
 		case 1:
@@ -73,6 +75,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		case 4:
 			capitalsource.setType(CapitalsourceType.PROVISION_ASSET);
 			break;
+		default:
+			throw new UnsupportedOperationException("Type " + capitalsourceData.getType() + " not supported!");
 		}
 		capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
 		capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
@@ -110,6 +114,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		case CACHE:
 			capitalsourceData.setState((short) 2);
 			break;
+		default:
+			throw new UnsupportedOperationException("State " + capitalsource.getState() + " not supported!");
 		}
 		switch (capitalsource.getType()) {
 		case CURRENT_ASSET:
@@ -124,6 +130,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		case PROVISION_ASSET:
 			capitalsourceData.setType((short) 4);
 			break;
+		default:
+			throw new UnsupportedOperationException("Type " + capitalsource.getType() + " not supported!");
 		}
 
 		if (capitalsource.getUser() != null) {

@@ -32,6 +32,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.UserDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.UserData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.UserDataMapper;
@@ -52,6 +54,8 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class UserService extends AbstractService implements IUserService {
+	private final Log LOG = LogFactory.getLog(this.getClass());
+
 	@Inject
 	private UserDao userDao;
 	private MessageDigest sha1MD;
@@ -60,6 +64,7 @@ public class UserService extends AbstractService implements IUserService {
 		try {
 			this.sha1MD = MessageDigest.getInstance("SHA1");
 		} catch (final NoSuchAlgorithmException e) {
+			this.LOG.error(e);
 		}
 
 	}
@@ -198,6 +203,7 @@ public class UserService extends AbstractService implements IUserService {
 
 			this.userDao.deleteUser(userId.getId());
 		} catch (final Exception e) {
+			this.LOG.info(e);
 			throw new BusinessException("This user has already entered data and may therefore not be deleted!",
 					ErrorCode.USER_HAS_DATA);
 		}

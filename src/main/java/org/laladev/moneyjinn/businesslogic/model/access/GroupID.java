@@ -32,6 +32,8 @@ package org.laladev.moneyjinn.businesslogic.model.access;
  */
 public class GroupID extends AccessID {
 
+	private static final long serialVersionUID = 1L;
+
 	public GroupID(final Long id) {
 		super(id);
 	}

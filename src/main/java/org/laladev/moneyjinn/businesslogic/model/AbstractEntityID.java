@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.businesslogic.model;
 
+import java.io.Serializable;
+
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -24,7 +26,8 @@ package org.laladev.moneyjinn.businesslogic.model;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-public abstract class AbstractEntityID<ID> {
+public abstract class AbstractEntityID<ID> implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private ID id;
 
 	protected AbstractEntityID() {

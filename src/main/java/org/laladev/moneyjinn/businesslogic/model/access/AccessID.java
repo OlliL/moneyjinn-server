@@ -28,6 +28,8 @@ import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
 
 public class AccessID extends AbstractEntityID<Long> implements Cloneable {
 
+	private static final long serialVersionUID = 1L;
+
 	public AccessID(final Long id) {
 		super(id);
 	}

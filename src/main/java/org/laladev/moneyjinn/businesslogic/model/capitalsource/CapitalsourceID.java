@@ -34,6 +34,8 @@ import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
  */
 public class CapitalsourceID extends AbstractEntityID<Long> {
 
+	private static final long serialVersionUID = 1L;
+
 	public CapitalsourceID(final Long id) {
 		super(id);
 	}

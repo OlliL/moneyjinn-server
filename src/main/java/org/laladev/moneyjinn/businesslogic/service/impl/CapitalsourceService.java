@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.CapitalsourceDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.CapitalsourceDataMapper;
@@ -61,6 +63,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
+	private final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Inject
 	private CapitalsourceDao capitalsourceDao;
@@ -125,9 +128,10 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 					new ValidationResultItem(capitalsource.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
 		} else if (capitalsource.getId() != null) {
 			// update existing Capitalsource
-			if (this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(capitalsource.getUser().getId().getId(),
-					capitalsource.getId().getId(), Date.valueOf(capitalsource.getValidFrom()),
-					Date.valueOf(capitalsource.getValidTil()))) {
+			final boolean checkCapitalsourceInUseOutOfDate = this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(
+					capitalsource.getUser().getId().getId(), capitalsource.getId().getId(),
+					Date.valueOf(capitalsource.getValidFrom()), Date.valueOf(capitalsource.getValidTil()));
+			if (checkCapitalsourceInUseOutOfDate) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(capitalsource.getId(), ErrorCode.CAPITALSOURCE_IN_USE_PERIOD));
 			}
@@ -139,12 +143,11 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		} else {
 			final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
 					capitalsource.getComment(), capitalsource.getValidFrom());
-			if (checkCapitalsource != null) {
+			if (checkCapitalsource != null
+					&& (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId()))) {
 				// new Capitalsource || update existing Capitalsource
-				if (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId())) {
-					validationResult.addValidationResultItem(
-							new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
-				}
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
 			}
 		}
 
@@ -295,6 +298,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
 			this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
 		} catch (final Exception e) {
+			this.LOG.info(e);
 			throw new BusinessException(
 					"You may not delete a source of capital while it is referenced by a flow of money!",
 					ErrorCode.CAPITALSOURCE_STILL_REFERENCED);

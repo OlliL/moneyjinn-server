@@ -89,19 +89,19 @@ public enum ErrorCode {
 	USERNAME_MUST_NOT_CONTAIN_SLASHES(291),
 	PASSWORD_MUST_NOT_CONTAIN_SLASHES(292);
 
-	private int errorCode;
+	private int code;
 
 	ErrorCode(final int errorCode) {
-		this.errorCode = errorCode;
+		this.code = errorCode;
 	}
 
 	public int getErrorCode() {
-		return this.errorCode;
+		return this.code;
 	}
 
-	public static ErrorCode byId(final int errorCode) {
+	public static ErrorCode byId(final int code) {
 		for (final ErrorCode errorCodeEnum : ErrorCode.values()) {
-			if (errorCodeEnum.getErrorCode() == errorCode) {
+			if (errorCodeEnum.getErrorCode() == code) {
 				return errorCodeEnum;
 			}
 		}
