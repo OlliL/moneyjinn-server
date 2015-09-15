@@ -54,7 +54,7 @@ public class ValidationResultItem {
 		return this.key;
 	}
 
-	public final void setKey(final AbstractEntityID<?> key) {
+	public final void setKey(final AbstractEntityID<? extends Serializable> key) {
 		this.key = key;
 	}
 
