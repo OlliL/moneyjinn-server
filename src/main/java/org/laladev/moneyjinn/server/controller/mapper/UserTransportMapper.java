@@ -56,13 +56,12 @@ public class UserTransportMapper implements IMapper<User, UserTransport> {
 			attributes.add(UserAttribute.NONE);
 		}
 
-		final User user = new User(new UserID(userTransport.getId()), userTransport.getUserName(),
-				userTransport.getUserPassword(), attributes, permissions);
-		return user;
+		return new User(new UserID(userTransport.getId()), userTransport.getUserName(), userTransport.getUserPassword(),
+				attributes, permissions);
 	}
 
 	private boolean isTrue(final Short property) {
-		return (property != null && property.equals(Short.valueOf((short) 1)));
+		return property != null && property.equals(Short.valueOf((short) 1));
 	}
 
 	@Override
@@ -72,15 +71,15 @@ public class UserTransportMapper implements IMapper<User, UserTransport> {
 		userTransport.setUserName(user.getName());
 
 		if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-			userTransport.setUserIsNew(Short.valueOf(((short) 1)));
+			userTransport.setUserIsNew(Short.valueOf((short) 1));
 		}
 
 		if (user.getPermissions().contains(UserPermission.ADMIN)) {
-			userTransport.setUserIsAdmin(Short.valueOf(((short) 1)));
+			userTransport.setUserIsAdmin(Short.valueOf((short) 1));
 		}
 
 		if (user.getPermissions().contains(UserPermission.LOGIN)) {
-			userTransport.setUserCanLogin(Short.valueOf(((short) 1)));
+			userTransport.setUserCanLogin(Short.valueOf((short) 1));
 		}
 
 		return userTransport;

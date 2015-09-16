@@ -40,8 +40,7 @@ public class UserDao {
 	IUserDaoMapper mapper;
 
 	public UserData getUserById(final Long id) {
-		final UserData userData = this.mapper.getUserById(id);
-		return userData;
+		return this.mapper.getUserById(id);
 	}
 
 	public Set<Character> getAllUserInitials() {
@@ -61,8 +60,7 @@ public class UserDao {
 	}
 
 	public UserData getUserByName(final String name) {
-		final UserData userData = this.mapper.getUserByName(name);
-		return userData;
+		return this.mapper.getUserByName(name);
 	}
 
 	public Long createUser(final UserData userData) {

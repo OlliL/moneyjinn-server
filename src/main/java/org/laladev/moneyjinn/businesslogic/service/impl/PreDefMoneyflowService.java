@@ -219,12 +219,11 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final List<Contractpartner> contractpartners = contractpartnerIds.stream()
 					.map(cpi -> this.contractpartnerService.getContractpartnerById(userId, new ContractpartnerID(cpi)))
 					.collect(Collectors.toCollection(ArrayList::new));
-			final HashSet<Character> initials = contractpartners.stream()
-					.map(cp -> cp.getName().toUpperCase().charAt(0)).collect(Collectors.toCollection(HashSet::new));
-			return initials;
+			return contractpartners.stream().map(cp -> cp.getName().toUpperCase().charAt(0))
+					.collect(Collectors.toCollection(HashSet::new));
 		}
 
-		return null;
+		return new HashSet<Character>();
 	}
 
 	@Override
@@ -253,7 +252,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 							.startsWith(initial.toString().toUpperCase()))
 					.collect(Collectors.toCollection(ArrayList::new));
 		}
-		return null;
+		return new ArrayList<PreDefMoneyflow>();
 	}
 
 	@Override

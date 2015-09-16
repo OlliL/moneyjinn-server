@@ -25,6 +25,11 @@ package org.laladev.moneyjinn.businesslogic.service;
 //SUCH DAMAGE.
 
 public class CacheNames {
+
+	private CacheNames() {
+
+	}
+
 	public static final String USER_BY_ID = "userById";
 	public static final String USER_BY_NAME = "userByName";
 

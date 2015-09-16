@@ -41,11 +41,9 @@ public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessR
 
 		// Only one level is supported right now, and the second level is always "0"
 		final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(accessRelationData.getRefId()));
-		parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0l)));
+		parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
 
-		final AccessRelation accessRelation = new AccessRelation(new AccessID(accessRelationData.getId()),
-				parentAccessRelation, validFrom, validTil);
-		return accessRelation;
+		return new AccessRelation(new AccessID(accessRelationData.getId()), parentAccessRelation, validFrom, validTil);
 	}
 
 	@Override

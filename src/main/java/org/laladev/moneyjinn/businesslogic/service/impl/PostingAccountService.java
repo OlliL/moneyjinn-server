@@ -73,15 +73,15 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		} else {
 			final PostingAccount checkPostingAccount = this.getPostingAccountByName(postingAccount.getName());
 			// Update OR Create
-			if (checkPostingAccount != null) {
-				if (postingAccount.getId() == null || !checkPostingAccount.getId().equals(postingAccount.getId())) {
-					validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
-							ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
-				}
+			if (checkPostingAccount != null && (postingAccount.getId() == null
+					|| !checkPostingAccount.getId().equals(postingAccount.getId()))) {
+				validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
+						ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
 			}
 		}
 
 		return validationResult;
+
 	}
 
 	@Override
@@ -122,8 +122,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	public PostingAccount getPostingAccountByName(final String name) {
 		Assert.notNull(name);
 		final PostingAccountData postingAccountData = this.postingAccountDao.getPostingAccountByName(name);
-		final PostingAccount postingAccount = super.map(postingAccountData, PostingAccount.class);
-		return postingAccount;
+		return super.map(postingAccountData, PostingAccount.class);
 	}
 
 	@Override

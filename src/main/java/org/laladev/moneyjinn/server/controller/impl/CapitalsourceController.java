@@ -88,9 +88,8 @@ public class CapitalsourceController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
 				.getClientCurrentlyValidCapitalsourcesSetting(userId);
-		final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, null, setting.getSetting());
+		return this.doShowCapitalsourceList(userId, null, setting.getSetting());
 
-		return response;
 	}
 
 	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
@@ -100,10 +99,8 @@ public class CapitalsourceController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
 				.getClientCurrentlyValidCapitalsourcesSetting(userId);
-		final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, restriction,
-				setting.getSetting());
+		return this.doShowCapitalsourceList(userId, restriction, setting.getSetting());
 
-		return response;
 	}
 
 	@RequestMapping(value = "showCapitalsourceList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })

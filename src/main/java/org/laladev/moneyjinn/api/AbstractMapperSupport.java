@@ -33,28 +33,40 @@ public abstract class AbstractMapperSupport {
 	protected void registerBeanMapper(final IMapper<?, ?> mapper) {
 		final List<Method> iMapperMethods = Arrays.asList(IMapper.class.getDeclaredMethods());
 
-		for (final Method m : mapper.getClass().getDeclaredMethods()) {
+		for (final Method mapperMethod : mapper.getClass().getDeclaredMethods()) {
 			for (final Method method : iMapperMethods) {
-				if (method.getName().equals(m.getName()) && !method.getReturnType().equals(m.getReturnType())) {
-					final Class<?> returnType = m.getReturnType();
-					final Class<?> parameter = m.getParameters()[0].getType();
+				// in mapper.getClass().getDeclaredMethods() the class-methods as well as the
+				// interface-methods are returned. We are only interested in the implemented
+				// methods, so filter the methods from the interface which differ in their return
+				// types (Generic vs. concrete class)
+				if (method.getName().equals(mapperMethod.getName())
+						&& !method.getReturnType().equals(mapperMethod.getReturnType())) {
+					final Class<?> returnType = mapperMethod.getReturnType();
+					final Class<?> parameter = mapperMethod.getParameters()[0].getType();
 
-					Map<Class<?>, Method> methodMap = this.mapperMethods.get(returnType);
-					if (methodMap == null) {
-						methodMap = new HashMap<>();
-					}
-					methodMap.put(parameter, m);
-					this.mapperMethods.put(returnType, methodMap);
-
-					Map<Class<?>, IMapper<?, ?>> classMap = this.mapperClasses.get(returnType);
-					if (classMap == null) {
-						classMap = new HashMap<>();
-					}
-					classMap.put(parameter, mapper);
-					this.mapperClasses.put(returnType, classMap);
+					this.putToMapperMethods(mapperMethod, returnType, parameter);
+					this.putToMapperClasses(mapper, returnType, parameter);
 				}
 			}
 		}
+	}
+
+	private void putToMapperClasses(final IMapper<?, ?> mapper, final Class<?> returnType, final Class<?> parameter) {
+		Map<Class<?>, IMapper<?, ?>> classMap = this.mapperClasses.get(returnType);
+		if (classMap == null) {
+			classMap = new HashMap<>();
+		}
+		classMap.put(parameter, mapper);
+		this.mapperClasses.put(returnType, classMap);
+	}
+
+	private void putToMapperMethods(final Method m, final Class<?> returnType, final Class<?> parameter) {
+		Map<Class<?>, Method> methodMap = this.mapperMethods.get(returnType);
+		if (methodMap == null) {
+			methodMap = new HashMap<>();
+		}
+		methodMap.put(parameter, m);
+		this.mapperMethods.put(returnType, methodMap);
 	}
 
 	protected <T> T map(final Object args, final Class<T> clazz) {
@@ -65,7 +77,7 @@ public abstract class AbstractMapperSupport {
 				method = this.mapperMethods.get(clazz).get(args.getClass());
 				obj = this.mapperClasses.get(clazz).get(args.getClass());
 			} catch (final NullPointerException e) {
-				this.LOG.error(e);
+				LOG.error(e);
 				throw new TechnicalException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
 			}
 			if (method == null) {
@@ -78,7 +90,7 @@ public abstract class AbstractMapperSupport {
 				}
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				e.printStackTrace();
-				this.LOG.error(e);
+				LOG.error(e);
 				throw new TechnicalException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
 			}
 		}

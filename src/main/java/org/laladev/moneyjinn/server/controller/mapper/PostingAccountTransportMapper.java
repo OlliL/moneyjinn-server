@@ -33,9 +33,8 @@ public class PostingAccountTransportMapper implements IMapper<PostingAccount, Po
 
 	@Override
 	public PostingAccount mapBToA(final PostingAccountTransport postingAccountTransport) {
-		final PostingAccount postingAccount = new PostingAccount(new PostingAccountID(postingAccountTransport.getId()),
+		return new PostingAccount(new PostingAccountID(postingAccountTransport.getId()),
 				postingAccountTransport.getName());
-		return postingAccount;
 	}
 
 	@Override

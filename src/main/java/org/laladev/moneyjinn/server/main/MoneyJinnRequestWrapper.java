@@ -90,7 +90,7 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 
 			@Override
 			public void setReadListener(final ReadListener listener) {
-				throw new RuntimeException("Not implemented");
+				throw new UnsupportedOperationException("Not implemented");
 			}
 		};
 		return servletInputStream;

@@ -221,6 +221,8 @@ public class Moneyflow extends AbstractEntity<MoneyflowID> {
 		builder.append(this.privat);
 		builder.append(", postingAccount=");
 		builder.append(this.postingAccount);
+		builder.append(", getId()=");
+		builder.append(this.getId());
 		builder.append("]");
 		return builder.toString();
 	}

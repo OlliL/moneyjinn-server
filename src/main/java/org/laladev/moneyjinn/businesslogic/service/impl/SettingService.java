@@ -44,6 +44,7 @@ import org.springframework.util.Assert;
 
 @Named
 public class SettingService extends AbstractService implements ISettingService {
+	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
 	@Inject
 	private SettingDao settingDao;
 
@@ -195,10 +196,10 @@ public class SettingService extends AbstractService implements ISettingService {
 	@Override
 	public void initSettings(final UserID userId) {
 		Assert.notNull(userId);
-		this.setClientDateFormatSetting(userId, this.getClientDateFormatSetting(new AccessID(0l)));
-		this.setClientDisplayedLanguageSetting(userId, this.getClientDisplayedLanguageSetting(new AccessID(0l)));
-		this.setClientMaxRowsSetting(userId, this.getClientMaxRowsSetting(new AccessID(0l)));
-		this.setClientNumFreeMoneyflowsSetting(userId, this.getClientNumFreeMoneyflowsSetting(new AccessID(0l)));
+		this.setClientDateFormatSetting(userId, this.getClientDateFormatSetting(ROOT_ACCESS_ID));
+		this.setClientDisplayedLanguageSetting(userId, this.getClientDisplayedLanguageSetting(ROOT_ACCESS_ID));
+		this.setClientMaxRowsSetting(userId, this.getClientMaxRowsSetting(ROOT_ACCESS_ID));
+		this.setClientNumFreeMoneyflowsSetting(userId, this.getClientNumFreeMoneyflowsSetting(ROOT_ACCESS_ID));
 	}
 
 	@Override

@@ -35,8 +35,6 @@ public class ObjectMapperConfiguration {
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		final ObjectMapper objectMapper = new MyObjectMapper();
-		// objectMapper.registerModule(new AfterburnerModule());
-		return objectMapper;
+		return new MyObjectMapper();
 	}
 }

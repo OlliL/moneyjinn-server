@@ -101,8 +101,7 @@ public class UserService extends AbstractService implements IUserService {
 	public User getUserById(final UserID userId) {
 		Assert.notNull(userId);
 		final UserData userData = this.userDao.getUserById(userId.getId());
-		final User user = super.map(userData, User.class);
-		return user;
+		return super.map(userData, User.class);
 	}
 
 	@Override
@@ -133,8 +132,7 @@ public class UserService extends AbstractService implements IUserService {
 	public User getUserByName(final String name) {
 		Assert.notNull(name);
 		final UserData userData = this.userDao.getUserByName(name);
-		final User user = super.map(userData, User.class);
-		return user;
+		return super.map(userData, User.class);
 	}
 
 	@Override
@@ -213,8 +211,7 @@ public class UserService extends AbstractService implements IUserService {
 		if (password != null) {
 			this.sha1MD.reset();
 
-			final String userPassword = BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
-			return userPassword;
+			return BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
 		}
 		return null;
 	}

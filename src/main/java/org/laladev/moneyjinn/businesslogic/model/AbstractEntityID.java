@@ -26,22 +26,22 @@ import java.io.Serializable;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-public abstract class AbstractEntityID<ID extends Serializable> implements Serializable {
+public abstract class AbstractEntityID<I extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private ID id;
+	private I id;
 
 	protected AbstractEntityID() {
 	}
 
-	protected AbstractEntityID(final ID id) {
+	protected AbstractEntityID(final I id) {
 		this.id = id;
 	}
 
-	public final ID getId() {
+	public final I getId() {
 		return this.id;
 	}
 
-	public final void setId(final ID id) {
+	public final void setId(final I id) {
 		this.id = id;
 	}
 

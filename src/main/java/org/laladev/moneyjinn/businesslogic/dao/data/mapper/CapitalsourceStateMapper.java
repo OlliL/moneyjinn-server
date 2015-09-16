@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.mapper;
+package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;

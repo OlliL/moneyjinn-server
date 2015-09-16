@@ -57,6 +57,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 @Named
 public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
+	private static final long MAX_MINUTES_CLOCK_OFF = 15L;
+
 	MoneyJinnRequestWrapper requestWrapper;
 
 	@Inject
@@ -96,14 +98,13 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 			String userName = null;
 			String hmacHash = null;
 
-			if (clientAuthorization != null) {
-				if (clientAuthorization.substring(0, 3).equals(RESTAuthorization.authenticationHeaderPrefix)) {
-					final String[] authorizationArray = clientAuthorization.substring(3)
-							.split(RESTAuthorization.authenticationHeaderSeparator);
-					if (authorizationArray.length == 2) {
-						userName = authorizationArray[0];
-						hmacHash = authorizationArray[1];
-					}
+			if (clientAuthorization != null
+					&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.authenticationHeaderPrefix)) {
+				final String[] authorizationArray = clientAuthorization.substring(3)
+						.split(RESTAuthorization.authenticationHeaderSeparator);
+				if (authorizationArray.length == 2) {
+					userName = authorizationArray[0];
+					hmacHash = authorizationArray[1];
 				}
 			}
 
@@ -115,7 +116,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 			final ZonedDateTime dateHeaderLocalDateTime = ZonedDateTime.parse(dateHeaderString, this.formatter);
 
 			final long minutes = ChronoUnit.MINUTES.between(ZonedDateTime.now(), dateHeaderLocalDateTime);
-			if (Math.abs(minutes) > 15l) {
+			if (Math.abs(minutes) > MAX_MINUTES_CLOCK_OFF) {
 				throw new BusinessException("Your clock is more than 15 minutes off", ErrorCode.CLIENT_CLOCK_OFF);
 			}
 

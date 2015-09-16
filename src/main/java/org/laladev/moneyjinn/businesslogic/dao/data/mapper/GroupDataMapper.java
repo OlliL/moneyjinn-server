@@ -33,8 +33,7 @@ public class GroupDataMapper implements IMapper<Group, GroupData> {
 
 	@Override
 	public Group mapBToA(final GroupData groupData) {
-		final Group group = new Group(new GroupID(groupData.getId()), groupData.getName());
-		return group;
+		return new Group(new GroupID(groupData.getId()), groupData.getName());
 	}
 
 	@Override

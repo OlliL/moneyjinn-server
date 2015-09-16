@@ -74,15 +74,14 @@ public class GroupService extends AbstractService implements IGroupService {
 		} else {
 			final Group checkGroup = this.getGroupByName(group.getName());
 			// Update OR Create
-			if (checkGroup != null) {
-				if (group.getId() == null || !checkGroup.getId().equals(group.getId())) {
-					validationResult.addValidationResultItem(
-							new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
-				}
+			if (checkGroup != null && (group.getId() == null || !checkGroup.getId().equals(group.getId()))) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
 			}
 		}
 
 		return validationResult;
+
 	}
 
 	@Override
@@ -121,8 +120,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	public Group getGroupByName(final String name) {
 		Assert.notNull(name);
 		final GroupData groupData = this.groupDao.getGroupByName(name);
-		final Group group = super.map(groupData, Group.class);
-		return group;
+		return super.map(groupData, Group.class);
 	}
 
 	@Override

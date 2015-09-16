@@ -229,7 +229,7 @@ public class MoneyflowController extends AbstractController {
 
 		final CreateMoneyflowsResponse response = new CreateMoneyflowsResponse();
 
-		if (validationResult.isValid() == true) {
+		if (validationResult.isValid()) {
 			this.moneyflowService.createMoneyflows(moneyflows);
 			if (preDefMoneyflowIds != null) {
 				preDefMoneyflowIds.stream()

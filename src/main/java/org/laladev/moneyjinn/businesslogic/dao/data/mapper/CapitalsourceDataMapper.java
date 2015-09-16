@@ -36,8 +36,6 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 
 public class CapitalsourceDataMapper implements IMapper<Capitalsource, CapitalsourceData> {
 
@@ -52,32 +50,9 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		capitalsource.setGroupUse(capitalsourceData.isAttGroupUse());
 		capitalsource.setImportAllowed(capitalsourceData.isImportAllowed());
 
-		switch (capitalsourceData.getState()) {
-		case 1:
-			capitalsource.setState(CapitalsourceState.NON_CACHE);
-			break;
-		case 2:
-			capitalsource.setState(CapitalsourceState.CACHE);
-			break;
-		default:
-			throw new UnsupportedOperationException("State " + capitalsourceData.getState() + " not supported!");
-		}
-		switch (capitalsourceData.getType()) {
-		case 1:
-			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
-			break;
-		case 2:
-			capitalsource.setType(CapitalsourceType.LONG_TERM_ASSET);
-			break;
-		case 3:
-			capitalsource.setType(CapitalsourceType.RESERVE_ASSET);
-			break;
-		case 4:
-			capitalsource.setType(CapitalsourceType.PROVISION_ASSET);
-			break;
-		default:
-			throw new UnsupportedOperationException("Type " + capitalsourceData.getType() + " not supported!");
-		}
+		capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceData.getState()));
+		capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceData.getType()));
+
 		capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
 		capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
 
@@ -107,32 +82,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		capitalsourceData.setAttGroupUse(capitalsource.isGroupUse());
 		capitalsourceData.setImportAllowed(capitalsource.isImportAllowed());
 
-		switch (capitalsource.getState()) {
-		case NON_CACHE:
-			capitalsourceData.setState((short) 1);
-			break;
-		case CACHE:
-			capitalsourceData.setState((short) 2);
-			break;
-		default:
-			throw new UnsupportedOperationException("State " + capitalsource.getState() + " not supported!");
-		}
-		switch (capitalsource.getType()) {
-		case CURRENT_ASSET:
-			capitalsourceData.setType((short) 1);
-			break;
-		case LONG_TERM_ASSET:
-			capitalsourceData.setType((short) 2);
-			break;
-		case RESERVE_ASSET:
-			capitalsourceData.setType((short) 3);
-			break;
-		case PROVISION_ASSET:
-			capitalsourceData.setType((short) 4);
-			break;
-		default:
-			throw new UnsupportedOperationException("Type " + capitalsource.getType() + " not supported!");
-		}
+		capitalsourceData.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
+		capitalsourceData.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 
 		if (capitalsource.getUser() != null) {
 			capitalsourceData.setMacIdCreator(capitalsource.getUser().getId().getId());

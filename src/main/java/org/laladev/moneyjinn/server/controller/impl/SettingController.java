@@ -57,6 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/setting/")
 public class SettingController extends AbstractController {
+	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -70,10 +71,9 @@ public class SettingController extends AbstractController {
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public ShowDefaultSettingsResponse showDefaultSettings() {
-		final AccessID accessId = new AccessID(0l);
 		final ShowDefaultSettingsResponse response = new ShowDefaultSettingsResponse();
 
-		this.getStandardSettings(accessId, response);
+		this.getStandardSettings(ROOT_ACCESS_ID, response);
 		return response;
 	}
 
@@ -81,9 +81,7 @@ public class SettingController extends AbstractController {
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public void updateDefaultSettings(@RequestBody final UpdateDefaultSettingsRequest request) {
-		final AccessID accessId = new AccessID(0l);
-
-		this.updateStandardSettings(request, accessId);
+		this.updateStandardSettings(request, ROOT_ACCESS_ID);
 	}
 
 	@RequestMapping(value = "showPersonalSettings", method = { RequestMethod.GET })

@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationResult {
-	public boolean result;
-	public List<ValidationResultItem> validationResultItems;
+	private boolean result;
+	private final List<ValidationResultItem> validationResultItems;
 
 	public ValidationResult() {
 		this.result = true;

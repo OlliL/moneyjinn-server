@@ -201,6 +201,8 @@ public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID> {
 		builder.append(this.lastUsedDate);
 		builder.append(", postingAccount=");
 		builder.append(this.postingAccount);
+		builder.append(", getId()=");
+		builder.append(this.getId());
 		builder.append("]");
 		return builder.toString();
 	}

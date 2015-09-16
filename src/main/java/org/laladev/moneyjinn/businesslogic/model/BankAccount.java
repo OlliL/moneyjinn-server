@@ -1,10 +1,13 @@
 package org.laladev.moneyjinn.businesslogic.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class BankAccount {
+public class BankAccount implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private static final Short ACCOUNT_NUMBER_MAX_LENGTH = 34;
 	private static final Short BANK_CODE_MAX_LENGTH = 11;
 	private String accountNumber;

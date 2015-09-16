@@ -101,10 +101,8 @@ public class ContractpartnerController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
 				.getClientCurrentlyValidContractpartnerSetting(userId);
-		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, null,
-				setting.getSetting());
+		return this.doShowContractpartnerList(userId, null, setting.getSetting());
 
-		return response;
 	}
 
 	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
@@ -114,10 +112,8 @@ public class ContractpartnerController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
 				.getClientCurrentlyValidContractpartnerSetting(userId);
-		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, restriction,
-				setting.getSetting());
+		return this.doShowContractpartnerList(userId, restriction, setting.getSetting());
 
-		return response;
 	}
 
 	@RequestMapping(value = "showContractpartnerList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })

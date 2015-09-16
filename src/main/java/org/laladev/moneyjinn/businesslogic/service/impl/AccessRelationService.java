@@ -59,6 +59,7 @@ import org.springframework.util.Assert;
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
 
 	private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
+	private static final Long ROOT_ID = 0L;
 
 	@Inject
 	private AccessRelationDao accessRelationDao;
@@ -182,7 +183,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(accessId.getId(), dateSQL);
 		AccessRelation accessRelation = super.map(accessRelationData, AccessRelation.class);
 		while (accessRelation.getParentAccessRelation() != null
-				&& accessRelation.getParentAccessRelation().getId().getId() != 0l) {
+				&& accessRelation.getParentAccessRelation().getId().getId().compareTo(ROOT_ID) != 0) {
 			accessRelationData = this.accessRelationDao
 					.getAccessRelationById(accessRelation.getParentAccessRelation().getId().getId(), dateSQL);
 			accessRelation = super.map(accessRelationData, AccessRelation.class);
@@ -319,11 +320,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 						}
 						updateAccessRelationItem.setValidTil(previousValidTil);
 						updateAccessRelationItems.add(updateAccessRelationItem);
-						// accessRelationItem ['id'] = currentAccessRelation.getId();
-						// accessRelationItem ['validfrom'] = currentAccessRelation.getValidFrom();
-						// accessRelationItem ['item'] = clone currentAccessRelation;
-						// accessRelationItem ['item'].setValidTil( previousValidTil );
-						// updateAccessRelationItems [] = accessRelationItem;
 						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
 						addAccessRelation = true;
 					}

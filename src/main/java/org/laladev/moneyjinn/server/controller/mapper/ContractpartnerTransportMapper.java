@@ -87,11 +87,10 @@ public class ContractpartnerTransportMapper implements IMapper<Contractpartner, 
 			postingAccountName = postingAccount.getName();
 		}
 
-		final ContractpartnerTransport contractpartnerTransport = new ContractpartnerTransport(id, userId,
-				contractpartner.getName(), contractpartner.getStreet(), contractpartner.getPostcode(),
-				contractpartner.getTown(), validTil, validFrom, contractpartner.getCountry(),
-				contractpartner.getMoneyflowComment(), postingAccountName, postingAccountId);
+		return new ContractpartnerTransport(id, userId, contractpartner.getName(), contractpartner.getStreet(),
+				contractpartner.getPostcode(), contractpartner.getTown(), validTil, validFrom,
+				contractpartner.getCountry(), contractpartner.getMoneyflowComment(), postingAccountName,
+				postingAccountId);
 
-		return contractpartnerTransport;
 	}
 }
