@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 
 public abstract class AbstractMapperSupport {
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(AbstractMapperSupport.class);
 
 	private static final String MAPPER_UNDEFINED = "Mapper undefined!";
 

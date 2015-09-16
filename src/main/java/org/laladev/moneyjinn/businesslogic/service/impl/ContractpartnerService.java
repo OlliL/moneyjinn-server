@@ -64,7 +64,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
 
 	@Inject
 	private ContractpartnerDao contractpartnerDao;
@@ -306,7 +306,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
 			this.evictContractpartnerCache(userId, contractpartnerId);
 		} catch (final Exception e) {
-			this.LOG.info(e);
+			LOG.info(e);
 			throw new BusinessException(
 					"You may not delete a contractual partner who is still referenced by a flow of money!",
 					ErrorCode.CONTRACTPARTNER_IN_USE);

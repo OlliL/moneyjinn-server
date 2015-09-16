@@ -54,7 +54,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class UserService extends AbstractService implements IUserService {
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(UserService.class);
 
 	@Inject
 	private UserDao userDao;
@@ -64,7 +64,7 @@ public class UserService extends AbstractService implements IUserService {
 		try {
 			this.sha1MD = MessageDigest.getInstance("SHA1");
 		} catch (final NoSuchAlgorithmException e) {
-			this.LOG.error(e);
+			LOG.error(e);
 		}
 
 	}
@@ -203,7 +203,7 @@ public class UserService extends AbstractService implements IUserService {
 
 			this.userDao.deleteUser(userId.getId());
 		} catch (final Exception e) {
-			this.LOG.info(e);
+			LOG.info(e);
 			throw new BusinessException("This user has already entered data and may therefore not be deleted!",
 					ErrorCode.USER_HAS_DATA);
 		}

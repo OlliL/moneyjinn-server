@@ -30,6 +30,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.GroupDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.GroupData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.GroupDataMapper;
@@ -49,6 +51,8 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class GroupService extends AbstractService implements IGroupService {
+
+	private static final Log LOG = LogFactory.getLog(GroupService.class);
 
 	@Inject
 	private GroupDao groupDao;
@@ -159,6 +163,7 @@ public class GroupService extends AbstractService implements IGroupService {
 			this.groupDao.deleteGroup(groupId.getId());
 			this.evictGroupCache(groupId);
 		} catch (final Exception e) {
+			LOG.info(e);
 			throw new BusinessException("You may not delete a group while there where/are users assigned to it!",
 					ErrorCode.GROUP_IN_USE);
 		}

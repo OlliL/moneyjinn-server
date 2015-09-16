@@ -58,7 +58,7 @@ import org.springframework.util.Assert;
 @EnableCaching
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
 
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
 
 	@Inject
 	private AccessRelationDao accessRelationDao;
@@ -222,7 +222,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		try {
 			insertAccessRelation = accessRelation.clone();
 		} catch (final CloneNotSupportedException e) {
-			this.LOG.error(e);
+			LOG.error(e);
 		}
 
 		// new user, no existing relations
@@ -315,7 +315,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 						try {
 							updateAccessRelationItem = currentAccessRelation.clone();
 						} catch (final CloneNotSupportedException e) {
-							this.LOG.error(e);
+							LOG.error(e);
 						}
 						updateAccessRelationItem.setValidTil(previousValidTil);
 						updateAccessRelationItems.add(updateAccessRelationItem);

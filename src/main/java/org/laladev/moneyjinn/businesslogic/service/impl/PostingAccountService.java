@@ -51,7 +51,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
 
 	@Inject
 	private PostingAccountDao postingAccountDao;
@@ -164,7 +164,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 			this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
 			this.evictPostingAccountCache(postingAccountId);
 		} catch (final Exception e) {
-			this.LOG.info(e);
+			LOG.info(e);
 			throw new BusinessException(
 					"The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
 					ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);

@@ -58,15 +58,15 @@ public class AccessRelationDao {
 
 	public void deleteAccessRelationByDate(final Long id, final Date date) {
 		this.mapper.deleteAccessRelationByDate(id, date);
-	};
+	}
 
 	public void updateAccessRelation(final Long id, final Date date, final AccessRelationData accessRelationData) {
 		this.mapper.updateAccessRelation(id, date, accessRelationData);
-	};
+	}
 
 	public void createAccessRelation(final AccessRelationData accessRelationData) {
 		this.mapper.createAccessRelation(accessRelationData);
-	};
+	}
 
 	public void deleteAllAccessFlattened(final Long id) {
 		this.mapper.deleteAllAccessFlattened(id);
@@ -74,10 +74,10 @@ public class AccessRelationDao {
 
 	public void deleteAccessFlattenedAfter(final Long id, final Date date) {
 		this.mapper.deleteAccessFlattenedAfter(id, date);
-	};
+	}
 
 	public void createAccessFlattened(final AccessFlattenedData accessFlattenedData) {
 		this.mapper.createAccessFlattened(accessFlattenedData);
-	};
+	}
 
 }

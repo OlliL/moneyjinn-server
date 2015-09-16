@@ -63,7 +63,7 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
-	private final Log LOG = LogFactory.getLog(this.getClass());
+	private static final Log LOG = LogFactory.getLog(CapitalsourceService.class);
 
 	@Inject
 	private CapitalsourceDao capitalsourceDao;
@@ -298,7 +298,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
 			this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
 		} catch (final Exception e) {
-			this.LOG.info(e);
+			LOG.info(e);
 			throw new BusinessException(
 					"You may not delete a source of capital while it is referenced by a flow of money!",
 					ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
