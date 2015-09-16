@@ -31,6 +31,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -39,11 +41,13 @@ import org.apache.commons.codec.binary.Base64;
 
 public class RESTAuthorization {
 
-	public static final String dateHeaderFormat = "EEE, dd MMM yyyy HH:mm:ss z";
-	public static final String dateHeaderName = "Requestdate";
-	public static final String authenticationHeaderName = "Authentication";
-	public static final String authenticationHeaderPrefix = "MNF";
-	public static final String authenticationHeaderSeparator = ":";
+	private static final Logger LOG = Logger.getLogger(RESTAuthorization.class.getName());
+
+	public static final String DATE_HEADER_FORMAT = "EEE, dd MMM yyyy HH:mm:ss z";
+	public static final String DATE_HEADER_NAME = "Requestdate";
+	public static final String AUTH_HEADER_NAME = "Authentication";
+	public static final String AUTH_HEADER_PREFIX = "MNF";
+	public static final String AUTH_HEADER_SEPERATOR = ":";
 	private static final String MAC_ALGORITHM = "HmacSHA1";
 
 	private final Base64 base64 = new Base64();
@@ -67,13 +71,16 @@ public class RESTAuthorization {
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 */
-	public final String getRESTAuthorization(byte[] secret, final String httpVerb, final String contentType,
-			final String url, final String date, final byte[] body, String ident) throws NoSuchAlgorithmException {
+	public final String getRESTAuthorization(final byte[] password, final String httpVerb, final String contentType,
+			final String url, final String date, final byte[] body, final String username)
+					throws NoSuchAlgorithmException {
 		String authString = null;
+		byte[] secret = password;
 		if (secret == null) {
 			secret = new String(" ").getBytes();
 		}
 
+		String ident = username;
 		if (ident == null) {
 			ident = new String();
 		}
@@ -103,10 +110,12 @@ public class RESTAuthorization {
 			final byte[] base64Bytes = this.base64.encode(hexBytes);
 			authString = new String(base64Bytes);
 		} catch (final InvalidKeyException e) {
+			LOG.log(Level.SEVERE, e.toString());
 		} catch (final UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, e.toString());
 		}
 
-		return authenticationHeaderPrefix + ident + authenticationHeaderSeparator + authString;
+		return AUTH_HEADER_PREFIX + ident + AUTH_HEADER_SEPERATOR + authString;
 	}
 
 	private String getMD5(final byte[] body) throws NoSuchAlgorithmException {

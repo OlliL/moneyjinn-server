@@ -58,11 +58,11 @@ public class ValidationResponse extends AbstractResponse {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
-		result = prime * result
+		int res = super.hashCode();
+		res = prime * res + ((this.result == null) ? 0 : this.result.hashCode());
+		res = prime * res
 				+ ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
-		return result;
+		return res;
 	}
 
 	@Override
