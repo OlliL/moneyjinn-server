@@ -1,3 +1,7 @@
+package org.laladev.moneyjinn.core.rest.model;
+
+import java.util.List;
+
 //
 // Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -23,11 +27,6 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ValidationResponse.java,v 1.3 2015/08/22 23:38:28 olivleh1 Exp $
-//package org.laladev.moneyflow.core.rest.model;
-package org.laladev.moneyjinn.core.rest.model;
-
-import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 
