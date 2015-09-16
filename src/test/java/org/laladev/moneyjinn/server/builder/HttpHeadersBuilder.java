@@ -23,7 +23,7 @@ public class HttpHeadersBuilder {
 
 	protected HttpHeadersBuilder() {
 		this.restAuthorization = new RESTAuthorization();
-		this.dateFormatter = DateTimeFormatter.ofPattern(RESTAuthorization.dateHeaderFormat, Locale.US)
+		this.dateFormatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT, Locale.US)
 				.withZone(ZoneId.of("GMT"));
 		try {
 			this.sha1MD = MessageDigest.getInstance("SHA1");
@@ -34,7 +34,7 @@ public class HttpHeadersBuilder {
 	public HttpHeaders getDateHeader(final ZonedDateTime dateTime) {
 		final String date = this.dateFormatter.format(dateTime);
 		final HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(RESTAuthorization.dateHeaderName, date);
+		httpHeaders.add(RESTAuthorization.DATE_HEADER_NAME, date);
 		return httpHeaders;
 	}
 
@@ -48,10 +48,10 @@ public class HttpHeadersBuilder {
 			final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
 
 			final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
-					contentType, uri, httpHeaders.getFirst(RESTAuthorization.dateHeaderName), body.getBytes(),
+					contentType, uri, httpHeaders.getFirst(RESTAuthorization.DATE_HEADER_NAME), body.getBytes(),
 					userName);
 
-			httpHeaders.add(RESTAuthorization.authenticationHeaderName, authString.trim());
+			httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, authString.trim());
 
 		}
 		return httpHeaders;

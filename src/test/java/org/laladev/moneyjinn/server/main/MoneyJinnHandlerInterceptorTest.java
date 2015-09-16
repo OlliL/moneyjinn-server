@@ -146,8 +146,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName, RESTAuthorization.authenticationHeaderPrefix
-				+ RESTAuthorization.authenticationHeaderSeparator + "aaaaa");
+		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, RESTAuthorization.AUTH_HEADER_PREFIX
+				+ RESTAuthorization.AUTH_HEADER_SEPERATOR + "aaaaa");
 
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
@@ -162,8 +162,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName, RESTAuthorization.authenticationHeaderPrefix
-				+ "klaus" + RESTAuthorization.authenticationHeaderSeparator);
+		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, RESTAuthorization.AUTH_HEADER_PREFIX
+				+ "klaus" + RESTAuthorization.AUTH_HEADER_SEPERATOR);
 
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
@@ -178,8 +178,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName,
-				"XXX" + "klaus" + RESTAuthorization.authenticationHeaderSeparator + "aaa");
+		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
+				"XXX" + "klaus" + RESTAuthorization.AUTH_HEADER_SEPERATOR + "aaa");
 
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
@@ -194,8 +194,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
-		httpHeaders.add(RESTAuthorization.authenticationHeaderName,
-				RESTAuthorization.authenticationHeaderPrefix + "klausaaa");
+		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
+				RESTAuthorization.AUTH_HEADER_PREFIX + "klausaaa");
 
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);

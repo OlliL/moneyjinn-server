@@ -67,7 +67,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 	private RESTAuthorization restAuthorization;
 	@Inject
 	private SessionEnvironment sessionEnvironment;
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.dateHeaderFormat,
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT,
 			Locale.US);
 
 	@Override
@@ -90,18 +90,18 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 
 		if (requiresAuthorization || requiresAdmin) {
 			final String dateHeaderString = ((MoneyJinnRequestWrapper) request)
-					.getHeader(RESTAuthorization.dateHeaderName);
+					.getHeader(RESTAuthorization.DATE_HEADER_NAME);
 
 			final String clientAuthorization = ((MoneyJinnRequestWrapper) request)
-					.getHeader(RESTAuthorization.authenticationHeaderName);
+					.getHeader(RESTAuthorization.AUTH_HEADER_NAME);
 
 			String userName = null;
 			String hmacHash = null;
 
 			if (clientAuthorization != null
-					&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.authenticationHeaderPrefix)) {
+					&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
 				final String[] authorizationArray = clientAuthorization.substring(3)
-						.split(RESTAuthorization.authenticationHeaderSeparator);
+						.split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
 				if (authorizationArray.length == 2) {
 					userName = authorizationArray[0];
 					hmacHash = authorizationArray[1];
