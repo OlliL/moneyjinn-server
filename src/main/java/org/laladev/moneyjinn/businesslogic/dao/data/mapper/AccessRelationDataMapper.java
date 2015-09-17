@@ -27,10 +27,10 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.laladev.moneyjinn.api.IMapper;
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
+import org.laladev.moneyjinn.core.mapper.IMapper;
 
 public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessRelationData> {
 

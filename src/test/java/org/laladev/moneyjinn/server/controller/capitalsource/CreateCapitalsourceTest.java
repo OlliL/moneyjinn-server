@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -18,6 +17,7 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceStat
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;

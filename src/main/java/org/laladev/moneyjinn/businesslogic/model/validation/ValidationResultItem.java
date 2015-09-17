@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 
 public class ValidationResultItem {
 	private AbstractEntityID<? extends Serializable> key;

@@ -26,7 +26,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import javax.inject.Inject;
 
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserAttribute;
@@ -38,6 +37,7 @@ import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractShowSettingsResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractUpdateSettingsRequest;
 import org.laladev.moneyjinn.core.rest.model.setting.ShowDefaultSettingsResponse;

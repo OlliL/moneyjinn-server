@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.controller.group;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowDeleteGroupResponse;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;

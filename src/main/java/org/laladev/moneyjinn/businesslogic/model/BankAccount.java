@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.laladev.moneyjinn.core.error.ErrorCode;
+
 public class BankAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 

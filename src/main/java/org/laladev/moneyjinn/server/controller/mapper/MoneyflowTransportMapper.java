@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.laladev.moneyjinn.api.IMapper;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
@@ -13,6 +12,7 @@ import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>

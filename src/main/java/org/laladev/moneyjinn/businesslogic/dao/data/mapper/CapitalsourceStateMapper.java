@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.ErrorCode;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 
 public class CapitalsourceStateMapper {
 	private static final Short NON_CACHE_SHORT = Short.valueOf((short) 1);
