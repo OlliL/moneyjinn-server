@@ -1,5 +1,6 @@
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 //
 
 @JsonRootName("showDeletePreDefMoneyflowResponse")
-public class ShowDeletePreDefMoneyflowResponse {
+public class ShowDeletePreDefMoneyflowResponse extends AbstractResponse {
 	private PreDefMoneyflowTransport preDefMoneyflowTransport;
 
 	public final PreDefMoneyflowTransport getPreDefMoneyflowTransport() {
@@ -45,7 +46,7 @@ public class ShowDeletePreDefMoneyflowResponse {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((this.preDefMoneyflowTransport == null) ? 0 : this.preDefMoneyflowTransport.hashCode());
 		return result;
@@ -56,7 +57,7 @@ public class ShowDeletePreDefMoneyflowResponse {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {

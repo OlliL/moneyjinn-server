@@ -90,7 +90,7 @@ public abstract class AbstractAddMoneyflowResponse extends ValidationResponse {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
 		result = prime * result
@@ -109,7 +109,7 @@ public abstract class AbstractAddMoneyflowResponse extends ValidationResponse {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {

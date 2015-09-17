@@ -56,7 +56,7 @@ public class ShowUserListResponse extends AbstractResponse {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((this.accessRelationTransports == null) ? 0 : this.accessRelationTransports.hashCode());
 		result = prime * result + ((this.groupTransports == null) ? 0 : this.groupTransports.hashCode());
@@ -70,7 +70,7 @@ public class ShowUserListResponse extends AbstractResponse {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {
