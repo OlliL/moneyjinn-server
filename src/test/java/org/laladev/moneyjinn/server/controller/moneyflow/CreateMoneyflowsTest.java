@@ -84,6 +84,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowTransports(Arrays.asList(transport));
 
 		final CreateMoneyflowsResponse expected = this.getCompleteResponseObject();
+		expected.setResult(Boolean.FALSE);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
 		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
@@ -137,7 +138,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		expected.setPreDefMoneyflowTransports(preDefMoneyflowTransports);
 
 		expected.setSettingNumberOfFreeMoneyflows(1);
-		expected.setResult(Boolean.FALSE);
+		expected.setResult(Boolean.TRUE);
 		return expected;
 	}
 

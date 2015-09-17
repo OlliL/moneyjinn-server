@@ -235,6 +235,7 @@ public class MoneyflowController extends AbstractController {
 				preDefMoneyflowIds.stream()
 						.forEach(id -> this.preDefMoneyflowService.setLastUsedDate(userId, new PreDefMoneyflowID(id)));
 			}
+			response.setResult(true);
 		} else {
 			response.setResult(false);
 			response.setValidationItemTransports(
