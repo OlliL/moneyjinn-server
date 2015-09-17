@@ -84,16 +84,15 @@ public class UserService extends AbstractService implements IUserService {
 					.addValidationResultItem(new ValidationResultItem(user.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
 		} else {
 			final User checkUser = this.getUserByName(user.getName());
-			// Update OR Create
-			if (checkUser != null) {
-				if (user.getId() == null || !checkUser.getId().equals(user.getId())) {
-					validationResult.addValidationResultItem(
-							new ValidationResultItem(user.getId(), ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS));
-				}
+			if (checkUser != null && (user.getId() == null || !checkUser.getId().equals(user.getId()))) {
+				// Update OR Create
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(user.getId(), ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS));
 			}
 		}
 
 		return validationResult;
+
 	}
 
 	@Override

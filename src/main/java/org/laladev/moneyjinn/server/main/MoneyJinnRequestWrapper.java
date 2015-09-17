@@ -72,7 +72,7 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
 		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body.getBytes());
-		final ServletInputStream servletInputStream = new ServletInputStream() {
+		return new ServletInputStream() {
 			@Override
 			public int read() throws IOException {
 				return byteArrayInputStream.read();
@@ -93,7 +93,6 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 				throw new UnsupportedOperationException("Not implemented");
 			}
 		};
-		return servletInputStream;
 	}
 
 	@Override

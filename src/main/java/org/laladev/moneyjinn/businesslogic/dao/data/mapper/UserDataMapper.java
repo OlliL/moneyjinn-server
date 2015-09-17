@@ -56,8 +56,7 @@ public class UserDataMapper implements IMapper<User, UserData> {
 			attributes.add(UserAttribute.NONE);
 		}
 
-		final User user = new User(new UserID(b.getId()), b.getName(), b.getPassword(), attributes, permissions);
-		return user;
+		return new User(new UserID(b.getId()), b.getName(), b.getPassword(), attributes, permissions);
 	}
 
 	@Override

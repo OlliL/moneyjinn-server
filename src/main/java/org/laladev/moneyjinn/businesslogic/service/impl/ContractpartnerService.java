@@ -132,14 +132,12 @@ public class ContractpartnerService extends AbstractService implements IContract
 		if (contractpartner.getValidTil().isBefore(contractpartner.getValidFrom())) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
-		} else if (contractpartner.getId() != null) {
+		} else if (contractpartner.getId() != null && this.contractpartnerDao.checkContractpartnerInUseOutOfDate(
+				contractpartner.getUser().getId().getId(), contractpartner.getId().getId(),
+				Date.valueOf(contractpartner.getValidFrom()), Date.valueOf(contractpartner.getValidTil()))) {
 			// update existing Contractpartner
-			if (this.contractpartnerDao.checkContractpartnerInUseOutOfDate(contractpartner.getUser().getId().getId(),
-					contractpartner.getId().getId(), Date.valueOf(contractpartner.getValidFrom()),
-					Date.valueOf(contractpartner.getValidTil()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(contractpartner.getId(),
-						ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
-			}
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(contractpartner.getId(), ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
 		}
 
 		if (contractpartner.getName() == null || contractpartner.getName().trim().isEmpty()) {
@@ -148,12 +146,11 @@ public class ContractpartnerService extends AbstractService implements IContract
 		} else {
 			final Contractpartner checkContractpartner = this
 					.getContractpartnerByName(contractpartner.getUser().getId(), contractpartner.getName());
-			if (checkContractpartner != null) {
+			if (checkContractpartner != null && (contractpartner.getId() == null
+					|| !checkContractpartner.getId().equals(contractpartner.getId()))) {
 				// new Contractpartner || update existing Contractpartner
-				if (contractpartner.getId() == null || !checkContractpartner.getId().equals(contractpartner.getId())) {
-					validationResult.addValidationResultItem(
-							new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
-				}
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
 			}
 		}
 

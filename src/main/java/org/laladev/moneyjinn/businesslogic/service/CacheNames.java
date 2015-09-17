@@ -26,10 +26,6 @@ package org.laladev.moneyjinn.businesslogic.service;
 
 public class CacheNames {
 
-	private CacheNames() {
-
-	}
-
 	public static final String USER_BY_ID = "userById";
 	public static final String USER_BY_NAME = "userByName";
 
@@ -54,4 +50,9 @@ public class CacheNames {
 	public static final String PRE_DEF_MONEYFLOW_BY_ID = "preDefMoneyflowById";
 
 	public static final String MONEYFLOW_BY_ID = "moneyflowById";
+
+	private CacheNames() {
+
+	}
+
 }

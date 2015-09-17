@@ -45,17 +45,19 @@ import javax.servlet.http.HttpServletRequest;
 public class BufferFilter implements Filter {
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
+		// noop
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, final ServletResponse response, final FilterChain chain)
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
-		request = new MoneyJinnRequestWrapper((HttpServletRequest) request);
-		chain.doFilter(request, response);
+		final ServletRequest req = new MoneyJinnRequestWrapper((HttpServletRequest) request);
+		chain.doFilter(req, response);
 	}
 
 	@Override
 	public void destroy() {
+		// noop
 	}
 
 }

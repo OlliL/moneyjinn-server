@@ -33,10 +33,6 @@ import org.springframework.context.annotation.Import;
 @Import(MoneyjinnConfiguration.class)
 public class MoneyJinnServer {
 
-	public MoneyJinnServer() {
-		super();
-	}
-
 	public static void main(final String[] args) {
 		SpringApplication.run(MoneyJinnServer.class, args);
 	}

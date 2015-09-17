@@ -50,6 +50,7 @@ public class SettingService extends AbstractService implements ISettingService {
 
 	@Override
 	protected void addBeanMapper() {
+		// no Mapper needed
 	}
 
 	@Override
