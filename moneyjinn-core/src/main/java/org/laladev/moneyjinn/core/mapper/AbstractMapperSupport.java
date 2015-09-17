@@ -106,13 +106,12 @@ public abstract class AbstractMapperSupport {
 	}
 
 	protected <T> List<T> mapList(final List<?> args, final Class<T> clazz) {
-		if (args != null && !args.isEmpty()) {
-			final List<T> resultList = new ArrayList<T>();
+		final List<T> resultList = new ArrayList<T>();
+		if (args != null) {
 			for (final Object object : args) {
 				resultList.add(this.map(object, clazz));
 			}
-			return resultList;
 		}
-		return null;
+		return resultList;
 	}
 }
