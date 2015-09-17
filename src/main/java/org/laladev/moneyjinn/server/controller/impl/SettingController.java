@@ -65,6 +65,7 @@ public class SettingController extends AbstractController {
 
 	@Override
 	protected void addBeanMapper() {
+		// No Mapping needed.
 	}
 
 	@RequestMapping(value = "showDefaultSettings", method = { RequestMethod.GET })
