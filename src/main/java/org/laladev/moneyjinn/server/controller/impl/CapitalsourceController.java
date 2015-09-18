@@ -1,32 +1,6 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.time.LocalDate;
-
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
-//All rights reserved.
-//
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-//notice, this list of conditions and the following disclaimer
-//2. Redistributions in binary form must reproduce the above copyright
-//notice, this list of conditions and the following disclaimer in the
-//documentation and/or other materials provided with the distribution.
-//
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
-
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -62,6 +36,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -86,54 +84,44 @@ public class CapitalsourceController extends AbstractController {
 	@RequiresAuthorization
 	public ShowCapitalsourceListResponse showCapitalsourceList() {
 		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
-				.getClientCurrentlyValidCapitalsourcesSetting(userId);
+		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService.getClientCurrentlyValidCapitalsourcesSetting(userId);
 		return this.doShowCapitalsourceList(userId, null, setting.getSetting());
 
 	}
 
 	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowCapitalsourceListResponse showCapitalsourceList(
-			@PathVariable(value = "restriction") final String restriction) {
+	public ShowCapitalsourceListResponse showCapitalsourceList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
-				.getClientCurrentlyValidCapitalsourcesSetting(userId);
+		final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService.getClientCurrentlyValidCapitalsourcesSetting(userId);
 		return this.doShowCapitalsourceList(userId, restriction, setting.getSetting());
 
 	}
 
 	@RequestMapping(value = "showCapitalsourceList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowCapitalsourceListResponse showCapitalsourceList(
-			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
+	public ShowCapitalsourceListResponse showCapitalsourceList(@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
 		final UserID userId = super.getUserId();
 		final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, null, currentlyValid);
-		final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(
-				currentlyValid);
+		final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(currentlyValid);
 		this.settingService.setClientCurrentlyValidCapitalsourcesSetting(userId, setting);
 
 		return response;
 	}
 
-	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/{currentlyValid}", method = {
-			RequestMethod.GET })
+	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowCapitalsourceListResponse showCapitalsourceList(
-			@PathVariable(value = "restriction") final String restriction,
+	public ShowCapitalsourceListResponse showCapitalsourceList(@PathVariable(value = "restriction") final String restriction,
 			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
 		final UserID userId = super.getUserId();
-		final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, restriction,
-				currentlyValid);
-		final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(
-				currentlyValid);
+		final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, restriction, currentlyValid);
+		final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(currentlyValid);
 		this.settingService.setClientCurrentlyValidCapitalsourcesSetting(userId, setting);
 
 		return response;
 	}
 
-	private ShowCapitalsourceListResponse doShowCapitalsourceList(final UserID userId, final String restriction,
-			final boolean currentlyValid) {
+	private ShowCapitalsourceListResponse doShowCapitalsourceList(final UserID userId, final String restriction, final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
 		Set<Character> initials = null;
@@ -157,11 +145,9 @@ public class CapitalsourceController extends AbstractController {
 			}
 		} else if (restriction != null && restriction.length() == 1) {
 			if (currentlyValid) {
-				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitialAndDateRange(userId,
-						restriction.toCharArray()[0], now, now);
+				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitialAndDateRange(userId, restriction.toCharArray()[0], now, now);
 			} else {
-				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitial(userId,
-						restriction.toCharArray()[0]);
+				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitial(userId, restriction.toCharArray()[0]);
 			}
 		}
 
@@ -193,12 +179,10 @@ public class CapitalsourceController extends AbstractController {
 		if (!validationResult.isValid()) {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
-		} else {
-			this.capitalsourceService.createCapitalsource(capitalsource);
 		}
+		this.capitalsourceService.createCapitalsource(capitalsource);
 		return null;
 	}
 
@@ -220,8 +204,7 @@ public class CapitalsourceController extends AbstractController {
 		} else {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -247,8 +230,7 @@ public class CapitalsourceController extends AbstractController {
 
 	@RequestMapping(value = "showDeleteCapitalsource/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowDeleteCapitalsourceResponse showDeleteCapitalsource(
-			@PathVariable(value = "id") final Long capitalsourceId) {
+	public ShowDeleteCapitalsourceResponse showDeleteCapitalsource(@PathVariable(value = "id") final Long capitalsourceId) {
 		final ShowDeleteCapitalsourceResponse response = new ShowDeleteCapitalsourceResponse();
 		this.fillAbstractCapitalsourceResponse(capitalsourceId, response);
 		return response;
@@ -258,8 +240,7 @@ public class CapitalsourceController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final Group accessor = this.accessRelationService.getAccessor(userId);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
-		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
-				capitalsourceId);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(), capitalsourceId);
 		if (capitalsource != null && capitalsource.getUser().getId().equals(userId)) {
 			// only the creator of a Capitalsource may edit or delete it
 			response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));

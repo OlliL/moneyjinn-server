@@ -94,10 +94,9 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 		accessFlattenedData.setValidTil(validTil);
 
 		AccessRelation parentAccessRelation = accessRelation;
-		if (parentAccessRelation != null) {
-			accessFlattenedData.setIdLevel1(parentAccessRelation.getId().getId());
-			parentAccessRelation = parentAccessRelation.getParentAccessRelation();
-		}
+		accessFlattenedData.setIdLevel1(parentAccessRelation.getId().getId());
+		parentAccessRelation = parentAccessRelation.getParentAccessRelation();
+
 		if (parentAccessRelation != null) {
 			accessFlattenedData.setIdLevel2(parentAccessRelation.getId().getId());
 			parentAccessRelation = parentAccessRelation.getParentAccessRelation();

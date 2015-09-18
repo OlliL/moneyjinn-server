@@ -1,32 +1,6 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.time.LocalDate;
-
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
-//All rights reserved.
-//
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-//notice, this list of conditions and the following disclaimer
-//2. Redistributions in binary form must reproduce the above copyright
-//notice, this list of conditions and the following disclaimer in the
-//documentation and/or other materials provided with the distribution.
-//
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
-
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -70,6 +44,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -99,54 +97,44 @@ public class ContractpartnerController extends AbstractController {
 	@RequiresAuthorization
 	public ShowContractpartnerListResponse showContractpartnerList() {
 		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
-				.getClientCurrentlyValidContractpartnerSetting(userId);
+		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService.getClientCurrentlyValidContractpartnerSetting(userId);
 		return this.doShowContractpartnerList(userId, null, setting.getSetting());
 
 	}
 
 	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "restriction") final String restriction) {
+	public ShowContractpartnerListResponse showContractpartnerList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
-				.getClientCurrentlyValidContractpartnerSetting(userId);
+		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService.getClientCurrentlyValidContractpartnerSetting(userId);
 		return this.doShowContractpartnerList(userId, restriction, setting.getSetting());
 
 	}
 
 	@RequestMapping(value = "showContractpartnerList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
+	public ShowContractpartnerListResponse showContractpartnerList(@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
 		final UserID userId = super.getUserId();
 		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, null, currentlyValid);
-		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
-				currentlyValid);
+		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(currentlyValid);
 		this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
 
 		return response;
 	}
 
-	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/{currentlyValid}", method = {
-			RequestMethod.GET })
+	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "restriction") final String restriction,
+	public ShowContractpartnerListResponse showContractpartnerList(@PathVariable(value = "restriction") final String restriction,
 			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
 		final UserID userId = super.getUserId();
-		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, restriction,
-				currentlyValid);
-		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
-				currentlyValid);
+		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, restriction, currentlyValid);
+		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(currentlyValid);
 		this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
 
 		return response;
 	}
 
-	private ShowContractpartnerListResponse doShowContractpartnerList(final UserID userId, final String restriction,
-			final boolean currentlyValid) {
+	private ShowContractpartnerListResponse doShowContractpartnerList(final UserID userId, final String restriction, final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
 		Set<Character> initials = null;
@@ -170,11 +158,9 @@ public class ContractpartnerController extends AbstractController {
 			}
 		} else if (restriction != null && restriction.length() == 1) {
 			if (currentlyValid) {
-				contractpartners = this.contractpartnerService.getAllContractpartnersByInitialAndDateRange(userId,
-						restriction.toCharArray()[0], now, now);
+				contractpartners = this.contractpartnerService.getAllContractpartnersByInitialAndDateRange(userId, restriction.toCharArray()[0], now, now);
 			} else {
-				contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId,
-						restriction.toCharArray()[0]);
+				contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId, restriction.toCharArray()[0]);
 			}
 		}
 
@@ -190,8 +176,7 @@ public class ContractpartnerController extends AbstractController {
 
 	@RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreateContractpartnerResponse createContractpartner(
-			@RequestBody final CreateContractpartnerRequest request) {
+	public CreateContractpartnerResponse createContractpartner(@RequestBody final CreateContractpartnerRequest request) {
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
 
@@ -208,19 +193,16 @@ public class ContractpartnerController extends AbstractController {
 			final CreateContractpartnerResponse response = new CreateContractpartnerResponse();
 			this.fillAbstractCreateContractpartnerResponse(response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
-		} else {
-			this.contractpartnerService.createContractpartner(contractpartner);
 		}
+		this.contractpartnerService.createContractpartner(contractpartner);
 		return null;
 	}
 
 	@RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public UpdateContractpartnerResponse updateContractpartner(
-			@RequestBody final UpdateContractpartnerRequest request) {
+	public UpdateContractpartnerResponse updateContractpartner(@RequestBody final UpdateContractpartnerRequest request) {
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
 		final User user = this.userService.getUserById(userId);
@@ -237,8 +219,7 @@ public class ContractpartnerController extends AbstractController {
 			final UpdateContractpartnerResponse response = new UpdateContractpartnerResponse();
 			this.fillAbstractCreateContractpartnerResponse(response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -267,8 +248,7 @@ public class ContractpartnerController extends AbstractController {
 
 	@RequestMapping(value = "showEditContractpartner/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowEditContractpartnerResponse showEditContractpartner(
-			@PathVariable(value = "id") final Long contractpartnerId) {
+	public ShowEditContractpartnerResponse showEditContractpartner(@PathVariable(value = "id") final Long contractpartnerId) {
 		final ShowEditContractpartnerResponse response = new ShowEditContractpartnerResponse();
 		this.fillAbstractContractpartnerResponse(contractpartnerId, response);
 		if (response.getContractpartnerTransport() != null) {
@@ -280,8 +260,7 @@ public class ContractpartnerController extends AbstractController {
 
 	@RequestMapping(value = "showDeleteContractpartner/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowDeleteContractpartnerResponse showDeleteContractpartner(
-			@PathVariable(value = "id") final Long contractpartnerId) {
+	public ShowDeleteContractpartnerResponse showDeleteContractpartner(@PathVariable(value = "id") final Long contractpartnerId) {
 		final ShowDeleteContractpartnerResponse response = new ShowDeleteContractpartnerResponse();
 		this.fillAbstractContractpartnerResponse(contractpartnerId, response);
 		return response;
@@ -290,8 +269,7 @@ public class ContractpartnerController extends AbstractController {
 	private void fillAbstractContractpartnerResponse(final Long id, final AbstractContractpartnerResponse response) {
 		final UserID userId = super.getUserId();
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 		response.setContractpartnerTransport(super.map(contractpartner, ContractpartnerTransport.class));
 	}
 

@@ -106,19 +106,16 @@ public class SettingController extends AbstractController {
 
 		if (password != null) {
 			this.userService.setPassword(userId, password);
-		} else if (password == null && user.getAttributes().contains(UserAttribute.IS_NEW)) {
+		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
 			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);
 		}
 	}
 
 	private void getStandardSettings(final AccessID accessId, final AbstractShowSettingsResponse response) {
-		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
-				.getClientDisplayedLanguageSetting(accessId);
-		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
-				.getClientDateFormatSetting(accessId);
+		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService.getClientDisplayedLanguageSetting(accessId);
+		final ClientDateFormatSetting clientDateFormatSetting = this.settingService.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
+		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService.getClientNumFreeMoneyflowsSetting(accessId);
 
 		response.setLanguage(clientDisplayedLanguageSetting.getSetting());
 		response.setDateFormat(clientDateFormatSetting.getSetting());
@@ -128,14 +125,12 @@ public class SettingController extends AbstractController {
 
 	private void updateStandardSettings(final AbstractUpdateSettingsRequest request, final AccessID accessId) {
 		if (request.getLanguage() != null) {
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(
-					request.getLanguage());
+			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(request.getLanguage());
 			this.settingService.setClientDisplayedLanguageSetting(accessId, clientDisplayedLanguageSetting);
 		}
 
 		if (request.getDateFormat() != null) {
-			final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(
-					request.getDateFormat());
+			final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(request.getDateFormat());
 			this.settingService.setClientDateFormatSetting(accessId, clientDateFormatSetting);
 		}
 
@@ -145,8 +140,7 @@ public class SettingController extends AbstractController {
 		}
 
 		if (request.getNumFreeMoneyflows() != null) {
-			final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = new ClientNumFreeMoneyflowsSetting(
-					request.getNumFreeMoneyflows());
+			final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = new ClientNumFreeMoneyflowsSetting(request.getNumFreeMoneyflows());
 			this.settingService.setClientNumFreeMoneyflowsSetting(accessId, clientNumFreeMoneyflowsSetting);
 		}
 	}

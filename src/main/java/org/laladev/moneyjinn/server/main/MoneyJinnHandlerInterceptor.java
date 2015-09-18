@@ -49,9 +49,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
- * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets
- * the {@link HttpStatus} to 204 if the {@link HttpServletResponse} body is empty.
- *
+ * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets the {@link HttpStatus} to 204 if the
+ * {@link HttpServletResponse} body is empty.
+ * 
  * @author olivleh1
  * @since 0.0.1
  */
@@ -67,12 +67,10 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 	private RESTAuthorization restAuthorization;
 	@Inject
 	private SessionEnvironment sessionEnvironment;
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT,
-			Locale.US);
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT, Locale.US);
 
 	@Override
-	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
-			throws Exception {
+	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
 
 		boolean requiresAuthorization = false;
 		boolean requiresAdmin = false;
@@ -89,27 +87,22 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		if (requiresAuthorization || requiresAdmin) {
-			final String dateHeaderString = ((MoneyJinnRequestWrapper) request)
-					.getHeader(RESTAuthorization.DATE_HEADER_NAME);
+			final String dateHeaderString = ((MoneyJinnRequestWrapper) request).getHeader(RESTAuthorization.DATE_HEADER_NAME);
 
-			final String clientAuthorization = ((MoneyJinnRequestWrapper) request)
-					.getHeader(RESTAuthorization.AUTH_HEADER_NAME);
+			final String clientAuthorization = ((MoneyJinnRequestWrapper) request).getHeader(RESTAuthorization.AUTH_HEADER_NAME);
 
 			String userName = null;
 			String hmacHash = null;
 
-			if (clientAuthorization != null
-					&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
-				final String[] authorizationArray = clientAuthorization.substring(3)
-						.split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
+			if (clientAuthorization != null && clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
+				final String[] authorizationArray = clientAuthorization.substring(3).split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
 				if (authorizationArray.length == 2) {
 					userName = authorizationArray[0];
 					hmacHash = authorizationArray[1];
 				}
 			}
 
-			if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0
-					|| dateHeaderString == null) {
+			if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0 || dateHeaderString == null) {
 				throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
 			}
 
@@ -129,16 +122,15 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 			final byte[] body = ((MoneyJinnRequestWrapper) request).getBody().getBytes();
 			final String method = ((MoneyJinnRequestWrapper) request).getMethod().toString();
 			final String requestURL = ((MoneyJinnRequestWrapper) request).getRequestURI();
-			final String serverAuthorization = this.restAuthorization.getRESTAuthorization(
-					user.getPassword().getBytes(), method, contentType, requestURL, dateHeaderString, body, userName);
+			final String serverAuthorization = this.restAuthorization.getRESTAuthorization(user.getPassword().getBytes(), method, contentType, requestURL,
+					dateHeaderString, body, userName);
 
-			if (clientAuthorization.equals(serverAuthorization)) {
+			if (serverAuthorization.equals(clientAuthorization)) {
 				if (!user.getPermissions().contains(UserPermission.LOGIN)) {
 					throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
 				}
 				if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
-					throw new BusinessException("You must be an admin to access this functionality!",
-							ErrorCode.USER_IS_NO_ADMIN);
+					throw new BusinessException("You must be an admin to access this functionality!", ErrorCode.USER_IS_NO_ADMIN);
 				}
 				this.sessionEnvironment.setUserID(user.getId());
 			} else {
@@ -150,8 +142,8 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	@Override
-	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler,
-			final ModelAndView modelAndView) throws Exception {
+	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView)
+			throws Exception {
 		if (response.getContentType() == null) {
 			response.setStatus(HttpStatus.NO_CONTENT.value());
 		}

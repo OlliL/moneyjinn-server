@@ -118,12 +118,10 @@ public class GroupController extends AbstractController {
 		if (!validationResult.isValid()) {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
-		} else {
-			this.groupService.createGroup(group);
 		}
+		this.groupService.createGroup(group);
 		return null;
 	}
 
@@ -140,8 +138,7 @@ public class GroupController extends AbstractController {
 		} else {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 

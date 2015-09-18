@@ -1,32 +1,6 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.time.LocalDate;
-
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
-//All rights reserved.
-//
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-//notice, this list of conditions and the following disclaimer
-//2. Redistributions in binary form must reproduce the above copyright
-//notice, this list of conditions and the following disclaimer in the
-//documentation and/or other materials provided with the distribution.
-//
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
-
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -74,6 +48,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -109,8 +107,7 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "showPreDefMoneyflowList/{restriction}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(
-			@PathVariable(value = "restriction") final String restriction) {
+	public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final Set<Character> initials = this.preDefMoneyflowService.getAllPreDefMoneyflowInitials(userId);
@@ -122,8 +119,7 @@ public class PreDefMoneyflowController extends AbstractController {
 				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
 			preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
 		} else if (restriction != null && restriction.length() == 1) {
-			preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId,
-					restriction.toCharArray()[0]);
+			preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId, restriction.toCharArray()[0]);
 		}
 
 		final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
@@ -137,8 +133,7 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
-			@RequestBody final CreatePreDefMoneyflowRequest request) {
+	public CreatePreDefMoneyflowResponse createPreDefMoneyflow(@RequestBody final CreatePreDefMoneyflowRequest request) {
 		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
 		final UserID userId = super.getUserId();
 
@@ -151,19 +146,16 @@ public class PreDefMoneyflowController extends AbstractController {
 			final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
 			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
-		} else {
-			this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
 		}
+		this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
 		return null;
 	}
 
 	@RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public UpdatePreDefMoneyflowResponse updatePreDefMoneyflow(
-			@RequestBody final UpdatePreDefMoneyflowRequest request) {
+	public UpdatePreDefMoneyflowResponse updatePreDefMoneyflow(@RequestBody final UpdatePreDefMoneyflowRequest request) {
 		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
 		final UserID userId = super.getUserId();
 		preDefMoneyflow.setUser(new User(userId));
@@ -176,8 +168,7 @@ public class PreDefMoneyflowController extends AbstractController {
 			final UpdatePreDefMoneyflowResponse response = new UpdatePreDefMoneyflowResponse();
 			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -203,12 +194,10 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "showEditPreDefMoneyflow/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowEditPreDefMoneyflowResponse showEditPreDefMoneyflow(
-			@PathVariable(value = "id") final Long preDefMoneyflowId) {
+	public ShowEditPreDefMoneyflowResponse showEditPreDefMoneyflow(@PathVariable(value = "id") final Long preDefMoneyflowId) {
 		final UserID userId = super.getUserId();
 		final ShowEditPreDefMoneyflowResponse response = new ShowEditPreDefMoneyflowResponse();
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				new PreDefMoneyflowID(preDefMoneyflowId));
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, new PreDefMoneyflowID(preDefMoneyflowId));
 		if (preDefMoneyflow != null) {
 			response.setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
 			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
@@ -218,22 +207,19 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "showDeletePreDefMoneyflow/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowDeletePreDefMoneyflowResponse showDeletePreDefMoneyflow(
-			@PathVariable(value = "id") final Long preDefMoneyflowId) {
+	public ShowDeletePreDefMoneyflowResponse showDeletePreDefMoneyflow(@PathVariable(value = "id") final Long preDefMoneyflowId) {
 		final UserID userId = super.getUserId();
 		final ShowDeletePreDefMoneyflowResponse response = new ShowDeletePreDefMoneyflowResponse();
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				new PreDefMoneyflowID(preDefMoneyflowId));
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, new PreDefMoneyflowID(preDefMoneyflowId));
 		response.setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
 		return response;
 	}
 
-	private void fillAbstractCreatePreDefMoneyflowResponse(final UserID userId,
-			final AbstractCreatePreDefMoneyflowResponse response, final PreDefMoneyflow preDefMoneyflow) {
+	private void fillAbstractCreatePreDefMoneyflowResponse(final UserID userId, final AbstractCreatePreDefMoneyflowResponse response,
+			final PreDefMoneyflow preDefMoneyflow) {
 		final LocalDate today = LocalDate.now();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
-				today, today);
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId, today, today);
 		// if the Capitalsource is no longer valid, it was not returned by the service call above
 		// but must be in the list to make it selectable.
 		if (preDefMoneyflow != null) {
@@ -242,22 +228,18 @@ public class PreDefMoneyflowController extends AbstractController {
 				if (preDefMoneyflow.getCapitalsource().getValidFrom() == null) {
 					// lazy initialized via update-request.
 					final GroupID groupId = this.accessRelationService.getAccessor(userId).getId();
-					capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
-							capitalsource.getId());
+					capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsource.getId());
 				}
 
-				if (capitalsource != null && (today.isBefore(capitalsource.getValidFrom())
-						|| today.isAfter(capitalsource.getValidTil()))) {
+				if (capitalsource != null && (today.isBefore(capitalsource.getValidFrom()) || today.isAfter(capitalsource.getValidTil()))) {
 					capitalsources.add(capitalsource);
 				}
 			}
 		}
-		final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
-				CapitalsourceTransport.class);
+		final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources, CapitalsourceTransport.class);
 		response.setCapitalsourceTransports(capitalsourceTransports);
 
-		final List<Contractpartner> contractpartners = this.contractpartnerService
-				.getAllContractpartnersByDateRange(userId, today, today);
+		final List<Contractpartner> contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, today, today);
 		// if the Contractpartner is no longer valid, it was not returned by the service call above
 		// but must be in the list to make it selectable.
 		if (preDefMoneyflow != null) {
@@ -265,19 +247,16 @@ public class PreDefMoneyflowController extends AbstractController {
 			if (contractpartner != null) {
 				if (preDefMoneyflow.getContractpartner().getValidFrom() == null) {
 					// lazy initialized via update-request.
-					contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-							contractpartner.getId());
+					contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartner.getId());
 				}
 
-				if (contractpartner != null && (today.isBefore(contractpartner.getValidFrom())
-						|| today.isAfter(contractpartner.getValidTil()))) {
+				if (contractpartner != null && (today.isBefore(contractpartner.getValidFrom()) || today.isAfter(contractpartner.getValidTil()))) {
 					contractpartners.add(contractpartner);
 				}
 			}
 		}
 
-		final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners,
-				ContractpartnerTransport.class);
+		final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners, ContractpartnerTransport.class);
 		response.setContractpartnerTransports(contractpartnerTransports);
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
