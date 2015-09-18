@@ -39,10 +39,9 @@ public abstract class AbstractMapperSupport {
 				// interface-methods are returned. We are only interested in the implemented
 				// methods, so filter the methods from the interface which differ in their return
 				// types (Generic vs. concrete class)
-				if (method.getName().equals(mapperMethod.getName())
-						&& !method.getReturnType().equals(mapperMethod.getReturnType())) {
+				if (method.getName().equals(mapperMethod.getName()) && !method.getReturnType().equals(mapperMethod.getReturnType())) {
 					final Class<?> returnType = mapperMethod.getReturnType();
-					final Class<?> parameter = mapperMethod.getParameters()[0].getType();
+					final Class<?> parameter = mapperMethod.getParameterTypes()[0];
 
 					this.putToMapperMethods(mapperMethod, returnType, parameter);
 					this.putToMapperClasses(mapper, returnType, parameter);
