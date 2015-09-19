@@ -55,15 +55,9 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 			} else {
 				stringBuilder.append("");
 			}
-		} catch (final IOException ex) {
-			throw ex;
 		} finally {
 			if (bufferedReader != null) {
-				try {
-					bufferedReader.close();
-				} catch (final IOException ex) {
-					throw ex;
-				}
+				bufferedReader.close();
 			}
 		}
 		this.body = stringBuilder.toString();
