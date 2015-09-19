@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.server.controller.impl;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.server.controller.impl;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.server.controller.impl;
 
 import javax.inject.Inject;
 
@@ -112,10 +112,13 @@ public class SettingController extends AbstractController {
 	}
 
 	private void getStandardSettings(final AccessID accessId, final AbstractShowSettingsResponse response) {
-		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService.getClientDisplayedLanguageSetting(accessId);
-		final ClientDateFormatSetting clientDateFormatSetting = this.settingService.getClientDateFormatSetting(accessId);
+		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
+				.getClientDisplayedLanguageSetting(accessId);
+		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
+				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService.getClientNumFreeMoneyflowsSetting(accessId);
+		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
+				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		response.setLanguage(clientDisplayedLanguageSetting.getSetting());
 		response.setDateFormat(clientDateFormatSetting.getSetting());
@@ -125,12 +128,14 @@ public class SettingController extends AbstractController {
 
 	private void updateStandardSettings(final AbstractUpdateSettingsRequest request, final AccessID accessId) {
 		if (request.getLanguage() != null) {
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(request.getLanguage());
+			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(
+					request.getLanguage());
 			this.settingService.setClientDisplayedLanguageSetting(accessId, clientDisplayedLanguageSetting);
 		}
 
 		if (request.getDateFormat() != null) {
-			final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(request.getDateFormat());
+			final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(
+					request.getDateFormat());
 			this.settingService.setClientDateFormatSetting(accessId, clientDateFormatSetting);
 		}
 
@@ -140,7 +145,8 @@ public class SettingController extends AbstractController {
 		}
 
 		if (request.getNumFreeMoneyflows() != null) {
-			final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = new ClientNumFreeMoneyflowsSetting(request.getNumFreeMoneyflows());
+			final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = new ClientNumFreeMoneyflowsSetting(
+					request.getNumFreeMoneyflows());
 			this.settingService.setClientNumFreeMoneyflowsSetting(accessId, clientNumFreeMoneyflowsSetting);
 		}
 	}

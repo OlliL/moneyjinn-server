@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.server.controller.impl;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.server.controller.impl;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.server.controller.impl;
 
 import java.util.List;
 import java.util.Set;
@@ -118,7 +118,8 @@ public class GroupController extends AbstractController {
 		if (!validationResult.isValid()) {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 		this.groupService.createGroup(group);
@@ -138,7 +139,8 @@ public class GroupController extends AbstractController {
 		} else {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 

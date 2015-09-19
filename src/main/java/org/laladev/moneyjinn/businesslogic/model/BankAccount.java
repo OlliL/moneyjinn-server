@@ -58,4 +58,54 @@ public class BankAccount implements Serializable {
 		}
 		return errorCodes;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.accountNumber == null) ? 0 : this.accountNumber.hashCode());
+		result = prime * result + ((this.bankCode == null) ? 0 : this.bankCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final BankAccount other = (BankAccount) obj;
+		if (this.accountNumber == null) {
+			if (other.accountNumber != null) {
+				return false;
+			}
+		} else if (!this.accountNumber.equals(other.accountNumber)) {
+			return false;
+		}
+		if (this.bankCode == null) {
+			if (other.bankCode != null) {
+				return false;
+			}
+		} else if (!this.bankCode.equals(other.bankCode)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BankAccount [accountNumber=");
+		builder.append(this.accountNumber);
+		builder.append(", bankCode=");
+		builder.append(this.bankCode);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

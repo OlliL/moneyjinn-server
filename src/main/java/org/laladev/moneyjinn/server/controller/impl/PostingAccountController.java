@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.server.controller.impl;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.server.controller.impl;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.server.controller.impl;
 
 import java.util.List;
 import java.util.Set;
@@ -82,7 +82,8 @@ public class PostingAccountController extends AbstractController {
 	@RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
-	public ShowPostingAccountListResponse showPostingAccountList(@PathVariable(value = "restriction") final String restriction) {
+	public ShowPostingAccountListResponse showPostingAccountList(
+			@PathVariable(value = "restriction") final String restriction) {
 		final UserID userID = super.getUserId();
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userID);
 		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
@@ -118,7 +119,8 @@ public class PostingAccountController extends AbstractController {
 		if (!validationResult.isValid()) {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 		this.postingAccountService.createPostingAccount(postingAccount);
@@ -138,7 +140,8 @@ public class PostingAccountController extends AbstractController {
 		} else {
 			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -156,7 +159,8 @@ public class PostingAccountController extends AbstractController {
 	@RequestMapping(value = "showEditPostingAccount/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
-	public ShowEditPostingAccountResponse showEditPostingAccount(@PathVariable(value = "id") final Long postingAccountId) {
+	public ShowEditPostingAccountResponse showEditPostingAccount(
+			@PathVariable(value = "id") final Long postingAccountId) {
 		final ShowEditPostingAccountResponse response = new ShowEditPostingAccountResponse();
 		this.fillAbstractPostingAccountResponse(postingAccountId, response);
 		return response;
@@ -165,14 +169,17 @@ public class PostingAccountController extends AbstractController {
 	@RequestMapping(value = "showDeletePostingAccount/{id}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
-	public ShowDeletePostingAccountResponse showDeletePostingAccount(@PathVariable(value = "id") final Long postingAccountId) {
+	public ShowDeletePostingAccountResponse showDeletePostingAccount(
+			@PathVariable(value = "id") final Long postingAccountId) {
 		final ShowDeletePostingAccountResponse response = new ShowDeletePostingAccountResponse();
 		this.fillAbstractPostingAccountResponse(postingAccountId, response);
 		return response;
 	}
 
-	private void fillAbstractPostingAccountResponse(final Long postingAccountId, final AbstractPostingAccountResponse response) {
-		final PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(new PostingAccountID(postingAccountId));
+	private void fillAbstractPostingAccountResponse(final Long postingAccountId,
+			final AbstractPostingAccountResponse response) {
+		final PostingAccount postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(postingAccountId));
 		response.setPostingAccountTransport(super.map(postingAccount, PostingAccountTransport.class));
 	}
 }
