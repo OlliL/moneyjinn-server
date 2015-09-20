@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.server.builder;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
@@ -39,7 +41,8 @@ public class HttpHeadersBuilder {
 	}
 
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
-			final String uri, final String body, final HttpMethod httpMethod) throws NoSuchAlgorithmException {
+			final String uri, final String body, final HttpMethod httpMethod)
+					throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		this.sha1MD.reset();
 		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);
 		if (userName != null && userPassword != null) {
