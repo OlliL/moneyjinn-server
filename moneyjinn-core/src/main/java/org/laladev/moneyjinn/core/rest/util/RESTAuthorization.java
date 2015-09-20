@@ -31,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.crypto.Mac;
@@ -70,10 +69,12 @@ public class RESTAuthorization {
 	 * @param ident
 	 * @return
 	 * @throws NoSuchAlgorithmException
+	 * @throws UnsupportedEncodingException
+	 * @throws InvalidKeyException
 	 */
 	public final String getRESTAuthorization(final byte[] password, final String httpVerb, final String contentType,
 			final String url, final String date, final byte[] body, final String username)
-					throws NoSuchAlgorithmException {
+					throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		String authString = null;
 		byte[] secret = password;
 		if (secret == null) {
@@ -104,16 +105,10 @@ public class RESTAuthorization {
 		stringToSign.append("\n");
 		stringToSign.append(url);
 
-		try {
-			final byte[] rawHmac = this.getRawHmac(stringToSign, secret);
-			final byte[] hexBytes = BytesToHexConverter.convert(rawHmac).getBytes();
-			final byte[] base64Bytes = this.base64.encode(hexBytes);
-			authString = new String(base64Bytes);
-		} catch (final InvalidKeyException e) {
-			LOG.log(Level.SEVERE, e.toString());
-		} catch (final UnsupportedEncodingException e) {
-			LOG.log(Level.SEVERE, e.toString());
-		}
+		final byte[] rawHmac = this.getRawHmac(stringToSign, secret);
+		final byte[] hexBytes = BytesToHexConverter.convert(rawHmac).getBytes();
+		final byte[] base64Bytes = this.base64.encode(hexBytes);
+		authString = new String(base64Bytes);
 
 		return AUTH_HEADER_PREFIX + ident + AUTH_HEADER_SEPERATOR + authString;
 	}
