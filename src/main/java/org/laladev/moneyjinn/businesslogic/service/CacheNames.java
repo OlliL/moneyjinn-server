@@ -51,6 +51,9 @@ public class CacheNames {
 
 	public static final String MONEYFLOW_BY_ID = "moneyflowById";
 
+	public static final String CONTRACTPARTNER_ACCOUNT_BY_ID = "contractpartnerAccountById";
+	public static final String CONTRACTPARTNER_ACCOUNTS_BY_PARTNER = "contractpartnerAccountsByPartner";
+
 	private CacheNames() {
 
 	}
