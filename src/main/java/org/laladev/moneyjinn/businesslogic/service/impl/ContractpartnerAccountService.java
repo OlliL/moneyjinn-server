@@ -85,9 +85,12 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	private final List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
 			final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
-		return contractpartnerAccountDataList.stream()
-				.map(element -> this.mapContractpartnerAccountData(userId, element))
-				.collect(Collectors.toCollection(ArrayList::new));
+		if (contractpartnerAccountDataList != null) {
+			return contractpartnerAccountDataList.stream()
+					.map(element -> this.mapContractpartnerAccountData(userId, element))
+					.collect(Collectors.toCollection(ArrayList::new));
+		}
+		return null;
 	}
 
 	private ContractpartnerAccount getContractpartnerAccountByBankAccount(final UserID userId,
