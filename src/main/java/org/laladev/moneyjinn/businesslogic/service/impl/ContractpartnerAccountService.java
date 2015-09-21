@@ -178,8 +178,10 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		Assert.notNull(contractpartnerId);
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
 				contractpartnerId);
-		this.contractpartnerAccountDao.deleteContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
-		contractpartnerAccounts.stream().forEach(ca -> this.evictContractpartnerAccountCache(userId, ca.getId()));
+		if (contractpartnerAccounts != null) {
+			this.contractpartnerAccountDao.deleteContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
+			contractpartnerAccounts.stream().forEach(ca -> this.evictContractpartnerAccountCache(userId, ca.getId()));
+		}
 
 	}
 
