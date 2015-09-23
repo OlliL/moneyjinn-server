@@ -40,6 +40,11 @@ public class AccountMovementMapper {
 	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
 	private final DateFormat dateTimeWithoutYearSpaceFormatter = new SimpleDateFormat("dd.MM HH.mm");
 	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
+	private final DateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+	private static final short MOVEMENT_TYPE_DIRECT_DEBIT = (short) 5;
+	private static final short MOVEMENT_TYPE_WITHDRAWAL = (short) 83;
+	private static final short MOVEMENT_TYPE_SEPA_DIRECT_DEBIT = (short) 106;
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
@@ -127,22 +132,23 @@ public class AccountMovementMapper {
 	}
 
 	/**
-	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
-	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
-	 *
-	 * @param {@link
-	 * 			AccountMovement} accountMovement
+	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its usage text based on the used
+	 * Business-AccountMovement-Code + Text. <br>
+	 * 
+	 * @param {@link AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
 	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
 		java.util.Date invoiceDate = null;
 		try {
-			if (accountMovement.getMovementReason() != null && accountMovement.getMovementTypeCode() != null) {
+			if (accountMovement.getMovementReason() != null && accountMovement.getMovementReason().length() > 0
+					&& accountMovement.getMovementTypeCode() != null) {
 				final String movementReason = accountMovement.getMovementReason();
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
-				if (movementTypeCode.equals(Short.valueOf((short) 5))) {
+				final String[] lines = movementReason.split("\r\n|\r|\n");
 
-					final String[] lines = movementReason.split("\r\n|\r|\n");
+				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)) {
+
 					lineloop: for (final String line : lines) {
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
 							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
@@ -162,12 +168,10 @@ public class AccountMovementMapper {
 							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
 							setYear(accountMovement.getBookingDate(), invoiceDate);
 							/*
-							 * the invoice date must be before or equal than the bookingdate and not
-							 * more than two weeks before the bookingdate
+							 * the invoice date must be before or equal than the bookingdate and not more than two weeks before the bookingdate
 							 */
 							if (invoiceDate.after(accountMovement.getBookingDate())
-									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
-											* 86400000) {
+									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14 * 86400000) {
 								invoiceDate = null;
 
 							}
@@ -175,8 +179,7 @@ public class AccountMovementMapper {
 						}
 					}
 
-				} else if (movementTypeCode.equals(Short.valueOf((short) 83))) {
-					final String[] lines = movementReason.split("\r\n|\r|\n");
+				} else if (movementTypeCode.equals(MOVEMENT_TYPE_WITHDRAWAL)) {
 					for (final String line : lines) {
 						if (line.contains("TA-NR.")) {
 							// 10.02 16.56 TA-NR. XXXXXX
@@ -191,6 +194,14 @@ public class AccountMovementMapper {
 					if (invoiceDate != null) {
 						setYear(accountMovement.getBookingDate(), invoiceDate);
 					}
+				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT)) {
+					for (final String line : lines) {
+						if (line.matches("^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+							// 2015-09-22T17:16:41
+							invoiceDate = this.dateTimeFormatter.parse(line);
+							break;
+						}
+					}
 				}
 			}
 		} catch (final Exception e) {
@@ -200,9 +211,8 @@ public class AccountMovementMapper {
 
 		if (invoiceDate == null) {
 			return null;
-		} else {
-			return new Timestamp(invoiceDate.getTime());
 		}
+		return new Timestamp(invoiceDate.getTime());
 	}
 
 	private void setYear(final Date bookingDate, final java.util.Date invoiceDate) {

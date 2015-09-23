@@ -36,21 +36,19 @@ import org.laladev.hbci.entity.BalanceMonthly;
 import org.laladev.hbci.entity.mapper.BalanceMonthlyMapper;
 
 /**
- * This Handler determines the monthly balance of all previous month. This is done by collecting all
- * movements of an account and determine the balance for each month by crawling through them. If no
- * movements could be retrived at all, it is assumed that at least the previous month had the same
+ * This Handler determines the monthly balance of all previous month. This is done by collecting all movements of an account and determine the balance
+ * for each month by crawling through them. If no movements could be retrived at all, it is assumed that at least the previous month had the same
  * balance as the current balance is.
- *
+ * 
  * @author Oliver Lehmann
- *
+ * 
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
 	private final StatelessSession session;
 	private final BalanceDaily balanceDaily;
 	private final List<AccountMovement> accountMovements;
 
-	public BalanceMonthlyHandler(final StatelessSession session, final BalanceDaily balanceDaily,
-			final List<AccountMovement> accountMovements) {
+	public BalanceMonthlyHandler(final StatelessSession session, final BalanceDaily balanceDaily, final List<AccountMovement> accountMovements) {
 		this.session = session;
 		this.accountMovements = accountMovements;
 		this.balanceDaily = balanceDaily;
@@ -71,43 +69,39 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 						if (!balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))
 								|| !balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))) {
 							/*
-							 * The month of the current movement is different from the month of the
-							 * previous movement so we can be sure that the previous movement was
-							 * the last one for that month and we can save the "end of month"
-							 * balance
+							 * The month of the current movement is different from the month of the previous movement so we can be sure that the
+							 * previous movement was the last one for that month and we can save the "end of month" balance
 							 */
 							insertBalanceMonthly(balanceMonthly);
 							/*
-							 * it's possible, that the current movement is not in the next month of
-							 * the previous movement but farer away. In this case, we can assume
-							 * that the "end of month" balance of the previous month is the same as
-							 * for all the following month until we reach the month of the current
-							 * movement. Example: the previous movement was from 2015-01-21. The
-							 * current movement is from 2015-03-03 -> we save the "end of month"
-							 * balance for January (already done above) and February with the same
-							 * value
+							 * it's possible, that the current movement is not in the next month of the previous movement but farer away. In this
+							 * case, we can assume that the "end of month" balance of the previous month is the same as for all the following month
+							 * until we reach the month of the current movement. Example: the previous movement was from 2015-01-21. The current
+							 * movement is from 2015-03-03 -> we save the "end of month" balance for January (already done above) and February with
+							 * the same value
 							 */
 							this.prolongBalance(balanceMonthly, calendar);
 						}
 					}
-					balanceMonthly = balanceMonthlyMapper.map(accountMovement, calendar,
-							accountMovement.getBalanceCurrency(), accountMovement.getBalanceValue());
+					balanceMonthly = balanceMonthlyMapper.map(accountMovement, calendar, accountMovement.getBalanceCurrency(),
+							accountMovement.getBalanceValue());
 				}
 
-				final Calendar currentCalendar = Calendar.getInstance();
-				/*
-				 * If the last processed movement is not from the current month, we can assume that
-				 * for the month of the last movement, the end of month balance can be written.
-				 */
-				if (!balanceMonthly.getBalanceYear().equals(currentCalendar.get(Calendar.YEAR))
-						|| !balanceMonthly.getBalanceMonth().equals(currentCalendar.get(Calendar.MONTH))) {
-					insertBalanceMonthly(balanceMonthly);
+				if (balanceMonthly != null) {
+					final Calendar currentCalendar = Calendar.getInstance();
+					/*
+					 * If the last processed movement is not from the current month, we can assume that for the month of the last movement, the end of
+					 * month balance can be written.
+					 */
+					if (!balanceMonthly.getBalanceYear().equals(currentCalendar.get(Calendar.YEAR))
+							|| !balanceMonthly.getBalanceMonth().equals(currentCalendar.get(Calendar.MONTH))) {
+						insertBalanceMonthly(balanceMonthly);
+					}
+					/*
+					 * now also write the balance of the last movement for all following month until the current month is reached
+					 */
+					this.prolongBalance(balanceMonthly, currentCalendar);
 				}
-				/*
-				 * now also write the balance of the last movement for all following month until the
-				 * current month is reached
-				 */
-				this.prolongBalance(balanceMonthly, currentCalendar);
 			} else {
 				final Calendar previousCalendar = Calendar.getInstance();
 				previousCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) * -1);
@@ -120,20 +114,19 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				readyCalendar.setTime(this.balanceDaily.getLastTransactionDate());
 
 				/*
-				 * some banks always send the current day as balance date. some banks send the date
-				 * of the last booking.
+				 * some banks always send the current day as balance date. some banks send the date of the last booking.
 				 */
 				if (readyCalendar.before(previousCalendar)) {
 					// last date of booking
-					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, readyCalendar,
-							balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
+					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, readyCalendar, balanceDaily.getBalanceCurrency(),
+							balanceDaily.getBalanceAvailableValue());
 					insertBalanceMonthly(balanceMonthly);
 					final Calendar currentCalendar = Calendar.getInstance();
 					this.prolongBalance(balanceMonthly, currentCalendar);
 				} else {
 					// current day
-					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, previousCalendar,
-							balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
+					balanceMonthly = balanceMonthlyMapper.map(balanceDaily, previousCalendar, balanceDaily.getBalanceCurrency(),
+							balanceDaily.getBalanceAvailableValue());
 					insertBalanceMonthly(balanceMonthly);
 				}
 			}
@@ -141,8 +134,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 	}
 
 	private void prolongBalance(final BalanceMonthly balanceMonthly, final Calendar calendar) {
-		while (!balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
-				|| !balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
+		while (!balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR)) || !balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
 			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() + 1);
 
 			// did the year change?
@@ -153,12 +145,10 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 			// we don't save the balance if we reached the same month as our current
 			// movement is.
-			if (balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
-					&& balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
+			if (balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR)) && balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
 				break;
-			} else {
-				insertBalanceMonthly(balanceMonthly);
 			}
+			insertBalanceMonthly(balanceMonthly);
 		}
 	}
 

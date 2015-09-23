@@ -31,8 +31,7 @@ public class AccountMovementMapperTest {
 		invoiceCalendar.setTime(accountMovement.getInvoiceTimestamp());
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
-				invoiceCalendar.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH), invoiceCalendar.get(Calendar.DAY_OF_MONTH));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY), invoiceCalendar.get(Calendar.HOUR_OF_DAY));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
@@ -129,6 +128,17 @@ public class AccountMovementMapperTest {
 		usage.add(usageLine);
 
 		this.testInvoiceDate(usage, "83");
+	}
+
+	@Test
+	public void test_InvoiceTimestamp106() {
+		this.expectedCalendar.set(Calendar.SECOND, 22);
+
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "2015-06-10T01:03:22";
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "106");
 	}
 
 }
