@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.25, for FreeBSD10.1 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.26, for FreeBSD10.1 (amd64)
 --
 -- Host: localhost    Database: moneyflow_hbci
 -- ------------------------------------------------------
--- Server version       5.6.25
+-- Server version       5.6.26
 
 
 --
@@ -56,10 +56,10 @@ CREATE TABLE balance_monthly (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   my_iban varchar(34) NOT NULL,
   my_bic varchar(11) NOT NULL,
-  my_accountnumber bigint(10) NOT NULL,
-  my_bankcode int(8) NOT NULL,
+  my_accountnumber bigint(10) unsigned NOT NULL,
+  my_bankcode int(8) unsigned NOT NULL,
   balance_year year(4) NOT NULL,
-  balance_month tinyint(4) NOT NULL,
+  balance_month tinyint(4) unsigned NOT NULL,
   balance_value decimal(10,2) NOT NULL,
   balance_currency varchar(3) NOT NULL,
   PRIMARY KEY (id),
@@ -75,8 +75,8 @@ CREATE TABLE balance_daily (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   my_iban varchar(34) NOT NULL,
   my_bic varchar(11) NOT NULL,
-  my_accountnumber bigint(10) NOT NULL,
-  my_bankcode int(8) NOT NULL,
+  my_accountnumber bigint(10) unsigned NOT NULL,
+  my_bankcode int(8) unsigned NOT NULL,
   balance_date date NOT NULL,
   last_transaction_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   balance_available_value decimal(10,2) NOT NULL,
@@ -88,4 +88,4 @@ CREATE TABLE balance_daily (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- Dump completed on 2015-08-15 22:17:13
+-- Dump completed on 2015-09-23 21:52:34
