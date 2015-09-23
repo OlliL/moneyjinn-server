@@ -110,7 +110,9 @@ public class AccountMovementMapper {
 		}
 
 		accountMovement.setCustomerReference(entry.customerref);
-		accountMovement.setBankReference(entry.instref);
+		if (entry.instref != null && entry.instref.length() > 0) {
+			accountMovement.setBankReference(entry.instref);
+		}
 
 		accountMovement.setCancellation(entry.isStorno);
 		accountMovement.setAdditionalInformation(entry.additional);
@@ -123,7 +125,7 @@ public class AccountMovementMapper {
 		accountMovement.setBalanceValue(entry.saldo.value.getBigDecimalValue());
 		accountMovement.setBalanceCurrency(entry.saldo.value.getCurr());
 
-		final Timestamp invoiceDate = getInvoiceTimestamp(accountMovement);
+		final Timestamp invoiceDate = this.getInvoiceTimestamp(accountMovement);
 		if (invoiceDate != null) {
 			accountMovement.setInvoiceTimestamp(invoiceDate);
 		}
@@ -132,10 +134,11 @@ public class AccountMovementMapper {
 	}
 
 	/**
-	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its usage text based on the used
-	 * Business-AccountMovement-Code + Text. <br>
-	 * 
-	 * @param {@link AccountMovement} accountMovement
+	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
+	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
+	 *
+	 * @param {@link
+	 * 			AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
 	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
@@ -153,7 +156,7 @@ public class AccountMovementMapper {
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
 							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
 							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(12, 23));
-							setYear(accountMovement.getBookingDate(), invoiceDate);
+							this.setYear(accountMovement.getBookingDate(), invoiceDate);
 							break;
 						} else if (line.startsWith("EC ")) {
 							// Usage text starts with EC XXXXXXXX 090215165422IC1
@@ -166,12 +169,14 @@ public class AccountMovementMapper {
 								}
 							}
 							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
-							setYear(accountMovement.getBookingDate(), invoiceDate);
+							this.setYear(accountMovement.getBookingDate(), invoiceDate);
 							/*
-							 * the invoice date must be before or equal than the bookingdate and not more than two weeks before the bookingdate
+							 * the invoice date must be before or equal than the bookingdate and not
+							 * more than two weeks before the bookingdate
 							 */
 							if (invoiceDate.after(accountMovement.getBookingDate())
-									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14 * 86400000) {
+									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
+											* 86400000) {
 								invoiceDate = null;
 
 							}
@@ -192,11 +197,12 @@ public class AccountMovementMapper {
 						}
 					}
 					if (invoiceDate != null) {
-						setYear(accountMovement.getBookingDate(), invoiceDate);
+						this.setYear(accountMovement.getBookingDate(), invoiceDate);
 					}
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT)) {
 					for (final String line : lines) {
-						if (line.matches("^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+						if (line.matches(
+								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
 							// 2015-09-22T17:16:41
 							invoiceDate = this.dateTimeFormatter.parse(line);
 							break;
