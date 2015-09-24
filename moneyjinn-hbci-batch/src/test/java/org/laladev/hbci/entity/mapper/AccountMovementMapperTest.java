@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
@@ -139,6 +140,16 @@ public class AccountMovementMapperTest {
 		usage.add(usageLine);
 
 		this.testInvoiceDate(usage, "106");
+	}
+
+	@Test
+	@Ignore
+	public void test_InvoiceTimestamp96Kontouebertrag() {
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "DATUM 10.06.2015,01.03 UHR, 1.TAN 123456";
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "96");
 	}
 
 }
