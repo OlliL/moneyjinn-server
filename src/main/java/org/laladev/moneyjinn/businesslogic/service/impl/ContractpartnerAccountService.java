@@ -141,7 +141,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				ContractpartnerAccountData.class);
 		final Long contractpartnerAccountId = this.contractpartnerAccountDao
 				.createContractpartnerAccount(contractpartnerAccountData);
-		this.evictContractpartnerAccountCache(userId, new ContractpartnerAccountID(contractpartnerAccountId));
+		this.evictContractpartnerAccountCache(userId, new ContractpartnerAccountID(contractpartnerAccountId),
+				contractpartnerAccount.getContractpartner().getId());
 
 	}
 
@@ -156,10 +157,21 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			throw new BusinessException("ContractpartnerAccount update failed!", validationResultItem.getError());
 		}
 
-		final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
-				ContractpartnerAccountData.class);
-		this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);
-		this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId());
+		final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,
+				contractpartnerAccount.getId());
+		if (contractpartnerAccount != null) {
+			final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
+					ContractpartnerAccountData.class);
+			this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);
+
+			this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
+					contractpartnerAccount.getContractpartner().getId());
+			if (!contractpartnerAccountOld.getContractpartner().equals(contractpartnerAccount.getContractpartner())) {
+				this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
+						contractpartnerAccountOld.getContractpartner().getId());
+
+			}
+		}
 
 	}
 
@@ -168,8 +180,14 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final ContractpartnerAccountID contractpartnerAccountId) {
 		Assert.notNull(userId);
 		Assert.notNull(contractpartnerAccountId);
-		this.contractpartnerAccountDao.deleteContractpartnerAccount(userId.getId(), contractpartnerAccountId.getId());
-		this.evictContractpartnerAccountCache(userId, contractpartnerAccountId);
+		final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
+				contractpartnerAccountId);
+		if (contractpartnerAccount != null) {
+			this.contractpartnerAccountDao.deleteContractpartnerAccount(userId.getId(),
+					contractpartnerAccountId.getId());
+			this.evictContractpartnerAccountCache(userId, contractpartnerAccountId,
+					contractpartnerAccount.getContractpartner().getId());
+		}
 	}
 
 	@Override
@@ -180,19 +198,20 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				contractpartnerId);
 		if (contractpartnerAccounts != null) {
 			this.contractpartnerAccountDao.deleteContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
-			contractpartnerAccounts.stream().forEach(ca -> this.evictContractpartnerAccountCache(userId, ca.getId()));
+			contractpartnerAccounts.stream().forEach(
+					ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));
 		}
 
 	}
 
 	private void evictContractpartnerAccountCache(final UserID userId,
-			final ContractpartnerAccountID contractpartnerAccountID) {
+			final ContractpartnerAccountID contractpartnerAccountID, final ContractpartnerID contractpartnerId) {
 		if (contractpartnerAccountID != null) {
 			final Cache contractpartnerAccountsByPartnerCache = super.getCache(
 					CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER);
 			final Cache contractpartnerAccountByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID);
 			if (contractpartnerAccountsByPartnerCache != null) {
-				contractpartnerAccountsByPartnerCache.evict(userId);
+				contractpartnerAccountsByPartnerCache.evict(new SimpleKey(userId, contractpartnerId));
 			}
 			if (contractpartnerAccountByIdCache != null) {
 				contractpartnerAccountByIdCache.evict(new SimpleKey(userId, contractpartnerAccountID));

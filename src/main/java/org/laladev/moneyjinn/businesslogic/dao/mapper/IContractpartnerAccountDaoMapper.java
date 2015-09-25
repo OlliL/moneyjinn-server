@@ -1,3 +1,5 @@
+package org.laladev.moneyjinn.businesslogic.dao.mapper;
+
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -22,28 +24,27 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
+import java.util.List;
 
-import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountData;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
-import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
 
-public class PostingAccountDataMapper implements IMapper<PostingAccount, PostingAccountData> {
+public interface IContractpartnerAccountDaoMapper {
 
-	@Override
-	public PostingAccount mapBToA(final PostingAccountData postingAccountData) {
-		return new PostingAccount(new PostingAccountID(postingAccountData.getId()), postingAccountData.getName());
-	}
+	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
+			@Param("accountNumber") String accountNumber);
 
-	@Override
-	public PostingAccountData mapAToB(final PostingAccount postingAccount) {
-		final PostingAccountData postingAccountData = new PostingAccountData();
-		// might be null for new PostingAccounts
-		if (postingAccount.getId() != null) {
-			postingAccountData.setId(postingAccount.getId().getId());
-		}
-		postingAccountData.setName(postingAccount.getName());
-		return postingAccountData;
-	}
+	public ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
+
+	public List<ContractpartnerAccountData> getContractpartnerAccounts(
+			@Param("contractpartnerId") Long contractpartnerId);
+
+	public void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
+
+	public void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
+
+	public void deleteContractpartnerAccount(@Param("id") Long id);
+
+	public void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
+
 }

@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.businesslogic.dao.data;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.businesslogic.dao.data;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.businesslogic.dao.data;
 
 public class PostingAccountData {
 	private Long id;

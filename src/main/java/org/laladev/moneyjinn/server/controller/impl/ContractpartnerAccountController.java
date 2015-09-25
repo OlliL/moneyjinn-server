@@ -130,7 +130,6 @@ public class ContractpartnerAccountController extends AbstractController {
 
 		final ContractpartnerAccount contractpartnerAccount = super.map(request.getContractpartnerAccountTransport(),
 				ContractpartnerAccount.class);
-		contractpartnerAccount.setId(null);
 
 		final ValidationResult validationResult = this.contractpartnerAccountService
 				.validateContractpartnerAccount(userId, contractpartnerAccount);
