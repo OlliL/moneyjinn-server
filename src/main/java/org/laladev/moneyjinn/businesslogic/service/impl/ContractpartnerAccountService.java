@@ -61,8 +61,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 			final ContractpartnerAccount contractpartnerAccountChecked = this
 					.getContractpartnerAccountByBankAccount(userId, contractpartnerAccount.getBankAccount());
-			if (contractpartnerAccountChecked != null && !contractpartnerAccountChecked.getContractpartner().getId()
-					.equals(contractpartnerAccount.getContractpartner().getId())) {
+			if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
+					|| !contractpartnerAccountChecked.getId().equals(contractpartnerAccount.getId()))) {
 				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
 						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
 						Arrays.asList(contractpartnerAccountChecked.getContractpartner().getName())));
@@ -166,7 +166,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 		final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,
 				contractpartnerAccount.getId());
-		if (contractpartnerAccount != null) {
+		if (contractpartnerAccountOld != null) {
 			final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
 					ContractpartnerAccountData.class);
 			this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);

@@ -120,7 +120,7 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 		final String content = result.getResponse().getContentAsString();
 		Assert.assertNotNull(content);
 
-		Assert.assertEquals(content, result.getResponse().getStatus(), status.value());
+		Assert.assertEquals(content, status.value(), result.getResponse().getStatus());
 
 		if (!noResult) {
 			Assert.assertTrue(content.length() > 0);

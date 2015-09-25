@@ -77,6 +77,8 @@ public class ContractpartnerAccount extends AbstractEntity<ContractpartnerAccoun
 		builder.append(this.contractpartner);
 		builder.append(", bankAccount=");
 		builder.append(this.bankAccount);
+		builder.append(", getId()=");
+		builder.append(this.getId());
 		builder.append("]");
 		return builder.toString();
 	}

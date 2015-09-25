@@ -47,6 +47,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTra
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,6 +68,7 @@ public class ContractpartnerAccountController extends AbstractController {
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new ContractpartnerAccountTransportMapper());
+		super.registerBeanMapper(new ValidationItemTransportMapper());
 	}
 
 	@RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })

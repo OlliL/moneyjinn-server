@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.laladev.moneyjinn.server.controller.capitalsource.TestSuiteCapitalsource;
 import org.laladev.moneyjinn.server.controller.contractpartner.TestSuiteContractpartner;
+import org.laladev.moneyjinn.server.controller.contractpartneraccount.TestSuiteContractpartnerAccount;
 import org.laladev.moneyjinn.server.controller.group.TestSuiteGroup;
 import org.laladev.moneyjinn.server.controller.moneyflow.TestSuiteMoneyflow;
 import org.laladev.moneyjinn.server.controller.postingaccount.TestSuitePostingAccount;
@@ -15,6 +16,7 @@ import org.laladev.moneyjinn.server.controller.user.TestSuiteUser;
 @Suite.SuiteClasses({ //
 		TestSuiteCapitalsource.class, //
 		TestSuiteContractpartner.class, //
+		TestSuiteContractpartnerAccount.class, //
 		TestSuiteGroup.class, //
 		TestSuiteMoneyflow.class, //
 		TestSuitePostingAccount.class, //

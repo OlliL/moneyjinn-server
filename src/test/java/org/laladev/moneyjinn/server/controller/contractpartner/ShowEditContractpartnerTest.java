@@ -70,6 +70,38 @@ public class ShowEditContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Contractpartner1AsDifferingUserSameGroup_completeResponseObject() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ShowEditContractpartnerResponse expected = new ShowEditContractpartnerResponse();
+		expected.setContractpartnerTransport(new ContractpartnerTransportBuilder().forContractpartner1().build());
+		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
+		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
+		expected.setPostingAccountTransports(postingAccountTransports);
+
+		final ShowEditContractpartnerResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+				ShowEditContractpartnerResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_Contractpartner1AsDifferingUserOtherGroup_emptyResponseObject() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ShowEditContractpartnerResponse expected = new ShowEditContractpartnerResponse();
+
+		final ShowEditContractpartnerResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+				ShowEditContractpartnerResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;

@@ -60,6 +60,33 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Contractpartner1AsDifferingUserSameGroup_completeResponseObject() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ShowDeleteContractpartnerResponse expected = new ShowDeleteContractpartnerResponse();
+		expected.setContractpartnerTransport(new ContractpartnerTransportBuilder().forContractpartner1().build());
+
+		final ShowDeleteContractpartnerResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+				ShowDeleteContractpartnerResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_Contractpartner1AsDifferingUserOtherGroup_emptyResponseObject() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ShowDeleteContractpartnerResponse expected = new ShowDeleteContractpartnerResponse();
+
+		final ShowDeleteContractpartnerResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+				ShowDeleteContractpartnerResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;

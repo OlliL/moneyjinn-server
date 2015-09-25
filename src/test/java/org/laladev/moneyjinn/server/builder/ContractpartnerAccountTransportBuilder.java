@@ -11,6 +11,7 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 
 	public ContractpartnerAccountTransportBuilder forContractpartnerAccount1() {
 		super.setId(CONTRACTPARTNER_ACCOUNT1_ID);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 		super.setBankCode("ABC123");
 		super.setAccountNumber("DE1234567890");
 
@@ -18,15 +19,17 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 	}
 
 	public ContractpartnerAccountTransportBuilder forContractpartnerAccount2() {
-		super.setId(CONTRACTPARTNER_ACCOUNT1_ID);
+		super.setId(CONTRACTPARTNER_ACCOUNT2_ID);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 		super.setBankCode("ABC456");
 		super.setAccountNumber("DE0987654321");
 
 		return this;
 	}
 
-	public ContractpartnerAccountTransportBuilder forNewContractpartner() {
+	public ContractpartnerAccountTransportBuilder forNewContractpartnerAccount() {
 		super.setId(NON_EXISTING_ID);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 		super.setBankCode("ABC789");
 		super.setAccountNumber("DE1111111111");
 
@@ -37,6 +40,7 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransport();
 
 		transport.setId(super.getId());
+		transport.setContractpartnerid(super.getContractpartnerid());
 		transport.setBankCode(super.getBankCode());
 		transport.setAccountNumber(super.getAccountNumber());
 
