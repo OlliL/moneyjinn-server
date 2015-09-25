@@ -12,6 +12,7 @@ import org.laladev.moneyjinn.businesslogic.dao.ContractpartnerAccountDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ContractpartnerAccountDataMapper;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
+import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
@@ -76,11 +77,17 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		if (contractpartnerAccountData != null) {
 			final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountData,
 					ContractpartnerAccount.class);
-			contractpartnerAccount.setContractpartner(this.contractpartnerService.getContractpartnerById(userId,
-					contractpartnerAccount.getContractpartner().getId()));
-			return contractpartnerAccount;
+			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+					contractpartnerAccount.getContractpartner().getId());
+			// this secures the Account - a user which has no access to the partner may not modify
+			// its accounts
+			if (contractpartner != null) {
+				contractpartnerAccount.setContractpartner(contractpartner);
+				return contractpartnerAccount;
+			}
 		}
 		return null;
+
 	}
 
 	private final List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,

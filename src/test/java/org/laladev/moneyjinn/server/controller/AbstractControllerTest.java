@@ -1,7 +1,5 @@
 package org.laladev.moneyjinn.server.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,10 +17,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -49,7 +47,6 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 			return this.httpHeadersBuilder.getAuthHeaders(userName, userPassword, ZonedDateTime.now(), uri, body,
 					httpMethod);
 		} catch (InvalidKeyException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -86,9 +83,9 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 	private <T> T callUsecase(final String uriParameters, final HttpMethod httpMethod, final String body,
 			final boolean noResult, final Class<T> clazz) throws Exception {
 
-		ResultMatcher status = status().isOk();
+		HttpStatus status = HttpStatus.OK;
 		if (noResult) {
-			status = status().isNoContent();
+			status = HttpStatus.NO_CONTENT;
 		}
 
 		MockHttpServletRequestBuilder builder = null;
@@ -118,10 +115,12 @@ public abstract class AbstractControllerTest extends AbstractMvcTest {
 
 		final MvcResult result = this.mvc
 				.perform(builder.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status).andReturn();
+				.andReturn();
 
 		final String content = result.getResponse().getContentAsString();
 		Assert.assertNotNull(content);
+
+		Assert.assertEquals(content, result.getResponse().getStatus(), status.value());
 
 		if (!noResult) {
 			Assert.assertTrue(content.length() > 0);

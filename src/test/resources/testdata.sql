@@ -53,7 +53,13 @@ INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street  
                       VALUES (5             ,6              ,'Sartner4','Street4',12345   ,'Town4','Country4','2000-01-01','2010-12-31',NULL               ,NULL                );
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (2             ,1              ,'AdminPartner','Street',12345   ,'Town','Country','2000-01-01','2999-12-31',NULL               ,NULL                );
-                      
+
+INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
+                             VALUES (1                    ,'ABC123' , 'DE1234567890');
+INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
+                             VALUES (1                    ,'ABC456' , 'DE0987654321');
+
+                             
 INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
                       VALUES (3     ,10.10 ,1                  ,1                    ,'Pre1' ,'2000-10-10',1           ,null     ,1                   );
 INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 

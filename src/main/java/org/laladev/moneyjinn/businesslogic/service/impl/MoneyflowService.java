@@ -2,9 +2,7 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -100,11 +98,6 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			return moneyflow;
 		}
 		return null;
-	}
-
-	private final List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
-		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element))
-				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	private void prepareMoneyflow(final Moneyflow moneyflow) {
