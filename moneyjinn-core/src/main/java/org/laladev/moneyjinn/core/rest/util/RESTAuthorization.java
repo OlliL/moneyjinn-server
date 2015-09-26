@@ -31,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -39,8 +38,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class RESTAuthorization {
-
-	private static final Logger LOG = Logger.getLogger(RESTAuthorization.class.getName());
 
 	public static final String DATE_HEADER_FORMAT = "EEE, dd MMM yyyy HH:mm:ss z";
 	public static final String DATE_HEADER_NAME = "Requestdate";
