@@ -19,6 +19,9 @@ public class Contractpartner extends AbstractEntity<ContractpartnerID> {
 	private LocalDate validTil;
 	private LocalDate validFrom;
 
+	public Contractpartner() {
+	}
+
 	public Contractpartner(final ContractpartnerID contractpartnerID) {
 		super.setId(contractpartnerID);
 	}

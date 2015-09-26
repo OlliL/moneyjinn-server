@@ -9,7 +9,13 @@ public class GroupTransportMapper implements IMapper<Group, GroupTransport> {
 
 	@Override
 	public Group mapBToA(final GroupTransport groupTransport) {
-		return new Group(new GroupID(groupTransport.getId()), groupTransport.getName());
+		final Group group = new Group();
+		if (groupTransport.getId() != null) {
+			group.setId(new GroupID(groupTransport.getId()));
+		}
+		group.setName(groupTransport.getName());
+
+		return group;
 	}
 
 	@Override

@@ -55,9 +55,12 @@ public class UserTransportMapper implements IMapper<User, UserTransport> {
 		if (attributes.isEmpty()) {
 			attributes.add(UserAttribute.NONE);
 		}
+		UserID userId = null;
+		if (userTransport.getId() != null) {
+			userId = new UserID(userTransport.getId());
+		}
 
-		return new User(new UserID(userTransport.getId()), userTransport.getUserName(), userTransport.getUserPassword(),
-				attributes, permissions);
+		return new User(userId, userTransport.getUserName(), userTransport.getUserPassword(), attributes, permissions);
 	}
 
 	private boolean isTrue(final Short property) {

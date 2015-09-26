@@ -66,6 +66,29 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_contractpartnerWithNoAccounts_responseWithNoAccountsButName() throws Exception {
+		final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
+		expected.setContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME);
+
+		final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID, this.method, false,
+				ShowContractpartnerAccountListResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_notExistingContractpartner_emptyResponseObject() throws Exception {
+		final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
+
+		final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method, false,
+				ShowContractpartnerAccountListResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;

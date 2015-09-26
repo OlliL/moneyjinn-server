@@ -33,6 +33,9 @@ package org.laladev.moneyjinn.businesslogic.model.access;
 public class Group extends AbstractAccess<GroupID> {
 	private static final long serialVersionUID = 1L;
 
+	public Group() {
+	}
+
 	public Group(final GroupID id) {
 		super(id);
 	}

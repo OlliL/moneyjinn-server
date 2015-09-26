@@ -33,10 +33,10 @@ import org.springframework.util.Assert;
 public class ContractpartnerAccountService extends AbstractService implements IContractpartnerAccountService {
 
 	@Inject
-	IContractpartnerService contractpartnerService;
+	private IContractpartnerService contractpartnerService;
 
 	@Inject
-	ContractpartnerAccountDao contractpartnerAccountDao;
+	private ContractpartnerAccountDao contractpartnerAccountDao;
 
 	@Override
 	protected void addBeanMapper() {
@@ -92,12 +92,9 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	private final List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
 			final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
-		if (contractpartnerAccountDataList != null) {
-			return contractpartnerAccountDataList.stream()
-					.map(element -> this.mapContractpartnerAccountData(userId, element))
-					.collect(Collectors.toCollection(ArrayList::new));
-		}
-		return null;
+		return contractpartnerAccountDataList.stream()
+				.map(element -> this.mapContractpartnerAccountData(userId, element))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	private ContractpartnerAccount getContractpartnerAccountByBankAccount(final UserID userId,
@@ -173,7 +170,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 			this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
 					contractpartnerAccount.getContractpartner().getId());
-			if (!contractpartnerAccountOld.getContractpartner().equals(contractpartnerAccount.getContractpartner())) {
+			if (!contractpartnerAccountOld.getContractpartner().getId()
+					.equals(contractpartnerAccount.getContractpartner().getId())) {
 				this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
 						contractpartnerAccountOld.getContractpartner().getId());
 
@@ -203,7 +201,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		Assert.notNull(contractpartnerId);
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
 				contractpartnerId);
-		if (contractpartnerAccounts != null) {
+		if (contractpartnerAccounts != null && contractpartnerAccounts.size() > 0) {
 			this.contractpartnerAccountDao.deleteContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
 			contractpartnerAccounts.stream().forEach(
 					ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));

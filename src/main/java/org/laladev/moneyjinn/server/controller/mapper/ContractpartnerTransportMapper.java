@@ -16,9 +16,10 @@ public class ContractpartnerTransportMapper implements IMapper<Contractpartner, 
 
 	@Override
 	public Contractpartner mapBToA(final ContractpartnerTransport contractpartnerTransport) {
-		final Contractpartner contractpartner = new Contractpartner(
-				new ContractpartnerID(contractpartnerTransport.getId()));
-
+		final Contractpartner contractpartner = new Contractpartner();
+		if (contractpartnerTransport.getId() != null) {
+			contractpartner.setId(new ContractpartnerID(contractpartnerTransport.getId()));
+		}
 		contractpartner.setUser(new User(new UserID(contractpartnerTransport.getUserid())));
 
 		if (contractpartnerTransport.getValidFrom() != null) {

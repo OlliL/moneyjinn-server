@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.config;
+package org.laladev.moneyjinn.config;
 
 import javax.sql.DataSource;
 

@@ -17,7 +17,10 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 
 	@Override
 	public Capitalsource mapBToA(final CapitalsourceTransport capitalsourceTransport) {
-		final Capitalsource capitalsource = new Capitalsource(new CapitalsourceID(capitalsourceTransport.getId()));
+		final Capitalsource capitalsource = new Capitalsource();
+		if (capitalsourceTransport.getId() != null) {
+			capitalsource.setId(new CapitalsourceID(capitalsourceTransport.getId()));
+		}
 		if (capitalsourceTransport.getAccountNumber() != null) {
 			capitalsource.setBankAccount(
 					new BankAccount(capitalsourceTransport.getAccountNumber(), capitalsourceTransport.getBankCode()));

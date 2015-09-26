@@ -20,6 +20,9 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 	private boolean groupUse;
 	private boolean importAllowed;
 
+	public Capitalsource() {
+	}
+
 	public Capitalsource(final CapitalsourceID id) {
 		super.setId(id);
 	}

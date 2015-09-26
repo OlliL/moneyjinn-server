@@ -9,9 +9,9 @@ import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.server.AbstractMvcTest;
 import org.laladev.moneyjinn.server.builder.HttpHeadersBuilder;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class AbstractControllerTest extends AbstractMvcTest {
+public abstract class AbstractControllerTest extends AbstractTest {
 	@Inject
 	private ObjectMapper objectMapper;
 	@Inject

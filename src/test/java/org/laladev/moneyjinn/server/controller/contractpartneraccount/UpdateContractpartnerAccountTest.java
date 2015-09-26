@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
+import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
@@ -60,15 +61,21 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private void testError(final ContractpartnerAccountTransport transport, final ErrorCode errorCode,
-			final String contractpartnerName) throws Exception {
+	private void testError(final ContractpartnerAccountTransport transport, final String contractpartnerName,
+			final ErrorCode... errorCodes) throws Exception {
 		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
 
 		request.setContractpartnerAccountTransport(transport);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
-				.withError(errorCode.getErrorCode()).withVariableArray(Arrays.asList(contractpartnerName)).build());
+		for (final ErrorCode errorCode : errorCodes) {
+			final ValidationItemTransportBuilder builder = new ValidationItemTransportBuilder()
+					.withKey(transport.getId().intValue()).withError(errorCode.getErrorCode());
+			if (contractpartnerName != null) {
+				builder.withVariableArray(Arrays.asList(contractpartnerName));
+			}
+			validationItems.add(builder.build());
+		}
 
 		final ValidationResponse expected = new ValidationResponse();
 		expected.setValidationItemTransports(validationItems);
@@ -82,6 +89,18 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_ContractpartnerAccountNullBankaccount_Error() throws Exception {
+
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forContractpartnerAccount2().build();
+		transport.setAccountNumber(null);
+		transport.setBankCode(null);
+
+		this.testError(transport, null, ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY,
+				ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
+	}
+
+	@Test
 	public void test_ContractpartnerAccountAlreadyExisting_Error() throws Exception {
 
 		final ContractpartnerAccountTransport transport1 = new ContractpartnerAccountTransportBuilder()
@@ -91,8 +110,8 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		transport2.setAccountNumber(transport1.getAccountNumber());
 		transport2.setBankCode(transport1.getBankCode());
 
-		this.testError(transport2, ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
-				ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		this.testError(transport2, ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME,
+				ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER);
 	}
 
 	@Test
@@ -166,6 +185,40 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 				contractpartnerAccount.getId().getId());
 		Assert.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
 		Assert.assertEquals("2", contractpartnerAccount.getBankAccount().getBankCode());
+	}
+
+	@Test
+	public void test_standardRequestChangingContractpartner_SuccessfullNoContent() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ContractpartnerID contractpartner1Id = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		final ContractpartnerID contractpartner2Id = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
+
+		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
+
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forContractpartnerAccount1().build();
+		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
+		request.setContractpartnerAccountTransport(transport);
+
+		List<ContractpartnerAccount> contractpartner1Accounts = this.contractpartnerAccountService
+				.getContractpartnerAccounts(userId, contractpartner1Id);
+		List<ContractpartnerAccount> contractpartner2Accounts = this.contractpartnerAccountService
+				.getContractpartnerAccounts(userId, contractpartner2Id);
+
+		Assert.assertEquals(2, contractpartner1Accounts.size());
+		Assert.assertTrue(contractpartner2Accounts.isEmpty());
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		contractpartner1Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
+				contractpartner1Id);
+		contractpartner2Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
+				contractpartner2Id);
+
+		Assert.assertEquals(1, contractpartner1Accounts.size());
+		Assert.assertEquals(1, contractpartner2Accounts.size());
 	}
 
 	@Test

@@ -81,23 +81,27 @@ public class ContractpartnerAccountController extends AbstractController {
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartnerId);
 
+		final ShowContractpartnerAccountListResponse response = new ShowContractpartnerAccountListResponse();
+
 		String contractpartnerName = null;
 		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
+			final List<ContractpartnerAccountTransport> contractpartnerAccountTransports = super.mapList(
+					contractpartnerAccounts, ContractpartnerAccountTransport.class);
+			response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
+
 			contractpartnerName = contractpartnerAccounts.iterator().next().getContractpartner().getName();
 		} else {
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerId);
-			contractpartnerName = contractpartner.getName();
+			if (contractpartner != null) {
+				contractpartnerName = contractpartner.getName();
+			}
 		}
 
-		final ShowContractpartnerAccountListResponse response = new ShowContractpartnerAccountListResponse();
-
-		final List<ContractpartnerAccountTransport> contractpartnerAccountTransports = super.mapList(
-				contractpartnerAccounts, ContractpartnerAccountTransport.class);
-		response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
 		response.setContractpartnerName(contractpartnerName);
 
 		return response;
+
 	}
 
 	@RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })

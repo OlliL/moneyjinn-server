@@ -6,8 +6,9 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 
 	public static final Long CONTRACTPARTNER_ACCOUNT1_ID = 1l;
 	public static final Long CONTRACTPARTNER_ACCOUNT2_ID = 2l;
+	public static final Long CONTRACTPARTNER_ACCOUNT3_ID = 3l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 3l;
+	public static final Long NEXT_ID = 4l;
 
 	public ContractpartnerAccountTransportBuilder forContractpartnerAccount1() {
 		super.setId(CONTRACTPARTNER_ACCOUNT1_ID);
@@ -23,6 +24,15 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 		super.setBankCode("ABC456");
 		super.setAccountNumber("DE0987654321");
+
+		return this;
+	}
+
+	public ContractpartnerAccountTransportBuilder forContractpartnerAccount3() {
+		super.setId(CONTRACTPARTNER_ACCOUNT3_ID);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setBankCode("ABC457");
+		super.setAccountNumber("DE0987654322");
 
 		return this;
 	}

@@ -13,8 +13,13 @@ public class ContractpartnerAccountTransportMapper
 
 	@Override
 	public ContractpartnerAccount mapBToA(final ContractpartnerAccountTransport contractpartnerAccountTransport) {
-		final BankAccount bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
-				contractpartnerAccountTransport.getBankCode());
+
+		BankAccount bankAccount = null;
+		if (contractpartnerAccountTransport.getAccountNumber() != null
+				&& contractpartnerAccountTransport.getBankCode() != null) {
+			bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
+					contractpartnerAccountTransport.getBankCode());
+		}
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
 				contractpartnerAccountTransport.getId());
 		final Contractpartner contractpartner = new Contractpartner(

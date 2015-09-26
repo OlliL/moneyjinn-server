@@ -1,13 +1,17 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
+import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
@@ -20,6 +24,8 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 	@Inject
 	IContractpartnerService contractpartnerService;
+	@Inject
+	IContractpartnerAccountService contractpartnerAccountService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;
@@ -65,6 +71,30 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_regularContractpartnerWithAccounts_AccountsDeleted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+
+		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+		Assert.assertNotNull(contractpartner);
+
+		List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+				.getContractpartnerAccounts(userId, contractpartnerId);
+		Assert.assertNotNull(contractpartnerAccounts);
+
+		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
+				Object.class);
+
+		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+		Assert.assertNull(contractpartner);
+
+		contractpartnerAccounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
+				contractpartnerId);
+		Assert.assertEquals(0, contractpartnerAccounts.size());
+	}
+
+	@Test
 	public void test_nonExistingContractpartner_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(
@@ -103,6 +133,10 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Assert.assertNotNull(contractpartner);
 		Assert.assertEquals(expected, response);
+
+		final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+				.getContractpartnerAccounts(userId, contractpartnerId);
+		Assert.assertEquals(2, contractpartnerAccounts.size());
 	}
 
 	@Test

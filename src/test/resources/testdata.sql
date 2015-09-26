@@ -58,6 +58,8 @@ INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnum
                              VALUES (1                    ,'ABC123' , 'DE1234567890');
 INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
                              VALUES (1                    ,'ABC456' , 'DE0987654321');
+INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
+                             VALUES (4                    ,'ABC457' , 'DE0987654322');
 
                              
 INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 

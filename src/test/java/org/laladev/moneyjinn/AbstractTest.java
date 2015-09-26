@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server;
+package org.laladev.moneyjinn;
 
 import org.junit.runner.RunWith;
 import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
@@ -16,6 +16,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @EnableAutoConfiguration
 @SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
 		"classpath:testdata.sql" }) })
-public abstract class AbstractMvcTest {
+public abstract class AbstractTest {
 
 }

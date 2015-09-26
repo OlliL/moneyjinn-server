@@ -120,6 +120,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Override
 	public ValidationResult validateCapitalsource(final Capitalsource capitalsource) {
 		Assert.notNull(capitalsource);
+		Assert.notNull(capitalsource.getUser());
+		Assert.notNull(capitalsource.getUser().getId());
+
 		this.prepareCapitalsource(capitalsource);
 		final ValidationResult validationResult = new ValidationResult();
 

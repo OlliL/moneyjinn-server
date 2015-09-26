@@ -8,11 +8,11 @@ import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
-import org.laladev.moneyjinn.server.AbstractMvcTest;
 import org.laladev.moneyjinn.server.builder.HttpHeadersBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MoneyJinnHandlerInterceptorTest extends AbstractMvcTest {
+public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 	@Inject
 	private ObjectMapper objectMapper;
 	@Inject

@@ -42,9 +42,4 @@ public abstract class AbstractController extends AbstractMapperSupport {
 		}
 		return this.sessionEnvironment.getUserID();
 	}
-
-	protected void setUserId(final UserID userId) {
-		this.sessionEnvironment.setUserID(userId);
-	}
-
 }

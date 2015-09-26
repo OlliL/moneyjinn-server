@@ -126,6 +126,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
 		Assert.notNull(contractpartner);
+		Assert.notNull(contractpartner.getUser());
+		Assert.notNull(contractpartner.getUser().getId());
+
 		this.prepareContractpartner(contractpartner);
 		final ValidationResult validationResult = new ValidationResult();
 

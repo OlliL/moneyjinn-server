@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.dao.data.mapper;
+package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import java.sql.Date;
 import java.time.LocalDate;
