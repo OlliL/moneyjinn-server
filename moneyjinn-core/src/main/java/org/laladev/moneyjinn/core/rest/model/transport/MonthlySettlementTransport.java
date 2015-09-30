@@ -3,44 +3,44 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 import java.math.BigDecimal;
 
 public class MonthlySettlementTransport {
-	private Integer id;
-	private Integer userid;
-	private Integer year;
-	private Integer month;
+	private Long id;
+	private Long userid;
+	private Short year;
+	private Short month;
 	private BigDecimal amount;
-	private Integer capitalsourceid;
+	private Long capitalsourceid;
 	private String capitalsourcecomment;
-	private Boolean capitalsourcegroupuse;
+	private Short capitalsourcegroupuse;
 
-	public final Integer getId() {
+	public final Long getId() {
 		return this.id;
 	}
 
-	public final void setId(final Integer id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public final Integer getUserid() {
+	public final Long getUserid() {
 		return this.userid;
 	}
 
-	public final void setUserid(final Integer userid) {
+	public final void setUserid(final Long userid) {
 		this.userid = userid;
 	}
 
-	public final Integer getYear() {
+	public final Short getYear() {
 		return this.year;
 	}
 
-	public final void setYear(final Integer year) {
+	public final void setYear(final Short year) {
 		this.year = year;
 	}
 
-	public final Integer getMonth() {
+	public final Short getMonth() {
 		return this.month;
 	}
 
-	public final void setMonth(final Integer month) {
+	public final void setMonth(final Short month) {
 		this.month = month;
 	}
 
@@ -52,11 +52,11 @@ public class MonthlySettlementTransport {
 		this.amount = amount;
 	}
 
-	public final Integer getCapitalsourceid() {
+	public final Long getCapitalsourceid() {
 		return this.capitalsourceid;
 	}
 
-	public final void setCapitalsourceid(final Integer capitalsourceid) {
+	public final void setCapitalsourceid(final Long capitalsourceid) {
 		this.capitalsourceid = capitalsourceid;
 	}
 
@@ -68,11 +68,11 @@ public class MonthlySettlementTransport {
 		this.capitalsourcecomment = capitalsourcecomment;
 	}
 
-	public final Boolean getCapitalsourcegroupuse() {
+	public final Short getCapitalsourcegroupuse() {
 		return this.capitalsourcegroupuse;
 	}
 
-	public final void setCapitalsourcegroupuse(final Boolean capitalsourcegroupuse) {
+	public final void setCapitalsourcegroupuse(final Short capitalsourcegroupuse) {
 		this.capitalsourcegroupuse = capitalsourcegroupuse;
 	}
 
