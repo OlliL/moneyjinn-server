@@ -24,11 +24,25 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementDeleteResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementListResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.UpsertMonthlySettlementRequest;
+import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
@@ -45,6 +59,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/monthlysettlement/")
 public class MonthlySettlementController extends AbstractController {
+	@Inject
+	IMonthlySettlementService monthlySettlementService;
+	@Inject
+	ICapitalsourceService capitalsourceService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -67,9 +85,74 @@ public class MonthlySettlementController extends AbstractController {
 
 	@RequestMapping(value = "showMonthlySettlementList/{year}/{month}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public ShowMonthlySettlementListResponse showMonthlySettlementList(@PathVariable(value = "year") final Short year,
-			@PathVariable(value = "month") final Short month) {
-		return null;
+	public ShowMonthlySettlementListResponse showMonthlySettlementList(
+			@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
+		final UserID userId = super.getUserId();
+		final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
+
+		final List<Short> allYears = this.monthlySettlementService.getAllYears(userId);
+		List<Month> allMonth = null;
+
+		Short year = requestYear;
+		Month month = Month.of(requestMonth.intValue());
+
+		List<MonthlySettlementTransport> monthlySettlementTransports = null;
+		int numberOfEditableSettlements = 0;
+
+		// only continue if settlements where made at all
+		if (allYears != null && !allYears.isEmpty()) {
+
+			// validate if settlements are recorded for the given year, if not fall back to the last
+			// recorded one
+			if (!allYears.contains(year)) {
+				year = allYears.get(allYears.size() - 1);
+				month = null;
+			}
+
+			allMonth = this.monthlySettlementService.getAllMonth(userId, year);
+
+			if (allMonth != null && allMonth.contains(month)) {
+
+				final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+						.getAllMonthlySettlementsByYearMonth(userId, year, month);
+
+				for (final MonthlySettlement monthlySettlement : monthlySettlements) {
+					if (userId.equals(monthlySettlement.getUser().getId())
+							|| monthlySettlement.getCapitalsource().isGroupUse()) {
+						numberOfEditableSettlements++;
+					}
+
+				}
+				monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+			}
+		}
+
+		final LocalDate today = LocalDate.now();
+		final List<Capitalsource> capitalSources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
+				today, today);
+
+		int numberOfAddableSettlements = 0;
+		if (capitalSources != null) {
+			numberOfAddableSettlements = capitalSources.size();
+		}
+
+		response.setAllYears(allYears);
+		response.setYear(year);
+		response.setMonth((short) month.getValue());
+
+		if (allMonth != null && !allMonth.isEmpty()) {
+			response.setAllMonth(
+					allMonth.stream().map(m -> (short) m.getValue()).collect(Collectors.toCollection(ArrayList::new)));
+		}
+
+		if (monthlySettlementTransports != null && !monthlySettlementTransports.isEmpty()) {
+			response.setMonthlySettlementTransports(monthlySettlementTransports);
+			response.setNumberOfEditableSettlements(numberOfEditableSettlements);
+		}
+		response.setNumberOfAddableSettlements(numberOfAddableSettlements);
+
+		return response;
 	}
 
 	@RequestMapping(value = "showMonthlySettlementCreate", method = { RequestMethod.GET })

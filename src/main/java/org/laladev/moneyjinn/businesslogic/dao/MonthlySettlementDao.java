@@ -22,23 +22,31 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.businesslogic.service.impl;
+package org.laladev.moneyjinn.businesslogic.dao;
 
-import javax.inject.Inject;
+import java.util.List;
 
-import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
+import javax.inject.Named;
 
-public abstract class AbstractService extends AbstractMapperSupport {
-	@Inject
-	private CacheManager cacheManager;
+import org.laladev.moneyjinn.businesslogic.dao.data.MonthlySettlementData;
+import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 
-	protected Cache getCache(final String... cacheNameParts) {
-		final String cacheName = String.join("#", cacheNameParts);
-		if (cacheName != null) {
-			return this.cacheManager.getCache(cacheName);
-		}
+@Named
+public class MonthlySettlementDao {
+
+	public List<Short> getAllYears(final UserID userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Short> getAllMonth(final UserID userId, final Short year) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final UserID userId, final Short year,
+			final Short month) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
