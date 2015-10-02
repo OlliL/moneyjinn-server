@@ -5,6 +5,7 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("showMonthlySettlementListResponse")
@@ -13,9 +14,10 @@ public class ShowMonthlySettlementListResponse extends AbstractResponse {
 	private Short month;
 	private List<Short> allYears;
 	private List<Short> allMonth;
-	private List<MonthlySettlementTransport> monthlySettlementTransport;
-	private Short numberOfEditableSettlements;
-	private Short numberOfAddableSettlements;
+	@JsonProperty("monthlySettlementTransport")
+	private List<MonthlySettlementTransport> monthlySettlementTransports;
+	private Integer numberOfEditableSettlements;
+	private Integer numberOfAddableSettlements;
 
 	public final Short getYear() {
 		return this.year;
@@ -49,27 +51,28 @@ public class ShowMonthlySettlementListResponse extends AbstractResponse {
 		this.allMonth = allMonth;
 	}
 
-	public final List<MonthlySettlementTransport> getMonthlySettlementTransport() {
-		return this.monthlySettlementTransport;
+	public final List<MonthlySettlementTransport> getMonthlySettlementTransports() {
+		return this.monthlySettlementTransports;
 	}
 
-	public final void setMonthlySettlementTransport(final List<MonthlySettlementTransport> monthlySettlementTransport) {
-		this.monthlySettlementTransport = monthlySettlementTransport;
+	public final void setMonthlySettlementTransports(
+			final List<MonthlySettlementTransport> monthlySettlementTransport) {
+		this.monthlySettlementTransports = monthlySettlementTransport;
 	}
 
-	public final Short getNumberOfEditableSettlements() {
+	public final Integer getNumberOfEditableSettlements() {
 		return this.numberOfEditableSettlements;
 	}
 
-	public final void setNumberOfEditableSettlements(final Short numberOfEditableSettlements) {
+	public final void setNumberOfEditableSettlements(final Integer numberOfEditableSettlements) {
 		this.numberOfEditableSettlements = numberOfEditableSettlements;
 	}
 
-	public final Short getNumberOfAddableSettlements() {
+	public final Integer getNumberOfAddableSettlements() {
 		return this.numberOfAddableSettlements;
 	}
 
-	public final void setNumberOfAddableSettlements(final Short numberOfAddableSettlements) {
+	public final void setNumberOfAddableSettlements(final Integer numberOfAddableSettlements) {
 		this.numberOfAddableSettlements = numberOfAddableSettlements;
 	}
 
@@ -81,7 +84,7 @@ public class ShowMonthlySettlementListResponse extends AbstractResponse {
 		result = prime * result + ((this.allYears == null) ? 0 : this.allYears.hashCode());
 		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
 		result = prime * result
-				+ ((this.monthlySettlementTransport == null) ? 0 : this.monthlySettlementTransport.hashCode());
+				+ ((this.monthlySettlementTransports == null) ? 0 : this.monthlySettlementTransports.hashCode());
 		result = prime * result
 				+ ((this.numberOfAddableSettlements == null) ? 0 : this.numberOfAddableSettlements.hashCode());
 		result = prime * result
@@ -123,11 +126,11 @@ public class ShowMonthlySettlementListResponse extends AbstractResponse {
 		} else if (!this.month.equals(other.month)) {
 			return false;
 		}
-		if (this.monthlySettlementTransport == null) {
-			if (other.monthlySettlementTransport != null) {
+		if (this.monthlySettlementTransports == null) {
+			if (other.monthlySettlementTransports != null) {
 				return false;
 			}
-		} else if (!this.monthlySettlementTransport.equals(other.monthlySettlementTransport)) {
+		} else if (!this.monthlySettlementTransports.equals(other.monthlySettlementTransports)) {
 			return false;
 		}
 		if (this.numberOfAddableSettlements == null) {
@@ -165,8 +168,8 @@ public class ShowMonthlySettlementListResponse extends AbstractResponse {
 		builder.append(this.allYears);
 		builder.append(", allMonth=");
 		builder.append(this.allMonth);
-		builder.append(", monthlySettlementTransport=");
-		builder.append(this.monthlySettlementTransport);
+		builder.append(", monthlySettlementTransports=");
+		builder.append(this.monthlySettlementTransports);
 		builder.append(", numberOfEditableSettlements=");
 		builder.append(this.numberOfEditableSettlements);
 		builder.append(", numberOfAddableSettlements=");
