@@ -100,7 +100,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	public List<Short> getAllYears(final UserID userId) {
 		Assert.notNull(userId);
 
-		return this.monthlySettlementDao.getAllYears(userId);
+		return this.monthlySettlementDao.getAllYears(userId.getId());
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		Assert.notNull(userId);
 		Assert.notNull(year);
 
-		final List<Short> allMonths = this.monthlySettlementDao.getAllMonth(userId, year);
+		final List<Short> allMonths = this.monthlySettlementDao.getAllMonth(userId.getId(), year);
 		if (allMonths != null) {
 			return allMonths.stream().map(m -> Month.of(m.intValue())).collect(Collectors.toCollection(ArrayList::new));
 		}
@@ -123,7 +123,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		Assert.notNull(month);
 
 		final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
-				.getAllMonthlySettlementsByYearMonth(userId, year, (short) month.getValue());
+				.getAllMonthlySettlementsByYearMonth(userId.getId(), year, (short) month.getValue());
 
 		return this.mapPreDefMoneyflowDataList(monthlySettlementDatas);
 	}

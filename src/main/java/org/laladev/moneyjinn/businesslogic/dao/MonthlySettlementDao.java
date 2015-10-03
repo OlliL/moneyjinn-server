@@ -26,28 +26,28 @@ package org.laladev.moneyjinn.businesslogic.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.MonthlySettlementData;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.dao.mapper.IMonthlySettlementDaoMapper;
 
 @Named
 public class MonthlySettlementDao {
+	@Inject
+	IMonthlySettlementDaoMapper mapper;
 
-	public List<Short> getAllYears(final UserID userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Short> getAllYears(final Long userId) {
+		return this.mapper.getAllYears(userId);
 	}
 
-	public List<Short> getAllMonth(final UserID userId, final Short year) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Short> getAllMonth(final Long userId, final Short year) {
+		return this.mapper.getAllMonth(userId, year);
 	}
 
-	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final UserID userId, final Short year,
+	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final Long userId, final Short year,
 			final Short month) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
 	}
 
 }

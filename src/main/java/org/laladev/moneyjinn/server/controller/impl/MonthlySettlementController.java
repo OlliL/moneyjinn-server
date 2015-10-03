@@ -95,7 +95,7 @@ public class MonthlySettlementController extends AbstractController {
 		List<Month> allMonth = null;
 
 		Short year = requestYear;
-		Month month = Month.of(requestMonth.intValue());
+		Month month = requestMonth != null ? Month.of(requestMonth.intValue()) : null;
 
 		List<MonthlySettlementTransport> monthlySettlementTransports = null;
 		int numberOfEditableSettlements = 0;
@@ -103,29 +103,34 @@ public class MonthlySettlementController extends AbstractController {
 		// only continue if settlements where made at all
 		if (allYears != null && !allYears.isEmpty()) {
 
-			// validate if settlements are recorded for the given year, if not fall back to the last
-			// recorded one
-			if (!allYears.contains(year)) {
+			// validate if settlements are recorded for the given year, if not fall back to the
+			// last recorded one
+			if (year == null || !allYears.contains(year)) {
 				year = allYears.get(allYears.size() - 1);
 				month = null;
 			}
 
 			allMonth = this.monthlySettlementService.getAllMonth(userId, year);
 
-			if (allMonth != null && allMonth.contains(month)) {
+			if (month != null) {
 
-				final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-						.getAllMonthlySettlementsByYearMonth(userId, year, month);
+				if (allMonth != null && allMonth.contains(month)) {
 
-				for (final MonthlySettlement monthlySettlement : monthlySettlements) {
-					if (userId.equals(monthlySettlement.getUser().getId())
-							|| monthlySettlement.getCapitalsource().isGroupUse()) {
-						numberOfEditableSettlements++;
+					final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+							.getAllMonthlySettlementsByYearMonth(userId, year, month);
+
+					for (final MonthlySettlement monthlySettlement : monthlySettlements) {
+						if (userId.equals(monthlySettlement.getUser().getId())
+								|| monthlySettlement.getCapitalsource().isGroupUse()) {
+							numberOfEditableSettlements++;
+						}
+
 					}
-
+					monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
 				}
-				monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+				response.setMonth((short) month.getValue());
 			}
+			response.setYear(year);
 		}
 
 		final LocalDate today = LocalDate.now();
@@ -138,8 +143,6 @@ public class MonthlySettlementController extends AbstractController {
 		}
 
 		response.setAllYears(allYears);
-		response.setYear(year);
-		response.setMonth((short) month.getValue());
 
 		if (allMonth != null && !allMonth.isEmpty()) {
 			response.setAllMonth(
