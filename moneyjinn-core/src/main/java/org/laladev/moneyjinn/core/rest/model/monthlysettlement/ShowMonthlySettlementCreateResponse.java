@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.core.rest.model.monthlysettlement;
 import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +16,7 @@ public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
 	@JsonProperty("monthlySettlementTransport")
 	private List<MonthlySettlementTransport> monthlySettlementTransports;
 	@JsonProperty("importedMonthlySettlementTransport")
-	private List<ImportedMonthlySettlementTransport> importedMonthlySettlementTransports;
+	private List<MonthlySettlementTransport> importedMonthlySettlementTransports;
 
 	public final Short getYear() {
 		return this.year;
@@ -52,12 +51,12 @@ public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
 		this.monthlySettlementTransports = monthlySettlementTransports;
 	}
 
-	public final List<ImportedMonthlySettlementTransport> getImportedMonthlySettlementTransports() {
+	public final List<MonthlySettlementTransport> getImportedMonthlySettlementTransports() {
 		return this.importedMonthlySettlementTransports;
 	}
 
 	public final void setImportedMonthlySettlementTransports(
-			final List<ImportedMonthlySettlementTransport> importedMonthlySettlementTransports) {
+			final List<MonthlySettlementTransport> importedMonthlySettlementTransports) {
 		this.importedMonthlySettlementTransports = importedMonthlySettlementTransports;
 	}
 
