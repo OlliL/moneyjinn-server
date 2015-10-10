@@ -1,11 +1,14 @@
 package org.laladev.moneyjinn.businesslogic.service.api;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
@@ -76,4 +79,17 @@ public interface IMoneyflowService {
 	 *            The {@link MoneyflowID} of the to-be-deleted {@link PostingAccount}
 	 */
 	public void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
+
+	/**
+	 * retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}
+	 * during a defined period of time.
+	 *
+	 * @param userId
+	 * @param beginOfMonth
+	 * @param endOfMonth
+	 * @param capitalsourceId
+	 * @return
+	 */
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(UserID userId, LocalDate beginOfMonth,
+			LocalDate endOfMonth, CapitalsourceID capitalsourceId);
 }

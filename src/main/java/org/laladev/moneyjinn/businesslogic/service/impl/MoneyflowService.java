@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -230,6 +231,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	@Override
 	public void createMoneyflows(final List<Moneyflow> moneyflows) {
+		Assert.notNull(moneyflows);
+
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflows.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
 
@@ -275,6 +278,18 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 				moneyflowIdCache.evict(new SimpleKey(userId, moneyflowId));
 			}
 		}
+	}
+
+	@Override
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+		Assert.notNull(userId);
+		Assert.notNull(dateFrom);
+		Assert.notNull(dateTil);
+		Assert.notNull(capitalsourceId);
+
+		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceId(userId.getId(), Date.valueOf(dateFrom),
+				Date.valueOf(dateTil), capitalsourceId.getId());
 	}
 
 }

@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -44,6 +45,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
@@ -64,6 +66,11 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new MonthlySettlementDataMapper());
+	}
+
+	private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {
+		final ValidationResult validationResult = new ValidationResult();
+		return validationResult;
 	}
 
 	private final MonthlySettlement mapMonthlySettlementData(final MonthlySettlementData monthlySettlementData) {
@@ -126,6 +133,53 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 				.getAllMonthlySettlementsByYearMonth(userId.getId(), year, (short) month.getValue());
 
 		return this.mapPreDefMoneyflowDataList(monthlySettlementDatas);
+	}
+
+	@Override
+	public LocalDate getMaxSettlementDate(final UserID userId) {
+		Assert.notNull(userId);
+
+		final Date maxSettlementDate = this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
+		if (maxSettlementDate != null) {
+			return maxSettlementDate.toLocalDate();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean checkMonthlySettlementsExists(final UserID userId, final Short year, final Month month) {
+		Assert.notNull(userId);
+		Assert.notNull(year);
+		Assert.notNull(month);
+
+		return this.monthlySettlementDao.checkMonthlySettlementsExists(userId.getId(), year, (short) month.getValue());
+	}
+
+	@Override
+	public ValidationResult upsertMonthlySettlement(final List<MonthlySettlement> monthlySettlements) {
+		Assert.notNull(monthlySettlements);
+
+		final ValidationResult validationResult = new ValidationResult();
+		monthlySettlements.stream()
+				.forEach(ms -> validationResult.mergeValidationResult(this.validateMonthlySettlement(ms)));
+
+		if (validationResult.isValid()) {
+			final List<MonthlySettlementData> monthlySettlementDatas = super.mapList(monthlySettlements,
+					MonthlySettlementData.class);
+
+			monthlySettlementDatas.stream().forEach(msd -> this.monthlySettlementDao.upsertMonthlySettlement(msd));
+		}
+
+		return validationResult;
+	}
+
+	@Override
+	public void deleteMonthlySettlement(final UserID userId, final Short year, final Month month) {
+		Assert.notNull(userId);
+		Assert.notNull(year);
+		Assert.notNull(month);
+
+		this.monthlySettlementDao.deleteMonthlySettlement(userId.getId(), year, (short) month.getValue());
 	}
 
 }

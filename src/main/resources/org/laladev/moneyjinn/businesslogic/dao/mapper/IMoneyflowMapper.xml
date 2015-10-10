@@ -81,6 +81,14 @@
 		   AND moneyflowid    = #{id}
 		 LIMIT 1
 	</delete>
-    	
+	
+    	<select id="getSumAmountByDateRangeForCapitalsourceId"
+		resultType="java.math.BigDecimal">
+		SELECT IFNULL(SUM(amount),0)
+		  FROM vw_moneyflows
+		 WHERE bookingdate   BETWEEN #{validFrom} AND #{validTil}
+		   AND maf_id              = #{userId}
+		   AND mcs_capitalsourceid = #{mcsCapitalsourceId}
+	</select>
 </mapper>
  

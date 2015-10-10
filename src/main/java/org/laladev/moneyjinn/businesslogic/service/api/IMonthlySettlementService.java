@@ -1,10 +1,12 @@
 package org.laladev.moneyjinn.businesslogic.service.api;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
  * <p>
@@ -59,4 +61,40 @@ public interface IMonthlySettlementService {
 	 * @return list of {@link MonthlySettlement}s
 	 */
 	public List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(UserID userId, Short year, Month month);
+
+	/**
+	 * Returns the last date a {@link MonthlySettlement} was created by the given {@link UserId}.
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public LocalDate getMaxSettlementDate(UserID userId);
+
+	/**
+	 * Checks if at the given year and month, the also given {@link UserId} has already created a
+	 * {@link MonthlySettlement}.
+	 *
+	 * @param userId
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public boolean checkMonthlySettlementsExists(UserID userId, Short year, Month month);
+
+	/**
+	 * This method inserts or updates the given {@link MonthlySettlement}s.
+	 *
+	 * @param monthlySettlements
+	 * @return
+	 */
+	public ValidationResult upsertMonthlySettlement(List<MonthlySettlement> monthlySettlements);
+
+	/**
+	 * This method deletes the {@link MonthlySettlement}s for the given year and {@link Month}
+	 *
+	 * @param userId
+	 * @param year
+	 * @param month
+	 */
+	public void deleteMonthlySettlement(UserID userId, Short year, Month month);
 }

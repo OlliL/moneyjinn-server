@@ -61,7 +61,9 @@ public class MonthlySettlementTransportMapper implements IMapper<MonthlySettleme
 	@Override
 	public MonthlySettlementTransport mapAToB(final MonthlySettlement monthlySettlement) {
 		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransport();
-		monthlySettlementTransport.setId(monthlySettlement.getId().getId());
+		if (monthlySettlement.getId() != null) {
+			monthlySettlementTransport.setId(monthlySettlement.getId().getId());
+		}
 		monthlySettlementTransport.setAmount(monthlySettlement.getAmount());
 		monthlySettlementTransport.setYear(monthlySettlement.getYear());
 		monthlySettlementTransport.setMonth((short) monthlySettlement.getMonth().getValue());

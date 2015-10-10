@@ -24,6 +24,9 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -73,6 +76,11 @@ public class MoneyflowDao {
 
 	public void deleteMoneyflow(final Long groupId, final Long id) {
 		this.mapper.deleteMoneyflow(groupId, id);
+	}
+
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final Long userId, final Date validFrom,
+			final Date validTil, final Long capitalsourceId) {
+		return this.mapper.getSumAmountByDateRangeForCapitalsourceId(userId, validFrom, validTil, capitalsourceId);
 	}
 
 }

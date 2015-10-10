@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,6 +49,23 @@ public class MonthlySettlementDao {
 	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final Long userId, final Short year,
 			final Short month) {
 		return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
+	}
+
+	public Date getMaxSettlementDate(final Long userId) {
+		return this.mapper.getMaxSettlementDate(userId);
+	}
+
+	public boolean checkMonthlySettlementsExists(final Long userId, final Short year, final Short month) {
+		final Short exists = this.mapper.checkMonthlySettlementsExists(userId, year, month);
+		return exists != null;
+	}
+
+	public void upsertMonthlySettlement(final MonthlySettlementData monthlySettlementData) {
+		this.mapper.upsertMonthlySettlement(monthlySettlementData);
+	}
+
+	public void deleteMonthlySettlement(final Long userId, final Short year, final Short month) {
+		this.mapper.deleteMonthlySettlement(userId, year, month);
 	}
 
 }
