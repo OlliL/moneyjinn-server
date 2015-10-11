@@ -371,7 +371,7 @@ public class MonthlySettlementController extends AbstractController {
 		}
 
 		final ValidationResult validationResult = this.monthlySettlementService
-				.upsertMonthlySettlement(monthlySettlements);
+				.upsertMonthlySettlements(monthlySettlements);
 
 		if (!validationResult.isValid()) {
 			final ValidationResponse response = new ValidationResponse();

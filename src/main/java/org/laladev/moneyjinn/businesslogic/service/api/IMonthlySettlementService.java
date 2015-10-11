@@ -87,7 +87,7 @@ public interface IMonthlySettlementService {
 	 * @param monthlySettlements
 	 * @return
 	 */
-	public ValidationResult upsertMonthlySettlement(List<MonthlySettlement> monthlySettlements);
+	public ValidationResult upsertMonthlySettlements(List<MonthlySettlement> monthlySettlements);
 
 	/**
 	 * This method deletes the {@link MonthlySettlement}s for the given year and {@link Month}

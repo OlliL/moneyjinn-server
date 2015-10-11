@@ -46,10 +46,12 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.springframework.util.Assert;
 
 @Named
@@ -69,7 +71,26 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	}
 
 	private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {
+		Assert.notNull(monthlySettlement);
+		Assert.notNull(monthlySettlement.getCapitalsource());
+		Assert.notNull(monthlySettlement.getCapitalsource().getId());
+		Assert.notNull(monthlySettlement.getUser());
+		Assert.notNull(monthlySettlement.getUser().getId());
+		Assert.notNull(monthlySettlement.getGroup());
+		Assert.notNull(monthlySettlement.getGroup().getId());
+
 		final ValidationResult validationResult = new ValidationResult();
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(
+				monthlySettlement.getUser().getId(), monthlySettlement.getGroup().getId(),
+				monthlySettlement.getCapitalsource().getId());
+
+		// You must not change, or create MonthlySettlements for Capitalsources not belonging to
+		// you.
+		if (capitalsource == null || !capitalsource.getUser().getId().equals(monthlySettlement.getUser().getId())) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+		}
 		return validationResult;
 	}
 
@@ -156,7 +177,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	}
 
 	@Override
-	public ValidationResult upsertMonthlySettlement(final List<MonthlySettlement> monthlySettlements) {
+	public ValidationResult upsertMonthlySettlements(final List<MonthlySettlement> monthlySettlements) {
 		Assert.notNull(monthlySettlements);
 
 		final ValidationResult validationResult = new ValidationResult();

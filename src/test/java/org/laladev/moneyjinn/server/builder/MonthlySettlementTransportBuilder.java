@@ -12,6 +12,11 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 4l;
 
+	public MonthlySettlementTransportBuilder withAmount(final BigDecimal amount) {
+		super.setAmount(amount);
+		return this;
+	}
+
 	public MonthlySettlementTransportBuilder forMonthlySettlement1() {
 		super.setId(MONTHLYSETTLEMENT1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
