@@ -71,3 +71,10 @@ INSERT INTO predefmoneyflows (mac_id,amount,mcs_capitalsourceid,mcp_contractpart
 
 INSERT INTO moneyflows (mac_id_creator,mac_id_accessor,bookingdate ,invoicedate ,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,mpa_postingaccountid,private)
                 VALUES (3             ,6              ,'2009-01-01','2009-01-01',-1.10 ,1                  ,1                    ,'flow1',1                   ,0);
+                
+INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsourceid,month,year,amount)
+                        VALUES (3             ,6              ,1                  ,12   ,2008,10);
+INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsourceid,month,year,amount)
+                        VALUES (3             ,6              ,2                  ,12   ,2008,100);
+INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsourceid,month,year,amount)
+                        VALUES (5             ,6              ,4                  ,12   ,2008,1000);

@@ -17,6 +17,11 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 5l;
 
+	public static final Short CAPITALSOURCE1_GROUP_USE = null;
+	public static final Short CAPITALSOURCE2_GROUP_USE = (short) 1;
+	public static final Short CAPITALSOURCE3_GROUP_USE = (short) 1;
+	public static final Short CAPITALSOURCE4_GROUP_USE = (short) 1;
+
 	public CapitalsourceTransportBuilder forCapitalsource1() {
 		super.setId(CAPITALSOURCE1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
@@ -27,7 +32,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode("765432");
 		super.setValidFrom(DateUtil.getGMTDate("1980-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2999-12-31"));
-		super.setGroupUse(null);
+		super.setGroupUse(CAPITALSOURCE1_GROUP_USE);
 		super.setImportAllowed((short) 1);
 		return this;
 	}
@@ -42,7 +47,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode("ABCDEFG");
 		super.setValidFrom(DateUtil.getGMTDate("1981-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2799-12-31"));
-		super.setGroupUse((short) 1);
+		super.setGroupUse(CAPITALSOURCE2_GROUP_USE);
 		super.setImportAllowed(null);
 		return this;
 	}
@@ -57,7 +62,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode("765432");
 		super.setValidFrom(DateUtil.getGMTDate("1982-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2000-12-31"));
-		super.setGroupUse((short) 1);
+		super.setGroupUse(CAPITALSOURCE3_GROUP_USE);
 		super.setImportAllowed((short) 1);
 		return this;
 	}
@@ -72,7 +77,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode("765432");
 		super.setValidFrom(DateUtil.getGMTDate("1983-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2010-12-31"));
-		super.setGroupUse((short) 1);
+		super.setGroupUse(CAPITALSOURCE4_GROUP_USE);
 		super.setImportAllowed((short) 1);
 		return this;
 	}

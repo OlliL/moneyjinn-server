@@ -116,7 +116,7 @@ public class MonthlySettlementController extends AbstractController {
 		List<Month> allMonth = null;
 
 		Short year = requestYear;
-		Month month = requestMonth != null ? Month.of(requestMonth.intValue()) : null;
+		Month month = this.getMonth(requestMonth);
 
 		List<MonthlySettlementTransport> monthlySettlementTransports = null;
 		int numberOfEditableSettlements = 0;
@@ -133,22 +133,18 @@ public class MonthlySettlementController extends AbstractController {
 
 			allMonth = this.monthlySettlementService.getAllMonth(userId, year);
 
-			if (month != null) {
+			if (month != null && allMonth != null && allMonth.contains(month)) {
 
-				if (allMonth != null && allMonth.contains(month)) {
+				final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+						.getAllMonthlySettlementsByYearMonth(userId, year, month);
 
-					final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-							.getAllMonthlySettlementsByYearMonth(userId, year, month);
-
-					for (final MonthlySettlement monthlySettlement : monthlySettlements) {
-						if (userId.equals(monthlySettlement.getUser().getId())
-								|| monthlySettlement.getCapitalsource().isGroupUse()) {
-							numberOfEditableSettlements++;
-						}
-
+				for (final MonthlySettlement monthlySettlement : monthlySettlements) {
+					if (userId.equals(monthlySettlement.getUser().getId())) {
+						numberOfEditableSettlements++;
 					}
-					monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+
 				}
+				monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
 				response.setMonth((short) month.getValue());
 			}
 			response.setYear(year);
@@ -188,7 +184,8 @@ public class MonthlySettlementController extends AbstractController {
 	@RequestMapping(value = "showMonthlySettlementCreate/{year}/{month}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate(
-			@PathVariable(value = "year") final Short aYear, @PathVariable(value = "month") final Short aMonth) {
+			@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
 
 		final UserID userId = super.getUserId();
 		final ShowMonthlySettlementCreateResponse response = new ShowMonthlySettlementCreateResponse();
@@ -212,16 +209,14 @@ public class MonthlySettlementController extends AbstractController {
 
 		Short year = null;
 		Month month = null;
-		if (aYear == null && aMonth == null) {
+		if (requestYear == null && requestMonth == null) {
 			year = nextYear;
 			month = nextMonth;
 		} else {
-			if (aYear != null) {
-				year = aYear;
+			if (requestYear != null) {
+				year = requestYear;
 			}
-			if (aMonth != null) {
-				month = Month.of(aMonth.intValue());
-			}
+			month = this.getMonth(requestMonth);
 		}
 
 		boolean selectedMonthIsNextSettlementMonth = false;
@@ -341,13 +336,14 @@ public class MonthlySettlementController extends AbstractController {
 	@RequestMapping(value = "showMonthlySettlementDelete/{year}/{month}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowMonthlySettlementDeleteResponse showMonthlySettlementDelete(
-			@PathVariable(value = "year") final Short aYear, @PathVariable(value = "month") final Short aMonth) {
+			@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
 
 		final UserID userId = super.getUserId();
 		final ShowMonthlySettlementDeleteResponse response = new ShowMonthlySettlementDeleteResponse();
 
-		final Short year = aYear;
-		final Month month = Month.of(aMonth.intValue());
+		final Short year = requestYear;
+		final Month month = this.getMonth(requestMonth);
 
 		final List<MonthlySettlementTransport> monthlySettlementTransports = this
 				.getMyEditableMonthlySettlements(userId, year, month);
@@ -390,10 +386,15 @@ public class MonthlySettlementController extends AbstractController {
 
 	@RequestMapping(value = "deleteMonthlySettlement/{year}/{month}", method = { RequestMethod.DELETE })
 	@RequiresAuthorization
-	public void deleteMonthlySettlement(@PathVariable(value = "year") final Short year,
-			@PathVariable(value = "month") final Short month) {
+	public void deleteMonthlySettlement(@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
 		final UserID userId = super.getUserId();
-		this.monthlySettlementService.deleteMonthlySettlement(userId, year, Month.of(month.intValue()));
+		this.monthlySettlementService.deleteMonthlySettlement(userId, requestYear, this.getMonth(requestMonth));
+	}
+
+	private Month getMonth(final Short requestMonth) {
+		return requestMonth != null && requestMonth >= 1 && requestMonth <= 12 ? Month.of(requestMonth.intValue())
+				: null;
 	}
 
 	private List<MonthlySettlementTransport> getMyEditableMonthlySettlements(final UserID userId, final Short year,
