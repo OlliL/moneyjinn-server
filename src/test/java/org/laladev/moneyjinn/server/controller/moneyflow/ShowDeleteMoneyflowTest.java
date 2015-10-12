@@ -9,6 +9,7 @@ import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class ShowDeleteMoneyflowTest extends AbstractControllerTest {
 
@@ -76,4 +77,15 @@ public class ShowDeleteMoneyflowTest extends AbstractControllerTest {
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ShowDeleteMoneyflowResponse expected = new ShowDeleteMoneyflowResponse();
+		final ShowDeleteMoneyflowResponse actual = super.callUsecaseWithoutContent(
+				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowDeleteMoneyflowResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
 }

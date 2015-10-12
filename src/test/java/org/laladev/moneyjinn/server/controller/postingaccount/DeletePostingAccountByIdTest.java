@@ -14,6 +14,7 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 
@@ -118,6 +119,16 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
+		super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, true,
+				Object.class);
 	}
 
 }

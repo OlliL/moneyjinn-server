@@ -20,10 +20,12 @@ import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContra
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 
@@ -116,6 +118,23 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_emptyContractpartner_Error() throws Exception {
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forNewContractpartnerAccount().withContractpartnerid(null).build();
+
+		this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_nonExistingContractpartner_Error() throws Exception {
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forNewContractpartnerAccount().withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID)
+				.build();
+
+		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+	}
+
+	@Test
 	public void test_standardRequest_SuccessfullNoContent() throws Exception {
 		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
 
@@ -141,6 +160,17 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forNewContractpartnerAccount().build();
+
+		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
 	}
 
 }

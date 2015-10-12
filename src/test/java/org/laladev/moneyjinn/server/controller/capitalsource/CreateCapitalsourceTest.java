@@ -29,6 +29,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class CreateCapitalsourceTest extends AbstractControllerTest {
 
@@ -217,6 +218,29 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.ADMINGROUP_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(1l);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(new Long(1l), capitalsource.getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
 	}
 
 }

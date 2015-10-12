@@ -20,10 +20,16 @@ public class ContractpartnerAccountTransportMapper
 			bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
 					contractpartnerAccountTransport.getBankCode());
 		}
+
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
 				contractpartnerAccountTransport.getId());
-		final Contractpartner contractpartner = new Contractpartner(
-				new ContractpartnerID(contractpartnerAccountTransport.getContractpartnerid()));
+
+		Contractpartner contractpartner = null;
+		if (contractpartnerAccountTransport.getContractpartnerid() != null) {
+			contractpartner = new Contractpartner(
+					new ContractpartnerID(contractpartnerAccountTransport.getContractpartnerid()));
+		}
+
 		return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
 	}
 

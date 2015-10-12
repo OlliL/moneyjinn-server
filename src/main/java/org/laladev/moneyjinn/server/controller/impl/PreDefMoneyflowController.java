@@ -129,7 +129,9 @@ public class PreDefMoneyflowController extends AbstractController {
 		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
 			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
 		}
-		response.setInitials(initials);
+		if (initials != null && initials.size() > 0) {
+			response.setInitials(initials);
+		}
 
 		return response;
 	}
@@ -250,9 +252,11 @@ public class PreDefMoneyflowController extends AbstractController {
 				}
 			}
 		}
-		final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
-				CapitalsourceTransport.class);
-		response.setCapitalsourceTransports(capitalsourceTransports);
+		if (capitalsources != null && capitalsources.size() > 0) {
+			final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
+					CapitalsourceTransport.class);
+			response.setCapitalsourceTransports(capitalsourceTransports);
+		}
 
 		final List<Contractpartner> contractpartners = this.contractpartnerService
 				.getAllContractpartnersByDateRange(userId, today, today);
@@ -274,12 +278,16 @@ public class PreDefMoneyflowController extends AbstractController {
 			}
 		}
 
-		final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners,
-				ContractpartnerTransport.class);
-		response.setContractpartnerTransports(contractpartnerTransports);
+		if (contractpartners != null && contractpartners.size() > 0) {
+			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners,
+					ContractpartnerTransport.class);
+			response.setContractpartnerTransports(contractpartnerTransports);
+		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		if (postingAccounts != null && postingAccounts.size() > 0) {
+			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		}
 
 	}
 }

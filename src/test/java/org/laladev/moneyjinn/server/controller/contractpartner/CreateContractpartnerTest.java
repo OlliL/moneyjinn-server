@@ -27,6 +27,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class CreateContractpartnerTest extends AbstractControllerTest {
 
@@ -214,6 +215,35 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
+		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+
+		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
+				.build();
+		transport.setStreet(null);
+		transport.setPostcode(null);
+		transport.setTown(null);
+		transport.setCountry(null);
+		transport.setMoneyflowComment(null);
+		transport.setPostingAccountId(null);
+		request.setContractpartnerTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerId);
+
+		Assert.assertEquals(contractpartnerId.getId(), contractpartner.getId().getId());
+		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
 	}
 
 }

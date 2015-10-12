@@ -46,6 +46,12 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 		return this;
 	}
 
+	public ContractpartnerAccountTransportBuilder withContractpartnerid(final Long contractpartnerId) {
+		super.setContractpartnerid(contractpartnerId);
+
+		return this;
+	}
+
 	public ContractpartnerAccountTransport build() {
 		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransport();
 

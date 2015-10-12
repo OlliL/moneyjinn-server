@@ -69,6 +69,18 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			}
 		}
 
+		if (contractpartnerAccount.getContractpartner() == null) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(contractpartnerAccount.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
+		} else {
+			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+					contractpartnerAccount.getContractpartner().getId());
+			if (contractpartner == null) {
+				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
+						ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
+			}
+		}
+
 		return validationResult;
 	}
 

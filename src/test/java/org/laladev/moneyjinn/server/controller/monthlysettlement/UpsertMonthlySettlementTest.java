@@ -20,11 +20,13 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.UpsertMonthlySettlementRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 // TODO Check that Settlements may only be created for owned Capitalsources.
 public class UpsertMonthlySettlementTest extends AbstractControllerTest {
@@ -109,6 +111,15 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_notOwnedCapitalsource_Error() throws Exception {
+		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
+				.forMonthlySettlement1().build();
+		monthlySettlementTransport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+	}
+
+	@Test
 	public void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 
@@ -146,6 +157,17 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
+				.forMonthlySettlement3().build();
+
+		this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
 	}
 
 }

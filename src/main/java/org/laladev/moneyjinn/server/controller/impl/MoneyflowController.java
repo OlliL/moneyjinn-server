@@ -119,17 +119,23 @@ public class MoneyflowController extends AbstractController {
 
 		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
 				today, today);
-		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+		if (capitalsources != null && capitalsources.size() > 0) {
+			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+		}
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService
 				.getAllContractpartnersByDateRange(userId, today, today);
-		response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
+		if (contractpartner != null && contractpartner.size() > 0) {
+			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
+		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		if (postingAccounts != null && postingAccounts.size() > 0) {
+			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		}
 
 		List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-		if (preDefMoneyflows != null) {
+		if (preDefMoneyflows != null && preDefMoneyflows.size() > 0) {
 			preDefMoneyflows = preDefMoneyflows.stream().filter(pdm -> !this.isOnceAMonthAndAlreadyUsed(today, pdm))
 					.collect(Collectors.toCollection(ArrayList::new));
 			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
@@ -211,18 +217,21 @@ public class MoneyflowController extends AbstractController {
 	@RequiresAuthorization
 	public ShowSearchMoneyflowFormResponse showSearchMoneyflowForm() {
 		final UserID userId = super.getUserId();
+		final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
-		final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
-				ContractpartnerTransport.class);
+		if (contractpartner != null && contractpartner.size() > 0) {
+			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
+					ContractpartnerTransport.class);
+			response.setContractpartnerTransports(contractpartnerTransports);
+		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
-				PostingAccountTransport.class);
-
-		final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
-		response.setContractpartnerTransports(contractpartnerTransports);
-		response.setPostingAccountTransports(postingAccountTransports);
+		if (postingAccounts != null && postingAccounts.size() > 0) {
+			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
+			response.setPostingAccountTransports(postingAccountTransports);
+		}
 
 		return response;
 	}

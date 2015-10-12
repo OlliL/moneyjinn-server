@@ -14,6 +14,7 @@ import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 
@@ -153,6 +154,19 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
+
+		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+				ShowMonthlySettlementListResponse.class);
+
+		Assert.assertEquals(expected, actual);
 	}
 
 }

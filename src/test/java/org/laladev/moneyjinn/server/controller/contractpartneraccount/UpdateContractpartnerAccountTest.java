@@ -27,6 +27,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
@@ -225,30 +226,13 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 	public void test_editContractpartnerAccountOwnedBySomeoneElse_notSuccessfull() throws Exception {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
-
-		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
 
 		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
 				.forContractpartnerAccount1().build();
 		transport.setAccountNumber("1");
 		transport.setBankCode("2");
-		request.setContractpartnerAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
-
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-
-		final ContractpartnerAccountTransport transportOriginal = new ContractpartnerAccountTransportBuilder()
-				.forContractpartnerAccount1().build();
-		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
-				contractpartnerAccount.getId().getId());
-		Assert.assertEquals(transportOriginal.getAccountNumber(),
-				contractpartnerAccount.getBankAccount().getAccountNumber());
-		Assert.assertEquals(transportOriginal.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
+		this.testError(transport, null, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
 	}
 
 	@Test
@@ -257,6 +241,17 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forNewContractpartnerAccount().build();
+
+		this.testError(transport, null, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
 	}
 
 }

@@ -102,7 +102,10 @@ public class PostingAccountController extends AbstractController {
 		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
-		response.setInitials(initials);
+
+		if (initials != null && initials.size() > 0) {
+			response.setInitials(initials);
+		}
 
 		return response;
 	}

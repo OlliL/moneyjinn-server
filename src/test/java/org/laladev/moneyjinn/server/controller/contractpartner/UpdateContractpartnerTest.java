@@ -27,6 +27,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class UpdateContractpartnerTest extends AbstractControllerTest {
 
@@ -191,4 +192,17 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+
+		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
+		request.setContractpartnerTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+	}
 }

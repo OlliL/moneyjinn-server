@@ -20,6 +20,7 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class ShowContractpartnerListTest extends AbstractControllerTest {
 
@@ -223,4 +224,16 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
+		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
+		final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0",
+				this.method, false, ShowContractpartnerListResponse.class);
+		Assert.assertEquals(expected, actual);
+
+	}
 }

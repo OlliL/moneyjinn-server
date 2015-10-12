@@ -6,9 +6,11 @@ import org.junit.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowDeleteContractpartnerAccountResponse;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 public class ShowDeleteContractpartnerAccountTest extends AbstractControllerTest {
 
@@ -94,6 +96,22 @@ public class ShowDeleteContractpartnerAccountTest extends AbstractControllerTest
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
+		final ShowDeleteContractpartnerAccountResponse expected = new ShowDeleteContractpartnerAccountResponse();
+
+		final ShowDeleteContractpartnerAccountResponse actual = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+				ShowDeleteContractpartnerAccountResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
 	}
 
 }
