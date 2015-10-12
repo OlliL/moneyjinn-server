@@ -17,6 +17,21 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		return this;
 	}
 
+	public MonthlySettlementTransportBuilder withMonth(final int month) {
+		super.setMonth((short) month);
+		return this;
+	}
+
+	public MonthlySettlementTransportBuilder withYear(final int year) {
+		super.setYear((short) year);
+		return this;
+	}
+
+	public MonthlySettlementTransportBuilder withId(final Long id) {
+		super.setId(id);
+		return this;
+	}
+
 	public MonthlySettlementTransportBuilder forMonthlySettlement1() {
 		super.setId(MONTHLYSETTLEMENT1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);

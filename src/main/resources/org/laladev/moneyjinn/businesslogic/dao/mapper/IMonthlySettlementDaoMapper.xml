@@ -47,14 +47,13 @@
 	</select>
 
 	<select id="getMaxSettlementDate" resultType="java.sql.Date">
-		SELECT DATE(
-		            CONCAT(
-		                   CONCAT(
-		                          CONCAT(year
-		                                ,'-')
-		                         ,LPAD(month,2,'0'))
-		                   ,'-01')
-		           )
+		SELECT CONCAT(
+		              CONCAT(
+		                     CONCAT(year
+		                           ,'-')
+		                    ,LPAD(month,2,'0'))
+		             ,'-01')
+		           
 		  FROM monthlysettlements
 		 WHERE mac_id_creator = #{userId}
 		 ORDER BY year  DESC

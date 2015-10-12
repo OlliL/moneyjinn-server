@@ -327,8 +327,12 @@ public class MonthlySettlementController extends AbstractController {
 		response.setYear(year);
 		response.setMonth((short) month.getValue());
 		response.setEditMode((short) (editMode ? 1 : 0));
-		response.setMonthlySettlementTransports(monthlySettlementTransports);
-		response.setImportedMonthlySettlementTransports(importedMonthlySettlementTransports);
+		if (monthlySettlementTransports != null && monthlySettlementTransports.size() > 0) {
+			response.setMonthlySettlementTransports(monthlySettlementTransports);
+		}
+		if (importedMonthlySettlementTransports != null && importedMonthlySettlementTransports.size() > 0) {
+			response.setImportedMonthlySettlementTransports(importedMonthlySettlementTransports);
+		}
 
 		return response;
 	}
