@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
  * <p>
@@ -28,6 +29,29 @@ import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonth
  */
 public interface IImportedMonthlySettlementService {
 
+	/**
+	 * Retrieves all the imported monthly settlements for the given year and month.
+	 *
+	 * @param userId
+	 * @param year
+	 * @param month
+	 * @return
+	 */
 	List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(UserID userId, Short year, Month month);
+
+	/**
+	 * Persists the given {@link ImportedMonthlySettlement}.
+	 *
+	 * @param importedMonthlySettlement
+	 */
+	void createImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
+
+	/**
+	 * Validates the given {@link ImportedMonthlySettlement} for correctness.
+	 * 
+	 * @param importedMonthlySettlement
+	 * @return
+	 */
+	ValidationResult validateImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
 
 }

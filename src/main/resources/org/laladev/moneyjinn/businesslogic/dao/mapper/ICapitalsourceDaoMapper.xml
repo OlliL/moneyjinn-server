@@ -219,5 +219,15 @@
 		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
 		      ,capitalsourceid
 	</select>
+
+	<select id="getCapitalsourceByAccount"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData">
+		SELECT <include refid="capitalsourceColumns" />
+		  FROM capitalsources
+		 WHERE accountnumber = #{accountNumber}
+		   AND bankcode      = #{bankCode}
+		   AND #{date}       BETWEEN validfrom AND validtil
+		 LIMIT 1
+	</select>
 </mapper>
  

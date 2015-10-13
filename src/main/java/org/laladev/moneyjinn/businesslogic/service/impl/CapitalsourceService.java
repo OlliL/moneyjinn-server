@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.businesslogic.dao.CapitalsourceDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.CapitalsourceDataMapper;
+import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -340,6 +341,14 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		return capitalsources;
 	}
 
+	@Override
+	public Capitalsource getCapitalsourceByAccount(final BankAccount bankAccount, final LocalDate endOfMonth) {
+		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByAccount(
+				bankAccount.getBankCode(), bankAccount.getAccountNumber(), Date.valueOf(endOfMonth));
+
+		return this.mapCapitalsourceData(capitalsourceData);
+	}
+
 	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
 			final CapitalsourceID capitalsourceId) {
 		if (capitalsourceId != null) {
@@ -358,5 +367,4 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			}
 		}
 	}
-
 }

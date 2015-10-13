@@ -24,29 +24,104 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.laladev.moneyjinn.businesslogic.dao.ImportedMonthlySettlementDao;
+import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMonthlySettlementData;
+import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ImportedMonthlySettlementDataMapper;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
+import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IImportedMonthlySettlementService;
+import org.springframework.util.Assert;
 
 @Named
 public class ImportedMonthlySettlementService extends AbstractService implements IImportedMonthlySettlementService {
+	@Inject
+	ImportedMonthlySettlementDao importedMonthlySettlementDao;
+
+	@Inject
+	ICapitalsourceService capitalsourceService;
+	@Inject
+	IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {
-		// TODO Auto-generated method stub
+		super.registerBeanMapper(new ImportedMonthlySettlementDataMapper());
+	}
 
+	private final ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
+			final ImportedMonthlySettlementData importedMonthlySettlementData) {
+
+		if (importedMonthlySettlementData != null) {
+			final ImportedMonthlySettlement importedMonthlySettlement = super.map(importedMonthlySettlementData,
+					ImportedMonthlySettlement.class);
+
+			final LocalDate beginOfMonth = LocalDate.of(importedMonthlySettlement.getYear(),
+					importedMonthlySettlement.getMonth(), 1);
+			final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+
+			final Group group = this.accessRelationService.getAccessor(userId, endOfMonth);
+
+			Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
+			if (capitalsource != null) {
+				final CapitalsourceID capitalsourceId = capitalsource.getId();
+				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+				importedMonthlySettlement.setCapitalsource(capitalsource);
+			}
+
+			return importedMonthlySettlement;
+		}
+		return null;
+	}
+
+	private final List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
+			final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList) {
+		return importedMonthlySettlementDataList.stream()
+				.map(element -> this.mapImportedMonthlySettlementData(userId, element))
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	@Override
+	public ValidationResult validateImportedMonthlySettlement(
+			final ImportedMonthlySettlement importedMonthlySettlement) {
+		final ValidationResult validationResult = new ValidationResult();
+		return validationResult;
 	}
 
 	@Override
 	public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(final UserID userId, final Short year,
 			final Month month) {
-		// TODO Auto-generated method stub
-		return null;
+		Assert.notNull(userId);
+		Assert.notNull(year);
+		Assert.notNull(month);
+
+		final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
+				.getImportedMonthlySettlementsByMonth(year, (short) month.getValue());
+		return this.mapImportedMonthlySettlementDataList(userId, importedMonthlySettlementDataList);
+	}
+
+	@Override
+	public void createImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
+		Assert.notNull(importedMonthlySettlement);
+
+		final ImportedMonthlySettlementData importedMonthlySettlementData = super.map(importedMonthlySettlement,
+				ImportedMonthlySettlementData.class);
+		this.importedMonthlySettlementDao.createImportedMonthlySettlement(importedMonthlySettlementData);
+
 	}
 
 }

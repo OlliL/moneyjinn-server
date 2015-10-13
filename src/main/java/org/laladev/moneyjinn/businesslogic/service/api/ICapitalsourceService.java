@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -227,5 +228,14 @@ public interface ICapitalsourceService {
 	 */
 	public List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
+
+	/**
+	 * Determines the {@link Capitalsource} by the given {@link BankAccound}
+	 * 
+	 * @param bankAccount
+	 * @param endOfMonth
+	 * @return
+	 */
+	public Capitalsource getCapitalsourceByAccount(BankAccount bankAccount, LocalDate endOfMonth);
 
 }

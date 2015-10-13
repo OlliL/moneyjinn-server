@@ -114,4 +114,9 @@ public class CapitalsourceDao {
 		return this.mapper.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
+	public CapitalsourceData getCapitalsourceByAccount(final String bankCode, final String accountNumber,
+			final Date date) {
+		return this.mapper.getCapitalsourceByAccount(bankCode, accountNumber, date);
+	}
+
 }

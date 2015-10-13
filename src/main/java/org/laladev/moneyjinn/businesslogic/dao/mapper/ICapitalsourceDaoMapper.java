@@ -75,4 +75,7 @@ public interface ICapitalsourceDaoMapper {
 	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
 			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
 
+	public CapitalsourceData getCapitalsourceByAccount(@Param("bankCode") String bankCode,
+			@Param("accountNumber") String accountNumber, @Param("date") Date date);
+
 }
