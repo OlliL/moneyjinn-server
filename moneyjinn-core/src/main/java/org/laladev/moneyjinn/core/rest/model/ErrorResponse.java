@@ -88,4 +88,15 @@ public class ErrorResponse {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ErrorResponse [code=");
+		builder.append(this.code);
+		builder.append(", message=");
+		builder.append(this.message);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
