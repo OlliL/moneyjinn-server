@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.businesslogic.dao.mapper.IImportedBalanceDaoMapper">
+
+    	<sql id="importedBalanceColumns">
+		 balance
+		,mcs_capitalsourceid	AS mcsCapitalsourceId
+		,changedate
+	</sql>
+    
+     	<select id="getAllImportedBalancesByCapitalsourceIds"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.ImportedBalanceData">
+		SELECT <include refid="importedBalanceColumns" />
+		  FROM impbalance
+		 WHERE mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+	</select>
+
+    	<insert id="upsertImportedBalance"
+		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.ImportedBalanceData">
+		INSERT
+		  INTO impbalance
+		      (mcs_capitalsourceid
+		      ,balance
+		      ,changedate
+		      )
+		VALUES
+		      (#{mcsCapitalsourceId}
+		      ,#{balance}
+		      ,#{changedate}
+		      )
+		    ON DUPLICATE KEY
+		UPDATE balance = VALUES(balance)
+	</insert>
+
+</mapper>
+ 

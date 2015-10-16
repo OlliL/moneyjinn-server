@@ -81,3 +81,6 @@ INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsource
 
 INSERT INTO impmonthlysettlements (externalid,mcs_capitalsourceid,month,year,amount)
                            VALUES ('A'       ,4                  ,1    ,2009,9);
+
+INSERT INTO impbalance (mcs_capitalsourceid,balance,changedate)
+                VALUES (4                  ,9      ,'2009-12-01 20:20:20');

@@ -41,6 +41,7 @@ import org.laladev.moneyjinn.businesslogic.dao.CapitalsourceDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.CapitalsourceDataMapper;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -53,6 +54,7 @@ import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.springframework.cache.Cache;
@@ -70,6 +72,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	private CapitalsourceDao capitalsourceDao;
 	@Inject
 	private IUserService userService;
+	@Inject
+	private IGroupService groupService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -82,7 +86,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			final Capitalsource capitalsource = super.map(capitalsourceData, Capitalsource.class);
 			final UserID userId = capitalsource.getUser().getId();
 			final User user = this.userService.getUserById(userId);
+			final Group group = this.groupService.getGroupById(capitalsource.getAccess().getId());
 			capitalsource.setUser(user);
+			capitalsource.setAccess(group);
 			return capitalsource;
 		}
 		return null;
