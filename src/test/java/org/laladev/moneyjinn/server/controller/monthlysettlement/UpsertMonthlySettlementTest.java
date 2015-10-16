@@ -28,7 +28,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-// TODO Check that Settlements may only be created for owned Capitalsources.
 public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 
 	@Inject

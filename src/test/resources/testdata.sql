@@ -78,3 +78,6 @@ INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsource
                         VALUES (3             ,6              ,2                  ,12   ,2008,100);
 INSERT INTO monthlysettlements (mac_id_creator,mac_id_accessor,mcs_capitalsourceid,month,year,amount)
                         VALUES (5             ,6              ,4                  ,12   ,2008,1000);
+
+INSERT INTO impmonthlysettlements (externalid,mcs_capitalsourceid,month,year,amount)
+                           VALUES ('A'       ,4                  ,1    ,2009,9);

@@ -17,7 +17,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-// TODO Test imported monthly settlements
 public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 
 	private final HttpMethod method = HttpMethod.GET;
@@ -100,6 +99,33 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 				.withYear(2009).withMonth(1).build());
 
 		expected.setMonthlySettlementTransports(monthlySettlementTransports);
+		expected.setYear((short) 2009);
+		expected.setMonth((short) 1);
+		expected.setEditMode((short) 0);
+
+		ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+		actual = super.callUsecaseWithoutContent("/2009/1", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+	}
+
+	@Test
+	public void test_nextUnsettledMonthWithImportedData_FullContentWithCalculatedAmount() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
+
+		final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
+		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement3().withId(null)
+				.withYear(2009).withMonth(1).withAmount(new BigDecimal("9.00")).build());
+
+		expected.setImportedMonthlySettlementTransports(monthlySettlementTransports);
 		expected.setYear((short) 2009);
 		expected.setMonth((short) 1);
 		expected.setEditMode((short) 0);
