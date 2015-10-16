@@ -58,7 +58,6 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 		expected.setYear((short) 2000);
 		expected.setMonth((short) 1);
 		expected.setEditMode((short) 0);
-		;
 
 		final ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2000/1", this.method,
 				false, ShowMonthlySettlementCreateResponse.class);
@@ -79,7 +78,6 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 		expected.setYear((short) 2008);
 		expected.setMonth((short) 12);
 		expected.setEditMode((short) 1);
-		;
 
 		final ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method,
 				false, ShowMonthlySettlementCreateResponse.class);
