@@ -36,6 +36,17 @@
 		         ,accountnumber
 	</select>
 
+	<select id="getAllContractpartnerByAccounts" 
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData">
+		SELECT <include refid="contractpartnerAccountColumns" />
+		  FROM contractpartneraccounts
+		 WHERE (accountnumber,bankcode) IN 
+		   <foreach item="bankAccountData" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        ( #{bankAccountData.accountNumber} , #{bankAccountData.bankCode} ) 
+		   </foreach>
+	</select>
+	
 	<insert id="createContractpartnerAccount"
 		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartneraccountid">

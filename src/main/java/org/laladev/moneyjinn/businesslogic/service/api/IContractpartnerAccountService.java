@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
@@ -109,4 +110,15 @@ public interface IContractpartnerAccountService {
 	 *            {@link ContractpartnerID}
 	 */
 	public void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
+
+	/**
+	 * This method selects all {@link ContractpartnerAccount}s for the given {@link BankAccount}s
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @param bankAccounts
+	 *            List of {@link BankAccount}
+	 * @return
+	 */
+	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
 }

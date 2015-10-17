@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
-import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.PreDefMoneyflowID;
@@ -41,6 +39,8 @@ import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
@@ -119,23 +119,23 @@ public class MoneyflowController extends AbstractController {
 
 		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
 				today, today);
-		if (capitalsources != null && capitalsources.size() > 0) {
+		if (capitalsources != null && !capitalsources.isEmpty()) {
 			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 		}
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService
 				.getAllContractpartnersByDateRange(userId, today, today);
-		if (contractpartner != null && contractpartner.size() > 0) {
+		if (contractpartner != null && !contractpartner.isEmpty()) {
 			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
 		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && postingAccounts.size() > 0) {
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
 
 		List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-		if (preDefMoneyflows != null && preDefMoneyflows.size() > 0) {
+		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
 			preDefMoneyflows = preDefMoneyflows.stream().filter(pdm -> !this.isOnceAMonthAndAlreadyUsed(today, pdm))
 					.collect(Collectors.toCollection(ArrayList::new));
 			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
@@ -220,14 +220,14 @@ public class MoneyflowController extends AbstractController {
 		final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
-		if (contractpartner != null && contractpartner.size() > 0) {
+		if (contractpartner != null && !contractpartner.isEmpty()) {
 			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
 					ContractpartnerTransport.class);
 			response.setContractpartnerTransports(contractpartnerTransports);
 		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && postingAccounts.size() > 0) {
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
 					PostingAccountTransport.class);
 			response.setPostingAccountTransports(postingAccountTransports);

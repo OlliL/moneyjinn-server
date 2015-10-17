@@ -348,7 +348,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public Capitalsource getCapitalsourceByAccount(final BankAccount bankAccount, final LocalDate endOfMonth) {
+	public Capitalsource getCapitalsourceByAccount(final UserID userId, final BankAccount bankAccount,
+			final LocalDate endOfMonth) {
 		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByAccount(
 				bankAccount.getBankCode(), bankAccount.getAccountNumber(), Date.valueOf(endOfMonth));
 

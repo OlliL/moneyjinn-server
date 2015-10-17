@@ -30,14 +30,14 @@ import java.time.LocalDate;
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
-import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 
 public class MoneyflowDataMapper implements IMapper<Moneyflow, MoneyflowData> {

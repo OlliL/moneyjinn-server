@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.businesslogic.dao.mapper;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -24,30 +22,36 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
+package org.laladev.moneyjinn.businesslogic.dao;
+
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
-import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-public interface IContractpartnerAccountDaoMapper {
+import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.mapper.IImportedMoneyflowDaoMapper;
 
-	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber);
+@Named
+public class ImportedMoneyflowDao {
+	@Inject
+	IImportedMoneyflowDaoMapper mapper;
 
-	public ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
+	public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIds) {
+		return this.mapper.countImportedMoneyflows(capitalsourceIds);
+	}
 
-	public List<ContractpartnerAccountData> getContractpartnerAccounts(
-			@Param("contractpartnerId") Long contractpartnerId);
+	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
+			final List<Long> capitalsourceIdLongs) {
+		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs);
+	}
 
-	public void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
+	public void deleteImportedMoneyflowById(final Long userId, final Long importedMoneyflowId) {
+		this.mapper.deleteImportedMoneyflowById(importedMoneyflowId);
+	}
 
-	public void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
-
-	public void deleteContractpartnerAccount(@Param("id") Long id);
-
-	public void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
-
-	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(List<BankAccountData> bankAccountDatas);
+	public void createImportedMoneyflow(final ImportedMoneyflowData importedMoneyflowData) {
+		this.mapper.createImportedMoneyflow(importedMoneyflowData);
+	}
 
 }

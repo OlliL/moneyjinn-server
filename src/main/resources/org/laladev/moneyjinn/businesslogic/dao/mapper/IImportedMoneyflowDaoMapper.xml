@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.businesslogic.dao.mapper.IImportedMoneyflowDaoMapper">
+
+    	<sql id="importedMoneyflowColumns">
+		 impmoneyflowid		AS id
+		,externalid		AS externalId
+		,mcs_capitalsourceid	AS mcsCapitalsourceId
+		,bookingdate
+		,invoicedate
+		,name
+		,accountnumber		AS accountNumber
+		,bankcode		AS bankCode
+		,comment
+		,amount
+	</sql>
+
+    	<select id="countImportedMoneyflows" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM impmoneyflows
+		 WHERE mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+	</select>
+    	
+    	
+     	<select id="getAllImportedMoneyflowsByCapitalsourceIds"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData">
+		SELECT <include refid="importedMoneyflowColumns" />
+		  FROM impmoneyflows
+		 WHERE mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+	</select>
+
+     	<delete id="deleteImportedMoneyflowById">
+     	    	DELETE
+     	    	  FROM impmoneyflows
+     	    	 WHERE impmoneyflowid = #{id}
+		 LIMIT 1
+     	</delete>
+     	
+    	<insert id="createImportedMoneyflow"
+		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData">
+		INSERT
+		  INTO impmoneyflows
+		      (externalid
+		      ,mcs_capitalsourceid
+		      ,bookingdate
+		      ,invoicedate
+		      ,name
+		      ,accountnumber
+		      ,bankcode
+		      ,comment
+		      ,amount
+		      )
+		VALUES
+		      (#{externalId}
+		      ,#{mcsCapitalsourceId}
+		      ,#{bookingdate}
+		      ,#{invoicedate}
+		      ,#{name}
+		      ,#{accountNumber}
+		      ,#{bankCode}
+		      ,#{comment}
+		      ,#{amount}
+		      )
+	</insert>
+
+</mapper>
+ 

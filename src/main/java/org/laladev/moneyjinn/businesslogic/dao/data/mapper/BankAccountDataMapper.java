@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.businesslogic.dao.mapper;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -24,30 +22,31 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
+package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
-import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
+import org.laladev.moneyjinn.businesslogic.model.BankAccount;
+import org.laladev.moneyjinn.core.mapper.IMapper;
 
-public interface IContractpartnerAccountDaoMapper {
+public class BankAccountDataMapper implements IMapper<BankAccount, BankAccountData> {
 
-	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber);
+	@Override
+	public BankAccount mapBToA(final BankAccountData bankAccountData) {
+		if (bankAccountData.getAccountNumber() != null) {
+			return new BankAccount(bankAccountData.getAccountNumber(), bankAccountData.getBankCode());
+		}
+		return null;
+	}
 
-	public ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
+	@Override
+	public BankAccountData mapAToB(final BankAccount bankAccount) {
+		final BankAccountData bankAccountData = new BankAccountData();
 
-	public List<ContractpartnerAccountData> getContractpartnerAccounts(
-			@Param("contractpartnerId") Long contractpartnerId);
+		if (bankAccount != null) {
+			bankAccountData.setAccountNumber(bankAccount.getAccountNumber());
+			bankAccountData.setBankCode(bankAccount.getBankCode());
+		}
 
-	public void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
-
-	public void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
-
-	public void deleteContractpartnerAccount(@Param("id") Long id);
-
-	public void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
-
-	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(List<BankAccountData> bankAccountDatas);
-
+		return bankAccountData;
+	}
 }

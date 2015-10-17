@@ -56,7 +56,7 @@ public class ImportedMonthlySettlementController extends AbstractController {
 		final LocalDate beginOfMonth = LocalDate.of(importedMonthlySettlement.getYear(),
 				importedMonthlySettlement.getMonth(), 1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(bankAccount,
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
 				endOfMonth);
 		if (capitalsource != null) {
 			if (!capitalsource.isImportAllowed()) {

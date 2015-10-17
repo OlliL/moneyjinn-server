@@ -29,6 +29,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.businesslogic.dao.mapper.IContractpartnerAccountDaoMapper;
 
@@ -68,6 +69,11 @@ public class ContractpartnerAccountDao {
 
 	public void deleteContractpartnerAccounts(final Long userId, final Long contractpartnerId) {
 		this.mapper.deleteContractpartnerAccounts(contractpartnerId);
+	}
+
+	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(final Long userId,
+			final List<BankAccountData> bankAccountDatas) {
+		return this.mapper.getAllContractpartnerByAccounts(bankAccountDatas);
 	}
 
 }

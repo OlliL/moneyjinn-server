@@ -49,7 +49,7 @@ public class ImportedBalanceController extends AbstractController {
 				importedBalanceTransport.getBankCodeCapitalsource());
 
 		final LocalDateTime now = LocalDateTime.now();
-		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(bankAccount,
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
 				now.toLocalDate());
 		if (capitalsource != null) {
 			if (!capitalsource.isImportAllowed()) {

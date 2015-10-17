@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.laladev.moneyjinn.businesslogic.model.Moneyflow;
-import org.laladev.moneyjinn.businesslogic.model.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**

@@ -231,11 +231,11 @@ public interface ICapitalsourceService {
 
 	/**
 	 * Determines the {@link Capitalsource} by the given {@link BankAccound}
-	 * 
+	 *
 	 * @param bankAccount
 	 * @param endOfMonth
 	 * @return
 	 */
-	public Capitalsource getCapitalsourceByAccount(BankAccount bankAccount, LocalDate endOfMonth);
+	public Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate endOfMonth);
 
 }

@@ -1,5 +1,3 @@
-package org.laladev.moneyjinn.businesslogic.dao.mapper;
-
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -24,30 +22,21 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
+package org.laladev.moneyjinn.businesslogic.model.moneyflow;
 
-import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
-import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
+import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
 
-public interface IContractpartnerAccountDaoMapper {
+/**
+ * The unique ID of a {@link Moneyflow}
+ *
+ * @author olivleh1
+ *
+ */
+public class MoneyflowID extends AbstractEntityID<Long> {
 
-	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber);
+	private static final long serialVersionUID = 1L;
 
-	public ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
-
-	public List<ContractpartnerAccountData> getContractpartnerAccounts(
-			@Param("contractpartnerId") Long contractpartnerId);
-
-	public void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
-
-	public void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
-
-	public void deleteContractpartnerAccount(@Param("id") Long id);
-
-	public void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
-
-	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(List<BankAccountData> bankAccountDatas);
-
+	public MoneyflowID(final Long id) {
+		super(id);
+	}
 }

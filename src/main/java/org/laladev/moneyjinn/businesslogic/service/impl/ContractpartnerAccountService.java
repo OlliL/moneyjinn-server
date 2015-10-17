@@ -9,7 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.laladev.moneyjinn.businesslogic.dao.ContractpartnerAccountDao;
+import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerAccountData;
+import org.laladev.moneyjinn.businesslogic.dao.data.mapper.BankAccountDataMapper;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ContractpartnerAccountDataMapper;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
@@ -41,6 +43,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new ContractpartnerAccountDataMapper());
+		super.registerBeanMapper(new BankAccountDataMapper());
 	}
 
 	@Override
@@ -219,6 +222,17 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 					ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));
 		}
 
+	}
+
+	@Override
+	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(final UserID userId,
+			final List<BankAccount> bankAccounts) {
+		Assert.notNull(userId);
+		Assert.notNull(bankAccounts);
+		final List<BankAccountData> bankAccountDatas = super.mapList(bankAccounts, BankAccountData.class);
+		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
+				.getAllContractpartnerByAccounts(userId.getId(), bankAccountDatas);
+		return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
 	}
 
 	private void evictContractpartnerAccountCache(final UserID userId,

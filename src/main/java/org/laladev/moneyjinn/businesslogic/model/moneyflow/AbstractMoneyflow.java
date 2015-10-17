@@ -22,16 +22,20 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.businesslogic.model;
+package org.laladev.moneyjinn.businesslogic.model.moneyflow;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.laladev.moneyjinn.businesslogic.model.AbstractEntity;
+import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
+import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 
-public class Moneyflow extends AbstractEntity<MoneyflowID> {
+public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I> {
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private Group group;
@@ -152,7 +156,8 @@ public class Moneyflow extends AbstractEntity<MoneyflowID> {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final Moneyflow other = (Moneyflow) obj;
+		@SuppressWarnings("rawtypes")
+		final AbstractMoneyflow other = (AbstractMoneyflow) obj;
 		if (this.amount == null) {
 			if (other.amount != null) {
 				return false;

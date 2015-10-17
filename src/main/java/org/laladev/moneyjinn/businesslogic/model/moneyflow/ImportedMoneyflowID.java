@@ -22,19 +22,21 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.businesslogic.model;
+package org.laladev.moneyjinn.businesslogic.model.moneyflow;
+
+import org.laladev.moneyjinn.businesslogic.model.AbstractEntityID;
 
 /**
- * The unique ID of a {@link Moneyflow}
+ * The unique ID of a {@link ImportedMoneyflow}
  *
  * @author olivleh1
  *
  */
-public class MoneyflowID extends AbstractEntityID<Long> {
+public class ImportedMoneyflowID extends AbstractEntityID<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	public MoneyflowID(final Long id) {
+	public ImportedMoneyflowID(final Long id) {
 		super(id);
 	}
 }
