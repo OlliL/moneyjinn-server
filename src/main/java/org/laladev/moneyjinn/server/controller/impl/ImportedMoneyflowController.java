@@ -221,7 +221,7 @@ public class ImportedMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "deleteImportedMoneyflowById/{id}", method = { RequestMethod.DELETE })
 	@RequiresAuthorization
-	public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
+	public void deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
 		final UserID userId = super.getUserId();
 		final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
 		this.importedMoneyflowService.deleteImportedMoneyflowById(userId, importedMoneyflowId);

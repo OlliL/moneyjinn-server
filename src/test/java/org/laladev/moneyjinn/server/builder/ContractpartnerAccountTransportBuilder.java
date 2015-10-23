@@ -4,6 +4,9 @@ import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTra
 
 public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccountTransport {
 
+	public static final String CONTRACTPARTNER_ACCOUNT1_ACCOUNT_NUMBER = "DE1234567890";
+	public static final String CONTRACTPARTNER_ACCOUNT1_BANK_CODE = "ABC123";
+
 	public static final Long CONTRACTPARTNER_ACCOUNT1_ID = 1l;
 	public static final Long CONTRACTPARTNER_ACCOUNT2_ID = 2l;
 	public static final Long CONTRACTPARTNER_ACCOUNT3_ID = 3l;
@@ -13,8 +16,8 @@ public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccou
 	public ContractpartnerAccountTransportBuilder forContractpartnerAccount1() {
 		super.setId(CONTRACTPARTNER_ACCOUNT1_ID);
 		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
-		super.setBankCode("ABC123");
-		super.setAccountNumber("DE1234567890");
+		super.setBankCode(CONTRACTPARTNER_ACCOUNT1_BANK_CODE);
+		super.setAccountNumber(CONTRACTPARTNER_ACCOUNT1_ACCOUNT_NUMBER);
 
 		return this;
 	}

@@ -84,3 +84,8 @@ INSERT INTO impmonthlysettlements (externalid,mcs_capitalsourceid,month,year,amo
 
 INSERT INTO impbalance (mcs_capitalsourceid,balance,changedate)
                 VALUES (4                  ,9      ,'2009-12-01 20:20:20');
+
+INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name  ,accountnumber ,bankcode,comment ,amount)
+                   VALUES ('8765421A',1                  ,'2010-01-02','2010-01-01','Paul','DE1234567890','ABC123','secret',10.10);
+INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name  ,accountnumber ,bankcode,comment ,amount)
+                   VALUES ('8765421B',1                  ,'2010-01-02','2010-01-01','Jane','888888888888','999999','code',-20.20);
