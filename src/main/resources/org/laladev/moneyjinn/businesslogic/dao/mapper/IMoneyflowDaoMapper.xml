@@ -82,13 +82,70 @@
 		 LIMIT 1
 	</delete>
 	
-    	<select id="getSumAmountByDateRangeForCapitalsourceId"
+    	<select id="getSumAmountByDateRangeForCapitalsourceIds"
 		resultType="java.math.BigDecimal">
 		SELECT IFNULL(SUM(amount),0)
 		  FROM vw_moneyflows
 		 WHERE bookingdate   BETWEEN #{validFrom} AND #{validTil}
 		   AND maf_id              = #{userId}
-		   AND mcs_capitalsourceid = #{mcsCapitalsourceId}
+		   AND mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
 	</select>
+	
+    	<select id="getAllYears" resultType="java.lang.Short">
+		SELECT DISTINCT CAST(YEAR(bookingdate) AS UNSIGNED) year
+		  FROM vw_moneyflows
+		 WHERE maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 ORDER BY year ASC
+	</select>
+	
+    	<select id="getAllMonth" resultType="java.lang.Short">
+		SELECT DISTINCT MONTH(bookingdate) month
+		  FROM vw_moneyflows
+		 WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 ORDER BY month ASC
+	</select>
+
+	<select id="getAllMoneyflowsByDateRange"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE bookingdate         BETWEEN #{validFrom} AND #{validTil}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+	</select>
+	
+	<select id="monthHasMoneyflows" resultType="java.lang.Boolean">
+		SELECT 1
+		  FROM vw_moneyflows
+		 WHERE bookingdate    BETWEEN #{date} AND LAST_DAY(#{date})
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 LIMIT 1
+	</select>
+	
+    	
 </mapper>
  

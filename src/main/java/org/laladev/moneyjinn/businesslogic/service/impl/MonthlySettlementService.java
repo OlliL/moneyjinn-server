@@ -203,4 +203,11 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		this.monthlySettlementDao.deleteMonthlySettlement(userId.getId(), year, (short) month.getValue());
 	}
 
+	@Override
+	public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(final UserID userId,
+			final LocalDate begin, final LocalDate end, final List<CapitalsourceID> capitalsourceIds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

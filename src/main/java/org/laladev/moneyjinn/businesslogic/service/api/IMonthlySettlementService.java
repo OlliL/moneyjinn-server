@@ -5,6 +5,7 @@ import java.time.Month;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
@@ -97,4 +98,17 @@ public interface IMonthlySettlementService {
 	 * @param month
 	 */
 	public void deleteMonthlySettlement(UserID userId, Short year, Month month);
+
+	/**
+	 * Returns all {@link MonthlySettlement}s between the given dates for all given
+	 * {@link CapitalsourceID}s.
+	 *
+	 * @param userId
+	 * @param begin
+	 * @param end
+	 * @param capitalsourceIds
+	 * @return
+	 */
+	public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(UserID userId, LocalDate begin,
+			LocalDate end, List<CapitalsourceID> capitalsourceIds);
 }

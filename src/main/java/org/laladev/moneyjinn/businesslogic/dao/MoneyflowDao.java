@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.businesslogic.dao;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 //All rights reserved.
 //
@@ -78,9 +79,30 @@ public class MoneyflowDao {
 		this.mapper.deleteMoneyflow(groupId, id);
 	}
 
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final Long userId, final Date validFrom,
-			final Date validTil, final Long capitalsourceId) {
-		return this.mapper.getSumAmountByDateRangeForCapitalsourceId(userId, validFrom, validTil, capitalsourceId);
+	public List<Short> getAllYears(final Long userId) {
+		return this.mapper.getAllYears(userId);
+	}
+
+	public List<Short> getAllMonth(final Long userId, final Date beginOfYear, final Date endOfYear) {
+		return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
+	}
+
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final Date validFrom,
+			final Date validTil, final List<Long> capitalsourceIds) {
+		return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil, capitalsourceIds);
+	}
+
+	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final Date validFrom,
+			final Date validTil) {
+		return this.mapper.getAllMoneyflowsByDateRange(userId, validFrom, validTil);
+	}
+
+	public boolean monthHasMoneyflows(final Long userId, final Date date) {
+		final Boolean result = this.mapper.monthHasMoneyflows(userId, date);
+		if (result == null) {
+			return false;
+		}
+		return result;
 	}
 
 }

@@ -98,7 +98,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(ms -> ms.getId())
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao

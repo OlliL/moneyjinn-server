@@ -107,6 +107,10 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 		this.importAllowed = importAllowed;
 	}
 
+	public final boolean isAsset() {
+		return this.getType() == CapitalsourceType.CURRENT_ASSET || this.getType() == CapitalsourceType.LONG_TERM_ASSET;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

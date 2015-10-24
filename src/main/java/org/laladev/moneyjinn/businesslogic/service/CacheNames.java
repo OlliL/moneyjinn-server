@@ -50,6 +50,8 @@ public class CacheNames {
 	public static final String PRE_DEF_MONEYFLOW_BY_ID = "preDefMoneyflowById";
 
 	public static final String MONEYFLOW_BY_ID = "moneyflowById";
+	public static final String MONEYFLOW_YEARS = "moneyflowYears";
+	public static final String MONEYFLOW_MONTH = "moneyflowMonths";
 
 	public static final String CONTRACTPARTNER_ACCOUNT_BY_ID = "contractpartnerAccountById";
 	public static final String CONTRACTPARTNER_ACCOUNTS_BY_PARTNER = "contractpartnerAccountsByPartner";

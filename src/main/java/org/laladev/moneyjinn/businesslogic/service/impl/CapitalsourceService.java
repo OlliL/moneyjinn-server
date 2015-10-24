@@ -333,9 +333,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(validTil);
 
 		final Cache cache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId().toString());
-		List<Capitalsource> capitalsources = null;
 		final SimpleKey key = new SimpleKey(validFrom, validTil);
-		capitalsources = cache.get(key, List.class);
+		List<Capitalsource> capitalsources = cache.get(key, List.class);
 
 		if (capitalsources == null) {
 			final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao

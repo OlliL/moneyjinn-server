@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
@@ -81,15 +82,66 @@ public interface IMoneyflowService {
 	public void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 
 	/**
-	 * retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}
+	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}
 	 * during a defined period of time.
 	 *
 	 * @param userId
-	 * @param beginOfMonth
-	 * @param endOfMonth
+	 * @param dateFrom
+	 * @param dateTil
 	 * @param capitalsourceId
 	 * @return
 	 */
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(UserID userId, LocalDate beginOfMonth,
-			LocalDate endOfMonth, CapitalsourceID capitalsourceId);
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(UserID userId, LocalDate dateFrom, LocalDate dateTil,
+			CapitalsourceID capitalsourceId);
+
+	/**
+	 * Returns all years {@link Moneyflow}s are created in.
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public List<Short> getAllYears(UserID userId);
+
+	/**
+	 * Returns all {@link Month} which contain {@link Moneyflow}s.
+	 *
+	 * @param userId
+	 * @param year
+	 * @return
+	 */
+	public List<Month> getAllMonth(UserID userId, Short year);
+
+	/**
+	 * Returns all {@link Moneyflow}s which Bookingdate is in the defined Daterange.
+	 *
+	 * @param userId
+	 * @param dateFrom
+	 * @param dateTil
+	 * @return
+	 */
+	public List<Moneyflow> getAllMoneyflowsByDateRange(UserID userId, LocalDate dateFrom, LocalDate dateTil);
+
+	/**
+	 * Returns true if the given Year/Month combination contains {@link Moneyflow}s. False
+	 * otherwise.
+	 *
+	 * @param userId
+	 * @param nextYear
+	 * @param nextMonth
+	 * @return
+	 */
+	public boolean monthHasMoneyflows(UserID userId, Short nextYear, Month nextMonth);
+
+	/**
+	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}s
+	 * during a defined period of time.
+	 *
+	 * @param userId
+	 * @param dateFrom
+	 * @param dateTil
+	 * @param capitalsourceIds
+	 * @return
+	 */
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(UserID userId, LocalDate dateFrom, LocalDate dateTil,
+			List<CapitalsourceID> capitalsourceIds);
 }

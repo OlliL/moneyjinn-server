@@ -27,7 +27,11 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -123,6 +127,11 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			return moneyflow;
 		}
 		return null;
+	}
+
+	private final List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
+		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	private void prepareMoneyflow(final Moneyflow moneyflow) {
@@ -274,8 +283,16 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
 		if (moneyflowId != null) {
 			final Cache moneyflowIdCache = super.getCache(CacheNames.MONEYFLOW_BY_ID);
+			final Cache monthsCache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
+			final Cache yearsCache = super.getCache(CacheNames.MONEYFLOW_YEARS);
 			if (moneyflowIdCache != null) {
 				moneyflowIdCache.evict(new SimpleKey(userId, moneyflowId));
+			}
+			if (monthsCache != null) {
+				monthsCache.clear();
+			}
+			if (yearsCache != null) {
+				yearsCache.evict(userId);
 			}
 		}
 	}
@@ -283,13 +300,82 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	@Override
 	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
 			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+		return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
+				Arrays.asList(capitalsourceId));
+	}
+
+	@Override
+	@Cacheable(value = CacheNames.MONEYFLOW_YEARS)
+	public List<Short> getAllYears(final UserID userId) {
+		Assert.notNull(userId);
+
+		return this.moneyflowDao.getAllYears(userId.getId());
+	}
+
+	@Override
+	public List<Month> getAllMonth(final UserID userId, final Short year) {
+		Assert.notNull(userId);
+		Assert.notNull(year);
+
+		final Cache cache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
+		@SuppressWarnings("unchecked")
+		List<Month> months = cache.get(year, List.class);
+
+		if (months == null) {
+			final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
+			final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
+
+			final List<Short> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), Date.valueOf(beginOfYear),
+					Date.valueOf(endOfYear));
+			if (allMonths != null) {
+				months = allMonths.stream().map(m -> Month.of(m.intValue()))
+						.collect(Collectors.toCollection(ArrayList::new));
+				cache.put(year, months);
+				return months;
+			}
+		} else {
+			return months;
+		}
+		return new ArrayList<>();
+	}
+
+	@Override
+	public List<Moneyflow> getAllMoneyflowsByDateRange(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil) {
 		Assert.notNull(userId);
 		Assert.notNull(dateFrom);
 		Assert.notNull(dateTil);
-		Assert.notNull(capitalsourceId);
 
-		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceId(userId.getId(), Date.valueOf(dateFrom),
-				Date.valueOf(dateTil), capitalsourceId.getId());
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRange(userId.getId(),
+				Date.valueOf(dateFrom), Date.valueOf(dateTil));
+
+		return this.mapMoneyflowDataList(moneyflowDatas);
+	}
+
+	@Override
+	public boolean monthHasMoneyflows(final UserID userId, final Short year, final Month month) {
+		Assert.notNull(userId);
+		Assert.notNull(year);
+		Assert.notNull(month);
+
+		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
+
+		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), Date.valueOf(beginOfMonth));
+	}
+
+	@Override
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final List<CapitalsourceID> capitalsourceIds) {
+		Assert.notNull(userId);
+		Assert.notNull(dateFrom);
+		Assert.notNull(dateTil);
+		Assert.notNull(capitalsourceIds);
+
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), Date.valueOf(dateFrom),
+				Date.valueOf(dateTil), capitalsourceIdLongs);
 	}
 
 }

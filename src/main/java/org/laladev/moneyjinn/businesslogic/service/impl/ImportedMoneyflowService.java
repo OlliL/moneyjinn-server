@@ -99,7 +99,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(ms -> ms.getId())
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs);
@@ -111,7 +111,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(ms -> ms.getId())
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
