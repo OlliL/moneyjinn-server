@@ -7,6 +7,7 @@ import org.laladev.moneyjinn.server.controller.contractpartner.TestSuiteContract
 import org.laladev.moneyjinn.server.controller.contractpartneraccount.TestSuiteContractpartnerAccount;
 import org.laladev.moneyjinn.server.controller.group.TestSuiteGroup;
 import org.laladev.moneyjinn.server.controller.importedbalance.TestSuiteImportedBalance;
+import org.laladev.moneyjinn.server.controller.importedmoneyflow.TestSuiteImportedMoneyflow;
 import org.laladev.moneyjinn.server.controller.importedmonthlysettlement.TestSuiteImportedMonthlySettlement;
 import org.laladev.moneyjinn.server.controller.moneyflow.TestSuiteMoneyflow;
 import org.laladev.moneyjinn.server.controller.monthlysettlement.TestSuiteMonthlySettlement;
@@ -22,6 +23,7 @@ import org.laladev.moneyjinn.server.controller.user.TestSuiteUser;
 		TestSuiteContractpartnerAccount.class, //
 		TestSuiteGroup.class, //
 		TestSuiteImportedBalance.class, //
+		TestSuiteImportedMoneyflow.class, //
 		TestSuiteImportedMonthlySettlement.class, //
 		TestSuiteMoneyflow.class, //
 		TestSuiteMonthlySettlement.class, //

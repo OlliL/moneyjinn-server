@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ CreateImportedMoneyflowTest.class, DeleteImportedMoneyflowByIdTest.class,
-		ShowAddImportedMoneyflowsTest.class })
+		ImportImportedMoneyflowsTest.class, ShowAddImportedMoneyflowsTest.class })
 public class TestSuiteImportedMoneyflow {
 
 }

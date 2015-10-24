@@ -49,6 +49,7 @@ import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
@@ -234,23 +235,25 @@ public class ImportedMoneyflowController extends AbstractController {
 		final List<ImportedMoneyflow> importedMoneyflows = super.mapList(request.getImportedMoneyflowTransports(),
 				ImportedMoneyflow.class);
 
-		final List<Moneyflow> moneyflows = importedMoneyflows.stream().map(im -> im.getMoneyflow())
-				.collect(Collectors.toCollection(ArrayList::new));
-
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getAccessor(userId);
+
+		final List<Moneyflow> moneyflows = new ArrayList<>();
+		final ValidationResult validationResult = new ValidationResult();
 
 		for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
 			importedMoneyflow.setUser(user);
 			importedMoneyflow.setGroup(group);
+			final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();
+			moneyflows.add(moneyflow);
+			final ValidationResult validationResultMoneyflow = this.moneyflowService.validateMoneyflow(moneyflow);
+			if (!validationResultMoneyflow.isValid()) {
+				for (final ValidationResultItem item : validationResultMoneyflow.getValidationResultItems()) {
+					item.setKey(importedMoneyflow.getId());
+				}
+				validationResult.mergeValidationResult(validationResultMoneyflow);
+			}
 		}
-
-		final ValidationResult validationResult = new ValidationResult();
-		moneyflows.stream().forEach(mf -> {
-			mf.setUser(user);
-			mf.setGroup(group);
-			validationResult.mergeValidationResult(this.moneyflowService.validateMoneyflow(mf));
-		});
 
 		if (validationResult.isValid() == true) {
 
@@ -266,17 +269,17 @@ public class ImportedMoneyflowController extends AbstractController {
 					if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
 						this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
 					}
-				}
 
-				// if the IBAN/BIC of the booking matches one of our own capitalsource which must
-				// not be imported (because it has
-				// no HBCI access for example), create a counterbooking for it automatically
-				final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(userId,
-						impMoneyflow.getBankAccount(), impMoneyflow.getBookingDate());
-				if (capitalsource != null && !capitalsource.isImportAllowed()) {
-					impMoneyflow.setCapitalsource(capitalsource);
-					impMoneyflow.setAmount(impMoneyflow.getAmount().negate());
-					this.moneyflowService.createMoneyflows(Arrays.asList(impMoneyflow.getMoneyflow()));
+					// if the IBAN/BIC of the booking matches one of our own capitalsource which
+					// must not be imported (because it has no HBCI access for example), create a
+					// counterbooking for it automatically
+					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(userId,
+							impMoneyflow.getBankAccount(), impMoneyflow.getBookingDate());
+					if (capitalsource != null && !capitalsource.isImportAllowed()) {
+						impMoneyflow.setCapitalsource(capitalsource);
+						impMoneyflow.setAmount(impMoneyflow.getAmount().negate());
+						this.moneyflowService.createMoneyflows(Arrays.asList(impMoneyflow.getMoneyflow()));
+					}
 				}
 
 				this.importedMoneyflowService.deleteImportedMoneyflowById(userId, impMoneyflow.getId());

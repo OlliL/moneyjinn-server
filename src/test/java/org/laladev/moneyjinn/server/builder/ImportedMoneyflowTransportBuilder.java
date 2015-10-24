@@ -30,6 +30,13 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 		return this;
 	}
 
+	public ImportedMoneyflowTransportBuilder forImportedMoneyflow1ToImport() {
+		this.forImportedMoneyflow1();
+		super.setComment("test");
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+		return this;
+	}
+
 	public ImportedMoneyflowTransportBuilder forImportedMoneyflow2() {
 		super.setId(IMPORTED_MONEYFLOW2_ID);
 		super.setExternalid("8765421B");
@@ -42,6 +49,15 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 		super.setBankCode("999999");
 		super.setUsage("code");
 		super.setAmount(new BigDecimal("-20.20"));
+		return this;
+	}
+
+	public ImportedMoneyflowTransportBuilder forImportedMoneyflow2ToImport() {
+		this.forImportedMoneyflow2();
+		super.setComment("test");
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+		super.setContractpartnerid(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
 		return this;
 	}
 
