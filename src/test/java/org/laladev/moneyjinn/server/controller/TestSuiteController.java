@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.laladev.moneyjinn.server.controller.capitalsource.TestSuiteCapitalsource;
 import org.laladev.moneyjinn.server.controller.contractpartner.TestSuiteContractpartner;
 import org.laladev.moneyjinn.server.controller.contractpartneraccount.TestSuiteContractpartnerAccount;
+import org.laladev.moneyjinn.server.controller.event.TestSuiteEvent;
 import org.laladev.moneyjinn.server.controller.group.TestSuiteGroup;
 import org.laladev.moneyjinn.server.controller.importedbalance.TestSuiteImportedBalance;
 import org.laladev.moneyjinn.server.controller.importedmoneyflow.TestSuiteImportedMoneyflow;
@@ -21,6 +22,7 @@ import org.laladev.moneyjinn.server.controller.user.TestSuiteUser;
 		TestSuiteCapitalsource.class, //
 		TestSuiteContractpartner.class, //
 		TestSuiteContractpartnerAccount.class, //
+		TestSuiteEvent.class, //
 		TestSuiteGroup.class, //
 		TestSuiteImportedBalance.class, //
 		TestSuiteImportedMoneyflow.class, //
