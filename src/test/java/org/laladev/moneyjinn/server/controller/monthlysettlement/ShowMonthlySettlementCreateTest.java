@@ -92,7 +92,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 
 		final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement1().withId(null)
-				.withYear(2010).withMonth(5).withAmount(new BigDecimal("8.90")).build());
+				.withYear(2010).withMonth(5).withAmount(BigDecimal.ZERO).build());
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().withId(null)
 				.withYear(2010).withMonth(5).build());
 
