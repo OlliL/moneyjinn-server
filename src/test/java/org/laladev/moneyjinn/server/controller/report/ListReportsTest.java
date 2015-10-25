@@ -34,6 +34,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 // TODO: Test "private" handling
+// TODO: Test december with no further moneyflows to cover MoneyflowDao line 102
 public class ListReportsTest extends AbstractControllerTest {
 
 	@Inject
@@ -427,6 +428,8 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
 				ListReportsResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 	}
 
