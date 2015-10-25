@@ -182,7 +182,7 @@ public class ContractpartnerController extends AbstractController {
 			response.setContractpartnerTransports(super.mapList(contractpartners, ContractpartnerTransport.class));
 		}
 
-		if (initials != null && initials.size() > 0) {
+		if (initials != null && !initials.isEmpty()) {
 			response.setInitials(initials);
 		}
 		response.setCurrentlyValid(currentlyValid);
@@ -298,7 +298,7 @@ public class ContractpartnerController extends AbstractController {
 
 	private void fillAbstractCreateContractpartnerResponse(final AbstractCreateContractpartnerResponse response) {
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && postingAccounts.size() > 0) {
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
 	}

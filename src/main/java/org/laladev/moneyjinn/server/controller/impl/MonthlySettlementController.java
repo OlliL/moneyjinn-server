@@ -154,7 +154,7 @@ public class MonthlySettlementController extends AbstractController {
 		final List<Capitalsource> capitalSources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
 				today, today);
 
-		if (capitalSources != null && capitalSources.size() > 0) {
+		if (capitalSources != null && !capitalSources.isEmpty()) {
 			response.setNumberOfAddableSettlements(capitalSources.size());
 		}
 
@@ -327,10 +327,10 @@ public class MonthlySettlementController extends AbstractController {
 		response.setYear(year);
 		response.setMonth((short) month.getValue());
 		response.setEditMode((short) (editMode ? 1 : 0));
-		if (monthlySettlementTransports != null && monthlySettlementTransports.size() > 0) {
+		if (monthlySettlementTransports != null && !monthlySettlementTransports.isEmpty()) {
 			response.setMonthlySettlementTransports(monthlySettlementTransports);
 		}
-		if (importedMonthlySettlementTransports != null && importedMonthlySettlementTransports.size() > 0) {
+		if (importedMonthlySettlementTransports != null && !importedMonthlySettlementTransports.isEmpty()) {
 			response.setImportedMonthlySettlementTransports(importedMonthlySettlementTransports);
 		}
 

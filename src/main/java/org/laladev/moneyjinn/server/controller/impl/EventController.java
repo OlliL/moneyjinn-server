@@ -63,6 +63,7 @@ public class EventController extends AbstractController {
 
 	@Override
 	protected void addBeanMapper() {
+		// No Mapping needed.
 	}
 
 	@RequestMapping(value = "showEventList", method = { RequestMethod.GET })
@@ -72,7 +73,7 @@ public class EventController extends AbstractController {
 		final ShowEventListResponse response = new ShowEventListResponse();
 
 		// missing monthly settlements from last month?
-		final LocalDate beginOfMonth = LocalDate.now().minusMonths(1l).withDayOfMonth(1);
+		final LocalDate beginOfMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 		final Month month = beginOfMonth.getMonth();
 		final Short year = (short) beginOfMonth.getYear();

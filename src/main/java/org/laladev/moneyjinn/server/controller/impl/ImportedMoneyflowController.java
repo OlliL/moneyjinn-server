@@ -255,7 +255,7 @@ public class ImportedMoneyflowController extends AbstractController {
 			}
 		}
 
-		if (validationResult.isValid() == true) {
+		if (validationResult.isValid()) {
 
 			this.moneyflowService.createMoneyflows(moneyflows);
 

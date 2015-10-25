@@ -129,7 +129,7 @@ public class PreDefMoneyflowController extends AbstractController {
 		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
 			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
 		}
-		if (initials != null && initials.size() > 0) {
+		if (initials != null && !initials.isEmpty()) {
 			response.setInitials(initials);
 		}
 
@@ -252,7 +252,7 @@ public class PreDefMoneyflowController extends AbstractController {
 				}
 			}
 		}
-		if (capitalsources != null && capitalsources.size() > 0) {
+		if (capitalsources != null && !capitalsources.isEmpty()) {
 			final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
 					CapitalsourceTransport.class);
 			response.setCapitalsourceTransports(capitalsourceTransports);
@@ -278,14 +278,14 @@ public class PreDefMoneyflowController extends AbstractController {
 			}
 		}
 
-		if (contractpartners != null && contractpartners.size() > 0) {
+		if (contractpartners != null && !contractpartners.isEmpty()) {
 			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners,
 					ContractpartnerTransport.class);
 			response.setContractpartnerTransports(contractpartnerTransports);
 		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && postingAccounts.size() > 0) {
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
 

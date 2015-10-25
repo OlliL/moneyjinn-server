@@ -90,8 +90,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	@Override
 	public ValidationResult validateImportedMoneyflow(final ImportedMoneyflow importedMoneyflow) {
-		final ValidationResult validationResult = new ValidationResult();
-		return validationResult;
+		return new ValidationResult();
 	}
 
 	@Override

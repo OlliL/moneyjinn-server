@@ -88,8 +88,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 
 	@Override
 	public ValidationResult validateImportedBalance(final ImportedBalance importedBalance) {
-		final ValidationResult validationResult = new ValidationResult();
-		return validationResult;
+		return new ValidationResult();
 	}
 
 	@Override

@@ -169,7 +169,7 @@ public class CapitalsourceController extends AbstractController {
 			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 		}
 
-		if (initials != null && initials.size() > 0) {
+		if (initials != null && !initials.isEmpty()) {
 			response.setInitials(initials);
 		}
 		response.setCurrentlyValid(currentlyValid);

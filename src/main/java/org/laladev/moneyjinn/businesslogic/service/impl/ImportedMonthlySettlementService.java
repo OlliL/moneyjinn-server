@@ -98,8 +98,7 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	@Override
 	public ValidationResult validateImportedMonthlySettlement(
 			final ImportedMonthlySettlement importedMonthlySettlement) {
-		final ValidationResult validationResult = new ValidationResult();
-		return validationResult;
+		return new ValidationResult();
 	}
 
 	@Override
