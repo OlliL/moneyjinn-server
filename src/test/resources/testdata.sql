@@ -81,7 +81,7 @@ INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoiceda
                    VALUES ('8765421B',1                  ,'2010-01-02','2010-01-01','Jane','888888888888','999999','code',-20.20);
 
 INSERT INTO `moneyflows` VALUES (1,3,6,'2009-01-01','2009-01-01',-1.10,1,1,'flow1',1,0);
-INSERT INTO `moneyflows` VALUES (2,3,6,'2008-12-25','2008-12-25',10.10,1,1,'Pre1',1,0);
+INSERT INTO `moneyflows` VALUES (2,3,6,'2008-12-01','2008-12-01',10.10,1,1,'generated',1,0);
 INSERT INTO `moneyflows` VALUES (3,3,6,'2009-02-01','2009-02-01',10.00,2,1,'generated',2,1);
 INSERT INTO `moneyflows` VALUES (4,3,6,'2009-03-01','2009-03-01',-10.00,2,1,'generated',2,1);
 INSERT INTO `moneyflows` VALUES (5,3,6,'2009-04-01','2009-04-01',10.00,2,1,'generated',2,1);
@@ -144,10 +144,8 @@ INSERT INTO `monthlysettlements` VALUES (43,3,6,1,1,2010,8.90);
 INSERT INTO `monthlysettlements` VALUES (44,3,6,2,1,2010,100.00);
 INSERT INTO `monthlysettlements` VALUES (45,3,6,1,2,2010,8.90);
 INSERT INTO `monthlysettlements` VALUES (46,3,6,2,2,2010,110.00);
-INSERT INTO `monthlysettlements` VALUES (47,5,6,4,2,2010,1000.00);
-INSERT INTO `monthlysettlements` VALUES (48,3,6,1,3,2010,8.90);
-INSERT INTO `monthlysettlements` VALUES (49,3,6,2,3,2010,100.00);
-INSERT INTO `monthlysettlements` VALUES (50,5,6,4,3,2010,1000.00);
-INSERT INTO `monthlysettlements` VALUES (51,3,6,1,4,2010,8.90);
-INSERT INTO `monthlysettlements` VALUES (52,3,6,2,4,2010,110.00);
-INSERT INTO `monthlysettlements` VALUES (53,5,6,4,4,2010,1000.00);
+INSERT INTO `monthlysettlements` VALUES (47,3,6,1,3,2010,8.90);
+INSERT INTO `monthlysettlements` VALUES (48,3,6,2,3,2010,100.00);
+INSERT INTO `monthlysettlements` VALUES (49,5,6,4,3,2010,1000.00);
+INSERT INTO `monthlysettlements` VALUES (50,3,6,2,4,2010,110.00);
+INSERT INTO `monthlysettlements` VALUES (51,5,6,4,4,2010,1000.00);

@@ -31,6 +31,8 @@ import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,7 +190,7 @@ public class ReportController extends AbstractController {
 					for (final MonthlySettlement lastSettlement : settlementsPrevMonth) {
 						final Capitalsource lastSettlementCapitalsource = lastSettlement.getCapitalsource();
 						// Capitalsource has a settlement for the previous month, but is no longer
-						// valid this month . ignore it
+						// valid this month -> ignore it
 						if (beginOfMonth.isAfter(lastSettlementCapitalsource.getValidTil())) {
 							continue;
 						}
@@ -203,12 +205,13 @@ public class ReportController extends AbstractController {
 						final CapitalsourceID capitalsourceId = lastSettlementCapitalsource.getId();
 						// if a settlement for the selected month was already done, use its data,
 						// otherwise calculate the movement on the fly
-						if (settlementsThisMonth != null && !settlementsThisMonth.isEmpty()
-								&& newCapitalsourcesSettled.containsKey(capitalsourceId)) {
-							turnoverCapitalsource.setAmountEndOfMonthFixed(
-									newCapitalsourcesSettled.get(capitalsourceId).getAmount());
-							newCapitalsourcesSettled.remove(capitalsourceId);
-						} else {
+						if (settlementsThisMonth != null && !settlementsThisMonth.isEmpty()) {
+							if (newCapitalsourcesSettled.containsKey(capitalsourceId)) {
+								turnoverCapitalsource.setAmountEndOfMonthFixed(
+										newCapitalsourcesSettled.get(capitalsourceId).getAmount());
+								newCapitalsourcesSettled.remove(capitalsourceId);
+							}
+						} else if (!nextMonthHasMoneyflows) {
 							this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
 									lastSettlement.getAmount(), turnoverCapitalsource, moneyflows);
 						}
@@ -257,11 +260,25 @@ public class ReportController extends AbstractController {
 							turnoverCapitalsource.setAmountEndOfMonthCalculated(
 									this.getMovementForCapitalsourceAndDateRange(moneyflows, capitalsource.getId(),
 											beginOfMonth, endOfMonth));
-							this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
-									turnoverCapitalsource, moneyflows);
+							if (!nextMonthHasMoneyflows) {
+								this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
+										turnoverCapitalsource, moneyflows);
+							}
 							turnoverCapitalsources.add(turnoverCapitalsource);
 						}
 					}
+
+					final List<String> validCapitalsourceIdLongs = validCapitalsources.stream()
+							.map(Capitalsource::getComment).collect(Collectors.toCollection(ArrayList::new));
+
+					Collections.sort(turnoverCapitalsources, new Comparator<ReportTurnoverCapitalsourceTransport>() {
+						@Override
+						public int compare(final ReportTurnoverCapitalsourceTransport left,
+								final ReportTurnoverCapitalsourceTransport right) {
+							return Integer.compare(validCapitalsourceIdLongs.indexOf(left.getCapitalsourceComment()),
+									validCapitalsourceIdLongs.indexOf(right.getCapitalsourceComment()));
+						}
+					});
 
 					final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
 					final List<Capitalsource> yearlyValidCapitalsources = this.capitalsourceService
