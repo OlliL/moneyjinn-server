@@ -47,27 +47,17 @@ public class ListReportsTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_noArguments_defaultsResponse() throws Exception {
+	public void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
 		final ListReportsResponse expected = new ListReportsResponse();
-		expected.setYear((short) 2009);
-		expected.setAllYears(Arrays.asList((short) 2009));
-		expected.setAllMonth(Arrays.asList((short) 1));
+		expected.setYear((short) 2010);
+		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4, (short) 5));
 
-		final ListReportsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ListReportsResponse.class);
+		ListReportsResponse actual = super.callUsecaseWithoutContent("", this.method, false, ListReportsResponse.class);
 
 		Assert.assertEquals(expected, actual);
-	}
 
-	@Test
-	public void test_onlyYear_defaultsResponse() throws Exception {
-		final ListReportsResponse expected = new ListReportsResponse();
-		expected.setYear((short) 2009);
-		expected.setAllYears(Arrays.asList((short) 2009));
-		expected.setAllMonth(Arrays.asList((short) 1));
-
-		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009", this.method, false,
-				ListReportsResponse.class);
+		actual = super.callUsecaseWithoutContent("/2010", this.method, false, ListReportsResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -76,8 +66,9 @@ public class ListReportsTest extends AbstractControllerTest {
 	public void test_settlementLastMonthNoSettlementThisMonth_completeResponse() throws Exception {
 		final ListReportsResponse expected = new ListReportsResponse();
 		expected.setYear((short) 2009);
-		expected.setAllYears(Arrays.asList((short) 2009));
-		expected.setAllMonth(Arrays.asList((short) 1));
+		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4, (short) 5, (short) 6, (short) 7,
+				(short) 8, (short) 9, (short) 10, (short) 11, (short) 12));
 		expected.setMonth((short) 1);
 
 		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
@@ -100,6 +91,9 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setPreviousYear((short) 2008);
 		expected.setNextMonth((short) 2);
 		expected.setNextYear((short) 2009);
+
+		expected.setNextMonthHasMoneyflows((short) 1);
+		expected.setPreviousMonthHasMoneyflows((short) 1);
 
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/1", this.method, false,
 				ListReportsResponse.class);

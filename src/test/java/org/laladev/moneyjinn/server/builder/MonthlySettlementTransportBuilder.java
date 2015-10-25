@@ -13,7 +13,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public static final Long MONTHLYSETTLEMENT2_ID = 2l;
 	public static final Long MONTHLYSETTLEMENT3_ID = 3l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 4l;
+	public static final Long NEXT_ID = 54l;
 
 	public MonthlySettlementTransportBuilder withAmount(final BigDecimal amount) {
 		super.setAmount(amount);
@@ -79,7 +79,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		super.setMonth((short) 1);
-		super.setYear((short) 2009);
+		super.setYear((short) 2019);
 		return this;
 	}
 

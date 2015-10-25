@@ -256,6 +256,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		transport.setId(MoneyflowTransportBuilder.NEXT_ID);
 
 		request.setMoneyflowTransport(transport);
 

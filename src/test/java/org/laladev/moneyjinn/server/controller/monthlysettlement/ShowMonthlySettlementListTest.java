@@ -45,9 +45,9 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 
 	private ShowMonthlySettlementListResponse getDefaultResponse() {
 		final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
-		expected.setAllMonth(Arrays.asList((short) 12));
-		expected.setAllYears(Arrays.asList((short) 2008));
-		expected.setYear((short) 2008);
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4));
+		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
+		expected.setYear((short) 2010);
 		expected.setNumberOfAddableSettlements(2);
 		return expected;
 	}
@@ -66,7 +66,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 	public void test_withYear_FullResponseObject() throws Exception {
 		final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
 
-		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2008", this.method, false,
+		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
 		Assert.assertEquals(expected, actual);
@@ -86,7 +86,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 	public void test_withYearAndInvalidMonth_FullResponseObject() throws Exception {
 		final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
 
-		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2008/10", this.method, false,
+		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010/10", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
 		Assert.assertEquals(expected, actual);
@@ -120,8 +120,12 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().build());
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement3().build());
 
-		final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
+		final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
+		expected.setAllMonth(Arrays.asList((short) 11, (short) 12));
+		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
+		expected.setYear((short) 2008);
 		expected.setMonth((short) 12);
+		expected.setNumberOfAddableSettlements(2);
 		expected.setNumberOfEditableSettlements(2);
 		expected.setMonthlySettlementTransports(monthlySettlementTransports);
 

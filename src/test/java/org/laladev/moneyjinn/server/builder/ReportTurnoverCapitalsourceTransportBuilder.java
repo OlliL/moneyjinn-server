@@ -1,7 +1,6 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
 
@@ -14,7 +13,7 @@ public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverC
 		super.setCapitalsourceComment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setAmountBeginOfMonthFixed(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT1_AMOUNT);
 		super.setAmountEndOfMonthCalculated(new BigDecimal("8.90"));
-		super.setAmountCurrent(new BigDecimal("8.90"));
+		super.setAmountEndOfMonthFixed(new BigDecimal("8.90"));
 
 		return this;
 	}
@@ -26,7 +25,7 @@ public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverC
 		super.setCapitalsourceComment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setAmountBeginOfMonthFixed(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT2_AMOUNT);
 		super.setAmountEndOfMonthCalculated(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT2_AMOUNT);
-		super.setAmountCurrent(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT2_AMOUNT);
+		super.setAmountEndOfMonthFixed(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT2_AMOUNT);
 
 		return this;
 	}
@@ -39,8 +38,9 @@ public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverC
 		super.setCapitalsourceComment(CapitalsourceTransportBuilder.CAPITALSOURCE4_COMMENT);
 		super.setAmountBeginOfMonthFixed(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_AMOUNT);
 		super.setAmountEndOfMonthCalculated(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_AMOUNT);
-		super.setAmountCurrent(new BigDecimal("9.00"));
-		super.setAmountCurrentState(new Timestamp(109, 11, 1, 20, 20, 20, 0));
+		super.setAmountEndOfMonthFixed(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_AMOUNT);
+		// super.setAmountCurrent(new BigDecimal("9.00"));
+		// super.setAmountCurrentState(new Timestamp(109, 11, 1, 20, 20, 20, 0));
 
 		return this;
 	}

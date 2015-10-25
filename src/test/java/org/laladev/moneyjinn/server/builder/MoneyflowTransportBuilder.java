@@ -11,7 +11,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 
 	public static final Long MONEYFLOW1_ID = 1l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 2l;
+	public static final Long NEXT_ID = 19l;
 
 	public MoneyflowTransportBuilder forMoneyflow1() {
 		super.setId(MONEYFLOW1_ID);
