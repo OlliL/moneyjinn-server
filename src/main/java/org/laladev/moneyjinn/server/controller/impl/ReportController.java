@@ -310,12 +310,18 @@ public class ReportController extends AbstractController {
 			response.setReportTurnoverCapitalsourceTransports(turnoverCapitalsources);
 		}
 
-		response.setMoneyflowTransports(super.mapList(moneyflows, MoneyflowTransport.class));
+		if (moneyflows != null && !moneyflows.isEmpty()) {
+			response.setMoneyflowTransports(super.mapList(moneyflows, MoneyflowTransport.class));
+		}
 
 		response.setTurnoverEndOfYearCalculated(turnoverEndOfYearCalculated);
 		response.setAmountBeginOfYear(amountBeginOfYear);
-		response.setNextMonthHasMoneyflows((short) (nextMonthHasMoneyflows ? 1 : 0));
-		response.setPreviousMonthHasMoneyflows((short) (previousMonthHasMoneyflows ? 1 : 0));
+		if (nextMonthHasMoneyflows) {
+			response.setNextMonthHasMoneyflows((short) 1);
+		}
+		if (previousMonthHasMoneyflows) {
+			response.setPreviousMonthHasMoneyflows((short) 1);
+		}
 		if (prevMonth != null) {
 			response.setPreviousMonth((short) prevMonth.getValue());
 		}

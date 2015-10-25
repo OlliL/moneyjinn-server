@@ -96,7 +96,7 @@
 	</select>
 	
     	<select id="getAllYears" resultType="java.lang.Short">
-		SELECT DISTINCT CAST(YEAR(bookingdate) AS UNSIGNED) year
+		SELECT DISTINCT YEAR(bookingdate) year
 		  FROM vw_moneyflows
 		 WHERE maf_id              = #{userId}
 		   AND (
