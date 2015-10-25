@@ -26,8 +26,9 @@ public interface IMoneyflowDaoMapper {
 			@Param("endOfYear") Date endOfYear);
 
 	public List<MoneyflowData> getAllMoneyflowsByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
 
-	public Boolean monthHasMoneyflows(@Param("userId") Long userId, @Param("date") Date date);
+	public Boolean monthHasMoneyflows(@Param("userId") Long userId, @Param("dateFrom") Date dateFrom,
+			@Param("dateTil") Date dateTil);
 
 }

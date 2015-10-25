@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -359,8 +360,10 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(month);
 
 		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
+		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
-		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), Date.valueOf(beginOfMonth));
+		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), Date.valueOf(beginOfMonth),
+				Date.valueOf(endOfMonth));
 	}
 
 	@Override

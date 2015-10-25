@@ -6,6 +6,9 @@ import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTranspor
 
 public class MonthlySettlementTransportBuilder extends MonthlySettlementTransport {
 
+	public static final BigDecimal MONTHLYSETTLEMENT1_AMOUNT = new BigDecimal("10.00");
+	public static final BigDecimal MONTHLYSETTLEMENT2_AMOUNT = new BigDecimal("100.00");
+	public static final BigDecimal MONTHLYSETTLEMENT3_AMOUNT = new BigDecimal("1000.00");
 	public static final Long MONTHLYSETTLEMENT1_ID = 1l;
 	public static final Long MONTHLYSETTLEMENT2_ID = 2l;
 	public static final Long MONTHLYSETTLEMENT3_ID = 3l;
@@ -35,7 +38,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public MonthlySettlementTransportBuilder forMonthlySettlement1() {
 		super.setId(MONTHLYSETTLEMENT1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setAmount(new BigDecimal("10.00"));
+		super.setAmount(MONTHLYSETTLEMENT1_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -47,7 +50,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public MonthlySettlementTransportBuilder forMonthlySettlement2() {
 		super.setId(MONTHLYSETTLEMENT2_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setAmount(new BigDecimal("100.00"));
+		super.setAmount(MONTHLYSETTLEMENT2_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE2_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -59,7 +62,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public MonthlySettlementTransportBuilder forMonthlySettlement3() {
 		super.setId(MONTHLYSETTLEMENT3_ID);
 		super.setUserid(UserTransportBuilder.USER3_ID);
-		super.setAmount(new BigDecimal("1000.00"));
+		super.setAmount(MONTHLYSETTLEMENT3_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE4_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE4_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);

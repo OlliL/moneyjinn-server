@@ -92,13 +92,12 @@ public class MoneyflowDao {
 		return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil, capitalsourceIds);
 	}
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
-		return this.mapper.getAllMoneyflowsByDateRange(userId, validFrom, validTil);
+	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final Date dateFrom, final Date dateTil) {
+		return this.mapper.getAllMoneyflowsByDateRange(userId, dateFrom, dateTil);
 	}
 
-	public boolean monthHasMoneyflows(final Long userId, final Date date) {
-		final Boolean result = this.mapper.monthHasMoneyflows(userId, date);
+	public boolean monthHasMoneyflows(final Long userId, final Date dateFrom, final Date dateTil) {
+		final Boolean result = this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil);
 		if (result == null) {
 			return false;
 		}

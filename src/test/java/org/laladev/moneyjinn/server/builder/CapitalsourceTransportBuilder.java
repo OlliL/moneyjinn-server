@@ -29,11 +29,21 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public static final Short CAPITALSOURCE3_GROUP_USE = (short) 1;
 	public static final Short CAPITALSOURCE4_GROUP_USE = (short) 1;
 
+	public static final Short CAPITALSOURCE1_TYPE = (short) 1;
+	public static final Short CAPITALSOURCE2_TYPE = (short) 2;
+	public static final Short CAPITALSOURCE3_TYPE = (short) 3;
+	public static final Short CAPITALSOURCE4_TYPE = (short) 4;
+
+	public static final Short CAPITALSOURCE1_STATE = (short) 1;
+	public static final Short CAPITALSOURCE2_STATE = (short) 2;
+	public static final Short CAPITALSOURCE3_STATE = (short) 1;
+	public static final Short CAPITALSOURCE4_STATE = (short) 1;
+
 	public CapitalsourceTransportBuilder forCapitalsource1() {
 		super.setId(CAPITALSOURCE1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setType((short) 1);
-		super.setState((short) 1);
+		super.setType(CAPITALSOURCE1_TYPE);
+		super.setState(CAPITALSOURCE1_STATE);
 		super.setComment(CAPITALSOURCE1_COMMENT);
 		super.setAccountNumber(CAPITALSOURCE1_ACCOUNTNUMBER);
 		super.setBankCode(CAPITALSOURCE1_BANKCODE);
@@ -47,8 +57,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public CapitalsourceTransportBuilder forCapitalsource2() {
 		super.setId(CAPITALSOURCE2_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setType((short) 2);
-		super.setState((short) 2);
+		super.setType(CAPITALSOURCE2_TYPE);
+		super.setState(CAPITALSOURCE2_STATE);
 		super.setComment(CAPITALSOURCE2_COMMENT);
 		super.setAccountNumber(CAPITALSOURCE2_ACCOUNTNUMBER);
 		super.setBankCode(CAPITALSOURCE2_BANKCODE);
@@ -62,8 +72,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public CapitalsourceTransportBuilder forCapitalsource3() {
 		super.setId(CAPITALSOURCE3_ID);
 		super.setUserid(UserTransportBuilder.USER3_ID);
-		super.setType((short) 3);
-		super.setState((short) 1);
+		super.setType(CAPITALSOURCE3_TYPE);
+		super.setState(CAPITALSOURCE3_STATE);
 		super.setComment(CAPITALSOURCE3_COMMENT);
 		super.setAccountNumber("ZUTVEGT");
 		super.setBankCode("765432");
@@ -77,8 +87,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public CapitalsourceTransportBuilder forCapitalsource4() {
 		super.setId(CAPITALSOURCE4_ID);
 		super.setUserid(UserTransportBuilder.USER3_ID);
-		super.setType((short) 4);
-		super.setState((short) 1);
+		super.setType(CAPITALSOURCE4_TYPE);
+		super.setState(CAPITALSOURCE4_STATE);
 		super.setComment(CAPITALSOURCE4_COMMENT);
 		super.setAccountNumber(CAPITALSOURCE4_ACCOUNTNUMBER);
 		super.setBankCode(CAPITALSOURCE4_BANKCODE);

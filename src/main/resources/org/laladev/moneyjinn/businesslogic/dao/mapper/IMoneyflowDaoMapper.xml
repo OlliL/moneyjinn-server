@@ -124,7 +124,7 @@
 		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
 		SELECT <include refid="moneyflowColumns" />
 		  FROM vw_moneyflows
-		 WHERE bookingdate         BETWEEN #{validFrom} AND #{validTil}
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
 		   AND maf_id              = #{userId}
 		   AND (
 		        private            = 0
@@ -136,7 +136,7 @@
 	<select id="monthHasMoneyflows" resultType="java.lang.Boolean">
 		SELECT 1
 		  FROM vw_moneyflows
-		 WHERE bookingdate    BETWEEN #{date} AND LAST_DAY(#{date})
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
 		   AND maf_id              = #{userId}
 		   AND (
 		        private            = 0
