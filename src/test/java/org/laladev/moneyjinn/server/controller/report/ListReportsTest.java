@@ -18,8 +18,10 @@ import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
+import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
@@ -34,13 +36,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 // TODO: Test "private" handling
-// TODO: Test december with no further moneyflows to cover MoneyflowDao line 102
 public class ListReportsTest extends AbstractControllerTest {
 
 	@Inject
 	private IImportedBalanceService importedBalanceService;
 	@Inject
 	private ICapitalsourceService capitalsourceService;
+	@Inject
+	private IMoneyflowService moneyflowService;
 
 	private static final List<Short> ALL_YEARS = Arrays.asList((short) 2008, (short) 2009, (short) 2010);
 	private final HttpMethod method = HttpMethod.GET;
@@ -129,8 +132,6 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("10.10"));
 		expected.setAmountBeginOfYear(new BigDecimal("99.90"));
 
-		expected.setPreviousMonth((short) 11);
-		expected.setPreviousYear((short) 2008);
 		expected.setNextMonth((short) 1);
 		expected.setNextYear((short) 2009);
 
@@ -221,6 +222,49 @@ public class ListReportsTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_DecemberAndNoMoneyflowsNextMonth_completeResponse() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW14_ID);
+		this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
+
+		final ListReportsResponse expected = new ListReportsResponse();
+		expected.setYear((short) 2009);
+		expected.setAllYears(ALL_YEARS);
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4, (short) 5, (short) 6, (short) 7,
+				(short) 8, (short) 9, (short) 10, (short) 11, (short) 12));
+		expected.setMonth((short) 12);
+
+		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow13().build());
+		expected.setMoneyflowTransports(moneyflowTransports);
+
+		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource1().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource2().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource4().build());
+		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
+
+		expected.setTurnoverEndOfYearCalculated(new BigDecimal("8.90"));
+		expected.setAmountBeginOfYear(new BigDecimal("110.00"));
+
+		expected.setPreviousMonth((short) 11);
+		expected.setPreviousYear((short) 2009);
+		expected.setNextMonth((short) 2);
+		expected.setNextYear((short) 2010);
+
+		expected.setPreviousMonthHasMoneyflows((short) 1);
+		expected.setNextMonthHasMoneyflows((short) 1);
+
+		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/12", this.method, false,
+				ListReportsResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_JanuarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettled_completeResponse()
 			throws Exception {
 		final ListReportsResponse expected = new ListReportsResponse();
@@ -255,6 +299,51 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/01", this.method, false,
 				ListReportsResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_MoneyflowOfDifferentGroupMember_shownTurnoverSortingCorrect() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ListReportsResponse expected = new ListReportsResponse();
+		expected.setYear((short) 2010);
+		expected.setAllYears(ALL_YEARS);
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 5));
+		expected.setMonth((short) 1);
+
+		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
+		expected.setMoneyflowTransports(moneyflowTransports);
+
+		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource4().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource1().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource2().build());
+		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
+
+		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
+		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
+
+		expected.setPreviousMonth((short) 12);
+		expected.setPreviousYear((short) 2009);
+		expected.setNextMonth((short) 5);
+		expected.setNextYear((short) 2010);
+
+		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/01", this.method, false,
+				ListReportsResponse.class);
+
+		expected.setPreviousMonth((short) 1);
+		expected.setPreviousYear((short) 2009);
+		expected.setNextMonth((short) 5);
+		expected.setNextYear((short) 2010);
+
+		expected.setNextMonthHasMoneyflows((short) 1);
+		expected.setPreviousMonthHasMoneyflows((short) 1);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -347,6 +436,7 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
 		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
 		expected.setMoneyflowTransports(moneyflowTransports);
 
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
@@ -368,8 +458,6 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		expected.setPreviousMonth((short) 4);
 		expected.setPreviousYear((short) 2010);
-		expected.setNextMonth((short) 6);
-		expected.setNextYear((short) 2010);
 
 		expected.setPreviousMonthHasMoneyflows((short) 1);
 
@@ -407,6 +495,7 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
 		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
 		expected.setMoneyflowTransports(moneyflowTransports);
 
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
@@ -421,8 +510,6 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		expected.setPreviousMonth((short) 4);
 		expected.setPreviousYear((short) 2010);
-		expected.setNextMonth((short) 6);
-		expected.setNextYear((short) 2010);
 
 		expected.setPreviousMonthHasMoneyflows((short) 1);
 

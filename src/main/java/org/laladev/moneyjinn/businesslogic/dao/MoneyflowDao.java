@@ -108,4 +108,12 @@ public class MoneyflowDao {
 		return this.mapper.getMaxMoneyflowDate(userId);
 	}
 
+	public Date getPreviousMoneyflowDate(final Long userId, final Date date) {
+		return this.mapper.getPreviousMoneyflowDate(userId, date);
+	}
+
+	public Date getNextMoneyflowDate(final Long userId, final Date date) {
+		return this.mapper.getNextMoneyflowDate(userId, date);
+	}
+
 }

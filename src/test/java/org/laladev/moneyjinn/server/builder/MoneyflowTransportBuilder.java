@@ -17,8 +17,9 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 	public static final Long MONEYFLOW15_ID = 15l;
 	public static final Long MONEYFLOW16_ID = 16l;
 	public static final Long MONEYFLOW18_ID = 18l;
+	public static final Long MONEYFLOW19_ID = 19l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 19l;
+	public static final Long NEXT_ID = 20l;
 
 	public MoneyflowTransportBuilder forMoneyflow1() {
 		super.setId(MONEYFLOW1_ID);
@@ -73,7 +74,6 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 	public MoneyflowTransportBuilder forMoneyflow14() {
 		super.setId(MONEYFLOW14_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setPrivat((short) 1);
 		super.setBookingdate(DateUtil.getGMTDate("2010-01-01"));
 		super.setInvoicedate(DateUtil.getGMTDate("2010-01-01"));
 		super.setAmount(new BigDecimal("-10.00"));
@@ -127,7 +127,23 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setPrivat((short) 1);
 		super.setBookingdate(DateUtil.getGMTDate("2010-05-01"));
 		super.setInvoicedate(DateUtil.getGMTDate("2010-05-01"));
-		super.setAmount(new BigDecimal("-10.00"));
+		super.setAmount(new BigDecimal("-5.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow19() {
+		super.setId(MONEYFLOW19_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setBookingdate(DateUtil.getGMTDate("2010-05-01"));
+		super.setInvoicedate(DateUtil.getGMTDate("2010-05-01"));
+		super.setAmount(new BigDecimal("-5.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		super.setComment(MONEYFLOW_GENERATED_COMMENT);

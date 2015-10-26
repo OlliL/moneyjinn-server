@@ -147,9 +147,27 @@ public interface IMoneyflowService {
 
 	/**
 	 * Retrives the highest date of all recored {@link Moneyflow}s.
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
 	public LocalDate getMaxMoneyflowDate(UserID userId);
+
+	/**
+	 * Retrives the highest date before the given {@link LocalDate}.
+	 *
+	 * @param userId
+	 * @param date
+	 * @return
+	 */
+	public LocalDate getPreviousMoneyflowDate(UserID userId, LocalDate date);
+
+	/**
+	 * Retrives the nearest date after the given {@link LocalDate}.
+	 *
+	 * @param userId
+	 * @param date
+	 * @return
+	 */
+	public LocalDate getNextMoneyflowDate(UserID userId, LocalDate date);
 }

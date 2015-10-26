@@ -156,5 +156,29 @@
 		        mac_id_creator     = #{userId}
 		       )
  	</select>   	
+
+	<select id="getPreviousMoneyflowDate" resultType="java.sql.Date">
+		SELECT MAX(bookingdate)
+		  FROM vw_moneyflows
+		 WHERE bookingdate         <![CDATA[ < ]]> #{date}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+ 	</select>
+
+ 	<select id="getNextMoneyflowDate" resultType="java.sql.Date">
+		SELECT MIN(bookingdate)
+		  FROM vw_moneyflows
+		 WHERE bookingdate         <![CDATA[ > ]]> #{date}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+ 	</select>   	
 </mapper>
  

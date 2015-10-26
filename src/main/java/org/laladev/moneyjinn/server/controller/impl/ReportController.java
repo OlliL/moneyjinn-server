@@ -325,35 +325,49 @@ public class ReportController extends AbstractController {
 				final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
 				final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 				final LocalDate beginOfPrevMonth = beginOfMonth.minusMonths(1L);
-				final LocalDate beginOfNextMonth = beginOfMonth.plusMonths(1L);
 
-				prevMonth = beginOfPrevMonth.getMonth();
-				prevYear = (short) beginOfPrevMonth.getYear();
-				nextMonth = beginOfNextMonth.getMonth();
-				nextYear = (short) beginOfNextMonth.getYear();
+				// TODO: Do not hardcode "previous" month for determine the last recorded
+				// settlement.
+				final Month prevMonthSettlement = beginOfPrevMonth.getMonth();
+				final Short prevYearSettlement = (short) beginOfPrevMonth.getYear();
 
 				moneyflows = this.moneyflowService.getAllMoneyflowsByDateRange(userId, beginOfMonth, endOfMonth);
 				final List<MonthlySettlement> settlementsPrevMonth = this.monthlySettlementService
-						.getAllMonthlySettlementsByYearMonth(userId, prevYear, prevMonth);
+						.getAllMonthlySettlementsByYearMonth(userId, prevYearSettlement, prevMonthSettlement);
 				final List<MonthlySettlement> settlementsThisMonth = this.monthlySettlementService
 						.getAllMonthlySettlementsByYearMonth(userId, year, month);
 				final int indexInAllMonthList = allMonth.indexOf(month);
 
+				LocalDate previousDate = null;
+				LocalDate nextDate = null;
+
 				if (month != Month.JANUARY) {
 					if (indexInAllMonthList > 0) {
-						previousMonthHasMoneyflows = true;
+						previousDate = LocalDate.of(year, allMonth.get(indexInAllMonthList - 1), 1);
 					}
 				} else {
-					previousMonthHasMoneyflows = this.moneyflowService.monthHasMoneyflows(userId, prevYear, prevMonth);
+					previousDate = this.moneyflowService.getPreviousMoneyflowDate(userId, beginOfMonth);
 				}
 
 				if (month != Month.DECEMBER) {
 					if (indexInAllMonthList < allMonth.size() - 1) {
-						nextMonthHasMoneyflows = true;
+						nextDate = LocalDate.of(year, allMonth.get(indexInAllMonthList + 1), 1);
 					}
 				} else {
-					nextMonthHasMoneyflows = this.moneyflowService.monthHasMoneyflows(userId, nextYear, nextMonth);
+					nextDate = this.moneyflowService.getNextMoneyflowDate(userId, endOfMonth);
 				}
+
+				if (previousDate != null) {
+					previousMonthHasMoneyflows = true;
+					prevMonth = previousDate.getMonth();
+					prevYear = (short) previousDate.getYear();
+				}
+				if (nextDate != null) {
+					nextMonthHasMoneyflows = true;
+					nextMonth = nextDate.getMonth();
+					nextYear = (short) nextDate.getYear();
+				}
+
 				final List<Capitalsource> validCapitalsources = this.capitalsourceService
 						.getAllCapitalsourcesByDateRange(userId, beginOfMonth, endOfMonth);
 

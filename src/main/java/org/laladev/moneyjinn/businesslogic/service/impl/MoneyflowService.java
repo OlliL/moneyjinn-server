@@ -390,4 +390,28 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		return null;
 	}
 
+	@Override
+	public LocalDate getPreviousMoneyflowDate(final UserID userId, final LocalDate date) {
+		Assert.notNull(userId);
+		Assert.notNull(date);
+
+		final Date sqlDate = this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), Date.valueOf(date));
+		if (sqlDate != null) {
+			return sqlDate.toLocalDate();
+		}
+		return null;
+	}
+
+	@Override
+	public LocalDate getNextMoneyflowDate(final UserID userId, final LocalDate date) {
+		Assert.notNull(userId);
+		Assert.notNull(date);
+
+		final Date sqlDate = this.moneyflowDao.getNextMoneyflowDate(userId.getId(), Date.valueOf(date));
+		if (sqlDate != null) {
+			return sqlDate.toLocalDate();
+		}
+		return null;
+	}
+
 }

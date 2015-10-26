@@ -33,4 +33,8 @@ public interface IMoneyflowDaoMapper {
 
 	public Date getMaxMoneyflowDate(Long userId);
 
+	public Date getPreviousMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
+
+	public Date getNextMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
+
 }
