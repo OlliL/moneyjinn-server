@@ -1,3 +1,4 @@
+
 //
 // Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -23,8 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowTransport.java,v 1.4 2015/08/24 17:24:29 olivleh1 Exp $
-//
+
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 import java.math.BigDecimal;

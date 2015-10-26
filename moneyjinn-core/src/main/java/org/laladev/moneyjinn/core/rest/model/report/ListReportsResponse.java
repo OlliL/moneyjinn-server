@@ -23,6 +23,7 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
+
 package org.laladev.moneyjinn.core.rest.model.report;
 
 import java.math.BigDecimal;
