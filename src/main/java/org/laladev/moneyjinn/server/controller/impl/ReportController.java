@@ -36,6 +36,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -46,20 +49,30 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
+import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
+import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsFormResponse;
+import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
+import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.TrendsCalculatedTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.TrendsSettledTransport;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
+import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,12 +90,186 @@ public class ReportController extends AbstractController {
 	private IMonthlySettlementService monthlySettlementService;
 	@Inject
 	private IImportedBalanceService importedBalanceService;
-	// @Inject
-	// private ISettingService settingService;
+	@Inject
+	private ISettingService settingService;
 
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new MoneyflowTransportMapper());
+		super.registerBeanMapper(new CapitalsourceTransportMapper());
+	}
+
+	@RequestMapping(value = "showTrendsForm", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowTrendsFormResponse showTrendsForm() {
+		final UserID userId = super.getUserId();
+		final ShowTrendsFormResponse response = new ShowTrendsFormResponse();
+
+		final List<Short> allYears = this.monthlySettlementService.getAllYears(userId);
+		final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
+		if (maxMoneyflowDate != null) {
+			final Short maxYear = (short) maxMoneyflowDate.getYear();
+			// if the last recorded settlement is for example December 2013, but we are now in
+			// January 2014, we also need to display 2014 as a selectable year for showing the
+			// trends. Otherwise we would not be able to show the forcast of January 2014.
+			Short maxSettledYear = allYears.get(allYears.size() - 1);
+			while (maxSettledYear < maxYear) {
+				maxSettledYear = (short) (maxSettledYear + 1);
+				allYears.add(maxSettledYear);
+			}
+		}
+		response.setAllYears(allYears);
+
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+
+		final ClientTrendCapitalsourceIDsSetting clientTrendCapitalsourceIDsSetting = this.settingService
+				.getClientTrendCapitalsourceIDsSetting(userId);
+		if (clientTrendCapitalsourceIDsSetting != null && clientTrendCapitalsourceIDsSetting.getSetting() != null
+				&& !clientTrendCapitalsourceIDsSetting.getSetting().isEmpty()) {
+			final List<Long> capitalsourceIds = clientTrendCapitalsourceIDsSetting.getSetting().stream()
+					.map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
+			response.setSettingTrendCapitalsourceIds(capitalsourceIds);
+		}
+
+		return response;
+	}
+
+	@RequestMapping(value = "showTrendsGraph", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public ShowTrendsGraphResponse showTrendsGraph(@RequestBody final ShowTrendsGraphRequest request) {
+		final UserID userId = super.getUserId();
+		final ShowTrendsGraphResponse response = new ShowTrendsGraphResponse();
+
+		if (request.getStartDate() != null && request.getEndDate() != null && request.getCapitalSourceIds() != null
+				&& !request.getCapitalSourceIds().isEmpty()) {
+			final LocalDate startDate = request.getStartDate().toLocalDate();
+			final LocalDate endDate = request.getEndDate().toLocalDate().with(TemporalAdjusters.lastDayOfMonth());
+
+			List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
+					.map(csi -> new CapitalsourceID(csi)).collect(Collectors.toCollection(ArrayList::new));
+			final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
+
+			// Save the selection for the next time the form is shown
+			this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
+
+			final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+					.getAllMonthlySettlementsByRangeAndCapitalsource(userId, startDate, endDate, capitalsourceIds);
+
+			final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+			final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIDMap = new HashMap<>();
+			for (final Capitalsource capitalsource : capitalsources) {
+				validTilCapitalsourceIDMap.put(capitalsource.getId(), capitalsource.getValidTil());
+			}
+
+			final SortedMap<Short, SortedMap<Month, BigDecimal>> settlementAmounts = new TreeMap<>();
+			final SortedMap<Short, SortedMap<Month, BigDecimal>> moneyflowAmounts = new TreeMap<>();
+
+			Month lastMonth = null;
+			Short lastYear = null;
+			BigDecimal lastAmount = BigDecimal.ZERO;
+
+			LocalDate lastSettledDay = null;
+
+			if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
+				for (final MonthlySettlement monthlySettlement : monthlySettlements) {
+					lastMonth = monthlySettlement.getMonth();
+					lastYear = monthlySettlement.getYear();
+
+					SortedMap<Month, BigDecimal> settlementAmountMap = settlementAmounts.get(lastYear);
+					if (settlementAmountMap == null) {
+						settlementAmountMap = new TreeMap<>();
+					}
+
+					lastAmount = settlementAmountMap.get(lastMonth);
+					if (lastAmount == null) {
+						lastAmount = BigDecimal.ZERO;
+					}
+
+					lastAmount = lastAmount.add(monthlySettlement.getAmount());
+
+					settlementAmountMap.put(lastMonth, lastAmount);
+					settlementAmounts.put(lastYear, settlementAmountMap);
+				}
+
+				lastSettledDay = LocalDate.of(lastYear.intValue(), lastMonth, 1)
+						.with(TemporalAdjusters.lastDayOfMonth());
+			} else {
+				lastSettledDay = startDate.minusMonths(1L).with(TemporalAdjusters.lastDayOfMonth());
+			}
+
+			if (endDate.isAfter(lastSettledDay)) {
+				LocalDate beginOfMonth = lastSettledDay.plusDays(1L);
+				LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+
+				LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
+				if (maxMoneyflowDate != null) {
+					maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
+					while (!endOfMonth.isAfter(maxMoneyflowDate)) {
+						capitalsourceIds = this.filterByValidity(capitalsourceIds, validTilCapitalsourceIDMap,
+								beginOfMonth);
+						if (capitalsourceIds.isEmpty()) {
+							break;
+						}
+						final BigDecimal amount = this.moneyflowService.getSumAmountByDateRangeForCapitalsourceIds(
+								userId, beginOfMonth, endOfMonth, capitalsourceIds);
+						lastAmount = lastAmount.add(amount);
+
+						final Month month = endOfMonth.getMonth();
+						final Short year = (short) endOfMonth.getYear();
+
+						SortedMap<Month, BigDecimal> moneyflowAmountMap = moneyflowAmounts.get(year);
+						if (moneyflowAmountMap == null) {
+							moneyflowAmountMap = new TreeMap<>();
+						}
+
+						moneyflowAmountMap.put(month, lastAmount);
+						moneyflowAmounts.put(year, moneyflowAmountMap);
+
+						beginOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth()).plusDays(1L);
+						endOfMonth = endOfMonth.plusDays(1L).with(TemporalAdjusters.lastDayOfMonth());
+					}
+				}
+			}
+
+			final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
+			for (final Entry<Short, SortedMap<Month, BigDecimal>> yearEntry : settlementAmounts.entrySet()) {
+				final Short year = yearEntry.getKey();
+				for (final Entry<Month, BigDecimal> monthEntry : yearEntry.getValue().entrySet()) {
+					final TrendsSettledTransport trendsSettledTransport = new TrendsSettledTransport();
+					trendsSettledTransport.setYear(year);
+					trendsSettledTransport.setMonth((short) monthEntry.getKey().getValue());
+					trendsSettledTransport.setAmount(monthEntry.getValue());
+					trendsSettledTransports.add(trendsSettledTransport);
+				}
+			}
+
+			final List<TrendsCalculatedTransport> trendsCalculatedTransports = new ArrayList<>();
+			for (final Entry<Short, SortedMap<Month, BigDecimal>> yearEntry : moneyflowAmounts.entrySet()) {
+				final Short year = yearEntry.getKey();
+				for (final Entry<Month, BigDecimal> monthEntry : yearEntry.getValue().entrySet()) {
+					final TrendsCalculatedTransport trendsCalculatedTransport = new TrendsCalculatedTransport();
+					trendsCalculatedTransport.setYear(year);
+					trendsCalculatedTransport.setMonth((short) monthEntry.getKey().getValue());
+					trendsCalculatedTransport.setAmount(monthEntry.getValue());
+					trendsCalculatedTransports.add(trendsCalculatedTransport);
+				}
+			}
+
+			if (!trendsSettledTransports.isEmpty()) {
+				response.setTrendsSettledTransports(trendsSettledTransports);
+			}
+			if (!trendsCalculatedTransports.isEmpty()) {
+				response.setTrendsCalculatedTransports(trendsCalculatedTransports);
+			}
+		}
+		return response;
+	}
+
+	private ArrayList<CapitalsourceID> filterByValidity(final List<CapitalsourceID> capitalsourceIds,
+			final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIDMap, final LocalDate beginOfMonth) {
+		return capitalsourceIds.stream().filter(csi -> validTilCapitalsourceIDMap.get(csi).isAfter(beginOfMonth))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@RequestMapping(value = "listReports", method = { RequestMethod.GET })

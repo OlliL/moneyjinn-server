@@ -24,4 +24,8 @@ public interface IMonthlySettlementDaoMapper {
 	public void deleteMonthlySettlement(@Param("userId") Long userId, @Param("year") Short year,
 			@Param("month") Short month);
 
+	public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(@Param("userId") Long user,
+			@Param("startYear") int startYear, @Param("startMonth") int startMonth, @Param("endYear") int endYear,
+			@Param("endMonth") int endMonth, @Param("mcsCapitalsourceIds") List<Long> capitalsourceIdLongs);
+
 }

@@ -146,6 +146,15 @@
 		 LIMIT 1
 	</select>
 	
-    	
+ 	<select id="getMaxMoneyflowDate" resultType="java.sql.Date">
+		SELECT MAX(bookingdate)
+		  FROM vw_moneyflows
+		 WHERE maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+ 	</select>   	
 </mapper>
  

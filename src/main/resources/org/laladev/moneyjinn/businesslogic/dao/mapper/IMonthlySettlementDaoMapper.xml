@@ -93,5 +93,27 @@
 		   AND month          = #{month}
 	</delete>
 
+	<select id="getAllMonthlySettlementsByRangeAndCapitalsource"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MonthlySettlementData">
+		SELECT <include refid="monthlySettlementsColumns" />
+		  FROM vw_monthlysettlements
+		 WHERE (
+		              year >  #{startYear} AND year   <![CDATA[ < ]]>  #{endYear}
+		           OR year =  #{startYear} AND month  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR year =  #{endYear}   AND month  <![CDATA[ <= ]]> #{endMonth}   AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR year =  #{startYear} AND month BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
+		       )
+		   AND mcs_capitalsourceid IN
+		   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+		   AND maf_id              = #{userId}
+		 ORDER BY year
+		         ,month
+		         ,CASE WHEN mac_id_creator = #{userId} THEN 1 ELSE 2 END
+		         ,mcs_capitalsourceid
+	</select>
+	
 </mapper>
  

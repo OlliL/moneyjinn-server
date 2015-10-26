@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.businesslogic.model;
+package org.laladev.moneyjinn.businesslogic.model.setting;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -24,20 +24,26 @@ package org.laladev.moneyjinn.businesslogic.model;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
+import java.util.List;
+
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
+
 /**
- * The unique ID of a {@link PostingAccount}
+ * returns a List of {@link PostingAccountID}s the user had chosen the last time when using the
+ * <code>Reporting</code> functionality.
  *
  * @author olivleh1
  *
  */
-public class PostingAccountID extends AbstractEntityID<Long> {
+public class ClientReportingUnselectedPostingAccountIdsSetting extends AbstractSetting<List<PostingAccountID>> {
 
-	private static final long serialVersionUID = 1L;
-
-	public PostingAccountID() {
+	public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
+		super.setSetting(setting);
 	}
 
-	public PostingAccountID(final Long id) {
-		super(id);
+	@Override
+	public SettingType getType() {
+		return SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS;
 	}
+
 }

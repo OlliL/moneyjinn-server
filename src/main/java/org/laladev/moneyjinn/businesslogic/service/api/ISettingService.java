@@ -33,6 +33,8 @@ import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientTrendCapitalsourceIDsSetting;
 
 /**
  * <p>
@@ -52,6 +54,50 @@ import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflows
  *
  */
 public interface ISettingService {
+
+	/**
+	 * This Service returns the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the
+	 * given {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
+	 */
+	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
+			AccessID accessId);
+
+	/**
+	 * This Service sets the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientReportingUnselectedPostingAccountIdsSetting}
+	 */
+	public void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId,
+			ClientReportingUnselectedPostingAccountIdsSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientTrendCapitalsourceIDsSetting} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientTrendCapitalsourceIDsSetting}
+	 */
+	public ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
+
+	/**
+	 * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientTrendCapitalsourceIDsSetting}
+	 */
+	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+			final ClientTrendCapitalsourceIDsSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientMaxRowsSetting} for the given {@link UserID}

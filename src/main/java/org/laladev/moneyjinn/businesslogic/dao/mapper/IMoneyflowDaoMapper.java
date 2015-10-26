@@ -31,4 +31,6 @@ public interface IMoneyflowDaoMapper {
 	public Boolean monthHasMoneyflows(@Param("userId") Long userId, @Param("dateFrom") Date dateFrom,
 			@Param("dateTil") Date dateTil);
 
+	public Date getMaxMoneyflowDate(Long userId);
+
 }

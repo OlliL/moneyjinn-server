@@ -68,4 +68,11 @@ public class MonthlySettlementDao {
 		this.mapper.deleteMonthlySettlement(userId, year, month);
 	}
 
+	public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(final Long user,
+			final int startYear, final int startMonth, final int endYear, final int endMonth,
+			final List<Long> capitalsourceIdLongs) {
+		return this.mapper.getAllMonthlySettlementsByRangeAndCapitalsource(user, startYear, startMonth, endYear,
+				endMonth, capitalsourceIdLongs);
+	}
+
 }

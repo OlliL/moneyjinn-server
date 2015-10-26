@@ -1,5 +1,8 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -30,27 +33,104 @@ import javax.inject.Named;
 import org.laladev.moneyjinn.businesslogic.dao.SettingDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.SettingData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.SettingTypeConverter;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.SettingType;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Named
 public class SettingService extends AbstractService implements ISettingService {
 	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
 	@Inject
 	private SettingDao settingDao;
+	@Inject
+	private ObjectMapper objectMapper;
 
 	@Override
 	protected void addBeanMapper() {
 		// no Mapper needed
+	}
+
+	@Override
+	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
+			final AccessID accessId) {
+		Assert.notNull(accessId);
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS));
+		if (settingData != null) {
+			try {
+				final PostingAccountID[] postingAccountIds = this.objectMapper.readValue(settingData.getValue(),
+						PostingAccountID[].class);
+				return new ClientReportingUnselectedPostingAccountIdsSetting(Arrays.asList(postingAccountIds));
+			} catch (final IOException e) {
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId,
+			final ClientReportingUnselectedPostingAccountIdsSetting setting) {
+		Assert.notNull(accessId);
+		Assert.notNull(setting);
+		Assert.notNull(setting.getSetting());
+
+		try {
+			final String settingString = this.objectMapper
+					.writeValueAsString(setting.getSetting().toArray(new PostingAccountID[0]));
+			final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+					.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS), settingString);
+			this.settingDao.setSetting(settingData);
+		} catch (final JsonProcessingException e) {
+		}
+	}
+
+	@Override
+	public ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId) {
+		Assert.notNull(accessId);
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS));
+		if (settingData != null) {
+			try {
+				final CapitalsourceID[] capitalsourceIds = this.objectMapper.readValue(settingData.getValue(),
+						CapitalsourceID[].class);
+				return new ClientTrendCapitalsourceIDsSetting(Arrays.asList(capitalsourceIds));
+			} catch (final IOException e) {
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+			final ClientTrendCapitalsourceIDsSetting setting) {
+		Assert.notNull(accessId);
+		Assert.notNull(setting);
+		Assert.notNull(setting.getSetting());
+
+		try {
+			final String settingString = this.objectMapper
+					.writeValueAsString(setting.getSetting().toArray(new CapitalsourceID[0]));
+			final SettingData settingData = new SettingData(accessId.getId(),
+					SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS),
+					settingString);
+			this.settingDao.setSetting(settingData);
+		} catch (final JsonProcessingException e) {
+		}
 	}
 
 	@Override

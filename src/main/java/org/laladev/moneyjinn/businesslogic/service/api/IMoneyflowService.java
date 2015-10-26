@@ -144,4 +144,12 @@ public interface IMoneyflowService {
 	 */
 	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(UserID userId, LocalDate dateFrom, LocalDate dateTil,
 			List<CapitalsourceID> capitalsourceIds);
+
+	/**
+	 * Retrives the highest date of all recored {@link Moneyflow}s.
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public LocalDate getMaxMoneyflowDate(UserID userId);
 }

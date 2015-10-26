@@ -70,6 +70,8 @@ public class SettingTypeConverter {
 			return "currently_valid_capitalsources";
 		case CLIENT_CURRENTLY_VALID_CONTRACTPARTNER:
 			return "currently_valid_contractpartner";
+		case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
+			return "reporting_postingaccountids";
 		default:
 			throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
 		}

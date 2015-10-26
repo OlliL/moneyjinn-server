@@ -381,4 +381,13 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 				Date.valueOf(dateTil), capitalsourceIdLongs);
 	}
 
+	@Override
+	public LocalDate getMaxMoneyflowDate(final UserID userId) {
+		final Date date = this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
+		if (date != null) {
+			return date.toLocalDate();
+		}
+		return null;
+	}
+
 }

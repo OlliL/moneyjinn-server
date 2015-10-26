@@ -37,6 +37,10 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
  */
 public class ClientTrendCapitalsourceIDsSetting extends AbstractSetting<List<CapitalsourceID>> {
 
+	public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
+		super.setSetting(setting);
+	}
+
 	@Override
 	public SettingType getType() {
 		return SettingType.CLIENT_TREND_CAPITALSOURCEIDS;

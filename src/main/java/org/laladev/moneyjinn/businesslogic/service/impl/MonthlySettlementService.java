@@ -118,7 +118,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		return null;
 	}
 
-	private final List<MonthlySettlement> mapPreDefMoneyflowDataList(
+	private final List<MonthlySettlement> mapMonthlySettlementDataList(
 			final List<MonthlySettlementData> monthlySettlementDataList) {
 		return monthlySettlementDataList.stream().map(element -> this.mapMonthlySettlementData(element))
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -153,7 +153,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
 				.getAllMonthlySettlementsByYearMonth(userId.getId(), year, (short) month.getValue());
 
-		return this.mapPreDefMoneyflowDataList(monthlySettlementDatas);
+		return this.mapMonthlySettlementDataList(monthlySettlementDatas);
 	}
 
 	@Override
@@ -206,8 +206,18 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	@Override
 	public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(final UserID userId,
 			final LocalDate begin, final LocalDate end, final List<CapitalsourceID> capitalsourceIds) {
-		// TODO Auto-generated method stub
-		return null;
+		Assert.notNull(userId);
+		Assert.notNull(begin);
+		Assert.notNull(end);
+		Assert.notEmpty(capitalsourceIds);
+
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
+		final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
+				.getAllMonthlySettlementsByRangeAndCapitalsource(userId.getId(), begin.getYear(), begin.getMonthValue(),
+						end.getYear(), end.getMonthValue(), capitalsourceIdLongs);
+
+		return this.mapMonthlySettlementDataList(monthlySettlementDatas);
 	}
 
 }
