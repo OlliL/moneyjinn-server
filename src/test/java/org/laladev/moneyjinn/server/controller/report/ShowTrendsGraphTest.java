@@ -232,6 +232,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		super.callUsecaseWithContent("", this.method, request, false, ShowTrendsGraphResponse.class);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	@Sql("classpath:h2defaults.sql")
 	public void test_emptyDatabaseFakeRequestData_noException() throws Exception {

@@ -221,7 +221,6 @@ public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverC
 		return this;
 	}
 
-	@SuppressWarnings("deprecation")
 	public ReportTurnoverCapitalsourceTransportBuilder forReport_2010_05_Capitalsource1() {
 
 		super.setCapitalsourceType(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);
