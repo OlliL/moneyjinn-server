@@ -44,23 +44,28 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
+import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
+import org.laladev.moneyjinn.core.rest.model.report.ShowReportingFormResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.TrendsSettledTransport;
@@ -69,6 +74,7 @@ import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,12 +97,37 @@ public class ReportController extends AbstractController {
 	@Inject
 	private IImportedBalanceService importedBalanceService;
 	@Inject
+	private IPostingAccountService postingAccountService;
+	@Inject
 	private ISettingService settingService;
 
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new MoneyflowTransportMapper());
 		super.registerBeanMapper(new CapitalsourceTransportMapper());
+		super.registerBeanMapper(new PostingAccountTransportMapper());
+	}
+
+	@RequestMapping(value = "showReportingForm", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowReportingFormResponse showReportingForm() {
+		final UserID userId = super.getUserId();
+		final ShowReportingFormResponse response = new ShowReportingFormResponse();
+
+		final List<Short> allYears = this.moneyflowService.getAllYears(userId);
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		final ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
+				.getClientReportingUnselectedPostingAccountIdsSetting(userId);
+
+		response.setAllYears(allYears);
+		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
+			final List<Long> postingAccountIds = setting.getSetting().stream().map(id -> id.getId())
+					.collect(Collectors.toCollection(ArrayList::new));
+			response.setPostingAccountIds(postingAccountIds);
+		}
+
+		return response;
 	}
 
 	@RequestMapping(value = "showTrendsForm", method = { RequestMethod.GET })
