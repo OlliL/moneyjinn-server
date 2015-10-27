@@ -12,10 +12,9 @@ import java.util.logging.Logger;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.error.MoneyjinnException;
-import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 
 public abstract class AbstractMapperSupport {
-	private static final Logger LOG = Logger.getLogger(RESTAuthorization.class.getName());
+	private static final Logger LOG = Logger.getLogger(AbstractMapperSupport.class.getName());
 
 	private static final String MAPPER_UNDEFINED = "Mapper undefined!";
 
@@ -39,7 +38,8 @@ public abstract class AbstractMapperSupport {
 				// interface-methods are returned. We are only interested in the implemented
 				// methods, so filter the methods from the interface which differ in their return
 				// types (Generic vs. concrete class)
-				if (method.getName().equals(mapperMethod.getName()) && !method.getReturnType().equals(mapperMethod.getReturnType())) {
+				if (method.getName().equals(mapperMethod.getName())
+						&& !method.getReturnType().equals(mapperMethod.getReturnType())) {
 					final Class<?> returnType = mapperMethod.getReturnType();
 					final Class<?> parameter = mapperMethod.getParameterTypes()[0];
 
@@ -76,7 +76,7 @@ public abstract class AbstractMapperSupport {
 				method = this.mapperMethods.get(clazz).get(args.getClass());
 				obj = this.mapperClasses.get(clazz).get(args.getClass());
 			} catch (final NullPointerException e) {
-				LOG.log(Level.SEVERE, e.toString());
+				LOG.log(Level.SEVERE, e.toString() + "on mapping " + args + " to " + clazz);
 				throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
 			}
 			if (method == null) {
