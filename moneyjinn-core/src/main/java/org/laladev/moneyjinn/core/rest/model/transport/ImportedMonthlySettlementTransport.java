@@ -23,8 +23,8 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMonthlySettlementTransport.java,v 1.1 2015/04/05 18:52:38 olivleh1 Exp $
 //
+
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 public class ImportedMonthlySettlementTransport extends MonthlySettlementTransport {

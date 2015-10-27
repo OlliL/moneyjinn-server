@@ -23,8 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedBalanceTransport.java,v 1.1 2015/08/15 18:25:50 olivleh1 Exp $
-//
+
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 import java.math.BigDecimal;

@@ -23,8 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowTransport.java,v 1.1 2015/02/08 00:26:04 olivleh1 Exp $
-//
+
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 public class ImportedMoneyflowTransport extends MoneyflowTransport {
