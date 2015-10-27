@@ -35,7 +35,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-// TODO: Test "private" handling
 public class ListReportsTest extends AbstractControllerTest {
 
 	@Inject
@@ -457,6 +456,63 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
 
 		expected.setPreviousMonth((short) 4);
+		expected.setPreviousYear((short) 2010);
+
+		expected.setPreviousMonthHasMoneyflows((short) 1);
+
+		final Capitalsource capitalsource = new Capitalsource(
+				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+
+		final ImportedBalance importedBalance = new ImportedBalance();
+		importedBalance.setBalance(new BigDecimal("111.00"));
+		importedBalance.setCapitalsource(capitalsource);
+		importedBalance.setDate(new Timestamp(109, 11, 1, 20, 20, 20, 0).toLocalDateTime());
+		this.importedBalanceService.upsertImportedBalance(importedBalance);
+
+		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
+				ListReportsResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void test_MaywithPrivateMoneyflows_privateMoneyflowNotShown() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final ListReportsResponse expected = new ListReportsResponse();
+		expected.setYear((short) 2010);
+		expected.setAllYears(ALL_YEARS);
+		expected.setAllMonth(Arrays.asList((short) 1, (short) 5));
+		expected.setMonth((short) 5);
+
+		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
+		expected.setMoneyflowTransports(moneyflowTransports);
+
+		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
+
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource4().build());
+
+		final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
+				.forReport_2010_05_Capitalsource1().build();
+		transport1.setAmountCurrent(new BigDecimal("111.00"));
+		transport1.setAmountCurrentState(new Timestamp(109, 11, 1, 20, 20, 20, 0));
+		reportTurnoverCapitalsourceTransports.add(transport1);
+
+		final ReportTurnoverCapitalsourceTransport transport2 = new ReportTurnoverCapitalsourceTransportBuilder()
+				.forReport_2010_05_Capitalsource2().build();
+		transport2.setAmountEndOfMonthCalculated(new BigDecimal("105.00"));
+		transport2.setAmountCurrent(new BigDecimal("105.00"));
+		reportTurnoverCapitalsourceTransports.add(transport2);
+
+		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
+
+		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
+		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
+
+		expected.setPreviousMonth((short) 1);
 		expected.setPreviousYear((short) 2010);
 
 		expected.setPreviousMonthHasMoneyflows((short) 1);
