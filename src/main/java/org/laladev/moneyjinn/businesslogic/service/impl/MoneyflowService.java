@@ -39,10 +39,13 @@ import javax.inject.Named;
 
 import org.laladev.moneyjinn.businesslogic.dao.MoneyflowDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.MoneyflowDataMapper;
+import org.laladev.moneyjinn.businesslogic.dao.data.mapper.PostingAccountAmountDataMapper;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
@@ -91,6 +94,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new MoneyflowDataMapper());
+		super.registerBeanMapper(new PostingAccountAmountDataMapper());
 
 	}
 
@@ -133,6 +137,19 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private final List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
 		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element))
 				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	private List<PostingAccountAmount> mapPostingAccountAmountDataList(
+			final List<PostingAccountAmountData> postingAccountAmountDatas) {
+		final List<PostingAccountAmount> postingAccountAmounts = super.mapList(postingAccountAmountDatas,
+				PostingAccountAmount.class);
+		for (final PostingAccountAmount postingAccountAmount : postingAccountAmounts) {
+			PostingAccount postingAccount = postingAccountAmount.getPostingAccount();
+			postingAccount = this.postingAccountService.getPostingAccountById(postingAccount.getId());
+			postingAccountAmount.setPostingAccount(postingAccount);
+		}
+
+		return postingAccountAmounts;
 	}
 
 	private void prepareMoneyflow(final Moneyflow moneyflow) {
@@ -412,6 +429,42 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			return sqlDate.toLocalDate();
 		}
 		return null;
+	}
+
+	@Override
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final UserID userId,
+			final List<PostingAccountID> postingAccountIds, final LocalDate startDate, final LocalDate endDate) {
+		Assert.notNull(userId);
+		Assert.notNull(startDate);
+		Assert.notNull(endDate);
+		Assert.notEmpty(postingAccountIds);
+
+		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
+				.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs,
+						Date.valueOf(startDate), Date.valueOf(endDate));
+		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
+
+	}
+
+	@Override
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final UserID userId,
+			final List<PostingAccountID> postingAccountIds, final LocalDate startDate, final LocalDate endDate) {
+		// TODO Auto-generated method stub
+		Assert.notNull(userId);
+		Assert.notNull(startDate);
+		Assert.notNull(endDate);
+		Assert.notEmpty(postingAccountIds);
+
+		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
+				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs,
+						Date.valueOf(startDate), Date.valueOf(endDate));
+		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
 	}
 
 }

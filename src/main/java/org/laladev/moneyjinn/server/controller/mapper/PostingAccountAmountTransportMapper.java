@@ -26,26 +26,28 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import java.sql.Date;
 
-public class ValidationItemTransportMapper implements IMapper<ValidationItemTransport, ValidationResultItem> {
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
+import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+
+public class PostingAccountAmountTransportMapper
+		implements IMapper<PostingAccountAmount, PostingAccountAmountTransport> {
+
 	@Override
-	public ValidationResultItem mapAToB(final ValidationItemTransport a) {
+	public PostingAccountAmount mapBToA(final PostingAccountAmountTransport postingAccountAmountTransport) {
 		throw new UnsupportedOperationException("Mapping not supported!");
 	}
 
 	@Override
-	public ValidationItemTransport mapBToA(final ValidationResultItem b) {
-		final ValidationItemTransport a = new ValidationItemTransport();
-		// key is not set when reporting errors for objects to be created as they have no id yet
-		if (b.getKey() != null) {
-			a.setKey(b.getKey().getId());
-		}
-		a.setError(b.getError().getErrorCode());
-		a.setVariableArray(b.getVariableArray());
-		return a;
-	}
+	public PostingAccountAmountTransport mapAToB(final PostingAccountAmount postingAccountAmount) {
+		final PostingAccountAmountTransport postingAccountAmountTransport = new PostingAccountAmountTransport();
+		postingAccountAmountTransport.setPostingaccountid(postingAccountAmount.getPostingAccount().getId().getId());
+		postingAccountAmountTransport.setPostingaccountname(postingAccountAmount.getPostingAccount().getName());
+		postingAccountAmountTransport.setAmount(postingAccountAmount.getAmount());
+		postingAccountAmountTransport.setDate(Date.valueOf(postingAccountAmount.getDate()));
 
+		return postingAccountAmountTransport;
+	}
 }

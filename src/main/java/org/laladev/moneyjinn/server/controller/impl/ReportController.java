@@ -45,6 +45,8 @@ import javax.inject.Inject;
 
 import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
@@ -59,12 +61,17 @@ import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
+import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
+import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowReportingFormResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
+import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphRequest;
+import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.TrendsCalculatedTransport;
@@ -74,6 +81,7 @@ import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +114,7 @@ public class ReportController extends AbstractController {
 		super.registerBeanMapper(new MoneyflowTransportMapper());
 		super.registerBeanMapper(new CapitalsourceTransportMapper());
 		super.registerBeanMapper(new PostingAccountTransportMapper());
+		super.registerBeanMapper(new PostingAccountAmountTransportMapper());
 	}
 
 	@RequestMapping(value = "showReportingForm", method = { RequestMethod.GET })
@@ -125,6 +134,77 @@ public class ReportController extends AbstractController {
 			final List<Long> postingAccountIds = setting.getSetting().stream().map(id -> id.getId())
 					.collect(Collectors.toCollection(ArrayList::new));
 			response.setPostingAccountIds(postingAccountIds);
+		}
+
+		return response;
+	}
+
+	@RequestMapping(value = "showMonthlyReportGraph", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public ShowMonthlyReportGraphResponse showMonthlyReportGraph(
+			@RequestBody final ShowMonthlyReportGraphRequest request) {
+		final UserID userId = super.getUserId();
+		final ShowMonthlyReportGraphResponse response = new ShowMonthlyReportGraphResponse();
+
+		if (request.getStartDate() != null && request.getEndDate() != null) {
+			final LocalDate startDate = request.getStartDate().toLocalDate();
+			final LocalDate endDate = request.getEndDate().toLocalDate();
+
+			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
+					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+			final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
+					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+			final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
+					postingAccountIdsNo);
+
+			this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
+					.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdsYes,
+							startDate, endDate);
+			final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+
+			final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
+					postingAccountAmounts, PostingAccountAmountTransport.class);
+			final List<PostingAccountTransport> responsePostingAccounts = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
+
+			response.setPostingAccountAmountTransports(responsePostingAccountAmount);
+			response.setPostingAccountTransports(responsePostingAccounts);
+		}
+		return response;
+	}
+
+	@RequestMapping(value = "showYearlyReportGraph", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public ShowYearlyReportGraphResponse showYearlyReportGraph(
+			@RequestBody final ShowYearlyReportGraphRequest request) {
+		final UserID userId = super.getUserId();
+		final ShowYearlyReportGraphResponse response = new ShowYearlyReportGraphResponse();
+
+		if (request.getStartDate() != null && request.getEndDate() != null) {
+			final LocalDate startDate = request.getStartDate().toLocalDate();
+			final LocalDate endDate = request.getEndDate().toLocalDate();
+
+			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
+					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+			final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
+					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+			final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
+					postingAccountIdsNo);
+
+			this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
+					.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdsYes, startDate,
+							endDate);
+			final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+
+			final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
+					postingAccountAmounts, PostingAccountAmountTransport.class);
+			final List<PostingAccountTransport> responsePostingAccounts = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
+
+			response.setPostingAccountAmountTransports(responsePostingAccountAmount);
+			response.setPostingAccountTransports(responsePostingAccounts);
 		}
 
 		return response;

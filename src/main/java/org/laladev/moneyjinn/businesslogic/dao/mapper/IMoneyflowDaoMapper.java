@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
 
 public interface IMoneyflowDaoMapper {
 	public void createMoneyflow(MoneyflowData moneyflowData);
@@ -36,5 +37,13 @@ public interface IMoneyflowDaoMapper {
 	public Date getPreviousMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
 
 	public Date getNextMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
+
+	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
+			@Param("userId") Long userId, @Param("postingAccountIds") List<Long> postingAccountIdLongs,
+			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
+
+	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
+			@Param("userId") Long userId, @Param("postingAccountIds") List<Long> postingAccountIdLongs,
+			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
 
 }

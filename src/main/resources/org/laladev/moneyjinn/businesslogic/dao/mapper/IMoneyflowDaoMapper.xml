@@ -179,6 +179,64 @@
 		          OR
 		        mac_id_creator     = #{userId}
 		       )
- 	</select>   	
+ 	</select>
+ 	
+	<select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData">
+		SELECT STR_TO_DATE(DATE_FORMAT(MIN(bookingdate)
+		                              ,'%Y-%m-01')
+		                  ,'%Y-%m-%d')                date
+		      ,mpa_postingaccountid                   mpaPostingAccountId
+      		      ,SUM(amount)                            amount
+		  FROM vw_moneyflows
+		 WHERE bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
+		   AND mpa_postingaccountid IN 
+		   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
+		      open="(" separator="," close=")">
+		        #{postingAccountId}
+		   </foreach>
+		   AND amount             <![CDATA[ < ]]> 0
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 GROUP BY YEAR(bookingdate)
+		         ,MONTH(bookingdate)
+		         ,mpa_postingaccountid
+ 		 ORDER BY 1
+		         ,2
+		         ,3
+	</select>
+
+	<select id="getAllMoneyflowsByDateRangeGroupedByYearhPostingAccount"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData">
+		SELECT STR_TO_DATE(DATE_FORMAT(MIN(bookingdate)
+		                              ,'%Y-%m-01')
+		                  ,'%Y-%m-%d')                date
+		      ,mpa_postingaccountid                   mpaPostingAccountId
+      		      ,SUM(amount)                            amount
+		  FROM vw_moneyflows
+		 WHERE bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
+		   AND mpa_postingaccountid IN 
+		   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
+		      open="(" separator="," close=")">
+		        #{postingAccountId}
+		   </foreach>
+		   AND amount             <![CDATA[ < ]]> 0
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		 GROUP BY YEAR(bookingdate)
+		         ,mpa_postingaccountid
+ 		 ORDER BY 1
+		         ,2
+		         ,3
+	</select>
+				
 </mapper>
  

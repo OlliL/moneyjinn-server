@@ -6,6 +6,8 @@ import java.time.Month;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
+import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
@@ -170,4 +172,30 @@ public interface IMoneyflowService {
 	 * @return
 	 */
 	public LocalDate getNextMoneyflowDate(UserID userId, LocalDate date);
+
+	/**
+	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s,
+	 * years and months.
+	 *
+	 * @param userId
+	 * @param postingAccountIds
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(UserID userId,
+			List<PostingAccountID> postingAccountIds, LocalDate startDate, LocalDate endDate);
+
+	/**
+	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s,
+	 * years.
+	 *
+	 * @param userId
+	 * @param postingAccountIds
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId,
+			List<PostingAccountID> postingAccountIds, LocalDate startDate, LocalDate endDate);
 }

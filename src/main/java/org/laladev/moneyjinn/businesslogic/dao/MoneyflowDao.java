@@ -54,6 +54,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.businesslogic.dao.mapper.IMoneyflowDaoMapper;
 
 @Named
@@ -114,6 +115,18 @@ public class MoneyflowDao {
 
 	public Date getNextMoneyflowDate(final Long userId, final Date date) {
 		return this.mapper.getNextMoneyflowDate(userId, date);
+	}
+
+	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final Long userId,
+			final List<Long> postingAccountIdLongs, final Date dateFrom, final Date dateTil) {
+		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdLongs,
+				dateFrom, dateTil);
+	}
+
+	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final Long userId,
+			final List<Long> postingAccountIdLongs, final Date dateFrom, final Date dateTil) {
+		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdLongs,
+				dateFrom, dateTil);
 	}
 
 }
