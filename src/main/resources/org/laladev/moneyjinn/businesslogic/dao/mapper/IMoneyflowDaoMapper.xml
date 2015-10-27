@@ -210,7 +210,7 @@
 		         ,3
 	</select>
 
-	<select id="getAllMoneyflowsByDateRangeGroupedByYearhPostingAccount"
+	<select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
 		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData">
 		SELECT STR_TO_DATE(DATE_FORMAT(MIN(bookingdate)
 		                              ,'%Y-%m-01')
