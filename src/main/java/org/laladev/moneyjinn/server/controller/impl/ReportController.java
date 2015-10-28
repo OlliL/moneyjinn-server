@@ -152,12 +152,14 @@ public class ReportController extends AbstractController {
 
 			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
 					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
-			final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
-					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
-			final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-					postingAccountIdsNo);
+			if (request.getPostingAccountIdsNo() != null) {
+				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
+						.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+				final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
+						postingAccountIdsNo);
 
-			this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+				this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+			}
 			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
 					.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdsYes,
 							startDate, endDate);
@@ -187,12 +189,14 @@ public class ReportController extends AbstractController {
 
 			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
 					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
-			final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
-					.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
-			final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-					postingAccountIdsNo);
+			if (request.getPostingAccountIdsNo() != null) {
+				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
+						.map(pai -> new PostingAccountID(pai)).collect(Collectors.toCollection(ArrayList::new));
+				final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
+						postingAccountIdsNo);
 
-			this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+				this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+			}
 			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
 					.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdsYes, startDate,
 							endDate);

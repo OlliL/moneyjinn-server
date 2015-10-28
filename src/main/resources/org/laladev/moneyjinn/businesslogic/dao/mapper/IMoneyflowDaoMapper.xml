@@ -183,11 +183,9 @@
  	
 	<select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
 		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData">
-		SELECT STR_TO_DATE(DATE_FORMAT(MIN(bookingdate)
-		                              ,'%Y-%m-01')
-		                  ,'%Y-%m-%d')                date
-		      ,mpa_postingaccountid                   mpaPostingAccountId
-      		      ,SUM(amount)                            amount
+		SELECT MIN(bookingdate)      date
+		      ,mpa_postingaccountid  mpaPostingAccountId
+      		      ,SUM(amount)           amount
 		  FROM vw_moneyflows
 		 WHERE bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
 		   AND mpa_postingaccountid IN 
@@ -212,11 +210,9 @@
 
 	<select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
 		resultType="org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData">
-		SELECT STR_TO_DATE(DATE_FORMAT(MIN(bookingdate)
-		                              ,'%Y-%m-01')
-		                  ,'%Y-%m-%d')                date
-		      ,mpa_postingaccountid                   mpaPostingAccountId
-      		      ,SUM(amount)                            amount
+		SELECT CONCAT(YEAR(MIN(bookingdate)),'-01-01')       date
+		      ,mpa_postingaccountid   mpaPostingAccountId
+      		      ,SUM(amount)            amount
 		  FROM vw_moneyflows
 		 WHERE bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
 		   AND mpa_postingaccountid IN 
