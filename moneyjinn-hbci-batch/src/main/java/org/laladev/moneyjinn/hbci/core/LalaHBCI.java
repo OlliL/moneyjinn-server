@@ -23,7 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-package org.laladev.hbci;
+package org.laladev.moneyjinn.hbci.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,14 +43,14 @@ import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
-import org.laladev.hbci.collector.AccountMovementCollector;
-import org.laladev.hbci.collector.BalanceDailyCollector;
-import org.laladev.hbci.entity.AccountMovement;
-import org.laladev.hbci.entity.BalanceDaily;
-import org.laladev.hbci.handler.AbstractHandler;
-import org.laladev.hbci.handler.AccountMovementHandler;
-import org.laladev.hbci.handler.BalanceDailyHandler;
-import org.laladev.hbci.handler.BalanceMonthlyHandler;
+import org.laladev.moneyjinn.hbci.core.collector.AccountMovementCollector;
+import org.laladev.moneyjinn.hbci.core.collector.BalanceDailyCollector;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.handler.AbstractHandler;
+import org.laladev.moneyjinn.hbci.core.handler.AccountMovementHandler;
+import org.laladev.moneyjinn.hbci.core.handler.BalanceDailyHandler;
+import org.laladev.moneyjinn.hbci.core.handler.BalanceMonthlyHandler;
 
 public final class LalaHBCI {
 	private final Properties properties;

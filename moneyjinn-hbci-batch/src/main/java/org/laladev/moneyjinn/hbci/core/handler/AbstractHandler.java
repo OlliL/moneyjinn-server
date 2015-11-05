@@ -23,34 +23,12 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.handler;
+package org.laladev.moneyjinn.hbci.core.handler;
 
-import java.util.List;
+import java.util.Observable;
 
-import org.hibernate.StatelessSession;
-import org.hibernate.exception.ConstraintViolationException;
-import org.laladev.hbci.entity.AccountMovement;
+public abstract class AbstractHandler extends Observable {
 
-public class AccountMovementHandler extends AbstractHandler {
-	private final StatelessSession session;
-	private final List<AccountMovement> accountMovements;
+	public abstract void handle();
 
-	public AccountMovementHandler(final StatelessSession session, final List<AccountMovement> accountMovements) {
-		this.session = session;
-		this.accountMovements = accountMovements;
-	}
-
-	@Override
-	public void handle() {
-		for (final AccountMovement accountMovement : this.accountMovements) {
-			try {
-				session.insert(accountMovement);
-				setChanged();
-				notifyObservers(accountMovement);
-
-			} catch (final ConstraintViolationException e) {
-			}
-
-		}
-	}
 }

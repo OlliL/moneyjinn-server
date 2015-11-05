@@ -23,7 +23,7 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.collector;
+package org.laladev.moneyjinn.hbci.core.collector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +34,8 @@ import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
-import org.laladev.hbci.entity.AccountMovement;
-import org.laladev.hbci.entity.mapper.AccountMovementMapper;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.AccountMovementMapper;
 
 public class AccountMovementCollector {
 	public List<AccountMovement> collect(final HBCIHandler hbciHandler, final Konto account) {

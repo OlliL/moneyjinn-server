@@ -23,17 +23,17 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.handler;
+package org.laladev.moneyjinn.hbci.core.handler;
 
 import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.StatelessSession;
 import org.hibernate.exception.ConstraintViolationException;
-import org.laladev.hbci.entity.AccountMovement;
-import org.laladev.hbci.entity.BalanceDaily;
-import org.laladev.hbci.entity.BalanceMonthly;
-import org.laladev.hbci.entity.mapper.BalanceMonthlyMapper;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
 
 /**
  * This Handler determines the monthly balance of all previous month. This is done by collecting all movements of an account and determine the balance

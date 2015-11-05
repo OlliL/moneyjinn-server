@@ -23,13 +23,13 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.handler;
+package org.laladev.moneyjinn.hbci.core.handler;
 
 import org.hibernate.Query;
 import org.hibernate.StatelessSession;
 import org.hibernate.exception.ConstraintViolationException;
-import org.laladev.hbci.entity.BalanceDaily;
-import org.laladev.hbci.entity.mapper.BalanceDailyMapper;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
 
 /**
  * @author Dennis Garske

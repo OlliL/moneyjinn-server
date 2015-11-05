@@ -1,6 +1,6 @@
-# lalaHBCI
+# moneyjinn-hbci-core
 
-lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect several data from the bank accounts specified. It stores the collected information in a database and notifies all given Observers to for further data processing.
+moneyjinn-hbci-core utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect several data from the bank accounts specified. It stores the collected information in a database and notifies all given Observers to for further data processing.
 
 ## Setup
 
@@ -10,8 +10,8 @@ lalaHBCI utilizes [hbci4java](https://github.com/willuhn/hbci4java) to collect s
 
 ## Usage
 
-* create a new java project and add lalaHBCI as a dependency to it
-* create a `static Main` class which executes the `main` method of `lala.hbci.lalaHBCI`
+* create a new java project and add moneyjinn-hbci-core as a dependency to it
+* create a `static Main` class which executes the `main` method of `lala.hbci.moneyjinn-hbci-core`
 * it could look like this:
 
 ```Java
@@ -24,7 +24,7 @@ public final class Main {
 		properties.load(propertyFile);
 		propertyFile.close();
 
-		final LalaHBCI lalaHBCI = new LalaHBCI(properties);
+		final moneyjinn-hbci-core moneyjinn-hbci-core = new moneyjinn-hbci-core(properties);
 		final List<String> passports = new ArrayList<String>(3);
 		passports.add(System.getProperty("user.home") + File.separator + "hbci_account_1.dat");
 		passports.add(System.getProperty("user.home") + File.separator + "hbci_account_2.dat");
@@ -33,14 +33,14 @@ public final class Main {
 		final List<Observer> observers = new ArrayList<Observer>(1);
 		observers.add(new LalaMoneyflowSubscriber());
 
-		lalaHBCI.main(passports, observers);
+		moneyjinn-hbci-core.main(passports, observers);
 
 	}
 }
 ```
 
 
-* you further need to hand over the following properties during instantiation of `lalaHBCI`
+* you further need to hand over the following properties during instantiation of `moneyjinn-hbci-core`
   * hbci.passport.password
     * must be the password to all of your passport files
   * hbci.PASSPORT-FILENAME.pin

@@ -1,4 +1,4 @@
-package org.laladev.hbci.entity.mapper;
+package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

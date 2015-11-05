@@ -1,10 +1,10 @@
-package org.laladev.hbci.entity.mapper;
+package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import org.laladev.hbci.entity.AbstractAccountEntitiy;
-import org.laladev.hbci.entity.BalanceMonthly;
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 
 public class BalanceMonthlyMapper {
 	public BalanceMonthly map(final AbstractAccountEntitiy accountEntitiy, final Calendar calendar,

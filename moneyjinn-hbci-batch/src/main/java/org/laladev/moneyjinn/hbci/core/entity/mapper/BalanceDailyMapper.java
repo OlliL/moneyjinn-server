@@ -1,9 +1,9 @@
-package org.laladev.hbci.entity.mapper;
+package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
 import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
-import org.laladev.hbci.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
 import java.math.BigDecimal;
 import java.sql.Date;

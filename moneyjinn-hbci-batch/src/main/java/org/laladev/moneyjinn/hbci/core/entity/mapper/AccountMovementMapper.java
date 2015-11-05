@@ -23,7 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-package org.laladev.hbci.entity.mapper;
+package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -33,7 +33,7 @@ import java.util.Calendar;
 
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
-import org.laladev.hbci.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
 public class AccountMovementMapper {
 	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");

@@ -23,7 +23,7 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.entity;
+package org.laladev.moneyjinn.hbci.core.entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

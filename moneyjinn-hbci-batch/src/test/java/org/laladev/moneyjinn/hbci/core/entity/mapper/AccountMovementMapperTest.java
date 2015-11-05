@@ -1,4 +1,4 @@
-package org.laladev.hbci.entity.mapper;
+package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +10,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
-import org.laladev.hbci.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.AccountMovementMapper;
 
 public class AccountMovementMapperTest {
 	private final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();

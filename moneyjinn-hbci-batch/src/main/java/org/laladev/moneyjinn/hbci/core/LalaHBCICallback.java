@@ -23,7 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-package org.laladev.hbci;
+package org.laladev.moneyjinn.hbci.core;
 
 import org.kapott.hbci.callback.HBCICallbackConsole;
 import org.kapott.hbci.passport.HBCIPassport;

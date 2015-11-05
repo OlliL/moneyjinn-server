@@ -23,7 +23,7 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-package org.laladev.hbci.collector;
+package org.laladev.moneyjinn.hbci.core.collector;
 
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRSaldoReq;
@@ -31,8 +31,8 @@ import org.kapott.hbci.GV_Result.GVRSaldoReq.Info;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
-import org.laladev.hbci.entity.BalanceDaily;
-import org.laladev.hbci.entity.mapper.BalanceDailyMapper;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
 
 public class BalanceDailyCollector {
 	public BalanceDaily collect(final HBCIHandler hbciHandler, final Konto account) {
