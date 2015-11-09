@@ -24,7 +24,7 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.report.transport;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.core.rest.model.report;
 import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

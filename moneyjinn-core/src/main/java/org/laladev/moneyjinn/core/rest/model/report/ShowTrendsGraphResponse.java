@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.core.rest.model.report;
 import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.TrendsCalculatedTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.TrendsSettledTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.core.rest.model.user;
 
 import java.util.List;
 
-import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

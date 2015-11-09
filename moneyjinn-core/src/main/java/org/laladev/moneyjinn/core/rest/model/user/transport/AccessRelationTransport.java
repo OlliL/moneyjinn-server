@@ -24,49 +24,56 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.user.transport;
 
-import java.util.List;
+import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+public class AccessRelationTransport {
+	private Long id;
+	private Long refId;
+	private Date validfrom;
+	private Date validtil;
 
-@JsonRootName("validationItemTransport")
-public class ValidationItemTransport {
-	private Object key;
-	private Integer error;
-	private List<String> variableArray;
-
-	public final Object getKey() {
-		return this.key;
+	public final Long getId() {
+		return this.id;
 	}
 
-	public final void setKey(final Object key) {
-		this.key = key;
+	public final void setId(final Long id) {
+		this.id = id;
 	}
 
-	public final Integer getError() {
-		return this.error;
+	public final Long getRefId() {
+		return this.refId;
 	}
 
-	public final void setError(final Integer error) {
-		this.error = error;
+	public final void setRefId(final Long refId) {
+		this.refId = refId;
 	}
 
-	public final List<String> getVariableArray() {
-		return this.variableArray;
+	public final Date getValidfrom() {
+		return this.validfrom;
 	}
 
-	public final void setVariableArray(final List<String> variableArray) {
-		this.variableArray = variableArray;
+	public final void setValidfrom(final Date validfrom) {
+		this.validfrom = validfrom;
+	}
+
+	public final Date getValidtil() {
+		return this.validtil;
+	}
+
+	public final void setValidtil(final Date validtil) {
+		this.validtil = validtil;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.error == null) ? 0 : this.error.hashCode());
-		result = prime * result + ((this.key == null) ? 0 : this.key.hashCode());
-		result = prime * result + ((this.variableArray == null) ? 0 : this.variableArray.hashCode());
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((this.refId == null) ? 0 : this.refId.hashCode());
+		result = prime * result + ((this.validfrom == null) ? 0 : this.validfrom.hashCode());
+		result = prime * result + ((this.validtil == null) ? 0 : this.validtil.hashCode());
 		return result;
 	}
 
@@ -81,26 +88,33 @@ public class ValidationItemTransport {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final ValidationItemTransport other = (ValidationItemTransport) obj;
-		if (this.error == null) {
-			if (other.error != null) {
+		final AccessRelationTransport other = (AccessRelationTransport) obj;
+		if (this.id == null) {
+			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.error.equals(other.error)) {
+		} else if (!this.id.equals(other.id)) {
 			return false;
 		}
-		if (this.key == null) {
-			if (other.key != null) {
+		if (this.refId == null) {
+			if (other.refId != null) {
 				return false;
 			}
-		} else if (!this.key.equals(other.key)) {
+		} else if (!this.refId.equals(other.refId)) {
 			return false;
 		}
-		if (this.variableArray == null) {
-			if (other.variableArray != null) {
+		if (this.validfrom == null) {
+			if (other.validfrom != null) {
 				return false;
 			}
-		} else if (!this.variableArray.equals(other.variableArray)) {
+		} else if (!this.validfrom.equals(other.validfrom)) {
+			return false;
+		}
+		if (this.validtil == null) {
+			if (other.validtil != null) {
+				return false;
+			}
+		} else if (!this.validtil.equals(other.validtil)) {
 			return false;
 		}
 		return true;
@@ -109,12 +123,14 @@ public class ValidationItemTransport {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("ValidationItemTransport [key=");
-		builder.append(this.key);
-		builder.append(", error=");
-		builder.append(this.error);
-		builder.append(", variableArray=");
-		builder.append(this.variableArray);
+		builder.append("AccessRelationTransport [id=");
+		builder.append(this.id);
+		builder.append(", refId=");
+		builder.append(this.refId);
+		builder.append(", validfrom=");
+		builder.append(this.validfrom);
+		builder.append(", validtil=");
+		builder.append(this.validtil);
 		builder.append("]");
 		return builder.toString();
 	}

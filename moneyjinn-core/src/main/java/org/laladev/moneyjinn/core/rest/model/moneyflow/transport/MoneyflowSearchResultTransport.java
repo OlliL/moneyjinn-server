@@ -24,35 +24,17 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.moneyflow.transport;
 
 import java.math.BigDecimal;
 
-public class MonthlySettlementTransport {
-	private Long id;
-	private Long userid;
+public class MoneyflowSearchResultTransport {
 	private Short year;
 	private Short month;
 	private BigDecimal amount;
-	private Long capitalsourceid;
-	private String capitalsourcecomment;
-	private Short capitalsourcegroupuse;
-
-	public final Long getId() {
-		return this.id;
-	}
-
-	public final void setId(final Long id) {
-		this.id = id;
-	}
-
-	public final Long getUserid() {
-		return this.userid;
-	}
-
-	public final void setUserid(final Long userid) {
-		this.userid = userid;
-	}
+	private Long contractpartnerid;
+	private String contractpartnername;
+	private String comment;
 
 	public final Short getYear() {
 		return this.year;
@@ -78,28 +60,28 @@ public class MonthlySettlementTransport {
 		this.amount = amount;
 	}
 
-	public final Long getCapitalsourceid() {
-		return this.capitalsourceid;
+	public final Long getContractpartnerid() {
+		return this.contractpartnerid;
 	}
 
-	public final void setCapitalsourceid(final Long capitalsourceid) {
-		this.capitalsourceid = capitalsourceid;
+	public final void setContractpartnerid(final Long contractpartnerid) {
+		this.contractpartnerid = contractpartnerid;
 	}
 
-	public final String getCapitalsourcecomment() {
-		return this.capitalsourcecomment;
+	public final String getContractpartnername() {
+		return this.contractpartnername;
 	}
 
-	public final void setCapitalsourcecomment(final String capitalsourcecomment) {
-		this.capitalsourcecomment = capitalsourcecomment;
+	public final void setContractpartnername(final String contractpartnername) {
+		this.contractpartnername = contractpartnername;
 	}
 
-	public final Short getCapitalsourcegroupuse() {
-		return this.capitalsourcegroupuse;
+	public final String getComment() {
+		return this.comment;
 	}
 
-	public final void setCapitalsourcegroupuse(final Short capitalsourcegroupuse) {
-		this.capitalsourcegroupuse = capitalsourcegroupuse;
+	public final void setComment(final String comment) {
+		this.comment = comment;
 	}
 
 	@Override
@@ -107,12 +89,10 @@ public class MonthlySettlementTransport {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.capitalsourcecomment == null) ? 0 : this.capitalsourcecomment.hashCode());
-		result = prime * result + ((this.capitalsourcegroupuse == null) ? 0 : this.capitalsourcegroupuse.hashCode());
-		result = prime * result + ((this.capitalsourceid == null) ? 0 : this.capitalsourceid.hashCode());
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
+		result = prime * result + ((this.contractpartnerid == null) ? 0 : this.contractpartnerid.hashCode());
+		result = prime * result + ((this.contractpartnername == null) ? 0 : this.contractpartnername.hashCode());
 		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
-		result = prime * result + ((this.userid == null) ? 0 : this.userid.hashCode());
 		result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
 		return result;
 	}
@@ -128,7 +108,7 @@ public class MonthlySettlementTransport {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final MonthlySettlementTransport other = (MonthlySettlementTransport) obj;
+		final MoneyflowSearchResultTransport other = (MoneyflowSearchResultTransport) obj;
 		if (this.amount == null) {
 			if (other.amount != null) {
 				return false;
@@ -136,32 +116,25 @@ public class MonthlySettlementTransport {
 		} else if (!this.amount.equals(other.amount)) {
 			return false;
 		}
-		if (this.capitalsourcecomment == null) {
-			if (other.capitalsourcecomment != null) {
+		if (this.comment == null) {
+			if (other.comment != null) {
 				return false;
 			}
-		} else if (!this.capitalsourcecomment.equals(other.capitalsourcecomment)) {
+		} else if (!this.comment.equals(other.comment)) {
 			return false;
 		}
-		if (this.capitalsourcegroupuse == null) {
-			if (other.capitalsourcegroupuse != null) {
+		if (this.contractpartnerid == null) {
+			if (other.contractpartnerid != null) {
 				return false;
 			}
-		} else if (!this.capitalsourcegroupuse.equals(other.capitalsourcegroupuse)) {
+		} else if (!this.contractpartnerid.equals(other.contractpartnerid)) {
 			return false;
 		}
-		if (this.capitalsourceid == null) {
-			if (other.capitalsourceid != null) {
+		if (this.contractpartnername == null) {
+			if (other.contractpartnername != null) {
 				return false;
 			}
-		} else if (!this.capitalsourceid.equals(other.capitalsourceid)) {
-			return false;
-		}
-		if (this.id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!this.contractpartnername.equals(other.contractpartnername)) {
 			return false;
 		}
 		if (this.month == null) {
@@ -169,13 +142,6 @@ public class MonthlySettlementTransport {
 				return false;
 			}
 		} else if (!this.month.equals(other.month)) {
-			return false;
-		}
-		if (this.userid == null) {
-			if (other.userid != null) {
-				return false;
-			}
-		} else if (!this.userid.equals(other.userid)) {
 			return false;
 		}
 		if (this.year == null) {
@@ -191,22 +157,18 @@ public class MonthlySettlementTransport {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("MonthlySettlementTransport [id=");
-		builder.append(this.id);
-		builder.append(", userid=");
-		builder.append(this.userid);
-		builder.append(", year=");
+		builder.append("MoneyflowSearchResultTransport [year=");
 		builder.append(this.year);
 		builder.append(", month=");
 		builder.append(this.month);
 		builder.append(", amount=");
 		builder.append(this.amount);
-		builder.append(", capitalsourceid=");
-		builder.append(this.capitalsourceid);
-		builder.append(", capitalsourcecomment=");
-		builder.append(this.capitalsourcecomment);
-		builder.append(", capitalsourcegroupuse=");
-		builder.append(this.capitalsourcegroupuse);
+		builder.append(", contractpartnerid=");
+		builder.append(this.contractpartnerid);
+		builder.append(", contractpartnername=");
+		builder.append(this.contractpartnername);
+		builder.append(", comment=");
+		builder.append(this.comment);
 		builder.append("]");
 		return builder.toString();
 	}

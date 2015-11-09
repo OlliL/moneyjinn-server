@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
+import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 

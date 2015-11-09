@@ -28,19 +28,31 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import java.util.List;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("showSearchMoneyflowFormResponse")
-public class ShowSearchMoneyflowFormResponse extends AbstractResponse {
+@JsonRootName("searchMoneyflowsResponse")
+public class SearchMoneyflowsResponse extends ValidationResponse {
+	@JsonProperty("moneyflowSearchResultTransport")
+	private List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports;
 	@JsonProperty("contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
 	@JsonProperty("postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
+
+	public final List<MoneyflowSearchResultTransport> getMoneyflowSearchResultTransports() {
+		return this.moneyflowSearchResultTransports;
+	}
+
+	public final void setMoneyflowSearchResultTransports(
+			final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports) {
+		this.moneyflowSearchResultTransports = moneyflowSearchResultTransports;
+	}
 
 	public final List<ContractpartnerTransport> getContractpartnerTransports() {
 		return this.contractpartnerTransports;
@@ -64,6 +76,8 @@ public class ShowSearchMoneyflowFormResponse extends AbstractResponse {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((this.contractpartnerTransports == null) ? 0 : this.contractpartnerTransports.hashCode());
+		result = prime * result + ((this.moneyflowSearchResultTransports == null) ? 0
+				: this.moneyflowSearchResultTransports.hashCode());
 		result = prime * result
 				+ ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
 		return result;
@@ -80,12 +94,19 @@ public class ShowSearchMoneyflowFormResponse extends AbstractResponse {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final ShowSearchMoneyflowFormResponse other = (ShowSearchMoneyflowFormResponse) obj;
+		final SearchMoneyflowsResponse other = (SearchMoneyflowsResponse) obj;
 		if (this.contractpartnerTransports == null) {
 			if (other.contractpartnerTransports != null) {
 				return false;
 			}
 		} else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
+			return false;
+		}
+		if (this.moneyflowSearchResultTransports == null) {
+			if (other.moneyflowSearchResultTransports != null) {
+				return false;
+			}
+		} else if (!this.moneyflowSearchResultTransports.equals(other.moneyflowSearchResultTransports)) {
 			return false;
 		}
 		if (this.postingAccountTransports == null) {
@@ -101,7 +122,9 @@ public class ShowSearchMoneyflowFormResponse extends AbstractResponse {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowSearchMoneyflowFormResponse [contractpartnerTransports=");
+		builder.append("SearchMoneyflowResponse [moneyflowSearchResultTransports=");
+		builder.append(this.moneyflowSearchResultTransports);
+		builder.append(", contractpartnerTransports=");
 		builder.append(this.contractpartnerTransports);
 		builder.append(", postingAccountTransports=");
 		builder.append(this.postingAccountTransports);

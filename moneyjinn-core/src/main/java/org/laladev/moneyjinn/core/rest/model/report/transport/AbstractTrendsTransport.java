@@ -23,25 +23,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-//
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.report.transport;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
-public class PostingAccountAmountTransport {
-	private Date date;
+public class AbstractTrendsTransport {
+	private Short year;
+	private Short month;
 	private BigDecimal amount;
-	private Long postingaccountid;
-	private String postingaccountname;
 
-	public final Date getDate() {
-		return this.date;
+	public final Short getYear() {
+		return this.year;
 	}
 
-	public final void setDate(final Date date) {
-		this.date = date;
+	public final void setYear(final Short year) {
+		this.year = year;
+	}
+
+	public final Short getMonth() {
+		return this.month;
+	}
+
+	public final void setMonth(final Short month) {
+		this.month = month;
 	}
 
 	public final BigDecimal getAmount() {
@@ -52,30 +57,13 @@ public class PostingAccountAmountTransport {
 		this.amount = amount;
 	}
 
-	public final Long getPostingaccountid() {
-		return this.postingaccountid;
-	}
-
-	public final void setPostingaccountid(final Long postingaccountid) {
-		this.postingaccountid = postingaccountid;
-	}
-
-	public final String getPostingaccountname() {
-		return this.postingaccountname;
-	}
-
-	public final void setPostingaccountname(final String postingaccountname) {
-		this.postingaccountname = postingaccountname;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
-		result = prime * result + ((this.postingaccountid == null) ? 0 : this.postingaccountid.hashCode());
-		result = prime * result + ((this.postingaccountname == null) ? 0 : this.postingaccountname.hashCode());
+		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
+		result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
 		return result;
 	}
 
@@ -90,7 +78,7 @@ public class PostingAccountAmountTransport {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final PostingAccountAmountTransport other = (PostingAccountAmountTransport) obj;
+		final AbstractTrendsTransport other = (AbstractTrendsTransport) obj;
 		if (this.amount == null) {
 			if (other.amount != null) {
 				return false;
@@ -98,25 +86,18 @@ public class PostingAccountAmountTransport {
 		} else if (!this.amount.equals(other.amount)) {
 			return false;
 		}
-		if (this.date == null) {
-			if (other.date != null) {
+		if (this.month == null) {
+			if (other.month != null) {
 				return false;
 			}
-		} else if (!this.date.equals(other.date)) {
+		} else if (!this.month.equals(other.month)) {
 			return false;
 		}
-		if (this.postingaccountid == null) {
-			if (other.postingaccountid != null) {
+		if (this.year == null) {
+			if (other.year != null) {
 				return false;
 			}
-		} else if (!this.postingaccountid.equals(other.postingaccountid)) {
-			return false;
-		}
-		if (this.postingaccountname == null) {
-			if (other.postingaccountname != null) {
-				return false;
-			}
-		} else if (!this.postingaccountname.equals(other.postingaccountname)) {
+		} else if (!this.year.equals(other.year)) {
 			return false;
 		}
 		return true;
@@ -125,15 +106,14 @@ public class PostingAccountAmountTransport {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("PostingAccountAmountTransport [date=");
-		builder.append(this.date);
+		builder.append("AbstractTrendsTransport [year=");
+		builder.append(this.year);
+		builder.append(", month=");
+		builder.append(this.month);
 		builder.append(", amount=");
 		builder.append(this.amount);
-		builder.append(", postingaccountid=");
-		builder.append(this.postingaccountid);
-		builder.append(", postingaccountname=");
-		builder.append(this.postingaccountname);
 		builder.append("]");
 		return builder.toString();
 	}
+
 }

@@ -24,56 +24,37 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.comparedata.transport;
 
-import java.sql.Date;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-public class AccessRelationTransport {
-	private Long id;
-	private Long refId;
-	private Date validfrom;
-	private Date validtil;
+public class CompareDataMatchingTransport {
+	private MoneyflowTransport moneyflowTransport;
+	private CompareDataDatasetTransport compareDataDatasetTransport;
 
-	public final Long getId() {
-		return this.id;
+	public final MoneyflowTransport getMoneyflowTransport() {
+		return this.moneyflowTransport;
 	}
 
-	public final void setId(final Long id) {
-		this.id = id;
+	public final void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
+		this.moneyflowTransport = moneyflowTransport;
 	}
 
-	public final Long getRefId() {
-		return this.refId;
+	public final CompareDataDatasetTransport getCompareDataDatasetTransport() {
+		return this.compareDataDatasetTransport;
 	}
 
-	public final void setRefId(final Long refId) {
-		this.refId = refId;
-	}
-
-	public final Date getValidfrom() {
-		return this.validfrom;
-	}
-
-	public final void setValidfrom(final Date validfrom) {
-		this.validfrom = validfrom;
-	}
-
-	public final Date getValidtil() {
-		return this.validtil;
-	}
-
-	public final void setValidtil(final Date validtil) {
-		this.validtil = validtil;
+	public final void setCompareDataDatasetTransport(final CompareDataDatasetTransport compareDataDatasetTransport) {
+		this.compareDataDatasetTransport = compareDataDatasetTransport;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-		result = prime * result + ((this.refId == null) ? 0 : this.refId.hashCode());
-		result = prime * result + ((this.validfrom == null) ? 0 : this.validfrom.hashCode());
-		result = prime * result + ((this.validtil == null) ? 0 : this.validtil.hashCode());
+		result = prime * result
+				+ ((this.compareDataDatasetTransport == null) ? 0 : this.compareDataDatasetTransport.hashCode());
+		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
 		return result;
 	}
 
@@ -88,33 +69,19 @@ public class AccessRelationTransport {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final AccessRelationTransport other = (AccessRelationTransport) obj;
-		if (this.id == null) {
-			if (other.id != null) {
+		final CompareDataMatchingTransport other = (CompareDataMatchingTransport) obj;
+		if (this.compareDataDatasetTransport == null) {
+			if (other.compareDataDatasetTransport != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!this.compareDataDatasetTransport.equals(other.compareDataDatasetTransport)) {
 			return false;
 		}
-		if (this.refId == null) {
-			if (other.refId != null) {
+		if (this.moneyflowTransport == null) {
+			if (other.moneyflowTransport != null) {
 				return false;
 			}
-		} else if (!this.refId.equals(other.refId)) {
-			return false;
-		}
-		if (this.validfrom == null) {
-			if (other.validfrom != null) {
-				return false;
-			}
-		} else if (!this.validfrom.equals(other.validfrom)) {
-			return false;
-		}
-		if (this.validtil == null) {
-			if (other.validtil != null) {
-				return false;
-			}
-		} else if (!this.validtil.equals(other.validtil)) {
+		} else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
 			return false;
 		}
 		return true;
@@ -123,14 +90,10 @@ public class AccessRelationTransport {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("AccessRelationTransport [id=");
-		builder.append(this.id);
-		builder.append(", refId=");
-		builder.append(this.refId);
-		builder.append(", validfrom=");
-		builder.append(this.validfrom);
-		builder.append(", validtil=");
-		builder.append(this.validtil);
+		builder.append("CompareDataMatchingTransport [moneyflowTransport=");
+		builder.append(this.moneyflowTransport);
+		builder.append(", compareDataDatasetTransport=");
+		builder.append(this.compareDataDatasetTransport);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -24,8 +24,7 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.report.transport;
 
-public class TrendsSettledTransport extends AbstractTrendsTransport {
-
+public class TrendsCalculatedTransport extends AbstractTrendsTransport {
 }

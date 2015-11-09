@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
+import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

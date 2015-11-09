@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.core.rest.model.report;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

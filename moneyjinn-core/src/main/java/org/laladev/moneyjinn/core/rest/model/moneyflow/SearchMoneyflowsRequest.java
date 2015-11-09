@@ -24,46 +24,36 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.transport;
+package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.math.BigDecimal;
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 
-public class AbstractTrendsTransport {
-	private Short year;
-	private Short month;
-	private BigDecimal amount;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-	public final Short getYear() {
-		return this.year;
+@JsonRootName("searchMoneyflowsRequest")
+public class SearchMoneyflowsRequest extends AbstractRequest {
+	private MoneyflowSearchParamsTransport moneyflowSearchParamsTransport;
+
+	public SearchMoneyflowsRequest() {
+		super();
 	}
 
-	public final void setYear(final Short year) {
-		this.year = year;
+	public final MoneyflowSearchParamsTransport getMoneyflowSearchParamsTransport() {
+		return this.moneyflowSearchParamsTransport;
 	}
 
-	public final Short getMonth() {
-		return this.month;
-	}
-
-	public final void setMonth(final Short month) {
-		this.month = month;
-	}
-
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
-
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
+	public final void setMoneyflowSearchParamsTransport(
+			final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
+		this.moneyflowSearchParamsTransport = moneyflowSearchParamsTransport;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
-		result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
+		result = prime * result
+				+ ((this.moneyflowSearchParamsTransport == null) ? 0 : this.moneyflowSearchParamsTransport.hashCode());
 		return result;
 	}
 
@@ -78,26 +68,12 @@ public class AbstractTrendsTransport {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final AbstractTrendsTransport other = (AbstractTrendsTransport) obj;
-		if (this.amount == null) {
-			if (other.amount != null) {
+		final SearchMoneyflowsRequest other = (SearchMoneyflowsRequest) obj;
+		if (this.moneyflowSearchParamsTransport == null) {
+			if (other.moneyflowSearchParamsTransport != null) {
 				return false;
 			}
-		} else if (!this.amount.equals(other.amount)) {
-			return false;
-		}
-		if (this.month == null) {
-			if (other.month != null) {
-				return false;
-			}
-		} else if (!this.month.equals(other.month)) {
-			return false;
-		}
-		if (this.year == null) {
-			if (other.year != null) {
-				return false;
-			}
-		} else if (!this.year.equals(other.year)) {
+		} else if (!this.moneyflowSearchParamsTransport.equals(other.moneyflowSearchParamsTransport)) {
 			return false;
 		}
 		return true;
@@ -106,12 +82,8 @@ public class AbstractTrendsTransport {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("AbstractTrendsTransport [year=");
-		builder.append(this.year);
-		builder.append(", month=");
-		builder.append(this.month);
-		builder.append(", amount=");
-		builder.append(this.amount);
+		builder.append("SearchMoneyflowRequest [moneyflowSearchParamsTransport=");
+		builder.append(this.moneyflowSearchParamsTransport);
 		builder.append("]");
 		return builder.toString();
 	}

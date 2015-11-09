@@ -1,7 +1,3 @@
-package org.laladev.moneyjinn.core.rest.model;
-
-import java.util.List;
-
 //
 // Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -28,41 +24,26 @@ import java.util.List;
 // SUCH DAMAGE.
 //
 
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+package org.laladev.moneyjinn.core.rest.model.comparedata.transport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+public class CompareDataNotInDatabaseTransport {
+	private CompareDataDatasetTransport compareDataDatasetTransport;
 
-@JsonRootName("validationResponse")
-public class ValidationResponse extends AbstractResponse {
-	private Boolean result;
-	@JsonProperty("validationItemTransport")
-	private List<ValidationItemTransport> validationItemTransports;
-
-	public final Boolean getResult() {
-		return this.result;
+	public final CompareDataDatasetTransport getCompareDataDatasetTransport() {
+		return this.compareDataDatasetTransport;
 	}
 
-	public final void setResult(final Boolean result) {
-		this.result = result;
-	}
-
-	public final List<ValidationItemTransport> getValidationItemTransports() {
-		return this.validationItemTransports;
-	}
-
-	public final void setValidationItemTransports(final List<ValidationItemTransport> validationItemTransports) {
-		this.validationItemTransports = validationItemTransports;
+	public final void setCompareDataDatasetTransport(final CompareDataDatasetTransport compareDataDatasetTransport) {
+		this.compareDataDatasetTransport = compareDataDatasetTransport;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int res = super.hashCode();
-		res = prime * res + ((this.result == null) ? 0 : this.result.hashCode());
-		res = prime * res
-				+ ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
-		return res;
+		int result = 1;
+		result = prime * result
+				+ ((this.compareDataDatasetTransport == null) ? 0 : this.compareDataDatasetTransport.hashCode());
+		return result;
 	}
 
 	@Override
@@ -70,25 +51,18 @@ public class ValidationResponse extends AbstractResponse {
 		if (this == obj) {
 			return true;
 		}
-		if (!super.equals(obj)) {
+		if (obj == null) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final ValidationResponse other = (ValidationResponse) obj;
-		if (this.result == null) {
-			if (other.result != null) {
+		final CompareDataNotInDatabaseTransport other = (CompareDataNotInDatabaseTransport) obj;
+		if (this.compareDataDatasetTransport == null) {
+			if (other.compareDataDatasetTransport != null) {
 				return false;
 			}
-		} else if (!this.result.equals(other.result)) {
-			return false;
-		}
-		if (this.validationItemTransports == null) {
-			if (other.validationItemTransports != null) {
-				return false;
-			}
-		} else if (!this.validationItemTransports.equals(other.validationItemTransports)) {
+		} else if (!this.compareDataDatasetTransport.equals(other.compareDataDatasetTransport)) {
 			return false;
 		}
 		return true;
@@ -97,10 +71,8 @@ public class ValidationResponse extends AbstractResponse {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("ValidationResponse [result=");
-		builder.append(this.result);
-		builder.append(", validationItemTransports=");
-		builder.append(this.validationItemTransports);
+		builder.append("CompareDataNotInDatabaseTransport [compareDataDatasetTransport=");
+		builder.append(this.compareDataDatasetTransport);
 		builder.append("]");
 		return builder.toString();
 	}
