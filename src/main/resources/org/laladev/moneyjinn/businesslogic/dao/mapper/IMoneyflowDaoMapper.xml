@@ -233,6 +233,102 @@
 		         ,2
 		         ,3
 	</select>
-				
+	
+	<select id="searchMoneyflowsByAmountDate"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
+		   AND amount              = CAST(#{amount} AS DECIMAL(8,2))
+		   AND maf_id              = #{userId}
+	</select>
+
+	<select id="getAllMoneyflowsByDateRangeCapitalsourceId"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
+		   AND mcs_capitalsourceid = #{capitalsourceId}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+	</select>
+	
+
+	<select id="searchMoneyflows"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchResultData"
+		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchParamsData">
+		SELECT SUM(amount)								AS amount
+		      ,GROUP_CONCAT( DISTINCT comment ORDER BY comment DESC SEPARATOR ',')	AS comment
+		      <if test="groupBy1 == 'year' or groupBy2 == 'year'">
+		      ,YEAR(bookingdate)							AS year
+		      </if>
+		      <if test="groupBy1 == 'month' or groupBy2 == 'month'">
+		      ,MONTH(bookingdate)							AS month
+		      </if>
+		      <if test="groupBy1 == 'contractpartnerid' or groupBy2 == 'contractpartnerid'">
+		      ,mcp_contractpartnerid							AS contractpartnerid
+		      </if>
+		  FROM vw_moneyflows
+		 WHERE <choose>
+		           <when test="searchString != null and featureCaseSensitive">
+		               comment
+		           </when>
+		           <when test="searchString != null">
+		               UPPER(comment)
+		           </when>
+		       </choose>
+		       <choose>
+		           <when test="searchString != null and featureEqual">
+		               =
+		           </when>
+		            <when test="searchString != null and featureRegexp">
+		               REGEXP
+		           </when>
+		            <when test="searchString != null">
+		               LIKE
+		           </when>
+		       </choose>
+		       <choose>
+		            <when test="searchString != null and featureCaseSensitive">
+		               #{searchString}
+		           </when>
+		            <when test="searchString != null">
+		                UPPER(#{searchString}) 
+		           </when>
+		       </choose>
+		       <if  test="searchString != null">
+		           AND
+		       </if>
+		       bookingdate BETWEEN #{startDate} AND #{endDate}
+		   AND maf_id              = #{userId}
+		   AND (
+		        private            = 0
+		          OR
+		        mac_id_creator     = #{userId}
+		       )
+		       <if test="featureOnlyMinusAmounts">
+		           AND amount <![CDATA[ < ]]> 0
+		       </if>
+		       <if test="contractpartnerId != null">
+		           AND mcp_contractpartnerid = #{contractpartnerId}
+		       </if>
+		       <if test="postingAccountId != null">
+		           AND mpa_postingaccountid = #{postingAccountId}
+		       </if>
+		 GROUP BY
+		 	<if test="groupBy1 != null">
+		 	    ${groupBy1}
+		 	</if>
+		 	<if test="groupBy1 != null and groupBy2 != null">
+		 	    ,
+		 	</if>
+		 	<if test="groupBy2 != null">
+		 	    ${groupBy2}
+		 	</if>
+	</select>
 </mapper>
  

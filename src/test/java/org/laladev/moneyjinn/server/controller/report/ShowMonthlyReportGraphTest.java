@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.server.builder.PostingAccountAmountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;

@@ -1,0 +1,18 @@
+"Volksbank Karlsruhe eG "
+
+"Umsatzanzeige"
+
+"BLZ:";"66190000";;"Datum:";"30.10.2015"
+"Konto:";"1008800049";;"Uhrzeit:";"22:29:30"
+"Abfrage von:";"Hermann Testkunde";;"Kontoinhaber:";"Hermann Testkunde"
+
+"Zeitraum:";"1 Woche";"von:";;"bis:";
+"Betrag in EUR:";;"von:";" ";"bis:";" "
+"Sortiert nach:";"Buchungstag";"absteigend"
+
+"Buchungstag";"Valuta";"Auftraggeber/Zahlungsempfänger";"Empfänger/Zahlungspflichtiger";"Konto-Nr.";"IBAN";"BLZ";"BIC";"Vorgang/Verwendungszweck";"Kundenreferenz";"Währung";"Umsatz";" "
+"03.05.2010";"03.05.2010";"Hermann Testkunde";"Qartnär2";;;;;"test1";;"EUR";"5,00€";"S"
+"13.05.2010";"13.05.2010";"Hermann Testkunde";"Finanzkasse Köln-Süd";;;;;"test2";;"EUR";"1000,00€";"H"
+
+"23.10.2015";;;;;;;;;"Anfangssaldo";"EUR";"22.257,11";"H"
+"30.10.2015";;;;;;;;;"Endsaldo";"EUR";"21.488,94";"H"

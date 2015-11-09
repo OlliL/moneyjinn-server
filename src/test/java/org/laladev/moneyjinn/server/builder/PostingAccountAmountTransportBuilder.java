@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 
 public class PostingAccountAmountTransportBuilder extends PostingAccountAmountTransport {
 

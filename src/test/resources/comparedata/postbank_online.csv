@@ -1,0 +1,13 @@
+Umsatzauskunft - gebuchte Umsätze
+Name;Petra Pfiffig
+BLZ;20010020
+Kontonummer;9999999999
+IBAN;DE31200100209999999999
+Aktueller Kontostand;5.314,05 €
+Summe vorgemerkter Umsätze;-11,33 €
+
+"Buchungstag";"Wertstellung";"Umsatzart";"Buchungsdetails";"Auftraggeber";"Empfänger";"Betrag (€)";"Saldo (€)"
+"03.05.2010";"03.05.2010";"Überweisung";"test1 ";"Petra Pfiffig";"Qartner2";"-5,00 €";"5.314,05 €"
+"13.05.2010";"13.05.2010";"Gutschrift";"test2 ";"Finanzkasse Köln-Süd";"Petra Pfiffig";"1.000,00 €";"5.642,80 €"
+"01.02.2010";"01.02.2010";"Überweisung";"test1 ";"Petra Pfiffig";"Hugo";"10,00 €";"5.314,05 €"
+"10.01.2010";"10.01.2010";"Überweisung";"test1 ";"Petra Pfiffig";"Paul";"-10,00 €";"5.314,05 €"

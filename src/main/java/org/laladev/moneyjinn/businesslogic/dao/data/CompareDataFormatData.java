@@ -29,18 +29,23 @@ package org.laladev.moneyjinn.businesslogic.dao.data;
 public class CompareDataFormatData {
 	private Long formatId;
 	private String name;
+	private String startTrigger0;
+	private String startTrigger1;
+	private String startTrigger2;
 	private String startline;
-	private Character delimiter;
+	private String delimiter;
 	private Short posDate;
 	private Short posPartner;
 	private Short posAmount;
 	private Short posComment;
 	private String fmtDate;
-	private Character fmtAmountDecimal;
-	private Character fmtAmountThousand;
+	private String fmtAmountDecimal;
+	private String fmtAmountThousand;
 	private Short posPartnerAlt;
 	private Short posPartnerAltPosKey;
 	private String posPartnerAltKeyword;
+	private Short posCreditDebitIndicator;
+	private String creditIndicator;
 
 	public final Long getFormatId() {
 		return this.formatId;
@@ -58,6 +63,30 @@ public class CompareDataFormatData {
 		this.name = name;
 	}
 
+	public final String getStartTrigger0() {
+		return this.startTrigger0;
+	}
+
+	public final void setStartTrigger0(final String startTrigger0) {
+		this.startTrigger0 = startTrigger0;
+	}
+
+	public final String getStartTrigger1() {
+		return this.startTrigger1;
+	}
+
+	public final void setStartTrigger1(final String startTrigger1) {
+		this.startTrigger1 = startTrigger1;
+	}
+
+	public final String getStartTrigger2() {
+		return this.startTrigger2;
+	}
+
+	public final void setStartTrigger2(final String startTrigger2) {
+		this.startTrigger2 = startTrigger2;
+	}
+
 	public final String getStartline() {
 		return this.startline;
 	}
@@ -66,11 +95,11 @@ public class CompareDataFormatData {
 		this.startline = startline;
 	}
 
-	public final Character getDelimiter() {
+	public final String getDelimiter() {
 		return this.delimiter;
 	}
 
-	public final void setDelimiter(final Character delimiter) {
+	public final void setDelimiter(final String delimiter) {
 		this.delimiter = delimiter;
 	}
 
@@ -114,19 +143,19 @@ public class CompareDataFormatData {
 		this.fmtDate = fmtDate;
 	}
 
-	public final Character getFmtAmountDecimal() {
+	public final String getFmtAmountDecimal() {
 		return this.fmtAmountDecimal;
 	}
 
-	public final void setFmtAmountDecimal(final Character fmtAmountDecimal) {
+	public final void setFmtAmountDecimal(final String fmtAmountDecimal) {
 		this.fmtAmountDecimal = fmtAmountDecimal;
 	}
 
-	public final Character getFmtAmountThousand() {
+	public final String getFmtAmountThousand() {
 		return this.fmtAmountThousand;
 	}
 
-	public final void setFmtAmountThousand(final Character fmtAmountThousand) {
+	public final void setFmtAmountThousand(final String fmtAmountThousand) {
 		this.fmtAmountThousand = fmtAmountThousand;
 	}
 
@@ -152,6 +181,22 @@ public class CompareDataFormatData {
 
 	public final void setPosPartnerAltKeyword(final String posPartnerAltKeyword) {
 		this.posPartnerAltKeyword = posPartnerAltKeyword;
+	}
+
+	public final Short getPosCreditDebitIndicator() {
+		return this.posCreditDebitIndicator;
+	}
+
+	public final void setPosCreditDebitIndicator(final Short posCreditDebitIndicator) {
+		this.posCreditDebitIndicator = posCreditDebitIndicator;
+	}
+
+	public final String getCreditIndicator() {
+		return this.creditIndicator;
+	}
+
+	public final void setCreditIndicator(final String creditIndicator) {
+		this.creditIndicator = creditIndicator;
 	}
 
 }

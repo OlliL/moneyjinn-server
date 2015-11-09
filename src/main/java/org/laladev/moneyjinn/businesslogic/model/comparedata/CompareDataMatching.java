@@ -29,23 +29,21 @@ package org.laladev.moneyjinn.businesslogic.model.comparedata;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 
 public class CompareDataMatching {
-	private Moneyflow moneyflow;
-	private CompareDataDataset compareDataDataset;
+	private final Moneyflow moneyflow;
+	private final CompareDataDataset compareDataDataset;
+
+	public CompareDataMatching(final Moneyflow moneyflow, final CompareDataDataset compareDataDataset) {
+		super();
+		this.moneyflow = moneyflow;
+		this.compareDataDataset = compareDataDataset;
+	}
 
 	public final Moneyflow getMoneyflow() {
 		return this.moneyflow;
 	}
 
-	public final void setMoneyflow(final Moneyflow moneyflow) {
-		this.moneyflow = moneyflow;
-	}
-
 	public final CompareDataDataset getCompareDataDataset() {
 		return this.compareDataDataset;
-	}
-
-	public final void setCompareDataDataset(final CompareDataDataset compareDataDataset) {
-		this.compareDataDataset = compareDataDataset;
 	}
 
 	@Override

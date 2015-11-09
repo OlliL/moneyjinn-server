@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import java.time.LocalDate;
+
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
@@ -35,6 +37,8 @@ import org.springframework.cache.CacheManager;
 public abstract class AbstractService extends AbstractMapperSupport {
 	@Inject
 	private CacheManager cacheManager;
+
+	protected static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
 
 	protected Cache getCache(final String... cacheNameParts) {
 		final String cacheName = String.join("#", cacheNameParts);

@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.server.builder.PostingAccountAmountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
@@ -25,7 +25,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-//TODO: fix date creation in SQL for yearly - it should be always january
 public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 
 	@Inject

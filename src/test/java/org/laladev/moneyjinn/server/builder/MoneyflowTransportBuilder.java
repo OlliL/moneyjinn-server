@@ -125,8 +125,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW18_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat((short) 1);
-		super.setBookingdate(DateUtil.getGMTDate("2010-05-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-05-01"));
+		super.setBookingdate(DateUtil.getGMTDate("2010-05-03"));
+		super.setInvoicedate(DateUtil.getGMTDate("2010-05-03"));
 		super.setAmount(new BigDecimal("-5.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -147,8 +147,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		super.setComment(MONEYFLOW_GENERATED_COMMENT);
-		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
-		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME);
 		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
 		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
 		return this;

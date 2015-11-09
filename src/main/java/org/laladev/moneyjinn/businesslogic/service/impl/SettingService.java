@@ -63,6 +63,9 @@ import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCompareDataSelectedCapitalsource;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
@@ -298,6 +301,53 @@ public class SettingService extends AbstractService implements ISettingService {
 		final SettingData settingData = new SettingData(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT), setting.getSetting());
 		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public void setClientCompareDataSelectedCapitalsource(final AccessID accessId,
+			final ClientCompareDataSelectedCapitalsource setting) {
+		Assert.notNull(accessId);
+		Assert.notNull(setting);
+		Assert.notNull(setting.getSetting());
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE),
+				setting.getSetting().getId().toString());
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(final AccessID accessId) {
+		Assert.notNull(accessId);
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE));
+		if (settingData != null && settingData.getValue() != null) {
+			return new ClientCompareDataSelectedCapitalsource(new CapitalsourceID(new Long(settingData.getValue())));
+		}
+		return null;
+	}
+
+	@Override
+	public void setClientCompareDataSelectedFormat(final AccessID accessId,
+			final ClientCompareDataSelectedFormat setting) {
+		Assert.notNull(accessId);
+		Assert.notNull(setting);
+		Assert.notNull(setting.getSetting());
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT),
+				setting.getSetting().getId().toString());
+		this.settingDao.setSetting(settingData);
+
+	}
+
+	@Override
+	public ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(final AccessID accessId) {
+		Assert.notNull(accessId);
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT));
+		if (settingData != null && settingData.getValue() != null) {
+			return new ClientCompareDataSelectedFormat(new CompareDataFormatID(new Long(settingData.getValue())));
+		}
+		return null;
 	}
 
 	@Override

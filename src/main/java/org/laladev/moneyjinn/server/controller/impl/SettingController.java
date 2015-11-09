@@ -104,7 +104,7 @@ public class SettingController extends AbstractController {
 
 		this.updateStandardSettings(request, userId);
 
-		if (password != null) {
+		if (password != null && !password.trim().isEmpty()) {
 			this.userService.setPassword(userId, password);
 		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
 			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);

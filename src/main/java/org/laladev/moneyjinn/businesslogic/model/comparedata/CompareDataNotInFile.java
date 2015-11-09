@@ -29,14 +29,15 @@ package org.laladev.moneyjinn.businesslogic.model.comparedata;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 
 public class CompareDataNotInFile {
-	private Moneyflow moneyflow;
+	private final Moneyflow moneyflow;
+
+	public CompareDataNotInFile(final Moneyflow moneyflow) {
+		super();
+		this.moneyflow = moneyflow;
+	}
 
 	public final Moneyflow getMoneyflow() {
 		return this.moneyflow;
-	}
-
-	public final void setMoneyflow(final Moneyflow moneyflow) {
-		this.moneyflow = moneyflow;
 	}
 
 	@Override

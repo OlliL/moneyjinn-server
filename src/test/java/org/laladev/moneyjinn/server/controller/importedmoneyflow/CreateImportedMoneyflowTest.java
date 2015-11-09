@@ -86,6 +86,35 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_emptyContractpartnerBankAccount_SuccessfullNoContent() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final List<CapitalsourceID> capitalsourceIds = Arrays
+				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds);
+
+		Assert.assertNotNull(importedMoneyflows);
+		final int sizeBeforeInsert = importedMoneyflows.size();
+
+		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
+				.build();
+		transport.setAccountNumber(null);
+		transport.setBankCode(null);
+		request.setImportedMoneyflowTransport(transport);
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
+				capitalsourceIds);
+
+		Assert.assertNotNull(importedMoneyflows);
+		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
+		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(0).getAmount()) == 0);
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+				importedMoneyflows.get(0).getCapitalsource().getId().getId());
+	}
+
+	@Test
 	public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 

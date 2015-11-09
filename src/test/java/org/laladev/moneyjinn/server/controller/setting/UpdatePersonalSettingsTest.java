@@ -81,6 +81,43 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
 		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
+
+		final User user = this.userService.getUserById(new UserID(accessId.getId()));
+		Assert.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
+	}
+
+	@Test
+	public void test_standardRequestEmptyPassword_regularResponse() throws Exception {
+		final UpdatePersonalSettingsRequest request = new UpdatePersonalSettingsRequest();
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		request.setDateFormat("YYYYMMDD");
+		request.setLanguage(2);
+		request.setMaxRows(10);
+		request.setNumFreeMoneyflows(20);
+		request.setPassword("");
+
+		// Set password so the "new user" flag is reset
+		final UserID accessId = new UserID(UserTransportBuilder.ADMIN_ID);
+		this.userService.setPassword(accessId, UserTransportBuilder.ADMIN_PASSWORD);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
+				.getClientDisplayedLanguageSetting(accessId);
+		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
+				.getClientDateFormatSetting(accessId);
+		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
+		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
+				.getClientNumFreeMoneyflowsSetting(accessId);
+
+		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
+		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
+
+		final User user = this.userService.getUserById(new UserID(accessId.getId()));
+		Assert.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
 	}
 
 	@Test

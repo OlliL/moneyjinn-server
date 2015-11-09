@@ -84,7 +84,8 @@ public class ImportedMoneyflowTransportMapper implements IMapper<ImportedMoneyfl
 
 		importedMoneyflow.setUsage(importedMoneyflowTransport.getUsage());
 
-		if (importedMoneyflowTransport.getAccountNumber() != null) {
+		if (importedMoneyflowTransport.getAccountNumber() != null
+				&& !importedMoneyflowTransport.getAccountNumber().trim().isEmpty()) {
 			importedMoneyflow.setBankAccount(new BankAccount(importedMoneyflowTransport.getAccountNumber(),
 					importedMoneyflowTransport.getBankCode()));
 		}

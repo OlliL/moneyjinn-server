@@ -210,8 +210,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		this.evictAccessRelationCache(accessRelation.getId());
 
 		if (accessRelation.getValidTil() == null) {
-			// TODO Enviornment for "max year"
-			accessRelation.setValidTil(LocalDate.parse("2999-12-31"));
+			accessRelation.setValidTil(MAX_DATE);
 		}
 
 		LocalDate previousValidTil = accessRelation.getValidFrom().minusDays(1);

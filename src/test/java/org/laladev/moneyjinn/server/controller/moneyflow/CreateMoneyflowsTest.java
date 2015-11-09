@@ -76,10 +76,11 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private void testError(final MoneyflowTransport transport, final ErrorCode errorCode,
+	private void testError(final MoneyflowTransport transport,
 			final List<CapitalsourceTransport> overrideCapitalsources,
 			final List<ContractpartnerTransport> overrideContractpartner,
-			final List<PreDefMoneyflowTransport> overridePreDefMoneyflows) throws Exception {
+			final List<PreDefMoneyflowTransport> overridePreDefMoneyflows, final ErrorCode... errorCodes)
+					throws Exception {
 		final CreateMoneyflowsRequest request = new CreateMoneyflowsRequest();
 
 		request.setMoneyflowTransports(Arrays.asList(transport));
@@ -88,8 +89,10 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		expected.setResult(Boolean.FALSE);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
-				.withError(errorCode.getErrorCode()).build());
+		for (final ErrorCode errorCode : errorCodes) {
+			validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+					.withError(errorCode.getErrorCode()).build());
+		}
 		expected.setValidationItemTransports(validationItems);
 		if (overrideCapitalsources != null) {
 			expected.setCapitalsourceTransports(overrideCapitalsources);
@@ -148,7 +151,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setComment("");
 
-		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.COMMENT_IS_NOT_SET);
 	}
 
 	@Test
@@ -156,7 +159,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setComment(null);
 
-		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.COMMENT_IS_NOT_SET);
 	}
 
 	@Test
@@ -164,7 +167,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setCapitalsourceid(null);
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_IS_NOT_SET, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CAPITALSOURCE_IS_NOT_SET);
 	}
 
 	@Test
@@ -172,7 +175,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
 	}
 
 	@Test
@@ -180,7 +183,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
 	}
 
 	@Test
@@ -188,7 +191,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setContractpartnerid(null);
 
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
 	}
 
 	@Test
@@ -196,15 +199,16 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
 
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
 	}
 
 	@Test
 	public void test_noLongerValidContractpartner_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
 
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 	}
 
 	@Test
@@ -212,7 +216,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setAmount(null);
 
-		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.AMOUNT_IS_ZERO);
 	}
 
 	@Test
@@ -220,7 +224,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setAmount(BigDecimal.ZERO);
 
-		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.AMOUNT_IS_ZERO);
 	}
 
 	// make sure it 0 is compared with compareTo not with equals
@@ -229,7 +233,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setAmount(new BigDecimal("0.00000"));
 
-		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.AMOUNT_IS_ZERO);
 	}
 
 	@Test
@@ -237,7 +241,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setPostingaccountid(null);
 
-		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	@Test
@@ -245,7 +249,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setBookingdate(null);
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
 	}
 
 	@Test
@@ -253,7 +257,8 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setBookingdate(DateUtil.getGMTDate("1970-01-01"));
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT,
+				ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 	}
 
 	@Test
@@ -261,7 +266,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setBookingdate(DateUtil.getGMTDate("2600-01-01"));
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
 	}
 
 	@Test
@@ -269,17 +274,18 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
 
-		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED, null, null, null);
+		this.testError(transport, null, null, null, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	@Test
-	public void test_oneNewMoneyflow_CreationDone() throws Exception {
+	public void test_oneNewMoneyflowWithoutInvoiceDate_CreationDone() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
 
 		final CreateMoneyflowsRequest request = new CreateMoneyflowsRequest();
 
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setInvoicedate(null);
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
@@ -302,7 +308,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
 		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
 		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getInvoiceDate());
 		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
 	}
 
@@ -401,8 +407,8 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 		final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
 		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow2().build());
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, capitalsourceTransports, null,
-				preDefMoneyflowTransports);
+		this.testError(transport, capitalsourceTransports, null, preDefMoneyflowTransports,
+				ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
 	}
 
 	@Test

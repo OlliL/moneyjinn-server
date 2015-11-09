@@ -1,0 +1,14 @@
+"Kontoumsätze Girokonto"
+
+"Kontoinhaber:";"Muster, Martha"
+"Kundennummer:";"1234567"
+
+"Umsätze ab";"Enddatum";"Kontonummer";"Saldo";"Währung"
+"30.09.2015";"30.10.2015";"1234567";"552,73";"EUR"
+"Weitere gewählte Suchoptionen:";"keine"
+
+
+"Buchungstag";"Wertstellungstag";"Verwendungszweck";"Umsatz";"Währung"
+"03.05.2010";"03.05.2010";"Qartner2test1";"-5,00 ";"EUR";"*"
+"13.05.2010";"13.05.2010";"Finanzkasse Köln-Südtest2";"1000,00€";"EUR";""
+"* noch nicht ausgeführte Umsätze"

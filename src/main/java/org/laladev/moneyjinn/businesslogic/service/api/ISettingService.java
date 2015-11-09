@@ -29,6 +29,8 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.setting.AbstractSetting;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCompareDataSelectedCapitalsource;
+import org.laladev.moneyjinn.businesslogic.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
@@ -199,7 +201,7 @@ public interface ISettingService {
 	 *
 	 * @param userID
 	 *            or groupID {@link AccessID}
-	 * @return {@link ClientNumFreeMoneyflowsSetting}
+	 * @return {@link ClientCurrentlyValidCapitalsourcesSetting}
 	 */
 	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(AccessID accessId);
 
@@ -221,7 +223,7 @@ public interface ISettingService {
 	 *
 	 * @param userID
 	 *            or groupID {@link AccessID}
-	 * @return {@link ClientNumFreeMoneyflowsSetting}
+	 * @return {@link ClientCurrentlyValidContractpartnerSetting}
 	 */
 	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(AccessID accessId);
 
@@ -236,5 +238,46 @@ public interface ISettingService {
 	 */
 	public void setClientCurrentlyValidContractpartnerSetting(AccessID accessId,
 			ClientCurrentlyValidContractpartnerSetting setting);
+
+	/**
+	 * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientCompareDataSelectedCapitalsource}
+	 */
+	public void setClientCompareDataSelectedCapitalsource(AccessID accessId,
+			ClientCompareDataSelectedCapitalsource setting);
+
+	/**
+	 * This Service returns the {@link ClientCompareDataSelectedCapitalsource} for the given
+	 * {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientCompareDataSelectedCapitalsource}
+	 */
+	public ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(AccessID accessId);
+
+	/**
+	 * This Service sets the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @param setting
+	 *            the {@link ClientCompareDataSelectedFormat}
+	 */
+	public void setClientCompareDataSelectedFormat(AccessID accessId, ClientCompareDataSelectedFormat setting);
+
+	/**
+	 * This Service returns the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
+	 *
+	 * @param userID
+	 *            or groupID {@link AccessID}
+	 * @return {@link ClientCompareDataSelectedFormat}
+	 */
+	public ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(AccessID accessId);
 
 }

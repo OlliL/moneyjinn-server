@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Period;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
@@ -39,6 +40,8 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchParams;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
@@ -154,11 +157,11 @@ public interface IMoneyflowService {
 	 * otherwise.
 	 *
 	 * @param userId
-	 * @param nextYear
-	 * @param nextMonth
+	 * @param year
+	 * @param month
 	 * @return
 	 */
-	public boolean monthHasMoneyflows(UserID userId, Short nextYear, Month nextMonth);
+	public boolean monthHasMoneyflows(UserID userId, Short year, Month month);
 
 	/**
 	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}s
@@ -210,7 +213,7 @@ public interface IMoneyflowService {
 	 * @return
 	 */
 	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(UserID userId,
-			List<PostingAccountID> postingAccountIds, LocalDate startDate, LocalDate endDate);
+			List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
 
 	/**
 	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s,
@@ -223,5 +226,41 @@ public interface IMoneyflowService {
 	 * @return
 	 */
 	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId,
-			List<PostingAccountID> postingAccountIds, LocalDate startDate, LocalDate endDate);
+			List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
+
+	/**
+	 * Searches for {@link Moneyflow}s with the given amount and the given bookingDate +/- the given
+	 * search period in days
+	 *
+	 * @param userId
+	 * @param bookingDate
+	 * @param amount
+	 * @param searchPeriod
+	 * @return
+	 */
+	public List<Moneyflow> searchMoneyflowsByAmountDate(UserID userId, LocalDate bookingDate, BigDecimal amount,
+			Period searchPeriod);
+
+	/**
+	 * Returns all {@link Moneyflow}s in the given timeframe recorded for the given
+	 * {@link CapitalsourceID}.
+	 *
+	 * @param userId
+	 * @param startDate
+	 * @param endDate
+	 * @param capitalsourceId
+	 * @return
+	 */
+	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(UserID userId, LocalDate dateFrom,
+			LocalDate dateTil, CapitalsourceID capitalsourceId);
+
+	/**
+	 * Searches for {@link Moneyflow}s and aggregates them. The search is mostly affected by the
+	 * given Params Object.
+	 * 
+	 * @param userId
+	 * @param moneyflowSearchParams
+	 * @return
+	 */
+	public List<MoneyflowSearchResult> searchMoneyflows(UserID userId, MoneyflowSearchParams moneyflowSearchParams);
 }

@@ -34,6 +34,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchParamsData;
+import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchResultData;
 import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.businesslogic.dao.mapper.IMoneyflowDaoMapper;
 
@@ -107,6 +109,29 @@ public class MoneyflowDao {
 			final List<Long> postingAccountIdLongs, final Date dateFrom, final Date dateTil) {
 		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdLongs,
 				dateFrom, dateTil);
+	}
+
+	public List<MoneyflowData> searchMoneyflowsByAmountDate(final Long userId, final Date dateFrom, final Date dateTil,
+			final BigDecimal amount) {
+		return this.mapper.searchMoneyflowsByAmountDate(userId, dateFrom, dateTil, amount);
+	}
+
+	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId, final Date dateFrom,
+			final Date dateTil, final Long capitalsourceId) {
+		return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil, capitalsourceId);
+	}
+
+	public List<MoneyflowSearchResultData> searchMoneyflows(final Long userId,
+			final MoneyflowSearchParamsData moneyflowSearchParamsData) {
+
+		if (moneyflowSearchParamsData.getSearchString() != null && !moneyflowSearchParamsData.isFeatureEqual()
+				&& !moneyflowSearchParamsData.isFeatureRegexp()) {
+			// LIKE-mode
+			moneyflowSearchParamsData.setSearchString('%' + moneyflowSearchParamsData.getSearchString() + '%');
+		}
+		moneyflowSearchParamsData.setUserId(userId);
+
+		return this.mapper.searchMoneyflows(moneyflowSearchParamsData);
 	}
 
 }

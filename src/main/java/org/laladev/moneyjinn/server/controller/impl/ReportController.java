@@ -69,13 +69,13 @@ import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphResponse;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.TrendsCalculatedTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.TrendsSettledTransport;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
@@ -261,7 +261,7 @@ public class ReportController extends AbstractController {
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate().with(TemporalAdjusters.lastDayOfMonth());
 
-			List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
+			final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
 					.map(csi -> new CapitalsourceID(csi)).collect(Collectors.toCollection(ArrayList::new));
 			final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
 
@@ -321,8 +321,7 @@ public class ReportController extends AbstractController {
 				if (maxMoneyflowDate != null) {
 					maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
 					while (!endOfMonth.isAfter(maxMoneyflowDate)) {
-						capitalsourceIds = this.filterByValidity(capitalsourceIds, validTilCapitalsourceIDMap,
-								beginOfMonth);
+						this.filterByValidity(capitalsourceIds, validTilCapitalsourceIDMap, beginOfMonth);
 						if (capitalsourceIds.isEmpty()) {
 							break;
 						}
@@ -381,10 +380,9 @@ public class ReportController extends AbstractController {
 		return response;
 	}
 
-	private ArrayList<CapitalsourceID> filterByValidity(final List<CapitalsourceID> capitalsourceIds,
+	private void filterByValidity(final List<CapitalsourceID> capitalsourceIds,
 			final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIDMap, final LocalDate beginOfMonth) {
-		return capitalsourceIds.stream().filter(csi -> validTilCapitalsourceIDMap.get(csi).isAfter(beginOfMonth))
-				.collect(Collectors.toCollection(ArrayList::new));
+		capitalsourceIds.removeIf(csi -> validTilCapitalsourceIDMap.get(csi).isBefore(beginOfMonth));
 	}
 
 	@RequestMapping(value = "listReports", method = { RequestMethod.GET })

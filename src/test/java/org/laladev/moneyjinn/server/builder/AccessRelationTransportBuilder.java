@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 public class AccessRelationTransportBuilder extends AccessRelationTransport {
 

@@ -78,7 +78,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private void testError(final ImportedMoneyflowTransport transport, final ErrorCode errorCode) throws Exception {
+	private void testError(final ImportedMoneyflowTransport transport, final ErrorCode... errorCodes) throws Exception {
 		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
 
 		request.setImportedMoneyflowTransports(Arrays.asList(transport));
@@ -87,8 +87,10 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		expected.setResult(Boolean.FALSE);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
-				.withError(errorCode.getErrorCode()).build());
+		for (final ErrorCode errorCode : errorCodes) {
+			validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+					.withError(errorCode.getErrorCode()).build());
+		}
 		expected.setValidationItemTransports(validationItems);
 
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
@@ -315,6 +317,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
 				.forImportedMoneyflow1ToImport().build();
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
+		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
 
 		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 	}
@@ -371,7 +374,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 				.forImportedMoneyflow1ToImport().build();
 		transport.setBookingdate(DateUtil.getGMTDate("1970-01-01"));
 
-		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
+		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT,
+				ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 	}
 
 	@Test

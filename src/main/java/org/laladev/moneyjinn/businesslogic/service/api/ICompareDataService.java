@@ -31,9 +31,11 @@ import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataDataset;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormat;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataResult;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 
 /**
  * <p>
@@ -57,10 +59,34 @@ import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataResult;
  */
 public interface ICompareDataService {
 
+	/**
+	 * Returns the {@link CompareDataFormat} specified by the given {@link CompareDataFormatID}.
+	 *
+	 * @param compareDataFormatId
+	 * @return
+	 */
 	public CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
 
+	/**
+	 * Returns all existing {@link CompareDataFormat}s.
+	 *
+	 * @return
+	 */
 	public List<CompareDataFormat> getAllCompareDataFormats();
 
+	/**
+	 * Parses the given fileContens based on the also given {@link CompareDataFormatID} and tries to
+	 * match the extracted {@link CompareDataDataset}s to stored {@link Moneyflow}s during the
+	 * specified timeframe. The response object contains the comparison results.
+	 *
+	 * @param userId
+	 * @param compareDataFormatId
+	 * @param capitalsourceId
+	 * @param startDate
+	 * @param endDate
+	 * @param fileContents
+	 * @return
+	 */
 	public CompareDataResult compareData(UserID userId, CompareDataFormatID compareDataFormatId,
 			CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
 }

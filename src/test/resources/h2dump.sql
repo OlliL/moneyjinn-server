@@ -2,12 +2,12 @@
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.6.26-log
+-- Server version	5.6.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES latin1 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -400,6 +400,9 @@ DROP TABLE IF EXISTS cmp_data_formats;
 CREATE TABLE cmp_data_formats (
   formatid int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
+  start_trigger_0 varchar(30) DEFAULT NULL,
+  start_trigger_1 varchar(30) DEFAULT NULL,
+  start_trigger_2 varchar(30) DEFAULT NULL,
   startline varchar(255) NOT NULL,
   delimiter varchar(1) NOT NULL,
   pos_date tinyint(2) NOT NULL,
@@ -412,6 +415,8 @@ CREATE TABLE cmp_data_formats (
   pos_partner_alt tinyint(2) DEFAULT NULL,
   pos_partner_alt_pos_key tinyint(2) DEFAULT NULL,
   pos_partner_alt_keyword varchar(255) DEFAULT NULL,
+  pos_credit_debit_indicator tinyint(2) DEFAULT NULL,
+  credit_indicator varchar(2) DEFAULT NULL,
   PRIMARY KEY (formatid),
   UNIQUE KEY `name` (`name`)
 );

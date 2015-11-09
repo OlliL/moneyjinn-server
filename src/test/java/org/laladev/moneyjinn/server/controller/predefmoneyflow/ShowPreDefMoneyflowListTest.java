@@ -105,7 +105,7 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_initialP_AResponseObject() throws Exception {
+	public void test_initialP_responseObjectcontainingP() throws Exception {
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
 		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
 
@@ -114,6 +114,17 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 		expected.setPreDefMoneyflowTransports(preDefMoneyflowTransports);
 
 		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/P", this.method, false,
+				ShowPreDefMoneyflowListResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_initialX_responseObjectContainingNoPreDefMoneyflow() throws Exception {
+		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
+		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+
+		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/X", this.method, false,
 				ShowPreDefMoneyflowListResponse.class);
 
 		Assert.assertEquals(expected, actual);
@@ -143,6 +154,19 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
 		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
+				ShowPreDefMoneyflowListResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	public void test_emptyDatabaseExplicitLetter_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
+		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
+		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/A", this.method, false,
 				ShowPreDefMoneyflowListResponse.class);
 
 		Assert.assertEquals(expected, actual);

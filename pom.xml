@@ -13,6 +13,7 @@
 
 	<properties>
 		<moneyjinn-core.version>0.0.1-SNAPSHOT</moneyjinn-core.version>
+		<moneyjinn-sepa-camt.version>0.0.1-SNAPSHOT</moneyjinn-sepa-camt.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -35,9 +36,25 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.juniversalchardet</groupId>
+			<artifactId>juniversalchardet</artifactId>
+			<version>1.0.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-core</artifactId>
 			<version>${moneyjinn-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-sepa-camt</artifactId>
+			<version>${moneyjinn-sepa-camt.version}</version>
 		</dependency>
 
 		<dependency>
@@ -122,6 +139,7 @@
 					<excludes>
 						<exclude>**/TestSuite*.java</exclude>
 					</excludes>
+					<argLine>-Dfile.encoding=UTF-8</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

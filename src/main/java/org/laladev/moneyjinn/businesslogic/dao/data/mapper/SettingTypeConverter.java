@@ -52,6 +52,10 @@ public class SettingTypeConverter {
 			return "currently_valid_contractpartner";
 		case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
 			return "reporting_postingaccountids";
+		case CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE:
+			return "compare_capitalsource";
+		case CLIENT_COMPARE_DATA_SELECTED_FORMAT:
+			return "compare_format";
 		default:
 			throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
 		}

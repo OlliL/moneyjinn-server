@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.businesslogic.model.comparedata;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.laladev.moneyjinn.businesslogic.model.AbstractEntity;
@@ -35,7 +36,7 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 	private static final long serialVersionUID = 1L;
 	private CompareDataFormatType type;
 	private String name;
-	private Pattern startline;
+	private List<String> startTrigger;
 	private Character delimiter;
 	private Short positionDate;
 	private Short positionPartner;
@@ -45,8 +46,10 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 	private Character formatAmountDecimal;
 	private Character formatAmountThousand;
 	private Short positionPartnerAlternative;
-	private Short positionPartnerAlternativePositionKey;
-	private Pattern positionPartnerAlternativeKeyword;
+	private Short partnerAlternativeIndicatorPosition;
+	private Pattern partnerAlternativeIndicator;
+	private Short positionCreditDebitIndicator;
+	private Pattern creditIndicator;
 
 	public final CompareDataFormatType getType() {
 		return this.type;
@@ -64,12 +67,12 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		this.name = name;
 	}
 
-	public final Pattern getStartline() {
-		return this.startline;
+	public final List<String> getStartTrigger() {
+		return this.startTrigger;
 	}
 
-	public final void setStartline(final Pattern startline) {
-		this.startline = startline;
+	public final void setStartTrigger(final List<String> startTrigger) {
+		this.startTrigger = startTrigger;
 	}
 
 	public final Character getDelimiter() {
@@ -144,42 +147,61 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		this.positionPartnerAlternative = positionPartnerAlternative;
 	}
 
-	public final Short getPositionPartnerAlternativePositionKey() {
-		return this.positionPartnerAlternativePositionKey;
+	public final Short getPartnerAlternativeIndicatorPosition() {
+		return this.partnerAlternativeIndicatorPosition;
 	}
 
-	public final void setPositionPartnerAlternativePositionKey(final Short positionPartnerAlternativePositionKey) {
-		this.positionPartnerAlternativePositionKey = positionPartnerAlternativePositionKey;
+	public final void setPartnerAlternativeIndicatorPosition(final Short partnerAlternativeIndicatorPosition) {
+		this.partnerAlternativeIndicatorPosition = partnerAlternativeIndicatorPosition;
 	}
 
-	public final Pattern getPositionPartnerAlternativeKeyword() {
-		return this.positionPartnerAlternativeKeyword;
+	public final Pattern getPartnerAlternativeIndicator() {
+		return this.partnerAlternativeIndicator;
 	}
 
-	public final void setPositionPartnerAlternativeKeyword(final Pattern positionPartnerAlternativeKeyword) {
-		this.positionPartnerAlternativeKeyword = positionPartnerAlternativeKeyword;
+	public final void setPartnerAlternativeIndicator(final Pattern partnerAlternativeIndicator) {
+		this.partnerAlternativeIndicator = partnerAlternativeIndicator;
+	}
+
+	public final Short getPositionCreditDebitIndicator() {
+		return this.positionCreditDebitIndicator;
+	}
+
+	public final void setPositionCreditDebitIndicator(final Short positionCreditDebitIndicator) {
+		this.positionCreditDebitIndicator = positionCreditDebitIndicator;
+	}
+
+	public final Pattern getCreditIndicator() {
+		return this.creditIndicator;
+	}
+
+	public final void setCreditIndicator(final Pattern creditIndicator) {
+		this.creditIndicator = creditIndicator;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((this.creditIndicator == null) ? 0 : this.creditIndicator.hashCode());
 		result = prime * result + ((this.delimiter == null) ? 0 : this.delimiter.hashCode());
 		result = prime * result + ((this.formatAmountDecimal == null) ? 0 : this.formatAmountDecimal.hashCode());
 		result = prime * result + ((this.formatAmountThousand == null) ? 0 : this.formatAmountThousand.hashCode());
 		result = prime * result + ((this.formatDate == null) ? 0 : this.formatDate.hashCode());
 		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result
+				+ ((this.partnerAlternativeIndicator == null) ? 0 : this.partnerAlternativeIndicator.hashCode());
+		result = prime * result + ((this.partnerAlternativeIndicatorPosition == null) ? 0
+				: this.partnerAlternativeIndicatorPosition.hashCode());
 		result = prime * result + ((this.positionAmount == null) ? 0 : this.positionAmount.hashCode());
 		result = prime * result + ((this.positionComment == null) ? 0 : this.positionComment.hashCode());
+		result = prime * result
+				+ ((this.positionCreditDebitIndicator == null) ? 0 : this.positionCreditDebitIndicator.hashCode());
 		result = prime * result + ((this.positionDate == null) ? 0 : this.positionDate.hashCode());
 		result = prime * result + ((this.positionPartner == null) ? 0 : this.positionPartner.hashCode());
 		result = prime * result
 				+ ((this.positionPartnerAlternative == null) ? 0 : this.positionPartnerAlternative.hashCode());
-		result = prime * result + ((this.positionPartnerAlternativeKeyword == null) ? 0
-				: this.positionPartnerAlternativeKeyword.hashCode());
-		result = prime * result + ((this.positionPartnerAlternativePositionKey == null) ? 0
-				: this.positionPartnerAlternativePositionKey.hashCode());
-		result = prime * result + ((this.startline == null) ? 0 : this.startline.hashCode());
+		result = prime * result + ((this.startTrigger == null) ? 0 : this.startTrigger.hashCode());
 		result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
 		return result;
 	}
@@ -196,6 +218,13 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 			return false;
 		}
 		final CompareDataFormat other = (CompareDataFormat) obj;
+		if (this.creditIndicator == null) {
+			if (other.creditIndicator != null) {
+				return false;
+			}
+		} else if (!this.creditIndicator.equals(other.creditIndicator)) {
+			return false;
+		}
 		if (this.delimiter == null) {
 			if (other.delimiter != null) {
 				return false;
@@ -231,6 +260,20 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		} else if (!this.name.equals(other.name)) {
 			return false;
 		}
+		if (this.partnerAlternativeIndicator == null) {
+			if (other.partnerAlternativeIndicator != null) {
+				return false;
+			}
+		} else if (!this.partnerAlternativeIndicator.equals(other.partnerAlternativeIndicator)) {
+			return false;
+		}
+		if (this.partnerAlternativeIndicatorPosition == null) {
+			if (other.partnerAlternativeIndicatorPosition != null) {
+				return false;
+			}
+		} else if (!this.partnerAlternativeIndicatorPosition.equals(other.partnerAlternativeIndicatorPosition)) {
+			return false;
+		}
 		if (this.positionAmount == null) {
 			if (other.positionAmount != null) {
 				return false;
@@ -243,6 +286,13 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 				return false;
 			}
 		} else if (!this.positionComment.equals(other.positionComment)) {
+			return false;
+		}
+		if (this.positionCreditDebitIndicator == null) {
+			if (other.positionCreditDebitIndicator != null) {
+				return false;
+			}
+		} else if (!this.positionCreditDebitIndicator.equals(other.positionCreditDebitIndicator)) {
 			return false;
 		}
 		if (this.positionDate == null) {
@@ -266,25 +316,11 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		} else if (!this.positionPartnerAlternative.equals(other.positionPartnerAlternative)) {
 			return false;
 		}
-		if (this.positionPartnerAlternativeKeyword == null) {
-			if (other.positionPartnerAlternativeKeyword != null) {
+		if (this.startTrigger == null) {
+			if (other.startTrigger != null) {
 				return false;
 			}
-		} else if (!this.positionPartnerAlternativeKeyword.equals(other.positionPartnerAlternativeKeyword)) {
-			return false;
-		}
-		if (this.positionPartnerAlternativePositionKey == null) {
-			if (other.positionPartnerAlternativePositionKey != null) {
-				return false;
-			}
-		} else if (!this.positionPartnerAlternativePositionKey.equals(other.positionPartnerAlternativePositionKey)) {
-			return false;
-		}
-		if (this.startline == null) {
-			if (other.startline != null) {
-				return false;
-			}
-		} else if (!this.startline.equals(other.startline)) {
+		} else if (!this.startTrigger.equals(other.startTrigger)) {
 			return false;
 		}
 		if (this.type != other.type) {
@@ -300,8 +336,8 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		builder.append(this.type);
 		builder.append(", name=");
 		builder.append(this.name);
-		builder.append(", startline=");
-		builder.append(this.startline);
+		builder.append(", startTrigger=");
+		builder.append(this.startTrigger);
 		builder.append(", delimiter=");
 		builder.append(this.delimiter);
 		builder.append(", positionDate=");
@@ -320,10 +356,14 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
 		builder.append(this.formatAmountThousand);
 		builder.append(", positionPartnerAlternative=");
 		builder.append(this.positionPartnerAlternative);
-		builder.append(", positionPartnerAlternativePositionKey=");
-		builder.append(this.positionPartnerAlternativePositionKey);
-		builder.append(", positionPartnerAlternativeKeyword=");
-		builder.append(this.positionPartnerAlternativeKeyword);
+		builder.append(", partnerAlternativeIndicatorPosition=");
+		builder.append(this.partnerAlternativeIndicatorPosition);
+		builder.append(", partnerAlternativeIndicator=");
+		builder.append(this.partnerAlternativeIndicator);
+		builder.append(", positionCreditDebitIndicator=");
+		builder.append(this.positionCreditDebitIndicator);
+		builder.append(", creditIndicator=");
+		builder.append(this.creditIndicator);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -24,8 +24,8 @@ import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
+import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
@@ -434,8 +434,8 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setMonth((short) 5);
 
 		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
-		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
 		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
 		expected.setMoneyflowTransports(moneyflowTransports);
 
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
@@ -550,8 +550,8 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setMonth((short) 5);
 
 		final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
-		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
 		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
+		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
 		expected.setMoneyflowTransports(moneyflowTransports);
 
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();

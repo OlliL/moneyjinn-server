@@ -32,6 +32,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData;
+import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchParamsData;
+import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchResultData;
 import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
 
 public interface IMoneyflowDaoMapper {
@@ -71,5 +73,14 @@ public interface IMoneyflowDaoMapper {
 	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
 			@Param("userId") Long userId, @Param("postingAccountIds") List<Long> postingAccountIdLongs,
 			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
+
+	public List<MoneyflowData> searchMoneyflowsByAmountDate(@Param("userId") Long userId,
+			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil, @Param("amount") BigDecimal amount);
+
+	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(@Param("userId") Long userId,
+			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil,
+			@Param("capitalsourceId") Long capitalsourceId);
+
+	public List<MoneyflowSearchResultData> searchMoneyflows(MoneyflowSearchParamsData moneyflowSearchParamsData);
 
 }

@@ -181,6 +181,13 @@ public class MonthlySettlementController extends AbstractController {
 		return this.showMonthlySettlementCreate(null, null);
 	}
 
+	@RequestMapping(value = "showMonthlySettlementCreate/{year}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate(
+			@PathVariable(value = "year") final Short requestYear) {
+		return this.showMonthlySettlementCreate(requestYear, null);
+	}
+
 	@RequestMapping(value = "showMonthlySettlementCreate/{year}/{month}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate(
@@ -215,8 +222,19 @@ public class MonthlySettlementController extends AbstractController {
 		} else {
 			if (requestYear != null) {
 				year = requestYear;
+			} else {
+				year = nextYear;
 			}
+
 			month = this.getMonth(requestMonth);
+
+			if (month == null) {
+				if (year.equals(nextYear)) {
+					month = nextMonth;
+				} else {
+					month = Month.DECEMBER;
+				}
+			}
 		}
 
 		boolean selectedMonthIsNextSettlementMonth = false;

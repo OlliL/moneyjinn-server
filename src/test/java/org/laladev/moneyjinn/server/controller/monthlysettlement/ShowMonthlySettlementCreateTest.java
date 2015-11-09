@@ -79,8 +79,13 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 		expected.setMonth((short) 12);
 		expected.setEditMode((short) 1);
 
-		final ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method,
-				false, ShowMonthlySettlementCreateResponse.class);
+		ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+		actual = super.callUsecaseWithoutContent("/2008", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
 
 		Assert.assertEquals(expected, actual);
 
@@ -111,6 +116,10 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 
 		Assert.assertEquals(expected, actual);
 
+		actual = super.callUsecaseWithoutContent("/2010", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
 	}
 
 	@Test

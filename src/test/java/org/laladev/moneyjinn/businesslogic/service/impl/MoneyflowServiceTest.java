@@ -1,22 +1,107 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 
 public class MoneyflowServiceTest extends AbstractTest {
 	@Inject
 	private IMoneyflowService moneyflowService;
+
+	private static final UserID USER_ID_1 = new UserID(UserTransportBuilder.USER1_ID);
+
+	@Test
+	public void monthHasMoneyflows_true() {
+		final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, (short) 2010, Month.JANUARY);
+		Assert.assertTrue(result);
+	}
+
+	@Test
+	public void monthHasMoneyflows_false() {
+		final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, (short) 2010, Month.DECEMBER);
+		Assert.assertFalse(result);
+	}
+
+	@Test
+	public void getPreviousMoneyflowDate_notExisting() {
+		final LocalDate date = this.moneyflowService.getPreviousMoneyflowDate(USER_ID_1,
+				LocalDate.of(2008, Month.DECEMBER, 1));
+		Assert.assertNull(date);
+	}
+
+	@Test
+	public void getNextMoneyflowDate_notExisting() {
+		final LocalDate date = this.moneyflowService.getNextMoneyflowDate(USER_ID_1, LocalDate.of(2010, Month.MAY, 31));
+		Assert.assertNull(date);
+	}
+
+	@Test
+	public void searchMoneyflowsByAmountDate_matchFound() {
+		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
+				LocalDate.of(2010, Month.MAY, 3), new BigDecimal("-5.00"), Period.ofDays(5));
+		Assert.assertNotNull(moneyflows);
+		Assert.assertEquals(2, moneyflows.size());
+	}
+
+	@Test
+	public void searchMoneyflowsByAmountDate_noMatchFound() {
+		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
+				LocalDate.of(2010, Month.MAY, 20), new BigDecimal("-5.00"), Period.ofDays(5));
+		Assert.assertNotNull(moneyflows);
+		Assert.assertEquals(0, moneyflows.size());
+	}
+
+	@Test
+	public void searchMoneyflowsByAmountDate_matchFoundOnlyInMonthOfBookingDateNotInTheWhole200DayPeriod() {
+		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
+				LocalDate.of(2010, Month.JANUARY, 3), new BigDecimal("-10.00"), Period.ofDays(200));
+		Assert.assertNotNull(moneyflows);
+		Assert.assertEquals(1, moneyflows.size());
+	}
+
+	@Test
+	public void getAllMoneyflowsByDateRangeCapitalsourceId_Found() {
+		final List<Moneyflow> moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeCapitalsourceId(USER_ID_1,
+				LocalDate.of(2010, Month.JANUARY, 1), LocalDate.of(2010, Month.JANUARY, 30),
+				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID));
+		Assert.assertNotNull(moneyflows);
+		Assert.assertEquals(1, moneyflows.size());
+	}
+
+	@Test
+	public void getAllMoneyflowsByDateRangeCapitalsourceId_NothingFound() {
+		final List<Moneyflow> moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeCapitalsourceId(USER_ID_1,
+				LocalDate.of(2011, Month.JANUARY, 1), LocalDate.of(2011, Month.JANUARY, 30),
+				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID));
+		Assert.assertNotNull(moneyflows);
+		Assert.assertEquals(0, moneyflows.size());
+	}
+
+	@Test
+	public void getAllMonth_noMonthFound() {
+		final List<Month> month = this.moneyflowService.getAllMonth(USER_ID_1, (short) 2011);
+		Assert.assertNotNull(month);
+		Assert.assertEquals(0, month.size());
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test_validateNullUser_raisesException() {

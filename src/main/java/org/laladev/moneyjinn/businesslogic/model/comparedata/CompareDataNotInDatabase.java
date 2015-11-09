@@ -27,14 +27,15 @@
 package org.laladev.moneyjinn.businesslogic.model.comparedata;
 
 public class CompareDataNotInDatabase {
-	private CompareDataDataset compareDataDataset;
+	private final CompareDataDataset compareDataDataset;
+
+	public CompareDataNotInDatabase(final CompareDataDataset compareDataDataset) {
+		super();
+		this.compareDataDataset = compareDataDataset;
+	}
 
 	public final CompareDataDataset getCompareDataDataset() {
 		return this.compareDataDataset;
-	}
-
-	public final void setCompareDataDataset(final CompareDataDataset compareDataDataset) {
-		this.compareDataDataset = compareDataDataset;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ else
         PROGPATH=$(dirname $PROGPATH)
 fi
 
-mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --default-character-set=latin1 --tables --add-drop-table --single-transaction --no-data moneyflow \
+mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --default-character-set=utf8 --tables --add-drop-table --single-transaction --no-data moneyflow \
 	access \
 	access_relation \
 	access_flattened \
@@ -43,7 +43,7 @@ mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --de
 		}
 	}' > ${PROGPATH}/mysqldump.sql
 
-mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-extended-insert --skip-triggers --default-character-set=latin1 --single-transaction --tables moneyflow \
+mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-extended-insert --skip-triggers --default-character-set=utf8 --single-transaction --tables moneyflow \
 	cmp_data_formats \
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 

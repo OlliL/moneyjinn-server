@@ -1,0 +1,3 @@
+"Buchungstag";"Wertstellung";"Zahlungsgegner";"IBAN";"BIC";"Verwendungszweck";"Betrag";"Währung"
+"03.05.2010";"03.05.2010";"Qartner2";"";"";"test1";"-5,00";"EUR"
+"13.05.2010";"13.05.2010";"Finanzkasse Köln-Süd";"";"";"test2";"1.000,00";"EUR"

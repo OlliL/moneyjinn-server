@@ -30,7 +30,7 @@ import java.sql.Date;
 
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 
 public class PostingAccountAmountTransportMapper
 		implements IMapper<PostingAccountAmount, PostingAccountAmountTransport> {

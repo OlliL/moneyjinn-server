@@ -41,8 +41,11 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchParams;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
+import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
@@ -51,16 +54,20 @@ import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPreDefMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractAddMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
@@ -70,6 +77,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchResultTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
@@ -112,6 +121,8 @@ public class MoneyflowController extends AbstractController {
 		this.registerBeanMapper(new PreDefMoneyflowTransportMapper());
 		this.registerBeanMapper(new MoneyflowTransportMapper());
 		this.registerBeanMapper(new ValidationItemTransportMapper());
+		this.registerBeanMapper(new MoneyflowSearchParamsTransportMapper());
+		this.registerBeanMapper(new MoneyflowSearchResultTransportMapper());
 	}
 
 	private void fillAbstractAddMoneyflowResponse(final UserID userId, final AbstractAddMoneyflowResponse response) {
@@ -238,8 +249,58 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "searchMoneyflows", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public void searchMoneyflows() {
-		// TODO implementation
+	public SearchMoneyflowsResponse searchMoneyflows(@RequestBody final SearchMoneyflowsRequest request) {
+		final UserID userId = super.getUserId();
+
+		final SearchMoneyflowsResponse response = new SearchMoneyflowsResponse();
+
+		final MoneyflowSearchParams moneyflowSearchParams = super.map(request.getMoneyflowSearchParamsTransport(),
+				MoneyflowSearchParams.class);
+
+		final ValidationResult validationResult = new ValidationResult();
+
+		if (moneyflowSearchParams == null || (moneyflowSearchParams.getContractpartnerId() == null
+				&& moneyflowSearchParams.getPostingAccountId() == null
+				&& moneyflowSearchParams.getSearchString() == null)) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_SEARCH_CRITERIA_ENTERED));
+		}
+		if (moneyflowSearchParams == null
+				|| (moneyflowSearchParams.getGroupBy1() == null && moneyflowSearchParams.getGroupBy2() == null)) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_GROUPING_CRITERIA_GIVEN));
+		}
+
+		if (!validationResult.isValid()) {
+			response.setResult(false);
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+		} else {
+			final List<MoneyflowSearchResult> moneyflowSearchResults = this.moneyflowService.searchMoneyflows(userId,
+					moneyflowSearchParams);
+			if (moneyflowSearchResults != null && !moneyflowSearchResults.isEmpty()) {
+
+				final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = super.mapList(
+						moneyflowSearchResults, MoneyflowSearchResultTransport.class);
+				response.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
+			}
+		}
+
+		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
+		if (contractpartner != null && !contractpartner.isEmpty()) {
+			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
+					ContractpartnerTransport.class);
+			response.setContractpartnerTransports(contractpartnerTransports);
+		}
+
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
+			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
+			response.setPostingAccountTransports(postingAccountTransports);
+		}
+
+		return response;
 	}
 
 	@RequestMapping(value = "createMoneyflows", method = { RequestMethod.POST })

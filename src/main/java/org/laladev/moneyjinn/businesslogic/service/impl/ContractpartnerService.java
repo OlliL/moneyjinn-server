@@ -144,8 +144,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			contractpartner.setValidFrom(LocalDate.now());
 		}
 		if (contractpartner.getValidTil() == null) {
-			// TODO Enviornment for "max year"
-			contractpartner.setValidTil(LocalDate.parse("2999-12-31"));
+			contractpartner.setValidTil(MAX_DATE);
 		}
 	}
 

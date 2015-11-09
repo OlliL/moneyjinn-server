@@ -97,8 +97,8 @@ INSERT INTO `moneyflows` VALUES (14,3,6,'2010-01-01','2010-01-01',-10.00,2,1,'ge
 INSERT INTO `moneyflows` VALUES (15,3,6,'2010-02-01','2010-02-01',10.00,2,1,'generated',2,1);
 INSERT INTO `moneyflows` VALUES (16,3,6,'2010-03-01','2010-03-01',-10.00,2,1,'generated',2,1);
 INSERT INTO `moneyflows` VALUES (17,3,6,'2010-04-01','2010-04-01',10.00,2,1,'generated',2,1);
-INSERT INTO `moneyflows` VALUES (18,3,6,'2010-05-01','2010-05-01',-5.00,2,1,'generated',2,1);
-INSERT INTO `moneyflows` VALUES (19,3,6,'2010-05-01','2010-05-01',-5.00,2,1,'generated',2,0);
+INSERT INTO `moneyflows` VALUES (18,3,6,'2010-05-03','2010-05-03',-5.00,2,1,'generated',2,1);
+INSERT INTO `moneyflows` VALUES (19,3,6,'2010-05-01','2010-05-01',-5.00,2,2,'generated',2,0);
 INSERT INTO `monthlysettlements` VALUES (1,3,6,1,12,2008,10.00);
 INSERT INTO `monthlysettlements` VALUES (2,3,6,2,12,2008,100.00);
 INSERT INTO `monthlysettlements` VALUES (3,5,6,4,12,2008,1000.00);

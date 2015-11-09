@@ -55,15 +55,17 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 	@Test
 	public void test_regularContractpartnerNoData_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(
-				ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
+				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
 		Assert.assertNotNull(contractpartner);
 
-		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID, this.method, true,
+		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);

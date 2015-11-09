@@ -139,8 +139,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			capitalsource.setValidFrom(LocalDate.now());
 		}
 		if (capitalsource.getValidTil() == null) {
-			// TODO Enviornment for "max year"
-			capitalsource.setValidTil(LocalDate.parse("2999-12-31"));
+			capitalsource.setValidTil(MAX_DATE);
 		}
 		if (capitalsource.getType() == null) {
 			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);

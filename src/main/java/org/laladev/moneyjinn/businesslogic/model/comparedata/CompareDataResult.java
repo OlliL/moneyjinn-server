@@ -26,43 +26,46 @@
 
 package org.laladev.moneyjinn.businesslogic.model.comparedata;
 
-public class CompareDataResult {
-	private CompareDataMatching compareDataMatching;
-	private CompareDataWrongCapitalsource compareDataWrongCapitalsource;
-	private CompareDataNotInFile compareDataNotInFile;
-	private CompareDataNotInDatabase compareDataNotInDatabase;
+import java.util.ArrayList;
+import java.util.List;
 
-	public final CompareDataMatching getCompareDataMatching() {
+public class CompareDataResult {
+	private final List<CompareDataMatching> compareDataMatching = new ArrayList<>();
+	private final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsource = new ArrayList<>();
+	private final List<CompareDataNotInFile> compareDataNotInFile = new ArrayList<>();
+	private final List<CompareDataNotInDatabase> compareDataNotInDatabase = new ArrayList<>();
+
+	public final List<CompareDataMatching> getCompareDataMatching() {
 		return this.compareDataMatching;
 	}
 
-	public final void setCompareDataMatching(final CompareDataMatching compareDataMatching) {
-		this.compareDataMatching = compareDataMatching;
+	public final void addCompareDataMatching(final CompareDataMatching compareDataMatching) {
+		this.compareDataMatching.add(compareDataMatching);
 	}
 
-	public final CompareDataWrongCapitalsource getCompareDataWrongCapitalsource() {
+	public final List<CompareDataWrongCapitalsource> getCompareDataWrongCapitalsource() {
 		return this.compareDataWrongCapitalsource;
 	}
 
-	public final void setCompareDataWrongCapitalsource(
+	public final void addCompareDataWrongCapitalsource(
 			final CompareDataWrongCapitalsource compareDataWrongCapitalsource) {
-		this.compareDataWrongCapitalsource = compareDataWrongCapitalsource;
+		this.compareDataWrongCapitalsource.add(compareDataWrongCapitalsource);
 	}
 
-	public final CompareDataNotInFile getCompareDataNotInFile() {
+	public final List<CompareDataNotInFile> getCompareDataNotInFile() {
 		return this.compareDataNotInFile;
 	}
 
-	public final void setCompareDataNotInFile(final CompareDataNotInFile compareDataNotInFile) {
-		this.compareDataNotInFile = compareDataNotInFile;
+	public final void addCompareDataNotInFile(final CompareDataNotInFile compareDataNotInFile) {
+		this.compareDataNotInFile.add(compareDataNotInFile);
 	}
 
-	public final CompareDataNotInDatabase getCompareDataNotInDatabase() {
+	public final List<CompareDataNotInDatabase> getCompareDataNotInDatabase() {
 		return this.compareDataNotInDatabase;
 	}
 
-	public final void setCompareDataNotInDatabase(final CompareDataNotInDatabase compareDataNotInDatabase) {
-		this.compareDataNotInDatabase = compareDataNotInDatabase;
+	public final void addCompareDataNotInDatabase(final CompareDataNotInDatabase compareDataNotInDatabase) {
+		this.compareDataNotInDatabase.add(compareDataNotInDatabase);
 	}
 
 	@Override
