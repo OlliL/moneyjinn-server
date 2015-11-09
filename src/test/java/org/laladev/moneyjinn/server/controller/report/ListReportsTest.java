@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -70,6 +72,60 @@ public class ListReportsTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
+	private void assertEquals(final ListReportsResponse expected, final ListReportsResponse actual) {
+		if (expected.getMoneyflowTransports() != null) {
+			Collections.sort(expected.getMoneyflowTransports(), new MoneyflowTransportComparator());
+		}
+		if (actual.getMoneyflowTransports() != null) {
+			Collections.sort(actual.getMoneyflowTransports(), new MoneyflowTransportComparator());
+		}
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	private class MoneyflowTransportComparator implements Comparator<MoneyflowTransport> {
+
+		@Override
+		public int compare(final MoneyflowTransport o1, final MoneyflowTransport o2) {
+
+			if (o1 == null) {
+				if (o2 == null) {
+					return 0;
+				}
+				return Integer.MIN_VALUE;
+			} else {
+				if (o2 == null) {
+					return Integer.MAX_VALUE;
+				}
+
+				int result = 0;
+
+				if (o1.getBookingdate() == null) {
+					if (o2.getBookingdate() != null) {
+						return Integer.MIN_VALUE;
+					}
+				} else {
+					result = o1.getBookingdate().compareTo(o2.getBookingdate());
+				}
+				if (result != 0) {
+					return result;
+				}
+
+				if (o1.getInvoicedate() == null) {
+					if (o2.getInvoicedate() != null) {
+						return Integer.MIN_VALUE;
+					}
+				} else {
+					result = o1.getInvoicedate().compareTo(o2.getInvoicedate());
+				}
+
+				return result;
+
+			}
+		}
+
+	}
+
 	@Test
 	public void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
 		final ListReportsResponse expected = new ListReportsResponse();
@@ -79,11 +135,11 @@ public class ListReportsTest extends AbstractControllerTest {
 
 		ListReportsResponse actual = super.callUsecaseWithoutContent("", this.method, false, ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 
 		actual = super.callUsecaseWithoutContent("/2010", this.method, false, ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -96,15 +152,15 @@ public class ListReportsTest extends AbstractControllerTest {
 		ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/13", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 
 		actual = super.callUsecaseWithoutContent("/2010/0", this.method, false, ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 
 		actual = super.callUsecaseWithoutContent("/2010/11", this.method, false, ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -139,7 +195,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -178,7 +234,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/1", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -217,7 +273,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/12", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -260,7 +316,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/12", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -299,7 +355,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/01", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -344,7 +400,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setNextMonthHasMoneyflows((short) 1);
 		expected.setPreviousMonthHasMoneyflows((short) 1);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -383,7 +439,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/02", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -421,7 +477,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/03", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -472,7 +528,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -529,7 +585,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -572,7 +628,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
 				ListReportsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		this.assertEquals(expected, actual);
 
 	}
 
