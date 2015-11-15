@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.businesslogic.model.moneyflow.search;
 
 public enum MoneyflowSearchGroupByType {
-	year,
-	month,
-	contractpartner
+	YEAR,
+	MONTH,
+	CONTRACTPARTNER
 }

@@ -71,13 +71,14 @@ public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchP
 			return null;
 		}
 		switch (groupBy) {
-		case contractpartner:
+		case CONTRACTPARTNER:
 			return "contractpartnerid";
-		case year:
+		case YEAR:
 			return "year";
-		case month:
+		case MONTH:
 			return "month";
+		default:
+			return null;
 		}
-		return null;
 	}
 }
