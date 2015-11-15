@@ -74,6 +74,7 @@ import com.opencsv.CSVReader;
 
 @Named
 public class CompareDataService extends AbstractService implements ICompareDataService {
+	private static final String WRONG_FILE_FORMAT_TEXT = "The specified file is not parseable! Maybe you've selected the wrong format or file?";
 	@Inject
 	private CompareDataFormatDao compareDataFormatDao;
 	@Inject
@@ -119,9 +120,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		}
 
 		if (compareDataDatasets == null || compareDataDatasets.isEmpty()) {
-			throw new BusinessException(
-					"The specified file is not parseable! Maybe you've selected the wrong format or file?",
-					ErrorCode.WRONG_FILE_FORMAT);
+			throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
 		}
 
 		// remove File-Data outside the given period of time
@@ -209,22 +208,22 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
 			final String splitPattern = "[\\., -]";
 
-			int matching_words = 0;
+			int matchingWords = 0;
 			int words = 0;
 			for (final String cmpWord : cmpPartner.split(splitPattern)) {
 				words++;
 				for (final String monWord : monPartner.split(splitPattern)) {
 					if (monWord.equals(cmpWord)) {
 						rating += 10;
-						matching_words++;
+						matchingWords++;
 					} else if (this.doubleMetaphone.encode(monWord).equals(this.doubleMetaphone.encode(cmpWord))) {
 						rating += 8;
-						matching_words++;
+						matchingWords++;
 					}
 				}
 			}
 
-			if (matching_words == words && matching_words != 0) {
+			if (matchingWords == words && matchingWords != 0) {
 				rating += 5;
 			}
 		}
@@ -259,13 +258,13 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				switch (entry.getCreditDebitIndicator()) {
 				case Credit:
 					data.setAmount(entry.getAmount().getValue());
-					data.setPartner((entry.getEntryDetails().getTransactionDetails().getRelatedParties().getDebtor()
-							.getName()));
+					data.setPartner(
+							entry.getEntryDetails().getTransactionDetails().getRelatedParties().getDebtor().getName());
 					break;
-				case Debit:
+				default:
 					data.setAmount(entry.getAmount().getValue().negate());
-					data.setPartner((entry.getEntryDetails().getTransactionDetails().getRelatedParties().getCreditor()
-							.getName()));
+					data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties().getCreditor()
+							.getName());
 					break;
 				}
 
@@ -274,6 +273,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				compareDataDatasets.add(data);
 			}
 		} catch (final Exception e) {
+			throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
 		} finally {
 			xml = null;
 			characterStream.close();
@@ -306,12 +306,12 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 					}
 				}
 
-				if (match == true && cmpDataRaw.length <= compareDataFormat.getPositionAmount()) {
+				if (match && cmpDataRaw.length <= compareDataFormat.getPositionAmount()) {
 					// main section in CSV is done skip the rest
 					break;
 				}
 
-				if (match == true) {
+				if (match) {
 					final CompareDataDataset data = new CompareDataDataset();
 					/*
 					 * Date
@@ -372,10 +372,12 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				}
 			}
 		} catch (final IOException e) {
+			throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
 		} finally {
 			try {
 				cvsReader.close();
 			} catch (final IOException e) {
+				throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
 			}
 		}
 

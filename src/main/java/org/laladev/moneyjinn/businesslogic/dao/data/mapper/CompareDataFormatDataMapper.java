@@ -46,7 +46,7 @@ public class CompareDataFormatDataMapper implements IMapper<CompareDataFormat, C
 		compareDataFormat.setId(new CompareDataFormatID(compareDataFormatData.getFormatId()));
 		compareDataFormat.setName(compareDataFormatData.getName());
 
-		if (compareDataFormatData.getStartline().equals("camt")) {
+		if ("camt".equals(compareDataFormatData.getStartline())) {
 			compareDataFormat.setType(CompareDataFormatType.XML);
 		} else {
 			compareDataFormat.setType(CompareDataFormatType.CVS);

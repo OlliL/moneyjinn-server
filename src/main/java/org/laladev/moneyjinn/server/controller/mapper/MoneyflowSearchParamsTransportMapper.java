@@ -85,11 +85,11 @@ public class MoneyflowSearchParamsTransportMapper
 	private MoneyflowSearchGroupByType getGroupBy(final String groupByTransport) {
 		if (groupByTransport == null) {
 			return null;
-		} else if (groupByTransport.equals("year")) {
+		} else if ("year".equals(groupByTransport)) {
 			return MoneyflowSearchGroupByType.year;
-		} else if (groupByTransport.equals("month")) {
+		} else if ("month".equals(groupByTransport)) {
 			return MoneyflowSearchGroupByType.month;
-		} else if (groupByTransport.equals("contractpartner")) {
+		} else if ("contractpartner".equals(groupByTransport)) {
 			return MoneyflowSearchGroupByType.contractpartner;
 		}
 		return null;
