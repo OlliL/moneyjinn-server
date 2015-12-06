@@ -140,7 +140,7 @@
 					<excludes>
 						<exclude>**/TestSuite*.java</exclude>
 					</excludes>
-					<argLine>-Dfile.encoding=UTF-8</argLine>
+					<argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
