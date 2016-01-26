@@ -44,7 +44,8 @@ public class AccountMovementMapper {
 
 	private static final short MOVEMENT_TYPE_DIRECT_DEBIT = (short) 5;
 	private static final short MOVEMENT_TYPE_WITHDRAWAL = (short) 83;
-	private static final short MOVEMENT_TYPE_SEPA_DIRECT_DEBIT = (short) 106;
+	private static final short MOVEMENT_TYPE_SEPA_CARDS_CLEARING = (short) 106;
+	private static final short MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS = (short) 107;
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
@@ -150,7 +151,8 @@ public class AccountMovementMapper {
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
 				final String[] lines = movementReason.split("\r\n|\r|\n");
 
-				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)) {
+				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)
+						|| movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
 
 					lineloop: for (final String line : lines) {
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
@@ -199,7 +201,7 @@ public class AccountMovementMapper {
 					if (invoiceDate != null) {
 						this.setYear(accountMovement.getBookingDate(), invoiceDate);
 					}
-				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT)) {
+				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_CARDS_CLEARING)) {
 					for (final String line : lines) {
 						if (line.matches(
 								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {

@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
-import org.laladev.moneyjinn.hbci.core.entity.mapper.AccountMovementMapper;
 
 public class AccountMovementMapperTest {
 	private final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
@@ -33,7 +32,8 @@ public class AccountMovementMapperTest {
 		invoiceCalendar.setTime(accountMovement.getInvoiceTimestamp());
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH), invoiceCalendar.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
+				invoiceCalendar.get(Calendar.DAY_OF_MONTH));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY), invoiceCalendar.get(Calendar.HOUR_OF_DAY));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
@@ -65,6 +65,16 @@ public class AccountMovementMapperTest {
 	}
 
 	@Test
+	public void test_InvoiceTimestamp107ELV() {
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "ELV12345678 10.06 01.03 ME2";
+		usage.add("123456789012345678901234567");
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "107");
+	}
+
+	@Test
 	public void test_InvoiceTimestamp5OLV() {
 		final List<String> usage = new ArrayList<String>();
 		final String usageLine = "OLV12345678 10.06 01.03";
@@ -85,6 +95,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp5EC() {
+		this.expectedCalendar.set(Calendar.YEAR, 2015);
 		this.expectedCalendar.set(Calendar.SECOND, 22);
 
 		final List<String> usage = new ArrayList<String>();
@@ -135,6 +146,7 @@ public class AccountMovementMapperTest {
 	@Test
 	public void test_InvoiceTimestamp106() {
 		this.expectedCalendar.set(Calendar.SECOND, 22);
+		this.expectedCalendar.set(Calendar.YEAR, 2015);
 
 		final List<String> usage = new ArrayList<String>();
 		final String usageLine = "2015-06-10T01:03:22";
