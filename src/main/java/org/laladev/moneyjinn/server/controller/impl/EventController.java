@@ -94,7 +94,7 @@ public class EventController extends AbstractController {
 			response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
 		}
 
-		response.setMonthlySettlementMissing((short) (monthlySettlementExists ? 0 : 1));
+		response.setMonthlySettlementMissing(!monthlySettlementExists);
 		response.setMonthlySettlementMonth((short) month.getValue());
 		response.setMonthlySettlementYear(year);
 		response.setMonthlySettlementNumberOfAddableSettlements(numberOfAddableSettlements);

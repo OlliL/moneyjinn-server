@@ -60,7 +60,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 	public void test_previousMonthIsNotSettled_completeResponseObject() throws Exception {
 		final ShowEventListResponse expected = new ShowEventListResponse();
 		final LocalDate lastMonth = LocalDate.now().minusMonths(1l);
-		expected.setMonthlySettlementMissing((short) 1);
+		expected.setMonthlySettlementMissing(true);
 		expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
 		expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
 		expected.setMonthlySettlementNumberOfAddableSettlements(2);
@@ -87,7 +87,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		monthlySettlement.setGroup(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
 		this.monthlySettlementService.upsertMonthlySettlements(Arrays.asList(monthlySettlement));
 
-		expected.setMonthlySettlementMissing((short) 0);
+		expected.setMonthlySettlementMissing(false);
 		expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
 		expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
 		expected.setMonthlySettlementNumberOfAddableSettlements(2);
