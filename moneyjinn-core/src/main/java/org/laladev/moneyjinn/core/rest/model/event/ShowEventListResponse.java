@@ -32,17 +32,17 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("showEventListResponse")
 public class ShowEventListResponse extends AbstractResponse {
-	private Short monthlySettlementMissing;
+	private boolean monthlySettlementMissing;
 	private Short monthlySettlementMonth;
 	private Short monthlySettlementYear;
 	private Integer monthlySettlementNumberOfAddableSettlements;
 	private Integer numberOfImportedMoneyflows;
 
-	public final Short getMonthlySettlementMissing() {
+	public final boolean getMonthlySettlementMissing() {
 		return this.monthlySettlementMissing;
 	}
 
-	public final void setMonthlySettlementMissing(final Short monthlySettlementMissing) {
+	public final void setMonthlySettlementMissing(final boolean monthlySettlementMissing) {
 		this.monthlySettlementMissing = monthlySettlementMissing;
 	}
 
@@ -83,8 +83,7 @@ public class ShowEventListResponse extends AbstractResponse {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((this.monthlySettlementMissing == null) ? 0 : this.monthlySettlementMissing.hashCode());
+		result = prime * result + (this.monthlySettlementMissing ? 1231 : 1237);
 		result = prime * result + ((this.monthlySettlementMonth == null) ? 0 : this.monthlySettlementMonth.hashCode());
 		result = prime * result + ((this.monthlySettlementNumberOfAddableSettlements == null) ? 0
 				: this.monthlySettlementNumberOfAddableSettlements.hashCode());
@@ -106,11 +105,7 @@ public class ShowEventListResponse extends AbstractResponse {
 			return false;
 		}
 		final ShowEventListResponse other = (ShowEventListResponse) obj;
-		if (this.monthlySettlementMissing == null) {
-			if (other.monthlySettlementMissing != null) {
-				return false;
-			}
-		} else if (!this.monthlySettlementMissing.equals(other.monthlySettlementMissing)) {
+		if (this.monthlySettlementMissing != other.monthlySettlementMissing) {
 			return false;
 		}
 		if (this.monthlySettlementMonth == null) {
