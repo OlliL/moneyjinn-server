@@ -27,6 +27,7 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
+import java.nio.charset.Charset;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,6 +46,7 @@ import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMon
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 public class AccountMovementObserver implements Observer {
@@ -55,6 +57,7 @@ public class AccountMovementObserver implements Observer {
 		this.restTemplate = new RestTemplate();
 
 		this.restTemplate.getMessageConverters().clear();
+		this.restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
 		this.restTemplate.getMessageConverters().add(new MessageConverter());
 
 		final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
