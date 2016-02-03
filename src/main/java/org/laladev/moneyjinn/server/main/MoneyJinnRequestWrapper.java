@@ -28,6 +28,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -36,9 +38,16 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 	private final String body;
+	private final Charset encoding;
 
 	public MoneyJinnRequestWrapper(final HttpServletRequest request) throws IOException {
 		super(request);
+		if (request.getCharacterEncoding() != null) {
+			this.encoding = Charset.forName(request.getCharacterEncoding());
+		} else {
+			this.encoding = StandardCharsets.UTF_8;
+		}
+
 		final StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bufferedReader = null;
 		try {
@@ -46,7 +55,7 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 			// problematic for unittests (DelegatingServletInputStream does not implement isFinished
 			// violating javax.servlet API 3.1) - thats why uncommenting that for now
 			if (inputStream != null /* && !inputStream.isFinished() */) {
-				bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				bufferedReader = new BufferedReader(new InputStreamReader(inputStream, this.encoding));
 				final char[] charBuffer = new char[128];
 				int bytesRead = -1;
 				while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
@@ -65,7 +74,7 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body.getBytes());
+		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body.getBytes(this.encoding));
 		return new ServletInputStream() {
 			@Override
 			public int read() throws IOException {
