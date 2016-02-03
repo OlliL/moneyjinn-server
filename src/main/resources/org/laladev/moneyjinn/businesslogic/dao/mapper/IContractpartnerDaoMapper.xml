@@ -31,7 +31,8 @@
 		SELECT <include refid="contractpartnerColumns" />
 		  FROM vw_contractpartners
 		 WHERE maf_id    = #{userId}
-		   AND name          = #{name}
+		   AND name      = #{name}
+		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
 		 LIMIT 1
 	</select>
     	
