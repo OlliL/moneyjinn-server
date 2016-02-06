@@ -37,6 +37,7 @@ public class MonthlySettlementTransport {
 	private Long capitalsourceid;
 	private String capitalsourcecomment;
 	private Short capitalsourcegroupuse;
+	private Short capitalsourcetype;
 
 	public final Long getId() {
 		return this.id;
@@ -102,6 +103,14 @@ public class MonthlySettlementTransport {
 		this.capitalsourcegroupuse = capitalsourcegroupuse;
 	}
 
+	public final Short getCapitalsourcetype() {
+		return this.capitalsourcetype;
+	}
+
+	public final void setCapitalsourcetype(final Short capitalsourcetype) {
+		this.capitalsourcetype = capitalsourcetype;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -110,6 +119,7 @@ public class MonthlySettlementTransport {
 		result = prime * result + ((this.capitalsourcecomment == null) ? 0 : this.capitalsourcecomment.hashCode());
 		result = prime * result + ((this.capitalsourcegroupuse == null) ? 0 : this.capitalsourcegroupuse.hashCode());
 		result = prime * result + ((this.capitalsourceid == null) ? 0 : this.capitalsourceid.hashCode());
+		result = prime * result + ((this.capitalsourcetype == null) ? 0 : this.capitalsourcetype.hashCode());
 		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
 		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
 		result = prime * result + ((this.userid == null) ? 0 : this.userid.hashCode());
@@ -155,6 +165,13 @@ public class MonthlySettlementTransport {
 				return false;
 			}
 		} else if (!this.capitalsourceid.equals(other.capitalsourceid)) {
+			return false;
+		}
+		if (this.capitalsourcetype == null) {
+			if (other.capitalsourcetype != null) {
+				return false;
+			}
+		} else if (!this.capitalsourcetype.equals(other.capitalsourcetype)) {
 			return false;
 		}
 		if (this.id == null) {
@@ -207,6 +224,8 @@ public class MonthlySettlementTransport {
 		builder.append(this.capitalsourcecomment);
 		builder.append(", capitalsourcegroupuse=");
 		builder.append(this.capitalsourcegroupuse);
+		builder.append(", capitalsourcetype=");
+		builder.append(this.capitalsourcetype);
 		builder.append("]");
 		return builder.toString();
 	}
