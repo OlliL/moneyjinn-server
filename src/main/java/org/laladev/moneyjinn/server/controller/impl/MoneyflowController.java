@@ -1,4 +1,4 @@
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -128,8 +128,8 @@ public class MoneyflowController extends AbstractController {
 	private void fillAbstractAddMoneyflowResponse(final UserID userId, final AbstractAddMoneyflowResponse response) {
 		final LocalDate today = LocalDate.now();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
-				today, today);
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
 		if (capitalsources != null && !capitalsources.isEmpty()) {
 			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 		}
@@ -171,7 +171,7 @@ public class MoneyflowController extends AbstractController {
 
 		final UserID userId = moneyflow.getUser().getId();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsources(userId);
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupBookableCapitalsources(userId);
 		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);

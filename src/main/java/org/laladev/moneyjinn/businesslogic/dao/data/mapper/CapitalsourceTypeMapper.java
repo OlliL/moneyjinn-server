@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ public class CapitalsourceTypeMapper {
 	private static final Short LONG_TERM_ASSET_SHORT = Short.valueOf((short) 2);
 	private static final Short RESERVE_ASSET_SHORT = Short.valueOf((short) 3);
 	private static final Short PROVISION_ASSET_SHORT = Short.valueOf((short) 4);
+	private static final Short CREDIT_SHORT = Short.valueOf((short) 5);
 
 	private CapitalsourceTypeMapper() {
 
@@ -51,6 +52,8 @@ public class CapitalsourceTypeMapper {
 				return CapitalsourceType.RESERVE_ASSET;
 			case 4:
 				return CapitalsourceType.PROVISION_ASSET;
+			case 5:
+				return CapitalsourceType.CREDIT;
 			default:
 				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
 			}
@@ -69,6 +72,8 @@ public class CapitalsourceTypeMapper {
 				return RESERVE_ASSET_SHORT;
 			case PROVISION_ASSET:
 				return PROVISION_ASSET_SHORT;
+			case CREDIT:
+				return CREDIT_SHORT;
 			default:
 				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
 			}

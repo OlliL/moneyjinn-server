@@ -1,4 +1,4 @@
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -232,8 +232,8 @@ public class PreDefMoneyflowController extends AbstractController {
 			final AbstractCreatePreDefMoneyflowResponse response, final PreDefMoneyflow preDefMoneyflow) {
 		final LocalDate today = LocalDate.now();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
-				today, today);
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
 		// if the Capitalsource is no longer valid, it was not returned by the service call above
 		// but must be in the list to make it selectable.
 		if (preDefMoneyflow != null) {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
@@ -231,18 +232,19 @@ public interface ICapitalsourceService {
 	public void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
 
 	/**
-	 * This method returns all {@link Capitalsource}s where the given {@link User} has usage
-	 * permissions like creating a Moneyflow.
+	 * This method returns all {@link Capitalsource}s where the given {@link User} has usage for
+	 * creating a {@link Moneyflow}. {@link Capitalsource}s for which no {@link Moneyflow} must be
+	 * created, are filtered out.
 	 *
 	 * @param userId
 	 *            {@link UserID}
 	 * @return a list of {@link Capitalsource}s
 	 */
-	public List<Capitalsource> getGroupCapitalsources(UserID userId);
+	public List<Capitalsource> getGroupBookableCapitalsources(UserID userId);
 
 	/**
 	 * This method returns all {@link Capitalsource}s where the {@link User} has usage permissions
-	 * like creating a Moneyflow and which valid between the given Dates.
+	 * like creating a {@link Moneyflow} and which valid between the given Dates.
 	 *
 	 * @param userId
 	 *            {@link UserID}
@@ -263,5 +265,18 @@ public interface ICapitalsourceService {
 	 * @return
 	 */
 	public Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate endOfMonth);
+
+	/**
+	 * This method returns all {@link Capitalsource}s where the {@link User} has usage permissions
+	 * for creating a {@link Moneyflow} and which valid between the given Dates.
+	 * {@link Capitalsource}s for which no {@link Moneyflow} must be created, are filtered out.
+	 *
+	 * @param userId
+	 * @param validFrom
+	 * @param validTil
+	 * @return
+	 */
+	public List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+			LocalDate validTil);
 
 }

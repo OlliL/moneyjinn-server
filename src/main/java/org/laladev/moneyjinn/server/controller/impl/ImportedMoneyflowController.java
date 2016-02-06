@@ -1,4 +1,4 @@
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -116,8 +116,8 @@ public class ImportedMoneyflowController extends AbstractController {
 			final ShowAddImportedMoneyflowsResponse response) {
 		final LocalDate today = LocalDate.now();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
-				today, today);
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
 		if (capitalsources != null && !capitalsources.isEmpty()) {
 
 			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(ms -> ms.getId())

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -61,6 +61,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
@@ -206,8 +207,14 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		} else {
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 					moneyflow.getCapitalsource().getId());
-			if (capitalsource == null || (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId())
-					&& !capitalsource.isGroupUse())) {
+			if (capitalsource == null) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
+			} else if (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId())
+					&& !capitalsource.isGroupUse()) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 			} else if (bookingDate != null && (bookingDate.isBefore(capitalsource.getValidFrom())

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -77,6 +77,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
@@ -176,8 +177,14 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final Group accessor = this.accessRelationService.getAccessor(userId);
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
 					preDefMoneyflow.getCapitalsource().getId());
-			if (capitalsource == null || (!capitalsource.getUser().getId().equals(preDefMoneyflow.getUser().getId())
-					&& !capitalsource.isGroupUse())) {
+			if (capitalsource == null) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
+			} else if (!capitalsource.getUser().getId().equals(preDefMoneyflow.getUser().getId())
+					&& !capitalsource.isGroupUse()) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 			} else if (today.isBefore(capitalsource.getValidFrom()) || today.isAfter(capitalsource.getValidTil())) {

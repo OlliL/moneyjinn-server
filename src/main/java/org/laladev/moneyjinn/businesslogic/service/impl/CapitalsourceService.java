@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -342,11 +342,22 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public List<Capitalsource> getGroupCapitalsources(final UserID userId) {
+	public List<Capitalsource> getGroupBookableCapitalsources(final UserID userId) {
 		Assert.notNull(userId);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getGroupCapitalsources(userId.getId());
-		return this.mapCapitalsourceDataList(capitalsourceDataList);
+		return this.mapCapitalsourceDataList(capitalsourceDataList).stream()
+				.filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT))
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	@Override
+	public List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
+			final LocalDate validTil) {
+		final List<Capitalsource> capitalsources = this.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
+
+		return capitalsources.stream().filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@SuppressWarnings("unchecked")
