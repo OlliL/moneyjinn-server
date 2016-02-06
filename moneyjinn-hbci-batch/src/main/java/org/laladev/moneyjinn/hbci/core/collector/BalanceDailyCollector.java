@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,9 @@ public class BalanceDailyCollector {
 			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
 				final BalanceDaily balanceDailyTmp = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
 						account);
-				if (balanceDailyTmp != null && balanceDailyTmp.getMyIban() != null
-						&& balanceDailyTmp.getMyBic() != null) {
+				if (balanceDailyTmp != null && ((balanceDailyTmp.getMyIban() != null
+						&& balanceDailyTmp.getMyBic() != null)
+						|| (balanceDailyTmp.getMyAccountnumber() != null && balanceDailyTmp.getMyBankcode() != null))) {
 					balanceDaily = balanceDailyTmp;
 				}
 			}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -45,6 +45,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.collector.AccountMovementCollector;
 import org.laladev.moneyjinn.hbci.core.collector.BalanceDailyCollector;
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.handler.AbstractHandler;
@@ -61,14 +62,14 @@ public final class LalaHBCI {
 
 	public void main(final List<String> passports, final List<Observer> observerList) throws Exception {
 
-		HBCIUtils.init(this.getHbciProperties(), new LalaHBCICallback(this.getProperty("hbci.passport.password")));
+		HBCIUtils.init(this.getHbciProperties(), new LalaHBCICallback());
 
 		final SessionFactory sf = this.getSessionFactory();
 		final StatelessSession session = sf.openStatelessSession();
 
 		try {
 			for (final String passport : passports) {
-				process(passport, session, observerList);
+				this.process(passport, session, observerList);
 			}
 		} finally {
 			session.close();
@@ -88,11 +89,22 @@ public final class LalaHBCI {
 	private void process(final String passport, final StatelessSession session, final List<Observer> observerList)
 			throws IOException {
 
-		HBCIUtils.setParam("client.passport.PinTan.filename", passport);
-		((LalaHBCICallback) HBCIUtilsInternal.getCallback()).setPin(this.getPin(passport));
+		((LalaHBCICallback) HBCIUtilsInternal.getCallback()).setPassportPassword(this.getPassword(passport));
+
+		final String type = this.getType(passport);
+
+		if (type.equals("RDHNew")) {
+			HBCIUtils.setParam("client.passport.RDHNew.filename", passport);
+		} else if (type.equals("PinTan")) {
+			HBCIUtils.setParam("client.passport.PinTan.filename", passport);
+			((LalaHBCICallback) HBCIUtilsInternal.getCallback()).setPin(this.getPin(passport));
+		} else {
+			throw new RuntimeException("type " + type + " for passport " + passport
+					+ " not supported (only PinTan and RDHNew supported)!");
+		}
 
 		final Transaction tx = session.beginTransaction();
-		final HBCIPassport hbciPassport = AbstractHBCIPassport.getInstance();
+		final HBCIPassport hbciPassport = AbstractHBCIPassport.getInstance(type);
 
 		HBCIHandler hbciHandler = null;
 		try {
@@ -106,9 +118,19 @@ public final class LalaHBCI {
 				final List<AccountMovement> accountMovements = accountMovementCollector.collect(hbciHandler, account);
 				final BalanceDaily balanceDaily = balanceDailyCollector.collect(hbciHandler, account);
 
-				executeHandler(new AccountMovementHandler(session, accountMovements), observerList);
-				executeHandler(new BalanceDailyHandler(session, balanceDaily), observerList);
-				executeHandler(new BalanceMonthlyHandler(session, balanceDaily, accountMovements), observerList);
+				if (accountMovements != null && !accountMovements.isEmpty()) {
+					for (final AccountMovement accountMovement : accountMovements) {
+						this.addIbanBic(accountMovement);
+					}
+				}
+
+				if (balanceDaily != null) {
+					this.addIbanBic(balanceDaily);
+				}
+
+				this.executeHandler(new AccountMovementHandler(session, accountMovements), observerList);
+				this.executeHandler(new BalanceDailyHandler(session, balanceDaily), observerList);
+				this.executeHandler(new BalanceMonthlyHandler(session, balanceDaily, accountMovements), observerList);
 			}
 
 		} finally {
@@ -121,6 +143,16 @@ public final class LalaHBCI {
 
 		tx.commit();
 
+	}
+
+	private void addIbanBic(final AbstractAccountEntitiy accountEntity) {
+		if (accountEntity.getMyIban() == null && accountEntity.getMyAccountnumber() != null
+				&& accountEntity.getMyBankcode() != null) {
+			accountEntity.setMyIban(this.getProperty("hbci.mapping.iban."
+					+ accountEntity.getMyAccountnumber().toString() + "." + accountEntity.getMyBankcode().toString()));
+			accountEntity.setMyBic(this.getProperty("hbci.mapping.bic." + accountEntity.getMyAccountnumber().toString()
+					+ "." + accountEntity.getMyBankcode().toString()));
+		}
 	}
 
 	/**
@@ -137,6 +169,40 @@ public final class LalaHBCI {
 			handler.addObserver(observer);
 		}
 		handler.handle();
+
+	}
+
+	/**
+	 * returns the configured type for the given {@link HBCIPassport} filename
+	 *
+	 * @param passport
+	 * @return online banking PIN
+	 */
+	private String getType(final String passport) {
+		final File passportFile = new File(passport);
+		final String type = this.getProperty("hbci." + passportFile.getName() + ".type");
+		if (type == null) {
+			throw new RuntimeException("type for passport " + passport + " not defined as property (hbci."
+					+ passportFile.getName() + ".type)");
+		}
+		return type;
+
+	}
+
+	/**
+	 * returns the configured password for the given {@link HBCIPassport} filename
+	 *
+	 * @param passport
+	 * @return online banking PIN
+	 */
+	private String getPassword(final String passport) {
+		final File passportFile = new File(passport);
+		final String password = this.getProperty("hbci." + passportFile.getName() + ".password");
+		if (password == null) {
+			throw new RuntimeException("password for passport " + passport + " not defined as property (hbci."
+					+ passportFile.getName() + ".password)");
+		}
+		return password;
 
 	}
 
@@ -178,7 +244,7 @@ public final class LalaHBCI {
 		hbciProperties.setProperty("client.product.version", "2.5");
 		hbciProperties.setProperty("client.passport.PinTan.checkcert", "1");
 		hbciProperties.setProperty("client.passport.PinTan.init", "1");
-		hbciProperties.setProperty("client.passport.default", "PinTan");
+		// hbciProperties.setProperty("client.passport.default", "PinTan");
 		hbciProperties.setProperty("log.loglevel.default", "0");
 		hbciProperties.setProperty("log.filter", "3");
 		return hbciProperties;

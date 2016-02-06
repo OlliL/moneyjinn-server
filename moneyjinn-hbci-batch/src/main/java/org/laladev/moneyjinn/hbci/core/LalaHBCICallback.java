@@ -30,14 +30,17 @@ import org.kapott.hbci.passport.HBCIPassport;
 
 public class LalaHBCICallback extends HBCICallbackConsole {
 	private String pin;
-	private final String passportPassword;
+	private String passportPassword;
 
-	public LalaHBCICallback(final String passportPassword) {
-		this.passportPassword = passportPassword;
+	public LalaHBCICallback() {
 	}
 
 	public final void setPin(final String pin) {
 		this.pin = pin;
+	}
+
+	public final void setPassportPassword(final String passportPassword) {
+		this.passportPassword = passportPassword;
 	}
 
 	@Override
