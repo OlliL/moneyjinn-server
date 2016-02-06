@@ -42,6 +42,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+		super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);
 		super.setMonth((short) 12);
 		super.setYear((short) 2008);
 		return this;
@@ -54,6 +55,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE2_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE2_TYPE);
 		super.setMonth((short) 12);
 		super.setYear((short) 2008);
 		return this;
@@ -66,6 +68,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE4_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE4_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
+		super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE4_TYPE);
 		super.setMonth((short) 12);
 		super.setYear((short) 2008);
 		return this;
@@ -78,6 +81,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+		super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);
 		super.setMonth((short) 1);
 		super.setYear((short) 2019);
 		return this;
@@ -92,6 +96,7 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		transport.setCapitalsourcecomment(super.getCapitalsourcecomment());
 		transport.setCapitalsourcegroupuse(super.getCapitalsourcegroupuse());
 		transport.setCapitalsourceid(super.getCapitalsourceid());
+		transport.setCapitalsourcetype(super.getCapitalsourcetype());
 		transport.setMonth(super.getMonth());
 		transport.setYear(super.getYear());
 
