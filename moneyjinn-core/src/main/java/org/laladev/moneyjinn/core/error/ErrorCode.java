@@ -1,6 +1,4 @@
-package org.laladev.moneyjinn.core.error;
-
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.core.error;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.core.error;
 
 public enum ErrorCode {
 	MAPPER_UNDEFINED(-1),
@@ -87,7 +87,9 @@ public enum ErrorCode {
 	CAPITALSOURCE_NOT_FOUND(284),
 	ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER(286),
 	USERNAME_MUST_NOT_CONTAIN_SLASHES(291),
-	PASSWORD_MUST_NOT_CONTAIN_SLASHES(292);
+	PASSWORD_MUST_NOT_CONTAIN_SLASHES(292),
+	CAPITALSOURCE_INVALID(296),
+	;
 
 	private int code;
 
