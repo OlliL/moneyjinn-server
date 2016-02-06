@@ -72,6 +72,7 @@ public class MonthlySettlementTransportMapper implements IMapper<MonthlySettleme
 		final Capitalsource capitalsource = monthlySettlement.getCapitalsource();
 		monthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
 		monthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
+		monthlySettlementTransport.setCapitalsourcetype(CapitalsourceTypeMapper.map(capitalsource.getType()));
 		monthlySettlementTransport.setCapitalsourcegroupuse(capitalsource.isGroupUse() ? (short) 1 : null);
 		final User user = monthlySettlement.getUser();
 		monthlySettlementTransport.setUserid(user.getId().getId());
