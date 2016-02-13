@@ -10,34 +10,41 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public static final String CAPITALSOURCE2_BANKCODE = "ABCDEFG";
 	public static final String CAPITALSOURCE4_ACCOUNTNUMBER = "ZUTVEGT";
 	public static final String CAPITALSOURCE4_BANKCODE = "765432";
+	public static final String CAPITALSOURCE5_ACCOUNTNUMBER = "ZRTVEGT";
+	public static final String CAPITALSOURCE5_BANKCODE = "765433";
 
 	public static final String CAPITALSOURCE1_COMMENT = "Aource1";
 	public static final String CAPITALSOURCE2_COMMENT = "Source2";
 	public static final String CAPITALSOURCE3_COMMENT = "Source3";
 	public static final String CAPITALSOURCE4_COMMENT = "Xource4";
+	public static final String CAPITALSOURCE5_COMMENT = "Xource5";
 	public static final String NEWCAPITALSOURCE_COMMENT = "SourceNew";
 
 	public static final Long CAPITALSOURCE1_ID = 1l;
 	public static final Long CAPITALSOURCE2_ID = 2l;
 	public static final Long CAPITALSOURCE3_ID = 3l;
 	public static final Long CAPITALSOURCE4_ID = 4l;
+	public static final Long CAPITALSOURCE5_ID = 5l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 5l;
+	public static final Long NEXT_ID = 6l;
 
 	public static final Short CAPITALSOURCE1_GROUP_USE = null;
 	public static final Short CAPITALSOURCE2_GROUP_USE = (short) 1;
 	public static final Short CAPITALSOURCE3_GROUP_USE = (short) 1;
 	public static final Short CAPITALSOURCE4_GROUP_USE = (short) 1;
+	public static final Short CAPITALSOURCE5_GROUP_USE = (short) 1;
 
 	public static final Short CAPITALSOURCE1_TYPE = (short) 1;
 	public static final Short CAPITALSOURCE2_TYPE = (short) 2;
 	public static final Short CAPITALSOURCE3_TYPE = (short) 3;
 	public static final Short CAPITALSOURCE4_TYPE = (short) 4;
+	public static final Short CAPITALSOURCE5_TYPE = (short) 5;
 
 	public static final Short CAPITALSOURCE1_STATE = (short) 1;
 	public static final Short CAPITALSOURCE2_STATE = (short) 2;
 	public static final Short CAPITALSOURCE3_STATE = (short) 1;
 	public static final Short CAPITALSOURCE4_STATE = (short) 1;
+	public static final Short CAPITALSOURCE5_STATE = (short) 1;
 
 	public CapitalsourceTransportBuilder forCapitalsource1() {
 		super.setId(CAPITALSOURCE1_ID);
@@ -95,6 +102,21 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setValidFrom(DateUtil.getGMTDate("1983-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2010-12-31"));
 		super.setGroupUse(CAPITALSOURCE4_GROUP_USE);
+		super.setImportAllowed((short) 1);
+		return this;
+	}
+
+	public CapitalsourceTransportBuilder forCapitalsource5() {
+		super.setId(CAPITALSOURCE5_ID);
+		super.setUserid(UserTransportBuilder.USER3_ID);
+		super.setType(CAPITALSOURCE5_TYPE);
+		super.setState(CAPITALSOURCE5_STATE);
+		super.setComment(CAPITALSOURCE5_COMMENT);
+		super.setAccountNumber(CAPITALSOURCE5_ACCOUNTNUMBER);
+		super.setBankCode(CAPITALSOURCE5_BANKCODE);
+		super.setValidFrom(DateUtil.getGMTDate("2014-01-01"));
+		super.setValidTil(DateUtil.getGMTDate("2799-12-31"));
+		super.setGroupUse(CAPITALSOURCE5_GROUP_USE);
 		super.setImportAllowed((short) 1);
 		return this;
 	}

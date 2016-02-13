@@ -179,6 +179,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_creditCapitalsource_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID);
+
+		this.testError(transport, null, null, null, ErrorCode.CAPITALSOURCE_INVALID);
+	}
+
+	@Test
 	public void test_noLongerValidCapitalsource_Error() throws Exception {
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);

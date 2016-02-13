@@ -64,6 +64,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource5().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 
 		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
@@ -106,13 +107,14 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 	public void test_witDefaultSelection_defaultsResponse() throws Exception {
 		final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
 				Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID),
-						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID)));
+						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID),
+						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID)));
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
 
 		final ShowTrendsFormResponse expected = this.getDefaultResponse();
 		expected.setSettingTrendCapitalsourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
-				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID));
+				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE5_ID));
 
 		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowTrendsFormResponse.class);

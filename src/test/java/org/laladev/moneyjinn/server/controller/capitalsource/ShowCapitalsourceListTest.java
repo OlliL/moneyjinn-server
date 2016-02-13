@@ -61,6 +61,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource5().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 		expected.setCurrentlyValid(false);
 
@@ -69,11 +70,12 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 	private ShowCapitalsourceListResponse getCurrentlyValidResponse() {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S')));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S', 'X')));
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource5().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 		expected.setCurrentlyValid(true);
 
@@ -172,7 +174,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 
 		// this must change the default-setting to 1
 		expected = new ShowCapitalsourceListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S')));
+		expected.setInitials(new HashSet<Character>(Arrays.asList('A', 'S', 'X')));
 		capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);

@@ -154,6 +154,15 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_creditCapitalsource_Error() throws Exception {
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+				.build();
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID);
+
+		this.testError(transport, ErrorCode.CAPITALSOURCE_INVALID, null, null);
+	}
+
+	@Test
 	public void test_noLongerValidCapitalsource_Error() throws Exception {
 		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
 				.build();

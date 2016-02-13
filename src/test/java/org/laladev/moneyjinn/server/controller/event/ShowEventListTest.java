@@ -63,7 +63,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementMissing(true);
 		expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
 		expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
-		expected.setMonthlySettlementNumberOfAddableSettlements(2);
+		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
 		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
@@ -90,7 +90,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementMissing(false);
 		expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
 		expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
-		expected.setMonthlySettlementNumberOfAddableSettlements(2);
+		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
 		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
