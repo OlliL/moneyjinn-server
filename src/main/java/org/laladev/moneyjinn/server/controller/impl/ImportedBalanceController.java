@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
@@ -52,7 +53,7 @@ public class ImportedBalanceController extends AbstractController {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
 				now.toLocalDate());
 		if (capitalsource != null) {
-			if (!capitalsource.isImportAllowed()) {
+			if (capitalsource.getImportAllowed() == CapitalsourceImport.NOT_ALLOWED) {
 				throw new BusinessException("Import of this capitalsource is not allowed!",
 						ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED);
 			}

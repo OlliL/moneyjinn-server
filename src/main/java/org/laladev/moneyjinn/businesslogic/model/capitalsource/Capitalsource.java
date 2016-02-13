@@ -18,7 +18,7 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 	private LocalDate validTil;
 	private LocalDate validFrom;
 	private boolean groupUse;
-	private boolean importAllowed;
+	private CapitalsourceImport importAllowed;
 
 	public Capitalsource() {
 	}
@@ -99,11 +99,11 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 		this.groupUse = groupUse;
 	}
 
-	public final boolean isImportAllowed() {
+	public final CapitalsourceImport getImportAllowed() {
 		return this.importAllowed;
 	}
 
-	public final void setImportAllowed(final boolean importAllowed) {
+	public final void setImportAllowed(final CapitalsourceImport importAllowed) {
 		this.importAllowed = importAllowed;
 	}
 
@@ -119,7 +119,7 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 		result = prime * result + ((this.bankAccount == null) ? 0 : this.bankAccount.hashCode());
 		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
 		result = prime * result + (this.groupUse ? 1231 : 1237);
-		result = prime * result + (this.importAllowed ? 1231 : 1237);
+		result = prime * result + ((this.importAllowed == null) ? 0 : this.importAllowed.hashCode());
 		result = prime * result + ((this.state == null) ? 0 : this.state.hashCode());
 		result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
 		result = prime * result + ((this.user == null) ? 0 : this.user.hashCode());

@@ -40,7 +40,7 @@ public class CapitalsourceData {
 	private Date validTil;
 	private Date validFrom;
 	private boolean attGroupUse;
-	private boolean importAllowed;
+	private Short importAllowed;
 
 	public final Long getId() {
 		return this.id;
@@ -130,11 +130,11 @@ public class CapitalsourceData {
 		this.attGroupUse = attGroupUse;
 	}
 
-	public final boolean isImportAllowed() {
+	public final Short getImportAllowed() {
 		return this.importAllowed;
 	}
 
-	public final void setImportAllowed(final boolean importAllowed) {
+	public final void setImportAllowed(final Short importAllowed) {
 		this.importAllowed = importAllowed;
 	}
 

@@ -50,6 +50,7 @@ import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.businesslogic.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
@@ -699,7 +700,7 @@ public class ReportController extends AbstractController {
 		final CapitalsourceID capitalsourceId = capitalsource.getId();
 
 		List<ImportedBalance> importedBalances = null;
-		if (capitalsource.isImportAllowed()) {
+		if (capitalsource.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED) {
 			importedBalances = this.importedBalanceService.getAllImportedBalancesByCapitalsourceIds(userId,
 					Arrays.asList(capitalsourceId));
 		}

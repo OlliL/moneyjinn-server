@@ -56,11 +56,8 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 				&& GROUP_USE_SHORT.equals(capitalsourceTransport.getGroupUse())) {
 			capitalsource.setGroupUse(true);
 		}
-		if (capitalsourceTransport.getImportAllowed() != null
-				&& IMPORT_ALLOWED_SHORT.equals(capitalsourceTransport.getImportAllowed())) {
-			capitalsource.setImportAllowed(true);
-		}
 
+		capitalsource.setImportAllowed(CapitalsourceImportMapper.map(capitalsourceTransport.getImportAllowed()));
 		capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceTransport.getState()));
 		capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceTransport.getType()));
 
@@ -92,10 +89,8 @@ public class CapitalsourceTransportMapper implements IMapper<Capitalsource, Capi
 		if (capitalsource.isGroupUse()) {
 			capitalsourceTransport.setGroupUse(GROUP_USE_SHORT);
 		}
-		if (capitalsource.isImportAllowed()) {
-			capitalsourceTransport.setImportAllowed(IMPORT_ALLOWED_SHORT);
-		}
 
+		capitalsourceTransport.setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
 		capitalsourceTransport.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
 		capitalsourceTransport.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 

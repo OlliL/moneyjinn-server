@@ -44,6 +44,8 @@ import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceImport;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowID;
@@ -196,7 +198,7 @@ public class ImportedMoneyflowController extends AbstractController {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
 				now.toLocalDate());
 		if (capitalsource != null) {
-			if (!capitalsource.isImportAllowed()) {
+			if (capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED) {
 				throw new BusinessException("Import of this capitalsource is not allowed!",
 						ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED);
 			}
@@ -272,10 +274,13 @@ public class ImportedMoneyflowController extends AbstractController {
 
 					// if the IBAN/BIC of the booking matches one of our own capitalsource which
 					// must not be imported (because it has no HBCI access for example), create a
-					// counterbooking for it automatically
+					// counterbooking for it automatically. Do not do it for a credit type
+					// capitalsource at this just makes no sense
 					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(userId,
 							impMoneyflow.getBankAccount(), impMoneyflow.getBookingDate());
-					if (capitalsource != null && !capitalsource.isImportAllowed()) {
+
+					if (capitalsource != null && capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED
+							&& capitalsource.getType() != CapitalsourceType.CREDIT) {
 						impMoneyflow.setCapitalsource(capitalsource);
 						impMoneyflow.setAmount(impMoneyflow.getAmount().negate());
 						this.moneyflowService.createMoneyflows(Arrays.asList(impMoneyflow.getMoneyflow()));

@@ -50,7 +50,7 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		}
 		capitalsource.setComment(capitalsourceData.getComment());
 		capitalsource.setGroupUse(capitalsourceData.isAttGroupUse());
-		capitalsource.setImportAllowed(capitalsourceData.isImportAllowed());
+		capitalsource.setImportAllowed(CapitalsourceImportMapper.map(capitalsourceData.getImportAllowed()));
 
 		capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceData.getState()));
 		capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceData.getType()));
@@ -82,8 +82,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		}
 		capitalsourceData.setComment(capitalsource.getComment());
 		capitalsourceData.setAttGroupUse(capitalsource.isGroupUse());
-		capitalsourceData.setImportAllowed(capitalsource.isImportAllowed());
 
+		capitalsourceData.setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
 		capitalsourceData.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
 		capitalsourceData.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 
