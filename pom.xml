@@ -37,17 +37,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>3.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.juniversalchardet</groupId>
-			<artifactId>juniversalchardet</artifactId>
-			<version>1.0.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-core</artifactId>
 			<version>${moneyjinn-core.version}</version>
@@ -100,8 +89,17 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+		</dependency>
 
 		<!-- TEST SCOPE -->
+		<dependency>
+			<groupId>com.googlecode.juniversalchardet</groupId>
+			<artifactId>juniversalchardet</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
