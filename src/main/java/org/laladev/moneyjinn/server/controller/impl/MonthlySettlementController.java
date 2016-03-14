@@ -255,21 +255,44 @@ public class MonthlySettlementController extends AbstractController {
 			}
 		}
 
+		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
+		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
+				beginOfMonth, endOfMonth);
+
 		List<MonthlySettlementTransport> importedMonthlySettlementTransports = new ArrayList<>();
 		List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
 
-		if (selectedMonthDoesExist) {
-			monthlySettlementTransports = this.getMyEditableMonthlySettlements(userId, year, month);
-			editMode = true;
-		} else {
-			// selected month does not exist
-			final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
-			final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-			final List<MonthlySettlement> monthlySettlements = new ArrayList<>();
+		if (capitalsources != null && !capitalsources.isEmpty()) {
+			List<MonthlySettlement> monthlySettlements = new ArrayList<>();
 
-			final List<Capitalsource> capitalsources = this.capitalsourceService
-					.getGroupCapitalsourcesByDateRange(userId, beginOfMonth, endOfMonth);
-			if (capitalsources != null && !capitalsources.isEmpty()) {
+			if (selectedMonthDoesExist) {
+				monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
+				/**
+				 * I could be, that for an already fixed month, a "new" capitalsource gets valid
+				 * afterwards. To make it possible to create a settlement for this new source, add
+				 * it here.
+				 */
+				final List<CapitalsourceID> capitalsourceIDs = monthlySettlements.stream()
+						.map(ms -> ms.getCapitalsource().getId()).collect(Collectors.toCollection(ArrayList::new));
+
+				for (final Capitalsource capitalsource : capitalsources) {
+					if (capitalsource.getUser().getId().equals(userId)
+							&& !capitalsourceIDs.contains(capitalsource.getId())) {
+						final MonthlySettlement monthlySettlement = new MonthlySettlement();
+						monthlySettlement.setYear(year);
+						monthlySettlement.setMonth(month);
+						monthlySettlement.setAmount(BigDecimal.ZERO);
+						monthlySettlement.setCapitalsource(capitalsource);
+						monthlySettlement.setUser(capitalsource.getUser());
+						monthlySettlements.add(monthlySettlement);
+					}
+				}
+
+				editMode = true;
+			} else {
+				// selected month does not exist
+
 				for (final Capitalsource capitalsource : capitalsources) {
 					if (capitalsource.getUser().getId().equals(userId)) {
 						final MonthlySettlement monthlySettlement = new MonthlySettlement();
@@ -281,63 +304,64 @@ public class MonthlySettlementController extends AbstractController {
 						monthlySettlements.add(monthlySettlement);
 					}
 				}
-			}
-			if (selectedMonthIsNextSettlementMonth && previousSettlementExists) {
-				final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-						.getImportedMonthlySettlementsByMonth(userId, year, month);
-				final List<MonthlySettlement> relevantImportedMonthlySettlements = new ArrayList<>();
+				if (selectedMonthIsNextSettlementMonth && previousSettlementExists) {
+					final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
+							.getImportedMonthlySettlementsByMonth(userId, year, month);
+					final List<MonthlySettlement> relevantImportedMonthlySettlements = new ArrayList<>();
 
-				// prefill Amount if the selected month is the next one
-				final Short lastYear = (short) lastDate.getYear();
-				final Month lastMonth = lastDate.getMonth();
-				final List<MonthlySettlement> lastMonthlySettlements = this.monthlySettlementService
-						.getAllMonthlySettlementsByYearMonth(userId, lastYear, lastMonth);
+					// prefill Amount if the selected month is the next one
+					final Short lastYear = (short) lastDate.getYear();
+					final Month lastMonth = lastDate.getMonth();
+					final List<MonthlySettlement> lastMonthlySettlements = this.monthlySettlementService
+							.getAllMonthlySettlementsByYearMonth(userId, lastYear, lastMonth);
 
-				final Iterator<MonthlySettlement> iteratorMonthlySettlements = monthlySettlements.iterator();
-				while (iteratorMonthlySettlements.hasNext()) {
-					final MonthlySettlement monthlySettlement = iteratorMonthlySettlements.next();
-					final CapitalsourceID capitalsourceId = monthlySettlement.getCapitalsource().getId();
+					final Iterator<MonthlySettlement> iteratorMonthlySettlements = monthlySettlements.iterator();
+					while (iteratorMonthlySettlements.hasNext()) {
+						final MonthlySettlement monthlySettlement = iteratorMonthlySettlements.next();
+						final CapitalsourceID capitalsourceId = monthlySettlement.getCapitalsource().getId();
 
-					// try to find the amount to settle at first in the array of imported
-					// end-of-month amounts.
-					boolean imported = false;
-					if (importedMonthlySettlements != null) {
-						final Iterator<ImportedMonthlySettlement> iteratorImportedMonthlySettlements = importedMonthlySettlements
-								.iterator();
-						while (iteratorImportedMonthlySettlements.hasNext()) {
-							final ImportedMonthlySettlement importedMonthlySettlement = iteratorImportedMonthlySettlements
-									.next();
-							if (importedMonthlySettlement.getCapitalsource().getId().equals(capitalsourceId)) {
-								imported = true;
-								monthlySettlement.setAmount(importedMonthlySettlement.getAmount());
-								relevantImportedMonthlySettlements.add(monthlySettlement);
-								iteratorMonthlySettlements.remove();
-								iteratorImportedMonthlySettlements.remove();
-								break;
+						// try to find the amount to settle at first in the array of imported
+						// end-of-month amounts.
+						boolean imported = false;
+						if (importedMonthlySettlements != null) {
+							final Iterator<ImportedMonthlySettlement> iteratorImportedMonthlySettlements = importedMonthlySettlements
+									.iterator();
+							while (iteratorImportedMonthlySettlements.hasNext()) {
+								final ImportedMonthlySettlement importedMonthlySettlement = iteratorImportedMonthlySettlements
+										.next();
+								if (importedMonthlySettlement.getCapitalsource().getId().equals(capitalsourceId)) {
+									imported = true;
+									monthlySettlement.setAmount(importedMonthlySettlement.getAmount());
+									relevantImportedMonthlySettlements.add(monthlySettlement);
+									iteratorMonthlySettlements.remove();
+									iteratorImportedMonthlySettlements.remove();
+									break;
+								}
 							}
 						}
-					}
 
-					if (!imported) {
-						// if no settlement was imported, try to calculate it
-						BigDecimal baseAmount = BigDecimal.ZERO;
-						final Iterator<MonthlySettlement> iteratorLastMonthlySettlements = lastMonthlySettlements
-								.iterator();
-						while (iteratorLastMonthlySettlements.hasNext()) {
-							final MonthlySettlement lastMonthlySettlement = iteratorLastMonthlySettlements.next();
-							if (lastMonthlySettlement.getCapitalsource().getId().equals(capitalsourceId)) {
-								baseAmount = lastMonthlySettlement.getAmount();
-								iteratorLastMonthlySettlements.remove();
-								break;
+						if (!imported) {
+							// if no settlement was imported, try to calculate it
+							BigDecimal baseAmount = BigDecimal.ZERO;
+							final Iterator<MonthlySettlement> iteratorLastMonthlySettlements = lastMonthlySettlements
+									.iterator();
+							while (iteratorLastMonthlySettlements.hasNext()) {
+								final MonthlySettlement lastMonthlySettlement = iteratorLastMonthlySettlements.next();
+								if (lastMonthlySettlement.getCapitalsource().getId().equals(capitalsourceId)) {
+									baseAmount = lastMonthlySettlement.getAmount();
+									iteratorLastMonthlySettlements.remove();
+									break;
+								}
 							}
+							final BigDecimal movedAmount = this.moneyflowService
+									.getSumAmountByDateRangeForCapitalsourceId(userId, beginOfMonth, endOfMonth,
+											capitalsourceId);
+							monthlySettlement.setAmount(baseAmount.add(movedAmount));
 						}
-						final BigDecimal movedAmount = this.moneyflowService.getSumAmountByDateRangeForCapitalsourceId(
-								userId, beginOfMonth, endOfMonth, capitalsourceId);
-						monthlySettlement.setAmount(baseAmount.add(movedAmount));
 					}
+					importedMonthlySettlementTransports = super.mapList(relevantImportedMonthlySettlements,
+							MonthlySettlementTransport.class);
 				}
-				importedMonthlySettlementTransports = super.mapList(relevantImportedMonthlySettlements,
-						MonthlySettlementTransport.class);
 			}
 			monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
 		}
@@ -367,11 +391,11 @@ public class MonthlySettlementController extends AbstractController {
 		final Short year = requestYear;
 		final Month month = this.getMonth(requestMonth);
 
-		final List<MonthlySettlementTransport> monthlySettlementTransports = this
-				.getMyEditableMonthlySettlements(userId, year, month);
+		final List<MonthlySettlement> monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
 
-		if (!monthlySettlementTransports.isEmpty()) {
-			response.setMonthlySettlementTransports(monthlySettlementTransports);
+		if (!monthlySettlements.isEmpty()) {
+			response.setMonthlySettlementTransports(
+					super.mapList(monthlySettlements, MonthlySettlementTransport.class));
 		}
 
 		return response;
@@ -419,7 +443,7 @@ public class MonthlySettlementController extends AbstractController {
 				: null;
 	}
 
-	private List<MonthlySettlementTransport> getMyEditableMonthlySettlements(final UserID userId, final Short year,
+	private List<MonthlySettlement> getMyEditableMonthlySettlements(final UserID userId, final Short year,
 			final Month month) {
 
 		final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
@@ -427,7 +451,6 @@ public class MonthlySettlementController extends AbstractController {
 
 		if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
 			return monthlySettlements.stream().filter(ms -> ms.getUser().getId().equals(userId))
-					.map(ms -> super.map(ms, MonthlySettlementTransport.class))
 					.collect(Collectors.toCollection(ArrayList::new));
 		}
 
