@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Observer;
 import java.util.Properties;
 
-import org.laladev.moneyjinn.hbci.batch.handler.ScreenScrapingHandler;
 import org.laladev.moneyjinn.hbci.batch.subscriber.AccountMovementObserver;
 import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceDailyObserver;
 import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceMonthlyObserver;
@@ -62,9 +61,5 @@ public final class Main {
 		}
 
 		lalaHBCI.main(passports, observers);
-
-		final ScreenScrapingHandler scrapingHandler = new ScreenScrapingHandler();
-		scrapingHandler.handle(properties, observers);
-
 	}
 }

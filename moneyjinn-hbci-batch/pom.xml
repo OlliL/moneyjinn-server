@@ -3,12 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.laladev.moneyjinn</groupId>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 
 	<properties>
 		<moneyjinn-client-core.version>0.0.1-SNAPSHOT</moneyjinn-client-core.version>
 		<moneyjinn-hbci-core.version>0.0.5-SNAPSHOT</moneyjinn-hbci-core.version>
 		<htmlunit.version>2.17</htmlunit.version> <!-- 2.18 does NOT work -->
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
