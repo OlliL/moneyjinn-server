@@ -32,8 +32,7 @@ public class AccountMovementMapperTest {
 		invoiceCalendar.setTime(accountMovement.getInvoiceTimestamp());
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
-				invoiceCalendar.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH), invoiceCalendar.get(Calendar.DAY_OF_MONTH));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY), invoiceCalendar.get(Calendar.HOUR_OF_DAY));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
@@ -50,8 +49,41 @@ public class AccountMovementMapperTest {
 		this.expectedCalendar.set(Calendar.SECOND, 0);
 		this.expectedCalendar.set(Calendar.MILLISECOND, 0);
 
-		this.currentCalendar.set(Calendar.MONTH, Calendar.JULY);
-		this.currentCalendar.set(Calendar.DAY_OF_MONTH, 1);
+		this.currentCalendar.set(Calendar.MONTH, Calendar.JUNE);
+		this.currentCalendar.set(Calendar.DAY_OF_MONTH, 20);
+	}
+
+	@Test
+	public void test_ArrayIndexOutOfBoundException_notRaised() {
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "100601031885492151200031520";
+
+		usage.add("EREF+YYIJ222224K446NA PP.53");
+		usage.add("89.PP PAYPAL ");
+		usage.add("MREF+5NHJ224NJJL8N   ");
+		usage.add("");
+		usage.add("CRED+LU96ZZZ000000000000000");
+		usage.add("0058         ");
+		usage.add("SVWZ+PP.5389.PP . superscho");
+		usage.add("en01, Ihr Einkauf bei super");
+		usage.add("schoen01, Artikel-38093416");
+		usage.add("421");
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "5");
+	}
+
+	@Test
+	public void test_correctDateUsed() {
+		final List<String> usage = new ArrayList<String>();
+		final String usageLine = "100601031885492151200031520";
+
+		usage.add("304-2383932-4629952  0983583325674196");
+		usage.add("Amazon .MktplceEU-DE");
+		usage.add("0983583325674196"); // This line has to be ignored
+		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "5");
 	}
 
 	@Test

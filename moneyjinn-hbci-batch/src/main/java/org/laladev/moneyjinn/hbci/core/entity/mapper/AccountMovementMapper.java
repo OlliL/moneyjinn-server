@@ -135,11 +135,10 @@ public class AccountMovementMapper {
 	}
 
 	/**
-	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
-	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
-	 *
-	 * @param {@link
-	 * 			AccountMovement} accountMovement
+	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its usage text based on the used
+	 * Business-AccountMovement-Code + Text. <br>
+	 * 
+	 * @param {@link AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
 	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
@@ -151,8 +150,7 @@ public class AccountMovementMapper {
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
 				final String[] lines = movementReason.split("\r\n|\r|\n");
 
-				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)
-						|| movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
+				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT) || movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
 
 					lineloop: for (final String line : lines) {
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
@@ -165,24 +163,24 @@ public class AccountMovementMapper {
 							invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
 							break;
 						} else {
-							for (int i = 0; i < line.length(); i++) {
-								if (!Character.isDigit(line.charAt(i))) {
-									continue lineloop;
+							if (line.length() >= 8) {
+								for (int i = 0; i < line.length(); i++) {
+									if (!Character.isDigit(line.charAt(i))) {
+										continue lineloop;
+									}
+								}
+								invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
+								this.setYear(accountMovement.getBookingDate(), invoiceDate);
+								/*
+								 * the invoice date must be before or equal than the bookingdate and not more than two weeks before the bookingdate
+								 */
+								if (invoiceDate.before(accountMovement.getBookingDate())
+										&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14 * 86400000) {
+									invoiceDate = null;
+								} else {
+									break;
 								}
 							}
-							invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
-							this.setYear(accountMovement.getBookingDate(), invoiceDate);
-							/*
-							 * the invoice date must be before or equal than the bookingdate and not
-							 * more than two weeks before the bookingdate
-							 */
-							if (invoiceDate.after(accountMovement.getBookingDate())
-									&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
-											* 86400000) {
-								invoiceDate = null;
-
-							}
-
 						}
 					}
 
@@ -203,8 +201,7 @@ public class AccountMovementMapper {
 					}
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_CARDS_CLEARING)) {
 					for (final String line : lines) {
-						if (line.matches(
-								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+						if (line.matches("^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
 							// 2015-09-22T17:16:41
 							invoiceDate = this.dateTimeFormatter.parse(line);
 							break;
