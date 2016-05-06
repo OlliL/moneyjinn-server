@@ -39,7 +39,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 public class CapitalsourceTransportMapper implements IMapper<Capitalsource, CapitalsourceTransport> {
 	private static final Short GROUP_USE_SHORT = Short.valueOf((short) 1);
-	private static final Short IMPORT_ALLOWED_SHORT = Short.valueOf((short) 1);
 
 	@Override
 	public Capitalsource mapBToA(final CapitalsourceTransport capitalsourceTransport) {
