@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,7 +53,7 @@ public class MonthlySettlementDao {
 		return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
 	}
 
-	public Date getMaxSettlementDate(final Long userId) {
+	public LocalDate getMaxSettlementDate(final Long userId) {
 		return this.mapper.getMaxSettlementDate(userId);
 	}
 

@@ -38,7 +38,7 @@ public class PostingAccountAmountDataMapper implements IMapper<PostingAccountAmo
 	public PostingAccountAmount mapBToA(final PostingAccountAmountData postingAccountAmountData) {
 		final PostingAccountAmount postingAccountAmount = new PostingAccountAmount();
 		postingAccountAmount.setAmount(postingAccountAmountData.getAmount());
-		postingAccountAmount.setDate(postingAccountAmountData.getDate().toLocalDate().withDayOfMonth(1));
+		postingAccountAmount.setDate(postingAccountAmountData.getDate().withDayOfMonth(1));
 		postingAccountAmount.setPostingAccount(
 				new PostingAccount(new PostingAccountID(postingAccountAmountData.getMpaPostingAccountId())));
 		return postingAccountAmount;

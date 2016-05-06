@@ -146,7 +146,7 @@
 		 LIMIT 1
 	</select>
 	
- 	<select id="getMaxMoneyflowDate" resultType="java.sql.Date">
+ 	<select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
 		SELECT MAX(bookingdate)
 		  FROM vw_moneyflows
 		 WHERE maf_id              = #{userId}
@@ -157,7 +157,7 @@
 		       )
  	</select>   	
 
-	<select id="getPreviousMoneyflowDate" resultType="java.sql.Date">
+	<select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
 		SELECT MAX(bookingdate)
 		  FROM vw_moneyflows
 		 WHERE bookingdate         <![CDATA[ < ]]> #{date}
@@ -169,7 +169,7 @@
 		       )
  	</select>
 
- 	<select id="getNextMoneyflowDate" resultType="java.sql.Date">
+ 	<select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
 		SELECT MIN(bookingdate)
 		  FROM vw_moneyflows
 		 WHERE bookingdate         <![CDATA[ > ]]> #{date}

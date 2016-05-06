@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -45,11 +42,8 @@ public class ImportedMoneyflowDataMapper implements IMapper<ImportedMoneyflow, I
 		importedMoneyflow.setId(new ImportedMoneyflowID(importedMoneyflowData.getId()));
 		importedMoneyflow.setAmount(importedMoneyflowData.getAmount());
 
-		final LocalDate bookingDate = importedMoneyflowData.getBookingdate().toLocalDate();
-		final LocalDate invoiceDate = importedMoneyflowData.getInvoicedate().toLocalDate();
-
-		importedMoneyflow.setBookingDate(bookingDate);
-		importedMoneyflow.setInvoiceDate(invoiceDate);
+		importedMoneyflow.setBookingDate(importedMoneyflowData.getBookingdate());
+		importedMoneyflow.setInvoiceDate(importedMoneyflowData.getInvoicedate());
 		importedMoneyflow.setCapitalsource(
 				new Capitalsource(new CapitalsourceID(importedMoneyflowData.getMcsCapitalsourceId())));
 
@@ -73,11 +67,8 @@ public class ImportedMoneyflowDataMapper implements IMapper<ImportedMoneyflow, I
 		}
 		importedMoneyflowData.setAmount(importedMoneyflow.getAmount());
 
-		final Date bookingDate = Date.valueOf(importedMoneyflow.getBookingDate());
-		final Date invoiceDate = Date.valueOf(importedMoneyflow.getInvoiceDate());
-
-		importedMoneyflowData.setBookingdate(bookingDate);
-		importedMoneyflowData.setInvoicedate(invoiceDate);
+		importedMoneyflowData.setBookingdate(importedMoneyflow.getBookingDate());
+		importedMoneyflowData.setInvoicedate(importedMoneyflow.getInvoiceDate());
 		importedMoneyflowData.setMcsCapitalsourceId(importedMoneyflow.getCapitalsource().getId().getId());
 
 		final BankAccount bankAccount = importedMoneyflow.getBankAccount();

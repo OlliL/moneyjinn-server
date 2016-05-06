@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class ContractpartnerData {
 	private Long id;
@@ -37,8 +37,8 @@ public class ContractpartnerData {
 	private Integer postcode;
 	private String town;
 	private String country;
-	private Date validTil;
-	private Date validFrom;
+	private LocalDate validTil;
+	private LocalDate validFrom;
 	private String mmfComment;
 	private Long mpaPostingAccountId;
 
@@ -106,19 +106,19 @@ public class ContractpartnerData {
 		this.country = country;
 	}
 
-	public final Date getValidTil() {
+	public final LocalDate getValidTil() {
 		return this.validTil;
 	}
 
-	public final void setValidTil(final Date validTil) {
+	public final void setValidTil(final LocalDate validTil) {
 		this.validTil = validTil;
 	}
 
-	public final Date getValidFrom() {
+	public final LocalDate getValidFrom() {
 		return this.validFrom;
 	}
 
-	public final void setValidFrom(final Date validFrom) {
+	public final void setValidFrom(final LocalDate validFrom) {
 		this.validFrom = validFrom;
 	}
 

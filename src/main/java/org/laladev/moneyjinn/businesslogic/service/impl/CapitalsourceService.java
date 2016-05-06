@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -165,7 +164,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			// update existing Capitalsource
 			final boolean checkCapitalsourceInUseOutOfDate = this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(
 					capitalsource.getUser().getId().getId(), capitalsource.getId().getId(),
-					Date.valueOf(capitalsource.getValidFrom()), Date.valueOf(capitalsource.getValidTil()));
+					capitalsource.getValidFrom(), capitalsource.getValidTil());
 			if (checkCapitalsourceInUseOutOfDate) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(capitalsource.getId(), ErrorCode.CAPITALSOURCE_IN_USE_PERIOD));
@@ -219,8 +218,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		return this.capitalsourceDao.getAllCapitalsourceInitialsByDateRange(userId.getId(), Date.valueOf(validFrom),
-				Date.valueOf(validTil));
+		return this.capitalsourceDao.getAllCapitalsourceInitialsByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
@@ -235,8 +233,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		return this.capitalsourceDao.countAllCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom),
-				Date.valueOf(validTil));
+		return this.capitalsourceDao.countAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
@@ -255,7 +252,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-				.getAllCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+				.getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
 	}
 
@@ -276,8 +273,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(validTil);
 		Assert.notNull(initial);
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-				.getAllCapitalsourcesByInitialAndDateRange(userId.getId(), initial, Date.valueOf(validFrom),
-						Date.valueOf(validTil));
+				.getAllCapitalsourcesByInitialAndDateRange(userId.getId(), initial, validFrom, validTil);
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
 	}
 
@@ -287,7 +283,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(date);
 		Assert.notNull(name);
 		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
-				name, Date.valueOf(date));
+				name, date);
 		return this.mapCapitalsourceData(capitalsourceData);
 	}
 
@@ -374,7 +370,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 		if (capitalsources == null) {
 			final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-					.getGroupCapitalsourcesByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+					.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
 			capitalsources = this.mapCapitalsourceDataList(capitalsourceDataList);
 			cache.put(key, capitalsources);
 		}
@@ -385,8 +381,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	@Override
 	public Capitalsource getCapitalsourceByAccount(final UserID userId, final BankAccount bankAccount,
 			final LocalDate endOfMonth) {
-		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByAccount(
-				bankAccount.getBankCode(), bankAccount.getAccountNumber(), Date.valueOf(endOfMonth));
+		final CapitalsourceData capitalsourceData = this.capitalsourceDao
+				.getCapitalsourceByAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber(), endOfMonth);
 
 		return this.mapCapitalsourceData(capitalsourceData);
 	}

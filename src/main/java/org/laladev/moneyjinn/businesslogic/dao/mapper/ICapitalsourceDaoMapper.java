@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -62,29 +62,29 @@ public interface ICapitalsourceDaoMapper {
 	public List<CapitalsourceData> getAllCapitalsources(@Param("userId") Long userId);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public CapitalsourceData getCapitalsourceById(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
 			@Param("id") Long id);
 
 	public Integer countAllCapitalsources(@Param("userId") Long userId);
 
-	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId, @Param("validFrom") Date validFrom,
-			@Param("validTil") Date validTil);
+	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId, @Param("validFrom") LocalDate validFrom,
+			@Param("validTil") LocalDate validTil);
 
 	public Set<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
 
 	public Set<Character> getAllCapitalsourceInitialsByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitial(@Param("userId") Long userId,
 			@Param("initial") Character initial);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(@Param("userId") Long userId,
-			@Param("initial") Character initial, @Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("initial") Character initial, @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId, @Param("comment") String comment,
-			@Param("date") Date date);
+			@Param("date") LocalDate date);
 
 	public void createCapitalsource(CapitalsourceData capitalsourceData);
 
@@ -94,14 +94,14 @@ public interface ICapitalsourceDaoMapper {
 			@Param("id") Long id);
 
 	public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public List<CapitalsourceData> getGroupCapitalsources(@Param("userId") Long userId);
 
 	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil);
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public CapitalsourceData getCapitalsourceByAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber, @Param("date") Date date);
+			@Param("accountNumber") String accountNumber, @Param("date") LocalDate date);
 
 }

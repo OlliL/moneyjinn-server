@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -46,39 +46,39 @@ public interface IMoneyflowDaoMapper {
 	public void deleteMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
 
 	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(@Param("userId") Long userId,
-			@Param("validFrom") Date validFrom, @Param("validTil") Date validTil,
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil,
 			@Param("mcsCapitalsourceIds") List<Long> capitalsourceIds);
 
 	public List<Short> getAllYears(Long userId);
 
-	public List<Short> getAllMonth(@Param("userId") Long userId, @Param("beginOfYear") Date beginOfYear,
-			@Param("endOfYear") Date endOfYear);
+	public List<Short> getAllMonth(@Param("userId") Long userId, @Param("beginOfYear") LocalDate beginOfYear,
+			@Param("endOfYear") LocalDate endOfYear);
 
 	public List<MoneyflowData> getAllMoneyflowsByDateRange(@Param("userId") Long userId,
-			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
-	public Boolean monthHasMoneyflows(@Param("userId") Long userId, @Param("dateFrom") Date dateFrom,
-			@Param("dateTil") Date dateTil);
+	public Boolean monthHasMoneyflows(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom,
+			@Param("dateTil") LocalDate dateTil);
 
-	public Date getMaxMoneyflowDate(Long userId);
+	public LocalDate getMaxMoneyflowDate(Long userId);
 
-	public Date getPreviousMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
+	public LocalDate getPreviousMoneyflowDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
-	public Date getNextMoneyflowDate(@Param("userId") Long userId, @Param("date") Date date);
+	public LocalDate getNextMoneyflowDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
 	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
 			@Param("userId") Long userId, @Param("postingAccountIds") List<Long> postingAccountIdLongs,
-			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
 	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
 			@Param("userId") Long userId, @Param("postingAccountIds") List<Long> postingAccountIdLongs,
-			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil);
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
 	public List<MoneyflowData> searchMoneyflowsByAmountDate(@Param("userId") Long userId,
-			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil, @Param("amount") BigDecimal amount);
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil, @Param("amount") BigDecimal amount);
 
 	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(@Param("userId") Long userId,
-			@Param("dateFrom") Date dateFrom, @Param("dateTil") Date dateTil,
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil,
 			@Param("capitalsourceId") Long capitalsourceId);
 
 	public List<MoneyflowSearchResultData> searchMoneyflows(MoneyflowSearchParamsData moneyflowSearchParamsData);

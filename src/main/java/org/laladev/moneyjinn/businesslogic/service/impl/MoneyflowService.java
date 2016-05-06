@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -365,8 +364,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
 		final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
 
-		final List<Short> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), Date.valueOf(beginOfYear),
-				Date.valueOf(endOfYear));
+		final List<Short> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
 
 		if (allMonths == null || allMonths.isEmpty()) {
 			months = new ArrayList<>();
@@ -388,7 +386,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(dateTil);
 
 		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRange(userId.getId(),
-				Date.valueOf(dateFrom), Date.valueOf(dateTil));
+				dateFrom, dateTil);
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
@@ -402,8 +400,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
-		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), Date.valueOf(beginOfMonth),
-				Date.valueOf(endOfMonth));
+		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), beginOfMonth, endOfMonth);
 	}
 
 	@Override
@@ -417,17 +414,15 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
 
-		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), Date.valueOf(dateFrom),
-				Date.valueOf(dateTil), capitalsourceIdLongs);
+		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil,
+				capitalsourceIdLongs);
 	}
 
 	@Override
 	public LocalDate getMaxMoneyflowDate(final UserID userId) {
-		final Date date = this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
-		if (date != null) {
-			return date.toLocalDate();
-		}
-		return null;
+		Assert.notNull(userId);
+
+		return this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
 	}
 
 	@Override
@@ -435,11 +430,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(userId);
 		Assert.notNull(date);
 
-		final Date sqlDate = this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), Date.valueOf(date));
-		if (sqlDate != null) {
-			return sqlDate.toLocalDate();
-		}
-		return null;
+		return this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), date);
 	}
 
 	@Override
@@ -447,11 +438,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(userId);
 		Assert.notNull(date);
 
-		final Date sqlDate = this.moneyflowDao.getNextMoneyflowDate(userId.getId(), Date.valueOf(date));
-		if (sqlDate != null) {
-			return sqlDate.toLocalDate();
-		}
-		return null;
+		return this.moneyflowDao.getNextMoneyflowDate(userId.getId(), date);
 	}
 
 	@Override
@@ -467,7 +454,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
 				.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs,
-						Date.valueOf(dateFrom), Date.valueOf(dateTil));
+						dateFrom, dateTil);
 		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
 
 	}
@@ -484,8 +471,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs,
-						Date.valueOf(dateFrom), Date.valueOf(dateTil));
+				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom,
+						dateTil);
 		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
 	}
 
@@ -509,7 +496,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		}
 
 		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflowsByAmountDate(userId.getId(),
-				Date.valueOf(dateFrom), Date.valueOf(dateTil), amount);
+				dateFrom, dateTil, amount);
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
@@ -555,8 +542,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(dateTil);
 		Assert.notNull(capitalsourceId);
 
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRangeCapitalsourceId(
-				userId.getId(), Date.valueOf(dateFrom), Date.valueOf(dateTil), capitalsourceId.getId());
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+				.getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil, capitalsourceId.getId());
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}

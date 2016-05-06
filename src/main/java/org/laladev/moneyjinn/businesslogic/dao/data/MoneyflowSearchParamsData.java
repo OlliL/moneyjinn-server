@@ -26,12 +26,12 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class MoneyflowSearchParamsData {
 	private Long userId;
-	private Date startDate;
-	private Date endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private String searchString;
 	private boolean featureEqual;
 	private boolean featureRegexp;
@@ -50,19 +50,19 @@ public class MoneyflowSearchParamsData {
 		this.userId = userId;
 	}
 
-	public final Date getStartDate() {
+	public final LocalDate getStartDate() {
 		return this.startDate;
 	}
 
-	public final void setStartDate(final Date startDate) {
+	public final void setStartDate(final LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public final Date getEndDate() {
+	public final LocalDate getEndDate() {
 		return this.endDate;
 	}
 
-	public final void setEndDate(final Date endDate) {
+	public final void setEndDate(final LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

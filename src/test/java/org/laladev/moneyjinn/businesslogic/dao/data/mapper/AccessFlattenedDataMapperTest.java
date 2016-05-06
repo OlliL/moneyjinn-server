@@ -1,12 +1,10 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData;
-import org.laladev.moneyjinn.businesslogic.dao.data.mapper.AccessFlattenedDataMapper;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
 
@@ -41,8 +39,8 @@ public class AccessFlattenedDataMapperTest {
 		Assert.assertEquals(Long.valueOf(2l), accessFlattenedData.getIdLevel3());
 		Assert.assertEquals(Long.valueOf(3l), accessFlattenedData.getIdLevel4());
 		Assert.assertEquals(Long.valueOf(4l), accessFlattenedData.getIdLevel5());
-		Assert.assertEquals(Date.valueOf(validFrom), accessFlattenedData.getValidFrom());
-		Assert.assertEquals(Date.valueOf(validTil), accessFlattenedData.getValidTil());
+		Assert.assertEquals(validFrom, accessFlattenedData.getValidFrom());
+		Assert.assertEquals(validTil, accessFlattenedData.getValidTil());
 	}
 
 	@Test
@@ -57,8 +55,8 @@ public class AccessFlattenedDataMapperTest {
 		accessFlattenedData.setIdLevel3(2l);
 		accessFlattenedData.setIdLevel4(3l);
 		accessFlattenedData.setIdLevel5(4l);
-		accessFlattenedData.setValidFrom(Date.valueOf(validFrom));
-		accessFlattenedData.setValidTil(Date.valueOf(validTil));
+		accessFlattenedData.setValidFrom(validFrom);
+		accessFlattenedData.setValidTil(validTil);
 
 		final AccessFlattenedDataMapper mapper = new AccessFlattenedDataMapper();
 
@@ -95,8 +93,8 @@ public class AccessFlattenedDataMapperTest {
 		Assert.assertNull(accessFlattenedData.getIdLevel3());
 		Assert.assertNull(accessFlattenedData.getIdLevel4());
 		Assert.assertNull(accessFlattenedData.getIdLevel5());
-		Assert.assertEquals(Date.valueOf(validFrom), accessFlattenedData.getValidFrom());
-		Assert.assertEquals(Date.valueOf(validTil), accessFlattenedData.getValidTil());
+		Assert.assertEquals(validFrom, accessFlattenedData.getValidFrom());
+		Assert.assertEquals(validTil, accessFlattenedData.getValidTil());
 	}
 
 	@Test
@@ -107,8 +105,8 @@ public class AccessFlattenedDataMapperTest {
 		final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
 		accessFlattenedData.setId(0l);
 		accessFlattenedData.setIdLevel1(0l);
-		accessFlattenedData.setValidFrom(Date.valueOf(validFrom));
-		accessFlattenedData.setValidTil(Date.valueOf(validTil));
+		accessFlattenedData.setValidFrom(validFrom);
+		accessFlattenedData.setValidTil(validTil);
 
 		final AccessFlattenedDataMapper mapper = new AccessFlattenedDataMapper();
 

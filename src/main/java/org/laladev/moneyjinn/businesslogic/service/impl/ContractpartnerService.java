@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -162,7 +161,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 					new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
 		} else if (contractpartner.getId() != null && this.contractpartnerDao.checkContractpartnerInUseOutOfDate(
 				contractpartner.getUser().getId().getId(), contractpartner.getId().getId(),
-				Date.valueOf(contractpartner.getValidFrom()), Date.valueOf(contractpartner.getValidTil()))) {
+				contractpartner.getValidFrom(), contractpartner.getValidTil())) {
 			// update existing Contractpartner
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(contractpartner.getId(), ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
@@ -207,8 +206,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		return this.contractpartnerDao.getAllContractpartnerInitialsByDateRange(userId.getId(), Date.valueOf(validFrom),
-				Date.valueOf(validTil));
+		return this.contractpartnerDao.getAllContractpartnerInitialsByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
@@ -223,8 +221,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(userId);
 		Assert.notNull(validFrom);
 		Assert.notNull(validTil);
-		return this.contractpartnerDao.countAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom),
-				Date.valueOf(validTil));
+		return this.contractpartnerDao.countAllContractpartnersByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
@@ -251,7 +248,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 		if (contractpartners == null) {
 			final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-					.getAllContractpartnersByDateRange(userId.getId(), Date.valueOf(validFrom), Date.valueOf(validTil));
+					.getAllContractpartnersByDateRange(userId.getId(), validFrom, validTil);
 			contractpartners = this.mapContractpartnerDataList(contractpartnerDataList);
 			cache.put(key, contractpartners);
 		}
@@ -276,8 +273,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(validTil);
 		Assert.notNull(initial);
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-				.getAllContractpartnersByInitialAndDateRange(userId.getId(), initial, Date.valueOf(validFrom),
-						Date.valueOf(validTil));
+				.getAllContractpartnersByInitialAndDateRange(userId.getId(), initial, validFrom, validTil);
 		return this.mapContractpartnerDataList(contractpartnerDataList);
 	}
 

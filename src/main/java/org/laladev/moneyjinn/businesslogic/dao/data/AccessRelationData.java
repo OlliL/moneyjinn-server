@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class AccessRelationData {
 	private Long id;
 	private Long refId;
-	private Date validFrom;
-	private Date validTil;
+	private LocalDate validFrom;
+	private LocalDate validTil;
 
 	public final Long getId() {
 		return this.id;
@@ -50,19 +50,19 @@ public class AccessRelationData {
 		this.refId = refId;
 	}
 
-	public final Date getValidFrom() {
+	public final LocalDate getValidFrom() {
 		return this.validFrom;
 	}
 
-	public final void setValidFrom(final Date validFrom) {
+	public final void setValidFrom(final LocalDate validFrom) {
 		this.validFrom = validFrom;
 	}
 
-	public final Date getValidTil() {
+	public final LocalDate getValidTil() {
 		return this.validTil;
 	}
 
-	public final void setValidTil(final Date validTil) {
+	public final void setValidTil(final LocalDate validTil) {
 		this.validTil = validTil;
 	}
 

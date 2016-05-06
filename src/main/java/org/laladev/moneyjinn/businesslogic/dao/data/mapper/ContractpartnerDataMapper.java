@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
@@ -49,11 +46,8 @@ public class ContractpartnerDataMapper implements IMapper<Contractpartner, Contr
 		contractpartner.setUser(new User(new UserID(contractpartnerData.getMacIdCreator())));
 		contractpartner.setAccess(new Group(new GroupID(contractpartnerData.getMacIdAccessor())));
 
-		final LocalDate validFrom = contractpartnerData.getValidFrom().toLocalDate();
-		final LocalDate validTil = contractpartnerData.getValidTil().toLocalDate();
-
-		contractpartner.setValidFrom(validFrom);
-		contractpartner.setValidTil(validTil);
+		contractpartner.setValidFrom(contractpartnerData.getValidFrom());
+		contractpartner.setValidTil(contractpartnerData.getValidTil());
 
 		contractpartner.setName(contractpartnerData.getName());
 		contractpartner.setStreet(contractpartnerData.getStreet());
@@ -85,11 +79,8 @@ public class ContractpartnerDataMapper implements IMapper<Contractpartner, Contr
 		if (contractpartner.getAccess() != null) {
 			contractpartnerData.setMacIdAccessor(contractpartner.getAccess().getId().getId());
 		}
-		final Date validFrom = Date.valueOf(contractpartner.getValidFrom());
-		final Date validTil = Date.valueOf(contractpartner.getValidTil());
-
-		contractpartnerData.setValidFrom(validFrom);
-		contractpartnerData.setValidTil(validTil);
+		contractpartnerData.setValidFrom(contractpartner.getValidFrom());
+		contractpartnerData.setValidTil(contractpartner.getValidTil());
 
 		contractpartnerData.setName(contractpartner.getName());
 		contractpartnerData.setStreet(contractpartner.getStreet());

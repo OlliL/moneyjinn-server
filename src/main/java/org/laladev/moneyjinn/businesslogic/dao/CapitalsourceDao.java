@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -46,8 +46,8 @@ public class CapitalsourceDao {
 		return this.mapper.getAllCapitalsources(userId);
 	}
 
-	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
+	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.getAllCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
@@ -59,7 +59,7 @@ public class CapitalsourceDao {
 		return this.mapper.countAllCapitalsources(userId);
 	}
 
-	public Integer countAllCapitalsourcesByDateRange(final Long userId, final Date validFrom, final Date validTil) {
+	public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom, final LocalDate validTil) {
 		return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
@@ -67,8 +67,8 @@ public class CapitalsourceDao {
 		return this.mapper.getAllCapitalsourceInitials(userId);
 	}
 
-	public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
+	public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.getAllCapitalsourceInitialsByDateRange(userId, validFrom, validTil);
 	}
 
@@ -77,11 +77,11 @@ public class CapitalsourceDao {
 	}
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(final Long userId, final Character initial,
-			final Date validFrom, final Date validTil) {
+			final LocalDate validFrom, final LocalDate validTil) {
 		return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initial, validFrom, validTil);
 	}
 
-	public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment, final Date date) {
+	public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment, final LocalDate date) {
 		return this.mapper.getCapitalsourceByComment(userId, comment, date);
 	}
 
@@ -98,8 +98,8 @@ public class CapitalsourceDao {
 		this.mapper.deleteCapitalsource(userId, accessorId, id);
 	}
 
-	public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id, final Date validFrom,
-			final Date validTil) {
+	public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
+			final LocalDate validTil) {
 		final Boolean result = this.mapper.checkCapitalsourceInUseOutOfDate(userId, id, validFrom, validTil);
 		if (result == null) {
 			return false;
@@ -111,13 +111,13 @@ public class CapitalsourceDao {
 		return this.mapper.getGroupCapitalsources(userId);
 	}
 
-	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
+	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
 	public CapitalsourceData getCapitalsourceByAccount(final String bankCode, final String accountNumber,
-			final Date date) {
+			final LocalDate date) {
 		return this.mapper.getCapitalsourceByAccount(bankCode, accountNumber, date);
 	}
 

@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class CapitalsourceData {
 	private Long id;
@@ -37,8 +37,8 @@ public class CapitalsourceData {
 	private String accountNumber;
 	private String bankCode;
 	private String comment;
-	private Date validTil;
-	private Date validFrom;
+	private LocalDate validTil;
+	private LocalDate validFrom;
 	private boolean attGroupUse;
 	private Short importAllowed;
 
@@ -106,19 +106,19 @@ public class CapitalsourceData {
 		this.comment = comment;
 	}
 
-	public final Date getValidTil() {
+	public final LocalDate getValidTil() {
 		return this.validTil;
 	}
 
-	public final void setValidTil(final Date validTil) {
+	public final void setValidTil(final LocalDate validTil) {
 		this.validTil = validTil;
 	}
 
-	public final Date getValidFrom() {
+	public final LocalDate getValidFrom() {
 		return this.validFrom;
 	}
 
-	public final void setValidFrom(final Date validFrom) {
+	public final void setValidFrom(final LocalDate validFrom) {
 		this.validFrom = validFrom;
 	}
 

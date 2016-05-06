@@ -27,11 +27,11 @@
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ImportedBalanceData {
 	private Long mcsCapitalsourceId;
-	private Timestamp changedate;
+	private LocalDateTime changedate;
 	private BigDecimal balance;
 
 	public final Long getMcsCapitalsourceId() {
@@ -42,11 +42,11 @@ public class ImportedBalanceData {
 		this.mcsCapitalsourceId = mcsCapitalsourceId;
 	}
 
-	public final Timestamp getChangedate() {
+	public final LocalDateTime getChangedate() {
 		return this.changedate;
 	}
 
-	public final void setChangedate(final Timestamp changedate) {
+	public final void setChangedate(final LocalDateTime changedate) {
 		this.changedate = changedate;
 	}
 

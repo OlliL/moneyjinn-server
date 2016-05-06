@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class PreDefMoneyflowData {
 	private Long id;
@@ -36,9 +36,9 @@ public class PreDefMoneyflowData {
 	private Long mcsCapitalsourceId;
 	private Long mcpContractpartnerId;
 	private String comment;
-	private Date createdate;
+	private LocalDate createdate;
 	private boolean onceAMonth;
-	private Date lastUsed;
+	private LocalDate lastUsed;
 	private Long mpaPostingAccountId;
 
 	public final Long getId() {
@@ -89,11 +89,11 @@ public class PreDefMoneyflowData {
 		this.comment = comment;
 	}
 
-	public final Date getCreatedate() {
+	public final LocalDate getCreatedate() {
 		return this.createdate;
 	}
 
-	public final void setCreatedate(final Date createdate) {
+	public final void setCreatedate(final LocalDate createdate) {
 		this.createdate = createdate;
 	}
 
@@ -105,11 +105,11 @@ public class PreDefMoneyflowData {
 		this.onceAMonth = onceAMonth;
 	}
 
-	public final Date getLastUsed() {
+	public final LocalDate getLastUsed() {
 		return this.lastUsed;
 	}
 
-	public final void setLastUsed(final Date lastUsed) {
+	public final void setLastUsed(final LocalDate lastUsed) {
 		this.lastUsed = lastUsed;
 	}
 

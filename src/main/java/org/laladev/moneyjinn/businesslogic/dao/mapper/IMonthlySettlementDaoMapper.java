@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -40,7 +40,7 @@ public interface IMonthlySettlementDaoMapper {
 	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(@Param("userId") Long userId,
 			@Param("year") Short year, @Param("month") Short month);
 
-	public Date getMaxSettlementDate(Long userId);
+	public LocalDate getMaxSettlementDate(Long userId);
 
 	public Short checkMonthlySettlementsExists(@Param("userId") Long userId, @Param("year") Short year,
 			@Param("month") Short month);

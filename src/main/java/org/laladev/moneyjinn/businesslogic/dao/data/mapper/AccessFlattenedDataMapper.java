@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
@@ -39,8 +36,6 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 	@Override
 	public AccessRelation mapBToA(final AccessFlattenedData accessFlattenedData) {
 		final AccessID accessId = new AccessID(accessFlattenedData.getId());
-		final LocalDate validFrom = accessFlattenedData.getValidFrom().toLocalDate();
-		final LocalDate validTil = accessFlattenedData.getValidTil().toLocalDate();
 
 		AccessRelation parentAccessRelation = null;
 		AccessRelation parentAccessRelationTmp = null;
@@ -71,7 +66,8 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 			parentAccessRelation = parentAccessRelationTmp;
 		}
 
-		final AccessRelation accessRelation = new AccessRelation(accessId, null, validFrom, validTil);
+		final AccessRelation accessRelation = new AccessRelation(accessId, null, accessFlattenedData.getValidFrom(),
+				accessFlattenedData.getValidTil());
 
 		if (parentAccessRelation != null) {
 			accessRelation.setParentAccessRelation(parentAccessRelation);
@@ -81,19 +77,10 @@ public class AccessFlattenedDataMapper implements IMapper<AccessRelation, Access
 
 	@Override
 	public AccessFlattenedData mapAToB(final AccessRelation accessRelation) {
-		Date validFrom = null;
-		if (accessRelation.getValidFrom() != null) {
-			validFrom = Date.valueOf(accessRelation.getValidFrom());
-		}
-		Date validTil = null;
-		if (accessRelation.getValidTil() != null) {
-			validTil = Date.valueOf(accessRelation.getValidTil());
-		}
-
 		final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
 		accessFlattenedData.setId(accessRelation.getId().getId());
-		accessFlattenedData.setValidFrom(validFrom);
-		accessFlattenedData.setValidTil(validTil);
+		accessFlattenedData.setValidFrom(accessRelation.getValidFrom());
+		accessFlattenedData.setValidTil(accessRelation.getValidTil());
 
 		AccessRelation parentAccessRelation = accessRelation;
 		accessFlattenedData.setIdLevel1(parentAccessRelation.getId().getId());

@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.businesslogic.dao;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,20 +66,20 @@ public class MoneyflowDao {
 		return this.mapper.getAllYears(userId);
 	}
 
-	public List<Short> getAllMonth(final Long userId, final Date beginOfYear, final Date endOfYear) {
+	public List<Short> getAllMonth(final Long userId, final LocalDate beginOfYear, final LocalDate endOfYear) {
 		return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
 	}
 
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final Date validFrom,
-			final Date validTil, final List<Long> capitalsourceIds) {
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil, final List<Long> capitalsourceIds) {
 		return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil, capitalsourceIds);
 	}
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final Date dateFrom, final Date dateTil) {
+	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final LocalDate dateFrom, final LocalDate dateTil) {
 		return this.mapper.getAllMoneyflowsByDateRange(userId, dateFrom, dateTil);
 	}
 
-	public boolean monthHasMoneyflows(final Long userId, final Date dateFrom, final Date dateTil) {
+	public boolean monthHasMoneyflows(final Long userId, final LocalDate dateFrom, final LocalDate dateTil) {
 		final Boolean result = this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil);
 		if (result == null) {
 			return false;
@@ -87,37 +87,37 @@ public class MoneyflowDao {
 		return result;
 	}
 
-	public Date getMaxMoneyflowDate(final Long userId) {
+	public LocalDate getMaxMoneyflowDate(final Long userId) {
 		return this.mapper.getMaxMoneyflowDate(userId);
 	}
 
-	public Date getPreviousMoneyflowDate(final Long userId, final Date date) {
+	public LocalDate getPreviousMoneyflowDate(final Long userId, final LocalDate date) {
 		return this.mapper.getPreviousMoneyflowDate(userId, date);
 	}
 
-	public Date getNextMoneyflowDate(final Long userId, final Date date) {
+	public LocalDate getNextMoneyflowDate(final Long userId, final LocalDate date) {
 		return this.mapper.getNextMoneyflowDate(userId, date);
 	}
 
 	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final Long userId,
-			final List<Long> postingAccountIdLongs, final Date dateFrom, final Date dateTil) {
+			final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
 		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdLongs,
 				dateFrom, dateTil);
 	}
 
 	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final Long userId,
-			final List<Long> postingAccountIdLongs, final Date dateFrom, final Date dateTil) {
+			final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
 		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdLongs,
 				dateFrom, dateTil);
 	}
 
-	public List<MoneyflowData> searchMoneyflowsByAmountDate(final Long userId, final Date dateFrom, final Date dateTil,
+	public List<MoneyflowData> searchMoneyflowsByAmountDate(final Long userId, final LocalDate dateFrom, final LocalDate dateTil,
 			final BigDecimal amount) {
 		return this.mapper.searchMoneyflowsByAmountDate(userId, dateFrom, dateTil, amount);
 	}
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId, final Date dateFrom,
-			final Date dateTil, final Long capitalsourceId) {
+	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final Long capitalsourceId) {
 		return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil, capitalsourceId);
 	}
 

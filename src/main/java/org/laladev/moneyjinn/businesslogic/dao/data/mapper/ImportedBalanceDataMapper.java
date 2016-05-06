@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Timestamp;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -40,7 +38,7 @@ public class ImportedBalanceDataMapper implements IMapper<ImportedBalance, Impor
 	public ImportedBalance mapBToA(final ImportedBalanceData importedBalanceData) {
 		final ImportedBalance importedBalance = new ImportedBalance();
 		importedBalance.setBalance(importedBalanceData.getBalance());
-		importedBalance.setDate(importedBalanceData.getChangedate().toLocalDateTime());
+		importedBalance.setDate(importedBalanceData.getChangedate());
 		importedBalance
 				.setCapitalsource(new Capitalsource(new CapitalsourceID(importedBalanceData.getMcsCapitalsourceId())));
 
@@ -52,7 +50,7 @@ public class ImportedBalanceDataMapper implements IMapper<ImportedBalance, Impor
 		final ImportedBalanceData importedBalanceData = new ImportedBalanceData();
 		importedBalanceData.setBalance(importedBalance.getBalance());
 		importedBalanceData.setMcsCapitalsourceId(importedBalance.getCapitalsource().getId().getId());
-		importedBalanceData.setChangedate(Timestamp.valueOf(importedBalance.getDate()));
+		importedBalanceData.setChangedate(importedBalance.getDate());
 
 		return importedBalanceData;
 	}

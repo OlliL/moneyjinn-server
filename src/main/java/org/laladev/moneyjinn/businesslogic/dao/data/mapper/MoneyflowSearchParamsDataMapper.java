@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchGroupByType;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchParams;
@@ -45,8 +43,8 @@ public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchP
 		final MoneyflowSearchParamsData moneyflowSearchParamsData = new MoneyflowSearchParamsData();
 		moneyflowSearchParamsData.setSearchString(moneyflowSearchParams.getSearchString());
 
-		moneyflowSearchParamsData.setStartDate(Date.valueOf(moneyflowSearchParams.getStartDate()));
-		moneyflowSearchParamsData.setEndDate(Date.valueOf(moneyflowSearchParams.getEndDate()));
+		moneyflowSearchParamsData.setStartDate(moneyflowSearchParams.getStartDate());
+		moneyflowSearchParamsData.setEndDate(moneyflowSearchParams.getEndDate());
 
 		moneyflowSearchParamsData.setFeatureCaseSensitive(moneyflowSearchParams.isFeatureCaseSensitive());
 		moneyflowSearchParamsData.setFeatureEqual(moneyflowSearchParams.isFeatureEqual());

@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -162,11 +161,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	public LocalDate getMaxSettlementDate(final UserID userId) {
 		Assert.notNull(userId);
 
-		final Date maxSettlementDate = this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
-		if (maxSettlementDate != null) {
-			return maxSettlementDate.toLocalDate();
-		}
-		return null;
+		return this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
 	}
 
 	@Override

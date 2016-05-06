@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ public class AccessRelationDao {
 	@Inject
 	IAccessRelationDaoMapper mapper;
 
-	public AccessRelationData getAccessRelationById(final Long id, final Date date) {
+	public AccessRelationData getAccessRelationById(final Long id, final LocalDate date) {
 		return this.mapper.getAccessRelationById(id, date);
 	}
 
@@ -50,7 +50,7 @@ public class AccessRelationDao {
 		return this.mapper.getAllAccessRelationsById(id);
 	}
 
-	public List<AccessRelationData> getAllAccessRelationsByIdDate(final Long id, final Date date) {
+	public List<AccessRelationData> getAllAccessRelationsByIdDate(final Long id, final LocalDate date) {
 		return this.mapper.getAllAccessRelationsByIdDate(id, date);
 	}
 
@@ -58,11 +58,11 @@ public class AccessRelationDao {
 		this.mapper.deleteAllAccessRelation(id);
 	}
 
-	public void deleteAccessRelationByDate(final Long id, final Date date) {
+	public void deleteAccessRelationByDate(final Long id, final LocalDate date) {
 		this.mapper.deleteAccessRelationByDate(id, date);
 	}
 
-	public void updateAccessRelation(final Long id, final Date date, final AccessRelationData accessRelationData) {
+	public void updateAccessRelation(final Long id, final LocalDate date, final AccessRelationData accessRelationData) {
 		this.mapper.updateAccessRelation(id, date, accessRelationData);
 	}
 
@@ -74,7 +74,7 @@ public class AccessRelationDao {
 		this.mapper.deleteAllAccessFlattened(id);
 	}
 
-	public void deleteAccessFlattenedAfter(final Long id, final Date date) {
+	public void deleteAccessFlattenedAfter(final Long id, final LocalDate date) {
 		this.mapper.deleteAccessFlattenedAfter(id, date);
 	}
 

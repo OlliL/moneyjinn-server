@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
@@ -58,11 +55,8 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
 		capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
 
-		final LocalDate validFrom = capitalsourceData.getValidFrom().toLocalDate();
-		final LocalDate validTil = capitalsourceData.getValidTil().toLocalDate();
-
-		capitalsource.setValidFrom(validFrom);
-		capitalsource.setValidTil(validTil);
+		capitalsource.setValidFrom(capitalsourceData.getValidFrom());
+		capitalsource.setValidTil(capitalsourceData.getValidTil());
 
 		return capitalsource;
 	}
@@ -93,11 +87,9 @@ public class CapitalsourceDataMapper implements IMapper<Capitalsource, Capitalso
 		if (capitalsource.getAccess() != null) {
 			capitalsourceData.setMacIdAccessor(capitalsource.getAccess().getId().getId());
 		}
-		final Date validFrom = Date.valueOf(capitalsource.getValidFrom());
-		final Date validTil = Date.valueOf(capitalsource.getValidTil());
 
-		capitalsourceData.setValidFrom(validFrom);
-		capitalsourceData.setValidTil(validTil);
+		capitalsourceData.setValidFrom(capitalsource.getValidFrom());
+		capitalsourceData.setValidTil(capitalsource.getValidTil());
 
 		return capitalsourceData;
 	}

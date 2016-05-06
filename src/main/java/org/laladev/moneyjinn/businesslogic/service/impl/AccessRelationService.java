@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +167,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		Assert.notNull(accessRelationId);
 		Assert.notNull(date);
 		final AccessRelationData accessRelationData = this.accessRelationDao
-				.getAccessRelationById(accessRelationId.getId(), Date.valueOf(date));
+				.getAccessRelationById(accessRelationId.getId(), date);
 		return super.map(accessRelationData, AccessRelation.class);
 	}
 
@@ -181,14 +180,13 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	private List<Group> getAllUserGroupsByUserIdDate(final AccessID accessId, final LocalDate date) {
-		final List<Group> groupList = new ArrayList<Group>();
-		final Date dateSQL = Date.valueOf(date);
-		AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(accessId.getId(), dateSQL);
+		final List<Group> groupList = new ArrayList<>();
+		AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(accessId.getId(), date);
 		AccessRelation accessRelation = super.map(accessRelationData, AccessRelation.class);
 		while (accessRelation.getParentAccessRelation() != null
 				&& accessRelation.getParentAccessRelation().getId().getId().compareTo(ROOT_ID) != 0) {
 			accessRelationData = this.accessRelationDao
-					.getAccessRelationById(accessRelation.getParentAccessRelation().getId().getId(), dateSQL);
+					.getAccessRelationById(accessRelation.getParentAccessRelation().getId().getId(), date);
 			accessRelation = super.map(accessRelationData, AccessRelation.class);
 			final Group groupById = this.groupService.getGroupById(new GroupID(accessRelation.getId().getId()));
 			if (groupById != null) {
@@ -201,7 +199,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId, final LocalDate date) {
 		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-				.getAllAccessRelationsByIdDate(accessRelationId.getId(), Date.valueOf(date));
+				.getAllAccessRelationsByIdDate(accessRelationId.getId(), date);
 		return super.mapList(accessRelationDataList, AccessRelation.class);
 	}
 
@@ -349,7 +347,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 				flattenRelationSince = accessRelationItem.getValidFrom();
 			}
 			this.accessRelationDao.deleteAccessRelationByDate(accessRelationItem.getId().getId(),
-					Date.valueOf(accessRelationItem.getValidFrom()));
+					accessRelationItem.getValidFrom());
 		}
 		for (final AccessRelation accessRelationItem : updateAccessRelationItems) {
 			if (flattenRelationSince == null || accessRelationItem.getValidFrom().isBefore(flattenRelationSince)) {
@@ -357,7 +355,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 			}
 			final AccessRelationData accessRelationData = super.map(accessRelationItem, AccessRelationData.class);
 			this.accessRelationDao.updateAccessRelation(accessRelationItem.getId().getId(),
-					Date.valueOf(accessRelationItem.getValidFrom()), accessRelationData);
+					accessRelationItem.getValidFrom(), accessRelationData);
 		}
 		if (addAccessRelation) {
 			if (flattenRelationSince == null || insertAccessRelation.getValidFrom().isBefore(flattenRelationSince)) {
@@ -377,7 +375,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	// does currently only support 1 user . 1 group . "group-0"
 	private void redoAccessFlattened(final AccessID userId, final LocalDate date) {
 		final List<AccessRelation> accessRelations = this.getAllAccessRelationsByIdDate(userId, date);
-		this.accessRelationDao.deleteAccessFlattenedAfter(userId.getId(), Date.valueOf(date));
+		this.accessRelationDao.deleteAccessFlattenedAfter(userId.getId(), date);
 		for (final AccessRelation accessRelation : accessRelations) {
 			final AccessFlattenedData accessFlattened = super.map(accessRelation, AccessFlattenedData.class);
 			this.accessRelationDao.createAccessFlattened(accessFlattened);

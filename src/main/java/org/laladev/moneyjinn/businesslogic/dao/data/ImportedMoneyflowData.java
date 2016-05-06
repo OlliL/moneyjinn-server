@@ -27,14 +27,14 @@
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class ImportedMoneyflowData {
 	private Long id;
 	private String externalId;
 	private Long mcsCapitalsourceId;
-	private Date bookingdate;
-	private Date invoicedate;
+	private LocalDate bookingdate;
+	private LocalDate invoicedate;
 	private String name;
 	private String accountNumber;
 	private String bankCode;
@@ -65,19 +65,19 @@ public class ImportedMoneyflowData {
 		this.mcsCapitalsourceId = mcsCapitalsourceId;
 	}
 
-	public final Date getBookingdate() {
+	public final LocalDate getBookingdate() {
 		return this.bookingdate;
 	}
 
-	public final void setBookingdate(final Date bookingdate) {
+	public final void setBookingdate(final LocalDate bookingdate) {
 		this.bookingdate = bookingdate;
 	}
 
-	public final Date getInvoicedate() {
+	public final LocalDate getInvoicedate() {
 		return this.invoicedate;
 	}
 
-	public final void setInvoicedate(final Date invoicedate) {
+	public final void setInvoicedate(final LocalDate invoicedate) {
 		this.invoicedate = invoicedate;
 	}
 

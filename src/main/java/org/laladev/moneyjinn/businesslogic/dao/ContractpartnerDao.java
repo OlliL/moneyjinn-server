@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -46,8 +46,8 @@ public class ContractpartnerDao {
 		return this.mapper.getAllContractpartners(userId);
 	}
 
-	public List<ContractpartnerData> getAllContractpartnersByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
+	public List<ContractpartnerData> getAllContractpartnersByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.getAllContractpartnersByDateRange(userId, validFrom, validTil);
 	}
 
@@ -59,7 +59,7 @@ public class ContractpartnerDao {
 		return this.mapper.countAllContractpartners(userId);
 	}
 
-	public Integer countAllContractpartnersByDateRange(final Long userId, final Date validFrom, final Date validTil) {
+	public Integer countAllContractpartnersByDateRange(final Long userId, final LocalDate validFrom, final LocalDate validTil) {
 		return this.mapper.countAllContractpartnersByDateRange(userId, validFrom, validTil);
 	}
 
@@ -67,8 +67,8 @@ public class ContractpartnerDao {
 		return this.mapper.getAllContractpartnerInitials(userId);
 	}
 
-	public Set<Character> getAllContractpartnerInitialsByDateRange(final Long userId, final Date validFrom,
-			final Date validTil) {
+	public Set<Character> getAllContractpartnerInitialsByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.getAllContractpartnerInitialsByDateRange(userId, validFrom, validTil);
 	}
 
@@ -77,7 +77,7 @@ public class ContractpartnerDao {
 	}
 
 	public List<ContractpartnerData> getAllContractpartnersByInitialAndDateRange(final Long userId,
-			final Character initial, final Date validFrom, final Date validTil) {
+			final Character initial, final LocalDate validFrom, final LocalDate validTil) {
 		return this.mapper.getAllContractpartnersByInitialAndDateRange(userId, initial, validFrom, validTil);
 	}
 
@@ -98,8 +98,8 @@ public class ContractpartnerDao {
 		this.mapper.deleteContractpartner(groupId, id);
 	}
 
-	public boolean checkContractpartnerInUseOutOfDate(final Long userId, final Long id, final Date validFrom,
-			final Date validTil) {
+	public boolean checkContractpartnerInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
+			final LocalDate validTil) {
 		final Boolean result = this.mapper.checkContractpartnerInUseOutOfDate(userId, id, validFrom, validTil);
 		if (result == null) {
 			return false;

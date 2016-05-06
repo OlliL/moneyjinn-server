@@ -27,18 +27,18 @@
 package org.laladev.moneyjinn.businesslogic.dao.data;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class PostingAccountAmountData {
-	private Date date;
+	private LocalDate date;
 	private BigDecimal amount;
 	private Long mpaPostingAccountId;
 
-	public final Date getDate() {
+	public final LocalDate getDate() {
 		return this.date;
 	}
 
-	public final void setDate(final Date date) {
+	public final void setDate(final LocalDate date) {
 		this.date = date;
 	}
 

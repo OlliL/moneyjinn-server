@@ -46,7 +46,7 @@
 		 LIMIT 1
 	</select>
 
-	<select id="getMaxSettlementDate" resultType="java.sql.Date">
+	<select id="getMaxSettlementDate" resultType="java.time.LocalDate">
 		SELECT CONCAT(
 		              CONCAT(
 		                     CONCAT(year
