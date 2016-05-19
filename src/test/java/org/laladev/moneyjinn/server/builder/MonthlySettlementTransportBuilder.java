@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 
+import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
 public class MonthlySettlementTransportBuilder extends MonthlySettlementTransport {
@@ -15,8 +16,21 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 52l;
 
+	public MonthlySettlementTransportBuilder withCapitalsource(final CapitalsourceTransport capitalsourceTransport) {
+		super.setCapitalsourcecomment(capitalsourceTransport.getComment());
+		super.setCapitalsourcegroupuse(capitalsourceTransport.getGroupUse());
+		super.setCapitalsourceid(capitalsourceTransport.getId());
+		super.setCapitalsourcetype(capitalsourceTransport.getType());
+		return this;
+	}
+
 	public MonthlySettlementTransportBuilder withAmount(final BigDecimal amount) {
 		super.setAmount(amount);
+		return this;
+	}
+
+	public MonthlySettlementTransportBuilder withUserId(final Long userId) {
+		super.setUserid(userId);
 		return this;
 	}
 

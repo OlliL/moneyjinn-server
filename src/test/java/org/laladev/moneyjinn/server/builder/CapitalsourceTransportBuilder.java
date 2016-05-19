@@ -46,6 +46,16 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public static final Short CAPITALSOURCE4_STATE = (short) 1;
 	public static final Short CAPITALSOURCE5_STATE = (short) 1;
 
+	public CapitalsourceTransportBuilder withUserId(final Long userId) {
+		super.setUserid(userId);
+		return this;
+	}
+
+	public CapitalsourceTransportBuilder withId(final Long id) {
+		super.setId(id);
+		return this;
+	}
+
 	public CapitalsourceTransportBuilder forCapitalsource1() {
 		super.setId(CAPITALSOURCE1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
@@ -131,7 +141,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setBankCode(CAPITALSOURCE4_BANKCODE);
 		super.setValidFrom(DateUtil.getGMTDate("1980-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2999-12-31"));
-		super.setGroupUse((short) 0);
+		super.setGroupUse(null);
 		super.setImportAllowed((short) 1);
 		return this;
 	}

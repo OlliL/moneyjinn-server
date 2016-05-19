@@ -5,15 +5,25 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
+import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
+import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -22,6 +32,9 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
 	private String userPassword;
+
+	@Inject
+	private ICapitalsourceService capitalsourceService;
 
 	@Before
 	public void setUp() {
@@ -73,6 +86,45 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 		final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement1().build());
 		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().build());
+
+		expected.setMonthlySettlementTransports(monthlySettlementTransports);
+		expected.setYear((short) 2008);
+		expected.setMonth((short) 12);
+		expected.setEditMode((short) 1);
+
+		ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+		actual = super.callUsecaseWithoutContent("/2008", this.method, false,
+				ShowMonthlySettlementCreateResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+	}
+
+	@Test
+	public void test_alreadySettledMonthWithNewCapitalsourceCreatedAfterwardsAndValid_FullContent() throws Exception {
+		final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
+
+		final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
+		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement1().build());
+		monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().build());
+
+		final CapitalsourceTransportMapper mapper = new CapitalsourceTransportMapper();
+		final CapitalsourceTransport newCapitalsourceTransport = new CapitalsourceTransportBuilder()
+				.forNewCapitalsource().withUserId(UserTransportBuilder.USER1_ID)
+				.withId(CapitalsourceTransportBuilder.NEXT_ID).build();
+		final Capitalsource newCapitalsource = mapper.mapBToA(newCapitalsourceTransport);
+		newCapitalsource.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
+		this.capitalsourceService.createCapitalsource(newCapitalsource);
+
+		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
+				.withCapitalsource(newCapitalsourceTransport).withAmount(BigDecimal.ZERO).withMonth(12).withYear(2008)
+				.withUserId(UserTransportBuilder.USER1_ID).build();
+
+		monthlySettlementTransports.add(monthlySettlementTransport);
 
 		expected.setMonthlySettlementTransports(monthlySettlementTransports);
 		expected.setYear((short) 2008);

@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
+import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
@@ -21,10 +23,19 @@ public class CapitalsourceServiceTest extends AbstractTest {
 		this.capitalsourceService.validateCapitalsource(capitalsource);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void test_validateNullAccess_raisesException() {
+		final Capitalsource capitalsource = new Capitalsource();
+		capitalsource.setUser(new User(new UserID(1l)));
+
+		this.capitalsourceService.validateCapitalsource(capitalsource);
+	}
+
 	@Test(expected = BusinessException.class)
 	public void test_createWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
-		capitalsource.setUser(new User(new UserID(1l)));
+		capitalsource.setUser(new User(new UserID(1L)));
+		capitalsource.setAccess(new Group(new GroupID(1L)));
 
 		this.capitalsourceService.createCapitalsource(capitalsource);
 	}
@@ -33,6 +44,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
 	public void test_updateWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1l)));
+		capitalsource.setAccess(new Group(new GroupID(1L)));
 
 		this.capitalsourceService.updateCapitalsource(capitalsource);
 	}
