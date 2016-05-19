@@ -69,6 +69,7 @@ import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
 import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -77,6 +78,7 @@ import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -96,6 +98,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Inject
 	private IUserService userService;
 	@Inject
+	private IGroupService groupService;
+	@Inject
 	private IPostingAccountService postingAccountService;
 
 	@Override
@@ -109,7 +113,10 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
 			final UserID userId = contractpartner.getUser().getId();
 			final User user = this.userService.getUserById(userId);
+			final Group group = this.groupService.getGroupById(contractpartner.getAccess().getId());
+
 			contractpartner.setUser(user);
+			contractpartner.setAccess(group);
 
 			PostingAccount postingAccount = contractpartner.getPostingAccount();
 			if (postingAccount != null) {
