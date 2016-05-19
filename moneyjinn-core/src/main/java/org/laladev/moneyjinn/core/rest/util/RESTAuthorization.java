@@ -48,10 +48,6 @@ public class RESTAuthorization {
 
 	private final Base64 base64 = new Base64();
 
-	public RESTAuthorization() {
-
-	}
-
 	/**
 	 * This function works basically as described in
 	 * <a href= "http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html" >Amazon
@@ -71,7 +67,7 @@ public class RESTAuthorization {
 	 */
 	public final String getRESTAuthorization(final byte[] password, final String httpVerb, final String contentType,
 			final String url, final String date, final byte[] body, final String username)
-					throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
+			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		String authString = null;
 		byte[] secret = password;
 		if (secret == null) {
