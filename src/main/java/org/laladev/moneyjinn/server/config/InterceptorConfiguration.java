@@ -43,7 +43,7 @@ public class InterceptorConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public SessionEnvironment sessionEnvironment() {
 		return new SessionEnvironment();
 	}
