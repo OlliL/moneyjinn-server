@@ -36,11 +36,9 @@ public class PostingAccountID extends AbstractEntityID<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
-	 * Mapper).
-	 */
 	public PostingAccountID() {
+		// Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
+		// Mapper).
 	}
 
 	public PostingAccountID(final Long id) {

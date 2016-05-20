@@ -35,10 +35,8 @@ package org.laladev.moneyjinn.businesslogic.model.access;
 public class Group extends AbstractAccess<GroupID> {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default Constructor because ID can be empty for newly created Groups.
-	 */
 	public Group() {
+		// Default Constructor because ID can be empty for newly created Groups.
 	}
 
 	public Group(final GroupID id) {

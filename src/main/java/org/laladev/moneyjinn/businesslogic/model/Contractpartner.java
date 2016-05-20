@@ -45,10 +45,8 @@ public class Contractpartner extends AbstractEntity<ContractpartnerID> {
 	private LocalDate validTil;
 	private LocalDate validFrom;
 
-	/**
-	 * Default Constructor because ID can be empty for newly created Contractpartner.
-	 */
 	public Contractpartner() {
+		// Default Constructor because ID can be empty for newly created Contractpartner.
 	}
 
 	public Contractpartner(final ContractpartnerID contractpartnerID) {

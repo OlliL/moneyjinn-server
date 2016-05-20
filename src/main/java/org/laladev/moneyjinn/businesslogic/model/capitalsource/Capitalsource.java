@@ -20,10 +20,8 @@ public class Capitalsource extends AbstractEntity<CapitalsourceID> {
 	private boolean groupUse;
 	private CapitalsourceImport importAllowed;
 
-	/**
-	 * Default Constructor because ID can be empty for newly created Capitalsources.
-	 */
 	public Capitalsource() {
+		// Default Constructor because ID can be empty for newly created Capitalsources.
 	}
 
 	public Capitalsource(final CapitalsourceID id) {

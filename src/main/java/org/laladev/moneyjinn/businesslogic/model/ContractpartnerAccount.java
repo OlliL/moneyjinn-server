@@ -31,10 +31,8 @@ public class ContractpartnerAccount extends AbstractEntity<ContractpartnerAccoun
 	private Contractpartner contractpartner;
 	private BankAccount bankAccount;
 
-	/**
-	 * Default Constructor because ID can be empty for newly created ContractpartnerAccount.
-	 */
 	public ContractpartnerAccount() {
+		// Default Constructor because ID can be empty for newly created ContractpartnerAccount.
 	}
 
 	public ContractpartnerAccount(final ContractpartnerAccountID contractpartnerAccountId,

@@ -36,6 +36,10 @@ public class AccessRelation extends AbstractEntity<AccessID> implements Cloneabl
 	private LocalDate validFrom;
 	private LocalDate validTil;
 
+	public AccessRelation() {
+		// Default Constructor because ID can be empty for newly created AccessRelations.
+	}
+
 	public AccessRelation(final AccessID id) {
 		super.setId(id);
 	}
@@ -51,9 +55,6 @@ public class AccessRelation extends AbstractEntity<AccessID> implements Cloneabl
 	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation) {
 		super.setId(id);
 		this.parentAccessRelation = parentAccessRelation;
-	}
-
-	public AccessRelation() {
 	}
 
 	public final AccessRelation getParentAccessRelation() {

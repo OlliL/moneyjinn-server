@@ -31,11 +31,8 @@ public class SettingData {
 	private String name;
 	private String value;
 
-	/**
-	 * Default Constructor for MyBatis
-	 */
 	public SettingData() {
-
+		// Default Constructor for MyBatis
 	}
 
 	public SettingData(final Long accessId, final String name, final String value) {

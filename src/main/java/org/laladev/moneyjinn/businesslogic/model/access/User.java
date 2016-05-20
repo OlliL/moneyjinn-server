@@ -41,10 +41,8 @@ public class User extends AbstractAccess<UserID> {
 	private Collection<UserAttribute> attributes;
 	private Collection<UserPermission> permissions;
 
-	/**
-	 * Default Constructor because ID can be empty for newly created Groups.
-	 */
 	public User() {
+		// Default Constructor because ID can be empty for newly created Groups.
 	}
 
 	public User(final UserID id) {
