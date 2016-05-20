@@ -30,6 +30,9 @@ public class PostingAccount extends AbstractEntity<PostingAccountID> {
 	private static final long serialVersionUID = 1L;
 	private String name;
 
+	/**
+	 * Default Constructor because ID can be empty for newly created PostingAccount.
+	 */
 	public PostingAccount() {
 	}
 

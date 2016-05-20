@@ -36,6 +36,9 @@ public class AbstractAccess<I extends AccessID> extends AbstractEntity<I> implem
 
 	private String name;
 
+	/**
+	 * Default Constructor because ID can be empty for newly created AbstractAccesses.
+	 */
 	public AbstractAccess() {
 	}
 

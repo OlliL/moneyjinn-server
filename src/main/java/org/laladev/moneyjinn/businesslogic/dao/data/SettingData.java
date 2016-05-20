@@ -31,6 +31,9 @@ public class SettingData {
 	private String name;
 	private String value;
 
+	/**
+	 * Default Constructor for MyBatis
+	 */
 	public SettingData() {
 
 	}

@@ -42,10 +42,7 @@ public abstract class AbstractService extends AbstractMapperSupport {
 
 	protected Cache getCache(final String... cacheNameParts) {
 		final String cacheName = String.join("#", cacheNameParts);
-		if (cacheName != null) {
-			return this.cacheManager.getCache(cacheName);
-		}
-		return null;
+		return this.cacheManager.getCache(cacheName);
 	}
 
 }

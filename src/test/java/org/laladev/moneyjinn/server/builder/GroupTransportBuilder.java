@@ -42,7 +42,7 @@ public class GroupTransportBuilder extends GroupTransport {
 	}
 
 	public GroupTransportBuilder forNewGroup() {
-		super.setId(NON_EXISTING_ID);
+		super.setId(null);
 		super.setName(NEWGROUP_NAME);
 		return this;
 	}

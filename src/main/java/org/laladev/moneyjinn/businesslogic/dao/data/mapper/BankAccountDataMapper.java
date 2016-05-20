@@ -34,20 +34,15 @@ public class BankAccountDataMapper implements IMapper<BankAccount, BankAccountDa
 
 	@Override
 	public BankAccount mapBToA(final BankAccountData bankAccountData) {
-		if (bankAccountData.getAccountNumber() != null) {
-			return new BankAccount(bankAccountData.getAccountNumber(), bankAccountData.getBankCode());
-		}
-		return null;
+		return new BankAccount(bankAccountData.getAccountNumber(), bankAccountData.getBankCode());
 	}
 
 	@Override
 	public BankAccountData mapAToB(final BankAccount bankAccount) {
 		final BankAccountData bankAccountData = new BankAccountData();
 
-		if (bankAccount != null) {
-			bankAccountData.setAccountNumber(bankAccount.getAccountNumber());
-			bankAccountData.setBankCode(bankAccount.getBankCode());
-		}
+		bankAccountData.setAccountNumber(bankAccount.getAccountNumber());
+		bankAccountData.setBankCode(bankAccount.getBankCode());
 
 		return bankAccountData;
 	}

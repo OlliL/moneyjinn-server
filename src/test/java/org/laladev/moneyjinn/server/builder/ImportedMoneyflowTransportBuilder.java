@@ -13,6 +13,11 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 3l;
 
+	public ImportedMoneyflowTransportBuilder withPrivat(final Short privat) {
+		super.setPrivat(privat);
+		return this;
+	}
+
 	public ImportedMoneyflowTransportBuilder forImportedMoneyflow1() {
 		super.setId(IMPORTED_MONEYFLOW1_ID);
 		super.setExternalid("8765421A");

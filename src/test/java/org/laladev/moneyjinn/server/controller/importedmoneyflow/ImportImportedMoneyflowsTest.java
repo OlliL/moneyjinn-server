@@ -127,12 +127,55 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 		Assert.assertNotNull(moneyflow);
 		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assert.assertFalse(moneyflow.isPrivat());
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeDelete - 1, importedMoneyflows.size());
+	}
+
+	@Test
+	public void test_privateMoneyflow_Successfull() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().withPrivat(Short.valueOf("1")).build();
+
+		request.setImportedMoneyflowTransports(Arrays.asList(transport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assert.assertTrue(moneyflow.isPrivat());
+
+	}
+
+	@Test
+	public void test_NonprivateMoneyflow_Successfull() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().withPrivat(Short.valueOf("0")).build();
+
+		request.setImportedMoneyflowTransports(Arrays.asList(transport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assert.assertFalse(moneyflow.isPrivat());
+
 	}
 
 	@Test
