@@ -145,6 +145,25 @@
 					<argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.1.10</version>
+				<configuration>
+					<targetClasses>
+						<!-- get Services clean first -->
+						<param>org.laladev.moneyjinn.businesslogic.service.impl*</param>
+						<!-- <param>org.laladev.moneyjinn.server.controller.impl*</param> <param>org.laladev.moneyjinn.server.controller.mapper*</param> 
+							<param>org.laladev.moneyjinn.businesslogic.dao.data.mapper*</param> -->
+					</targetClasses>
+					<targetTests>
+						<param>org.laladev.moneyjinn*</param>
+					</targetTests>
+					<timeoutConstant>20000</timeoutConstant>
+					<!--<verbose>true</verbose> -->
+					<threads>2</threads>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
