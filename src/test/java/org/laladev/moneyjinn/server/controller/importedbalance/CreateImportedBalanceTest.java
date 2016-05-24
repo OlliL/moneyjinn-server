@@ -118,6 +118,29 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent() throws Exception {
+		final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
+
+		final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder().forOnlyBalanceImportedBalance()
+				.build();
+
+		request.setImportedBalanceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final List<ImportedBalance> importedBalances = this.importedBalanceService
+				.getAllImportedBalancesByCapitalsourceIds(userId,
+						Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID)));
+
+		Assert.assertNotNull(importedBalances);
+		Assert.assertEquals(1, importedBalances.size());
+		Assert.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+				importedBalances.get(0).getCapitalsource().getId().getId());
+	}
+
+	@Test
 	public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
 		final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
 

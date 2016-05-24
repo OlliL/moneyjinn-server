@@ -39,11 +39,11 @@ INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnum
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (3             ,6              ,2   ,2    ,'1234567'    ,'ABCDEFG','Source2','2799-12-31','1981-01-01',1            ,0             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,3   ,1    ,'ZUTVEGT'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,1             ); 
+                    VALUES (5             ,6              ,3   ,1    ,'ZUTVEGT1'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,2             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (5             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','1983-01-01',1            ,1             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,5   ,1    ,'ZRTVEGT'    ,'765433','Xource5','2799-12-31','2014-01-01',1            ,1             ); 
+                    VALUES (5             ,6              ,5   ,1    ,'ZRTVEGT'    ,'765433','Xource5','2799-12-31','2014-01-01',1            ,2             ); 
                     
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (3             ,6              ,'Partner1','Street1',12345   ,'Town1','Country1','2000-01-01','2999-12-31','Default Comment 1',1                   );

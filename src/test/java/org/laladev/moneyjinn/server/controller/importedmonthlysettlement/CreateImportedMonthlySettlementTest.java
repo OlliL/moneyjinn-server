@@ -76,6 +76,29 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 	}
 
 	@Test
+	public void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forOnlyBalanceImportedMonthlySettlement().build();
+
+		request.setImportedMonthlySettlementTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
+				.getImportedMonthlySettlementsByMonth(userId, (short) 2015, Month.FEBRUARY);
+
+		Assert.assertNotNull(importedMonthlySettlements);
+		Assert.assertEquals(1, importedMonthlySettlements.size());
+		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
+				importedMonthlySettlements.get(0).getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
+	}
+
+	@Test
 	public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
 		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
 

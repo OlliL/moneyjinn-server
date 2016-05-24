@@ -135,6 +135,26 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_capitalsourceAllowsOnlyBalancesToBeImported_errorResponse() throws Exception {
+		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
+				.build();
+		transport.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
+		transport.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
+
+		request.setImportedMoneyflowTransport(transport);
+
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
+		expected.setMessage("Import of this capitalsource is not allowed!");
+
+		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
 	public void test_unknownAccountNumber_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 

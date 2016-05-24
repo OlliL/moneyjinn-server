@@ -25,6 +25,13 @@ public class ImportedBalanceTransportBuilder extends ImportedBalanceTransport {
 		return this;
 	}
 
+	public ImportedBalanceTransportBuilder forOnlyBalanceImportedBalance() {
+		super.setBalance(BigDecimal.valueOf(1000l));
+		super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
+		super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
+		return this;
+	}
+
 	public ImportedBalanceTransport build() {
 		final ImportedBalanceTransport transport = new ImportedBalanceTransport();
 

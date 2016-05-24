@@ -54,6 +54,18 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
 		return this;
 	}
 
+	public ImportedMonthlySettlementTransportBuilder forOnlyBalanceImportedMonthlySettlement() {
+		super.setId(NON_EXISTING_ID);
+		super.setExternalid("B");
+		super.setUserid(UserTransportBuilder.USER3_ID);
+		super.setAmount(BigDecimal.valueOf(1000l));
+		super.setMonth((short) 2);
+		super.setYear((short) 2015);
+		super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
+		super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
+		return this;
+	}
+
 	public ImportedMonthlySettlementTransport build() {
 		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransport();
 

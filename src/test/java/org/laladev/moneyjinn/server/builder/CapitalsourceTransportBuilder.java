@@ -8,6 +8,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 	public static final String CAPITALSOURCE1_BANKCODE = "765432";
 	public static final String CAPITALSOURCE2_ACCOUNTNUMBER = "1234567";
 	public static final String CAPITALSOURCE2_BANKCODE = "ABCDEFG";
+	public static final String CAPITALSOURCE3_ACCOUNTNUMBER = "ZUTVEGT1";
+	public static final String CAPITALSOURCE3_BANKCODE = "765432";
 	public static final String CAPITALSOURCE4_ACCOUNTNUMBER = "ZUTVEGT";
 	public static final String CAPITALSOURCE4_BANKCODE = "765432";
 	public static final String CAPITALSOURCE5_ACCOUNTNUMBER = "ZRTVEGT";
@@ -92,12 +94,12 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setType(CAPITALSOURCE3_TYPE);
 		super.setState(CAPITALSOURCE3_STATE);
 		super.setComment(CAPITALSOURCE3_COMMENT);
-		super.setAccountNumber("ZUTVEGT");
-		super.setBankCode("765432");
+		super.setAccountNumber(CAPITALSOURCE3_ACCOUNTNUMBER);
+		super.setBankCode(CAPITALSOURCE3_BANKCODE);
 		super.setValidFrom(DateUtil.getGMTDate("1982-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2000-12-31"));
 		super.setGroupUse(CAPITALSOURCE3_GROUP_USE);
-		super.setImportAllowed((short) 1);
+		super.setImportAllowed((short) 2);
 		return this;
 	}
 
@@ -127,7 +129,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setValidFrom(DateUtil.getGMTDate("2014-01-01"));
 		super.setValidTil(DateUtil.getGMTDate("2799-12-31"));
 		super.setGroupUse(CAPITALSOURCE5_GROUP_USE);
-		super.setImportAllowed((short) 1);
+		super.setImportAllowed((short) 2);
 		return this;
 	}
 

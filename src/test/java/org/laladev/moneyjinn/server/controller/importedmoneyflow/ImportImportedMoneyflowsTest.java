@@ -267,6 +267,39 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_bankAccountOfOnlyBalanceImportAllowedCapitalsourceIsContractpartner_counterBookingCreated()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow2ToImport().build();
+		transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE3_ACCOUNTNUMBER);
+		transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE3_BANKCODE);
+		transport.setBookingdate(DateUtil.getGMTDate("2000-01-02"));
+		transport.setInvoicedate(DateUtil.getGMTDate("2000-01-01"));
+
+		request.setImportedMoneyflowTransports(Arrays.asList(transport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+
+		moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID + 1));
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount().negate(), moneyflow.getAmount());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
+				moneyflow.getCapitalsource().getId().getId());
+
+	}
+
+	@Test
 	public void test_bankAccountOfImportableCapitalsourceIsContractpartner_counterBookingNotCreated() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
@@ -275,6 +308,33 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 				.forImportedMoneyflow2ToImport().build();
 		transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE1_ACCOUNTNUMBER);
 		transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE1_BANKCODE);
+		request.setImportedMoneyflowTransports(Arrays.asList(transport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+
+		moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID + 1));
+
+		Assert.assertNull(moneyflow);
+
+	}
+
+	@Test
+	public void test_bankAccountOfOfOnlyBalanceImportAllowedButCreditCapitalsourceIsContractpartner_counterBookingNotCreated()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow2ToImport().build();
+		transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
+		transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
 		request.setImportedMoneyflowTransports(Arrays.asList(transport));
 
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
