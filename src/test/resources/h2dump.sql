@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.26, for FreeBSD10.1 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.30, for FreeBSD10.3 (amd64)
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.6.26
+-- Server version	5.6.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -276,7 +276,9 @@ CREATE TABLE predefmoneyflows (
   KEY mpm_mac_pk (mac_id),
   KEY mpm_mpa_pk (mpa_postingaccountid),
   KEY mpm_mcs_pk (mcs_capitalsourceid),
+  KEY mpm_mcp_pk_01 (mcp_contractpartnerid),
   CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id),
+  CONSTRAINT mpm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid),
   CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid),
   CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
 );

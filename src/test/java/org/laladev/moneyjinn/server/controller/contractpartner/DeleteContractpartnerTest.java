@@ -54,18 +54,43 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_regularContractpartnerNoData_SuccessfullNoContent() throws Exception {
+	public void test_regularContractpartnerWitPreDefMoneyflows_ErrorResponse() throws Exception {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(
 				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
 
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CONTRACTPARTNER_IN_USE.getErrorCode());
+		expected.setMessage("You may not delete a contractual partner who is still referenced by a flow of money!");
+
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
 		Assert.assertNotNull(contractpartner);
 
-		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, true,
+		final ErrorResponse response = super.callUsecaseWithoutContent(
+				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, false, ErrorResponse.class);
+
+		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+
+		Assert.assertNotNull(contractpartner);
+		Assert.assertEquals(expected, response);
+	}
+
+	@Test
+	public void test_regularContractpartnerNoData_SuccessfullNoContent() throws Exception {
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+
+		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+
+		Assert.assertNotNull(contractpartner);
+
+		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
@@ -146,13 +171,13 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 	public void test_ContractpartnerFromSameGroupButNotMe_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(
-				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
+				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
 		Assert.assertNotNull(contractpartner);
 
-		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, true,
+		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
