@@ -38,7 +38,7 @@
 		      ,#{amount}
 		      )
 		    ON DUPLICATE KEY
-		UPDATE balance = VALUES(balance)
+		UPDATE amount = VALUES(amount)
 	</insert>
 
 </mapper>

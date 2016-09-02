@@ -35,6 +35,9 @@ public class TestDatabaseConfiguration {
 		return ds;
 	}
 
+	@Value("classpath:h2dropAll.sql")
+	private Resource dropAllScript;
+
 	@Value("classpath:h2dump.sql")
 	private Resource schemaScript;
 
@@ -43,6 +46,7 @@ public class TestDatabaseConfiguration {
 
 	private DatabasePopulator databasePopulator() {
 		final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		populator.addScript(this.dropAllScript);
 		populator.addScript(this.schemaScript);
 		populator.addScript(this.dataScript);
 		return populator;
