@@ -19,7 +19,7 @@
 		   AND year   = #{year}
 	</select>
 
-    	<insert id="createImportedMonthlySettlement"
+    	<insert id="upsertImportedMonthlySettlement"
 		parameterType="org.laladev.moneyjinn.businesslogic.dao.data.ImportedMonthlySettlementData"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="impmonthlysettlementid">
 		INSERT
@@ -37,6 +37,8 @@
 		      ,#{year}
 		      ,#{amount}
 		      )
+		    ON DUPLICATE KEY
+		UPDATE balance = VALUES(balance)
 	</insert>
 
 </mapper>

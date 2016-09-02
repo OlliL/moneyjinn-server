@@ -70,7 +70,7 @@ public class ImportedMonthlySettlementController extends AbstractController {
 					.validateImportedMonthlySettlement(importedMonthlySettlement);
 
 			if (validationResult.isValid()) {
-				this.importedMonthlySettlementService.createImportedMonthlySettlement(importedMonthlySettlement);
+				this.importedMonthlySettlementService.upsertImportedMonthlySettlement(importedMonthlySettlement);
 			} else {
 				final ValidationResponse response = new ValidationResponse();
 				response.setResult(false);

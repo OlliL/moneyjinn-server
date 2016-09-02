@@ -70,7 +70,7 @@ public interface IImportedMonthlySettlementService {
 	 *
 	 * @param importedMonthlySettlement
 	 */
-	void createImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
+	void upsertImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
 
 	/**
 	 * Validates the given {@link ImportedMonthlySettlement} for correctness.

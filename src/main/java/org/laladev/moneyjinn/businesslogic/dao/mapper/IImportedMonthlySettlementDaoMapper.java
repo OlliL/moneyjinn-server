@@ -36,6 +36,6 @@ public interface IImportedMonthlySettlementDaoMapper {
 	List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(@Param("year") Short year,
 			@Param("month") Short month);
 
-	void createImportedMonthlySettlement(ImportedMonthlySettlementData importedMonthlySettlementData);
+	void upsertImportedMonthlySettlement(ImportedMonthlySettlementData importedMonthlySettlementData);
 
 }

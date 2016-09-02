@@ -44,8 +44,8 @@ public class ImportedMonthlySettlementDao {
 		return this.mapper.getImportedMonthlySettlementsByMonth(year, month);
 	}
 
-	public void createImportedMonthlySettlement(final ImportedMonthlySettlementData importedMonthlySettlementData) {
-		this.mapper.createImportedMonthlySettlement(importedMonthlySettlementData);
+	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlementData importedMonthlySettlementData) {
+		this.mapper.upsertImportedMonthlySettlement(importedMonthlySettlementData);
 	}
 
 }

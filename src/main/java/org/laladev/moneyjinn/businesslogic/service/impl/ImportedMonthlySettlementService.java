@@ -116,12 +116,12 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	}
 
 	@Override
-	public void createImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
+	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
 		Assert.notNull(importedMonthlySettlement);
 
 		final ImportedMonthlySettlementData importedMonthlySettlementData = super.map(importedMonthlySettlement,
 				ImportedMonthlySettlementData.class);
-		this.importedMonthlySettlementDao.createImportedMonthlySettlement(importedMonthlySettlementData);
+		this.importedMonthlySettlementDao.upsertImportedMonthlySettlement(importedMonthlySettlementData);
 
 	}
 
