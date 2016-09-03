@@ -53,9 +53,15 @@ public class ContractpartnerAccountDataMapper implements IMapper<Contractpartner
 		if (contractpartnerAccount.getId() != null) {
 			contractpartnerAccountData.setId(contractpartnerAccount.getId().getId());
 		}
-		contractpartnerAccountData.setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
-		contractpartnerAccountData.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
-		contractpartnerAccountData.setMcpContractpartnerId(contractpartnerAccount.getContractpartner().getId().getId());
+		if (contractpartnerAccount.getBankAccount() != null) {
+			contractpartnerAccountData.setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
+			contractpartnerAccountData.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
+		}
+		if (contractpartnerAccount.getContractpartner() != null
+				&& contractpartnerAccount.getContractpartner().getId() != null) {
+			contractpartnerAccountData
+					.setMcpContractpartnerId(contractpartnerAccount.getContractpartner().getId().getId());
+		}
 
 		return contractpartnerAccountData;
 	}

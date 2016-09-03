@@ -39,8 +39,8 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 public class UserDataMapper implements IMapper<User, UserData> {
 	@Override
 	public User mapBToA(final UserData b) {
-		final Collection<UserAttribute> attributes = new ArrayList<UserAttribute>();
-		final Collection<UserPermission> permissions = new ArrayList<UserPermission>();
+		final Collection<UserAttribute> attributes = new ArrayList<>();
+		final Collection<UserPermission> permissions = new ArrayList<>();
 		if (b.isPermAdmin()) {
 			permissions.add(UserPermission.ADMIN);
 		}
@@ -71,21 +71,26 @@ public class UserDataMapper implements IMapper<User, UserData> {
 		userData.setName(a.getName());
 		userData.setPassword(a.getPassword());
 
-		if (a.getAttributes().contains(UserAttribute.IS_NEW)) {
+		if (a.getAttributes() != null && a.getAttributes().contains(UserAttribute.IS_NEW)) {
 			userData.setAttChangePassword(true);
 		} else {
 			userData.setAttChangePassword(false);
 		}
 
-		if (a.getPermissions().contains(UserPermission.ADMIN)) {
-			userData.setPermAdmin(true);
+		if (a.getPermissions() != null) {
+			if (a.getPermissions().contains(UserPermission.ADMIN)) {
+				userData.setPermAdmin(true);
+			} else {
+				userData.setPermAdmin(false);
+			}
+
+			if (a.getPermissions().contains(UserPermission.LOGIN)) {
+				userData.setPermLogin(true);
+			} else {
+				userData.setPermLogin(false);
+			}
 		} else {
 			userData.setPermAdmin(false);
-		}
-
-		if (a.getPermissions().contains(UserPermission.LOGIN)) {
-			userData.setPermLogin(true);
-		} else {
 			userData.setPermLogin(false);
 		}
 
