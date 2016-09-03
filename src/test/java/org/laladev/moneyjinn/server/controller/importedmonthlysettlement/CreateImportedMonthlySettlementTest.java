@@ -72,7 +72,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 		Assert.assertEquals(1, importedMonthlySettlements.size());
 		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assert.assertEquals(transport.getCapitalsourceid(),
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
 				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
 	}
 
