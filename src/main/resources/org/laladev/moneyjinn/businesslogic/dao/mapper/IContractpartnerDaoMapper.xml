@@ -4,6 +4,7 @@
 
     	<sql id="contractpartnerColumns">
 		 mac_id_creator		AS macIdCreator
+		,mac_id_accessor	AS macIdAccessor
 		,contractpartnerid      AS id
 		,name
 		,street

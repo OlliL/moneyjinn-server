@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.businesslogic.service.api;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
@@ -119,7 +120,7 @@ public interface IAccessRelationService {
 	public void deleteAllAccessRelation(AccessID accessRelationID);
 
 	/**
-	 * gives the Group the {@link AccessID} is attached to.
+	 * Gives the Group the {@link AccessID} is attached to.
 	 *
 	 * @param userId
 	 * @param date
@@ -128,11 +129,19 @@ public interface IAccessRelationService {
 	public Group getAccessor(AccessID userId, LocalDate date);
 
 	/**
-	 * gives the Group the {@link AccessID} is attached to.
+	 * Gives the Group the {@link AccessID} is attached to.
 	 *
 	 * @param userId
 	 * @return
 	 */
 	public Group getAccessor(AccessID userId);
+
+	/**
+	 * Gives all {@link UserID}s who are or where in the same group the given user is or was.
+	 *
+	 * @param groupID
+	 * @return
+	 */
+	public Set<UserID> getAllUserWithSameGroup(AccessID userID);
 
 }

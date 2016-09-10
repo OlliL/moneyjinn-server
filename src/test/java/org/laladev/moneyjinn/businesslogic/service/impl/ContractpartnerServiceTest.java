@@ -5,11 +5,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
 import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
+import org.laladev.moneyjinn.businesslogic.model.access.Group;
+import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
 import org.laladev.moneyjinn.businesslogic.model.access.User;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
@@ -32,6 +33,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
 	public void test_createWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
+		contractpartner.setAccess(new Group(new GroupID(1L)));
 
 		this.contractpartnerService.createContractpartner(contractpartner);
 	}
@@ -40,12 +42,13 @@ public class ContractpartnerServiceTest extends AbstractTest {
 	public void test_updateWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
+		contractpartner.setAccess(new Group(new GroupID(1L)));
 
 		this.contractpartnerService.updateContractpartner(contractpartner);
 	}
 
 	@Test
-	@Ignore("this does not work yet - see wiki TODO list")
+	// @Ignore("this does not work yet - see wiki TODO list")
 	public void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
 		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
@@ -73,7 +76,6 @@ public class ContractpartnerServiceTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore("this does not work yet - see wiki TODO list")
 	public void test_userAaddsAContractpartner_userBsameGroupSeessItTooBecauseCacheWasReset() {
 		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);

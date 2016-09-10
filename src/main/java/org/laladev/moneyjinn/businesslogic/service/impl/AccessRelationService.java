@@ -29,6 +29,8 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,6 +46,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
 import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
+import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
@@ -177,6 +180,16 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		this.evictAccessRelationCache(accessRelationId);
 		this.accessRelationDao.deleteAllAccessFlattened(accessRelationId.getId());
 		this.accessRelationDao.deleteAllAccessRelation(accessRelationId.getId());
+	}
+
+	@Override
+	public Set<UserID> getAllUserWithSameGroup(final AccessID userID) {
+		Assert.notNull(userID);
+
+		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userID.getId());
+
+		return accessIdList.stream().map(ai -> new UserID(ai)).collect(Collectors.toSet());
+
 	}
 
 	private List<Group> getAllUserGroupsByUserIdDate(final AccessID accessId, final LocalDate date) {

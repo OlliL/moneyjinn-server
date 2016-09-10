@@ -68,6 +68,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
    mac_id_creator
   ,maf_id
+  ,mac_id_accessor
   ,contractpartnerid
   ,name
   ,street
@@ -83,6 +84,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
   ) AS
       SELECT mcp.mac_id_creator
             ,maf.id
+            ,mcp.mac_id_accessor
             ,mcp.contractpartnerid
             ,mcp.name
             ,mcp.street

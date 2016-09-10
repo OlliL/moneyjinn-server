@@ -77,6 +77,7 @@ import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
+import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
@@ -101,6 +102,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	private IGroupService groupService;
 	@Inject
 	private IPostingAccountService postingAccountService;
+	@Inject
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -159,6 +162,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(contractpartner);
 		Assert.notNull(contractpartner.getUser());
 		Assert.notNull(contractpartner.getUser().getId());
+		Assert.notNull(contractpartner.getAccess());
+		Assert.notNull(contractpartner.getAccess().getId());
 
 		this.prepareContractpartner(contractpartner);
 		final ValidationResult validationResult = new ValidationResult();
@@ -346,16 +351,20 @@ public class ContractpartnerService extends AbstractService implements IContract
 		if (contractpartnerId != null) {
 			final Cache allContractpartnersCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER);
 			final Cache contractpartnerByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
-			final Cache allContractpartnerByCDateCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
-					userId.getId().toString());
-			if (allContractpartnersCache != null) {
-				allContractpartnersCache.evict(userId);
-			}
-			if (contractpartnerByIdCache != null) {
-				contractpartnerByIdCache.evict(new SimpleKey(userId, contractpartnerId));
-			}
-			if (allContractpartnerByCDateCache != null) {
-				allContractpartnerByCDateCache.clear();
+
+			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
+			for (final UserID evictingUserId : userIds) {
+				final Cache allContractpartnerByCDateCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
+						evictingUserId.getId().toString());
+				if (allContractpartnersCache != null) {
+					allContractpartnersCache.evict(evictingUserId);
+				}
+				if (contractpartnerByIdCache != null) {
+					contractpartnerByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
+				}
+				if (allContractpartnerByCDateCache != null) {
+					allContractpartnerByCDateCache.clear();
+				}
 			}
 		}
 	}

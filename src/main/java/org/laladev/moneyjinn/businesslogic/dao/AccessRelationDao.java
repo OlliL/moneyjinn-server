@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.businesslogic.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -80,6 +81,10 @@ public class AccessRelationDao {
 
 	public void createAccessFlattened(final AccessFlattenedData accessFlattenedData) {
 		this.mapper.createAccessFlattened(accessFlattenedData);
+	}
+
+	public Set<Long> getAllUserWithSameGroup(final Long id) {
+		return this.mapper.getAllUserWithSameGroup(id);
 	}
 
 }

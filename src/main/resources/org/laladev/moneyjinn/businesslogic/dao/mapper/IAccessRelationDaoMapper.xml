@@ -112,5 +112,14 @@
 		      ,#{idLevel5}
 		      )
         </insert>
+        
+        <select id="getAllUserWithSameGroup" resultType="java.lang.Long">
+		SELECT id_level_1
+		  FROM access_flattened
+		 WHERE id_level_2 IN (SELECT id_level_2
+		                        FROM access_flattened
+		                       WHERE id_level_1=#{id})
+		 GROUP BY id_level_1
+        </select>
 </mapper>
  

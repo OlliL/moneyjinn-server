@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData;
@@ -55,5 +56,7 @@ public interface IAccessRelationDaoMapper {
 	public void deleteAccessFlattenedAfter(@Param("id") Long id, @Param("date") LocalDate date);
 
 	public void createAccessFlattened(AccessFlattenedData accessFlattenedData);
+
+	public Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
 
 }
