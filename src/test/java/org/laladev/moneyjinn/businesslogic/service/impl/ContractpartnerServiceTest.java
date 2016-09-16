@@ -48,7 +48,6 @@ public class ContractpartnerServiceTest extends AbstractTest {
 	}
 
 	@Test
-	// @Ignore("this does not work yet - see wiki TODO list")
 	public void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
 		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
@@ -96,7 +95,8 @@ public class ContractpartnerServiceTest extends AbstractTest {
 
 		final List<Contractpartner> allContractpartners2 = this.contractpartnerService.getAllContractpartners(user1ID);
 
-		// Cache of user1 should have been invalidated and the added Contractparter should be now in
+		// Cache of user1 should have been invalidated and the added Contractpartner should be now
+		// in
 		// the List of all partners.
 		Assert.assertNotEquals(allContractpartners1.size(), allContractpartners2.size());
 	}

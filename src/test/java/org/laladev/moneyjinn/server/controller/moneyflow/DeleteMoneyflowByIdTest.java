@@ -81,7 +81,9 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 	@Test
 	public void test_MoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		this.userName = UserTransportBuilder.USER3_NAME;
+		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);

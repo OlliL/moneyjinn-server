@@ -78,6 +78,7 @@ import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
+import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
 import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
@@ -99,6 +100,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	private IUserService userService;
 	@Inject
 	private IGroupService groupService;
+	@Inject
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -394,16 +397,20 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		if (capitalsourceId != null) {
 			final Cache allCapitalsourcesCache = super.getCache(CacheNames.ALL_CAPITALSOURCES);
 			final Cache capitalsourceByIdCache = super.getCache(CacheNames.CAPITALSOURCE_BY_ID);
-			final Cache groupCapitalsourcesByDateCache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE,
-					userId.getId().toString());
-			if (allCapitalsourcesCache != null) {
-				allCapitalsourcesCache.evict(userId);
-			}
-			if (capitalsourceByIdCache != null) {
-				capitalsourceByIdCache.evict(new SimpleKey(userId, groupId, capitalsourceId));
-			}
-			if (groupCapitalsourcesByDateCache != null) {
-				groupCapitalsourcesByDateCache.clear();
+
+			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
+			for (final UserID evictingUserId : userIds) {
+				final Cache groupCapitalsourcesByDateCache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE,
+						evictingUserId.getId().toString());
+				if (allCapitalsourcesCache != null) {
+					allCapitalsourcesCache.evict(evictingUserId);
+				}
+				if (capitalsourceByIdCache != null) {
+					capitalsourceByIdCache.evict(new SimpleKey(evictingUserId, groupId, capitalsourceId));
+				}
+				if (groupCapitalsourcesByDateCache != null) {
+					groupCapitalsourcesByDateCache.clear();
+				}
 			}
 		}
 	}

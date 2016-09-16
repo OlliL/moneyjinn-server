@@ -256,7 +256,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 					.collect(Collectors.toCollection(HashSet::new));
 		}
 
-		return new HashSet<Character>();
+		return new HashSet<>();
 	}
 
 	@Override
@@ -266,7 +266,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_POSTINGACCOUNTS)
+	@Cacheable(CacheNames.ALL_PRE_DEF_MONEYFLOWS)
 	public List<PreDefMoneyflow> getAllPreDefMoneyflows(final UserID userId) {
 		Assert.notNull(userId);
 		final List<PreDefMoneyflowData> preDefMoneyflowDataList = this.preDefMoneyflowDao
@@ -285,7 +285,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 							.startsWith(initial.toString().toUpperCase()))
 					.collect(Collectors.toCollection(ArrayList::new));
 		}
-		return new ArrayList<PreDefMoneyflow>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -338,7 +338,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
 	private void evictPreDefMoneyflowCache(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
 		if (preDefMoneyflowId != null) {
-			final Cache allPreDefMoneyflowsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
+			final Cache allPreDefMoneyflowsCache = super.getCache(CacheNames.ALL_PRE_DEF_MONEYFLOWS);
 			final Cache preDefMoneyflowByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
 			if (allPreDefMoneyflowsCache != null) {
 				allPreDefMoneyflowsCache.evict(userId);

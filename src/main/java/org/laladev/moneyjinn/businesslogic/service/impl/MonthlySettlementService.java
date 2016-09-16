@@ -58,13 +58,13 @@ import org.springframework.util.Assert;
 @Named
 public class MonthlySettlementService extends AbstractService implements IMonthlySettlementService {
 	@Inject
-	MonthlySettlementDao monthlySettlementDao;
+	private MonthlySettlementDao monthlySettlementDao;
 	@Inject
-	IUserService userService;
+	private IUserService userService;
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {

@@ -34,6 +34,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -319,16 +320,20 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
 		if (moneyflowId != null) {
 			final Cache moneyflowIdCache = super.getCache(CacheNames.MONEYFLOW_BY_ID);
-			final Cache monthsCache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
 			final Cache yearsCache = super.getCache(CacheNames.MONEYFLOW_YEARS);
-			if (moneyflowIdCache != null) {
-				moneyflowIdCache.evict(new SimpleKey(userId, moneyflowId));
-			}
-			if (monthsCache != null) {
-				monthsCache.clear();
-			}
-			if (yearsCache != null) {
-				yearsCache.evict(userId);
+
+			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
+			for (final UserID evictingUserId : userIds) {
+				final Cache monthsCache = super.getCache(CacheNames.MONEYFLOW_MONTH, evictingUserId.getId().toString());
+				if (moneyflowIdCache != null) {
+					moneyflowIdCache.evict(new SimpleKey(evictingUserId, moneyflowId));
+				}
+				if (monthsCache != null) {
+					monthsCache.clear();
+				}
+				if (yearsCache != null) {
+					yearsCache.evict(evictingUserId);
+				}
 			}
 		}
 	}

@@ -50,12 +50,11 @@ import org.springframework.util.Assert;
 @Named
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
 	@Inject
-	ImportedBalanceDao importedBalanceDao;
-
+	private ImportedBalanceDao importedBalanceDao;
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {

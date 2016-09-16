@@ -19,8 +19,10 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 
 public class MoneyflowServiceTest extends AbstractTest {
@@ -136,4 +138,58 @@ public class MoneyflowServiceTest extends AbstractTest {
 
 		this.moneyflowService.updateMoneyflow(moneyflow);
 	}
+
+	@Test
+	public void test_userAeditsMoneyflow_userBsameGroupSeesCachedChange() {
+		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+
+		// this caches
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+
+		moneyflow = this.moneyflowService.getMoneyflowById(user1ID,
+				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+
+		final String comment = String.valueOf(System.currentTimeMillis());
+
+		moneyflow.getUser().setId(user1ID);
+		moneyflow.setComment(comment);
+
+		// this should also modify the cache of user 1!
+		this.moneyflowService.updateMoneyflow(moneyflow);
+
+		// this should now retrieve the changed cache entry!
+		moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+
+		Assert.assertEquals(comment, moneyflow.getComment());
+	}
+
+	@Test
+	public void test_userAaddsAMoneyflow_userBsameGroupSeessItTooBecauseCacheWasReset() {
+		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+
+		// this caches
+		final List<Short> allYears1 = this.moneyflowService.getAllYears(user1ID);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+
+		final String name = String.valueOf(System.currentTimeMillis());
+
+		moneyflow.getUser().setId(user2ID);
+		moneyflow.setBookingDate(LocalDate.now());
+
+		// this should also modify the cache of user 1!
+		this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
+
+		final List<Short> allYears2 = this.moneyflowService.getAllYears(user1ID);
+
+		// Cache of user1 should have been invalidated and the added Moneyflow should be now
+		// in the List of all years.
+		Assert.assertNotEquals(allYears1.size(), allYears2.size());
+	}
+
 }

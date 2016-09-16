@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -49,6 +50,7 @@ import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.businesslogic.service.CacheNames;
+import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -62,9 +64,10 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	@Inject
 	private IContractpartnerService contractpartnerService;
-
 	@Inject
 	private ContractpartnerAccountDao contractpartnerAccountDao;
+	@Inject
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -267,11 +270,15 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final Cache contractpartnerAccountsByPartnerCache = super.getCache(
 					CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER);
 			final Cache contractpartnerAccountByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID);
-			if (contractpartnerAccountsByPartnerCache != null) {
-				contractpartnerAccountsByPartnerCache.evict(new SimpleKey(userId, contractpartnerId));
-			}
-			if (contractpartnerAccountByIdCache != null) {
-				contractpartnerAccountByIdCache.evict(new SimpleKey(userId, contractpartnerAccountID));
+
+			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
+			for (final UserID evictingUserId : userIds) {
+				if (contractpartnerAccountsByPartnerCache != null) {
+					contractpartnerAccountsByPartnerCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
+				}
+				if (contractpartnerAccountByIdCache != null) {
+					contractpartnerAccountByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerAccountID));
+				}
 			}
 		}
 
