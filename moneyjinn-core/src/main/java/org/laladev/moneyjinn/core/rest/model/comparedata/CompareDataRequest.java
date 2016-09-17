@@ -41,6 +41,7 @@ public class CompareDataRequest extends AbstractRequest {
 	private Date startDate;
 	private Date endDate;
 	private String fileContents;
+	private Short useImportedData;
 
 	public final Long getFormatId() {
 		return this.formatId;
@@ -82,15 +83,24 @@ public class CompareDataRequest extends AbstractRequest {
 		this.fileContents = fileContents;
 	}
 
+	public final Short getUseImportedData() {
+		return this.useImportedData;
+	}
+
+	public final void setUseImportedData(final Short useImportedData) {
+		this.useImportedData = useImportedData;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((this.capitalsourceId == null) ? 0 : this.capitalsourceId.hashCode());
 		result = prime * result + ((this.endDate == null) ? 0 : this.endDate.hashCode());
 		result = prime * result + ((this.fileContents == null) ? 0 : this.fileContents.hashCode());
 		result = prime * result + ((this.formatId == null) ? 0 : this.formatId.hashCode());
 		result = prime * result + ((this.startDate == null) ? 0 : this.startDate.hashCode());
+		result = prime * result + ((this.useImportedData == null) ? 0 : this.useImportedData.hashCode());
 		return result;
 	}
 
@@ -99,7 +109,7 @@ public class CompareDataRequest extends AbstractRequest {
 		if (this == obj) {
 			return true;
 		}
-		if (!super.equals(obj)) {
+		if (obj == null) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {
@@ -141,6 +151,13 @@ public class CompareDataRequest extends AbstractRequest {
 		} else if (!this.startDate.equals(other.startDate)) {
 			return false;
 		}
+		if (this.useImportedData == null) {
+			if (other.useImportedData != null) {
+				return false;
+			}
+		} else if (!this.useImportedData.equals(other.useImportedData)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -157,6 +174,8 @@ public class CompareDataRequest extends AbstractRequest {
 		builder.append(this.endDate);
 		builder.append(", fileContents=");
 		builder.append(this.fileContents);
+		builder.append(", useImportedData=");
+		builder.append(this.useImportedData);
 		builder.append("]");
 		return builder.toString();
 	}
