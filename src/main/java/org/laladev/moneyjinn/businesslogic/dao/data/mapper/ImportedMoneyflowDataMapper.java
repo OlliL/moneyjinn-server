@@ -54,8 +54,10 @@ public class ImportedMoneyflowDataMapper implements IMapper<ImportedMoneyflow, I
 		importedMoneyflow.setExternalId(importedMoneyflowData.getExternalId());
 		importedMoneyflow.setUsage(importedMoneyflowData.getComment());
 		importedMoneyflow.setName(importedMoneyflowData.getName());
+		importedMoneyflow.setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflowData.getStatus()));
 
 		return importedMoneyflow;
+
 	}
 
 	@Override
@@ -83,6 +85,7 @@ public class ImportedMoneyflowDataMapper implements IMapper<ImportedMoneyflow, I
 		importedMoneyflowData.setExternalId(importedMoneyflow.getExternalId());
 		importedMoneyflowData.setComment(importedMoneyflow.getUsage());
 		importedMoneyflowData.setName(importedMoneyflow.getName());
+		importedMoneyflowData.setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflow.getStatus()));
 
 		return importedMoneyflowData;
 	}

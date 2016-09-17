@@ -15,6 +15,7 @@ import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
@@ -130,10 +131,17 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		Assert.assertFalse(moneyflow.isPrivat());
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds);
+				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeDelete - 1, importedMoneyflows.size());
+
+		// No delete happend - it is only marked as "ignored"
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
+				capitalsourceIds);
+
+		Assert.assertNotNull(importedMoneyflows);
+		Assert.assertEquals(sizeBeforeDelete, importedMoneyflows.size());
 	}
 
 	@Test

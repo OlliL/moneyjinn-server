@@ -49,6 +49,7 @@ import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
@@ -126,7 +127,8 @@ public class ImportedMoneyflowController extends AbstractController {
 					.collect(Collectors.toCollection(ArrayList::new));
 
 			final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-					.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds);
+					.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+							ImportedMoneyflowStatus.CREATED);
 
 			if (importedMoneyflows != null && !importedMoneyflows.isEmpty()) {
 				response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
@@ -227,7 +229,8 @@ public class ImportedMoneyflowController extends AbstractController {
 	public void deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
 		final UserID userId = super.getUserId();
 		final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
-		this.importedMoneyflowService.deleteImportedMoneyflowById(userId, importedMoneyflowId);
+		this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflowId,
+				ImportedMoneyflowStatus.IGNORED);
 	}
 
 	@RequestMapping(value = "importImportedMoneyflows", method = { RequestMethod.POST })
@@ -287,7 +290,8 @@ public class ImportedMoneyflowController extends AbstractController {
 					}
 				}
 
-				this.importedMoneyflowService.deleteImportedMoneyflowById(userId, impMoneyflow.getId());
+				this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, impMoneyflow.getId(),
+						ImportedMoneyflowStatus.PROCESSED);
 			}
 		} else {
 			final ValidationResponse response = new ValidationResponse();

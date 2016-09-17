@@ -44,8 +44,12 @@ public class ImportedMoneyflowDao {
 	}
 
 	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
-			final List<Long> capitalsourceIdLongs) {
-		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs);
+			final List<Long> capitalsourceIdLongs, final Short status) {
+		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status);
+	}
+
+	public void updateImportedMoneyflowStatus(final Long userId, final Long importedMoneyflowId, final Short status) {
+		this.mapper.updateImportedMoneyflowStatus(importedMoneyflowId, status);
 	}
 
 	public void deleteImportedMoneyflowById(final Long userId, final Long importedMoneyflowId) {

@@ -32,6 +32,7 @@ import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 
 /**
@@ -84,11 +85,34 @@ public interface IImportedMoneyflowService {
 			List<CapitalsourceID> capitalsourceIds);
 
 	/**
+	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given
+	 * {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
+	 *
+	 * @param userId
+	 * @param capitalsourceIds
+	 * @param status
+	 * @return
+	 */
+	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
+			List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
+
+	/**
 	 * Persists the given {@link ImportedMoneyflow}.
 	 *
 	 * @param importedMoneyflow
 	 */
 	void createImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
+
+	/**
+	 * Sets a new {@link ImportedMoneyflowStatus} for the {@link ImportedMoneyflow} specified by its
+	 * {@link ImportedMoneyflowID}.
+	 *
+	 * @param userId
+	 * @param importedMoneyflowId
+	 * @param status
+	 */
+	void updateImportedMoneyflowStatus(UserID userId, ImportedMoneyflowID importedMoneyflowId,
+			ImportedMoneyflowStatus status);
 
 	/**
 	 * Deletes the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.

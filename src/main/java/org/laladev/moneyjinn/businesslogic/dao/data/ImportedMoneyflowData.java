@@ -40,6 +40,7 @@ public class ImportedMoneyflowData {
 	private String bankCode;
 	private String comment;
 	private BigDecimal amount;
+	private Short status;
 
 	public final Long getId() {
 		return this.id;
@@ -119,6 +120,14 @@ public class ImportedMoneyflowData {
 
 	public final void setAmount(final BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public final Short getStatus() {
+		return this.status;
+	}
+
+	public final void setStatus(final Short status) {
+		this.status = status;
 	}
 
 }

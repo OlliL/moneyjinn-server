@@ -34,6 +34,7 @@ public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
 	private String name;
 	private BankAccount bankAccount;
 	private String usage;
+	private ImportedMoneyflowStatus status;
 
 	public final String getExternalId() {
 		return this.externalId;
@@ -67,6 +68,14 @@ public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
 		this.usage = usage;
 	}
 
+	public final ImportedMoneyflowStatus getStatus() {
+		return this.status;
+	}
+
+	public final void setStatus(final ImportedMoneyflowStatus status) {
+		this.status = status;
+	}
+
 	public Moneyflow getMoneyflow() {
 		final Moneyflow moneyflow = new Moneyflow();
 		moneyflow.setUser(super.getUser());
@@ -89,6 +98,7 @@ public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
 		result = prime * result + ((this.bankAccount == null) ? 0 : this.bankAccount.hashCode());
 		result = prime * result + ((this.externalId == null) ? 0 : this.externalId.hashCode());
 		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
 		result = prime * result + ((this.usage == null) ? 0 : this.usage.hashCode());
 		return result;
 	}
@@ -126,6 +136,9 @@ public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
 		} else if (!this.name.equals(other.name)) {
 			return false;
 		}
+		if (this.status != other.status) {
+			return false;
+		}
 		if (this.usage == null) {
 			if (other.usage != null) {
 				return false;
@@ -147,8 +160,8 @@ public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
 		builder.append(this.bankAccount);
 		builder.append(", usage=");
 		builder.append(this.usage);
-		builder.append(", toString()=");
-		builder.append(super.toString());
+		builder.append(", status=");
+		builder.append(this.status);
 		builder.append("]");
 		return builder.toString();
 	}

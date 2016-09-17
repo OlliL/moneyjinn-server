@@ -317,6 +317,7 @@ CREATE TABLE impmoneyflows (
   bankcode varchar(11) NOT NULL,
   `comment` varchar(512) DEFAULT NULL,
   amount decimal(8,2) NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (impmoneyflowid),
   UNIQUE KEY mim_i_01 (externalid),
   KEY mim_mcs_pk (mcs_capitalsourceid),

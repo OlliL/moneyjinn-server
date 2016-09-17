@@ -28,13 +28,17 @@ package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
 
 public interface IImportedMoneyflowDaoMapper {
 
 	Integer countImportedMoneyflows(List<Long> capitalsourceIds);
 
-	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(List<Long> capitalsourceIds);
+	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
+			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status);
+
+	void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Short status);
 
 	void deleteImportedMoneyflowById(Long impMoneyflowId);
 

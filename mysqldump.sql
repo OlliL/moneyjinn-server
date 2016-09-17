@@ -317,6 +317,7 @@ CREATE TABLE impmoneyflows (
   bankcode varchar(11) COLLATE utf8_bin NOT NULL,
   `comment` varchar(512) COLLATE utf8_bin DEFAULT NULL,
   amount float(8,2) NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (impmoneyflowid),
   UNIQUE KEY mim_i_01 (externalid),
   KEY mim_mcs_pk (mcs_capitalsourceid),
@@ -433,7 +434,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-03 22:53:07
+-- Dump completed on 2016-09-17 20:53:54
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

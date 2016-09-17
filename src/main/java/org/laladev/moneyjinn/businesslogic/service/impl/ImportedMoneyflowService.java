@@ -37,12 +37,14 @@ import javax.inject.Named;
 import org.laladev.moneyjinn.businesslogic.dao.ImportedMoneyflowDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ImportedMoneyflowDataMapper;
+import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ImportedMoneyflowStatusMapper;
 import org.laladev.moneyjinn.businesslogic.model.access.Group;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
 import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
@@ -108,6 +110,12 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	@Override
 	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
 			final List<CapitalsourceID> capitalsourceIds) {
+		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+	}
+
+	@Override
+	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
@@ -115,7 +123,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs);
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs,
+						ImportedMoneyflowStatusMapper.map(status));
 		return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
 	}
 
@@ -125,6 +134,17 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 		final ImportedMoneyflowData importedMoneyflowData = super.map(importedMoneyflow, ImportedMoneyflowData.class);
 		this.importedMoneyflowDao.createImportedMoneyflow(importedMoneyflowData);
+	}
+
+	@Override
+	public void updateImportedMoneyflowStatus(final UserID userId, final ImportedMoneyflowID importedMoneyflowId,
+			final ImportedMoneyflowStatus status) {
+		Assert.notNull(userId);
+		Assert.notNull(importedMoneyflowId);
+		Assert.notNull(status);
+
+		this.importedMoneyflowDao.updateImportedMoneyflowStatus(userId.getId(), importedMoneyflowId.getId(),
+				ImportedMoneyflowStatusMapper.map(status));
 	}
 
 	@Override
