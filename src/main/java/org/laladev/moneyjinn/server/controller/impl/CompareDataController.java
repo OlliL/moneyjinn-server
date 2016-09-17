@@ -150,18 +150,32 @@ public class CompareDataController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final CompareDataResponse response = new CompareDataResponse();
 
-		if (request.getCapitalsourceId() != null && request.getEndDate() != null && request.getFileContents() != null
-				&& request.getFormatId() != null && request.getStartDate() != null) {
-			final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(request.getFormatId());
+		CompareDataResult compareDataResult = null;
+
+		if (request.getCapitalsourceId() != null && request.getEndDate() != null && request.getStartDate() != null) {
 			final CapitalsourceID capitalsourceId = new CapitalsourceID(request.getCapitalsourceId());
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate();
-			final byte[] fileContentBytes = Base64.getMimeDecoder().decode(request.getFileContents());
+			final boolean useImportedData = request.getUseImportedData() != null
+					&& request.getUseImportedData().compareTo(new Short((short) 1)) == 0;
 
-			final String fileContents = new String(fileContentBytes, StandardCharsets.UTF_8);
+			if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {
+				final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(request.getFormatId());
+				final byte[] fileContentBytes = Base64.getMimeDecoder().decode(request.getFileContents());
 
-			final CompareDataResult compareDataResult = this.compareDataService.compareData(userId, compareDataFormatId,
-					capitalsourceId, startDate, endDate, fileContents);
+				final String fileContents = new String(fileContentBytes, StandardCharsets.UTF_8);
+
+				compareDataResult = this.compareDataService.compareDataFile(userId, compareDataFormatId,
+						capitalsourceId, startDate, endDate, fileContents);
+
+				final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
+						compareDataFormatId);
+				this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
+
+			} else if (useImportedData) {
+				compareDataResult = this.compareDataService.compareDataImport(userId, capitalsourceId, startDate,
+						endDate);
+			}
 
 			final List<CompareDataNotInDatabase> compareDataNotInDatabaseList = compareDataResult
 					.getCompareDataNotInDatabase();
@@ -215,10 +229,6 @@ public class CompareDataController extends AbstractController {
 					capitalsourceId);
 
 			response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
-
-			final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
-					compareDataFormatId);
-			this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
 
 			final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
 					capitalsourceId);

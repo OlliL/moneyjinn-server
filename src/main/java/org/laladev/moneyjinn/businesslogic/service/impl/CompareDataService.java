@@ -49,6 +49,7 @@ import org.apache.commons.codec.language.DoubleMetaphone;
 import org.laladev.moneyjinn.businesslogic.dao.CompareDataFormatDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.CompareDataFormatDataMapper;
+import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataDataset;
@@ -61,8 +62,11 @@ import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataNotInFil
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataResult;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataWrongCapitalsource;
 import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.businesslogic.service.api.ICompareDataService;
+import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
+import org.laladev.moneyjinn.businesslogic.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.sepa.camt.mapper.BankToCustomerAccountReportMapper;
@@ -79,6 +83,10 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	private CompareDataFormatDao compareDataFormatDao;
 	@Inject
 	private IMoneyflowService moneyflowService;
+	@Inject
+	private IImportedMoneyflowService importedMoneyflowService;
+	@Inject
+	private IContractpartnerAccountService contractpartnerAccountService;
 
 	private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
@@ -102,14 +110,11 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	}
 
 	@Override
-	public CompareDataResult compareData(final UserID userId, final CompareDataFormatID compareDataFormatId,
+	public CompareDataResult compareDataFile(final UserID userId, final CompareDataFormatID compareDataFormatId,
 			final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate,
 			final String fileContents) {
-		final CompareDataResult result = new CompareDataResult();
 
 		final CompareDataFormat compareDataFormat = this.getCompareDataFormatById(compareDataFormatId);
-
-		final Period searchFrame = Period.ofDays(5);
 
 		List<CompareDataDataset> compareDataDatasets = null;
 
@@ -127,56 +132,100 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		compareDataDatasets
 				.removeIf(cdd -> cdd.getBookingDate().isAfter(endDate) || cdd.getBookingDate().isBefore(startDate));
 
+		return this.doComparision(userId, capitalsourceId, startDate, endDate, compareDataDatasets);
+	}
+
+	@Override
+	public CompareDataResult compareDataImport(final UserID userId, final CapitalsourceID capitalsourceId,
+			final LocalDate startDate, final LocalDate endDate) {
+
+		List<CompareDataDataset> compareDataDatasets = null;
+
+		final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, Arrays.asList(capitalsourceId), startDate, endDate);
+
+		if (importedMoneyflows != null) {
+			compareDataDatasets = this.mapImportedMoneyflows(importedMoneyflows);
+		}
+		return this.doComparision(userId, capitalsourceId, startDate, endDate, compareDataDatasets);
+	}
+
+	private List<CompareDataDataset> mapImportedMoneyflows(final List<ImportedMoneyflow> importedMoneyflows) {
+		final List<CompareDataDataset> compareDataDatasets = new ArrayList<>();
+
+		for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
+			final CompareDataDataset compareDataDataset = new CompareDataDataset();
+			compareDataDataset.setAmount(importedMoneyflow.getAmount());
+			compareDataDataset.setBookingDate(importedMoneyflow.getBookingDate());
+			compareDataDataset.setComment(importedMoneyflow.getUsage());
+			compareDataDataset.setInvoiceDate(importedMoneyflow.getInvoiceDate());
+			compareDataDataset.setPartner(importedMoneyflow.getName());
+			compareDataDataset.setPartnerBankAccount(importedMoneyflow.getBankAccount());
+
+			compareDataDatasets.add(compareDataDataset);
+		}
+		return compareDataDatasets;
+	}
+
+	private CompareDataResult doComparision(final UserID userId, final CapitalsourceID capitalsourceId,
+			final LocalDate startDate, final LocalDate endDate, final List<CompareDataDataset> compareDataDatasets) {
+		final CompareDataResult result = new CompareDataResult();
+		final Period searchFrame = Period.ofDays(5);
+
 		// gather all recorded moneyflows in the given period of time to work on for comparision
 		final List<Moneyflow> allMoneyflows = this.moneyflowService.getAllMoneyflowsByDateRange(userId, startDate,
 				endDate);
 
-		for (final CompareDataDataset compareDataDataset : compareDataDatasets) {
+		if (compareDataDatasets != null) {
+			for (final CompareDataDataset compareDataDataset : compareDataDatasets) {
 
-			final LocalDate bookingDate = compareDataDataset.getBookingDate();
-			final LocalDate bookingDateLeft = bookingDate.minus(searchFrame);
-			final LocalDate bookingDateRight = bookingDate.plus(searchFrame);
+				final LocalDate bookingDate = compareDataDataset.getBookingDate();
+				final LocalDate bookingDateLeft = bookingDate.minus(searchFrame);
+				final LocalDate bookingDateRight = bookingDate.plus(searchFrame);
 
-			final List<Moneyflow> moneyflows = new ArrayList<>();
-			// find all recorded moneyflows which could possibly match the file dataset
-			for (final Moneyflow moneyflow : allMoneyflows) {
-				if (moneyflow.getAmount().equals(compareDataDataset.getAmount())
-						&& moneyflow.getBookingDate().isAfter(bookingDateLeft)
-						&& moneyflow.getBookingDate().isBefore(bookingDateRight)) {
-					moneyflows.add(moneyflow);
+				final List<Moneyflow> moneyflows = new ArrayList<>();
+				// find all recorded moneyflows which could possibly match the file dataset
+				for (final Moneyflow moneyflow : allMoneyflows) {
+					if (moneyflow.getAmount().equals(compareDataDataset.getAmount())
+							&& moneyflow.getBookingDate().isAfter(bookingDateLeft)
+							&& moneyflow.getBookingDate().isBefore(bookingDateRight)) {
+						moneyflows.add(moneyflow);
+					}
 				}
-			}
 
-			if (moneyflows.isEmpty()) {
-				// no matching moneyflows found
-				result.addCompareDataNotInDatabase(new CompareDataNotInDatabase(compareDataDataset));
-			} else {
-				Moneyflow matchingMoneyflow = null;
-
-				if (moneyflows.size() == 1) {
-					// one match found
-					matchingMoneyflow = moneyflows.get(0);
+				if (moneyflows.isEmpty()) {
+					// no matching moneyflows found
+					result.addCompareDataNotInDatabase(new CompareDataNotInDatabase(compareDataDataset));
 				} else {
-					// more than one match found - try to find the best one by rating all
-					int currentRating = -1;
-					for (final Moneyflow moneyflow : moneyflows) {
-						final int rating = this.rateMoneyflowToDataset(moneyflow, compareDataDataset, capitalsourceId);
-						if (rating > currentRating) {
-							matchingMoneyflow = moneyflow;
-							currentRating = rating;
+					Moneyflow matchingMoneyflow = null;
+
+					if (moneyflows.size() == 1) {
+						// one match found
+						matchingMoneyflow = moneyflows.get(0);
+					} else {
+						// more than one match found - try to find the best one by rating all
+						int currentRating = -1;
+						for (final Moneyflow moneyflow : moneyflows) {
+							final int rating = this.rateMoneyflowToDataset(userId, moneyflow, compareDataDataset,
+									capitalsourceId);
+							if (rating > currentRating) {
+								matchingMoneyflow = moneyflow;
+								currentRating = rating;
+							}
 						}
 					}
-				}
 
-				if (matchingMoneyflow != null) {
-					if (matchingMoneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
-						result.addCompareDataMatching(new CompareDataMatching(matchingMoneyflow, compareDataDataset));
-					} else {
-						result.addCompareDataWrongCapitalsource(
-								new CompareDataWrongCapitalsource(matchingMoneyflow, compareDataDataset));
+					if (matchingMoneyflow != null) {
+						if (matchingMoneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
+							result.addCompareDataMatching(
+									new CompareDataMatching(matchingMoneyflow, compareDataDataset));
+						} else {
+							result.addCompareDataWrongCapitalsource(
+									new CompareDataWrongCapitalsource(matchingMoneyflow, compareDataDataset));
+						}
+
+						allMoneyflows.remove(matchingMoneyflow);
 					}
-
-					allMoneyflows.remove(matchingMoneyflow);
 				}
 			}
 		}
@@ -186,18 +235,35 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		for (final Moneyflow moneyflow : allMoneyflows) {
 			result.addCompareDataNotInFile(new CompareDataNotInFile(moneyflow));
 		}
+
 		return result;
 	}
 
-	private int rateMoneyflowToDataset(final Moneyflow moneyflow, final CompareDataDataset compareDataDataset,
-			final CapitalsourceID capitalsourceId) {
+	private int rateMoneyflowToDataset(final UserID userId, final Moneyflow moneyflow,
+			final CompareDataDataset compareDataDataset, final CapitalsourceID capitalsourceId) {
 		int rating = 0;
 		if (moneyflow.getBookingDate().equals(compareDataDataset.getBookingDate())) {
+			rating += 10;
+		}
+		if (moneyflow.getInvoiceDate().equals(compareDataDataset.getInvoiceDate())) {
 			rating += 10;
 		}
 
 		if (moneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
 			rating += 10;
+		}
+
+		// does our source contain bank account information?
+		if (compareDataDataset.getPartnerBankAccount() != null) {
+			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+					.getAllContractpartnerByAccounts(userId, Arrays.asList(compareDataDataset.getPartnerBankAccount()));
+
+			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
+				if (contractpartnerAccounts.get(0).getContractpartner().getId()
+						.equals(moneyflow.getContractpartner().getId())) {
+					rating += 50;
+				}
+			}
 		}
 
 		// does our input-file contain contractpartner information?

@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,8 +45,9 @@ public class ImportedMoneyflowDao {
 	}
 
 	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
-			final List<Long> capitalsourceIdLongs, final Short status) {
-		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status);
+			final List<Long> capitalsourceIdLongs, final Short status, final LocalDate dateFrom,
+			final LocalDate dateTil) {
+		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status, dateFrom, dateTil);
 	}
 
 	public void updateImportedMoneyflowStatus(final Long userId, final Long importedMoneyflowId, final Short status) {

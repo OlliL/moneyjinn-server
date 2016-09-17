@@ -109,13 +109,19 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	@Override
 	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
-			final List<CapitalsourceID> capitalsourceIds) {
-		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+			final List<CapitalsourceID> capitalsourceIds, final LocalDate dateFrom, final LocalDate dateTil) {
+		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null, dateFrom, dateTil);
 	}
 
 	@Override
 	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
 			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
+		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, status, null, null);
+	}
+
+	private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
+			final LocalDate dateFrom, final LocalDate dateTil) {
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
@@ -124,7 +130,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs,
-						ImportedMoneyflowStatusMapper.map(status));
+						ImportedMoneyflowStatusMapper.map(status), dateFrom, dateTil);
 		return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
 	}
 

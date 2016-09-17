@@ -29,12 +29,15 @@ package org.laladev.moneyjinn.businesslogic.model.comparedata;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.laladev.moneyjinn.businesslogic.model.BankAccount;
+
 public class CompareDataDataset {
 	private LocalDate bookingDate;
 	private LocalDate invoiceDate;
 	private BigDecimal amount;
 	private String partner;
 	private String comment;
+	private BankAccount partnerBankAccount;
 
 	public final LocalDate getBookingDate() {
 		return this.bookingDate;
@@ -76,6 +79,14 @@ public class CompareDataDataset {
 		this.comment = comment;
 	}
 
+	public final BankAccount getPartnerBankAccount() {
+		return this.partnerBankAccount;
+	}
+
+	public final void setPartnerBankAccount(final BankAccount partnerBankAccount) {
+		this.partnerBankAccount = partnerBankAccount;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -85,6 +96,7 @@ public class CompareDataDataset {
 		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
 		result = prime * result + ((this.invoiceDate == null) ? 0 : this.invoiceDate.hashCode());
 		result = prime * result + ((this.partner == null) ? 0 : this.partner.hashCode());
+		result = prime * result + ((this.partnerBankAccount == null) ? 0 : this.partnerBankAccount.hashCode());
 		return result;
 	}
 
@@ -135,6 +147,13 @@ public class CompareDataDataset {
 		} else if (!this.partner.equals(other.partner)) {
 			return false;
 		}
+		if (this.partnerBankAccount == null) {
+			if (other.partnerBankAccount != null) {
+				return false;
+			}
+		} else if (!this.partnerBankAccount.equals(other.partnerBankAccount)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -151,6 +170,8 @@ public class CompareDataDataset {
 		builder.append(this.partner);
 		builder.append(", comment=");
 		builder.append(this.comment);
+		builder.append(", partnerBankAccount=");
+		builder.append(this.partnerBankAccount);
 		builder.append("]");
 		return builder.toString();
 	}

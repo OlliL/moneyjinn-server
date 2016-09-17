@@ -61,7 +61,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 		final List<CapitalsourceID> capitalsourceIds = Arrays
 				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds);
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeDelete = importedMoneyflows.size();
@@ -77,7 +77,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 
 		// No delete happend - it is only marked as "ignored"
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds);
+				capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeDelete, importedMoneyflows.size());

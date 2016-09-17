@@ -63,7 +63,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		final List<CapitalsourceID> capitalsourceIds = Arrays
 				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds);
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
@@ -76,7 +76,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds);
+				capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
@@ -91,7 +91,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		final List<CapitalsourceID> capitalsourceIds = Arrays
 				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds);
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
@@ -105,7 +105,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds);
+				capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());

@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +37,8 @@ public interface IImportedMoneyflowDaoMapper {
 	Integer countImportedMoneyflows(List<Long> capitalsourceIds);
 
 	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
-			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status);
+			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status,
+			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
 	void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Short status);
 

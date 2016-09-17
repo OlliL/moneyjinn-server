@@ -32,14 +32,16 @@
 		SELECT <include refid="importedMoneyflowColumns" />
 		  FROM impmoneyflows
 		 WHERE mcs_capitalsourceid IN 
-		   <foreach item="mcsCapitalsourceId" index="index" collection="capitalsourceIds"
-		      open="(" separator="," close=")">
+		   <foreach item="mcsCapitalsourceId" index="index" collection="capitalsourceIds" open="(" separator="," close=")">
 		        #{mcsCapitalsourceId}
 		   </foreach>
 		   <if test="status != null">
-		   AND status = #{status} 
+		   	AND status = #{status} 
 		   </if>
-	</select>
+		   <if test="dateFrom != null and dateTil != null">
+		   	AND bookingdate between #{dateFrom} AND #{dateTil} 
+		   </if>
+		   	</select>
 
      	<delete id="deleteImportedMoneyflowById">
      	    	DELETE

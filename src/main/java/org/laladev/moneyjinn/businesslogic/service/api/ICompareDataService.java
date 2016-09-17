@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataDataset;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormat;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataResult;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
 
 /**
@@ -87,6 +88,19 @@ public interface ICompareDataService {
 	 * @param fileContents
 	 * @return
 	 */
-	public CompareDataResult compareData(UserID userId, CompareDataFormatID compareDataFormatId,
+	public CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
 			CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
+
+	/**
+	 * Loads all {@link ImportedMoneyflow}s and tries to match them to stored {@link Moneyflow}s
+	 * during the specified timeframe. The response object contains the comparison results.
+	 *
+	 * @param userId
+	 * @param capitalsourceId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId, LocalDate startDate,
+			LocalDate endDate);
 }

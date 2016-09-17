@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.service.api;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
@@ -79,10 +80,12 @@ public interface IImportedMoneyflowService {
 	 *
 	 * @param userId
 	 * @param capitalsourceIds
+	 * @param dateFrom
+	 * @param dateTil
 	 * @return
 	 */
 	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
-			List<CapitalsourceID> capitalsourceIds);
+			List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom, LocalDate dateTil);
 
 	/**
 	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given
