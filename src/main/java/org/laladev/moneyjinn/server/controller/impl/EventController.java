@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.businesslogic.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.businesslogic.service.api.IMonthlySettlementService;
@@ -90,7 +91,7 @@ public class EventController extends AbstractController {
 			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(cs -> cs.getId())
 					.collect(Collectors.toCollection(ArrayList::new));
 			final Integer numberOfImportedMoneyflows = this.importedMoneyflowService.countImportedMoneyflows(userId,
-					capitalsourceIds);
+					capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 			response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
 		}
 

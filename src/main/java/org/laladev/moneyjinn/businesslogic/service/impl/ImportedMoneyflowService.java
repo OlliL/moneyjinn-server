@@ -97,14 +97,16 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	}
 
 	@Override
-	public Integer countImportedMoneyflows(final UserID userId, final List<CapitalsourceID> capitalsourceIds) {
+	public Integer countImportedMoneyflows(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
+			final ImportedMoneyflowStatus status) {
 		Assert.notNull(userId);
 		Assert.notNull(capitalsourceIds);
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
 
-		return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs);
+		return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs,
+				ImportedMoneyflowStatusMapper.map(status));
 	}
 
 	@Override

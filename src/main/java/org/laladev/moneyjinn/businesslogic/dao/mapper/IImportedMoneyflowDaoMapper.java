@@ -34,7 +34,8 @@ import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
 
 public interface IImportedMoneyflowDaoMapper {
 
-	Integer countImportedMoneyflows(List<Long> capitalsourceIds);
+	Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
+			@Param("status") Short status);
 
 	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
 			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status,

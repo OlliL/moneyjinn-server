@@ -70,9 +70,11 @@ public interface IImportedMoneyflowService {
 	 *
 	 * @param userId
 	 * @param capitalsourceIds
+	 * @param status
 	 * @return
 	 */
-	Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds);
+	Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds,
+			ImportedMoneyflowStatus status);
 
 	/**
 	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given

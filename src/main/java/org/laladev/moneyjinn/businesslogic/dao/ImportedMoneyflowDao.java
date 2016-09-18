@@ -40,8 +40,9 @@ public class ImportedMoneyflowDao {
 	@Inject
 	IImportedMoneyflowDaoMapper mapper;
 
-	public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIds) {
-		return this.mapper.countImportedMoneyflows(capitalsourceIds);
+	public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs,
+			final Short status) {
+		return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
 	}
 
 	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,

@@ -20,10 +20,12 @@
 		SELECT COUNT(*)
 		  FROM impmoneyflows
 		 WHERE mcs_capitalsourceid IN 
-		   <foreach item="mcsCapitalsourceId" index="index" collection="list"
-		      open="(" separator="," close=")">
+		   <foreach item="mcsCapitalsourceId" index="index" collection="capitalsourceIds" open="(" separator="," close=")">
 		        #{mcsCapitalsourceId}
 		   </foreach>
+		   <if test="status != null">
+		   	AND status = #{status} 
+		   </if>
 	</select>
     	
     	
