@@ -177,8 +177,6 @@ public class MoneyflowServiceTest extends AbstractTest {
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 
-		final String name = String.valueOf(System.currentTimeMillis());
-
 		moneyflow.getUser().setId(user2ID);
 		moneyflow.setBookingDate(LocalDate.now());
 

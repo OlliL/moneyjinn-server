@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.server.config;
 
+import org.springframework.boot.SpringBootConfiguration;
+
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
@@ -28,6 +30,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+@SpringBootConfiguration
 @Configuration
 @ComponentScan(value = "org.laladev")
 @EnableAspectJAutoProxy

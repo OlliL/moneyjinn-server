@@ -59,7 +59,8 @@ public class CapitalsourceDao {
 		return this.mapper.countAllCapitalsources(userId);
 	}
 
-	public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom, final LocalDate validTil) {
+	public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 

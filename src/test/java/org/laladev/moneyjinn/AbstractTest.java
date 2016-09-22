@@ -12,8 +12,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MoneyjinnConfiguration.class })
-@WebAppConfiguration
 @EnableAutoConfiguration
+// @SpringBootTest
+// @ContextConfiguration(classes = { MoneyjinnConfiguration.class })
+@WebAppConfiguration
 @SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
 		"classpath:testdata.sql" }) })
 public abstract class AbstractTest {

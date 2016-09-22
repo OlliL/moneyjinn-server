@@ -69,8 +69,8 @@ public interface ICapitalsourceDaoMapper {
 
 	public Integer countAllCapitalsources(@Param("userId") Long userId);
 
-	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId, @Param("validFrom") LocalDate validFrom,
-			@Param("validTil") LocalDate validTil);
+	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId,
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public Set<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
 
@@ -81,7 +81,8 @@ public interface ICapitalsourceDaoMapper {
 			@Param("initial") Character initial);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(@Param("userId") Long userId,
-			@Param("initial") Character initial, @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+			@Param("initial") Character initial, @Param("validFrom") LocalDate validFrom,
+			@Param("validTil") LocalDate validTil);
 
 	public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId, @Param("comment") String comment,
 			@Param("date") LocalDate date);
