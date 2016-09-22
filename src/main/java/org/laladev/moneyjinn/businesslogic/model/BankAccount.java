@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 
 public class BankAccount implements Serializable {
@@ -61,7 +62,12 @@ public class BankAccount implements Serializable {
 	}
 
 	public final void setBankCode(final String bankCode) {
-		this.bankCode = bankCode;
+		// Always fill 8 digits BIC to 11 digits BIC!
+		if (bankCode.length() == 8 && !NumberUtils.isNumber(bankCode)) {
+			this.bankCode = bankCode + "XXX";
+		} else {
+			this.bankCode = bankCode;
+		}
 	}
 
 	public List<ErrorCode> checkValidity() {
