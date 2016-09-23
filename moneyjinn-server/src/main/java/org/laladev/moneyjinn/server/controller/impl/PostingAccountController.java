@@ -29,13 +29,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
-import org.laladev.moneyjinn.businesslogic.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.AbstractPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
@@ -45,10 +38,17 @@ import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountLi
 import org.laladev.moneyjinn.core.rest.model.postingaccount.UpdatePostingAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;

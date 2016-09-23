@@ -28,13 +28,13 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.Month;
 
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlement;
-import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlementID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlementID;
 
 public class ImportedMonthlySettlementTransportMapper
 		implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {

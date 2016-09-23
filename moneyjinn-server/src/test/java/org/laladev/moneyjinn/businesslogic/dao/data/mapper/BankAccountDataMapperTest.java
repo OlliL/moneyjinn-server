@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
-import org.laladev.moneyjinn.businesslogic.model.BankAccount;
+import org.laladev.moneyjinn.model.BankAccount;
 
 public class BankAccountDataMapperTest {
 	@Test

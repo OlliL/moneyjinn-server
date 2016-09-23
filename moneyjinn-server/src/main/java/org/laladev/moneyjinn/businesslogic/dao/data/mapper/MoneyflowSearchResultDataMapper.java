@@ -29,10 +29,10 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 import java.time.Month;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchResultData;
-import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 
 public class MoneyflowSearchResultDataMapper implements IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
 

@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.setting.SettingType;
+import org.laladev.moneyjinn.model.setting.SettingType;
 
 public class SettingTypeConverter {
 

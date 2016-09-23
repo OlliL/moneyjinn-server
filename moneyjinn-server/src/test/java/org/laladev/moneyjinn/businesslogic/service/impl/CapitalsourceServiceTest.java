@@ -7,17 +7,17 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 
 public class CapitalsourceServiceTest extends AbstractTest {
 	@Inject

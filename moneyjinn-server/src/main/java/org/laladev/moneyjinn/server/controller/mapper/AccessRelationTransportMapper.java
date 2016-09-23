@@ -29,10 +29,10 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
-import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 
 public class AccessRelationTransportMapper implements IMapper<AccessRelation, AccessRelationTransport> {
 	@Override

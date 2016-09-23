@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.BankAccount;
-import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerAccount;
+import org.laladev.moneyjinn.model.ContractpartnerAccountID;
+import org.laladev.moneyjinn.model.ContractpartnerID;
 
 public class ContractpartnerAccountTransportMapper
 		implements IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {

@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
+import org.laladev.moneyjinn.model.ImportedBalance;
 
 public class ImportedBalanceTransportMapper implements IMapper<ImportedBalance, ImportedBalanceTransport> {
 

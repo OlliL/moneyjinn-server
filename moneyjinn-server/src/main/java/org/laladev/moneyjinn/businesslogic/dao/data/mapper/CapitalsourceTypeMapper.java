@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceType;
-import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceTypeMapper {
 	private static final Short CURRENT_ASSET_SHORT = Short.valueOf((short) 1);

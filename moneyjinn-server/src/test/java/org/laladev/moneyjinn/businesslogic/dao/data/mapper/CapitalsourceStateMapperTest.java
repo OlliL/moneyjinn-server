@@ -2,8 +2,8 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
-import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceStateMapperTest {
 	@Test

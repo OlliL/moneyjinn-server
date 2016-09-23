@@ -12,18 +12,18 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.Moneyflow;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.MoneyflowID;
-import org.laladev.moneyjinn.businesslogic.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.service.api.IMoneyflowService;
 
 public class MoneyflowServiceTest extends AbstractTest {
 	@Inject

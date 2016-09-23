@@ -27,9 +27,9 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.AccessRelationData;
-import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
-import org.laladev.moneyjinn.businesslogic.model.access.AccessRelation;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 
 public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessRelationData> {
 

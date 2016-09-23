@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.service.api.IGroupService;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.service.api.IGroupService;
 
 public class GroupServiceTest extends AbstractTest {
 	@Inject

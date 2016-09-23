@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.server.main;
 
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

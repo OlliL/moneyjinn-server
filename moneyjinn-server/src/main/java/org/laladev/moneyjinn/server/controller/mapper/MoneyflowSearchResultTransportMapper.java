@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 
 public class MoneyflowSearchResultTransportMapper
 		implements IMapper<MoneyflowSearchResult, MoneyflowSearchResultTransport> {

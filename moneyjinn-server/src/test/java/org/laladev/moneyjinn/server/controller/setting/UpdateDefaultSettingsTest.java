@@ -5,17 +5,17 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.access.AccessID;
-import org.laladev.moneyjinn.businesslogic.model.setting.ClientDateFormatSetting;
-import org.laladev.moneyjinn.businesslogic.model.setting.ClientDisplayedLanguageSetting;
-import org.laladev.moneyjinn.businesslogic.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.businesslogic.model.setting.ClientNumFreeMoneyflowsSetting;
-import org.laladev.moneyjinn.businesslogic.service.api.ISettingService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.UpdateDefaultSettingsRequest;
+import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
+import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
+import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
+import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 
 public class UpdateDefaultSettingsTest extends AbstractControllerTest {

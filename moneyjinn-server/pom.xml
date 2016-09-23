@@ -22,7 +22,14 @@
 			<artifactId>moneyjinn-sepa-camt</artifactId>
 			<version>${moneyjinn-sepa-camt.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-service-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-service-impl</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

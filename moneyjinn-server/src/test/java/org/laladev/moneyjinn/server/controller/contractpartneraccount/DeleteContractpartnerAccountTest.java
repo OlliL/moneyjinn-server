@@ -5,14 +5,14 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
+import org.laladev.moneyjinn.model.ContractpartnerAccount;
+import org.laladev.moneyjinn.model.ContractpartnerAccountID;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 

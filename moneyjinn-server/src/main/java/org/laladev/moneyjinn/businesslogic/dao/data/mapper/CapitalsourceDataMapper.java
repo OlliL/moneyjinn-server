@@ -27,14 +27,14 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.CapitalsourceData;
-import org.laladev.moneyjinn.businesslogic.model.BankAccount;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
 public class CapitalsourceDataMapper implements IMapper<Capitalsource, CapitalsourceData> {
 

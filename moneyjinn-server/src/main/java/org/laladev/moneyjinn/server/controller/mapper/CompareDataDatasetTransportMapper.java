@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Date;
 
-import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataDataset;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
+import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
 
 public class CompareDataDatasetTransportMapper implements IMapper<CompareDataDataset, CompareDataDatasetTransport> {
 

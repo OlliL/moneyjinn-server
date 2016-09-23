@@ -28,12 +28,12 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.LocalDate;
 
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchGroupByType;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchGroupByType;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 
 public class MoneyflowSearchParamsTransportMapper
 		implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {

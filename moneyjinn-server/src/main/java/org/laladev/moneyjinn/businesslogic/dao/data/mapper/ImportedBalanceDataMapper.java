@@ -27,10 +27,10 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedBalanceData;
-import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.ImportedBalance;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
 public class ImportedBalanceDataMapper implements IMapper<ImportedBalance, ImportedBalanceData> {
 

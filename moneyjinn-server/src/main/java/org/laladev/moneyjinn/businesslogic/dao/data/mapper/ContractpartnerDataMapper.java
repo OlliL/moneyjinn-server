@@ -27,15 +27,15 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.ContractpartnerData;
-import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
 
 public class ContractpartnerDataMapper implements IMapper<Contractpartner, ContractpartnerData> {
 

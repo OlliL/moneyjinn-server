@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceState;
-import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceStateMapper {
 	private static final Short NON_CACHE_SHORT = Short.valueOf((short) 1);

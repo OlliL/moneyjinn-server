@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 
 public class ImportedMoneyflowStatusMapper {
 	private static final Short CREATED = Short.valueOf((short) 0);

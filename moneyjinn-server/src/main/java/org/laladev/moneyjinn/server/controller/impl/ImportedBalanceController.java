@@ -4,20 +4,20 @@ import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 
-import org.laladev.moneyjinn.businesslogic.model.BankAccount;
-import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceImport;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
-import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.ImportedBalance;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedBalanceTransportMapper;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;

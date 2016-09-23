@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Date;
 
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.model.PostingAccountAmount;
 
 public class PostingAccountAmountTransportMapper
 		implements IMapper<PostingAccountAmount, PostingAccountAmountTransport> {

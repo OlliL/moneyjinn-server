@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceImport;
-import org.laladev.moneyjinn.businesslogic.model.exception.TechnicalException;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceImportMapper {
 	private static final short NOT_ALLOWED_SHORT = (short) 0;

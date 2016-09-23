@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 
 public class ValidationItemTransportMapper implements IMapper<ValidationItemTransport, ValidationResultItem> {
 	@Override

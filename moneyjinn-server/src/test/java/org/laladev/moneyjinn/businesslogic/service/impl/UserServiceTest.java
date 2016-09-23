@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.service.api.IUserService;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.service.api.IUserService;
 
 public class UserServiceTest extends AbstractTest {
 	@Inject

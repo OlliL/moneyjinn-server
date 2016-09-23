@@ -27,9 +27,9 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowSearchParamsData;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchGroupByType;
-import org.laladev.moneyjinn.businesslogic.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchGroupByType;
+import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 
 public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {
 

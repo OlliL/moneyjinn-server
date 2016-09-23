@@ -27,8 +27,8 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.BankAccountData;
-import org.laladev.moneyjinn.businesslogic.model.BankAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.BankAccount;
 
 public class BankAccountDataMapper implements IMapper<BankAccount, BankAccountData> {
 

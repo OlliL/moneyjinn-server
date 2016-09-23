@@ -7,16 +7,16 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.GroupID;
-import org.laladev.moneyjinn.businesslogic.model.access.User;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.exception.BusinessException;
-import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
 
 public class ContractpartnerServiceTest extends AbstractTest {
 	@Inject

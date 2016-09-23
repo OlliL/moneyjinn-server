@@ -32,10 +32,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.CompareDataFormatData;
-import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormat;
-import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormatID;
-import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormatType;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatType;
 
 public class CompareDataFormatDataMapper implements IMapper<CompareDataFormat, CompareDataFormatData> {
 

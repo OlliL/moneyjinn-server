@@ -13,6 +13,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>moneyjinn-model</module>
+		<module>moneyjinn-service-api</module>
+		<module>moneyjinn-service-impl</module>
 		<module>moneyjinn-server</module>
 	</modules>
 
@@ -46,6 +49,23 @@
 				<groupId>org.laladev.moneyjinn</groupId>
 				<artifactId>moneyjinn-sepa-camt</artifactId>
 				<version>${moneyjinn-sepa-camt.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.laladev.moneyjinn</groupId>
+				<artifactId>moneyjinn-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.laladev.moneyjinn</groupId>
+				<artifactId>moneyjinn-service-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.laladev.moneyjinn</groupId>
+				<artifactId>moneyjinn-service-impl</artifactId>
+				<version>${project.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

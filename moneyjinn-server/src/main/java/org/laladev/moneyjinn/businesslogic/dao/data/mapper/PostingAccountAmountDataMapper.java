@@ -27,10 +27,10 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.PostingAccountAmountData;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccount;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountAmount;
-import org.laladev.moneyjinn.businesslogic.model.PostingAccountID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.PostingAccountAmount;
+import org.laladev.moneyjinn.model.PostingAccountID;
 
 public class PostingAccountAmountDataMapper implements IMapper<PostingAccountAmount, PostingAccountAmountData> {
 

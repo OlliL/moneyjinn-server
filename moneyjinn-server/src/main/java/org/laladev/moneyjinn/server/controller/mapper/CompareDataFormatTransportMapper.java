@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.businesslogic.model.comparedata.CompareDataFormat;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
 
 public class CompareDataFormatTransportMapper implements IMapper<CompareDataFormat, CompareDataFormatTransport> {
 

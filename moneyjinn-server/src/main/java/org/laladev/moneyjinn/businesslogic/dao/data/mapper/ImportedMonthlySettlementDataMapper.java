@@ -29,11 +29,11 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 import java.time.Month;
 
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMonthlySettlementData;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlement;
-import org.laladev.moneyjinn.businesslogic.model.monthlysettlement.ImportedMonthlySettlementID;
 import org.laladev.moneyjinn.core.mapper.IMapper;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlementID;
 
 public class ImportedMonthlySettlementDataMapper
 		implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {

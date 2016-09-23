@@ -36,15 +36,15 @@ import javax.inject.Named;
 import org.laladev.moneyjinn.businesslogic.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.businesslogic.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.businesslogic.dao.data.mapper.ImportedBalanceDataMapper;
-import org.laladev.moneyjinn.businesslogic.model.ImportedBalance;
-import org.laladev.moneyjinn.businesslogic.model.access.Group;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.businesslogic.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
-import org.laladev.moneyjinn.businesslogic.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.businesslogic.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.businesslogic.service.api.IImportedBalanceService;
+import org.laladev.moneyjinn.model.ImportedBalance;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.util.Assert;
 
 @Named

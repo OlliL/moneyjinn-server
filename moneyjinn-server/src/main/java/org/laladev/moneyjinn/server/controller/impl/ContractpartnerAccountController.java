@@ -28,14 +28,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.laladev.moneyjinn.businesslogic.model.Contractpartner;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.businesslogic.model.ContractpartnerID;
-import org.laladev.moneyjinn.businesslogic.model.access.UserID;
-import org.laladev.moneyjinn.businesslogic.model.validation.ValidationResult;
-import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerAccountService;
-import org.laladev.moneyjinn.businesslogic.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
@@ -45,9 +37,17 @@ import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowEditCont
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.UpdateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerAccount;
+import org.laladev.moneyjinn.model.ContractpartnerAccountID;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
