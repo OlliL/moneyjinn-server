@@ -14,16 +14,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
-			<artifactId>moneyjinn-core</artifactId>
-			<version>${moneyjinn-core.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.laladev.moneyjinn</groupId>
-			<artifactId>moneyjinn-sepa-camt</artifactId>
-			<version>${moneyjinn-sepa-camt.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-service-api</artifactId>
 		</dependency>
 		<dependency>
@@ -61,10 +51,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 		</dependency>
@@ -77,10 +63,9 @@
 			<artifactId>mybatis-spring</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 		</dependency>
-
 		<!-- TEST SCOPE -->
 		<dependency>
 			<groupId>com.github.albfernandez</groupId>

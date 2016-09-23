@@ -14,7 +14,36 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-sepa-camt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-service-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-typehandlers-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>
