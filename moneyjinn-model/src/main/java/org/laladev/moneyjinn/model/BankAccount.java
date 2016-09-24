@@ -45,7 +45,7 @@ public class BankAccount implements Serializable {
 	public BankAccount(final String accountNumber, final String bankCode) {
 		super();
 		this.accountNumber = accountNumber;
-		this.bankCode = bankCode;
+		this.setBankCode(bankCode);
 	}
 
 	public final String getAccountNumber() {
