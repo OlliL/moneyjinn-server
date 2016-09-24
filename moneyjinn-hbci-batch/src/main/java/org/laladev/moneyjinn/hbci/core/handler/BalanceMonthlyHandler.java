@@ -28,8 +28,9 @@ package org.laladev.moneyjinn.hbci.core.handler;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.StatelessSession;
-import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.criterion.Restrictions;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
@@ -163,11 +164,31 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
 		try {
 			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() + 1);
-			this.session.insert(balanceMonthly);
-			this.setChanged();
-			this.notifyObservers(balanceMonthly);
 
-		} catch (final ConstraintViolationException e) {
+			final Criteria cr = this.session.createCriteria(BalanceMonthly.class);
+			cr.add(Restrictions.eq("myIban", balanceMonthly.getMyIban()));
+			cr.add(Restrictions.eq("myBic", balanceMonthly.getMyBic()));
+			cr.add(Restrictions.eq("myAccountnumber", balanceMonthly.getMyAccountnumber()));
+			cr.add(Restrictions.eq("myBankcode", balanceMonthly.getMyBankcode()));
+			cr.add(Restrictions.eq("balanceYear", balanceMonthly.getBalanceYear()));
+			cr.add(Restrictions.eq("balanceMonth", balanceMonthly.getBalanceMonth()));
+
+			final Object uniqueResult = cr.uniqueResult();
+			if (uniqueResult != null && uniqueResult instanceof BalanceMonthly) {
+				final BalanceMonthly balanceMonthlyRead = (BalanceMonthly) uniqueResult;
+				if (balanceMonthlyRead.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
+					balanceMonthlyRead.setBalanceValue(balanceMonthly.getBalanceValue());
+					balanceMonthlyRead.setBalanceCurrency(balanceMonthly.getBalanceCurrency());
+					this.session.update(balanceMonthlyRead);
+					this.setChanged();
+					this.notifyObservers(balanceMonthlyRead);
+				}
+			} else {
+				this.session.insert(balanceMonthly);
+				this.setChanged();
+				this.notifyObservers(balanceMonthly);
+			}
+
 		} finally {
 			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() - 1);
 		}
