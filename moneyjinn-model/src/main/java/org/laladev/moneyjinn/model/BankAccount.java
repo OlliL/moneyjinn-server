@@ -62,7 +62,7 @@ public class BankAccount implements Serializable {
 
 	public final void setBankCode(final String bankCode) {
 		// Always fill 8 digits BIC to 11 digits BIC!
-		if (bankCode != null && bankCode.length() == 8 && bankCode.matches("^\\d+$")) {
+		if (bankCode != null && bankCode.length() == 8 && !bankCode.matches("^\\d+$")) {
 			this.bankCode = bankCode + "XXX";
 		} else {
 			this.bankCode = bankCode;
