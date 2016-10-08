@@ -162,10 +162,13 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final ContractpartnerAccountID contractpartnerAccountId) {
 		Assert.notNull(userId);
 		Assert.notNull(contractpartnerAccountId);
+		System.out.println("getContractpartnerAccountById " + contractpartnerAccountId);
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountById(userId.getId(), contractpartnerAccountId.getId());
-		System.out.println(contractpartnerAccountData.getMcpContractpartnerId());
-		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
+		final ContractpartnerAccount mapContractpartnerAccountData = this.mapContractpartnerAccountData(userId,
+				contractpartnerAccountData);
+		System.out.println("return: " + mapContractpartnerAccountData);
+		return mapContractpartnerAccountData;
 	}
 
 	@Override
