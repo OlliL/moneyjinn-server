@@ -76,6 +76,8 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 				.getContractpartnerAccountById(user2ID, new ContractpartnerAccountID(
 						ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
+		System.out.println(contractpartnerAccount);
+
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
 
