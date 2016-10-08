@@ -101,11 +101,12 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			}
 		}
 		System.out.println(contractpartnerAccount);
-
+		System.out.println(contractpartnerAccount.getContractpartner());
 		if (contractpartnerAccount.getContractpartner() == null) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(contractpartnerAccount.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
 		} else {
+			System.out.println(contractpartnerAccount.getContractpartner());
 			System.out.println(contractpartnerAccount.getContractpartner().getId());
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
