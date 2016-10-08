@@ -79,7 +79,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	public ValidationResult validateContractpartnerAccount(final UserID userId,
 			final ContractpartnerAccount contractpartnerAccount) {
 		final ValidationResult validationResult = new ValidationResult();
-
+		System.out.println(contractpartnerAccount);
 		if (contractpartnerAccount.getBankAccount() == null) {
 			validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
 					ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY));
@@ -100,11 +100,13 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 						Arrays.asList(contractpartnerAccountChecked.getContractpartner().getName())));
 			}
 		}
+		System.out.println(contractpartnerAccount);
 
 		if (contractpartnerAccount.getContractpartner() == null) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(contractpartnerAccount.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
 		} else {
+			System.out.println(contractpartnerAccount.getContractpartner().getId());
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			if (contractpartner == null) {
