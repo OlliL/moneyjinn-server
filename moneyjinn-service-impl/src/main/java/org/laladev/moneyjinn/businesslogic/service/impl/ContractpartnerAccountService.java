@@ -79,8 +79,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	public ValidationResult validateContractpartnerAccount(final UserID userId,
 			final ContractpartnerAccount contractpartnerAccount) {
 		final ValidationResult validationResult = new ValidationResult();
-		System.out.println("validateContractpartnerAccount 1:");
-		System.out.println(contractpartnerAccount);
+
 		if (contractpartnerAccount.getBankAccount() == null) {
 			validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
 					ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY));
@@ -101,16 +100,11 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 						Arrays.asList(contractpartnerAccountChecked.getContractpartner().getName())));
 			}
 		}
-		System.out.println("validateContractpartnerAccount 2:");
-		System.out.println(contractpartnerAccount);
-		System.out.println(contractpartnerAccount.getContractpartner());
+
 		if (contractpartnerAccount.getContractpartner() == null) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(contractpartnerAccount.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
 		} else {
-			System.out.println("validateContractpartnerAccount 3:");
-			System.out.println(contractpartnerAccount.getContractpartner());
-			System.out.println(contractpartnerAccount.getContractpartner().getId());
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			if (contractpartner == null) {
@@ -127,12 +121,17 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		if (contractpartnerAccountData != null) {
 			final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountData,
 					ContractpartnerAccount.class);
+			System.out.println("map");
+			System.out.println(contractpartnerAccount);
+
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			// this secures the Account - a user which has no access to the partner may not modify
 			// its accounts
+			System.out.println(contractpartner);
 			if (contractpartner != null) {
 				contractpartnerAccount.setContractpartner(contractpartner);
+				System.out.println(contractpartnerAccount);
 				return contractpartnerAccount;
 			}
 		}
@@ -165,6 +164,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		Assert.notNull(contractpartnerAccountId);
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountById(userId.getId(), contractpartnerAccountId.getId());
+		System.out.println(contractpartnerAccountData.getMcpContractpartnerId());
 		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
 	}
 
@@ -184,8 +184,6 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		Assert.notNull(userId);
 		Assert.notNull(contractpartnerAccount);
 		contractpartnerAccount.setId(null);
-		System.out.println("createContractpartnerAccount:");
-		System.out.println(contractpartnerAccount);
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
