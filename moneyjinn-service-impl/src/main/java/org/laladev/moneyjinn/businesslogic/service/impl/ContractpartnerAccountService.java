@@ -121,17 +121,13 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		if (contractpartnerAccountData != null) {
 			final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountData,
 					ContractpartnerAccount.class);
-			System.out.println("map");
-			System.out.println(contractpartnerAccount);
 
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			// this secures the Account - a user which has no access to the partner may not modify
 			// its accounts
-			System.out.println(contractpartner);
 			if (contractpartner != null) {
 				contractpartnerAccount.setContractpartner(contractpartner);
-				System.out.println(contractpartnerAccount);
 				return contractpartnerAccount;
 			}
 		}
@@ -162,13 +158,12 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final ContractpartnerAccountID contractpartnerAccountId) {
 		Assert.notNull(userId);
 		Assert.notNull(contractpartnerAccountId);
-		System.out.println("getContractpartnerAccountById " + contractpartnerAccountId);
+		
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountById(userId.getId(), contractpartnerAccountId.getId());
-		final ContractpartnerAccount mapContractpartnerAccountData = this.mapContractpartnerAccountData(userId,
+
+		return this.mapContractpartnerAccountData(userId,
 				contractpartnerAccountData);
-		System.out.println("return: " + mapContractpartnerAccountData);
-		return mapContractpartnerAccountData;
 	}
 
 	@Override

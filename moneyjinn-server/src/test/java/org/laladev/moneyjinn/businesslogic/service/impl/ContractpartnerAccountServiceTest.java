@@ -40,7 +40,6 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
 
-		System.out.println("1START:");
 		// this caches
 		ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(user2ID, new ContractpartnerAccountID(
@@ -48,8 +47,6 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 
 		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user1ID,
 				new ContractpartnerAccountID(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
-
-		System.out.println("1getById" + contractpartnerAccount);
 
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
@@ -71,8 +68,6 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 		final ContractpartnerID contractpartnerID = new ContractpartnerID(
 				ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 
-		System.out.println("2START:");
-
 		// this caches
 		final List<ContractpartnerAccount> allContractpartnerAccounts1 = this.contractpartnerAccountService
 				.getContractpartnerAccounts(user1ID, contractpartnerID);
@@ -80,8 +75,6 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(user2ID, new ContractpartnerAccountID(
 						ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
-
-		System.out.println("2getById" + contractpartnerAccount);
 
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
