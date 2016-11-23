@@ -17,7 +17,7 @@ public class CapitalsourceStateMapperTest {
 	}
 
 	@Test(expected = TechnicalException.class)
-	public void testExceptionShort() {
+	public void test_unknownCapitalsourceState_exception() {
 		Assert.assertNull(CapitalsourceStateMapper.map(Short.valueOf("66")));
 
 	}

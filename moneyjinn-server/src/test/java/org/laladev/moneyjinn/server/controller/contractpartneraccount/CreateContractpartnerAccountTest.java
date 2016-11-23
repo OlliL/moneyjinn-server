@@ -155,6 +155,28 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
+
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forNewContractpartnerAccount().build();
+
+		transport.setBankCode("ABCDEFGH");
+		request.setContractpartnerAccountTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+				ContractpartnerAccountTransportBuilder.NEXT_ID);
+		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+				.getContractpartnerAccountById(userId, contractpartnerAccountId);
+
+		Assert.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, contractpartnerAccount.getId().getId());
+		Assert.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;

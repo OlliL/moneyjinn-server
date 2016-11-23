@@ -139,6 +139,30 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+
+		final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1().build();
+		transport.setComment("hugo");
+		transport.setBankCode("ABCDEFGH");
+
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, capitalsource.getId().getId());
+		Assert.assertEquals("hugo", capitalsource.getComment());
+		Assert.assertEquals(transport.getBankCode() + "XXX", capitalsource.getBankAccount().getBankCode());
+	}
+
+	@Test
 	public void test_setImportAllowedAll_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);

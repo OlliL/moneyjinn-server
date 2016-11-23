@@ -189,6 +189,31 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
+
+		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
+
+		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+				.forContractpartnerAccount1().build();
+		transport.setAccountNumber("1");
+		transport.setBankCode("ABCDEFGH");
+		request.setContractpartnerAccountTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+				.getContractpartnerAccountById(userId, contractpartnerAccountId);
+
+		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
+				contractpartnerAccount.getId().getId());
+		Assert.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assert.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
+	}
+
+	@Test
 	public void test_standardRequestChangingContractpartner_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartner1Id = new ContractpartnerID(

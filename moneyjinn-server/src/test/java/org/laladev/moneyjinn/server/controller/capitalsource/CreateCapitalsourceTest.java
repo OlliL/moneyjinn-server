@@ -162,6 +162,28 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
+
+		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
+		transport.setBankCode("ABCDEFGH");
+
+		request.setCapitalsourceTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(CapitalsourceTransportBuilder.NEXT_ID);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceId);
+
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assert.assertEquals(transport.getBankCode() + "XXX", capitalsource.getBankAccount().getBankCode());
+	}
+
+	@Test
 	public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
 		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
 
