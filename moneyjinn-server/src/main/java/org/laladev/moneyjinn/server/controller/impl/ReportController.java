@@ -406,6 +406,7 @@ public class ReportController extends AbstractController {
 		final ListReportsResponse response = new ListReportsResponse();
 
 		final List<Short> allYears = this.moneyflowService.getAllYears(userId);
+		final LocalDate today = LocalDate.now();
 
 		final List<ReportTurnoverCapitalsourceTransport> turnoverCapitalsources = new ArrayList<>();
 		List<Moneyflow> moneyflows = null;
@@ -526,7 +527,8 @@ public class ReportController extends AbstractController {
 										newCapitalsourcesSettled.get(capitalsourceId).getAmount());
 								newCapitalsourcesSettled.remove(capitalsourceId);
 							}
-						} else if (!nextMonthHasMoneyflows) {
+						} else if (today.compareTo(beginOfMonth) >= 0 && today.compareTo(endOfMonth) <= 0) {
+							// show imported balances only for the current month
 							this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
 									lastSettlement.getAmount(), turnoverCapitalsource, moneyflows);
 						}
