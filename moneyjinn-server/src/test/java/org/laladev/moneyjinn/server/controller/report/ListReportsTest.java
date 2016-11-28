@@ -560,7 +560,6 @@ public class ListReportsTest extends AbstractControllerTest {
 		final ReportTurnoverCapitalsourceTransport transport2 = new ReportTurnoverCapitalsourceTransportBuilder()
 				.forReport_2010_05_Capitalsource2().build();
 		transport2.setAmountEndOfMonthCalculated(new BigDecimal("105.00"));
-		transport2.setAmountCurrent(new BigDecimal("105.00"));
 		reportTurnoverCapitalsourceTransports.add(transport2);
 
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
