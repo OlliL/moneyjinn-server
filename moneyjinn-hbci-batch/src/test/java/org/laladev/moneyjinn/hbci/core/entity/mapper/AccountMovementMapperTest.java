@@ -32,7 +32,8 @@ public class AccountMovementMapperTest {
 		invoiceCalendar.setTime(accountMovement.getInvoiceTimestamp());
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH), invoiceCalendar.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
+				invoiceCalendar.get(Calendar.DAY_OF_MONTH));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY), invoiceCalendar.get(Calendar.HOUR_OF_DAY));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
@@ -71,6 +72,24 @@ public class AccountMovementMapperTest {
 		usage.add(usageLine);
 
 		this.testInvoiceDate(usage, "5");
+	}
+
+	@Test
+	public void test_OLV_is_not_at_beginning() {
+		final List<String> usage = new ArrayList<String>();
+
+		usage.add("Referenz 091217053064422201");
+		usage.add("20003152");
+		usage.add("085543540");
+		usage.add("Mandat 85543540442216120917");
+		usage.add("05");
+		usage.add("Einreicher-ID DE53ZZZ000001");
+		usage.add("32681");
+		usage.add("091217053064422201200031520");
+		usage.add(" OLV8554");
+		usage.add("3540 10.06 01.03 ME0");
+
+		this.testInvoiceDate(usage, "107");
 	}
 
 	@Test

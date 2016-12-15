@@ -29,7 +29,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
@@ -61,6 +64,10 @@ public class AccountMovementMapper {
 		if (entry.other != null) {
 			if (entry.other.isSEPAAccount() && entry.other.iban != null && !entry.other.iban.isEmpty()) {
 				if (Character.isDigit(entry.other.iban.toCharArray()[0])) {
+					// Ikano bank sends an empty blz as bankcode - I've no idea why?!
+					if (entry.other.bic.equals("")) {
+						entry.other.bic = "0";
+					}
 					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.iban));
 					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.bic));
 				} else {
@@ -70,6 +77,10 @@ public class AccountMovementMapper {
 
 			} else if (entry.other.number != null && !entry.other.number.isEmpty()) {
 				if (Character.isDigit(entry.other.number.toCharArray()[0])) {
+					// Ikano bank sends an empty blz as bankcode - I've no idea why?!
+					if (entry.other.blz.equals("")) {
+						entry.other.blz = "0";
+					}
 					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.number));
 					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.blz));
 				} else {
@@ -135,10 +146,11 @@ public class AccountMovementMapper {
 	}
 
 	/**
-	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its usage text based on the used
-	 * Business-AccountMovement-Code + Text. <br>
-	 * 
-	 * @param {@link AccountMovement} accountMovement
+	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
+	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
+	 *
+	 * @param {@link
+	 * 			AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
 	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
@@ -148,22 +160,35 @@ public class AccountMovementMapper {
 					&& accountMovement.getMovementTypeCode() != null) {
 				final String movementReason = accountMovement.getMovementReason();
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
-				final String[] lines = movementReason.split("\r\n|\r|\n");
+				final List<String> lines = Arrays.asList(movementReason.split("\r\n|\r|\n"));
 
-				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT) || movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
+				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)
+						|| movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
 
-					lineloop: for (final String line : lines) {
+					final Iterator<String> lineIterator = lines.iterator();
+
+					lineloop: while (lineIterator.hasNext()) {
+						String line = lineIterator.next();
+
+						if ((line.startsWith(" ELV") || line.startsWith(" OLV")) && line.length() == 8
+								&& lineIterator.hasNext()) {
+							// Usage text starts with " OLVXXXX" and continues on the next line with
+							// "XXXX 09.12 17.05 ME0"
+							line = line.substring(1) + lineIterator.next();
+						}
+
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
-							// Usage text starts with ELVXXXXXXXX 15.12 16.29 ME1
+							// Usage text starts with "ELVXXXXXXXX 15.12 16.29 ME1"
 							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(12, 23));
 							this.setYear(accountMovement.getBookingDate(), invoiceDate);
 							break;
+
 						} else if (line.startsWith("EC ")) {
-							// Usage text starts with EC XXXXXXXX 090215165422IC1
+							// Usage text starts with "EC XXXXXXXX 090215165422IC1"
 							invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
 							break;
 						} else {
-							if (line.length() >= 8) {
+							if (line.length() == 27) {
 								for (int i = 0; i < line.length(); i++) {
 									if (!Character.isDigit(line.charAt(i))) {
 										continue lineloop;
@@ -172,10 +197,12 @@ public class AccountMovementMapper {
 								invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
 								this.setYear(accountMovement.getBookingDate(), invoiceDate);
 								/*
-								 * the invoice date must be before or equal than the bookingdate and not more than two weeks before the bookingdate
+								 * the invoice date must be before or equal than the bookingdate and
+								 * not more than two weeks before the bookingdate
 								 */
 								if (invoiceDate.before(accountMovement.getBookingDate())
-										&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14 * 86400000) {
+										&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
+												* 86400000) {
 									invoiceDate = null;
 								} else {
 									break;
@@ -201,7 +228,8 @@ public class AccountMovementMapper {
 					}
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_CARDS_CLEARING)) {
 					for (final String line : lines) {
-						if (line.matches("^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+						if (line.matches(
+								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
 							// 2015-09-22T17:16:41
 							invoiceDate = this.dateTimeFormatter.parse(line);
 							break;
