@@ -79,11 +79,10 @@
 		 LIMIT 1
 	</delete>
 
-		<delete id="deleteContractpartnerAccounts">
+	<delete id="deleteContractpartnerAccounts">
 		DELETE
 		  FROM contractpartneraccounts
 		 WHERE mcp_contractpartnerid = #{contractpartnerId}
-		 LIMIT 1
 	</delete>
 </mapper>
  

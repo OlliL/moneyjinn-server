@@ -57,6 +57,7 @@ import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapi
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
@@ -68,6 +69,8 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
@@ -75,12 +78,14 @@ import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -100,6 +105,8 @@ public class ReportController extends AbstractController {
 	@Inject
 	private IMoneyflowService moneyflowService;
 	@Inject
+	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	@Inject
 	private ICapitalsourceService capitalsourceService;
 	@Inject
 	private IMonthlySettlementService monthlySettlementService;
@@ -113,6 +120,7 @@ public class ReportController extends AbstractController {
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new MoneyflowTransportMapper());
+		super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
 		super.registerBeanMapper(new CapitalsourceTransportMapper());
 		super.registerBeanMapper(new PostingAccountTransportMapper());
 		super.registerBeanMapper(new PostingAccountAmountTransportMapper());
@@ -419,6 +427,7 @@ public class ReportController extends AbstractController {
 		Month nextMonth = null;
 		Short nextYear = null;
 		final Map<CapitalsourceID, MonthlySettlement> newCapitalsourcesSettled = new HashMap<>();
+		Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = new HashMap<>();
 		List<Month> allMonth = null;
 
 		Short year = requestYear;
@@ -447,6 +456,11 @@ public class ReportController extends AbstractController {
 				final Short prevYearSettlement = (short) beginOfPrevMonth.getYear();
 
 				moneyflows = this.moneyflowService.getAllMoneyflowsByDateRange(userId, beginOfMonth, endOfMonth);
+
+				final List<MoneyflowID> moneyflowIds = moneyflows.stream().map(Moneyflow::getId)
+						.collect(Collectors.toCollection(ArrayList::new));
+				moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowIds);
+
 				final List<MonthlySettlement> settlementsPrevMonth = this.monthlySettlementService
 						.getAllMonthlySettlementsByYearMonth(userId, prevYearSettlement, prevMonthSettlement);
 				final List<MonthlySettlement> settlementsThisMonth = this.monthlySettlementService
@@ -646,6 +660,12 @@ public class ReportController extends AbstractController {
 
 		if (moneyflows != null && !moneyflows.isEmpty()) {
 			response.setMoneyflowTransports(super.mapList(moneyflows, MoneyflowTransport.class));
+
+			final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
+					.flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
+
+			response.setMoneyflowSplitEntryTransports(
+					super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
 		}
 
 		response.setTurnoverEndOfYearCalculated(turnoverEndOfYearCalculated);

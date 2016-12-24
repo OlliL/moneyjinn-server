@@ -108,7 +108,7 @@ public interface IMoneyflowService {
 	 * @param userId
 	 *            {@link UserID}
 	 * @param moneyflowId
-	 *            The {@link MoneyflowID} of the to-be-deleted {@link PostingAccount}
+	 *            The {@link MoneyflowID} of the to-be-deleted {@link Moneyflow}
 	 */
 	public void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 
@@ -257,7 +257,7 @@ public interface IMoneyflowService {
 	/**
 	 * Searches for {@link Moneyflow}s and aggregates them. The search is mostly affected by the
 	 * given Params Object.
-	 * 
+	 *
 	 * @param userId
 	 * @param moneyflowSearchParams
 	 * @return

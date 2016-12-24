@@ -26,6 +26,79 @@
 
 package org.laladev.moneyjinn.model.moneyflow;
 
+import java.util.List;
+
 public class Moneyflow extends AbstractMoneyflow<MoneyflowID> {
 	private static final long serialVersionUID = 1L;
+	private List<MoneyflowSplitEntry> moneyflowSplitEntries;
+
+	public final List<MoneyflowSplitEntry> getMoneyflowSplitEntries() {
+		return this.moneyflowSplitEntries;
+	}
+
+	public final void setMoneyflowSplitEntries(final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+		this.moneyflowSplitEntries = moneyflowSplitEntries;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.moneyflowSplitEntries == null) ? 0 : this.moneyflowSplitEntries.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final Moneyflow other = (Moneyflow) obj;
+		if (this.moneyflowSplitEntries == null) {
+			if (other.moneyflowSplitEntries != null) {
+				return false;
+			}
+		} else if (!this.moneyflowSplitEntries.equals(other.moneyflowSplitEntries)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Moneyflow [moneyflowSplitEntries=");
+		builder.append(this.moneyflowSplitEntries);
+		builder.append(", getUser()=");
+		builder.append(this.getUser());
+		builder.append(", getGroup()=");
+		builder.append(this.getGroup());
+		builder.append(", getBookingDate()=");
+		builder.append(this.getBookingDate());
+		builder.append(", getInvoiceDate()=");
+		builder.append(this.getInvoiceDate());
+		builder.append(", getAmount()=");
+		builder.append(this.getAmount());
+		builder.append(", getCapitalsource()=");
+		builder.append(this.getCapitalsource());
+		builder.append(", getContractpartner()=");
+		builder.append(this.getContractpartner());
+		builder.append(", getComment()=");
+		builder.append(this.getComment());
+		builder.append(", isPrivat()=");
+		builder.append(this.isPrivat());
+		builder.append(", getPostingAccount()=");
+		builder.append(this.getPostingAccount());
+		builder.append(", getId()=");
+		builder.append(this.getId());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
