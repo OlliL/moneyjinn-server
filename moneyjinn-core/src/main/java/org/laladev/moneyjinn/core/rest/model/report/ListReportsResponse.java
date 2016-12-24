@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,6 +40,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 public class ListReportsResponse {
 	@JsonProperty("moneyflowTransport")
 	private List<MoneyflowTransport> moneyflowTransports;
+	@JsonProperty("moneyflowSplitEntryTransport")
+	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
 	private Short year;
 	private Short month;
 	private List<Short> allYears;
@@ -60,6 +63,15 @@ public class ListReportsResponse {
 
 	public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
 		this.moneyflowTransports = moneyflowTransports;
+	}
+
+	public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
+		return this.moneyflowSplitEntryTransports;
+	}
+
+	public final void setMoneyflowSplitEntryTransports(
+			final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
+		this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
 	}
 
 	public final Short getYear() {
@@ -174,6 +186,8 @@ public class ListReportsResponse {
 		result = prime * result + ((this.allMonth == null) ? 0 : this.allMonth.hashCode());
 		result = prime * result + ((this.allYears == null) ? 0 : this.allYears.hashCode());
 		result = prime * result + ((this.amountBeginOfYear == null) ? 0 : this.amountBeginOfYear.hashCode());
+		result = prime * result
+				+ ((this.moneyflowSplitEntryTransports == null) ? 0 : this.moneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
 		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
 		result = prime * result + ((this.nextMonth == null) ? 0 : this.nextMonth.hashCode());
@@ -222,6 +236,13 @@ public class ListReportsResponse {
 				return false;
 			}
 		} else if (!this.amountBeginOfYear.equals(other.amountBeginOfYear)) {
+			return false;
+		}
+		if (this.moneyflowSplitEntryTransports == null) {
+			if (other.moneyflowSplitEntryTransports != null) {
+				return false;
+			}
+		} else if (!this.moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports)) {
 			return false;
 		}
 		if (this.moneyflowTransports == null) {
@@ -309,6 +330,8 @@ public class ListReportsResponse {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("ListReportsResponse [moneyflowTransports=");
 		builder.append(this.moneyflowTransports);
+		builder.append(", moneyflowSplitEntryTransports=");
+		builder.append(this.moneyflowSplitEntryTransports);
 		builder.append(", year=");
 		builder.append(this.year);
 		builder.append(", month=");
