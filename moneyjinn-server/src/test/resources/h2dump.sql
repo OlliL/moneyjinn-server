@@ -229,6 +229,27 @@ CREATE TABLE moneyflows (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `moneyflowsplitentries`
+--
+
+DROP TABLE IF EXISTS moneyflowsplitentries;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE moneyflowsplitentries (
+  moneyflowsplitentryid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mmf_moneyflowid int(10) unsigned NOT NULL,
+  amount decimal(8,2) NOT NULL,
+  `comment` varchar(100) NOT NULL,
+  mpa_postingaccountid int(10) unsigned NOT NULL,
+  PRIMARY KEY (moneyflowsplitentryid),
+  KEY mse_mmf_pk (mmf_moneyflowid),
+  KEY mse_mpa_pk (mpa_postingaccountid),
+  CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid),
+  CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `monthlysettlements`
 --
 
