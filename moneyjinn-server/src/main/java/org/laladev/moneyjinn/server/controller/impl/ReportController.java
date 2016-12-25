@@ -661,11 +661,13 @@ public class ReportController extends AbstractController {
 		if (moneyflows != null && !moneyflows.isEmpty()) {
 			response.setMoneyflowTransports(super.mapList(moneyflows, MoneyflowTransport.class));
 
-			final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
-					.flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
+			if (!moneyflowSplitEntries.isEmpty()) {
+				final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
+						.flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
 
-			response.setMoneyflowSplitEntryTransports(
-					super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+				response.setMoneyflowSplitEntryTransports(
+						super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+			}
 		}
 
 		response.setTurnoverEndOfYearCalculated(turnoverEndOfYearCalculated);
