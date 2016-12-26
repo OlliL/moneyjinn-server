@@ -31,6 +31,7 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,6 +43,9 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 	private List<ContractpartnerTransport> contractpartnerTransports;
 	@JsonProperty("postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
+	@JsonProperty("moneyflowSplitEntryTransport")
+	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
+
 
 	public final List<CapitalsourceTransport> getCapitalsourceTransports() {
 		return this.capitalsourceTransports;
@@ -67,64 +71,70 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 		this.postingAccountTransports = postingAccountTransports;
 	}
 
+	
+	public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
+		return moneyflowSplitEntryTransports;
+	}
+
+	public final void setMoneyflowSplitEntryTransports(List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
+		this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
+		result = prime * result + ((contractpartnerTransports == null) ? 0 : contractpartnerTransports.hashCode());
 		result = prime * result
-				+ ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
-		result = prime * result
-				+ ((this.contractpartnerTransports == null) ? 0 : this.contractpartnerTransports.hashCode());
-		result = prime * result
-				+ ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
+				+ ((moneyflowSplitEntryTransports == null) ? 0 : moneyflowSplitEntryTransports.hashCode());
+		result = prime * result + ((postingAccountTransports == null) ? 0 : postingAccountTransports.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!super.equals(obj)) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		final AbstractEditMoneyflowResponse other = (AbstractEditMoneyflowResponse) obj;
-		if (this.capitalsourceTransports == null) {
-			if (other.capitalsourceTransports != null) {
+		AbstractEditMoneyflowResponse other = (AbstractEditMoneyflowResponse) obj;
+		if (capitalsourceTransports == null) {
+			if (other.capitalsourceTransports != null)
 				return false;
-			}
-		} else if (!this.capitalsourceTransports.equals(other.capitalsourceTransports)) {
+		} else if (!capitalsourceTransports.equals(other.capitalsourceTransports))
 			return false;
-		}
-		if (this.contractpartnerTransports == null) {
-			if (other.contractpartnerTransports != null) {
+		if (contractpartnerTransports == null) {
+			if (other.contractpartnerTransports != null)
 				return false;
-			}
-		} else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
+		} else if (!contractpartnerTransports.equals(other.contractpartnerTransports))
 			return false;
-		}
-		if (this.postingAccountTransports == null) {
-			if (other.postingAccountTransports != null) {
+		if (moneyflowSplitEntryTransports == null) {
+			if (other.moneyflowSplitEntryTransports != null)
 				return false;
-			}
-		} else if (!this.postingAccountTransports.equals(other.postingAccountTransports)) {
+		} else if (!moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports))
 			return false;
-		}
+		if (postingAccountTransports == null) {
+			if (other.postingAccountTransports != null)
+				return false;
+		} else if (!postingAccountTransports.equals(other.postingAccountTransports))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("AbstractEditMoneyflowResponse [capitalsourceTransports=");
-		builder.append(this.capitalsourceTransports);
+		builder.append(capitalsourceTransports);
 		builder.append(", contractpartnerTransports=");
-		builder.append(this.contractpartnerTransports);
+		builder.append(contractpartnerTransports);
 		builder.append(", postingAccountTransports=");
-		builder.append(this.postingAccountTransports);
+		builder.append(postingAccountTransports);
+		builder.append(", moneyflowSplitEntryTransports=");
+		builder.append(moneyflowSplitEntryTransports);
 		builder.append("]");
 		return builder.toString();
 	}
