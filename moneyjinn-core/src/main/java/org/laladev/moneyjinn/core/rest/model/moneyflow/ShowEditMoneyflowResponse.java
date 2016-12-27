@@ -74,15 +74,17 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("ShowEditMoneyflowResponse [moneyflowTransport=");
-		builder.append(this.moneyflowTransport);
+		builder.append(moneyflowTransport);
 		builder.append(", getCapitalsourceTransports()=");
-		builder.append(this.getCapitalsourceTransports());
+		builder.append(getCapitalsourceTransports());
 		builder.append(", getContractpartnerTransports()=");
-		builder.append(this.getContractpartnerTransports());
+		builder.append(getContractpartnerTransports());
 		builder.append(", getPostingAccountTransports()=");
-		builder.append(this.getPostingAccountTransports());
+		builder.append(getPostingAccountTransports());
+		builder.append(", getMoneyflowSplitEntryTransports()=");
+		builder.append(getMoneyflowSplitEntryTransports());
 		builder.append("]");
 		return builder.toString();
 	}
