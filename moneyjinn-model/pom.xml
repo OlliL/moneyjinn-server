@@ -9,13 +9,11 @@
 	</parent>
 
 	<artifactId>moneyjinn-model</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-core</artifactId>
-			<version>${moneyjinn-core.version}</version>
 		</dependency>
 	</dependencies>
 

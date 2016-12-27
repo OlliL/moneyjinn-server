@@ -51,8 +51,15 @@
 	<delete id="deleteMoneyflowSplitEntry">
 		DELETE
 		  FROM moneyflowsplitentries
-		 WHERE moneyflowsplitentryid = #{id}
+		 WHERE mmf_moneyflowid       = #{moneyflowId}
+		   AND moneyflowsplitentryid = #{id}
 		 LIMIT 1
+		 
+	</delete>
+	<delete id="deleteMoneyflowSplitEntries">
+		DELETE
+		  FROM moneyflowsplitentries
+		 WHERE mmf_moneyflowid = #{id}
 	</delete>
 </mapper>
  

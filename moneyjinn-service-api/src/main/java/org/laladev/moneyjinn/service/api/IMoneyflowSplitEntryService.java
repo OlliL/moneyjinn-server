@@ -38,15 +38,12 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * MoneyflowSplitEntryService is the Service handling everything around an
- * {@link MoneyflowSplitEntry}.
+ * MoneyflowSplitEntryService is the Service handling everything around an {@link MoneyflowSplitEntry}.
  * </p>
  *
  * <p>
- * MoneyflowSplitEntryService is the Service handling operations around an
- * {@link MoneyflowSplitEntry} like getting, creating, updating, deleting. Before a
- * {@link MoneyflowSplitEntry} is created or updated, the {@link MoneyflowSplitEntry} is validated
- * for correctness.
+ * MoneyflowSplitEntryService is the Service handling operations around an {@link MoneyflowSplitEntry} like getting, creating, updating, deleting.
+ * Before a {@link MoneyflowSplitEntry} is created or updated, the {@link MoneyflowSplitEntry} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>moneyflowSplitEntrysplitentries</code>.
@@ -77,8 +74,8 @@ public interface IMoneyflowSplitEntryService {
 	public void createMoneyflowSplitEntries(UserID userId, List<MoneyflowSplitEntry> moneyflowSplitEntries);
 
 	/**
-	 * This service changes a {@link MoneyflowSplitEntry}. Before the {@link MoneyflowSplitEntry} is
-	 * changed, the new values are validated for correctness.
+	 * This service changes a {@link MoneyflowSplitEntry}. Before the {@link MoneyflowSplitEntry} is changed, the new values are validated for
+	 * correctness.
 	 *
 	 * @param moneyflowSplitEntry
 	 *            the new {@link MoneyflowSplitEntry} attributes
@@ -86,8 +83,7 @@ public interface IMoneyflowSplitEntryService {
 	public void updateMoneyflowSplitEntry(UserID userId, MoneyflowSplitEntry moneyflowSplitEntry);
 
 	/**
-	 * This service retrieves all {@link MoneyflowSplitEntry}s for a given {@link MoneyflowID} from
-	 * the system
+	 * This service retrieves all {@link MoneyflowSplitEntry}s for a given {@link MoneyflowID} from the system
 	 *
 	 * @param userId
 	 *            {@link UserID}
@@ -97,25 +93,34 @@ public interface IMoneyflowSplitEntryService {
 	public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 
 	/**
-	 * This service retrieves all {@link MoneyflowSplitEntry}s for all given {@link MoneyflowID}s
-	 * from the system
+	 * This service retrieves all {@link MoneyflowSplitEntry}s for all given {@link MoneyflowID}s from the system
 	 *
 	 * @param userId
 	 *            {@link UserID}
 	 * @param moneyflowIds
 	 *            The {@link MoneyflowID}s of the {@link MoneyflowSplitEntry}s
 	 */
-	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(UserID userId,
-			List<MoneyflowID> moneyflowIds);
+	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(UserID userId, List<MoneyflowID> moneyflowIds);
 
 	/**
-	 * This service deletes the {@link MoneyflowSplitEntry} for a given
-	 * {@link MoneyflowSplitEntryID} from the system
+	 * This service deletes the {@link MoneyflowSplitEntry} for a given {@link MoneyflowSplitEntryID} from the system
+	 *
+	 * @param userId
+	 *            {@link UserID}
+	 * @param moneyflowId
+	 *            The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
+	 * @param moneyflowSplitEntryId
+	 *            The {@link MoneyflowSplitEntryID} of the to-be-deleted {@link MoneyflowSplitEntry}s
+	 */
+	public void deleteMoneyflowSplitEntry(UserID userId, MoneyflowID moneyflowId, MoneyflowSplitEntryID moneyflowSplitEntryId);
+
+	/**
+	 * This service deletes the {@link MoneyflowSplitEntry}s for a given {@link MoneyflowyID} from the system
 	 *
 	 * @param userId
 	 *            {@link UserID}
 	 * @param moneyflowId
 	 *            The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
 	 */
-	public void deleteMoneyflowSplitEntry(UserID userId, MoneyflowSplitEntryID moneyflowSplitEntryId);
+	public void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 }

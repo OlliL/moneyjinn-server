@@ -53,7 +53,11 @@ public class MoneyflowSplitEntryDao {
 		this.mapper.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
 	}
 
-	public void deleteMoneyflowSplitEntry(final Long moneyflowSplitEntryId) {
-		this.mapper.deleteMoneyflowSplitEntry(moneyflowSplitEntryId);
+	public void deleteMoneyflowSplitEntry(final Long moneyflowId, final Long moneyflowSplitEntryId) {
+		this.mapper.deleteMoneyflowSplitEntry(moneyflowId, moneyflowSplitEntryId);
+	}
+
+	public void deleteMoneyflowSplitEntries(final Long moneyflowId) {
+		this.mapper.deleteMoneyflowSplitEntries(moneyflowId);
 	}
 }

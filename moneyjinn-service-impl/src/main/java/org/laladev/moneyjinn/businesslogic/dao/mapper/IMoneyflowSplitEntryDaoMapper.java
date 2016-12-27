@@ -39,6 +39,8 @@ public interface IMoneyflowSplitEntryDaoMapper {
 
 	public void updateMoneyflowSplitEntry(MoneyflowSplitEntryData moneyflowSplitEntryData);
 
-	public void deleteMoneyflowSplitEntry(@Param("id") Long id);
+	public void deleteMoneyflowSplitEntry(@Param("moneyflowId") Long moneyflowId, @Param("id") Long id);
+
+	public void deleteMoneyflowSplitEntries(@Param("id") Long id);
 
 }

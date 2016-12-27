@@ -70,11 +70,9 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		super.registerBeanMapper(new MoneyflowSplitEntryDataMapper());
 	}
 
-	private final MoneyflowSplitEntry mapMoneyflowSplitEntryData(
-			final MoneyflowSplitEntryData moneyflowSplitEntryData) {
+	private final MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
 		if (moneyflowSplitEntryData != null) {
-			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData,
-					MoneyflowSplitEntry.class);
+			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData, MoneyflowSplitEntry.class);
 
 			PostingAccount postingAccount = moneyflowSplitEntry.getPostingAccount();
 			if (postingAccount != null) {
@@ -88,10 +86,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		return null;
 	}
 
-	private final List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(
-			final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
-		return moneyflowSplitEntryDataList.stream().map(element -> this.mapMoneyflowSplitEntryData(element))
-				.collect(Collectors.toCollection(ArrayList::new));
+	private final List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
+		return moneyflowSplitEntryDataList.stream().map(element -> this.mapMoneyflowSplitEntryData(element)).collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -101,25 +97,19 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (moneyflowSplitEntry.getComment() == null || moneyflowSplitEntry.getComment().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+			validationResult.addValidationResultItem(new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.COMMENT_IS_NOT_SET));
 		}
 
-		if (moneyflowSplitEntry.getAmount() == null
-				|| moneyflowSplitEntry.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.AMOUNT_IS_ZERO));
+		if (moneyflowSplitEntry.getAmount() == null || moneyflowSplitEntry.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+			validationResult.addValidationResultItem(new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.AMOUNT_IS_ZERO));
 		}
 
 		if (moneyflowSplitEntry.getPostingAccount() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			validationResult.addValidationResultItem(new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
 		} else {
-			final PostingAccount postingAccount = this.postingAccountService
-					.getPostingAccountById(moneyflowSplitEntry.getPostingAccount().getId());
+			final PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(moneyflowSplitEntry.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				validationResult.addValidationResultItem(new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
 			}
 
 		}
@@ -129,8 +119,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
-		List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Arrays.asList(moneyflowId))
-				.get(moneyflowId);
+		List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Arrays.asList(moneyflowId)).get(moneyflowId);
 		if (list == null) {
 			list = new ArrayList<>();
 		}
@@ -138,18 +127,14 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(final UserID userId,
-			final List<MoneyflowID> moneyflowIds) {
+	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(final UserID userId, final List<MoneyflowID> moneyflowIds) {
 		Assert.notNull(userId);
 		Assert.notNull(moneyflowIds);
 
-		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
-				.collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
 
-		final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao
-				.getMoneyflowSplitEntries(moneyflowIdLongs);
-		final List<MoneyflowSplitEntry> mapMoneyflowSplitEntries = this
-				.mapMoneyflowSplitEntryDataList(moneyflowSplitEntriesData);
+		final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao.getMoneyflowSplitEntries(moneyflowIdLongs);
+		final List<MoneyflowSplitEntry> mapMoneyflowSplitEntries = this.mapMoneyflowSplitEntryDataList(moneyflowSplitEntriesData);
 
 		final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntryMap = new HashMap<>();
 
@@ -167,13 +152,11 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public void createMoneyflowSplitEntries(final UserID userId,
-			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+	public void createMoneyflowSplitEntries(final UserID userId, final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
 		Assert.notNull(moneyflowSplitEntries);
 
 		final ValidationResult validationResult = new ValidationResult();
-		moneyflowSplitEntries.stream()
-				.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
+		moneyflowSplitEntries.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
@@ -181,10 +164,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		}
 
 		for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
-			final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry,
-					MoneyflowSplitEntryData.class);
-			final Long moneyflowSplitEntryId = this.moneyflowSplitEntryDao
-					.createMoneyflowSplitEntry(moneyflowSplitEntryData);
+			final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry, MoneyflowSplitEntryData.class);
+			final Long moneyflowSplitEntryId = this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
 		}
 	}
 
@@ -198,15 +179,21 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 			throw new BusinessException("MoneyflowSplitEntry update failed!", validationResultItem.getError());
 		}
 
-		final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry,
-				MoneyflowSplitEntryData.class);
+		final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry, MoneyflowSplitEntryData.class);
 		this.moneyflowSplitEntryDao.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
 	}
 
 	@Override
-	public void deleteMoneyflowSplitEntry(final UserID userId, final MoneyflowSplitEntryID moneyflowSplitEntryId) {
+	public void deleteMoneyflowSplitEntry(final UserID userId, final MoneyflowID moneyflowId, final MoneyflowSplitEntryID moneyflowSplitEntryId) {
 		Assert.notNull(userId);
 		Assert.notNull(moneyflowSplitEntryId);
-		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowSplitEntryId.getId());
+		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(), moneyflowSplitEntryId.getId());
+	}
+
+	@Override
+	public void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId) {
+		Assert.notNull(userId);
+		Assert.notNull(moneyflowId);
+		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
 	}
 }
