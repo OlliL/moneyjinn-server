@@ -6,6 +6,23 @@ import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapi
 
 public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverCapitalsourceTransport {
 
+	public ReportTurnoverCapitalsourceTransportBuilder forReport_Capitalsource6() {
+
+		super.setCapitalsourceType(CapitalsourceTransportBuilder.CAPITALSOURCE6_TYPE);
+		super.setCapitalsourceState(CapitalsourceTransportBuilder.CAPITALSOURCE6_STATE);
+		super.setCapitalsourceComment(CapitalsourceTransportBuilder.CAPITALSOURCE6_COMMENT);
+		super.setAmountBeginOfMonthFixed(BigDecimal.ZERO);
+		super.setAmountEndOfMonthCalculated(BigDecimal.ZERO);
+		super.setAmountEndOfMonthFixed(null);
+
+		return this;
+	}
+
+	public ReportTurnoverCapitalsourceTransportBuilder withAmountCurrentZero() {
+		super.setAmountCurrent(BigDecimal.ZERO);
+		return this;
+	}
+
 	public ReportTurnoverCapitalsourceTransportBuilder forReport_2008_12_Capitalsource1() {
 
 		super.setCapitalsourceType(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);

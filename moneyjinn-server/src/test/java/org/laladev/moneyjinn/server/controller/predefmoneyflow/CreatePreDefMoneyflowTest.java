@@ -66,16 +66,14 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode,
-			final List<CapitalsourceTransport> overrideCapitalsources,
+	private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode, final List<CapitalsourceTransport> overrideCapitalsources,
 			final List<ContractpartnerTransport> overrideContractpartner) throws Exception {
 		final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
 
 		request.setPreDefMoneyflowTransport(transport);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems
-				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
+		validationItems.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
 		final CreatePreDefMoneyflowResponse expected = new CreatePreDefMoneyflowResponse();
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
@@ -104,8 +102,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 			expected.setContractpartnerTransports(overrideContractpartner);
 		}
 
-		final CreatePreDefMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreatePreDefMoneyflowResponse.class);
+		final CreatePreDefMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request, false, CreatePreDefMoneyflowResponse.class);
 
 		Assert.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
 		Assert.assertEquals(expected.getResult(), actual.getResult());
@@ -119,8 +116,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_emptyComment_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setComment("");
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET, null, null);
@@ -128,8 +124,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullComment_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setComment(null);
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET, null, null);
@@ -137,8 +132,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullCapitalsource_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setCapitalsourceid(null);
 
 		this.testError(transport, ErrorCode.CAPITALSOURCE_IS_NOT_SET, null, null);
@@ -146,8 +140,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_notExistingCapitalsource_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, null, null);
@@ -155,8 +148,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_creditCapitalsource_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID);
 
 		this.testError(transport, ErrorCode.CAPITALSOURCE_INVALID, null, null);
@@ -164,8 +156,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_noLongerValidCapitalsource_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
@@ -177,8 +168,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullContractpartner_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setContractpartnerid(null);
 
 		this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET, null, null);
@@ -186,8 +176,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_notExistingContractpartner_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST, null, null);
@@ -195,8 +184,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_noLongerValidContractpartner_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
@@ -208,8 +196,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullAmount_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setAmount(null);
 
 		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null);
@@ -217,8 +204,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_zeroAmount_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setAmount(BigDecimal.ZERO);
 
 		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null);
@@ -227,8 +213,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	// make sure it 0 is compared with compareTo not with equals
 	@Test
 	public void test_0_00Amount_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setAmount(new BigDecimal("0.00000"));
 
 		this.testError(transport, ErrorCode.AMOUNT_IS_ZERO, null, null);
@@ -236,8 +221,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullPostingAccount_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setPostingaccountid(null);
 
 		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED, null, null);
@@ -245,8 +229,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_notExistingPostingAccount_Error() throws Exception {
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED, null, null);
@@ -256,8 +239,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	public void test_standardRequest_SuccessfullNoContent() throws Exception {
 		final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
 
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 
 		request.setPreDefMoneyflowTransport(transport);
 
@@ -265,8 +247,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(PreDefMoneyflowTransportBuilder.NEXT_ID);
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				preDefMoneyflowId);
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
 
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEXT_ID, preDefMoneyflow.getId().getId());
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEWPRE_DEF_MONEYFLOW_COMMENT, preDefMoneyflow.getComment());
@@ -276,8 +257,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
 		final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
 
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setUserid(UserTransportBuilder.ADMIN_ID);
 
 		request.setPreDefMoneyflowTransport(transport);
@@ -286,8 +266,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(PreDefMoneyflowTransportBuilder.NEXT_ID);
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				preDefMoneyflowId);
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
 
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEXT_ID, preDefMoneyflow.getId().getId());
 		Assert.assertEquals(PreDefMoneyflowTransportBuilder.NEWPRE_DEF_MONEYFLOW_COMMENT, preDefMoneyflow.getComment());
@@ -297,12 +276,12 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	public void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 
 		final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
+		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource6().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
 
 		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST, capitalsourceTransports, null);
@@ -324,8 +303,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
 
-		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
-				.build();
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow().build();
 		request.setPreDefMoneyflowTransport(transport);
 
 		super.callUsecaseWithContent("", this.method, request, false, CreatePreDefMoneyflowResponse.class);

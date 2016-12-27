@@ -24,9 +24,11 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -351,40 +353,97 @@ public class MoneyflowController extends AbstractController {
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 
-		MoneyflowID moneyflowId = moneyflow.getId();
-		Moneyflow moneyflowById = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-		if (moneyflowById != null) {
-			if (request.getDeleteMoneyflowSplitEntryIds() != null) {
-				request.getDeleteMoneyflowSplitEntryIds()
-						.forEach(mseId -> this.moneyflowSplitEntryService.deleteMoneyflowSplitEntry(userId, moneyflowId, new MoneyflowSplitEntryID(mseId)));
+		final MoneyflowID moneyflowId = moneyflow.getId();
+		final Moneyflow moneyflowById = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+
+		ValidationResult validationResult = new ValidationResult();
+
+		// only the creator of a moneyflow may edit it!
+		if (moneyflowById != null && moneyflowById.getUser().equals(user)) {
+
+			validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+
+			if (validationResult.isValid()) {
+				List<MoneyflowSplitEntry> updateMoneyflowSplitEntries = null;
+				List<MoneyflowSplitEntry> insertMoneyflowSplitEntries = null;
+				List<MoneyflowSplitEntryID> deleteMoneyflowSplitEntryIds = null;
+
+				if (request.getUpdateMoneyflowSplitEntryTransports() != null) {
+					updateMoneyflowSplitEntries = super.mapList(request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+					updateMoneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+				}
+
+				if (request.getInsertMoneyflowSplitEntryTransports() != null) {
+					insertMoneyflowSplitEntries = super.mapList(request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+					insertMoneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+				}
+
+				if (request.getDeleteMoneyflowSplitEntryIds() != null) {
+					deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream().map(id -> new MoneyflowSplitEntryID(id))
+							.collect(Collectors.toCollection(ArrayList::new));
+				}
+
+				if (insertMoneyflowSplitEntries != null || updateMoneyflowSplitEntries != null || deleteMoneyflowSplitEntryIds != null) {
+					final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflow.getId());
+					final ListIterator<MoneyflowSplitEntry> entryIterator = moneyflowSplitEntries.listIterator();
+					while (entryIterator.hasNext()) {
+						final MoneyflowSplitEntry entry = entryIterator.next();
+						if (deleteMoneyflowSplitEntryIds != null && deleteMoneyflowSplitEntryIds.contains(entry.getId())) {
+							entryIterator.remove();
+						} else {
+							if (updateMoneyflowSplitEntries != null) {
+								final MoneyflowSplitEntry matchingUpdateEntry = updateMoneyflowSplitEntries.stream()
+										.filter(mse -> mse.getId().equals(entry.getId())).findAny().orElse(null);
+								if (matchingUpdateEntry != null) {
+									entryIterator.set(matchingUpdateEntry);
+								}
+							}
+						}
+					}
+
+					if (insertMoneyflowSplitEntries != null) {
+						moneyflowSplitEntries.addAll(insertMoneyflowSplitEntries);
+					}
+
+					if (!moneyflowSplitEntries.isEmpty()) {
+						final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream().map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO,
+								BigDecimal::add);
+
+						if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+							validationResult.addValidationResultItem(
+									new ValidationResultItem(moneyflowId, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+						}
+					}
+
+					if (validationResult.isValid()) {
+						if (deleteMoneyflowSplitEntryIds != null) {
+							deleteMoneyflowSplitEntryIds
+									.forEach(mseId -> this.moneyflowSplitEntryService.deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
+						}
+
+						if (updateMoneyflowSplitEntries != null) {
+							updateMoneyflowSplitEntries.stream().forEach(mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
+						}
+
+						if (insertMoneyflowSplitEntries != null) {
+							this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, insertMoneyflowSplitEntries);
+						}
+
+					}
+				}
+
+				if (validationResult.isValid()) {
+					this.moneyflowService.updateMoneyflow(moneyflow);
+				}
 			}
 
-			if (request.getUpdateMoneyflowSplitEntryTransports() != null) {
-				List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
-				moneyflowSplitEntries.stream().forEach(mse -> {
-					mse.setMoneyflowId(moneyflowId);
-					this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse);
-				});
+			if (!validationResult.isValid()) {
+				final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
+				this.fillAbstractEditMoneyflowResponse(moneyflow, response);
+				response.setResult(validationResult.isValid());
+				response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+				return response;
 			}
-
-			if (request.getInsertMoneyflowSplitEntryTransports() != null) {
-				List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
-				moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
-				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
-			}
-
-		}
-
-		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
-
-		if (validationResult.isValid()) {
-			this.moneyflowService.updateMoneyflow(moneyflow);
-		} else {
-			final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
-			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
-			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
 
 		return null;

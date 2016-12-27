@@ -101,6 +101,19 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
 		return this;
 	}
 
+	public MonthlySettlementTransportBuilder forCapitalsource6() {
+		super.setId(null);
+		super.setUserid(UserTransportBuilder.USER3_ID);
+		super.setAmount(BigDecimal.ZERO);
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE6_COMMENT);
+		super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE6_GROUP_USE);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE6_ID);
+		super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE6_TYPE);
+		super.setMonth((short) 5);
+		super.setYear((short) 2010);
+		return this;
+	}
+
 	public MonthlySettlementTransport build() {
 		final MonthlySettlementTransport transport = new MonthlySettlementTransport();
 
