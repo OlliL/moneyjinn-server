@@ -67,7 +67,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_bookedWithWrongCapitalsource_SuccessfullNoContent() throws Exception {
+	public void test_bookedWithWrongCapitalsource_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -96,7 +96,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_privateFlowProcessedButNotShown_bookedWithWrongCapitalsource_SuccessfullNoContent() throws Exception {
+	public void test_privateFlowProcessedButNotShown_bookedWithWrongCapitalsource_Successfull() throws Exception {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 		final CompareDataRequest request = new CompareDataRequest();
@@ -122,7 +122,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_privateFlowProcessedButNotShown_notInFile_SuccessfullNoContent() throws Exception {
+	public void test_privateFlowProcessedButNotShown_notInFile_Successfull() throws Exception {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 		final CompareDataRequest request = new CompareDataRequest();
@@ -144,7 +144,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_privateFlowProcessedButNotShown_matching_SuccessfullNoContent() throws Exception {
+	public void test_privateFlowProcessedButNotShown_matching_Successfull() throws Exception {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 		final CompareDataRequest request = new CompareDataRequest();
@@ -269,7 +269,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SpardaBank_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_SpardaBank_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -304,7 +304,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_PostbankOnline_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_PostbankOnline_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -340,7 +340,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_Sparkasse_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Sparkasse_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -376,7 +376,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_Volksbank_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Volksbank_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -413,7 +413,7 @@ public class CompareDataTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_Camt_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Camt_Successfull() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -441,6 +441,40 @@ public class CompareDataTest extends AbstractControllerTest {
 
 		final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
 		compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
+		expected.addCompareDataNotInDatabaseTransport(compareDataNotInDatabaseTransport);
+
+		final CompareDataResponse actual = super.callUsecaseWithContent("", this.method, request, false, CompareDataResponse.class);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_standardRequest_Import_Successfull() throws Exception {
+		final CompareDataRequest request = new CompareDataRequest();
+
+		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		request.setStartDate(DateUtil.getGMTDate("2010-05-01"));
+		request.setEndDate(DateUtil.getGMTDate("2010-05-31"));
+		request.setUseImportedData((short) 1);
+
+		final CompareDataResponse expected = new CompareDataResponse();
+		expected.setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
+		// there is a booking with the same amount on the same date as in the file, but the 100%
+		// matching Contractpartner overrules this so the other moneyflow is picked.
+
+		CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
+		compareDataMatchingTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
+		compareDataMatchingTransport.setCompareDataDatasetTransport(new CompareDataDatasetTransportBuilder().forCompareDataImportDataset1().build());
+		expected.addCompareDataMatchingTransport(compareDataMatchingTransport);
+
+		compareDataMatchingTransport = new CompareDataMatchingTransport();
+		compareDataMatchingTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow19().build());
+		compareDataMatchingTransport.setCompareDataDatasetTransport(new CompareDataDatasetTransportBuilder().forCompareDataImportDataset3().build());
+		expected.addCompareDataMatchingTransport(compareDataMatchingTransport);
+
+		final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+		compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(new CompareDataDatasetTransportBuilder().forCompareDataImportDataset2().build());
 		expected.addCompareDataNotInDatabaseTransport(compareDataNotInDatabaseTransport);
 
 		final CompareDataResponse actual = super.callUsecaseWithContent("", this.method, request, false, CompareDataResponse.class);

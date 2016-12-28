@@ -58,26 +58,27 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 	@Test
 	public void test_standardRequest_emptyResponse() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final List<CapitalsourceID> capitalsourceIds = Arrays
-				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+		final List<CapitalsourceID> capitalsourceIds = Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeDelete = importedMoneyflows.size();
 
-		super.callUsecaseWithoutContent("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID, this.method,
-				true, Object.class);
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+				ImportedMoneyflowStatus.CREATED);
+		Assert.assertNotNull(importedMoneyflows);
+		final int sizeBeforeDeleteInStateCreated = importedMoneyflows.size();
 
-		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
+		super.callUsecaseWithoutContent("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID, this.method, true, Object.class);
+
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+				ImportedMoneyflowStatus.CREATED);
 
 		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeDelete - 1, importedMoneyflows.size());
+		Assert.assertEquals(sizeBeforeDeleteInStateCreated - 1, importedMoneyflows.size());
 
 		// No delete happend - it is only marked as "ignored"
-		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds, null);
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeDelete, importedMoneyflows.size());
@@ -96,8 +97,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 	public void test_emptyDatabase_noException() throws Exception {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		super.callUsecaseWithoutContent("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID, this.method,
-				true, Object.class);
+		super.callUsecaseWithoutContent("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID, this.method, true, Object.class);
 	}
 
 }

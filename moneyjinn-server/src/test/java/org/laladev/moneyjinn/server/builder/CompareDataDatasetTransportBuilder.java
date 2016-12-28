@@ -12,6 +12,33 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
 
 	}
 
+	public CompareDataDatasetTransportBuilder forCompareDataImportDataset1() {
+		super.setAmount(new BigDecimal("-5.00"));
+		super.setBookingDate(DateUtil.getGMTDate("2010-05-03"));
+		super.setInvoiceDate(DateUtil.getGMTDate("2010-05-03"));
+		super.setPartner("Partner");
+		super.setComment("generated");
+		return this;
+	}
+
+	public CompareDataDatasetTransportBuilder forCompareDataImportDataset2() {
+		super.setAmount(new BigDecimal("-5.00"));
+		super.setBookingDate(DateUtil.getGMTDate("2010-05-20"));
+		super.setInvoiceDate(DateUtil.getGMTDate("2010-05-20"));
+		super.setPartner("Partner");
+		super.setComment("generated");
+		return this;
+	}
+
+	public CompareDataDatasetTransportBuilder forCompareDataImportDataset3() {
+		super.setAmount(new BigDecimal("-5.00"));
+		super.setBookingDate(DateUtil.getGMTDate("2010-05-05"));
+		super.setInvoiceDate(DateUtil.getGMTDate("2010-05-05"));
+		super.setPartner("Sartner");
+		super.setComment("generated");
+		return this;
+	}
+
 	public CompareDataDatasetTransportBuilder forCompareDataDataset1() {
 		super.setAmount(new BigDecimal("-5.00"));
 		super.setBookingDate(DateUtil.getGMTDate("2010-05-03"));
@@ -63,6 +90,7 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
 
 		transport.setAmount(super.getAmount());
 		transport.setBookingDate(super.getBookingDate());
+		transport.setInvoiceDate(super.getInvoiceDate());
 		transport.setPartner(super.getPartner());
 		transport.setComment(super.getComment());
 

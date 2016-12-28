@@ -121,14 +121,15 @@ public class ShowEventListTest extends AbstractControllerTest {
 	public void test_importedImportedMoneyflow_isIgnored() throws Exception {
 		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
-		Assert.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
+		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+		int numberOfImportedMoneyflows = actual.getNumberOfImportedMoneyflows().intValue();
 
 		this.importedMoneyflowService.updateImportedMoneyflowStatus(new UserID(UserTransportBuilder.USER1_ID),
 				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID), ImportedMoneyflowStatus.PROCESSED);
 
 		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
-		Assert.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
+		Assert.assertEquals(Integer.valueOf(numberOfImportedMoneyflows - 1), actual.getNumberOfImportedMoneyflows());
 	}
 
 	@Test

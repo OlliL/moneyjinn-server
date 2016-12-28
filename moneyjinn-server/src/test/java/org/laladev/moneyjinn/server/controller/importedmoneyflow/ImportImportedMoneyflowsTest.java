@@ -111,8 +111,15 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 		request.setImportedMoneyflowTransports(Arrays.asList(transport));
 
-		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
-
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+				ImportedMoneyflowStatus.CREATED);
+		Assert.assertNotNull(importedMoneyflows);
+		final int sizeBeforeDeleteInStateCreated = importedMoneyflows.size();
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+				ImportedMoneyflowStatus.PROCESSED);
+		Assert.assertNotNull(importedMoneyflows);
+		final int sizeBeforeDeleteInStateProcessed = importedMoneyflows.size();
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeDelete = importedMoneyflows.size();
 
@@ -126,15 +133,13 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
 				ImportedMoneyflowStatus.CREATED);
-
 		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeDelete - 1, importedMoneyflows.size());
+		Assert.assertEquals(sizeBeforeDeleteInStateCreated - 1, importedMoneyflows.size());
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
 				ImportedMoneyflowStatus.PROCESSED);
-
 		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(1, importedMoneyflows.size());
+		Assert.assertEquals(sizeBeforeDeleteInStateProcessed + 1, importedMoneyflows.size());
 
 		// No delete happend - it is only marked as "processed"
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
