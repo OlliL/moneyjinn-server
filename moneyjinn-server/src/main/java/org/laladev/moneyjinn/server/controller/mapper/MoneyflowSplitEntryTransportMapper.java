@@ -35,7 +35,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 
 public class MoneyflowSplitEntryTransportMapper implements IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
-	private static final Short IS_PRIVATE_SHORT = Short.valueOf((short) 1);
 
 	@Override
 	public MoneyflowSplitEntry mapBToA(final MoneyflowSplitEntryTransport moneyflowSplitEntryTransport) {
@@ -48,8 +47,7 @@ public class MoneyflowSplitEntryTransportMapper implements IMapper<MoneyflowSpli
 		moneyflowSplitEntry.setComment(moneyflowSplitEntryTransport.getComment());
 
 		if (moneyflowSplitEntryTransport.getPostingaccountid() != null) {
-			final PostingAccount postingAccount = new PostingAccount(
-					new PostingAccountID(moneyflowSplitEntryTransport.getPostingaccountid()));
+			final PostingAccount postingAccount = new PostingAccount(new PostingAccountID(moneyflowSplitEntryTransport.getPostingaccountid()));
 			moneyflowSplitEntry.setPostingAccount(postingAccount);
 		}
 
