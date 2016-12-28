@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -75,9 +76,10 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	private void testError(final MoneyflowTransport transport, final List<CapitalsourceTransport> overrideCapitalsources,
-			final List<ContractpartnerTransport> overrideContractpartner, List<Long> deleteMoneyflowSplitEntryIds,
-			List<MoneyflowSplitEntryTransport> updateMoneyflowSplitEntryTransports, List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports,
-			Long validationId, final ErrorCode... errorCodes) throws Exception {
+			final List<ContractpartnerTransport> overrideContractpartner, final List<Long> deleteMoneyflowSplitEntryIds,
+			final List<MoneyflowSplitEntryTransport> updateMoneyflowSplitEntryTransports,
+			final List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports, final Long validationId, final ErrorCode... errorCodes)
+			throws Exception {
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 
 		request.setMoneyflowTransport(transport);
@@ -213,15 +215,6 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		transport.setAmount(null);
 
 		this.testError(transport, null, null, ErrorCode.AMOUNT_IS_ZERO);
-	}
-
-	@Test
-	public void test_SplitEntries_DeletionMakesAmountUnbalanced_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
-		List<Long> deleteMoneyflowSplitEntryIds = new ArrayList<>();
-		deleteMoneyflowSplitEntryIds.add(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID);
-
-		this.testError(transport, null, null, deleteMoneyflowSplitEntryIds, null, null, null, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
 	}
 
 	@Test
@@ -401,6 +394,162 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
 
 		this.testError(transport, capitalsourceTransports, null, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+	}
+
+	@Test
+	public void test_SplitEntries_DeletionMakesAmountUnbalanced_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final List<Long> deleteMoneyflowSplitEntryIds = new ArrayList<>();
+		deleteMoneyflowSplitEntryIds.add(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID);
+
+		this.testError(transport, null, null, deleteMoneyflowSplitEntryIds, null, null, null, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
+	}
+
+	@Test
+	public void test_SplitEntries_UpdateMakesAmountUnbalanced_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build();
+		mseTransport.setAmount(BigDecimal.TEN);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, null, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
+	}
+
+	@Test
+	public void test_SplitEntries_InsertMakesAmountUnbalanced_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build();
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), null, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_emptyComment_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setComment("");
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_zeroAmount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setAmount(BigDecimal.ZERO);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	// make sure it 0 is compared with compareTo not with equals
+	@Test
+	public void test_SplitEntries_Update_0_00Amount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setAmount(new BigDecimal("0.00000"));
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_nullComment_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setComment(null);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_nullAmount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setAmount(null);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_nullPostingAccount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setPostingaccountid(null);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	@Test
+	public void test_SplitEntries_Update_notExistingPostingAccount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
+
+		this.testError(transport, null, null, null, Arrays.asList(mseTransport), null, mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setComment("");
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setAmount(BigDecimal.ZERO);
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	// make sure it 0 is compared with compareTo not with equals
+	@Test
+	public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setAmount(new BigDecimal("0.00000"));
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setComment(null);
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setAmount(null);
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setPostingaccountid(null);
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder().forNewMoneyflowSplitEntry().build();
+		mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
+
+		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	@Test

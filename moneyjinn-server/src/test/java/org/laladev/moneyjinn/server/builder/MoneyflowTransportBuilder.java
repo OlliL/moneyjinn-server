@@ -6,6 +6,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 public class MoneyflowTransportBuilder extends MoneyflowTransport {
 
+	public static final BigDecimal MONEYFLOW2_AMOUNT = new BigDecimal("10.10");
 	public static final String MONEYFLOW1_COMMENT = "flow1";
 	public static final String MONEYFLOW_GENERATED_COMMENT = "generated";
 	public static final String NEW_MONEYFLOW_COMMENT = "flownew";
@@ -43,7 +44,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setBookingdate(DateUtil.getGMTDate("2008-12-01"));
 		super.setInvoicedate(DateUtil.getGMTDate("2008-12-01"));
-		super.setAmount(new BigDecimal("10.10"));
+		super.setAmount(MONEYFLOW2_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		super.setComment(MONEYFLOW_GENERATED_COMMENT);
@@ -160,7 +161,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setPrivat(null);
 		super.setBookingdate(DateUtil.getGMTDate("2008-01-01"));
 		super.setInvoicedate(DateUtil.getGMTDate("2008-01-01"));
-		super.setAmount(new BigDecimal("10.10"));
+		super.setAmount(MONEYFLOW2_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		super.setComment(NEW_MONEYFLOW_COMMENT);
