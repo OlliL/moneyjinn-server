@@ -17,6 +17,7 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
+import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -81,8 +82,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 	public void test_noSetting_defaultsResponse() throws Exception {
 		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 
-		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowCompareDataFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -99,12 +99,15 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 				new CompareDataFormatID(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID));
 		this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
 
+		final ClientCompareDataSelectedSourceIsFile settingSource = new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE);
+		this.settingService.setClientCompareDataSelectedSourceIsFile(userId, settingSource);
+
 		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 		expected.setSelectedCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		expected.setSelectedDataFormat(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
+		expected.setSelectedSourceIsFile((short) 1);
 
-		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowCompareDataFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

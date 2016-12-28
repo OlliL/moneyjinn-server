@@ -58,6 +58,7 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
 import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
+import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
@@ -110,31 +111,32 @@ public class CompareDataController extends AbstractController {
 		final List<CompareDataFormat> compareDataFormats = this.compareDataService.getAllCompareDataFormats();
 
 		if (compareDataFormats != null && !compareDataFormats.isEmpty()) {
-			final List<CompareDataFormatTransport> responseCompareDataFormats = super.mapList(compareDataFormats,
-					CompareDataFormatTransport.class);
+			final List<CompareDataFormatTransport> responseCompareDataFormats = super.mapList(compareDataFormats, CompareDataFormatTransport.class);
 			response.setCompareDataFormatTransports(responseCompareDataFormats);
-			final ClientCompareDataSelectedFormat selectedDataFormat = this.settingService
-					.getClientCompareDataSelectedFormat(userId);
+
+			final ClientCompareDataSelectedFormat selectedDataFormat = this.settingService.getClientCompareDataSelectedFormat(userId);
 			if (selectedDataFormat != null) {
 				response.setSelectedDataFormat(selectedDataFormat.getSetting().getId());
 			}
 
-			final List<Capitalsource> capitalsources = this.capitalsourceService
-					.getGroupCapitalsourcesByDateRange(userId, today, today);
+			final ClientCompareDataSelectedSourceIsFile selectedSourceIsFile = this.settingService.getClientCompareDataSelectedSourceIsFile(userId);
+			if (selectedSourceIsFile != null && selectedSourceIsFile.getSetting().equals(Boolean.TRUE)) {
+				response.setSelectedSourceIsFile((short) 1);
+			}
+
+			final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId, today, today);
 
 			if (capitalsources != null && !capitalsources.isEmpty()) {
 				final Iterator<Capitalsource> iterator = capitalsources.iterator();
 				while (iterator.hasNext()) {
 					final Capitalsource capitalsource = iterator.next();
 
-					if (capitalsource.getType() != CapitalsourceType.CURRENT_ASSET
-							|| capitalsource.getState() != CapitalsourceState.NON_CACHE) {
+					if (capitalsource.getType() != CapitalsourceType.CURRENT_ASSET || capitalsource.getState() != CapitalsourceState.NON_CACHE) {
 						iterator.remove();
 					}
 				}
 				response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
-				final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
-						.getClientCompareDataSelectedCapitalsource(userId);
+				final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService.getClientCompareDataSelectedCapitalsource(userId);
 				if (selectedCapitalsource != null) {
 					response.setSelectedCapitalsourceId(selectedCapitalsource.getSetting().getId());
 				}
@@ -156,8 +158,7 @@ public class CompareDataController extends AbstractController {
 			final CapitalsourceID capitalsourceId = new CapitalsourceID(request.getCapitalsourceId());
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate();
-			final boolean useImportedData = request.getUseImportedData() != null
-					&& request.getUseImportedData().compareTo(new Short((short) 1)) == 0;
+			final boolean useImportedData = request.getUseImportedData() != null && request.getUseImportedData().compareTo(new Short((short) 1)) == 0;
 
 			if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {
 				final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(request.getFormatId());
@@ -165,30 +166,27 @@ public class CompareDataController extends AbstractController {
 
 				final String fileContents = new String(fileContentBytes, StandardCharsets.UTF_8);
 
-				compareDataResult = this.compareDataService.compareDataFile(userId, compareDataFormatId,
-						capitalsourceId, startDate, endDate, fileContents);
+				compareDataResult = this.compareDataService.compareDataFile(userId, compareDataFormatId, capitalsourceId, startDate, endDate, fileContents);
 
-				final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
-						compareDataFormatId);
+				final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(compareDataFormatId);
 				this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
+				this.settingService.setClientCompareDataSelectedSourceIsFile(userId, new ClientCompareDataSelectedSourceIsFile(Boolean.FALSE));
 
 			} else if (useImportedData) {
-				compareDataResult = this.compareDataService.compareDataImport(userId, capitalsourceId, startDate,
-						endDate);
+				compareDataResult = this.compareDataService.compareDataImport(userId, capitalsourceId, startDate, endDate);
+				this.settingService.setClientCompareDataSelectedSourceIsFile(userId, new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE));
 			}
 
-			final List<CompareDataNotInDatabase> compareDataNotInDatabaseList = compareDataResult
-					.getCompareDataNotInDatabase();
+			final List<CompareDataNotInDatabase> compareDataNotInDatabaseList = compareDataResult.getCompareDataNotInDatabase();
 			final List<CompareDataMatching> compareDataMatchingList = compareDataResult.getCompareDataMatching();
-			final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsourceList = compareDataResult
-					.getCompareDataWrongCapitalsource();
+			final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsourceList = compareDataResult.getCompareDataWrongCapitalsource();
 			final List<CompareDataNotInFile> compareDataNotInFileList = compareDataResult.getCompareDataNotInFile();
 
 			if (compareDataNotInDatabaseList != null && !compareDataNotInDatabaseList.isEmpty()) {
 				for (final CompareDataNotInDatabase compareDataNotInDatabase : compareDataNotInDatabaseList) {
 					final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
-					compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(super.map(
-							compareDataNotInDatabase.getCompareDataDataset(), CompareDataDatasetTransport.class));
+					compareDataNotInDatabaseTransport
+							.setCompareDataDatasetTransport(super.map(compareDataNotInDatabase.getCompareDataDataset(), CompareDataDatasetTransport.class));
 					response.addCompareDataNotInDatabaseTransport(compareDataNotInDatabaseTransport);
 				}
 			}
@@ -196,10 +194,9 @@ public class CompareDataController extends AbstractController {
 			if (compareDataMatchingList != null && !compareDataMatchingList.isEmpty()) {
 				for (final CompareDataMatching compareDataMatching : compareDataMatchingList) {
 					final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
-					compareDataMatchingTransport.setCompareDataDatasetTransport(
-							super.map(compareDataMatching.getCompareDataDataset(), CompareDataDatasetTransport.class));
-					compareDataMatchingTransport.setMoneyflowTransport(
-							super.map(compareDataMatching.getMoneyflow(), MoneyflowTransport.class));
+					compareDataMatchingTransport
+							.setCompareDataDatasetTransport(super.map(compareDataMatching.getCompareDataDataset(), CompareDataDatasetTransport.class));
+					compareDataMatchingTransport.setMoneyflowTransport(super.map(compareDataMatching.getMoneyflow(), MoneyflowTransport.class));
 					response.addCompareDataMatchingTransport(compareDataMatchingTransport);
 				}
 			}
@@ -207,10 +204,10 @@ public class CompareDataController extends AbstractController {
 			if (compareDataWrongCapitalsourceList != null && !compareDataWrongCapitalsourceList.isEmpty()) {
 				for (final CompareDataWrongCapitalsource compareDataWrongCapitalsource : compareDataWrongCapitalsourceList) {
 					final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
-					compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(super.map(
-							compareDataWrongCapitalsource.getCompareDataDataset(), CompareDataDatasetTransport.class));
-					compareDataWrongCapitalsourceTransport.setMoneyflowTransport(
-							super.map(compareDataWrongCapitalsource.getMoneyflow(), MoneyflowTransport.class));
+					compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
+							super.map(compareDataWrongCapitalsource.getCompareDataDataset(), CompareDataDatasetTransport.class));
+					compareDataWrongCapitalsourceTransport
+							.setMoneyflowTransport(super.map(compareDataWrongCapitalsource.getMoneyflow(), MoneyflowTransport.class));
 					response.addCompareDataWrongCapitalsourceTransport(compareDataWrongCapitalsourceTransport);
 				}
 			}
@@ -218,20 +215,17 @@ public class CompareDataController extends AbstractController {
 			if (compareDataNotInFileList != null && !compareDataNotInFileList.isEmpty()) {
 				for (final CompareDataNotInFile compareDataNotInFile : compareDataNotInFileList) {
 					final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
-					compareDataNotInFileTransport.setMoneyflowTransport(
-							super.map(compareDataNotInFile.getMoneyflow(), MoneyflowTransport.class));
+					compareDataNotInFileTransport.setMoneyflowTransport(super.map(compareDataNotInFile.getMoneyflow(), MoneyflowTransport.class));
 					response.addCompareDataNotInFileTransport(compareDataNotInFileTransport);
 				}
 			}
 
 			final Group accessor = this.accessRelationService.getAccessor(userId);
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
-					capitalsourceId);
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(), capitalsourceId);
 
 			response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
 
-			final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
-					capitalsourceId);
+			final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(capitalsourceId);
 			this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
 
 		}
