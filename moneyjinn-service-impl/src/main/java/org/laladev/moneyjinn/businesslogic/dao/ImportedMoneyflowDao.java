@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,14 +40,12 @@ public class ImportedMoneyflowDao {
 	@Inject
 	IImportedMoneyflowDaoMapper mapper;
 
-	public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs,
-			final Short status) {
+	public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs, final Short status) {
 		return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
 	}
 
-	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
-			final List<Long> capitalsourceIdLongs, final Short status, final LocalDate dateFrom,
-			final LocalDate dateTil) {
+	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId, final List<Long> capitalsourceIdLongs, final Short status,
+			final LocalDate dateFrom, final LocalDate dateTil) {
 		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status, dateFrom, dateTil);
 	}
 
@@ -63,4 +61,11 @@ public class ImportedMoneyflowDao {
 		this.mapper.createImportedMoneyflow(importedMoneyflowData);
 	}
 
+	public boolean checkIfExternalIdAlreadyExists(String externalId) {
+		final Boolean result = this.mapper.checkIfExternalIdAlreadyExists(externalId);
+		if (result == null) {
+			return false;
+		}
+		return result;
+	}
 }

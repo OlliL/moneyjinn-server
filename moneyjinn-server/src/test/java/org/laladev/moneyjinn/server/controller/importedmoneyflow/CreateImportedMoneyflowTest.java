@@ -60,96 +60,101 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	@Test
 	public void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final List<CapitalsourceID> capitalsourceIds = Arrays
-				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+		final List<CapitalsourceID> capitalsourceIds = Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 
 		request.setImportedMoneyflowTransport(transport);
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
-		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds, null);
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
 		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
-				importedMoneyflows.get(2).getCapitalsource().getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, importedMoneyflows.get(2).getCapitalsource().getId().getId());
+	}
+
+	@Test
+	public void test_insertwithDuplicateExternalId_NotSuccessfullButIgnored() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final List<CapitalsourceID> capitalsourceIds = Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		List<ImportedMoneyflow> importedMoneyflowsOrig = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+				null);
+
+		Assert.assertNotNull(importedMoneyflowsOrig);
+
+		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
+		transport.setExternalid(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_EXTERNAL_ID);
+
+		request.setImportedMoneyflowTransport(transport);
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+
+		Assert.assertEquals(importedMoneyflowsOrig, importedMoneyflows);
 	}
 
 	@Test
 	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final List<CapitalsourceID> capitalsourceIds = Arrays
-				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+		final List<CapitalsourceID> capitalsourceIds = Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 
 		transport.setBankCode("ABCDEFGH");
 		request.setImportedMoneyflowTransport(transport);
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
-		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds, null);
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
 		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
-				importedMoneyflows.get(2).getCapitalsource().getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, importedMoneyflows.get(2).getCapitalsource().getId().getId());
 		Assert.assertEquals(transport.getBankCode() + "XXX", importedMoneyflows.get(2).getBankAccount().getBankCode());
 	}
 
 	@Test
 	public void test_emptyContractpartnerBankAccount_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final List<CapitalsourceID> capitalsourceIds = Arrays
-				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
+		final List<CapitalsourceID> capitalsourceIds = Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setAccountNumber(null);
 		transport.setBankCode(null);
 		request.setImportedMoneyflowTransport(transport);
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
-		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				capitalsourceIds, null);
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
 		Assert.assertNotNull(importedMoneyflows);
 		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
 		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
-				importedMoneyflows.get(2).getCapitalsource().getId().getId());
+		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, importedMoneyflows.get(2).getCapitalsource().getId().getId());
 	}
 
 	@Test
 	public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_ACCOUNTNUMBER);
 		transport.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_BANKCODE);
 
@@ -168,8 +173,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	public void test_capitalsourceAllowsOnlyBalancesToBeImported_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
 		transport.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
 
@@ -188,8 +192,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	public void test_unknownAccountNumber_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setAccountNumberCapitalsource("1");
 
 		request.setImportedMoneyflowTransport(transport);
@@ -207,8 +210,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	public void test_unknownBankCode_errorResponse() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setBankCodeCapitalsource("1");
 
 		request.setImportedMoneyflowTransport(transport);
@@ -227,8 +229,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 	public void test_emptyDatabase_noException() throws Exception {
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-				.build();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow().build();
 		transport.setBankCodeCapitalsource("1");
 
 		request.setImportedMoneyflowTransport(transport);

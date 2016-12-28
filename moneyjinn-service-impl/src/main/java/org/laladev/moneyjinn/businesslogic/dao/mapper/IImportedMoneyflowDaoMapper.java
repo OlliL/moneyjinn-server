@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,17 +34,17 @@ import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMoneyflowData;
 
 public interface IImportedMoneyflowDaoMapper {
 
-	Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
-			@Param("status") Short status);
+	Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status);
 
-	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
-			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status,
-			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
+	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(@Param("capitalsourceIds") List<Long> capitalsourceIds,
+			@Param("status") Short status, @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
 	void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Short status);
 
 	void deleteImportedMoneyflowById(Long impMoneyflowId);
 
 	void createImportedMoneyflow(ImportedMoneyflowData importedMoneyflowData);
+
+	Boolean checkIfExternalIdAlreadyExists(String externalId);
 
 }

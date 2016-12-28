@@ -38,15 +38,12 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * ImportedMoneyflowService is the Core Service handling everything around an
- * {@link ImportedMoneyflow}.
+ * ImportedMoneyflowService is the Core Service handling everything around an {@link ImportedMoneyflow}.
  * </p>
  *
  * <p>
- * ImportedMoneyflowService is the Domain Service handling operations around an
- * {@link ImportedMoneyflow} like getting, creating, updating, deleting. Before a
- * {@link ImportedMoneyflow} is created or updated, the {@link ImportedMoneyflow} is validated for
- * correctness.
+ * ImportedMoneyflowService is the Domain Service handling operations around an {@link ImportedMoneyflow} like getting, creating, updating, deleting.
+ * Before a {@link ImportedMoneyflow} is created or updated, the {@link ImportedMoneyflow} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>impmoneyflows</code>.
@@ -73,12 +70,10 @@ public interface IImportedMoneyflowService {
 	 * @param status
 	 * @return
 	 */
-	Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds,
-			ImportedMoneyflowStatus status);
+	Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
 
 	/**
-	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given
-	 * {@link CapitalsourceID}s.
+	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given {@link CapitalsourceID}s.
 	 *
 	 * @param userId
 	 * @param capitalsourceIds
@@ -86,20 +81,18 @@ public interface IImportedMoneyflowService {
 	 * @param dateTil
 	 * @return
 	 */
-	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
-			List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom, LocalDate dateTil);
+	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId, List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom,
+			LocalDate dateTil);
 
 	/**
-	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given
-	 * {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
+	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
 	 *
 	 * @param userId
 	 * @param capitalsourceIds
 	 * @param status
 	 * @return
 	 */
-	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
-			List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
+	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId, List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
 
 	/**
 	 * Persists the given {@link ImportedMoneyflow}.
@@ -109,15 +102,13 @@ public interface IImportedMoneyflowService {
 	void createImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
 	/**
-	 * Sets a new {@link ImportedMoneyflowStatus} for the {@link ImportedMoneyflow} specified by its
-	 * {@link ImportedMoneyflowID}.
+	 * Sets a new {@link ImportedMoneyflowStatus} for the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.
 	 *
 	 * @param userId
 	 * @param importedMoneyflowId
 	 * @param status
 	 */
-	void updateImportedMoneyflowStatus(UserID userId, ImportedMoneyflowID importedMoneyflowId,
-			ImportedMoneyflowStatus status);
+	void updateImportedMoneyflowStatus(UserID userId, ImportedMoneyflowID importedMoneyflowId, ImportedMoneyflowStatus status);
 
 	/**
 	 * Deletes the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.
@@ -126,5 +117,13 @@ public interface IImportedMoneyflowService {
 	 * @param importedMoneyflowId
 	 */
 	void deleteImportedMoneyflowById(UserID userId, ImportedMoneyflowID importedMoneyflowId);
+
+	/**
+	 * checks if the externalId of a {@link ImportedMoneyflow} is already in the database.
+	 * 
+	 * @param externalId
+	 * @return
+	 */
+	boolean checkIfExternalIdAlreadyExists(String externalId);
 
 }

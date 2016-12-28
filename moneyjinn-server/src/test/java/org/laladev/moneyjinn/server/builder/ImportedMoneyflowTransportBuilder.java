@@ -6,6 +6,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTranspor
 
 public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTransport {
 
+	public static final String IMPORTED_MONEYFLOW1_EXTERNAL_ID = "8765421A";
+
 	public static final String NEW_IMPORTED_MONEYFLOW_COMMENT = "flownew";
 
 	public static final Long IMPORTED_MONEYFLOW1_ID = 1l;
@@ -20,7 +22,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 
 	public ImportedMoneyflowTransportBuilder forImportedMoneyflow1() {
 		super.setId(IMPORTED_MONEYFLOW1_ID);
-		super.setExternalid("8765421A");
+		super.setExternalid(IMPORTED_MONEYFLOW1_EXTERNAL_ID);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setBookingdate(DateUtil.getGMTDate("2010-01-02"));
