@@ -70,8 +70,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	public void test_default_FullResponseObject() throws Exception {
 		final ShowPostingAccountListResponse expected = this.getCompleteResponse();
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
-				ShowPostingAccountListResponse.class);
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -84,8 +83,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
-				ShowPostingAccountListResponse.class);
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -97,8 +95,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
-				ShowPostingAccountListResponse.class);
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false, ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -112,8 +109,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
 		expected.setPostingAccountTransports(postingAccountTransports);
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/X", this.method, false,
-				ShowPostingAccountListResponse.class);
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/X", this.method, false, ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -124,6 +120,17 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
+	}
+
+	@Test
+	public void test_OnlyAdminAllowed_filtered_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/all", this.method, false, ErrorResponse.class);
 
 		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
@@ -153,8 +160,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
-				ShowPostingAccountListResponse.class);
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

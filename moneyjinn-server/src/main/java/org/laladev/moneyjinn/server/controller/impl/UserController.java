@@ -119,8 +119,7 @@ public class UserController extends AbstractController {
 
 		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
 		if (accessRelation != null) {
-			final ValidationResult validationResultAccess = this.accessRelationService
-					.validateAccessRelation(accessRelation);
+			final ValidationResult validationResultAccess = this.accessRelationService.validateAccessRelation(accessRelation);
 			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
@@ -130,8 +129,7 @@ public class UserController extends AbstractController {
 				this.userService.resetPassword(user.getId(), user.getPassword());
 			}
 			if (accessRelation != null) {
-				validationResult.mergeValidationResult(
-						this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
+				validationResult.mergeValidationResult(this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
 			}
 		}
 
@@ -140,8 +138,7 @@ public class UserController extends AbstractController {
 			final UpdateUserResponse response = new UpdateUserResponse();
 			this.fillAbstractUpdateUserResponse(user.getId(), response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -156,6 +153,7 @@ public class UserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
+	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public ShowUserListResponse showUserList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
@@ -181,8 +179,7 @@ public class UserController extends AbstractController {
 				if (accessRelation != null) {
 					accessRelationList.add(accessRelation);
 					if (accessRelation.getParentAccessRelation() != null) {
-						final Group group = this.groupService
-								.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+						final Group group = this.groupService.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
 						groupSet.add(group);
 					}
 				}
@@ -221,8 +218,7 @@ public class UserController extends AbstractController {
 		if (accessRelation != null) {
 			accessRelation.setId(null);
 
-			final ValidationResult validationResultAccess = this.accessRelationService
-					.validateAccessRelation(accessRelation);
+			final ValidationResult validationResultAccess = this.accessRelationService.validateAccessRelation(accessRelation);
 			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
@@ -230,8 +226,7 @@ public class UserController extends AbstractController {
 			final CreateUserResponse response = new CreateUserResponse();
 			this.fillAbstractCreateUserResponse(response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -258,8 +253,7 @@ public class UserController extends AbstractController {
 
 	@RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public GetUserSettingsForStartupResponse getUserSettingsForStartup(
-			@PathVariable(value = "name") final String name) {
+	public GetUserSettingsForStartupResponse getUserSettingsForStartup(@PathVariable(value = "name") final String name) {
 		final User user = this.userService.getUserByName(name);
 		final GetUserSettingsForStartupResponse response = new GetUserSettingsForStartupResponse();
 
@@ -268,10 +262,8 @@ public class UserController extends AbstractController {
 
 			response.setUserId(userId.getId());
 
-			final ClientDateFormatSetting clientDateFormatSetting = this.settingService
-					.getClientDateFormatSetting(userId);
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
-					.getClientDisplayedLanguageSetting(userId);
+			final ClientDateFormatSetting clientDateFormatSetting = this.settingService.getClientDateFormatSetting(userId);
+			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService.getClientDisplayedLanguageSetting(userId);
 			response.setSettingDateFormat(clientDateFormatSetting.getSetting());
 			response.setSettingDisplayedLanguage(clientDisplayedLanguageSetting.getSetting());
 			response.setAttributeNew(user.getAttributes().contains(UserAttribute.IS_NEW));
@@ -299,8 +291,7 @@ public class UserController extends AbstractController {
 
 	private void fillAbstractUpdateUserResponse(final UserID userId, final AbstractUpdateUserResponse response) {
 		final List<AccessRelation> accessRelations = this.accessRelationService.getAllAccessRelationsById(userId);
-		final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
-				AccessRelationTransport.class);
+		final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations, AccessRelationTransport.class);
 
 		response.setAccessRelationTransports(accessRelationTransports);
 		this.fillAbstractCreateUserResponse(response);

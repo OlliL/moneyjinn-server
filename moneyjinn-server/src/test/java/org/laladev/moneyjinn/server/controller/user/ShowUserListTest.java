@@ -84,8 +84,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 	public void test_default_FullResponseObject() throws Exception {
 		final ShowUserListResponse expected = this.getCompleteResponse();
 
-		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
-				ShowUserListResponse.class);
+		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ShowUserListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -98,8 +97,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
-				ShowUserListResponse.class);
+		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ShowUserListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -111,8 +109,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
-				ShowUserListResponse.class);
+		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false, ShowUserListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -134,8 +131,7 @@ public class ShowUserListTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forAdminUser().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 
-		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/A", this.method, false,
-				ShowUserListResponse.class);
+		final ShowUserListResponse actual = super.callUsecaseWithoutContent("/A", this.method, false, ShowUserListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -152,10 +148,29 @@ public class ShowUserListTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_OnlyAdminAllowed_filtered_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/A", this.method, false, ErrorResponse.class);
+
+		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
+		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	public void test_AuthorizationRequired_filtered_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/A", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
