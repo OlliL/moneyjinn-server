@@ -61,17 +61,14 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
 		request.setStartDate(new Date(70, 0, 1));
 		request.setEndDate(new Date(199, 11, 31));
-		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-				PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
 
 		final ShowYearlyReportGraphResponse expected = new ShowYearlyReportGraphResponse();
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
-		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
-				.withDate("2009-01-01").withAmount("-1.10").build());
-		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
-				.withDate("2009-01-01").withAmount("-50.00").build());
-		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
-				.withDate("2010-01-01").withAmount("-30.00").build());
+		// Respect Moneyflow Split Entries -1.10 -> -1.00
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1().withDate("2009-01-01").withAmount("-1.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2().withDate("2009-01-01").withAmount("-50.10").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2().withDate("2010-01-01").withAmount("-30.00").build());
 		expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
 
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
@@ -80,8 +77,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
 		expected.setPostingAccountTransports(postingAccountTransports);
 
-		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ShowYearlyReportGraphResponse.class);
+		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false, ShowYearlyReportGraphResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -94,12 +90,10 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
 		request.setStartDate(new Date(70, 0, 1));
 		request.setEndDate(new Date(199, 11, 31));
-		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-				PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
 		request.setPostingAccountIdsNo(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
 
-		ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
-				.getClientReportingUnselectedPostingAccountIdsSetting(userId);
+		ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService.getClientReportingUnselectedPostingAccountIdsSetting(userId);
 
 		Assert.assertNull(setting);
 
@@ -121,15 +115,14 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
 		request.setStartDate(new Date(70, 0, 1));
 		request.setEndDate(new Date(199, 11, 31));
-		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-				PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
 
 		final ShowYearlyReportGraphResponse expected = new ShowYearlyReportGraphResponse();
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
-		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
-				.withDate("2009-01-01").withAmount("-1.10").build());
-		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
-				.withDate("2010-01-01").withAmount("-15.00").build());
+		// Respect Moneyflow Split Entries -1.10 -> -1.00
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1().withDate("2009-01-01").withAmount("-1.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2().withDate("2009-01-01").withAmount("-0.10").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2().withDate("2010-01-01").withAmount("-15.00").build());
 		expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
 
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
@@ -138,8 +131,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
 		expected.setPostingAccountTransports(postingAccountTransports);
 
-		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ShowYearlyReportGraphResponse.class);
+		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false, ShowYearlyReportGraphResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -170,8 +162,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
 		request.setStartDate(new Date(110, 3, 1));
 		request.setEndDate(new Date(110, 11, 31));
-		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-				PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+		request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
 		super.callUsecaseWithContent("", this.method, request, false, ShowYearlyReportGraphResponse.class);
 	}
 }
