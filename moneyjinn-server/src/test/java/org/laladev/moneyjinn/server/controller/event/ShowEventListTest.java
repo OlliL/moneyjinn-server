@@ -17,11 +17,15 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
+import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -30,6 +34,9 @@ public class ShowEventListTest extends AbstractControllerTest {
 
 	@Inject
 	IMonthlySettlementService monthlySettlementService;
+
+	@Inject
+	IImportedMoneyflowService importedMoneyflowService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
@@ -66,8 +73,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
-		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowEventListResponse.class);
+		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -80,8 +86,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		final MonthlySettlement monthlySettlement = new MonthlySettlement();
 		monthlySettlement.setYear((short) lastMonth.getYear());
 		monthlySettlement.setMonth(lastMonth.getMonth());
-		monthlySettlement.setCapitalsource(
-				new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
+		monthlySettlement.setCapitalsource(new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
 		monthlySettlement.setAmount(BigDecimal.TEN);
 		monthlySettlement.setUser(new User(new UserID(UserTransportBuilder.USER1_ID)));
 		monthlySettlement.setGroup(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
@@ -93,10 +98,37 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
-		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowEventListResponse.class);
+		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_deletedImportedMoneyflow_isIgnored() throws Exception {
+		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+
+		Assert.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
+
+		this.importedMoneyflowService.deleteImportedMoneyflowById(new UserID(UserTransportBuilder.USER1_ID),
+				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
+
+		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+
+		Assert.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
+	}
+
+	@Test
+	public void test_importedImportedMoneyflow_isIgnored() throws Exception {
+		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+
+		Assert.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
+
+		this.importedMoneyflowService.updateImportedMoneyflowStatus(new UserID(UserTransportBuilder.USER1_ID),
+				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID), ImportedMoneyflowStatus.PROCESSED);
+
+		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+
+		Assert.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
 	}
 
 	@Test
