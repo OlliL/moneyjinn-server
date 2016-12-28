@@ -43,13 +43,13 @@ public class ShowCompareDataFormResponse extends AbstractResponse {
 	private List<CapitalsourceTransport> capitalsourceTransports;
 	private Long selectedCapitalsourceId;
 	private Long selectedDataFormat;
+	private Short selectedSourceIsFile;
 
 	public final List<CompareDataFormatTransport> getCompareDataFormatTransports() {
 		return this.compareDataFormatTransports;
 	}
 
-	public final void setCompareDataFormatTransports(
-			final List<CompareDataFormatTransport> compareDataFormatTransports) {
+	public final void setCompareDataFormatTransports(final List<CompareDataFormatTransport> compareDataFormatTransports) {
 		this.compareDataFormatTransports = compareDataFormatTransports;
 	}
 
@@ -77,58 +77,71 @@ public class ShowCompareDataFormResponse extends AbstractResponse {
 		this.selectedDataFormat = selectedDataFormat;
 	}
 
+	public Short getSelectedSourceIsFile() {
+		return selectedSourceIsFile;
+	}
+
+	public void setSelectedSourceIsFile(Short selectedSourceIsFile) {
+		this.selectedSourceIsFile = selectedSourceIsFile;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
-		result = prime * result
-				+ ((this.compareDataFormatTransports == null) ? 0 : this.compareDataFormatTransports.hashCode());
-		result = prime * result
-				+ ((this.selectedCapitalsourceId == null) ? 0 : this.selectedCapitalsourceId.hashCode());
-		result = prime * result + ((this.selectedDataFormat == null) ? 0 : this.selectedDataFormat.hashCode());
+		result = prime * result + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
+		result = prime * result + ((compareDataFormatTransports == null) ? 0 : compareDataFormatTransports.hashCode());
+		result = prime * result + ((selectedCapitalsourceId == null) ? 0 : selectedCapitalsourceId.hashCode());
+		result = prime * result + ((selectedDataFormat == null) ? 0 : selectedDataFormat.hashCode());
+		result = prime * result + ((selectedSourceIsFile == null) ? 0 : selectedSourceIsFile.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ShowCompareDataFormResponse other = (ShowCompareDataFormResponse) obj;
-		if (this.capitalsourceTransports == null) {
+		ShowCompareDataFormResponse other = (ShowCompareDataFormResponse) obj;
+		if (capitalsourceTransports == null) {
 			if (other.capitalsourceTransports != null) {
 				return false;
 			}
-		} else if (!this.capitalsourceTransports.equals(other.capitalsourceTransports)) {
+		} else if (!capitalsourceTransports.equals(other.capitalsourceTransports)) {
 			return false;
 		}
-		if (this.compareDataFormatTransports == null) {
+		if (compareDataFormatTransports == null) {
 			if (other.compareDataFormatTransports != null) {
 				return false;
 			}
-		} else if (!this.compareDataFormatTransports.equals(other.compareDataFormatTransports)) {
+		} else if (!compareDataFormatTransports.equals(other.compareDataFormatTransports)) {
 			return false;
 		}
-		if (this.selectedCapitalsourceId == null) {
+		if (selectedCapitalsourceId == null) {
 			if (other.selectedCapitalsourceId != null) {
 				return false;
 			}
-		} else if (!this.selectedCapitalsourceId.equals(other.selectedCapitalsourceId)) {
+		} else if (!selectedCapitalsourceId.equals(other.selectedCapitalsourceId)) {
 			return false;
 		}
-		if (this.selectedDataFormat == null) {
+		if (selectedDataFormat == null) {
 			if (other.selectedDataFormat != null) {
 				return false;
 			}
-		} else if (!this.selectedDataFormat.equals(other.selectedDataFormat)) {
+		} else if (!selectedDataFormat.equals(other.selectedDataFormat)) {
+			return false;
+		}
+		if (selectedSourceIsFile == null) {
+			if (other.selectedSourceIsFile != null) {
+				return false;
+			}
+		} else if (!selectedSourceIsFile.equals(other.selectedSourceIsFile)) {
 			return false;
 		}
 		return true;
@@ -136,15 +149,17 @@ public class ShowCompareDataFormResponse extends AbstractResponse {
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("ShowCompareDataFormResponse [compareDataFormatTransports=");
-		builder.append(this.compareDataFormatTransports);
+		builder.append(compareDataFormatTransports);
 		builder.append(", capitalsourceTransports=");
-		builder.append(this.capitalsourceTransports);
+		builder.append(capitalsourceTransports);
 		builder.append(", selectedCapitalsourceId=");
-		builder.append(this.selectedCapitalsourceId);
+		builder.append(selectedCapitalsourceId);
 		builder.append(", selectedDataFormat=");
-		builder.append(this.selectedDataFormat);
+		builder.append(selectedDataFormat);
+		builder.append(", selectedSourceIsFile=");
+		builder.append(selectedSourceIsFile);
 		builder.append("]");
 		return builder.toString();
 	}
