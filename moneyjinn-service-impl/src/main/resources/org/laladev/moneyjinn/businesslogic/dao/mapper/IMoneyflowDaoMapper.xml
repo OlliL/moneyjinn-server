@@ -133,6 +133,14 @@
 		       )
 	</select>
 	
+	<select id="getAllMoneyflowsByDateRangeIncludingPrivate"
+		resultType="org.laladev.moneyjinn.businesslogic.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
+		   AND maf_id              = #{userId}
+	</select>
+	
 	<select id="monthHasMoneyflows" resultType="java.lang.Boolean">
 		SELECT 1
 		  FROM vw_moneyflows

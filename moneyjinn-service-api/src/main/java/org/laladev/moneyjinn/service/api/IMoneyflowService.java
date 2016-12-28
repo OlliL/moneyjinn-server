@@ -50,9 +50,8 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  * </p>
  *
  * <p>
- * MoneyflowService is the Service handling operations around an {@link Moneyflow} like getting,
- * creating, updating, deleting. Before a {@link Moneyflow} is created or updated, the
- * {@link Moneyflow} is validated for correctness.
+ * MoneyflowService is the Service handling operations around an {@link Moneyflow} like getting, creating, updating, deleting. Before a
+ * {@link Moneyflow} is created or updated, the {@link Moneyflow} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>moneyflows</code>.
@@ -94,8 +93,7 @@ public interface IMoneyflowService {
 	public Moneyflow getMoneyflowById(UserID userId, MoneyflowID moneyflowId);
 
 	/**
-	 * This service changes a {@link Moneyflow}. Before the {@link Moneyflow} is changed, the new
-	 * values are validated for correctness.
+	 * This service changes a {@link Moneyflow}. Before the {@link Moneyflow} is changed, the new values are validated for correctness.
 	 *
 	 * @param moneyflow
 	 *            the new {@link Moneyflow} attributes
@@ -113,8 +111,7 @@ public interface IMoneyflowService {
 	public void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 
 	/**
-	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}
-	 * during a defined period of time.
+	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID} during a defined period of time.
 	 *
 	 * @param userId
 	 * @param dateFrom
@@ -122,8 +119,7 @@ public interface IMoneyflowService {
 	 * @param capitalsourceId
 	 * @return
 	 */
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(UserID userId, LocalDate dateFrom, LocalDate dateTil,
-			CapitalsourceID capitalsourceId);
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(UserID userId, LocalDate dateFrom, LocalDate dateTil, CapitalsourceID capitalsourceId);
 
 	/**
 	 * Returns all years {@link Moneyflow}s are created in.
@@ -153,8 +149,17 @@ public interface IMoneyflowService {
 	public List<Moneyflow> getAllMoneyflowsByDateRange(UserID userId, LocalDate dateFrom, LocalDate dateTil);
 
 	/**
-	 * Returns true if the given Year/Month combination contains {@link Moneyflow}s. False
-	 * otherwise.
+	 * Returns all {@link Moneyflow}s which Bookingdate is in the defined Daterange. Including also the "private" marked flows.
+	 *
+	 * @param userId
+	 * @param dateFrom
+	 * @param dateTil
+	 * @return
+	 */
+	public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(UserID userId, LocalDate dateFrom, LocalDate dateTil);
+
+	/**
+	 * Returns true if the given Year/Month combination contains {@link Moneyflow}s. False otherwise.
 	 *
 	 * @param userId
 	 * @param year
@@ -164,8 +169,7 @@ public interface IMoneyflowService {
 	public boolean monthHasMoneyflows(UserID userId, Short year, Month month);
 
 	/**
-	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}s
-	 * during a defined period of time.
+	 * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}s during a defined period of time.
 	 *
 	 * @param userId
 	 * @param dateFrom
@@ -173,8 +177,7 @@ public interface IMoneyflowService {
 	 * @param capitalsourceIds
 	 * @return
 	 */
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(UserID userId, LocalDate dateFrom, LocalDate dateTil,
-			List<CapitalsourceID> capitalsourceIds);
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(UserID userId, LocalDate dateFrom, LocalDate dateTil, List<CapitalsourceID> capitalsourceIds);
 
 	/**
 	 * Retrives the highest date of all recored {@link Moneyflow}s.
@@ -203,8 +206,7 @@ public interface IMoneyflowService {
 	public LocalDate getNextMoneyflowDate(UserID userId, LocalDate date);
 
 	/**
-	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s,
-	 * years and months.
+	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s, years and months.
 	 *
 	 * @param userId
 	 * @param postingAccountIds
@@ -212,12 +214,11 @@ public interface IMoneyflowService {
 	 * @param endDate
 	 * @return
 	 */
-	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(UserID userId,
-			List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(UserID userId, List<PostingAccountID> postingAccountIds,
+			LocalDate dateFrom, LocalDate dateTil);
 
 	/**
-	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s,
-	 * years.
+	 * Returns the amount of all recorded {@link Moneyflow}s grouped by {@link PostingAccount}s, years.
 	 *
 	 * @param userId
 	 * @param postingAccountIds
@@ -225,12 +226,11 @@ public interface IMoneyflowService {
 	 * @param endDate
 	 * @return
 	 */
-	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId,
-			List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
+	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId, List<PostingAccountID> postingAccountIds,
+			LocalDate dateFrom, LocalDate dateTil);
 
 	/**
-	 * Searches for {@link Moneyflow}s with the given amount and the given bookingDate +/- the given
-	 * search period in days
+	 * Searches for {@link Moneyflow}s with the given amount and the given bookingDate +/- the given search period in days
 	 *
 	 * @param userId
 	 * @param bookingDate
@@ -238,12 +238,10 @@ public interface IMoneyflowService {
 	 * @param searchPeriod
 	 * @return
 	 */
-	public List<Moneyflow> searchMoneyflowsByAmountDate(UserID userId, LocalDate bookingDate, BigDecimal amount,
-			Period searchPeriod);
+	public List<Moneyflow> searchMoneyflowsByAmountDate(UserID userId, LocalDate bookingDate, BigDecimal amount, Period searchPeriod);
 
 	/**
-	 * Returns all {@link Moneyflow}s in the given timeframe recorded for the given
-	 * {@link CapitalsourceID}.
+	 * Returns all {@link Moneyflow}s in the given timeframe recorded for the given {@link CapitalsourceID}.
 	 *
 	 * @param userId
 	 * @param startDate
@@ -251,16 +249,15 @@ public interface IMoneyflowService {
 	 * @param capitalsourceId
 	 * @return
 	 */
-	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(UserID userId, LocalDate dateFrom,
-			LocalDate dateTil, CapitalsourceID capitalsourceId);
+	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(UserID userId, LocalDate dateFrom, LocalDate dateTil, CapitalsourceID capitalsourceId);
 
 	/**
-	 * Searches for {@link Moneyflow}s and aggregates them. The search is mostly affected by the
-	 * given Params Object.
+	 * Searches for {@link Moneyflow}s and aggregates them. The search is mostly affected by the given Params Object.
 	 *
 	 * @param userId
 	 * @param moneyflowSearchParams
 	 * @return
 	 */
 	public List<MoneyflowSearchResult> searchMoneyflows(UserID userId, MoneyflowSearchParams moneyflowSearchParams);
+
 }
