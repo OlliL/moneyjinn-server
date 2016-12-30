@@ -33,7 +33,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootConfiguration
 @Configuration
-@ComponentScan(value = "org.laladev")
+@ComponentScan(value = { "org.laladev.moneyjinn.service", "org.laladev.moneyjinn.server" })
 @EnableAspectJAutoProxy
 @EnableAutoConfiguration
 public class MoneyjinnConfiguration {

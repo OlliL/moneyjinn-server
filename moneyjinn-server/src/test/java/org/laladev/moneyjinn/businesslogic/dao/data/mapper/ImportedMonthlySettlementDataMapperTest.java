@@ -4,10 +4,11 @@ import java.time.Month;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
+import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
 
 public class ImportedMonthlySettlementDataMapperTest {
 	@Test

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper">
+
+	<sql id="importedMoneyflowColumns">
+		 impmoneyflowid      AS id
+		,externalid	         AS externalId
+		,mcs_capitalsourceid AS mcsCapitalsourceId
+		,bookingdate
+		,invoicedate
+		,name
+		,accountnumber       AS accountNumber
+		,bankcode            AS bankCode
+		,comment
+		,amount
+		,status
+	</sql>
+
+	<select id="countImportedMoneyflows" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM impmoneyflows
+		 WHERE mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="capitalsourceIds" open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+		   <if test="status != null">
+		   	AND status = #{status} 
+		   </if>
+	</select>
+    	
+    	
+	<select id="getAllImportedMoneyflowsByCapitalsourceIds"
+		resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+		SELECT <include refid="importedMoneyflowColumns" />
+		  FROM impmoneyflows
+		 WHERE mcs_capitalsourceid IN 
+		   <foreach item="mcsCapitalsourceId" index="index" collection="capitalsourceIds" open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+		   <if test="status != null">
+		   	AND status = #{status} 
+		   </if>
+		   <if test="dateFrom != null and dateTil != null">
+		   	AND bookingdate between #{dateFrom} AND #{dateTil} 
+		   </if>
+	</select>
+
+	<delete id="deleteImportedMoneyflowById">
+		DELETE
+		  FROM impmoneyflows
+		 WHERE impmoneyflowid = #{id}
+		 LIMIT 1
+	</delete>
+     	
+	<update id="updateImportedMoneyflowStatus">
+		UPDATE impmoneyflows
+		   SET status = #{status}
+		 WHERE impmoneyflowid = #{id}
+		 LIMIT 1
+	</update>
+     	
+	<insert id="createImportedMoneyflow"
+		parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+		INSERT
+		  INTO impmoneyflows
+		      (externalid
+		      ,mcs_capitalsourceid
+		      ,bookingdate
+		      ,invoicedate
+		      ,name
+		      ,accountnumber
+		      ,bankcode
+		      ,comment
+		      ,amount
+		      ,status
+		      )
+		VALUES
+		      (#{externalId}
+		      ,#{mcsCapitalsourceId}
+		      ,#{bookingdate}
+		      ,#{invoicedate}
+		      ,#{name}
+		      ,#{accountNumber}
+		      ,#{bankCode}
+		      ,#{comment}
+		      ,#{amount}
+		      ,0
+		      )
+	</insert>
+
+	<select id="checkIfExternalIdAlreadyExists" resultType="java.lang.Boolean">
+		SELECT 1
+		  FROM impmoneyflows
+		 WHERE externalId = #{externalId}
+		 LIMIT 1	
+	</select>
+
+</mapper>
+ 

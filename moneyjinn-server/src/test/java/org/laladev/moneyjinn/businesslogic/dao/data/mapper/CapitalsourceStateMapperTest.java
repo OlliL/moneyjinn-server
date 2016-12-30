@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceStateMapper;
 
 public class CapitalsourceStateMapperTest {
 	@Test

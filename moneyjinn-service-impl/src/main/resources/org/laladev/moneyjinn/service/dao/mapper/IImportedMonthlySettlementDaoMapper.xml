@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMonthlySettlementDaoMapper">
+
+    	<sql id="importedMonthlySettlementsColumns">
+		 impmonthlysettlementid	AS id
+		,year
+		,month
+		,amount
+		,mcs_capitalsourceid	AS mcsCapitalsourceId
+		,externalid		AS externalId
+	</sql>
+    
+     	<select id="getImportedMonthlySettlementsByMonth"
+		resultType="org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData">
+		SELECT <include refid="importedMonthlySettlementsColumns" />
+		  FROM impmonthlysettlements
+		 WHERE month  = #{month}
+		   AND year   = #{year}
+	</select>
+
+    	<insert id="upsertImportedMonthlySettlement"
+		parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="impmonthlysettlementid">
+		INSERT
+		  INTO impmonthlysettlements
+		      (externalid
+		      ,mcs_capitalsourceid
+		      ,month
+		      ,year
+		      ,amount
+		      )
+		VALUES
+		      (#{externalId}
+		      ,#{mcsCapitalsourceId}
+		      ,#{month}
+		      ,#{year}
+		      ,#{amount}
+		      )
+		    ON DUPLICATE KEY
+		UPDATE amount = VALUES(amount)
+	</insert>
+
+</mapper>
+ 

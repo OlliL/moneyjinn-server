@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper">
+
+	<sql id="userColumns">
+		 id
+		,name
+		,password
+		,perm_login          as permLogin
+		,perm_admin          as permAdmin
+		,att_change_password as attChangePassword
+	</sql>
+
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+
+		SELECT <include refid="userColumns" />
+		  FROM access
+		 WHERE id = #{id}
+		   AND att_user = 1
+		 LIMIT 1
+	</select>
+
+	<select id="getUserByName" parameterType="java.lang.String"
+		resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+
+		SELECT <include refid="userColumns" />
+		  FROM access
+		 WHERE name = #{name}
+		   AND att_user = 1
+		 LIMIT 1
+	</select>
+	
+	<select id="getAllUserInitials" resultType="java.lang.Character">
+		SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
+		  FROM access
+		 WHERE att_user = 1
+		 ORDER BY letters
+	</select>
+	
+	<select id="countAllUsers" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM access
+		 WHERE att_user = 1
+	</select>
+
+	<select id="getAllUsers" 
+		resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+
+		SELECT <include refid="userColumns" />
+		  FROM access
+		 WHERE att_user = 1
+	</select>
+
+	<select id="getAllUsersByInitial" parameterType="java.lang.Character" 
+		resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+
+		SELECT <include refid="userColumns" />
+		  FROM access
+		 WHERE att_user = 1
+		   AND UPPER(name) LIKE CONCAT(UPPER(#{initial}),'%')
+	</select>
+	
+	<insert id="createUser"
+		parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT
+		  INTO access
+		      (name
+		      ,password
+		      ,perm_login
+		      ,perm_admin
+		      ,att_change_password
+		      ,att_user
+		      )
+		VALUES
+		      (#{name}
+		      ,#{password}
+		      ,#{permLogin}
+		      ,#{permAdmin}
+		      ,1
+		      ,1
+		      )
+	</insert>
+	
+	<update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
+		UPDATE access
+		   SET name                = #{name}
+		      ,perm_login          = #{permLogin}
+		      ,perm_admin          = #{permAdmin}
+		      ,att_change_password = #{attChangePassword}
+		 WHERE att_user = 1
+		   AND id       = #{id}
+		 LIMIT 1
+	</update>
+	
+	<update id="setPassword">
+		UPDATE access
+		   SET password            = #{password}
+		      ,att_change_password = 0
+		WHERE att_user = 1
+		  AND id       = #{userId}
+		LIMIT 1
+	</update>
+	
+	<update id="resetPassword">
+		UPDATE access
+		   SET password            = #{password}
+		      ,att_change_password = 1
+		 WHERE att_user = 1
+		   AND id       = #{userId}
+		 LIMIT 1	    
+	</update>
+		
+	<delete id="deleteUser">
+		DELETE
+		  FROM access
+		 WHERE att_user = 1
+		   AND id       = #{userId}
+		 LIMIT 1
+	</delete>
+	
+</mapper>
+ 

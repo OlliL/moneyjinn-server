@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper">
+
+    	<sql id="monthlySettlementsColumns">
+		 monthlysettlementid	AS id
+		,mac_id_creator		AS macIdCreator
+		,year
+		,month
+		,amount
+		,mcs_capitalsourceid	AS mcsCapitalsourceId
+	</sql>
+    
+    	<select id="getAllYears" resultType="java.lang.Short">
+		SELECT DISTINCT year
+		  FROM vw_monthlysettlements
+		 WHERE maf_id = #{userId}
+		 ORDER BY year ASC
+	</select>
+	
+    	<select id="getAllMonth" resultType="java.lang.Short">
+		SELECT DISTINCT month
+		  FROM vw_monthlysettlements
+		 WHERE maf_id = #{userId}
+		   AND year   = #{year}
+		 ORDER BY month ASC
+	</select>
+    			
+     	<select id="getAllMonthlySettlementsByYearMonth"
+		resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
+		SELECT <include refid="monthlySettlementsColumns" />
+		  FROM vw_monthlysettlements
+		 WHERE month  = #{month}
+		   AND year   = #{year}
+		   AND maf_id = #{userId}
+		 ORDER BY CASE WHEN mac_id_creator = #{userId} THEN 1 ELSE 2 END
+		      ,mcs_capitalsourceid
+	</select>
+
+	<select id="checkMonthlySettlementsExists" resultType="java.lang.Short">
+		SELECT 1
+		  FROM monthlysettlements
+		 WHERE mac_id_creator = #{userId}
+		   AND year           = #{year}
+		   AND month          = #{month}
+		 LIMIT 1
+	</select>
+
+	<select id="getMaxSettlementDate" resultType="java.time.LocalDate">
+		SELECT CONCAT(
+		              CONCAT(
+		                     CONCAT(year
+		                           ,'-')
+		                    ,LPAD(month,2,'0'))
+		             ,'-01')
+		           
+		  FROM monthlysettlements
+		 WHERE mac_id_creator = #{userId}
+		 ORDER BY year  DESC
+		        , month DESC
+		 LIMIT 1
+	</select>
+	
+    	<insert id="upsertMonthlySettlement"
+		parameterType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
+		INSERT
+		  INTO monthlysettlements
+		      (mac_id_creator
+		      ,mac_id_accessor
+		      ,mcs_capitalsourceid
+		      ,month
+		      ,year
+		      ,amount
+		      )
+		VALUES
+		      (#{macIdCreator}
+		      ,#{macIdAccessor}
+		      ,#{mcsCapitalsourceId}
+		      ,#{month}
+		      ,#{year}
+		      ,#{amount}
+		      )
+		    ON DUPLICATE KEY
+		UPDATE amount = VALUES(amount)
+	</insert>
+
+	<delete id="deleteMonthlySettlement">
+		DELETE
+		  FROM monthlysettlements
+		 WHERE mac_id_creator = #{userId}
+		   AND year           = #{year}
+		   AND month          = #{month}
+	</delete>
+
+	<select id="getAllMonthlySettlementsByRangeAndCapitalsource"
+		resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
+		SELECT <include refid="monthlySettlementsColumns" />
+		  FROM vw_monthlysettlements
+		 WHERE (
+		              year >  #{startYear} AND year   <![CDATA[ < ]]>  #{endYear}
+		           OR year =  #{startYear} AND month  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR year =  #{endYear}   AND month  <![CDATA[ <= ]]> #{endMonth}   AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR year =  #{startYear} AND month BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
+		       )
+		   AND mcs_capitalsourceid IN
+		   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
+		      open="(" separator="," close=")">
+		        #{mcsCapitalsourceId}
+		   </foreach>
+		   AND maf_id              = #{userId}
+		 ORDER BY year
+		         ,month
+		         ,CASE WHEN mac_id_creator = #{userId} THEN 1 ELSE 2 END
+		         ,mcs_capitalsourceid
+	</select>
+	
+</mapper>
+ 

@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.service.impl.SettingService;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
@@ -20,6 +19,7 @@ import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 

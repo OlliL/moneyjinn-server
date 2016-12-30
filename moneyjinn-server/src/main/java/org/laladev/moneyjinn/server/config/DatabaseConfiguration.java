@@ -37,7 +37,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@MapperScan("org.laladev.moneyjinn.businesslogic.dao.mapper")
+@MapperScan("org.laladev.moneyjinn.service.dao.mapper")
 public class DatabaseConfiguration {
 	@Inject
 	private DataSource pool;
@@ -49,8 +49,8 @@ public class DatabaseConfiguration {
 		sqlSessionFactoryBean.setDataSource(this.pool);
 
 		final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		sqlSessionFactoryBean.setMapperLocations(
-				resolver.getResources("classpath:org/laladev/moneyjinn/businesslogic/dao/mapper/*.xml"));
+		sqlSessionFactoryBean
+				.setMapperLocations(resolver.getResources("classpath:org/laladev/moneyjinn/service/dao/mapper/*.xml"));
 
 		return sqlSessionFactoryBean.getObject();
 	}

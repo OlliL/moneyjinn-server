@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IPostingAccountDaoMapper">
+
+    	<sql id="postingAccountColumns">
+		 postingaccountid    AS id
+		,postingaccountname  AS name
+	</sql>
+    
+    	<select id="getPostingAccountById" parameterType="java.lang.Long"
+		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
+		SELECT <include refid="postingAccountColumns" />
+		  FROM postingaccounts
+		 WHERE postingaccountid = #{id}
+		 LIMIT 1
+	</select>
+
+	<select id="getPostingAccountByName" parameterType="java.lang.String"
+		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
+
+		SELECT <include refid="postingAccountColumns" />
+		  FROM postingaccounts
+		 WHERE postingaccountname = #{name}
+		 LIMIT 1
+	</select>
+    	
+	<select id="getAllPostingAccountInitials" resultType="java.lang.Character">
+		SELECT DISTINCT UPPER(SUBSTR(postingaccountname,1,1)) letters
+		  FROM postingaccounts
+		 ORDER BY letters
+	</select>
+	
+	<select id="countAllPostingAccounts" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM postingaccounts
+	</select>
+
+	<select id="getAllPostingAccounts"
+		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
+		SELECT <include refid="postingAccountColumns" />
+		  FROM postingaccounts
+		 ORDER BY postingaccountname
+	</select>
+	
+	<select id="getAllPostingAccountsByInitial" parameterType="java.lang.Character" 
+		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
+
+		SELECT <include refid="postingAccountColumns" />
+		  FROM postingaccounts
+		 WHERE UPPER(postingaccountname) LIKE CONCAT(UPPER(#{initial}),'%')
+	</select>
+	
+	<insert id="createPostingAccount"
+		parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="postingaccountid">
+		INSERT
+		  INTO postingaccounts
+		      (postingaccountname
+		      )
+		VALUES
+		      (#{name}
+		      )
+	</insert>
+	
+	<update id="updatePostingAccount" parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
+		UPDATE postingaccounts
+		   SET postingaccountname = #{name}
+		 WHERE postingaccountid   = #{id}
+		 LIMIT 1
+	</update>
+	
+
+	<delete id="deletePostingAccount">
+		DELETE
+		  FROM postingaccounts
+		 WHERE postingaccountid = #{id}
+		 LIMIT 1
+	</delete>
+			
+</mapper>
+ 

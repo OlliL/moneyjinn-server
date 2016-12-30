@@ -4,9 +4,10 @@ import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.laladev.moneyjinn.businesslogic.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
+import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
+import org.laladev.moneyjinn.service.dao.data.mapper.AccessFlattenedDataMapper;
 
 public class AccessFlattenedDataMapperTest {
 	@Test
