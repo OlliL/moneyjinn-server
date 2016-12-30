@@ -23,6 +23,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.DateUtil;
@@ -34,6 +35,7 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -41,6 +43,8 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	@Inject
 	IMoneyflowService moneyflowService;
+	@Inject
+	IMoneyflowSplitEntryService moneyflowSplitEntryService;
 
 	@Inject
 	IAccessRelationService accessRelationService;
@@ -550,6 +554,130 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, null, null, null, null, Arrays.asList(mseTransport), mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	@Test
+	public void test_SplitEntries_DeleteUpdateInsert_ChangesDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		request.setMoneyflowTransport(transport);
+
+		request.setDeleteMoneyflowSplitEntryIds(Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+
+		final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		updateTransport.setAmount(new BigDecimal("-0.60"));
+		request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+
+		final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build();
+		insertTransport.setAmount(new BigDecimal("-0.50"));
+		insertTransport.setComment("inserted");
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.60"));
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-0.50"));
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
+	}
+
+	@Test
+	public void test_SplitEntries_DeleteUpdate_ChangeDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		request.setMoneyflowTransport(transport);
+
+		request.setDeleteMoneyflowSplitEntryIds(Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+
+		final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build();
+		updateTransport.setAmount(new BigDecimal("-1.10"));
+		request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-1.10"));
+	}
+
+	@Test
+	public void test_SplitEntries_DeleteInsert_ChangesDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		request.setMoneyflowTransport(transport);
+
+		request.setDeleteMoneyflowSplitEntryIds(Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+
+		final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build();
+		insertTransport.setAmount(new BigDecimal("-1.00"));
+		insertTransport.setComment("inserted");
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.10"));
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-1.00"));
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_ChangesDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build();
+		insertTransport.setAmount(new BigDecimal("10.10"));
+		insertTransport.setComment("inserted");
+		insertTransport.setMoneyflowid(moneyflowId.getId());
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
+	}
+
+	@Test
+	public void test_SplitEntries_Delete_ChangesDone() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		request.setMoneyflowTransport(transport);
+
+		request.setDeleteMoneyflowSplitEntryIds(
+				Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID, MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertTrue(moneyflowSplitEntries.isEmpty());
 	}
 
 	@Test
