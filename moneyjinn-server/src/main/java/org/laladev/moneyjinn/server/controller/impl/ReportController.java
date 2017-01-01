@@ -455,9 +455,11 @@ public class ReportController extends AbstractController {
 				final Month prevMonthSettlement = beginOfPrevMonth.getMonth();
 				final Short prevYearSettlement = (short) beginOfPrevMonth.getYear();
 
-				moneyflows = this.moneyflowService.getAllMoneyflowsByDateRange(userId, beginOfMonth, endOfMonth);
+				moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId, beginOfMonth,
+						endOfMonth);
 
-				final List<MoneyflowID> moneyflowIds = moneyflows.stream().map(Moneyflow::getId)
+				final List<MoneyflowID> moneyflowIds = moneyflows.stream()
+						.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId)).map(Moneyflow::getId)
 						.collect(Collectors.toCollection(ArrayList::new));
 				moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowIds);
 
@@ -659,7 +661,12 @@ public class ReportController extends AbstractController {
 		}
 
 		if (moneyflows != null && !moneyflows.isEmpty()) {
-			response.setMoneyflowTransports(super.mapList(moneyflows, MoneyflowTransport.class));
+			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
+					.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
+					.map(mf -> super.map(mf, MoneyflowTransport.class))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			response.setMoneyflowTransports(moneyflowTransports);
 
 			if (!moneyflowSplitEntries.isEmpty()) {
 				final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
