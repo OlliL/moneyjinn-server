@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS postingaccounts;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE postingaccounts (
   postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  postingaccountname varchar(20) COLLATE utf8_bin NOT NULL,
+  postingaccountname varchar(60) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (postingaccountid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mpa';
 /*!40101 SET character_set_client = @saved_cs_client */;
