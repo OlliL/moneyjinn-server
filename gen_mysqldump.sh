@@ -21,6 +21,7 @@ mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --de
 	contractpartneraccounts \
 	moneyflows \
 	moneyflowsplitentries \
+	moneyflowreceipts \
 	monthlysettlements \
 	predefmoneyflows \
 	impbalance \

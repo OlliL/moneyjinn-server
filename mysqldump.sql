@@ -250,6 +250,23 @@ CREATE TABLE moneyflowsplitentries (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `moneyflowreceipts`
+--
+
+DROP TABLE IF EXISTS moneyflowreceipts;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE moneyflowreceipts (
+  moneyflowreceiptid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mmf_moneyflowid int(10) unsigned NOT NULL,
+  receipt mediumblob NOT NULL,
+  PRIMARY KEY (moneyflowreceiptid),
+  KEY mrp_mmf_pk (mmf_moneyflowid),
+  CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mrp';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `monthlysettlements`
 --
 
@@ -455,7 +472,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-31 10:27:36
+-- Dump completed on 2017-01-01 19:28:30
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',2,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

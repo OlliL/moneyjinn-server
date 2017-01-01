@@ -84,6 +84,7 @@ import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransp
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
+import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
@@ -106,6 +107,8 @@ public class ReportController extends AbstractController {
 	private IMoneyflowService moneyflowService;
 	@Inject
 	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	@Inject
+	private IMoneyflowReceiptService moneyflowReceiptService;
 	@Inject
 	private ICapitalsourceService capitalsourceService;
 	@Inject
@@ -428,6 +431,7 @@ public class ReportController extends AbstractController {
 		Short nextYear = null;
 		final Map<CapitalsourceID, MonthlySettlement> newCapitalsourcesSettled = new HashMap<>();
 		Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = new HashMap<>();
+		List<MoneyflowID> moneyflowIdsWithReceipts = new ArrayList<>();
 		List<Month> allMonth = null;
 
 		Short year = requestYear;
@@ -458,10 +462,14 @@ public class ReportController extends AbstractController {
 				moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId, beginOfMonth,
 						endOfMonth);
 
-				final List<MoneyflowID> moneyflowIds = moneyflows.stream()
+				final List<MoneyflowID> relevantMoneyflowIds = moneyflows.stream()
 						.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId)).map(Moneyflow::getId)
 						.collect(Collectors.toCollection(ArrayList::new));
-				moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowIds);
+
+				moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId,
+						relevantMoneyflowIds);
+				moneyflowIdsWithReceipts = this.moneyflowReceiptService.getMoneyflowIdsWithReceipt(userId,
+						relevantMoneyflowIds);
 
 				final List<MonthlySettlement> settlementsPrevMonth = this.monthlySettlementService
 						.getAllMonthlySettlementsByYearMonth(userId, prevYearSettlement, prevMonthSettlement);
@@ -674,6 +682,12 @@ public class ReportController extends AbstractController {
 
 				response.setMoneyflowSplitEntryTransports(
 						super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+			}
+
+			if (!moneyflowIdsWithReceipts.isEmpty()) {
+				final List<Long> moneyflowIdLongs = moneyflowIdsWithReceipts.stream().map(MoneyflowID::getId)
+						.collect(Collectors.toCollection(ArrayList::new));
+				response.setMoneyflowsWithReceipt(moneyflowIdLongs);
 			}
 		}
 

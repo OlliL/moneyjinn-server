@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS postingaccounts;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE postingaccounts (
   postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  postingaccountname varchar(20) NOT NULL,
+  postingaccountname varchar(60) NOT NULL,
   PRIMARY KEY (postingaccountid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -246,6 +246,23 @@ CREATE TABLE moneyflowsplitentries (
   KEY mse_mpa_pk (mpa_postingaccountid),
   CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid),
   CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `moneyflowreceipts`
+--
+
+DROP TABLE IF EXISTS moneyflowreceipts;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE moneyflowreceipts (
+  moneyflowreceiptid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mmf_moneyflowid int(10) unsigned NOT NULL,
+  receipt mediumblob NOT NULL,
+  PRIMARY KEY (moneyflowreceiptid),
+  KEY mrp_mmf_pk (mmf_moneyflowid),
+  CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

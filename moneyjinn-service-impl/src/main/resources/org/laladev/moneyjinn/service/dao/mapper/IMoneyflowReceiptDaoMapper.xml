@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowReceiptDaoMapper">
+
+	<resultMap id="moneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData">
+		<result property="id"             javaType="java.lang.Long" column="id"             />
+		<result property="mmfMoneyflowId" javaType="java.lang.Long" column="mmfMoneyflowId" />
+		<result property="receipt"        javaType="_byte[]"        column="blob_Data"      jdbcType="BLOB"/>
+	</resultMap>
+  
+    	<sql id="moneyflowReceiptColumns">
+		 moneyflowreceiptid AS id
+		,mmf_moneyflowid    AS mmfMoneyflowId
+		,receipt
+	</sql>
+    	
+	<select id="getMoneyflowReceipt" 
+		resultMap="moneyflowReceiptMap">
+		SELECT <include refid="moneyflowReceiptColumns" />
+		  FROM moneyflowreceipts
+		 WHERE mmf_moneyflowid = #{moneyflowId}
+	</select>
+
+	<select id="getMoneyflowIdsWithReceipt" resultType="java.lang.Long">
+		SELECT mmf_moneyflowid
+		  FROM moneyflowreceipts
+		 WHERE mmf_moneyflowid  IN 
+		   <foreach item="moneyflowId" index="index" collection="moneyflowIds" open="(" separator="," close=")">
+		        #{moneyflowId}
+		   </foreach>
+	</select>
+</mapper>
