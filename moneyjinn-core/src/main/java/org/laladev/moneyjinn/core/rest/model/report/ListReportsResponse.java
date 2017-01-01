@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2017 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,7 @@ public class ListReportsResponse {
 	private Short previousYear;
 	private Short nextMonth;
 	private Short nextYear;
+	private List<Long> moneyflowsWithReceipt;
 
 	public final List<MoneyflowTransport> getMoneyflowTransports() {
 		return this.moneyflowTransports;
@@ -179,6 +180,14 @@ public class ListReportsResponse {
 		this.nextYear = nextYear;
 	}
 
+	public final List<Long> getMoneyflowsWithReceipt() {
+		return this.moneyflowsWithReceipt;
+	}
+
+	public final void setMoneyflowsWithReceipt(final List<Long> moneyflowsWithReceipt) {
+		this.moneyflowsWithReceipt = moneyflowsWithReceipt;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -189,6 +198,7 @@ public class ListReportsResponse {
 		result = prime * result
 				+ ((this.moneyflowSplitEntryTransports == null) ? 0 : this.moneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
+		result = prime * result + ((this.moneyflowsWithReceipt == null) ? 0 : this.moneyflowsWithReceipt.hashCode());
 		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
 		result = prime * result + ((this.nextMonth == null) ? 0 : this.nextMonth.hashCode());
 		result = prime * result + ((this.nextMonthHasMoneyflows == null) ? 0 : this.nextMonthHasMoneyflows.hashCode());
@@ -250,6 +260,13 @@ public class ListReportsResponse {
 				return false;
 			}
 		} else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
+			return false;
+		}
+		if (this.moneyflowsWithReceipt == null) {
+			if (other.moneyflowsWithReceipt != null) {
+				return false;
+			}
+		} else if (!this.moneyflowsWithReceipt.equals(other.moneyflowsWithReceipt)) {
 			return false;
 		}
 		if (this.month == null) {
@@ -358,6 +375,8 @@ public class ListReportsResponse {
 		builder.append(this.nextMonth);
 		builder.append(", nextYear=");
 		builder.append(this.nextYear);
+		builder.append(", moneyflowsWithReceipt=");
+		builder.append(this.moneyflowsWithReceipt);
 		builder.append("]");
 		return builder.toString();
 	}
