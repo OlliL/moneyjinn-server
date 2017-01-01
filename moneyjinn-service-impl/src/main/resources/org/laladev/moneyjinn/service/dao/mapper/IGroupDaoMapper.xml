@@ -69,9 +69,15 @@
 		  INTO access
 		      (name
 		      ,att_user
+		      ,att_change_password
+		      ,perm_login
+		      ,perm_admin
 		      )
 		VALUES
 		      (#{name}
+		      ,0
+		      ,0
+		      ,0
 		      ,0
 		      )
 	</insert>

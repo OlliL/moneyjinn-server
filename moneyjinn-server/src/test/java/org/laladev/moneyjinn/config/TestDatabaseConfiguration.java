@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.config;
 import javax.sql.DataSource;
 
 import org.h2.Driver;
+import org.h2.engine.Mode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,10 @@ public class TestDatabaseConfiguration {
 	}
 
 	private SimpleDriverDataSource simpleDriverDataSource() {
+
+		final Mode mode = Mode.getInstance("MYSQL");
+		mode.convertInsertNullToZero = false;
+
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(Driver.class);
 		ds.setUrl("jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
