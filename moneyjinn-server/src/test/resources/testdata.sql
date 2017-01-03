@@ -114,6 +114,8 @@ INSERT INTO `moneyflows` VALUES (19,3,6,'2010-05-01','2010-05-01',-5.00,2,2,'gen
 INSERT INTO moneyflowsplitentries VALUES (1,1,-1,'split1',1);
 INSERT INTO moneyflowsplitentries VALUES (2,1,-.1,'split2',2);
 
+INSERT INTO moneyflowreceipts VALUES (1,1,'FFFFFFFF');
+
 INSERT INTO `monthlysettlements` VALUES (1,3,6,1,12,2008,10.00);
 INSERT INTO `monthlysettlements` VALUES (2,3,6,2,12,2008,100.00);
 INSERT INTO `monthlysettlements` VALUES (3,5,6,4,12,2008,1000.00);

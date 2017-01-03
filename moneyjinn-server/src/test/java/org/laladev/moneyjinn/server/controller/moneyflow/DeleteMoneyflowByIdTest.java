@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.junit.Assert;
@@ -9,10 +11,14 @@ import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -20,6 +26,10 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 	@Inject
 	IMoneyflowService moneyflowService;
+	@Inject
+	IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	@Inject
+	IMoneyflowReceiptService moneyflowReceiptService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;
@@ -57,9 +67,15 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, true, Object.class);
 
+		// Validate that everything was deleted (and do not rely on foreign key constraints)
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-
 		Assert.assertNull(moneyflow);
+
+		MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
+		Assert.assertNull(moneyflowReceipt);
+
+		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertTrue(moneyflowSplitEntries.isEmpty());
 	}
 
 	@Test
@@ -71,8 +87,7 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		Assert.assertNull(moneyflow);
 
-		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true,
-				Object.class);
+		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true, Object.class);
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 

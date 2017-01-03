@@ -84,6 +84,7 @@ import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMap
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
@@ -121,6 +122,8 @@ public class MoneyflowController extends AbstractController {
 	private IMoneyflowService moneyflowService;
 	@Inject
 	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	@Inject
+	private IMoneyflowReceiptService moneyflowReceiptService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -464,6 +467,7 @@ public class MoneyflowController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final MoneyflowID moneyflowId = new MoneyflowID(id);
 		this.moneyflowSplitEntryService.deleteMoneyflowSplitEntries(userId, moneyflowId);
+		this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
 		this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
 	}
 }

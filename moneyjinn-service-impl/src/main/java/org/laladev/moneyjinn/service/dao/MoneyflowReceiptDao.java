@@ -47,4 +47,8 @@ public class MoneyflowReceiptDao {
 	public List<Long> getMoneyflowIdsWithReceipt(final List<Long> moneyflowIds) {
 		return this.mapper.getMoneyflowIdsWithReceipt(moneyflowIds);
 	}
+
+	public void deleteMoneyflowReceipt(Long moneyflowId) {
+		this.mapper.deleteMoneyflowReceipt(moneyflowId);
+	}
 }

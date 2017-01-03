@@ -67,8 +67,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 		Assert.notNull(userId);
 		Assert.notNull(moneyflowId);
 
-		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
-				.getMoneyflowReceipt(moneyflowId.getId());
+		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao.getMoneyflowReceipt(moneyflowId.getId());
 		return this.mapMoneyflowReceiptData(moneyflowReceiptData);
 	}
 
@@ -77,18 +76,22 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 		Assert.notNull(userId);
 		Assert.notNull(moneyflowIds);
 
-		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
-				.collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
 
-		final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
-				.getMoneyflowIdsWithReceipt(moneyflowIdLongs);
+		final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao.getMoneyflowIdsWithReceipt(moneyflowIdLongs);
 
 		if (moneyflowIdsWithReceipt != null) {
-			return moneyflowIdsWithReceipt.stream().map(id -> new MoneyflowID(id))
-					.collect(Collectors.toCollection(ArrayList::new));
+			return moneyflowIdsWithReceipt.stream().map(id -> new MoneyflowID(id)).collect(Collectors.toCollection(ArrayList::new));
 		} else {
 			return new ArrayList<>();
 		}
+	}
+
+	@Override
+	public void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId) {
+		Assert.notNull(userId);
+		Assert.notNull(moneyflowId);
+		this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
 	}
 
 }

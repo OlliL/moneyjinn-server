@@ -29,4 +29,12 @@
 		        #{moneyflowId}
 		   </foreach>
 	</select>
+	
+	<delete id="deleteMoneyflowReceipt">
+		DELETE
+		  FROM moneyflowreceipts
+		 WHERE mmf_moneyflowid = #{id}
+		 LIMIT 1
+	</delete>
+
 </mapper>
