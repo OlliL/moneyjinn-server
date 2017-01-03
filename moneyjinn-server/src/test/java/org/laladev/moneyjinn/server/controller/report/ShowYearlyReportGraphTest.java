@@ -84,6 +84,19 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 
 	@SuppressWarnings("deprecation")
 	@Test
+	public void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
+		final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
+		request.setStartDate(new Date(70, 0, 1));
+		request.setEndDate(new Date(199, 11, 31));
+
+		final ShowYearlyReportGraphResponse expected = new ShowYearlyReportGraphResponse();
+
+		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false, ShowYearlyReportGraphResponse.class);
+		Assert.assertEquals(expected, actual);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
 	public void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 
