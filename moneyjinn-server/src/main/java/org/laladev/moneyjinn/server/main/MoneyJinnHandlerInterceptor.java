@@ -49,9 +49,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
- * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets the {@link HttpStatus} to 204 if the
- * {@link HttpServletResponse} body is empty.
- * 
+ * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets
+ * the {@link HttpStatus} to 204 if the {@link HttpServletResponse} body is empty.
+ *
  * @author olivleh1
  * @since 0.0.1
  */
@@ -67,83 +67,94 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 	private RESTAuthorization restAuthorization;
 	@Inject
 	private SessionEnvironment sessionEnvironment;
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT, Locale.US);
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT,
+			Locale.US);
 
 	@Override
-	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
+	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
+			throws Exception {
 
 		boolean requiresAuthorization = false;
 		boolean requiresAdmin = false;
 
-		final Annotation[] argAnnotations = ((HandlerMethod) handler).getMethod().getAnnotations();
+		if (handler instanceof HandlerMethod) {
+			final Annotation[] argAnnotations = ((HandlerMethod) handler).getMethod().getAnnotations();
 
-		for (final Annotation annotation : argAnnotations) {
-			if (RequiresAuthorization.class.isInstance(annotation)) {
-				requiresAuthorization = true;
+			for (final Annotation annotation : argAnnotations) {
+				if (RequiresAuthorization.class.isInstance(annotation)) {
+					requiresAuthorization = true;
+				}
+				if (RequiresPermissionAdmin.class.isInstance(annotation)) {
+					requiresAdmin = true;
+				}
 			}
-			if (RequiresPermissionAdmin.class.isInstance(annotation)) {
-				requiresAdmin = true;
+
+			if (requiresAuthorization || requiresAdmin) {
+				final String dateHeaderString = ((MoneyJinnRequestWrapper) request)
+						.getHeader(RESTAuthorization.DATE_HEADER_NAME);
+
+				final String clientAuthorization = ((MoneyJinnRequestWrapper) request)
+						.getHeader(RESTAuthorization.AUTH_HEADER_NAME);
+
+				String userName = null;
+				String hmacHash = null;
+
+				if (clientAuthorization != null
+						&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
+					final String[] authorizationArray = clientAuthorization.substring(3)
+							.split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
+					if (authorizationArray.length == 2) {
+						userName = authorizationArray[0];
+						hmacHash = authorizationArray[1];
+					}
+				}
+
+				if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0
+						|| dateHeaderString == null) {
+					throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
+				}
+
+				final ZonedDateTime dateHeaderLocalDateTime = ZonedDateTime.parse(dateHeaderString, this.formatter);
+
+				final long minutes = ChronoUnit.MINUTES.between(ZonedDateTime.now(), dateHeaderLocalDateTime);
+				if (Math.abs(minutes) > MAX_MINUTES_CLOCK_OFF) {
+					throw new BusinessException("Your clock is more than 15 minutes off", ErrorCode.CLIENT_CLOCK_OFF);
+				}
+
+				final User user = this.userService.getUserByName(userName);
+				if (user == null) {
+					throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
+				}
+
+				final String contentType = request.getContentType();
+				final byte[] body = ((MoneyJinnRequestWrapper) request).getBody().getBytes();
+				final String method = ((MoneyJinnRequestWrapper) request).getMethod().toString();
+				final String requestURL = ((MoneyJinnRequestWrapper) request).getRequestURI();
+				final String serverAuthorization = this.restAuthorization.getRESTAuthorization(
+						user.getPassword().getBytes(), method, contentType, requestURL, dateHeaderString, body,
+						userName);
+
+				if (serverAuthorization.equals(clientAuthorization)) {
+					if (!user.getPermissions().contains(UserPermission.LOGIN)) {
+						throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
+					}
+					if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
+						throw new BusinessException("You must be an admin to access this functionality!",
+								ErrorCode.USER_IS_NO_ADMIN);
+					}
+					this.sessionEnvironment.setUserID(user.getId());
+				} else {
+					throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
+				}
 			}
+			return super.preHandle(request, response, handler);
 		}
-
-		if (requiresAuthorization || requiresAdmin) {
-			final String dateHeaderString = ((MoneyJinnRequestWrapper) request).getHeader(RESTAuthorization.DATE_HEADER_NAME);
-
-			final String clientAuthorization = ((MoneyJinnRequestWrapper) request).getHeader(RESTAuthorization.AUTH_HEADER_NAME);
-
-			String userName = null;
-			String hmacHash = null;
-
-			if (clientAuthorization != null && clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
-				final String[] authorizationArray = clientAuthorization.substring(3).split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
-				if (authorizationArray.length == 2) {
-					userName = authorizationArray[0];
-					hmacHash = authorizationArray[1];
-				}
-			}
-
-			if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0 || dateHeaderString == null) {
-				throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
-			}
-
-			final ZonedDateTime dateHeaderLocalDateTime = ZonedDateTime.parse(dateHeaderString, this.formatter);
-
-			final long minutes = ChronoUnit.MINUTES.between(ZonedDateTime.now(), dateHeaderLocalDateTime);
-			if (Math.abs(minutes) > MAX_MINUTES_CLOCK_OFF) {
-				throw new BusinessException("Your clock is more than 15 minutes off", ErrorCode.CLIENT_CLOCK_OFF);
-			}
-
-			final User user = this.userService.getUserByName(userName);
-			if (user == null) {
-				throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
-			}
-
-			final String contentType = request.getContentType();
-			final byte[] body = ((MoneyJinnRequestWrapper) request).getBody().getBytes();
-			final String method = ((MoneyJinnRequestWrapper) request).getMethod().toString();
-			final String requestURL = ((MoneyJinnRequestWrapper) request).getRequestURI();
-			final String serverAuthorization = this.restAuthorization.getRESTAuthorization(user.getPassword().getBytes(), method, contentType, requestURL,
-					dateHeaderString, body, userName);
-
-			if (serverAuthorization.equals(clientAuthorization)) {
-				if (!user.getPermissions().contains(UserPermission.LOGIN)) {
-					throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
-				}
-				if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
-					throw new BusinessException("You must be an admin to access this functionality!", ErrorCode.USER_IS_NO_ADMIN);
-				}
-				this.sessionEnvironment.setUserID(user.getId());
-			} else {
-				throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
-			}
-		}
-		return super.preHandle(request, response, handler);
-
+		return true;
 	}
 
 	@Override
-	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView)
-			throws Exception {
+	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler,
+			final ModelAndView modelAndView) throws Exception {
 		if (response.getContentType() == null) {
 			response.setStatus(HttpStatus.NO_CONTENT.value());
 		}
