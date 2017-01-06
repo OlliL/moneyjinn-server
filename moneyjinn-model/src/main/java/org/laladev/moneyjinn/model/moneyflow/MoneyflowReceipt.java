@@ -34,6 +34,7 @@ public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
 	private static final long serialVersionUID = 1L;
 	private MoneyflowID moneyflowId;
 	private byte[] receipt;
+	private MoneyflowReceiptType moneyflowReceiptType;
 
 	public final MoneyflowID getMoneyflowId() {
 		return this.moneyflowId;
@@ -51,11 +52,20 @@ public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
 		this.receipt = receipt;
 	}
 
+	public final MoneyflowReceiptType getMoneyflowReceiptType() {
+		return this.moneyflowReceiptType;
+	}
+
+	public final void setMoneyflowReceiptType(final MoneyflowReceiptType moneyflowReceiptType) {
+		this.moneyflowReceiptType = moneyflowReceiptType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((this.moneyflowId == null) ? 0 : this.moneyflowId.hashCode());
+		result = prime * result + ((this.moneyflowReceiptType == null) ? 0 : this.moneyflowReceiptType.hashCode());
 		result = prime * result + Arrays.hashCode(this.receipt);
 		return result;
 	}
@@ -79,6 +89,9 @@ public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
 		} else if (!this.moneyflowId.equals(other.moneyflowId)) {
 			return false;
 		}
+		if (this.moneyflowReceiptType != other.moneyflowReceiptType) {
+			return false;
+		}
 		if (!Arrays.equals(this.receipt, other.receipt)) {
 			return false;
 		}
@@ -92,6 +105,8 @@ public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
 		builder.append(this.moneyflowId);
 		builder.append(", receipt=");
 		builder.append(Arrays.toString(this.receipt));
+		builder.append(", moneyflowReceiptType=");
+		builder.append(this.moneyflowReceiptType);
 		builder.append(", getId()=");
 		builder.append(this.getId());
 		builder.append("]");

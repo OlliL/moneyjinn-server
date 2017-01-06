@@ -40,6 +40,7 @@ public class MoneyflowReceiptDataMapper implements IMapper<MoneyflowReceipt, Mon
 		moneyflowReceipt.setId(new MoneyflowReceiptID(moneyflowReceiptData.getId()));
 		moneyflowReceipt.setMoneyflowId(new MoneyflowID(moneyflowReceiptData.getMmfMoneyflowId()));
 		moneyflowReceipt.setReceipt(moneyflowReceiptData.getReceipt());
+		moneyflowReceipt.setMoneyflowReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceiptData.getReceiptType()));
 
 		return moneyflowReceipt;
 	}
@@ -53,6 +54,7 @@ public class MoneyflowReceiptDataMapper implements IMapper<MoneyflowReceipt, Mon
 		}
 		moneyflowReceiptData.setMmfMoneyflowId(moneyflowReceipt.getMoneyflowId().getId());
 		moneyflowReceiptData.setReceipt(moneyflowReceipt.getReceipt());
+		moneyflowReceiptData.setReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
 
 		return moneyflowReceiptData;
 	}

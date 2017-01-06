@@ -19,19 +19,19 @@
 -- Table structure for table `access`
 --
 
-DROP TABLE IF EXISTS access;
+DROP TABLE IF EXISTS `access`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE access (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `access` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) COLLATE utf8_bin NOT NULL,
   `password` varchar(40) COLLATE utf8_bin DEFAULT NULL,
-  att_user tinyint(1) unsigned NOT NULL,
-  att_change_password tinyint(1) unsigned NOT NULL,
-  perm_login tinyint(1) unsigned NOT NULL,
-  perm_admin tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (id),
-  UNIQUE KEY mac_i_01 (`name`,att_user)
+  `att_user` tinyint(1) unsigned NOT NULL,
+  `att_change_password` tinyint(1) unsigned NOT NULL,
+  `perm_login` tinyint(1) unsigned NOT NULL,
+  `perm_admin` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mac_i_01` (`name`,`att_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mac';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,18 +39,18 @@ CREATE TABLE access (
 -- Table structure for table `access_relation`
 --
 
-DROP TABLE IF EXISTS access_relation;
+DROP TABLE IF EXISTS `access_relation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE access_relation (
-  id int(10) unsigned NOT NULL,
-  ref_id int(10) unsigned NOT NULL,
-  validfrom date NOT NULL,
-  validtil date NOT NULL,
-  PRIMARY KEY (id,validfrom),
-  KEY mar_i_01 (ref_id),
-  CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
-  CONSTRAINT mar_mac_pk_02 FOREIGN KEY (ref_id) REFERENCES access (id)
+CREATE TABLE `access_relation` (
+  `id` int(10) unsigned NOT NULL,
+  `ref_id` int(10) unsigned NOT NULL,
+  `validfrom` date NOT NULL,
+  `validtil` date NOT NULL,
+  PRIMARY KEY (`id`,`validfrom`),
+  KEY `mar_i_01` (`ref_id`),
+  CONSTRAINT `mar_mac_pk_01` FOREIGN KEY (`id`) REFERENCES `access` (`id`),
+  CONSTRAINT `mar_mac_pk_02` FOREIGN KEY (`ref_id`) REFERENCES `access` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -58,30 +58,30 @@ CREATE TABLE access_relation (
 -- Table structure for table `access_flattened`
 --
 
-DROP TABLE IF EXISTS access_flattened;
+DROP TABLE IF EXISTS `access_flattened`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE access_flattened (
-  id int(10) unsigned NOT NULL,
-  validfrom date NOT NULL,
-  validtil date NOT NULL,
-  id_level_1 int(10) unsigned NOT NULL,
-  id_level_2 int(10) unsigned NOT NULL,
-  id_level_3 int(10) unsigned DEFAULT NULL,
-  id_level_4 int(10) unsigned DEFAULT NULL,
-  id_level_5 int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (id,validfrom),
-  KEY maf_i_01 (id_level_1),
-  KEY maf_i_02 (id_level_2),
-  KEY maf_i_03 (id_level_3),
-  KEY maf_i_04 (id_level_4),
-  KEY maf_i_05 (id_level_5),
-  CONSTRAINT maf_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
-  CONSTRAINT maf_mac_pk_02 FOREIGN KEY (id_level_1) REFERENCES access (id),
-  CONSTRAINT maf_mac_pk_03 FOREIGN KEY (id_level_2) REFERENCES access (id),
-  CONSTRAINT maf_mac_pk_04 FOREIGN KEY (id_level_3) REFERENCES access (id),
-  CONSTRAINT maf_mac_pk_05 FOREIGN KEY (id_level_4) REFERENCES access (id),
-  CONSTRAINT maf_mac_pk_06 FOREIGN KEY (id_level_5) REFERENCES access (id)
+CREATE TABLE `access_flattened` (
+  `id` int(10) unsigned NOT NULL,
+  `validfrom` date NOT NULL,
+  `validtil` date NOT NULL,
+  `id_level_1` int(10) unsigned NOT NULL,
+  `id_level_2` int(10) unsigned NOT NULL,
+  `id_level_3` int(10) unsigned DEFAULT NULL,
+  `id_level_4` int(10) unsigned DEFAULT NULL,
+  `id_level_5` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`,`validfrom`),
+  KEY `maf_i_01` (`id_level_1`),
+  KEY `maf_i_02` (`id_level_2`),
+  KEY `maf_i_03` (`id_level_3`),
+  KEY `maf_i_04` (`id_level_4`),
+  KEY `maf_i_05` (`id_level_5`),
+  CONSTRAINT `maf_mac_pk_01` FOREIGN KEY (`id`) REFERENCES `access` (`id`),
+  CONSTRAINT `maf_mac_pk_02` FOREIGN KEY (`id_level_1`) REFERENCES `access` (`id`),
+  CONSTRAINT `maf_mac_pk_03` FOREIGN KEY (`id_level_2`) REFERENCES `access` (`id`),
+  CONSTRAINT `maf_mac_pk_04` FOREIGN KEY (`id_level_3`) REFERENCES `access` (`id`),
+  CONSTRAINT `maf_mac_pk_05` FOREIGN KEY (`id_level_4`) REFERENCES `access` (`id`),
+  CONSTRAINT `maf_mac_pk_06` FOREIGN KEY (`id_level_5`) REFERENCES `access` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='maf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,16 +89,16 @@ CREATE TABLE access_flattened (
 -- Table structure for table `settings`
 --
 
-DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS `settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE settings (
-  mac_id int(10) unsigned NOT NULL,
+CREATE TABLE `settings` (
+  `mac_id` int(10) unsigned NOT NULL,
   `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `value` varchar(256) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`name`,mac_id),
-  KEY mse_mac_pk (mac_id),
-  CONSTRAINT mse_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id)
+  `value` varchar(2048) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`name`,`mac_id`),
+  KEY `mse_mac_pk` (`mac_id`),
+  CONSTRAINT `mse_mac_pk` FOREIGN KEY (`mac_id`) REFERENCES `access` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mse';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -106,27 +106,27 @@ CREATE TABLE settings (
 -- Table structure for table `capitalsources`
 --
 
-DROP TABLE IF EXISTS capitalsources;
+DROP TABLE IF EXISTS `capitalsources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE capitalsources (
-  capitalsourceid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id_creator int(10) unsigned NOT NULL,
-  mac_id_accessor int(10) unsigned NOT NULL,
+CREATE TABLE `capitalsources` (
+  `capitalsourceid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
   `type` tinyint(4) NOT NULL DEFAULT '1',
-  state tinyint(4) NOT NULL DEFAULT '1',
-  accountnumber varchar(34) COLLATE utf8_bin DEFAULT NULL,
-  bankcode varchar(11) COLLATE utf8_bin DEFAULT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '1',
+  `accountnumber` varchar(34) COLLATE utf8_bin DEFAULT NULL,
+  `bankcode` varchar(11) COLLATE utf8_bin DEFAULT NULL,
   `comment` varchar(255) COLLATE utf8_bin NOT NULL,
-  validtil date NOT NULL DEFAULT '2999-12-31',
-  validfrom date NOT NULL DEFAULT '1970-01-01',
-  att_group_use tinyint(1) unsigned NOT NULL DEFAULT '0',
-  import_allowed tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (capitalsourceid,mac_id_accessor),
-  KEY mcs_mac_pk_01 (mac_id_creator),
-  KEY mcs_mac_pk_02 (mac_id_accessor),
-  CONSTRAINT mcs_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
-  CONSTRAINT mcs_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id)
+  `validtil` date NOT NULL DEFAULT '2999-12-31',
+  `validfrom` date NOT NULL DEFAULT '1970-01-01',
+  `att_group_use` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `import_allowed` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`capitalsourceid`,`mac_id_accessor`),
+  KEY `mcs_mac_pk_01` (`mac_id_creator`),
+  KEY `mcs_mac_pk_02` (`mac_id_accessor`),
+  CONSTRAINT `mcs_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mcs_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mcs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,13 +134,13 @@ CREATE TABLE capitalsources (
 -- Table structure for table `postingaccounts`
 --
 
-DROP TABLE IF EXISTS postingaccounts;
+DROP TABLE IF EXISTS `postingaccounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE postingaccounts (
-  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  postingaccountname varchar(60) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (postingaccountid)
+CREATE TABLE `postingaccounts` (
+  `postingaccountid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `postingaccountname` varchar(60) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`postingaccountid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mpa';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -148,30 +148,30 @@ CREATE TABLE postingaccounts (
 -- Table structure for table `contractpartners`
 --
 
-DROP TABLE IF EXISTS contractpartners;
+DROP TABLE IF EXISTS `contractpartners`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE contractpartners (
-  contractpartnerid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id_creator int(10) unsigned NOT NULL,
-  mac_id_accessor int(10) unsigned NOT NULL,
+CREATE TABLE `contractpartners` (
+  `contractpartnerid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
   `name` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
-  street varchar(100) COLLATE utf8_bin DEFAULT '',
-  postcode int(12) DEFAULT '0',
-  town varchar(100) COLLATE utf8_bin DEFAULT '',
-  country varchar(100) COLLATE utf8_bin DEFAULT '',
-  validfrom date NOT NULL,
-  validtil date NOT NULL,
-  mmf_comment varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  mpa_postingaccountid int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (contractpartnerid),
-  UNIQUE KEY mcp_i_01 (mac_id_accessor,`name`),
-  KEY mcp_mac_pk_01 (mac_id_creator),
-  KEY mcp_mac_pk_02 (mac_id_accessor),
-  KEY mcp_mpa_pk_01 (mpa_postingaccountid),
-  CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
-  CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
-  CONSTRAINT mcp_mpa_pk_01 FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+  `street` varchar(100) COLLATE utf8_bin DEFAULT '',
+  `postcode` int(12) DEFAULT '0',
+  `town` varchar(100) COLLATE utf8_bin DEFAULT '',
+  `country` varchar(100) COLLATE utf8_bin DEFAULT '',
+  `validfrom` date NOT NULL,
+  `validtil` date NOT NULL,
+  `mmf_comment` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `mpa_postingaccountid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`contractpartnerid`),
+  UNIQUE KEY `mcp_i_01` (`mac_id_accessor`,`name`),
+  KEY `mcp_mac_pk_01` (`mac_id_creator`),
+  KEY `mcp_mac_pk_02` (`mac_id_accessor`),
+  KEY `mcp_mpa_pk_01` (`mpa_postingaccountid`),
+  CONSTRAINT `mcp_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mcp_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`),
+  CONSTRAINT `mcp_mpa_pk_01` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mcp';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,18 +179,18 @@ CREATE TABLE contractpartners (
 -- Table structure for table `contractpartneraccounts`
 --
 
-DROP TABLE IF EXISTS contractpartneraccounts;
+DROP TABLE IF EXISTS `contractpartneraccounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE contractpartneraccounts (
-  contractpartneraccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mcp_contractpartnerid int(10) unsigned NOT NULL,
-  accountnumber varchar(34) COLLATE utf8_bin NOT NULL,
-  bankcode varchar(11) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (contractpartneraccountid),
-  UNIQUE KEY mca_i_01 (accountnumber,bankcode) USING BTREE,
-  KEY mca_mcp_pk_01 (mcp_contractpartnerid),
-  CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid)
+CREATE TABLE `contractpartneraccounts` (
+  `contractpartneraccountid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mcp_contractpartnerid` int(10) unsigned NOT NULL,
+  `accountnumber` varchar(34) COLLATE utf8_bin NOT NULL,
+  `bankcode` varchar(11) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`contractpartneraccountid`),
+  UNIQUE KEY `mca_i_01` (`accountnumber`,`bankcode`) USING BTREE,
+  KEY `mca_mcp_pk_01` (`mcp_contractpartnerid`),
+  CONSTRAINT `mca_mcp_pk_01` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mca';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,33 +198,33 @@ CREATE TABLE contractpartneraccounts (
 -- Table structure for table `moneyflows`
 --
 
-DROP TABLE IF EXISTS moneyflows;
+DROP TABLE IF EXISTS `moneyflows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE moneyflows (
-  moneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id_creator int(10) unsigned NOT NULL,
-  mac_id_accessor int(10) unsigned NOT NULL,
-  bookingdate date NOT NULL DEFAULT '1970-01-01',
-  invoicedate date NOT NULL DEFAULT '1970-01-01',
-  amount float(8,2) NOT NULL DEFAULT '0.00',
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
-  mcp_contractpartnerid int(10) unsigned NOT NULL,
+CREATE TABLE `moneyflows` (
+  `moneyflowid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
+  `bookingdate` date NOT NULL DEFAULT '1970-01-01',
+  `invoicedate` date NOT NULL DEFAULT '1970-01-01',
+  `amount` float(8,2) NOT NULL DEFAULT '0.00',
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
+  `mcp_contractpartnerid` int(10) unsigned NOT NULL,
   `comment` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
-  mpa_postingaccountid int(10) unsigned NOT NULL,
-  private tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (moneyflowid),
-  KEY mmf_i_01 (bookingdate,mac_id_accessor,moneyflowid),
-  KEY mmf_mac_pk_01 (mac_id_creator),
-  KEY ` mmf_mac_pk_02` (mac_id_accessor),
-  KEY mmf_mcs_pk (mcs_capitalsourceid),
-  KEY mmf_mcp_pk (mcp_contractpartnerid),
-  KEY mmf_mpa_pk (mpa_postingaccountid),
-  CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
-  CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
-  CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid),
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid),
-  CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+  `mpa_postingaccountid` int(10) unsigned NOT NULL,
+  `private` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`moneyflowid`),
+  KEY `mmf_i_01` (`bookingdate`,`mac_id_accessor`,`moneyflowid`),
+  KEY `mmf_mac_pk_01` (`mac_id_creator`),
+  KEY ` mmf_mac_pk_02` (`mac_id_accessor`),
+  KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
+  KEY `mmf_mcp_pk` (`mcp_contractpartnerid`),
+  KEY `mmf_mpa_pk` (`mpa_postingaccountid`),
+  CONSTRAINT `mmf_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mmf_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`),
+  CONSTRAINT `mmf_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`),
+  CONSTRAINT `mmf_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`),
+  CONSTRAINT `mmf_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -232,20 +232,20 @@ CREATE TABLE moneyflows (
 -- Table structure for table `moneyflowsplitentries`
 --
 
-DROP TABLE IF EXISTS moneyflowsplitentries;
+DROP TABLE IF EXISTS `moneyflowsplitentries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE moneyflowsplitentries (
-  moneyflowsplitentryid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mmf_moneyflowid int(10) unsigned NOT NULL,
-  amount decimal(8,2) NOT NULL,
+CREATE TABLE `moneyflowsplitentries` (
+  `moneyflowsplitentryid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mmf_moneyflowid` int(10) unsigned NOT NULL,
+  `amount` decimal(8,2) NOT NULL,
   `comment` varchar(100) COLLATE utf8_bin NOT NULL,
-  mpa_postingaccountid int(10) unsigned NOT NULL,
-  PRIMARY KEY (moneyflowsplitentryid),
-  KEY mse_mmf_pk (mmf_moneyflowid),
-  KEY mse_mpa_pk (mpa_postingaccountid),
-  CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid),
-  CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+  `mpa_postingaccountid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`moneyflowsplitentryid`),
+  KEY `mse_mmf_pk` (`mmf_moneyflowid`),
+  KEY `mse_mpa_pk` (`mpa_postingaccountid`),
+  CONSTRAINT `mse_mmf_pk` FOREIGN KEY (`mmf_moneyflowid`) REFERENCES `moneyflows` (`moneyflowid`),
+  CONSTRAINT `mse_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mse';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -253,16 +253,17 @@ CREATE TABLE moneyflowsplitentries (
 -- Table structure for table `moneyflowreceipts`
 --
 
-DROP TABLE IF EXISTS moneyflowreceipts;
+DROP TABLE IF EXISTS `moneyflowreceipts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE moneyflowreceipts (
-  moneyflowreceiptid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mmf_moneyflowid int(10) unsigned NOT NULL,
-  receipt mediumblob NOT NULL,
-  PRIMARY KEY (moneyflowreceiptid),
-  KEY mrp_mmf_pk (mmf_moneyflowid),
-  CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows (moneyflowid)
+CREATE TABLE `moneyflowreceipts` (
+  `moneyflowreceiptid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mmf_moneyflowid` int(10) unsigned NOT NULL,
+  `receipt` mediumblob NOT NULL,
+  `receipt_type` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`moneyflowreceiptid`),
+  KEY `mrp_mmf_pk` (`mmf_moneyflowid`),
+  CONSTRAINT `mrp_mmf_pk` FOREIGN KEY (`mmf_moneyflowid`) REFERENCES `moneyflows` (`moneyflowid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mrp';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -270,25 +271,25 @@ CREATE TABLE moneyflowreceipts (
 -- Table structure for table `monthlysettlements`
 --
 
-DROP TABLE IF EXISTS monthlysettlements;
+DROP TABLE IF EXISTS `monthlysettlements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE monthlysettlements (
-  monthlysettlementid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id_creator int(10) unsigned NOT NULL,
-  mac_id_accessor int(10) unsigned NOT NULL,
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
+CREATE TABLE `monthlysettlements` (
+  `monthlysettlementid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
   `month` tinyint(4) unsigned NOT NULL,
   `year` year(4) NOT NULL,
-  amount float(8,2) NOT NULL,
-  PRIMARY KEY (monthlysettlementid),
-  UNIQUE KEY mms_i_01 (`month`,`year`,mcs_capitalsourceid),
-  KEY mms_mac_pk_01 (mac_id_creator),
-  KEY mms_mac_pk_02 (mac_id_accessor),
-  KEY mms_mcs_pk (mcs_capitalsourceid),
-  CONSTRAINT mms_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
-  CONSTRAINT mms_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
-  CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
+  `amount` float(8,2) NOT NULL,
+  PRIMARY KEY (`monthlysettlementid`),
+  UNIQUE KEY `mms_i_01` (`month`,`year`,`mcs_capitalsourceid`),
+  KEY `mms_mac_pk_01` (`mac_id_creator`),
+  KEY `mms_mac_pk_02` (`mac_id_accessor`),
+  KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
+  CONSTRAINT `mms_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mms_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`),
+  CONSTRAINT `mms_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mms';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,29 +297,29 @@ CREATE TABLE monthlysettlements (
 -- Table structure for table `predefmoneyflows`
 --
 
-DROP TABLE IF EXISTS predefmoneyflows;
+DROP TABLE IF EXISTS `predefmoneyflows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE predefmoneyflows (
-  predefmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id int(10) unsigned NOT NULL,
-  amount float(8,2) NOT NULL DEFAULT '0.00',
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
-  mcp_contractpartnerid int(10) unsigned NOT NULL,
+CREATE TABLE `predefmoneyflows` (
+  `predefmoneyflowid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id` int(10) unsigned NOT NULL,
+  `amount` float(8,2) NOT NULL DEFAULT '0.00',
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
+  `mcp_contractpartnerid` int(10) unsigned NOT NULL,
   `comment` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
-  createdate date NOT NULL DEFAULT '1970-01-01',
-  once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
-  last_used date DEFAULT NULL,
-  mpa_postingaccountid int(10) unsigned NOT NULL,
-  PRIMARY KEY (predefmoneyflowid),
-  KEY mpm_mac_pk (mac_id),
-  KEY mpm_mpa_pk (mpa_postingaccountid),
-  KEY mpm_mcs_pk (mcs_capitalsourceid),
-  KEY mpm_mcp_pk_01 (mcp_contractpartnerid),
-  CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id),
-  CONSTRAINT mpm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid),
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid),
-  CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid)
+  `createdate` date NOT NULL DEFAULT '1970-01-01',
+  `once_a_month` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `last_used` date DEFAULT NULL,
+  `mpa_postingaccountid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`predefmoneyflowid`),
+  KEY `mpm_mac_pk` (`mac_id`),
+  KEY `mpm_mpa_pk` (`mpa_postingaccountid`),
+  KEY `mpm_mcs_pk` (`mcs_capitalsourceid`),
+  KEY `mpm_mcp_pk_01` (`mcp_contractpartnerid`),
+  CONSTRAINT `mpm_mac_pk` FOREIGN KEY (`mac_id`) REFERENCES `access` (`id`),
+  CONSTRAINT `mpm_mcp_pk_01` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`),
+  CONSTRAINT `mpm_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`),
+  CONSTRAINT `mpm_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -326,14 +327,14 @@ CREATE TABLE predefmoneyflows (
 -- Table structure for table `impbalance`
 --
 
-DROP TABLE IF EXISTS impbalance;
+DROP TABLE IF EXISTS `impbalance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE impbalance (
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
-  balance float(8,2) NOT NULL,
-  changedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (mcs_capitalsourceid)
+CREATE TABLE `impbalance` (
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
+  `balance` float(8,2) NOT NULL,
+  `changedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`mcs_capitalsourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mib';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -341,25 +342,25 @@ CREATE TABLE impbalance (
 -- Table structure for table `impmoneyflows`
 --
 
-DROP TABLE IF EXISTS impmoneyflows;
+DROP TABLE IF EXISTS `impmoneyflows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE impmoneyflows (
-  impmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  externalid varchar(10) COLLATE utf8_bin NOT NULL,
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
-  bookingdate date NOT NULL,
-  invoicedate date NOT NULL,
+CREATE TABLE `impmoneyflows` (
+  `impmoneyflowid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `externalid` varchar(10) COLLATE utf8_bin NOT NULL,
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
+  `bookingdate` date NOT NULL,
+  `invoicedate` date NOT NULL,
   `name` varchar(100) COLLATE utf8_bin NOT NULL,
-  accountnumber varchar(34) COLLATE utf8_bin NOT NULL,
-  bankcode varchar(11) COLLATE utf8_bin NOT NULL,
+  `accountnumber` varchar(34) COLLATE utf8_bin NOT NULL,
+  `bankcode` varchar(11) COLLATE utf8_bin NOT NULL,
   `comment` varchar(512) COLLATE utf8_bin DEFAULT NULL,
-  amount float(8,2) NOT NULL,
+  `amount` float(8,2) NOT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (impmoneyflowid),
-  UNIQUE KEY mim_i_01 (externalid),
-  KEY mim_mcs_pk (mcs_capitalsourceid),
-  CONSTRAINT mim_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
+  PRIMARY KEY (`impmoneyflowid`),
+  UNIQUE KEY `mim_i_01` (`externalid`),
+  KEY `mim_mcs_pk` (`mcs_capitalsourceid`),
+  CONSTRAINT `mim_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mim';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -367,20 +368,20 @@ CREATE TABLE impmoneyflows (
 -- Table structure for table `impmonthlysettlements`
 --
 
-DROP TABLE IF EXISTS impmonthlysettlements;
+DROP TABLE IF EXISTS `impmonthlysettlements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE impmonthlysettlements (
-  impmonthlysettlementid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  externalid varchar(10) COLLATE utf8_bin NOT NULL,
-  mcs_capitalsourceid int(10) unsigned NOT NULL,
+CREATE TABLE `impmonthlysettlements` (
+  `impmonthlysettlementid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `externalid` varchar(10) COLLATE utf8_bin NOT NULL,
+  `mcs_capitalsourceid` int(10) unsigned NOT NULL,
   `month` tinyint(4) unsigned NOT NULL,
   `year` year(4) NOT NULL,
-  amount float(8,2) NOT NULL,
-  PRIMARY KEY (impmonthlysettlementid),
-  UNIQUE KEY mit_i_01 (externalid) USING BTREE,
-  KEY mis_mcs_pk (mcs_capitalsourceid),
-  CONSTRAINT mis_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
+  `amount` float(8,2) NOT NULL,
+  PRIMARY KEY (`impmonthlysettlementid`),
+  UNIQUE KEY `mit_i_01` (`externalid`) USING BTREE,
+  KEY `mis_mcs_pk` (`mcs_capitalsourceid`),
+  CONSTRAINT `mis_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mit';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -388,18 +389,18 @@ CREATE TABLE impmonthlysettlements (
 -- Table structure for table `imp_data`
 --
 
-DROP TABLE IF EXISTS imp_data;
+DROP TABLE IF EXISTS `imp_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE imp_data (
-  dataid int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `imp_data` (
+  `dataid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `date` varchar(10) COLLATE utf8_bin NOT NULL,
-  amount varchar(20) COLLATE utf8_bin NOT NULL,
+  `amount` varchar(20) COLLATE utf8_bin NOT NULL,
   `source` varchar(100) COLLATE utf8_bin NOT NULL,
-  partner varchar(100) COLLATE utf8_bin NOT NULL,
+  `partner` varchar(100) COLLATE utf8_bin NOT NULL,
   `comment` varchar(100) COLLATE utf8_bin NOT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (dataid)
+  PRIMARY KEY (`dataid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mid';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -407,13 +408,13 @@ CREATE TABLE imp_data (
 -- Table structure for table `imp_mapping_source`
 --
 
-DROP TABLE IF EXISTS imp_mapping_source;
+DROP TABLE IF EXISTS `imp_mapping_source`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE imp_mapping_source (
-  source_from varchar(100) COLLATE utf8_bin NOT NULL,
-  source_to varchar(100) COLLATE utf8_bin NOT NULL,
-  UNIQUE KEY mis_i_01 (source_from)
+CREATE TABLE `imp_mapping_source` (
+  `source_from` varchar(100) COLLATE utf8_bin NOT NULL,
+  `source_to` varchar(100) COLLATE utf8_bin NOT NULL,
+  UNIQUE KEY `mis_i_01` (`source_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mis';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -421,13 +422,13 @@ CREATE TABLE imp_mapping_source (
 -- Table structure for table `imp_mapping_partner`
 --
 
-DROP TABLE IF EXISTS imp_mapping_partner;
+DROP TABLE IF EXISTS `imp_mapping_partner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE imp_mapping_partner (
-  partner_from varchar(100) COLLATE utf8_bin NOT NULL,
-  partner_to varchar(100) COLLATE utf8_bin NOT NULL,
-  UNIQUE KEY mip_i_01 (partner_from)
+CREATE TABLE `imp_mapping_partner` (
+  `partner_from` varchar(100) COLLATE utf8_bin NOT NULL,
+  `partner_to` varchar(100) COLLATE utf8_bin NOT NULL,
+  UNIQUE KEY `mip_i_01` (`partner_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mip';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -435,30 +436,30 @@ CREATE TABLE imp_mapping_partner (
 -- Table structure for table `cmp_data_formats`
 --
 
-DROP TABLE IF EXISTS cmp_data_formats;
+DROP TABLE IF EXISTS `cmp_data_formats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE cmp_data_formats (
-  formatid int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `cmp_data_formats` (
+  `formatid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_bin NOT NULL,
-  start_trigger_0 varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  start_trigger_1 varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  start_trigger_2 varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  startline varchar(255) COLLATE utf8_bin NOT NULL,
+  `start_trigger_0` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `start_trigger_1` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `start_trigger_2` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `startline` varchar(255) COLLATE utf8_bin NOT NULL,
   `delimiter` varchar(1) COLLATE utf8_bin NOT NULL,
-  pos_date tinyint(2) NOT NULL,
-  pos_partner tinyint(2) DEFAULT NULL,
-  pos_amount tinyint(2) NOT NULL,
-  pos_comment tinyint(2) DEFAULT NULL,
-  fmt_date varchar(10) COLLATE utf8_bin NOT NULL,
-  fmt_amount_decimal varchar(1) COLLATE utf8_bin NOT NULL,
-  fmt_amount_thousand varchar(1) COLLATE utf8_bin DEFAULT NULL,
-  pos_partner_alt tinyint(2) DEFAULT NULL,
-  pos_partner_alt_pos_key tinyint(2) DEFAULT NULL,
-  pos_partner_alt_keyword varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  pos_credit_debit_indicator tinyint(2) DEFAULT NULL,
-  credit_indicator varchar(2) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (formatid),
+  `pos_date` tinyint(2) NOT NULL,
+  `pos_partner` tinyint(2) DEFAULT NULL,
+  `pos_amount` tinyint(2) NOT NULL,
+  `pos_comment` tinyint(2) DEFAULT NULL,
+  `fmt_date` varchar(10) COLLATE utf8_bin NOT NULL,
+  `fmt_amount_decimal` varchar(1) COLLATE utf8_bin NOT NULL,
+  `fmt_amount_thousand` varchar(1) COLLATE utf8_bin DEFAULT NULL,
+  `pos_partner_alt` tinyint(2) DEFAULT NULL,
+  `pos_partner_alt_pos_key` tinyint(2) DEFAULT NULL,
+  `pos_partner_alt_keyword` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `pos_credit_debit_indicator` tinyint(2) DEFAULT NULL,
+  `credit_indicator` varchar(2) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`formatid`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mcf';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -472,7 +473,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-01 19:28:30
+-- Dump completed on 2017-01-06 21:57:48
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',2,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

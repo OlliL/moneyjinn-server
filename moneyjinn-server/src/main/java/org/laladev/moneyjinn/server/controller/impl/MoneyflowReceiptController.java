@@ -34,6 +34,7 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowReceiptTypeMapper;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.transaction.annotation.Propagation;
@@ -69,6 +70,7 @@ public class MoneyflowReceiptController extends AbstractController {
 					moneyflowId);
 			if (moneyflowReceipt != null) {
 				response.setReceipt(Base64.getEncoder().encodeToString(moneyflowReceipt.getReceipt()));
+				response.setReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
 			}
 		}
 		return response;

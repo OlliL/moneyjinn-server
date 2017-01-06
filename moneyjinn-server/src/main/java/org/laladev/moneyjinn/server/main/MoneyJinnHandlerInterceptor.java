@@ -149,7 +149,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 			}
 			return super.preHandle(request, response, handler);
 		}
-		return true;
+		return false;
 	}
 
 	@Override

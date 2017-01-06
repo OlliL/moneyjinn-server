@@ -24,44 +24,46 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao.data;
+package org.laladev.moneyjinn.service.dao.data.mapper;
 
-public class MoneyflowReceiptData {
-	private Long id;
-	private Long mmfMoneyflowId;
-	private byte[] receipt;
-	private Short receiptType;
+import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
-	public final Long getId() {
-		return this.id;
+public class MoneyflowReceiptTypeMapper {
+	private static final Short JPEG = Short.valueOf((short) 1);
+	private static final Short PDF = Short.valueOf((short) 2);
+
+	private MoneyflowReceiptTypeMapper() {
+
 	}
 
-	public final void setId(final Long id) {
-		this.id = id;
+	public static MoneyflowReceiptType map(final Short type) {
+		if (type != null) {
+			switch (type) {
+			case 1:
+				return MoneyflowReceiptType.JPEG;
+			case 2:
+				return MoneyflowReceiptType.PDF;
+			default:
+				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+			}
+		}
+		return null;
 	}
 
-	public final Long getMmfMoneyflowId() {
-		return this.mmfMoneyflowId;
-	}
-
-	public final void setMmfMoneyflowId(final Long mmfMoneyflowId) {
-		this.mmfMoneyflowId = mmfMoneyflowId;
-	}
-
-	public final byte[] getReceipt() {
-		return this.receipt;
-	}
-
-	public final void setReceipt(final byte[] receipt) {
-		this.receipt = receipt;
-	}
-
-	public final Short getReceiptType() {
-		return this.receiptType;
-	}
-
-	public final void setReceiptType(final Short receiptType) {
-		this.receiptType = receiptType;
+	public static Short map(final MoneyflowReceiptType type) {
+		if (type != null) {
+			switch (type) {
+			case JPEG:
+				return JPEG;
+			case PDF:
+				return PDF;
+			default:
+				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+			}
+		}
+		return null;
 	}
 
 }
