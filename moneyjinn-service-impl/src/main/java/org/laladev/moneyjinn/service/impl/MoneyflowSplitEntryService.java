@@ -165,7 +165,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 		for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
 			final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry, MoneyflowSplitEntryData.class);
-			final Long moneyflowSplitEntryId = this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
+			this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
 		}
 	}
 
