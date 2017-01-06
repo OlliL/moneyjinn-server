@@ -39,8 +39,7 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 	@Test
 	public void test_unknownUser_emptyResponseObject() throws Exception {
 		final GetUserSettingsForStartupResponse expected = new GetUserSettingsForStartupResponse();
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/xxx", this.method, false,
-				GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/xxx", this.method, false, GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -54,8 +53,8 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setSettingDisplayedLanguage(1);
 		expected.setUserId(UserTransportBuilder.ADMIN_ID);
 
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
-				"/" + UserTransportBuilder.ADMIN_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.ADMIN_NAME, this.method, false,
+				GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -69,8 +68,8 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setSettingDisplayedLanguage(1);
 		expected.setUserId(UserTransportBuilder.USER1_ID);
 
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
-				"/" + UserTransportBuilder.USER1_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER1_NAME, this.method, false,
+				GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -84,8 +83,8 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		expected.setSettingDisplayedLanguage(1);
 		expected.setUserId(UserTransportBuilder.USER2_ID);
 
-		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent(
-				"/" + UserTransportBuilder.USER2_NAME, this.method, false, GetUserSettingsForStartupResponse.class);
+		final GetUserSettingsForStartupResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_NAME, this.method, false,
+				GetUserSettingsForStartupResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -96,6 +95,14 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
 		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+	}
+
+	@Test
+	public void test_OPTIONS_EmptyResponse() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+
+		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER1_NAME, HttpMethod.OPTIONS, true, GetUserSettingsForStartupResponse.class);
 	}
 
 }
