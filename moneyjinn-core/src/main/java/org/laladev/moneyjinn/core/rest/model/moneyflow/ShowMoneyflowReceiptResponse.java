@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName("showMoneyflowReceiptResponse")
 public class ShowMoneyflowReceiptResponse extends AbstractResponse {
 	private String receipt;
+	private Short receiptType;
 
 	public final String getReceipt() {
 		return this.receipt;
@@ -42,11 +43,20 @@ public class ShowMoneyflowReceiptResponse extends AbstractResponse {
 		this.receipt = receipt;
 	}
 
+	public final Short getReceiptType() {
+		return this.receiptType;
+	}
+
+	public final void setReceiptType(final Short receiptType) {
+		this.receiptType = receiptType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((this.receipt == null) ? 0 : this.receipt.hashCode());
+		result = prime * result + ((this.receiptType == null) ? 0 : this.receiptType.hashCode());
 		return result;
 	}
 
@@ -69,6 +79,13 @@ public class ShowMoneyflowReceiptResponse extends AbstractResponse {
 		} else if (!this.receipt.equals(other.receipt)) {
 			return false;
 		}
+		if (this.receiptType == null) {
+			if (other.receiptType != null) {
+				return false;
+			}
+		} else if (!this.receiptType.equals(other.receiptType)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -77,6 +94,8 @@ public class ShowMoneyflowReceiptResponse extends AbstractResponse {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("ShowMoneyflowReceiptResponse [receipt=");
 		builder.append(this.receipt);
+		builder.append(", receiptType=");
+		builder.append(this.receiptType);
 		builder.append("]");
 		return builder.toString();
 	}
