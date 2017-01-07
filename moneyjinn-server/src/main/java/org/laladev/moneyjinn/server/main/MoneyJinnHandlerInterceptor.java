@@ -99,7 +99,14 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 				String userName = null;
 				String hmacHash = null;
 
-				if (clientAuthorization != null
+				if (clientAuthorization != null && clientAuthorization.length() > 3 // TODO das mit
+																					// der laenge
+																					// unittesten!
+																					// Also Empty
+																					// String
+																					// schicken darf
+																					// nicht
+																					// abbrechen!
 						&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
 					final String[] authorizationArray = clientAuthorization.substring(3)
 							.split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
