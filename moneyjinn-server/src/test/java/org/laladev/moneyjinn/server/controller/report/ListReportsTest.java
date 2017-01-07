@@ -195,7 +195,7 @@ public class ListReportsTest extends AbstractControllerTest {
 		expected.setNextYear((short) 2009);
 
 		expected.setNextMonthHasMoneyflows((short) 1);
-		expected.setMoneyflowsWithReceipt(Arrays.asList(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+		expected.setMoneyflowsWithReceipt(Arrays.asList(MoneyflowTransportBuilder.MONEYFLOW2_ID));
 
 		final ListReportsResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ListReportsResponse.class);
