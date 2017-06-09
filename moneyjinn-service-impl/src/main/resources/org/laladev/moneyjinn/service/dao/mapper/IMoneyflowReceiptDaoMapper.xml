@@ -12,7 +12,7 @@
     	<sql id="moneyflowReceiptColumns">
 		 moneyflowreceiptid AS id
 		,mmf_moneyflowid    AS mmfMoneyflowId
-		,receipt
+		,receipt            AS blob_Data
 		,receipt_type       AS receiptType
 	</sql>
     	
