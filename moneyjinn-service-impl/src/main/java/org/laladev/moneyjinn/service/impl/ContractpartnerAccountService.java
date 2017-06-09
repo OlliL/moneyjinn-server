@@ -144,8 +144,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	private ContractpartnerAccount getContractpartnerAccountByBankAccount(final UserID userId,
 			final BankAccount bankAccount) {
-		Assert.notNull(userId);
-		Assert.notNull(bankAccount);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(bankAccount, "BankAccount must not be null!");
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountByBankAccount(userId.getId(), bankAccount.getBankCode(),
 						bankAccount.getAccountNumber());
@@ -156,22 +156,21 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	@Cacheable(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID)
 	public ContractpartnerAccount getContractpartnerAccountById(final UserID userId,
 			final ContractpartnerAccountID contractpartnerAccountId) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerAccountId);
-		
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerAccountId, "ContractpartnerAccountId must not be null!");
+
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountById(userId.getId(), contractpartnerAccountId.getId());
 
-		return this.mapContractpartnerAccountData(userId,
-				contractpartnerAccountData);
+		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
 	}
 
 	@Override
 	@Cacheable(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER)
 	public List<ContractpartnerAccount> getContractpartnerAccounts(final UserID userId,
 			final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerId, "ContractpartnerId must not be null!");
 		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
 		return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
@@ -179,8 +178,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	@Override
 	public void createContractpartnerAccount(final UserID userId, final ContractpartnerAccount contractpartnerAccount) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerAccount);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
 		contractpartnerAccount.setId(null);
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 
@@ -200,8 +199,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	@Override
 	public void updateContractpartnerAccount(final UserID userId, final ContractpartnerAccount contractpartnerAccount) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerAccount);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -231,8 +230,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	@Override
 	public void deleteContractpartnerAccountById(final UserID userId,
 			final ContractpartnerAccountID contractpartnerAccountId) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerAccountId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerAccountId, "ContractpartnerAccountId must not be null!");
 		final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
 				contractpartnerAccountId);
 		if (contractpartnerAccount != null) {
@@ -245,8 +244,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	@Override
 	public void deleteContractpartnerAccounts(final UserID userId, final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerId, "ContractpartnerId must not be null!");
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
 				contractpartnerId);
 		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
@@ -260,8 +259,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	@Override
 	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(final UserID userId,
 			final List<BankAccount> bankAccounts) {
-		Assert.notNull(userId);
-		Assert.notNull(bankAccounts);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(bankAccounts, "BankAccounts must not be null!");
 		final List<BankAccountData> bankAccountDatas = super.mapList(bankAccounts, BankAccountData.class);
 		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
 				.getAllContractpartnerByAccounts(userId.getId(), bankAccountDatas);

@@ -78,7 +78,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public ValidationResult validateUser(final User user) {
-		Assert.notNull(user);
+		Assert.notNull(user, "user must not be null!");
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (user.getName() == null || user.getName().trim().isEmpty()) {
@@ -100,7 +100,7 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	@Cacheable(CacheNames.USER_BY_ID)
 	public User getUserById(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 		final UserData userData = this.userDao.getUserById(userId.getId());
 		return super.map(userData, User.class);
 	}
@@ -123,7 +123,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public List<User> getAllUsersByInitial(final Character initial) {
-		Assert.notNull(initial);
+		Assert.notNull(initial, "initial must not be null!");
 		final List<UserData> userDataList = this.userDao.getAllUsersByInitial(initial);
 		return super.mapList(userDataList, User.class);
 	}
@@ -131,14 +131,14 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	@Cacheable(CacheNames.USER_BY_NAME)
 	public User getUserByName(final String name) {
-		Assert.notNull(name);
+		Assert.notNull(name, "name must not be null!");
 		final UserData userData = this.userDao.getUserByName(name);
 		return super.map(userData, User.class);
 	}
 
 	@Override
 	public UserID createUser(final User user) {
-		Assert.notNull(user);
+		Assert.notNull(user, "user must not be null!");
 		user.setId(null);
 		final ValidationResult validationResult = this.validateUser(user);
 
@@ -157,7 +157,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void updateUser(final User user) {
-		Assert.notNull(user);
+		Assert.notNull(user, "user must not be null!");
 		final ValidationResult validationResult = this.validateUser(user);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -175,8 +175,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void setPassword(final UserID userId, final String password) {
-		Assert.notNull(userId);
-		Assert.notNull(password);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(password, "password must not be null!");
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
 		final String cryptedPassword = this.cryptPassword(password);
@@ -185,8 +185,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void resetPassword(final UserID userId, final String password) {
-		Assert.notNull(userId);
-		Assert.notNull(password);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(password, "password must not be null!");
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
 		final String cryptedPassword = this.cryptPassword(password);
@@ -195,7 +195,7 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Override
 	public void deleteUser(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 		try {
 			final User user = this.getUserById(userId);
 			this.evictUserCache(user);

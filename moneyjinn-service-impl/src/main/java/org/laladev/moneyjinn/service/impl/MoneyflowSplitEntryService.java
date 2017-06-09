@@ -92,7 +92,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public ValidationResult validateMoneyflowSplitEntry(final MoneyflowSplitEntry moneyflowSplitEntry) {
-		Assert.notNull(moneyflowSplitEntry);
+		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
 
@@ -128,8 +128,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(final UserID userId, final List<MoneyflowID> moneyflowIds) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
 
 		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
 
@@ -153,7 +153,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public void createMoneyflowSplitEntries(final UserID userId, final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-		Assert.notNull(moneyflowSplitEntries);
+		Assert.notNull(moneyflowSplitEntries, "moneyflowSplitEntries must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflowSplitEntries.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
@@ -171,7 +171,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public void updateMoneyflowSplitEntry(final UserID userId, final MoneyflowSplitEntry moneyflowSplitEntry) {
-		Assert.notNull(moneyflowSplitEntry);
+		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
 		final ValidationResult validationResult = this.validateMoneyflowSplitEntry(moneyflowSplitEntry);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -185,15 +185,15 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public void deleteMoneyflowSplitEntry(final UserID userId, final MoneyflowID moneyflowId, final MoneyflowSplitEntryID moneyflowSplitEntryId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowSplitEntryId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowSplitEntryId, "moneyflowSplitEntryId must not be null!");
 		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(), moneyflowSplitEntryId.getId());
 	}
 
 	@Override
 	public void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
 		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
 	}
 }

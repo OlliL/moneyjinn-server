@@ -141,12 +141,14 @@ public class MoneyflowController extends AbstractController {
 	private void fillAbstractAddMoneyflowResponse(final UserID userId, final AbstractAddMoneyflowResponse response) {
 		final LocalDate today = LocalDate.now();
 
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
 		if (capitalsources != null && !capitalsources.isEmpty()) {
 			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 		}
 
-		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartnersByDateRange(userId, today, today);
+		final List<Contractpartner> contractpartner = this.contractpartnerService
+				.getAllContractpartnersByDateRange(userId, today, today);
 		if (contractpartner != null && !contractpartner.isEmpty()) {
 			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
 		}
@@ -163,7 +165,8 @@ public class MoneyflowController extends AbstractController {
 			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
 		}
 
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService.getClientNumFreeMoneyflowsSetting(userId);
+		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
+				.getClientNumFreeMoneyflowsSetting(userId);
 		response.setSettingNumberOfFreeMoneyflows(clientNumFreeMoneyflowsSetting.getSetting());
 	}
 
@@ -175,8 +178,9 @@ public class MoneyflowController extends AbstractController {
 				&& lastUsedDate.getYear() == today.getYear();
 	}
 
-	private void fillAbstractEditMoneyflowResponse(final Moneyflow moneyflow, final AbstractEditMoneyflowResponse response) {
-		Assert.notNull(moneyflow.getUser());
+	private void fillAbstractEditMoneyflowResponse(final Moneyflow moneyflow,
+			final AbstractEditMoneyflowResponse response) {
+		Assert.notNull(moneyflow.getUser(), "User must not be null!");
 
 		final UserID userId = moneyflow.getUser().getId();
 
@@ -213,9 +217,11 @@ public class MoneyflowController extends AbstractController {
 		if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
 			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
 
-			final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflow.getId());
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+					.getMoneyflowSplitEntries(userId, moneyflow.getId());
 			if (!moneyflowSplitEntries.isEmpty()) {
-				response.setMoneyflowSplitEntryTransports(super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
+				response.setMoneyflowSplitEntryTransports(
+						super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
 			}
 
 			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
@@ -247,13 +253,15 @@ public class MoneyflowController extends AbstractController {
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
 		if (contractpartner != null && !contractpartner.isEmpty()) {
-			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner, ContractpartnerTransport.class);
+			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
+					ContractpartnerTransport.class);
 			response.setContractpartnerTransports(contractpartnerTransports);
 		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
 		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts, PostingAccountTransport.class);
+			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
 			response.setPostingAccountTransports(postingAccountTransports);
 		}
 
@@ -267,40 +275,49 @@ public class MoneyflowController extends AbstractController {
 
 		final SearchMoneyflowsResponse response = new SearchMoneyflowsResponse();
 
-		final MoneyflowSearchParams moneyflowSearchParams = super.map(request.getMoneyflowSearchParamsTransport(), MoneyflowSearchParams.class);
+		final MoneyflowSearchParams moneyflowSearchParams = super.map(request.getMoneyflowSearchParamsTransport(),
+				MoneyflowSearchParams.class);
 
 		final ValidationResult validationResult = new ValidationResult();
 
-		if (moneyflowSearchParams == null || (moneyflowSearchParams.getContractpartnerId() == null && moneyflowSearchParams.getPostingAccountId() == null
+		if (moneyflowSearchParams == null || (moneyflowSearchParams.getContractpartnerId() == null
+				&& moneyflowSearchParams.getPostingAccountId() == null
 				&& moneyflowSearchParams.getSearchString() == null)) {
-			validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_SEARCH_CRITERIA_ENTERED));
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_SEARCH_CRITERIA_ENTERED));
 		}
-		if (moneyflowSearchParams == null || (moneyflowSearchParams.getGroupBy1() == null && moneyflowSearchParams.getGroupBy2() == null)) {
-			validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_GROUPING_CRITERIA_GIVEN));
+		if (moneyflowSearchParams == null
+				|| (moneyflowSearchParams.getGroupBy1() == null && moneyflowSearchParams.getGroupBy2() == null)) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_GROUPING_CRITERIA_GIVEN));
 		}
 
 		if (!validationResult.isValid()) {
 			response.setResult(false);
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		} else {
-			final List<MoneyflowSearchResult> moneyflowSearchResults = this.moneyflowService.searchMoneyflows(userId, moneyflowSearchParams);
+			final List<MoneyflowSearchResult> moneyflowSearchResults = this.moneyflowService.searchMoneyflows(userId,
+					moneyflowSearchParams);
 			if (moneyflowSearchResults != null && !moneyflowSearchResults.isEmpty()) {
 
-				final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = super.mapList(moneyflowSearchResults,
-						MoneyflowSearchResultTransport.class);
+				final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = super.mapList(
+						moneyflowSearchResults, MoneyflowSearchResultTransport.class);
 				response.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 			}
 		}
 
 		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
 		if (contractpartner != null && !contractpartner.isEmpty()) {
-			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner, ContractpartnerTransport.class);
+			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartner,
+					ContractpartnerTransport.class);
 			response.setContractpartnerTransports(contractpartnerTransports);
 		}
 
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
 		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts, PostingAccountTransport.class);
+			final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
+					PostingAccountTransport.class);
 			response.setPostingAccountTransports(postingAccountTransports);
 		}
 
@@ -330,15 +347,18 @@ public class MoneyflowController extends AbstractController {
 		if (validationResult.isValid()) {
 			this.moneyflowService.createMoneyflows(moneyflows);
 			if (preDefMoneyflowIds != null) {
-				preDefMoneyflowIds.stream().forEach(id -> this.preDefMoneyflowService.setLastUsedDate(userId, new PreDefMoneyflowID(id)));
+				preDefMoneyflowIds.stream()
+						.forEach(id -> this.preDefMoneyflowService.setLastUsedDate(userId, new PreDefMoneyflowID(id)));
 			}
 			response.setResult(true);
 		} else {
 			response.setResult(false);
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		}
 
-		// It is important that the "last used" of any predefmoneyflows is set before selecting any relevant predefmoneyflows because of "once a
+		// It is important that the "last used" of any predefmoneyflows is set before selecting any
+		// relevant predefmoneyflows because of "once a
 		// month" they might not be relevant. Thats why the response data is created at last
 		this.fillAbstractAddMoneyflowResponse(userId, response);
 
@@ -372,34 +392,41 @@ public class MoneyflowController extends AbstractController {
 				List<MoneyflowSplitEntryID> deleteMoneyflowSplitEntryIds = null;
 
 				if (request.getUpdateMoneyflowSplitEntryTransports() != null) {
-					updateMoneyflowSplitEntries = super.mapList(request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+					updateMoneyflowSplitEntries = super.mapList(request.getUpdateMoneyflowSplitEntryTransports(),
+							MoneyflowSplitEntry.class);
 					updateMoneyflowSplitEntries.stream().forEach(mse -> {
 						mse.setMoneyflowId(moneyflowId);
-						validationResult.mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
+						validationResult.mergeValidationResult(
+								this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
 					});
 				}
 
 				if (request.getInsertMoneyflowSplitEntryTransports() != null) {
-					insertMoneyflowSplitEntries = super.mapList(request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+					insertMoneyflowSplitEntries = super.mapList(request.getInsertMoneyflowSplitEntryTransports(),
+							MoneyflowSplitEntry.class);
 					insertMoneyflowSplitEntries.stream().forEach(mse -> {
 						mse.setMoneyflowId(moneyflowId);
-						validationResult.mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
+						validationResult.mergeValidationResult(
+								this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
 					});
 				}
 
 				if (validationResult.isValid()) {
 					if (request.getDeleteMoneyflowSplitEntryIds() != null) {
-						deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream().map(id -> new MoneyflowSplitEntryID(id))
+						deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream()
+								.map(id -> new MoneyflowSplitEntryID(id))
 								.collect(Collectors.toCollection(ArrayList::new));
 					}
 
-					if (insertMoneyflowSplitEntries != null || updateMoneyflowSplitEntries != null || deleteMoneyflowSplitEntryIds != null) {
-						final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId,
-								moneyflow.getId());
+					if (insertMoneyflowSplitEntries != null || updateMoneyflowSplitEntries != null
+							|| deleteMoneyflowSplitEntryIds != null) {
+						final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+								.getMoneyflowSplitEntries(userId, moneyflow.getId());
 						final ListIterator<MoneyflowSplitEntry> entryIterator = moneyflowSplitEntries.listIterator();
 						while (entryIterator.hasNext()) {
 							final MoneyflowSplitEntry entry = entryIterator.next();
-							if (deleteMoneyflowSplitEntryIds != null && deleteMoneyflowSplitEntryIds.contains(entry.getId())) {
+							if (deleteMoneyflowSplitEntryIds != null
+									&& deleteMoneyflowSplitEntryIds.contains(entry.getId())) {
 								entryIterator.remove();
 							} else {
 								if (updateMoneyflowSplitEntries != null) {
@@ -417,27 +444,29 @@ public class MoneyflowController extends AbstractController {
 						}
 
 						if (!moneyflowSplitEntries.isEmpty()) {
-							final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream().map(MoneyflowSplitEntry::getAmount)
-									.reduce(BigDecimal.ZERO, BigDecimal::add);
+							final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+									.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
 
 							if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-								validationResult.addValidationResultItem(
-										new ValidationResultItem(moneyflowId, ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+								validationResult.addValidationResultItem(new ValidationResultItem(moneyflowId,
+										ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
 							}
 						}
 
 						if (validationResult.isValid()) {
 							if (deleteMoneyflowSplitEntryIds != null) {
-								deleteMoneyflowSplitEntryIds
-										.forEach(mseId -> this.moneyflowSplitEntryService.deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
+								deleteMoneyflowSplitEntryIds.forEach(mseId -> this.moneyflowSplitEntryService
+										.deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
 							}
 
 							if (updateMoneyflowSplitEntries != null) {
-								updateMoneyflowSplitEntries.stream().forEach(mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
+								updateMoneyflowSplitEntries.stream().forEach(
+										mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
 							}
 
 							if (insertMoneyflowSplitEntries != null) {
-								this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, insertMoneyflowSplitEntries);
+								this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId,
+										insertMoneyflowSplitEntries);
 							}
 
 						}
@@ -453,7 +482,8 @@ public class MoneyflowController extends AbstractController {
 				final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
 				this.fillAbstractEditMoneyflowResponse(moneyflow, response);
 				response.setResult(validationResult.isValid());
-				response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+				response.setValidationItemTransports(
+						super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 				return response;
 			}
 		}

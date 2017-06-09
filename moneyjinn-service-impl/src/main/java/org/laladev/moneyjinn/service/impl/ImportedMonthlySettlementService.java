@@ -105,9 +105,9 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	@Override
 	public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(final UserID userId, final Short year,
 			final Month month) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
-		Assert.notNull(month);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		Assert.notNull(month, "month must not be null!");
 
 		final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
 				.getImportedMonthlySettlementsByMonth(year, (short) month.getValue());
@@ -116,7 +116,7 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 
 	@Override
 	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
-		Assert.notNull(importedMonthlySettlement);
+		Assert.notNull(importedMonthlySettlement, "importedMonthlySettlement must not be null!");
 
 		final ImportedMonthlySettlementData importedMonthlySettlementData = super.map(importedMonthlySettlement,
 				ImportedMonthlySettlementData.class);

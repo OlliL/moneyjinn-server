@@ -146,11 +146,14 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	private final List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
-		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element)).collect(Collectors.toCollection(ArrayList::new));
+		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-	private List<PostingAccountAmount> mapPostingAccountAmountDataList(final List<PostingAccountAmountData> postingAccountAmountDatas) {
-		final List<PostingAccountAmount> postingAccountAmounts = super.mapList(postingAccountAmountDatas, PostingAccountAmount.class);
+	private List<PostingAccountAmount> mapPostingAccountAmountDataList(
+			final List<PostingAccountAmountData> postingAccountAmountDatas) {
+		final List<PostingAccountAmount> postingAccountAmounts = super.mapList(postingAccountAmountDatas,
+				PostingAccountAmount.class);
 		for (final PostingAccountAmount postingAccountAmount : postingAccountAmounts) {
 			PostingAccount postingAccount = postingAccountAmount.getPostingAccount();
 			postingAccount = this.postingAccountService.getPostingAccountById(postingAccount.getId());
@@ -168,11 +171,11 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	@Override
 	public ValidationResult validateMoneyflow(final Moneyflow moneyflow) {
-		Assert.notNull(moneyflow);
-		Assert.notNull(moneyflow.getUser());
-		Assert.notNull(moneyflow.getUser().getId());
-		Assert.notNull(moneyflow.getGroup());
-		Assert.notNull(moneyflow.getGroup().getId());
+		Assert.notNull(moneyflow, "Moneyflow must not be null!");
+		Assert.notNull(moneyflow.getUser(), "Moneyflow.user must not be null!");
+		Assert.notNull(moneyflow.getUser().getId(), "Moneyflow.user.id must not be null!");
+		Assert.notNull(moneyflow.getGroup(), "Moneyflow.group must not be null!");
+		Assert.notNull(moneyflow.getGroup().getId(), "Moneyflowgroup.id must not be null!");
 
 		this.prepareMoneyflow(moneyflow);
 
@@ -184,56 +187,78 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final LocalDate bookingDate = moneyflow.getBookingDate();
 
 		if (bookingDate == null) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
 		} else {
-			final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(moneyflow.getUser().getId(), today);
+			final AccessRelation accessRelation = this.accessRelationService
+					.getAccessRelationById(moneyflow.getUser().getId(), today);
 			// if this check is removed, make sure the accessor is evaluated for the bookingdate,
 			// not for today otherwise it will be created with the wrong accessor
-			if (bookingDate.isBefore(accessRelation.getValidFrom()) || bookingDate.isAfter(accessRelation.getValidTil())) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT));
+			if (bookingDate.isBefore(accessRelation.getValidFrom())
+					|| bookingDate.isAfter(accessRelation.getValidTil())) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT));
 			}
 		}
 
 		if (moneyflow.getCapitalsource() == null) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
 		} else {
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, moneyflow.getCapitalsource().getId());
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+					moneyflow.getCapitalsource().getId());
 			if (capitalsource == null) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
-			} else if (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId()) && !capitalsource.isGroupUse()) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
-			} else if (bookingDate != null && (bookingDate.isBefore(capitalsource.getValidFrom()) || bookingDate.isAfter(capitalsource.getValidTil()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY));
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
+			} else if (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId())
+					&& !capitalsource.isGroupUse()) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+			} else if (bookingDate != null && (bookingDate.isBefore(capitalsource.getValidFrom())
+					|| bookingDate.isAfter(capitalsource.getValidTil()))) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY));
 			}
 		}
 
 		if (moneyflow.getContractpartner() == null) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
 		} else {
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, moneyflow.getContractpartner().getId());
+			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+					moneyflow.getContractpartner().getId());
 			if (contractpartner == null) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
-			} else if (bookingDate != null && (bookingDate.isBefore(contractpartner.getValidFrom()) || bookingDate.isAfter(contractpartner.getValidTil()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID));
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
+			} else if (bookingDate != null && (bookingDate.isBefore(contractpartner.getValidFrom())
+					|| bookingDate.isAfter(contractpartner.getValidTil()))) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID));
 			}
 		}
 
 		if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
 		}
 
 		if (moneyflow.getAmount() == null || moneyflow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
 		}
 
 		if (moneyflow.getPostingAccount() == null) {
-			validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
 		} else {
-			final PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(moneyflow.getPostingAccount().getId());
+			final PostingAccount postingAccount = this.postingAccountService
+					.getPostingAccountById(moneyflow.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
 			}
 
 		}
@@ -244,15 +269,15 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	@Override
 	@Cacheable(value = CacheNames.MONEYFLOW_BY_ID)
 	public Moneyflow getMoneyflowById(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
 		final MoneyflowData moneyflowData = this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId());
 		return this.mapMoneyflowData(moneyflowData);
 	}
 
 	@Override
 	public void createMoneyflows(final List<Moneyflow> moneyflows) {
-		Assert.notNull(moneyflows);
+		Assert.notNull(moneyflows, "moneyflows must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflows.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
@@ -271,7 +296,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	@Override
 	public void updateMoneyflow(final Moneyflow moneyflow) {
-		Assert.notNull(moneyflow);
+		Assert.notNull(moneyflow, "moneyflow must not be null!");
 		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -286,8 +311,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	@Override
 	public void deleteMoneyflow(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
 		this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
 		this.evictMoneyflowCache(userId, moneyflowId);
 	}
@@ -314,23 +339,24 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom, final LocalDate dateTil,
-			final CapitalsourceID capitalsourceId) {
-		return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil, Arrays.asList(capitalsourceId));
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+		return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
+				Arrays.asList(capitalsourceId));
 	}
 
 	@Override
 	@Cacheable(value = CacheNames.MONEYFLOW_YEARS)
 	public List<Short> getAllYears(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 
 		return this.moneyflowDao.getAllYears(userId.getId());
 	}
 
 	@Override
 	public List<Month> getAllMonth(final UserID userId, final Short year) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
 
 		final Cache cache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
 		@SuppressWarnings("unchecked")
@@ -348,7 +374,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		if (allMonths == null || allMonths.isEmpty()) {
 			months = new ArrayList<>();
 		} else {
-			months = allMonths.stream().map(m -> Month.of(m.intValue())).collect(Collectors.toCollection(ArrayList::new));
+			months = allMonths.stream().map(m -> Month.of(m.intValue()))
+					.collect(Collectors.toCollection(ArrayList::new));
 		}
 
 		cache.put(year, months);
@@ -357,32 +384,36 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	public List<Moneyflow> getAllMoneyflowsByDateRange(final UserID userId, final LocalDate dateFrom, final LocalDate dateTil) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
+	public List<Moneyflow> getAllMoneyflowsByDateRange(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "dateFrom must not be null!");
+		Assert.notNull(dateTil, "dateTil must not be null!");
 
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRange(userId.getId(), dateFrom, dateTil);
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRange(userId.getId(),
+				dateFrom, dateTil);
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
 
 	@Override
-	public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(final UserID userId, final LocalDate dateFrom, final LocalDate dateTil) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
+	public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "dateFrom must not be null!");
+		Assert.notNull(dateTil, "dateTil must not be null!");
 
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRangeIncludingPrivate(userId.getId(), dateFrom, dateTil);
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+				.getAllMoneyflowsByDateRangeIncludingPrivate(userId.getId(), dateFrom, dateTil);
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
 
 	@Override
 	public boolean monthHasMoneyflows(final UserID userId, final Short year, final Month month) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
-		Assert.notNull(month);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		Assert.notNull(month, "month must not be null!");
 
 		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
@@ -391,37 +422,39 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final UserID userId, final LocalDate dateFrom, final LocalDate dateTil,
-			final List<CapitalsourceID> capitalsourceIds) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
-		Assert.notNull(capitalsourceIds);
+	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final List<CapitalsourceID> capitalsourceIds) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "dateFrom must not be null!");
+		Assert.notNull(dateTil, "dateTil must not be null!");
+		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
 
-		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil, capitalsourceIdLongs);
+		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil,
+				capitalsourceIdLongs);
 	}
 
 	@Override
 	public LocalDate getMaxMoneyflowDate(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 
 		return this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
 	}
 
 	@Override
 	public LocalDate getPreviousMoneyflowDate(final UserID userId, final LocalDate date) {
-		Assert.notNull(userId);
-		Assert.notNull(date);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(date, "Date must not be null!");
 
 		return this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), date);
 	}
 
 	@Override
 	public LocalDate getNextMoneyflowDate(final UserID userId, final LocalDate date) {
-		Assert.notNull(userId);
-		Assert.notNull(date);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(date, "Date must not be null!");
 
 		return this.moneyflowDao.getNextMoneyflowDate(userId.getId(), date);
 	}
@@ -429,15 +462,17 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	@Override
 	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final UserID userId,
 			final List<PostingAccountID> postingAccountIds, final LocalDate dateFrom, final LocalDate dateTil) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
-		Assert.notEmpty(postingAccountIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "DateFrom must not be null!");
+		Assert.notNull(dateTil, "DateTil must not be null!");
+		Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
 
-		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom, dateTil);
+				.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs,
+						dateFrom, dateTil);
 		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
 
 	}
@@ -445,24 +480,27 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	@Override
 	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final UserID userId,
 			final List<PostingAccountID> postingAccountIds, final LocalDate dateFrom, final LocalDate dateTil) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
-		Assert.notEmpty(postingAccountIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "DateFrom must not be null!");
+		Assert.notNull(dateTil, "DateTil must not be null!");
+		Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
 
-		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom, dateTil);
+				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom,
+						dateTil);
 		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
 	}
 
 	@Override
-	public List<Moneyflow> searchMoneyflowsByAmountDate(final UserID userId, final LocalDate bookingDate, final BigDecimal amount, final Period searchPeriod) {
-		Assert.notNull(userId);
-		Assert.notNull(bookingDate);
-		Assert.notNull(amount);
-		Assert.notNull(searchPeriod);
+	public List<Moneyflow> searchMoneyflowsByAmountDate(final UserID userId, final LocalDate bookingDate,
+			final BigDecimal amount, final Period searchPeriod) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(bookingDate, "bookingDate must not be null!");
+		Assert.notNull(amount, "amount must not be null!");
+		Assert.notNull(searchPeriod, "searchPeriod must not be null!");
 
 		final LocalDate beginOfMonth = bookingDate.with(TemporalAdjusters.firstDayOfMonth());
 		final LocalDate endOfMonth = bookingDate.with(TemporalAdjusters.lastDayOfMonth());
@@ -475,15 +513,17 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			dateTil = endOfMonth;
 		}
 
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflowsByAmountDate(userId.getId(), dateFrom, dateTil, amount);
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflowsByAmountDate(userId.getId(),
+				dateFrom, dateTil, amount);
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
 
 	@Override
-	public List<MoneyflowSearchResult> searchMoneyflows(final UserID userId, final MoneyflowSearchParams moneyflowSearchParams) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowSearchParams);
+	public List<MoneyflowSearchResult> searchMoneyflows(final UserID userId,
+			final MoneyflowSearchParams moneyflowSearchParams) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowSearchParams, "moneyflowSearchParams must not be null!");
 
 		if (moneyflowSearchParams.getStartDate() == null) {
 			moneyflowSearchParams.setStartDate(LocalDate.of(0, Month.JANUARY, 1));
@@ -492,15 +532,19 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			moneyflowSearchParams.setEndDate(LocalDate.of(9999, Month.DECEMBER, 31));
 		}
 
-		final MoneyflowSearchParamsData moneyflowSearchParamsData = super.map(moneyflowSearchParams, MoneyflowSearchParamsData.class);
+		final MoneyflowSearchParamsData moneyflowSearchParamsData = super.map(moneyflowSearchParams,
+				MoneyflowSearchParamsData.class);
 
-		final List<MoneyflowSearchResultData> moneyflowSearchResultDatas = this.moneyflowDao.searchMoneyflows(userId.getId(), moneyflowSearchParamsData);
-		final List<MoneyflowSearchResult> moneyflowSearchResults = super.mapList(moneyflowSearchResultDatas, MoneyflowSearchResult.class);
+		final List<MoneyflowSearchResultData> moneyflowSearchResultDatas = this.moneyflowDao
+				.searchMoneyflows(userId.getId(), moneyflowSearchParamsData);
+		final List<MoneyflowSearchResult> moneyflowSearchResults = super.mapList(moneyflowSearchResultDatas,
+				MoneyflowSearchResult.class);
 
 		for (final MoneyflowSearchResult moneyflowSearchResult : moneyflowSearchResults) {
 			if (moneyflowSearchResult.getContractpartner() != null) {
 				final ContractpartnerID contractpartnerId = moneyflowSearchResult.getContractpartner().getId();
-				final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+				final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+						contractpartnerId);
 				moneyflowSearchResult.setContractpartner(contractpartner);
 			}
 		}
@@ -509,15 +553,15 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(final UserID userId, final LocalDate dateFrom, final LocalDate dateTil,
-			final CapitalsourceID capitalsourceId) {
-		Assert.notNull(userId);
-		Assert.notNull(dateFrom);
-		Assert.notNull(dateTil);
-		Assert.notNull(capitalsourceId);
+	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(final UserID userId, final LocalDate dateFrom,
+			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "dateFrom must not be null!");
+		Assert.notNull(dateTil, "dateTil must not be null!");
+		Assert.notNull(capitalsourceId, "capitalsourceId must not be null!");
 
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil,
-				capitalsourceId.getId());
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+				.getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil, capitalsourceId.getId());
 
 		return this.mapMoneyflowDataList(moneyflowDatas);
 	}

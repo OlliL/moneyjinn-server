@@ -96,8 +96,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	@Override
 	public Integer countImportedMoneyflows(final UserID userId, final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
-		Assert.notNull(userId);
-		Assert.notNull(capitalsourceIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
 
@@ -118,8 +118,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
 			final ImportedMoneyflowStatus status, final LocalDate dateFrom, final LocalDate dateTil) {
-		Assert.notNull(userId);
-		Assert.notNull(capitalsourceIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
 
@@ -130,7 +130,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	@Override
 	public void createImportedMoneyflow(final ImportedMoneyflow importedMoneyflow) {
-		Assert.notNull(importedMoneyflow);
+		Assert.notNull(importedMoneyflow, "importedMoneyflow must not be null!");
 
 		if (!this.checkIfExternalIdAlreadyExists(importedMoneyflow.getExternalId())) {
 			final ImportedMoneyflowData importedMoneyflowData = super.map(importedMoneyflow, ImportedMoneyflowData.class);
@@ -140,24 +140,24 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
 	@Override
 	public boolean checkIfExternalIdAlreadyExists(final String externalId) {
-		Assert.notNull(externalId);
+		Assert.notNull(externalId, "externalId must not be null!");
 
 		return this.importedMoneyflowDao.checkIfExternalIdAlreadyExists(externalId);
 	}
 
 	@Override
 	public void updateImportedMoneyflowStatus(final UserID userId, final ImportedMoneyflowID importedMoneyflowId, final ImportedMoneyflowStatus status) {
-		Assert.notNull(userId);
-		Assert.notNull(importedMoneyflowId);
-		Assert.notNull(status);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
+		Assert.notNull(status, "status must not be null!");
 
 		this.importedMoneyflowDao.updateImportedMoneyflowStatus(userId.getId(), importedMoneyflowId.getId(), ImportedMoneyflowStatusMapper.map(status));
 	}
 
 	@Override
 	public void deleteImportedMoneyflowById(final UserID userId, final ImportedMoneyflowID importedMoneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(importedMoneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
 
 		this.importedMoneyflowDao.deleteImportedMoneyflowById(userId.getId(), importedMoneyflowId.getId());
 	}

@@ -67,7 +67,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public ValidationResult validateGroup(final Group group) {
-		Assert.notNull(group);
+		Assert.notNull(group, "group must not be null!");
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (group.getName() == null || group.getName().trim().isEmpty()) {
@@ -89,7 +89,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	@Override
 	@Cacheable(CacheNames.GROUP_BY_ID)
 	public Group getGroupById(final GroupID groupId) {
-		Assert.notNull(groupId);
+		Assert.notNull(groupId, "groupId must not be null!");
 		final GroupData groupData = this.groupDao.getGroupById(groupId.getId());
 		return super.map(groupData, Group.class);
 	}
@@ -113,21 +113,21 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public List<Group> getAllGroupsByInitial(final Character initial) {
-		Assert.notNull(initial);
+		Assert.notNull(initial, "initial must not be null!");
 		final List<GroupData> groupDataList = this.groupDao.getAllGroupsByInitial(initial);
 		return super.mapList(groupDataList, Group.class);
 	}
 
 	@Override
 	public Group getGroupByName(final String name) {
-		Assert.notNull(name);
+		Assert.notNull(name, "name must not be null!");
 		final GroupData groupData = this.groupDao.getGroupByName(name);
 		return super.map(groupData, Group.class);
 	}
 
 	@Override
 	public void updateGroup(final Group group) {
-		Assert.notNull(group);
+		Assert.notNull(group, "group must not be null!");
 		final ValidationResult validationResult = this.validateGroup(group);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -142,7 +142,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public void createGroup(final Group group) {
-		Assert.notNull(group);
+		Assert.notNull(group, "group must not be null!");
 		group.setId(null);
 		final ValidationResult validationResult = this.validateGroup(group);
 
@@ -158,7 +158,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public void deleteGroup(final GroupID groupId) {
-		Assert.notNull(groupId);
+		Assert.notNull(groupId, "groupId must not be null!");
 		try {
 			this.groupDao.deleteGroup(groupId.getId());
 			this.evictGroupCache(groupId);

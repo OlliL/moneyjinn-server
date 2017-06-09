@@ -72,13 +72,14 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	}
 
 	private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {
-		Assert.notNull(monthlySettlement);
-		Assert.notNull(monthlySettlement.getCapitalsource());
-		Assert.notNull(monthlySettlement.getCapitalsource().getId());
-		Assert.notNull(monthlySettlement.getUser());
-		Assert.notNull(monthlySettlement.getUser().getId());
-		Assert.notNull(monthlySettlement.getGroup());
-		Assert.notNull(monthlySettlement.getGroup().getId());
+		Assert.notNull(monthlySettlement, "monthlySettlement must not be null!");
+		Assert.notNull(monthlySettlement.getCapitalsource(), "monthlySettlement.getCapitalsource() must not be null!");
+		Assert.notNull(monthlySettlement.getCapitalsource().getId(),
+				"monthlySettlement.getCapitalsource().getId() must not be null!");
+		Assert.notNull(monthlySettlement.getUser(), "monthlySettlement.getUser() must not be null!");
+		Assert.notNull(monthlySettlement.getUser().getId(), "monthlySettlement.getUser().getId() must not be null!");
+		Assert.notNull(monthlySettlement.getGroup(), "monthlySettlement.getGroup() must not be null!");
+		Assert.notNull(monthlySettlement.getGroup().getId(), "monthlySettlement.getGroup().getId() must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
 
@@ -127,15 +128,15 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
 	@Override
 	public List<Short> getAllYears(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 
 		return this.monthlySettlementDao.getAllYears(userId.getId());
 	}
 
 	@Override
 	public List<Month> getAllMonth(final UserID userId, final Short year) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
 
 		final List<Short> allMonths = this.monthlySettlementDao.getAllMonth(userId.getId(), year);
 		if (allMonths != null) {
@@ -147,9 +148,9 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	@Override
 	public List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(final UserID userId, final Short year,
 			final Month month) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
-		Assert.notNull(month);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		Assert.notNull(month, "month must not be null!");
 
 		final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
 				.getAllMonthlySettlementsByYearMonth(userId.getId(), year, (short) month.getValue());
@@ -159,23 +160,23 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
 	@Override
 	public LocalDate getMaxSettlementDate(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 
 		return this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
 	}
 
 	@Override
 	public boolean checkMonthlySettlementsExists(final UserID userId, final Short year, final Month month) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
-		Assert.notNull(month);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		Assert.notNull(month, "month must not be null!");
 
 		return this.monthlySettlementDao.checkMonthlySettlementsExists(userId.getId(), year, (short) month.getValue());
 	}
 
 	@Override
 	public ValidationResult upsertMonthlySettlements(final List<MonthlySettlement> monthlySettlements) {
-		Assert.notNull(monthlySettlements);
+		Assert.notNull(monthlySettlements, "monthlySettlements must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
 		monthlySettlements.stream()
@@ -193,9 +194,9 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
 	@Override
 	public void deleteMonthlySettlement(final UserID userId, final Short year, final Month month) {
-		Assert.notNull(userId);
-		Assert.notNull(year);
-		Assert.notNull(month);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		Assert.notNull(month, "month must not be null!");
 
 		this.monthlySettlementDao.deleteMonthlySettlement(userId.getId(), year, (short) month.getValue());
 	}
@@ -203,10 +204,10 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	@Override
 	public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(final UserID userId,
 			final LocalDate begin, final LocalDate end, final List<CapitalsourceID> capitalsourceIds) {
-		Assert.notNull(userId);
-		Assert.notNull(begin);
-		Assert.notNull(end);
-		Assert.notEmpty(capitalsourceIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(begin, "begin must not be null!");
+		Assert.notNull(end, "end must not be null!");
+		Assert.notEmpty(capitalsourceIds, "CapitalsourceIds must not be empty!");
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));

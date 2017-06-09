@@ -95,8 +95,8 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	@Override
 	public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(final UserID userId,
 			final List<CapitalsourceID> capitalsourceIds) {
-		Assert.notNull(userId);
-		Assert.notNull(capitalsourceIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -108,7 +108,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 
 	@Override
 	public void upsertImportedBalance(final ImportedBalance importedBalance) {
-		Assert.notNull(importedBalance);
+		Assert.notNull(importedBalance, "importedBalance must not be null!");
 
 		final ImportedBalanceData importedBalanceData = super.map(importedBalance, ImportedBalanceData.class);
 		this.importedBalanceDao.upsertImportedBalance(importedBalanceData);

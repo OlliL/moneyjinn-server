@@ -159,11 +159,11 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner);
-		Assert.notNull(contractpartner.getUser());
-		Assert.notNull(contractpartner.getUser().getId());
-		Assert.notNull(contractpartner.getAccess());
-		Assert.notNull(contractpartner.getAccess().getId());
+		Assert.notNull(contractpartner, "contractpartner must not be null!");
+		Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
+		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.getUser().getId() must not be null!");
+		Assert.notNull(contractpartner.getAccess(), "contractpartner.getAccess() must not be null!");
+		Assert.notNull(contractpartner.getAccess().getId(), "contractpartner.getAccess().getId() must not be null!");
 
 		this.prepareContractpartner(contractpartner);
 		final ValidationResult validationResult = new ValidationResult();
@@ -199,8 +199,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	@Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
 	public Contractpartner getContractpartnerById(final UserID userId, final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId);
-		Assert.notNull(contractpartnerId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
 		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerById(userId.getId(),
 				contractpartnerId.getId());
 		return this.mapContractpartnerData(contractpartnerData);
@@ -208,38 +208,38 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public Set<Character> getAllContractpartnerInitials(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 		return this.contractpartnerDao.getAllContractpartnerInitials(userId.getId());
 	}
 
 	@Override
 	public Set<Character> getAllContractpartnerInitialsByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
-		Assert.notNull(userId);
-		Assert.notNull(validFrom);
-		Assert.notNull(validTil);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(validFrom, "validFrom must not be null!");
+		Assert.notNull(validTil, "validTil must not be null!");
 		return this.contractpartnerDao.getAllContractpartnerInitialsByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
 	public Integer countAllContractpartners(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 		return this.contractpartnerDao.countAllContractpartners(userId.getId());
 	}
 
 	@Override
 	public Integer countAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
-		Assert.notNull(userId);
-		Assert.notNull(validFrom);
-		Assert.notNull(validTil);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(validFrom, "validFrom must not be null!");
+		Assert.notNull(validTil, "validTil must not be null!");
 		return this.contractpartnerDao.countAllContractpartnersByDateRange(userId.getId(), validFrom, validTil);
 	}
 
 	@Override
 	@Cacheable(CacheNames.ALL_CONTRACTPARTNER)
 	public List<Contractpartner> getAllContractpartners(final UserID userId) {
-		Assert.notNull(userId);
+		Assert.notNull(userId, "UserId must not be null!");
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartners(userId.getId());
 		return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -249,9 +249,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public List<Contractpartner> getAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
-		Assert.notNull(userId);
-		Assert.notNull(validFrom);
-		Assert.notNull(validTil);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(validFrom, "validFrom must not be null!");
+		Assert.notNull(validTil, "validTil must not be null!");
 
 		final Cache cache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE, userId.getId().toString());
 		List<Contractpartner> contractpartners = null;
@@ -270,8 +270,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public List<Contractpartner> getAllContractpartnersByInitial(final UserID userId, final Character initial) {
-		Assert.notNull(userId);
-		Assert.notNull(initial);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(initial, "initial must not be null!");
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartnersByInitial(userId.getId(), initial);
 		return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -280,10 +280,10 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public List<Contractpartner> getAllContractpartnersByInitialAndDateRange(final UserID userId,
 			final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-		Assert.notNull(userId);
-		Assert.notNull(validFrom);
-		Assert.notNull(validTil);
-		Assert.notNull(initial);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(validFrom, "validFrom must not be null!");
+		Assert.notNull(validTil, "validTil must not be null!");
+		Assert.notNull(initial, "initial must not be null!");
 		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
 				.getAllContractpartnersByInitialAndDateRange(userId.getId(), initial, validFrom, validTil);
 		return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -291,8 +291,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
-		Assert.notNull(userId);
-		Assert.notNull(name);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(name, "name must not be null!");
 		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerByName(userId.getId(),
 				name);
 		return this.mapContractpartnerData(contractpartnerData);
@@ -300,7 +300,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public void updateContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner);
+		Assert.notNull(contractpartner, "contractpartner must not be null!");
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -315,7 +315,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	@Override
 	public void createContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner);
+		Assert.notNull(contractpartner, "contractpartner must not be null!");
 		contractpartner.setId(null);
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 
@@ -332,9 +332,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public void deleteContractpartner(final UserID userId, final GroupID groupId,
 			final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId);
-		Assert.notNull(groupId);
-		Assert.notNull(contractpartnerId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(groupId, "groupId must not be null!");
+		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
 		try {
 			this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
 			this.evictContractpartnerCache(userId, contractpartnerId);

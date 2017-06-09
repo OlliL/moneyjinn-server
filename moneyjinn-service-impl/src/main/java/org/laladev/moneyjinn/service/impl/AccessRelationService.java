@@ -84,7 +84,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
-		Assert.notNull(accessRelation);
+		Assert.notNull(accessRelation, "AccessRelation must not be null!");
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (accessRelation.getParentAccessRelation() == null) {
@@ -107,8 +107,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public Group getAccessor(final AccessID accessId, final LocalDate date) {
-		Assert.notNull(accessId);
-		Assert.notNull(date);
+		Assert.notNull(accessId, "AccessId must not be null!");
+		Assert.notNull(date, "Date must not be null!");
 
 		final Cache cache = super.getCache(CacheNames.ACCESS_RELATION_BY_USER_ID_AND_DATE, accessId.getId().toString());
 		Group group = cache.get(date, Group.class);
@@ -128,7 +128,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	@Override
 	@Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID)
 	public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
-		Assert.notNull(accessId);
+		Assert.notNull(accessId, "AccessId must not be null!");
 		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
 				.getAllAccessRelationsById(accessId.getId());
 		return super.mapList(accessRelationDataList, AccessRelation.class);
@@ -136,7 +136,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public ValidationResult setAccessRelationForExistingUser(final AccessRelation accessRelation) {
-		Assert.notNull(accessRelation);
+		Assert.notNull(accessRelation, "AccessRelation must not be null!");
 		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
 		if (accessRelation.getValidFrom().isBefore(this.now())) {
 			validationResult.addValidationResultItem(
@@ -151,7 +151,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public ValidationResult setAccessRelationForNewUser(final AccessRelation accessRelation) {
-		Assert.notNull(accessRelation);
+		Assert.notNull(accessRelation, "AccessRelation must not be null!");
 		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
 		if (validationResult.isValid()) {
 			this.setAccessRelation(accessRelation);
@@ -161,14 +161,14 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public AccessRelation getAccessRelationById(final AccessID accessRelationId) {
-		Assert.notNull(accessRelationId);
+		Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
 		return this.getAccessRelationById(accessRelationId, this.now());
 	}
 
 	@Override
 	public AccessRelation getAccessRelationById(final AccessID accessRelationId, final LocalDate date) {
-		Assert.notNull(accessRelationId);
-		Assert.notNull(date);
+		Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
+		Assert.notNull(date, "Date must not be null!");
 		final AccessRelationData accessRelationData = this.accessRelationDao
 				.getAccessRelationById(accessRelationId.getId(), date);
 		return super.map(accessRelationData, AccessRelation.class);
@@ -176,17 +176,17 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public void deleteAllAccessRelation(final AccessID accessRelationId) {
-		Assert.notNull(accessRelationId);
+		Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
 		this.evictAccessRelationCache(accessRelationId);
 		this.accessRelationDao.deleteAllAccessFlattened(accessRelationId.getId());
 		this.accessRelationDao.deleteAllAccessRelation(accessRelationId.getId());
 	}
 
 	@Override
-	public Set<UserID> getAllUserWithSameGroup(final AccessID userID) {
-		Assert.notNull(userID);
+	public Set<UserID> getAllUserWithSameGroup(final AccessID userId) {
+		Assert.notNull(userId, "UserId must not be null!");
 
-		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userID.getId());
+		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
 
 		return accessIdList.stream().map(ai -> new UserID(ai)).collect(Collectors.toSet());
 

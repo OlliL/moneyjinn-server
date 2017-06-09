@@ -64,8 +64,8 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 
 	@Override
 	public MoneyflowReceipt getMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
 
 		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao.getMoneyflowReceipt(moneyflowId.getId());
 		return this.mapMoneyflowReceiptData(moneyflowReceiptData);
@@ -73,8 +73,8 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 
 	@Override
 	public List<MoneyflowID> getMoneyflowIdsWithReceipt(final UserID userId, final List<MoneyflowID> moneyflowIds) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowIds);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
 
 		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
 
@@ -89,8 +89,8 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 
 	@Override
 	public void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId) {
-		Assert.notNull(userId);
-		Assert.notNull(moneyflowId);
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
 		this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
 	}
 

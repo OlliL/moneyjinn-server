@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
@@ -29,23 +28,15 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 	IImportedMonthlySettlementService importedMonthlySettlementService;
 
 	private final HttpMethod method = HttpMethod.POST;
-	private String userName;
-	private String userPassword;
-
-	@Before
-	public void setUp() {
-		this.userName = null;
-		this.userPassword = null;
-	}
 
 	@Override
 	protected String getUsername() {
-		return this.userName;
+		return null;
 	}
 
 	@Override
 	protected String getPassword() {
-		return this.userPassword;
+		return null;
 	}
 
 	@Override

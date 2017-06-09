@@ -66,7 +66,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount);
+		Assert.notNull(postingAccount, "postingAccount must not be null!");
 		final ValidationResult validationResult = new ValidationResult();
 
 		if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
@@ -89,7 +89,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	@Override
 	@Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
 	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
-		Assert.notNull(postingAccountId);
+		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
 		final PostingAccountData postingAccountData = this.postingAccountDao
 				.getPostingAccountById(postingAccountId.getId());
 		return super.map(postingAccountData, PostingAccount.class);
@@ -114,7 +114,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public List<PostingAccount> getAllPostingAccountsByInitial(final Character initial) {
-		Assert.notNull(initial);
+		Assert.notNull(initial, "initial must not be null!");
 		final List<PostingAccountData> postingAccountDataList = this.postingAccountDao
 				.getAllPostingAccountsByInitial(initial);
 		return super.mapList(postingAccountDataList, PostingAccount.class);
@@ -122,14 +122,14 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public PostingAccount getPostingAccountByName(final String name) {
-		Assert.notNull(name);
+		Assert.notNull(name, "name must not be null!");
 		final PostingAccountData postingAccountData = this.postingAccountDao.getPostingAccountByName(name);
 		return super.map(postingAccountData, PostingAccount.class);
 	}
 
 	@Override
 	public void updatePostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount);
+		Assert.notNull(postingAccount, "postingAccount must not be null!");
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -144,7 +144,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public void createPostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount);
+		Assert.notNull(postingAccount, "postingAccount must not be null!");
 		postingAccount.setId(null);
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 
@@ -160,7 +160,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public void deletePostingAccount(final PostingAccountID postingAccountId) {
-		Assert.notNull(postingAccountId);
+		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
 		try {
 			this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
 			this.evictPostingAccountCache(postingAccountId);
