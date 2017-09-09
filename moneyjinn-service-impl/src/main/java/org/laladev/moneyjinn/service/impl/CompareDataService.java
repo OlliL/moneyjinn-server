@@ -74,7 +74,10 @@ import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.service.dao.data.mapper.CompareDataFormatDataMapper;
 import org.xml.sax.InputSource;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 @Named
 public class CompareDataService extends AbstractService implements ICompareDataService {
@@ -97,7 +100,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
 	@Override
 	public CompareDataFormat getCompareDataFormatById(final CompareDataFormatID compareDataFormatId) {
-		final CompareDataFormatData compareDataFormatData = this.compareDataFormatDao.getCompareDataFormatById(compareDataFormatId.getId());
+		final CompareDataFormatData compareDataFormatData = this.compareDataFormatDao
+				.getCompareDataFormatById(compareDataFormatId.getId());
 		return super.map(compareDataFormatData, CompareDataFormat.class);
 	}
 
@@ -109,8 +113,9 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	}
 
 	@Override
-	public CompareDataResult compareDataFile(final UserID userId, final CompareDataFormatID compareDataFormatId, final CapitalsourceID capitalsourceId,
-			final LocalDate startDate, final LocalDate endDate, final String fileContents) {
+	public CompareDataResult compareDataFile(final UserID userId, final CompareDataFormatID compareDataFormatId,
+			final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate,
+			final String fileContents) {
 
 		final CompareDataFormat compareDataFormat = this.getCompareDataFormatById(compareDataFormatId);
 
@@ -127,18 +132,20 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		}
 
 		// remove File-Data outside the given period of time
-		compareDataDatasets.removeIf(cdd -> cdd.getBookingDate().isAfter(endDate) || cdd.getBookingDate().isBefore(startDate));
+		compareDataDatasets
+				.removeIf(cdd -> cdd.getBookingDate().isAfter(endDate) || cdd.getBookingDate().isBefore(startDate));
 
 		return this.doComparision(userId, capitalsourceId, startDate, endDate, compareDataDatasets);
 	}
 
 	@Override
-	public CompareDataResult compareDataImport(final UserID userId, final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate) {
+	public CompareDataResult compareDataImport(final UserID userId, final CapitalsourceID capitalsourceId,
+			final LocalDate startDate, final LocalDate endDate) {
 
 		List<CompareDataDataset> compareDataDatasets = null;
 
-		final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
-				Arrays.asList(capitalsourceId), startDate, endDate);
+		final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, Arrays.asList(capitalsourceId), startDate, endDate);
 
 		if (importedMoneyflows != null) {
 			compareDataDatasets = this.mapImportedMoneyflows(importedMoneyflows);
@@ -163,13 +170,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		return compareDataDatasets;
 	}
 
-	private CompareDataResult doComparision(final UserID userId, final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate,
-			final List<CompareDataDataset> compareDataDatasets) {
+	private CompareDataResult doComparision(final UserID userId, final CapitalsourceID capitalsourceId,
+			final LocalDate startDate, final LocalDate endDate, final List<CompareDataDataset> compareDataDatasets) {
 		final CompareDataResult result = new CompareDataResult();
 		final Period searchFrame = Period.ofDays(5);
 
 		// gather all recorded moneyflows in the given period of time to work on for comparision
-		final List<Moneyflow> allMoneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId, startDate, endDate);
+		final List<Moneyflow> allMoneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId,
+				startDate, endDate);
 
 		if (compareDataDatasets != null) {
 			for (final CompareDataDataset compareDataDataset : compareDataDatasets) {
@@ -181,7 +189,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				final List<Moneyflow> moneyflows = new ArrayList<>();
 				// find all recorded moneyflows which could possibly match the file dataset
 				for (final Moneyflow moneyflow : allMoneyflows) {
-					if (moneyflow.getAmount().equals(compareDataDataset.getAmount()) && moneyflow.getBookingDate().isAfter(bookingDateLeft)
+					if (moneyflow.getAmount().equals(compareDataDataset.getAmount())
+							&& moneyflow.getBookingDate().isAfter(bookingDateLeft)
 							&& moneyflow.getBookingDate().isBefore(bookingDateRight)) {
 						moneyflows.add(moneyflow);
 					}
@@ -200,7 +209,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 						// more than one match found - try to find the best one by rating all
 						int currentRating = -1;
 						for (final Moneyflow moneyflow : moneyflows) {
-							final int rating = this.rateMoneyflowToDataset(userId, moneyflow, compareDataDataset, capitalsourceId);
+							final int rating = this.rateMoneyflowToDataset(userId, moneyflow, compareDataDataset,
+									capitalsourceId);
 							if (rating > currentRating) {
 								matchingMoneyflow = moneyflow;
 								currentRating = rating;
@@ -211,9 +221,11 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 					if (matchingMoneyflow != null) {
 						if (!matchingMoneyflow.isPrivat() || matchingMoneyflow.getUser().getId().equals(userId)) {
 							if (matchingMoneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
-								result.addCompareDataMatching(new CompareDataMatching(matchingMoneyflow, compareDataDataset));
+								result.addCompareDataMatching(
+										new CompareDataMatching(matchingMoneyflow, compareDataDataset));
 							} else {
-								result.addCompareDataWrongCapitalsource(new CompareDataWrongCapitalsource(matchingMoneyflow, compareDataDataset));
+								result.addCompareDataWrongCapitalsource(
+										new CompareDataWrongCapitalsource(matchingMoneyflow, compareDataDataset));
 							}
 						}
 
@@ -234,8 +246,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		return result;
 	}
 
-	private int rateMoneyflowToDataset(final UserID userId, final Moneyflow moneyflow, final CompareDataDataset compareDataDataset,
-			final CapitalsourceID capitalsourceId) {
+	private int rateMoneyflowToDataset(final UserID userId, final Moneyflow moneyflow,
+			final CompareDataDataset compareDataDataset, final CapitalsourceID capitalsourceId) {
 		int rating = 0;
 		if (moneyflow.getBookingDate().equals(compareDataDataset.getBookingDate())) {
 			rating += 10;
@@ -250,11 +262,12 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
 		// does our source contain bank account information?
 		if (compareDataDataset.getPartnerBankAccount() != null) {
-			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService.getAllContractpartnerByAccounts(userId,
-					Arrays.asList(compareDataDataset.getPartnerBankAccount()));
+			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+					.getAllContractpartnerByAccounts(userId, Arrays.asList(compareDataDataset.getPartnerBankAccount()));
 
 			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
-				if (contractpartnerAccounts.get(0).getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
+				if (contractpartnerAccounts.get(0).getContractpartner().getId()
+						.equals(moneyflow.getContractpartner().getId())) {
 					rating += 50;
 				}
 			}
@@ -296,7 +309,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		if (source instanceof GregorianCalendar) {
 			zonedDateTime = ((GregorianCalendar) source).toZonedDateTime();
 		} else {
-			zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(source.getTimeInMillis()), source.getTimeZone().toZoneId());
+			zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(source.getTimeInMillis()),
+					source.getTimeZone().toZoneId());
 		}
 		return zonedDateTime.toLocalDate();
 	}
@@ -315,17 +329,20 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				final CompareDataDataset data = new CompareDataDataset();
 				data.setBookingDate(this.calendarToLocalDate(entry.getBookingDate()));
 				switch (entry.getCreditDebitIndicator()) {
-					case Credit:
-						data.setAmount(entry.getAmount().getValue());
-						data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties().getDebtor().getName());
-						break;
-					default:
-						data.setAmount(entry.getAmount().getValue().negate());
-						data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties().getCreditor().getName());
-						break;
+				case Credit:
+					data.setAmount(entry.getAmount().getValue());
+					data.setPartner(
+							entry.getEntryDetails().getTransactionDetails().getRelatedParties().getDebtor().getName());
+					break;
+				default:
+					data.setAmount(entry.getAmount().getValue().negate());
+					data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties().getCreditor()
+							.getName());
+					break;
 				}
 
-				data.setComment(String.join(" ", entry.getEntryDetails().getTransactionDetails().getRemittanceInformation().getUnstructured()));
+				data.setComment(String.join(" ",
+						entry.getEntryDetails().getTransactionDetails().getRemittanceInformation().getUnstructured()));
 				compareDataDatasets.add(data);
 			}
 		} catch (final Exception e) {
@@ -337,11 +354,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		return compareDataDatasets;
 	}
 
-	private List<CompareDataDataset> mapCvsFileToCompareData(final String fileContents, final CompareDataFormat compareDataFormat) {
+	private List<CompareDataDataset> mapCvsFileToCompareData(final String fileContents,
+			final CompareDataFormat compareDataFormat) {
 
 		final List<CompareDataDataset> compareDataDatasets = new ArrayList<>();
 
-		final CSVReader cvsReader = new CSVReader(new StringReader(fileContents), compareDataFormat.getDelimiter());
+		final CSVParser parser = new CSVParserBuilder().withSeparator(compareDataFormat.getDelimiter()).build();
+		final CSVReader cvsReader = new CSVReaderBuilder(new StringReader(fileContents)).withCSVParser(parser).build();
+
 		try {
 			final List<String[]> cvsLines = cvsReader.readAll();
 
@@ -406,7 +426,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 					}
 					// alternative Partner overrules Partner if existant
 					if (compareDataFormat.getPositionPartnerAlternative() != null) {
-						final String keyword = cmpDataRaw[compareDataFormat.getPartnerAlternativeIndicatorPosition() - 1];
+						final String keyword = cmpDataRaw[compareDataFormat.getPartnerAlternativeIndicatorPosition()
+								- 1];
 						final Matcher altPartnerMatcher = partnerAlternativeIndicator.matcher(keyword);
 						if (altPartnerMatcher.find()) {
 							partner = cmpDataRaw[compareDataFormat.getPositionPartnerAlternative() - 1];
