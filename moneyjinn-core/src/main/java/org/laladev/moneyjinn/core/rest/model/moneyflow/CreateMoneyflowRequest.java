@@ -26,42 +26,48 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("createMoneyflowsRequest")
-public class CreateMoneyflowsRequest extends AbstractRequest {
-	@JsonProperty("moneyflowTransport")
-	private List<MoneyflowTransport> moneyflowTransports;
-	private List<Long> usedPreDefMoneyflowIds;
+@JsonRootName("createMoneyflowRequest")
+public class CreateMoneyflowRequest extends AbstractRequest {
+	private MoneyflowTransport moneyflowTransport;
+	private Long usedPreDefMoneyflowId;
+	private Short saveAsPreDefMoneyflow;
 
-	public final List<MoneyflowTransport> getMoneyflowTransports() {
-		return this.moneyflowTransports;
+	public final MoneyflowTransport getMoneyflowTransport() {
+		return this.moneyflowTransport;
 	}
 
-	public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
-		this.moneyflowTransports = moneyflowTransports;
+	public final void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
+		this.moneyflowTransport = moneyflowTransport;
 	}
 
-	public final List<Long> getUsedPreDefMoneyflowIds() {
-		return this.usedPreDefMoneyflowIds;
+	public final Long getUsedPreDefMoneyflowId() {
+		return this.usedPreDefMoneyflowId;
 	}
 
-	public final void setUsedPreDefMoneyflowIds(final List<Long> usedPreDefMoneyflowIds) {
-		this.usedPreDefMoneyflowIds = usedPreDefMoneyflowIds;
+	public final void setUsedPreDefMoneyflowId(final Long usedPreDefMoneyflowId) {
+		this.usedPreDefMoneyflowId = usedPreDefMoneyflowId;
+	}
+
+	public final Short getSaveAsPreDefMoneyflow() {
+		return this.saveAsPreDefMoneyflow;
+	}
+
+	public final void setSaveAsPreDefMoneyflow(final Short saveAsPreDefMoneyflow) {
+		this.saveAsPreDefMoneyflow = saveAsPreDefMoneyflow;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
-		result = prime * result + ((this.usedPreDefMoneyflowIds == null) ? 0 : this.usedPreDefMoneyflowIds.hashCode());
+		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
+		result = prime * result + ((this.saveAsPreDefMoneyflow == null) ? 0 : this.saveAsPreDefMoneyflow.hashCode());
+		result = prime * result + ((this.usedPreDefMoneyflowId == null) ? 0 : this.usedPreDefMoneyflowId.hashCode());
 		return result;
 	}
 
@@ -76,19 +82,26 @@ public class CreateMoneyflowsRequest extends AbstractRequest {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final CreateMoneyflowsRequest other = (CreateMoneyflowsRequest) obj;
-		if (this.moneyflowTransports == null) {
-			if (other.moneyflowTransports != null) {
+		final CreateMoneyflowRequest other = (CreateMoneyflowRequest) obj;
+		if (this.moneyflowTransport == null) {
+			if (other.moneyflowTransport != null) {
 				return false;
 			}
-		} else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
+		} else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
 			return false;
 		}
-		if (this.usedPreDefMoneyflowIds == null) {
-			if (other.usedPreDefMoneyflowIds != null) {
+		if (this.saveAsPreDefMoneyflow == null) {
+			if (other.saveAsPreDefMoneyflow != null) {
 				return false;
 			}
-		} else if (!this.usedPreDefMoneyflowIds.equals(other.usedPreDefMoneyflowIds)) {
+		} else if (!this.saveAsPreDefMoneyflow.equals(other.saveAsPreDefMoneyflow)) {
+			return false;
+		}
+		if (this.usedPreDefMoneyflowId == null) {
+			if (other.usedPreDefMoneyflowId != null) {
+				return false;
+			}
+		} else if (!this.usedPreDefMoneyflowId.equals(other.usedPreDefMoneyflowId)) {
 			return false;
 		}
 		return true;
@@ -97,10 +110,12 @@ public class CreateMoneyflowsRequest extends AbstractRequest {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("CreateMoneyflowRequest [moneyflowTransports=");
-		builder.append(this.moneyflowTransports);
-		builder.append(", usedPreDefMoneyflowIds=");
-		builder.append(this.usedPreDefMoneyflowIds);
+		builder.append("CreateMoneyflowRequest [moneyflowTransport=");
+		builder.append(this.moneyflowTransport);
+		builder.append(", usedPreDefMoneyflowId=");
+		builder.append(this.usedPreDefMoneyflowId);
+		builder.append(", saveAsPreDefMoneyflow=");
+		builder.append(this.saveAsPreDefMoneyflow);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -28,6 +28,6 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonRootName("createMoneyflowsResponse")
-public class CreateMoneyflowsResponse extends AbstractAddMoneyflowResponse {
+@JsonRootName("createMoneyflowResponse")
+public class CreateMoneyflowResponse extends AbstractAddMoneyflowResponse {
 }
