@@ -344,7 +344,6 @@ public class MoneyflowController extends AbstractController {
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getAccessor(userId);
 
-		final ValidationResult validationResult = new ValidationResult();
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 
@@ -359,8 +358,7 @@ public class MoneyflowController extends AbstractController {
 			if (!bookingDate.isBefore(accessRelation.getValidFrom())
 					&& !bookingDate.isAfter(accessRelation.getValidTil())) {
 				// Check if used Capitalsource is valid at bookingDate - if not, change its
-				// validity
-				// so it fits.
+				// validity so it fits.
 				if (moneyflow.getCapitalsource() != null) {
 					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
 							group.getId(), moneyflow.getCapitalsource().getId());
@@ -414,9 +412,9 @@ public class MoneyflowController extends AbstractController {
 				}
 			}
 		}
-		validationResult.mergeValidationResult(this.moneyflowService.validateMoneyflow(moneyflow));
 
 		final CreateMoneyflowResponse response = new CreateMoneyflowResponse();
+		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
 		if (validationResult.isValid()) {
 			this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
@@ -461,8 +459,8 @@ public class MoneyflowController extends AbstractController {
 		}
 
 		// It is important that the "last used" of any predefmoneyflows is set before selecting any
-		// relevant predefmoneyflows because of "once a
-		// month" they might not be relevant. Thats why the response data is created at last
+		// relevant predefmoneyflows because of "once a month" they might not be relevant. Thats why
+		// the response data is created at last
 		this.fillAbstractAddMoneyflowResponse(userId, response);
 
 		return response;

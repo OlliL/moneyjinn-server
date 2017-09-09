@@ -118,7 +118,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
 		super.setComment(CAPITALSOURCE4_COMMENT);
 		super.setAccountNumber(CAPITALSOURCE4_ACCOUNTNUMBER);
 		super.setBankCode(CAPITALSOURCE4_BANKCODE);
-		super.setValidFrom(DateUtil.getGMTDate("1983-01-01"));
+		super.setValidFrom(DateUtil.getGMTDate("2000-01-02"));
 		super.setValidTil(DateUtil.getGMTDate("2010-12-31"));
 		super.setGroupUse(CAPITALSOURCE4_GROUP_USE);
 		super.setImportAllowed((short) 1);

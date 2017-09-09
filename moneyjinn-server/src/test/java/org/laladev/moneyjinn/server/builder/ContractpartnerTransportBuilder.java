@@ -74,7 +74,7 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
 		super.setId(CONTRACTPARTNER4_ID);
 		super.setUserid(UserTransportBuilder.USER3_ID);
 		super.setName(CONTRACTPARTNER4_NAME);
-		super.setValidFrom(DateUtil.getGMTDate("2000-01-01"));
+		super.setValidFrom(DateUtil.getGMTDate("2000-01-02"));
 		super.setValidTil(DateUtil.getGMTDate("2010-12-31"));
 		super.setStreet("Street4");
 		super.setPostcode(12345);

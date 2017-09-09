@@ -41,7 +41,7 @@ INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnum
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (5             ,6              ,3   ,1    ,'ZUTVEGT1'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,2             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','1983-01-01',1            ,1             ); 
+                    VALUES (5             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','2000-01-02',1            ,1             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
                     VALUES (5             ,6              ,5   ,1    ,'ZRTVEGT'    ,'765433','Xource5','2799-12-31','2014-01-01',1            ,2             ); 
 INSERT INTO capitalsources (mac_id_creator,mac_id_accessor,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
@@ -54,7 +54,7 @@ INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street  
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (5             ,6              ,'Qartner3','Street3',12345   ,'Town3','Country3','2000-01-01','2010-12-31','Default Comment 3',2                   );
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
-                      VALUES (5             ,6              ,'Sartner4','Street4',12345   ,'Town4','Country4','2000-01-01','2010-12-31',NULL               ,NULL                );
+                      VALUES (5             ,6              ,'Sartner4','Street4',12345   ,'Town4','Country4','2000-01-02','2010-12-31',NULL               ,NULL                );
 INSERT INTO contractpartners (mac_id_creator,mac_id_accessor,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (2             ,1              ,'AdminPartner','Street',12345   ,'Town','Country','2000-01-01','2999-12-31',NULL               ,NULL                );
 
