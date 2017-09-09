@@ -124,7 +124,7 @@ public interface IPreDefMoneyflowService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PreDefMoneyflow} failed.
 	 */
-	public void createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+	public PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
 	/**
 	 * This service changes a {@link PreDefMoneyflow}. Before the {@link PreDefMoneyflow} is

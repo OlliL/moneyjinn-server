@@ -304,7 +304,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	}
 
 	@Override
-	public void createPreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
+	public PreDefMoneyflowID createPreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
 		Assert.notNull(preDefMoneyflow, "preDefMoneyflow must not be null!");
 		preDefMoneyflow.setId(null);
 		final ValidationResult validationResult = this.validatePreDefMoneyflow(preDefMoneyflow);
@@ -317,6 +317,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		final PreDefMoneyflowData preDefMoneyflowData = super.map(preDefMoneyflow, PreDefMoneyflowData.class);
 		final Long preDefMoneyflowId = this.preDefMoneyflowDao.createPreDefMoneyflow(preDefMoneyflowData);
 		this.evictPreDefMoneyflowCache(preDefMoneyflow.getUser().getId(), new PreDefMoneyflowID(preDefMoneyflowId));
+		return new PreDefMoneyflowID(preDefMoneyflowId);
 	}
 
 	@Override

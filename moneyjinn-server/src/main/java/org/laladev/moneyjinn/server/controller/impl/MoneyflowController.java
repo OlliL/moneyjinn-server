@@ -27,6 +27,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -36,8 +37,8 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractAddMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowsResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
@@ -58,6 +59,7 @@ import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -104,6 +106,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/moneyflow/")
 public class MoneyflowController extends AbstractController {
+	private static final Short SHORT_1 = new Short("1");
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -324,31 +327,131 @@ public class MoneyflowController extends AbstractController {
 		return response;
 	}
 
-	@RequestMapping(value = "createMoneyflows", method = { RequestMethod.POST })
+	@RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreateMoneyflowsResponse createMoneyflows(@RequestBody final CreateMoneyflowsRequest request) {
+	public CreateMoneyflowResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
 
-		final List<Moneyflow> moneyflows = super.mapList(request.getMoneyflowTransports(), Moneyflow.class);
-		final List<Long> preDefMoneyflowIds = request.getUsedPreDefMoneyflowIds();
+		final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
+		final Long preDefMoneyflowIdLong = request.getUsedPreDefMoneyflowId();
+
+		boolean saveAsPreDefMoneyflow = false;
+		final Short saveAsPreDefMoneyflowShort = request.getSaveAsPreDefMoneyflow();
+		if (saveAsPreDefMoneyflowShort != null && saveAsPreDefMoneyflowShort.equals(SHORT_1)) {
+			saveAsPreDefMoneyflow = true;
+		}
 
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getAccessor(userId);
 
 		final ValidationResult validationResult = new ValidationResult();
-		moneyflows.stream().forEach(mf -> {
-			mf.setUser(user);
-			mf.setGroup(group);
-			validationResult.mergeValidationResult(this.moneyflowService.validateMoneyflow(mf));
-		});
+		moneyflow.setUser(user);
+		moneyflow.setGroup(group);
 
-		final CreateMoneyflowsResponse response = new CreateMoneyflowsResponse();
+		final LocalDate bookingDate = moneyflow.getBookingDate();
+
+		if (bookingDate != null) {
+
+			final AccessRelation accessRelation = this.accessRelationService
+					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+			// Only modify Capitalsources or Contractpartner if the Bookingdate is within the
+			// current group assignment validity period
+			if (!bookingDate.isBefore(accessRelation.getValidFrom())
+					&& !bookingDate.isAfter(accessRelation.getValidTil())) {
+				// Check if used Capitalsource is valid at bookingDate - if not, change its
+				// validity
+				// so it fits.
+				if (moneyflow.getCapitalsource() != null) {
+					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+							group.getId(), moneyflow.getCapitalsource().getId());
+
+					if (capitalsource != null) {
+						final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
+								.equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
+
+						if (userMayUseCapitalsource) {
+							final boolean bookingDateIsBeforeValidity = bookingDate
+									.isBefore(capitalsource.getValidFrom());
+							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
+
+							if (bookingDateIsBeforeValidity) {
+								capitalsource.setValidFrom(bookingDate);
+							}
+							if (bookingDateIsAfterValidity) {
+								capitalsource.setValidTil(bookingDate);
+							}
+							if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+								this.capitalsourceService.updateCapitalsource(capitalsource);
+
+							}
+
+						}
+					}
+				}
+
+				// Check if used Contractpartner is valid at bookingDate - if not, change its
+				// validity so it fits.
+				if (moneyflow.getContractpartner() != null) {
+					final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+							moneyflow.getContractpartner().getId());
+
+					if (contractpartner != null) {
+						final boolean bookingDateIsBeforeValidity = bookingDate
+								.isBefore(contractpartner.getValidFrom());
+						final boolean bookingDateIsAfterValidity = bookingDate.isAfter(contractpartner.getValidTil());
+
+						if (bookingDateIsBeforeValidity) {
+							contractpartner.setValidFrom(bookingDate);
+						}
+						if (bookingDateIsAfterValidity) {
+							contractpartner.setValidTil(bookingDate);
+						}
+						if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+							this.contractpartnerService.updateContractpartner(contractpartner);
+
+						}
+					}
+				}
+			}
+		}
+		validationResult.mergeValidationResult(this.moneyflowService.validateMoneyflow(moneyflow));
+
+		final CreateMoneyflowResponse response = new CreateMoneyflowResponse();
 
 		if (validationResult.isValid()) {
-			this.moneyflowService.createMoneyflows(moneyflows);
-			if (preDefMoneyflowIds != null) {
-				preDefMoneyflowIds.stream()
-						.forEach(id -> this.preDefMoneyflowService.setLastUsedDate(userId, new PreDefMoneyflowID(id)));
+			this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
+
+			PreDefMoneyflowID preDefMoneyflowId = null;
+			if (preDefMoneyflowIdLong != null) {
+				preDefMoneyflowId = new PreDefMoneyflowID(preDefMoneyflowIdLong);
+			}
+
+			if (saveAsPreDefMoneyflow) {
+				final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
+				preDefMoneyflow.setAmount(moneyflow.getAmount());
+				preDefMoneyflow.setCapitalsource(moneyflow.getCapitalsource());
+				preDefMoneyflow.setComment(moneyflow.getComment());
+				preDefMoneyflow.setContractpartner(moneyflow.getContractpartner());
+				preDefMoneyflow.setPostingAccount(moneyflow.getPostingAccount());
+				preDefMoneyflow.setUser(user);
+
+				if (preDefMoneyflowId != null) {
+					final PreDefMoneyflow preDefMoneyflowOrig = this.preDefMoneyflowService
+							.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+					if (preDefMoneyflowOrig != null) {
+						preDefMoneyflow.setId(preDefMoneyflowId);
+						preDefMoneyflow.setOnceAMonth(preDefMoneyflowOrig.isOnceAMonth());
+
+						this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+					}
+				} else {
+					preDefMoneyflow.setOnceAMonth(false);
+					preDefMoneyflowId = this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
+				}
+			}
+
+			if (preDefMoneyflowId != null) {
+				this.preDefMoneyflowService.setLastUsedDate(userId, preDefMoneyflowId);
 			}
 			response.setResult(true);
 		} else {
