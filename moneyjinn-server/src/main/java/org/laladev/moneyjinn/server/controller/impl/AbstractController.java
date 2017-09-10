@@ -28,8 +28,11 @@ import javax.inject.Inject;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.main.SessionEnvironment;
 
 public abstract class AbstractController extends AbstractMapperSupport {
@@ -42,4 +45,13 @@ public abstract class AbstractController extends AbstractMapperSupport {
 		}
 		return this.sessionEnvironment.getUserID();
 	}
+
+	protected ValidationResponse returnValidationResponse(final ValidationResult validationResult) {
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
+		response.setValidationItemTransports(
+				super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+		return response;
+	}
+
 }

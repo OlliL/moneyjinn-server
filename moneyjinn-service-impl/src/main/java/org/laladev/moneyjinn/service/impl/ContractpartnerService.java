@@ -314,7 +314,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public void createContractpartner(final Contractpartner contractpartner) {
+	public ContractpartnerID createContractpartner(final Contractpartner contractpartner) {
 		Assert.notNull(contractpartner, "contractpartner must not be null!");
 		contractpartner.setId(null);
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
@@ -327,6 +327,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
 		final Long contractpartnerId = this.contractpartnerDao.createContractpartner(contractpartnerData);
 		this.evictContractpartnerCache(contractpartner.getUser().getId(), new ContractpartnerID(contractpartnerId));
+		return new ContractpartnerID(contractpartnerId);
 	}
 
 	@Override

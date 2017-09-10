@@ -210,9 +210,10 @@ public interface IContractpartnerService {
 	 *
 	 * @param contractpartner
 	 *            {@link Contractpartner}
+	 * @return The {@link ContractpartnerID} of the created {@link Contractpartner}
 	 * @throws BusinessException
 	 */
-	public void createContractpartner(Contractpartner contractpartner);
+	public ContractpartnerID createContractpartner(Contractpartner contractpartner);
 
 	/**
 	 * This method deletes the {@link Contractpartner} specified by its Id.
