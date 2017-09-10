@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.contractpartner;
 
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+
 //
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -29,6 +31,54 @@ package org.laladev.moneyjinn.core.rest.model.contractpartner;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("createContractpartnerResponse")
-public class CreateContractpartnerResponse extends AbstractCreateContractpartnerResponse {
+public class CreateContractpartnerResponse extends ValidationResponse {
+	private Long contractpartnerId;
+
+	public final Long getContractpartnerId() {
+		return this.contractpartnerId;
+	}
+
+	public final void setContractpartnerId(final Long contractpartnerId) {
+		this.contractpartnerId = contractpartnerId;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.contractpartnerId == null) ? 0 : this.contractpartnerId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final CreateContractpartnerResponse other = (CreateContractpartnerResponse) obj;
+		if (this.contractpartnerId == null) {
+			if (other.contractpartnerId != null) {
+				return false;
+			}
+		} else if (!this.contractpartnerId.equals(other.contractpartnerId)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("CreateContractpartnerResponse [contractpartnerId=");
+		builder.append(this.contractpartnerId);
+		builder.append("]");
+		return builder.toString();
+	}
 
 }
