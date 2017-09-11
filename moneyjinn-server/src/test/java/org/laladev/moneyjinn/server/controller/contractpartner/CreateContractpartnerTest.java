@@ -1,11 +1,5 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +8,11 @@ import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -28,6 +20,11 @@ import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateContractpartnerTest extends AbstractControllerTest {
 
@@ -74,11 +71,6 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
-		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-		expected.setPostingAccountTransports(postingAccountTransports);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
@@ -124,7 +116,13 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
+
+		Assert.assertEquals(expected,actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -144,7 +142,13 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		transport.setUserid(UserTransportBuilder.ADMIN_ID);
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
+
+		Assert.assertEquals(expected,actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -165,7 +169,13 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		transport.setValidTil(null);
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
+
+		Assert.assertEquals(expected,actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -192,7 +202,13 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		transport.setPostingAccountId(null);
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
+
+		Assert.assertEquals(expected,actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -235,7 +251,13 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		transport.setPostingAccountId(null);
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+		expected.setContractpartnerId(1l);
+
+		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateContractpartnerResponse.class);
+
+		Assert.assertEquals(expected,actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);
