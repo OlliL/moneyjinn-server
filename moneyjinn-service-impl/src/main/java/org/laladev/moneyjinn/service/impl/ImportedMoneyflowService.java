@@ -26,14 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -51,6 +43,13 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowStatusMapper;
 import org.springframework.util.Assert;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Named
 public class ImportedMoneyflowService extends AbstractService implements IImportedMoneyflowService {
 	@Inject
@@ -65,7 +64,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		super.registerBeanMapper(new ImportedMoneyflowDataMapper());
 	}
 
-	private final ImportedMoneyflow mapImportedMoneyflowData(final UserID userId, final ImportedMoneyflowData importedMoneyflowData) {
+	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId, final ImportedMoneyflowData importedMoneyflowData) {
 
 		if (importedMoneyflowData != null) {
 			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);

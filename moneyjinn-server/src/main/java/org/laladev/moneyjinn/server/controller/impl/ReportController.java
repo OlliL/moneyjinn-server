@@ -24,34 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
-import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
-import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
-import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphResponse;
-import org.laladev.moneyjinn.core.rest.model.report.ShowReportingFormResponse;
-import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsFormResponse;
-import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
-import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
-import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphRequest;
-import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphResponse;
+import org.laladev.moneyjinn.core.rest.model.report.*;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
@@ -75,28 +48,21 @@ import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IImportedBalanceService;
-import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
-import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.ISettingService;
+import org.laladev.moneyjinn.server.controller.mapper.*;
+import org.laladev.moneyjinn.service.api.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -142,7 +108,7 @@ public class ReportController extends AbstractController {
 		response.setAllYears(allYears);
 		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
-			final List<Long> postingAccountIds = setting.getSetting().stream().map(id -> id.getId()).collect(Collectors.toCollection(ArrayList::new));
+			final List<Long> postingAccountIds = setting.getSetting().stream().map(PostingAccountID::getId).collect(Collectors.toCollection(ArrayList::new));
 			response.setPostingAccountIds(postingAccountIds);
 		}
 
@@ -160,10 +126,10 @@ public class ReportController extends AbstractController {
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate();
 
-			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream().map(pai -> new PostingAccountID(pai))
+			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream().map(PostingAccountID::new)
 					.collect(Collectors.toCollection(ArrayList::new));
 			if (request.getPostingAccountIdsNo() != null) {
-				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream().map(pai -> new PostingAccountID(pai))
+				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream().map(PostingAccountID::new)
 						.collect(Collectors.toCollection(ArrayList::new));
 				final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(postingAccountIdsNo);
 
@@ -193,10 +159,10 @@ public class ReportController extends AbstractController {
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate();
 
-			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream().map(pai -> new PostingAccountID(pai))
+			final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream().map(PostingAccountID::new)
 					.collect(Collectors.toCollection(ArrayList::new));
 			if (request.getPostingAccountIdsNo() != null) {
-				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream().map(pai -> new PostingAccountID(pai))
+				final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream().map(PostingAccountID::new)
 						.collect(Collectors.toCollection(ArrayList::new));
 				final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(postingAccountIdsNo);
 
@@ -262,7 +228,7 @@ public class ReportController extends AbstractController {
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate().with(TemporalAdjusters.lastDayOfMonth());
 
-			final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream().map(csi -> new CapitalsourceID(csi))
+			final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream().map(CapitalsourceID::new)
 					.collect(Collectors.toCollection(ArrayList::new));
 			final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
 
@@ -285,7 +251,7 @@ public class ReportController extends AbstractController {
 			Short lastYear = null;
 			BigDecimal lastAmount = BigDecimal.ZERO;
 
-			LocalDate lastSettledDay = null;
+			LocalDate lastSettledDay;
 
 			if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
 				for (final MonthlySettlement monthlySettlement : monthlySettlements) {
@@ -579,6 +545,7 @@ public class ReportController extends AbstractController {
 					final List<String> validCapitalsourceIdLongs = validCapitalsources.stream().map(Capitalsource::getComment)
 							.collect(Collectors.toCollection(ArrayList::new));
 
+					//TODO Replace by Lists.sort and Lambdas
 					Collections.sort(turnoverCapitalsources, new Comparator<ReportTurnoverCapitalsourceTransport>() {
 						@Override
 						public int compare(final ReportTurnoverCapitalsourceTransport left, final ReportTurnoverCapitalsourceTransport right) {
@@ -700,7 +667,7 @@ public class ReportController extends AbstractController {
 
 		List<ImportedBalance> importedBalances = null;
 		if (capitalsource.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED) {
-			importedBalances = this.importedBalanceService.getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
+			importedBalances = this.importedBalanceService.getAllImportedBalancesByCapitalsourceIds(userId, Collections.singletonList(capitalsourceId));
 		}
 
 		if (importedBalances != null && !importedBalances.isEmpty()) {

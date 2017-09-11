@@ -24,15 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.event.ShowEventListResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -48,19 +39,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/event/")
 public class EventController extends AbstractController {
 
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private IMonthlySettlementService monthlySettlementService;
 
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 
 	@Inject
-	IImportedMoneyflowService importedMoneyflowService;
+	private IImportedMoneyflowService importedMoneyflowService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -88,7 +87,7 @@ public class EventController extends AbstractController {
 		final LocalDate today = LocalDate.now();
 		capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId, today, today);
 		if (capitalsources != null && !capitalsources.isEmpty()) {
-			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(cs -> cs.getId())
+			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(Capitalsource::getId)
 					.collect(Collectors.toCollection(ArrayList::new));
 			final Integer numberOfImportedMoneyflows = this.importedMoneyflowService.countImportedMoneyflows(userId,
 					capitalsourceIds, ImportedMoneyflowStatus.CREATED);

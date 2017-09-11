@@ -1,9 +1,5 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.time.LocalDateTime;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
@@ -25,15 +21,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
+import java.time.LocalDateTime;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/importedbalance/")
 public class ImportedBalanceController extends AbstractController {
 
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 	@Inject
-	IImportedBalanceService importedBalanceService;
+	private IImportedBalanceService importedBalanceService;
 
 	@Override
 	protected void addBeanMapper() {

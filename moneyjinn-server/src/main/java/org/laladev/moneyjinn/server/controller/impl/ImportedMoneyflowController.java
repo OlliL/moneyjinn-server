@@ -24,27 +24,12 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.*;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
@@ -64,26 +49,17 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.server.controller.mapper.*;
+import org.laladev.moneyjinn.service.api.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -123,7 +99,7 @@ public class ImportedMoneyflowController extends AbstractController {
 				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
 		if (capitalsources != null && !capitalsources.isEmpty()) {
 
-			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(ms -> ms.getId())
+			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(Capitalsource::getId)
 					.collect(Collectors.toCollection(ArrayList::new));
 
 			final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
@@ -146,7 +122,7 @@ public class ImportedMoneyflowController extends AbstractController {
 				}
 
 				final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
-						.map(im -> im.getBankAccount()).collect(Collectors.toCollection(ArrayList::new));
+						.map(ImportedMoneyflow::getBankAccount).collect(Collectors.toCollection(ArrayList::new));
 
 				final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 						.getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
@@ -270,7 +246,7 @@ public class ImportedMoneyflowController extends AbstractController {
 					contractpartnerAccount.setBankAccount(impMoneyflow.getBankAccount());
 					contractpartnerAccount.setContractpartner(impMoneyflow.getContractpartner());
 					final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-							.getAllContractpartnerByAccounts(userId, Arrays.asList(impMoneyflow.getBankAccount()));
+							.getAllContractpartnerByAccounts(userId, Collections.singletonList(impMoneyflow.getBankAccount()));
 					if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
 						this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
 					}
@@ -286,7 +262,7 @@ public class ImportedMoneyflowController extends AbstractController {
 							&& capitalsource.getType() != CapitalsourceType.CREDIT) {
 						impMoneyflow.setCapitalsource(capitalsource);
 						impMoneyflow.setAmount(impMoneyflow.getAmount().negate());
-						this.moneyflowService.createMoneyflows(Arrays.asList(impMoneyflow.getMoneyflow()));
+						this.moneyflowService.createMoneyflows(Collections.singletonList(impMoneyflow.getMoneyflow()));
 					}
 				}
 

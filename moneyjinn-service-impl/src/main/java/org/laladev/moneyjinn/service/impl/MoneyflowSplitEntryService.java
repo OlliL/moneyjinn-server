@@ -26,17 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
@@ -55,6 +44,12 @@ import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSplitEntryDataMapp
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Named
 @EnableCaching
 public class MoneyflowSplitEntryService extends AbstractService implements IMoneyflowSplitEntryService {
@@ -70,7 +65,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		super.registerBeanMapper(new MoneyflowSplitEntryDataMapper());
 	}
 
-	private final MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
+	private MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
 		if (moneyflowSplitEntryData != null) {
 			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData, MoneyflowSplitEntry.class);
 
@@ -86,8 +81,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		return null;
 	}
 
-	private final List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
-		return moneyflowSplitEntryDataList.stream().map(element -> this.mapMoneyflowSplitEntryData(element)).collect(Collectors.toCollection(ArrayList::new));
+	private List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
+		return moneyflowSplitEntryDataList.stream().map(this::mapMoneyflowSplitEntryData).collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -119,7 +114,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	@Override
 	public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
-		List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Arrays.asList(moneyflowId)).get(moneyflowId);
+		List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Collections.singletonList(moneyflowId)).get(moneyflowId);
 		if (list == null) {
 			list = new ArrayList<>();
 		}
@@ -156,7 +151,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		Assert.notNull(moneyflowSplitEntries, "moneyflowSplitEntries must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
-		moneyflowSplitEntries.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
+		moneyflowSplitEntries.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);

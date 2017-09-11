@@ -24,19 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.AbstractCapitalsourceResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowCapitalsourceListResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowDeleteCapitalsourceResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowEditCapitalsourceResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRequest;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.*;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
@@ -56,11 +45,12 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -135,8 +125,8 @@ public class CapitalsourceController extends AbstractController {
 			final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
-		Set<Character> initials = null;
-		Integer count = null;
+		Set<Character> initials;
+		Integer count;
 		if (currentlyValid) {
 			initials = this.capitalsourceService.getAllCapitalsourceInitialsByDateRange(userId, now, now);
 			count = this.capitalsourceService.countAllCapitalsourcesByDateRange(userId, now, now);

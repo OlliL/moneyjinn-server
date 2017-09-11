@@ -26,31 +26,9 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.Period;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountAmount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.*;
+import org.laladev.moneyjinn.model.access.*;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
@@ -62,12 +40,7 @@ import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.service.api.*;
 import org.laladev.moneyjinn.service.dao.MoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
@@ -82,6 +55,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -109,7 +92,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		super.registerBeanMapper(new MoneyflowSearchResultDataMapper());
 	}
 
-	private final Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
+	private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
 		if (moneyflowData != null) {
 			final Moneyflow moneyflow = super.map(moneyflowData, Moneyflow.class);
 			final UserID userId = moneyflow.getUser().getId();
@@ -145,8 +128,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		return null;
 	}
 
-	private final List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
-		return moneyflowDataList.stream().map(element -> this.mapMoneyflowData(element))
+	private List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
+		return moneyflowDataList.stream().map(this::mapMoneyflowData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
@@ -280,7 +263,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(moneyflows, "moneyflows must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
-		moneyflows.stream().forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
+		moneyflows.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
 
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
@@ -342,7 +325,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
 			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
 		return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
-				Arrays.asList(capitalsourceId));
+				Collections.singletonList(capitalsourceId));
 	}
 
 	@Override

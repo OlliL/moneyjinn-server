@@ -26,13 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -46,6 +39,12 @@ import org.laladev.moneyjinn.service.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
@@ -61,7 +60,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 		super.registerBeanMapper(new ImportedBalanceDataMapper());
 	}
 
-	private final ImportedBalance mapImportedBalanceData(final UserID userId,
+	private ImportedBalance mapImportedBalanceData(final UserID userId,
 			final ImportedBalanceData importedBalanceData) {
 
 		if (importedBalanceData != null) {
@@ -81,7 +80,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 		return null;
 	}
 
-	private final List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
+	private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
 			final List<ImportedBalanceData> importedBalanceDataList) {
 		return importedBalanceDataList.stream().map(element -> this.mapImportedBalanceData(userId, element))
 				.collect(Collectors.toCollection(ArrayList::new));

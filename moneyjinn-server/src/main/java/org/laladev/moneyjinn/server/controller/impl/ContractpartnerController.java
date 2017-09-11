@@ -24,21 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.AbstractContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowCreateContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowDeleteContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowEditContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.UpdateContractpartnerRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartner.*;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -55,19 +42,15 @@ import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.ISettingService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.service.api.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -147,8 +130,8 @@ public class ContractpartnerController extends AbstractController {
 			final boolean currentlyValid) {
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
-		Set<Character> initials = null;
-		Integer count = null;
+		Set<Character> initials;
+		Integer count;
 		if (currentlyValid) {
 			initials = this.contractpartnerService.getAllContractpartnerInitialsByDateRange(userId, now, now);
 			count = this.contractpartnerService.countAllContractpartnersByDateRange(userId, now, now);

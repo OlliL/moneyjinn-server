@@ -26,23 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.access.*;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
@@ -58,6 +45,14 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -188,7 +183,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
 
-		return accessIdList.stream().map(ai -> new UserID(ai)).collect(Collectors.toSet());
+		return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
 
 	}
 
@@ -232,7 +227,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		final List<AccessRelation> deleteAccessRelationItems = new ArrayList<>();
 		AccessRelation previousCurrentAccessRelation = null;
 
-		AccessRelation insertAccessRelation = null;
+		AccessRelation insertAccessRelation;
 		try {
 			insertAccessRelation = accessRelation.clone();
 		} catch (final CloneNotSupportedException e) {
@@ -328,7 +323,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 					// different
 					if (!currentAccessRelation.getParentAccessRelation().getId()
 							.equals(accessRelation.getParentAccessRelation().getId())) {
-						AccessRelation updateAccessRelationItem = null;
+						AccessRelation updateAccessRelationItem;
 						try {
 							updateAccessRelationItem = currentAccessRelation.clone();
 							updateAccessRelationItem.setValidTil(previousValidTil);

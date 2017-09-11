@@ -26,19 +26,18 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
 
 public abstract class AbstractService extends AbstractMapperSupport {
 	@Inject
 	private CacheManager cacheManager;
 
-	protected static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
+	static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
 
 	protected Cache getCache(final String... cacheNameParts) {
 		final String cacheName = String.join("#", cacheNameParts);

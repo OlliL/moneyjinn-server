@@ -26,10 +26,38 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.*;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.model.validation.ValidationResultItem;
+import org.laladev.moneyjinn.service.CacheNames;
+import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.service.dao.PreDefMoneyflowDao;
+import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
+import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
+import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.SimpleKey;
+import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -54,46 +82,6 @@ import java.util.HashSet;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.PreDefMoneyflow;
-import org.laladev.moneyjinn.model.PreDefMoneyflowID;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
-import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.laladev.moneyjinn.service.api.IUserService;
-import org.laladev.moneyjinn.service.dao.PreDefMoneyflowDao;
-import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
-import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.SimpleKey;
-import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
@@ -154,9 +142,9 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		return null;
 	}
 
-	private final List<PreDefMoneyflow> mapPreDefMoneyflowDataList(
+	private List<PreDefMoneyflow> mapPreDefMoneyflowDataList(
 			final List<PreDefMoneyflowData> preDefMoneyflowDataList) {
-		return preDefMoneyflowDataList.stream().map(element -> this.mapPreDefMoneyflowData(element))
+		return preDefMoneyflowDataList.stream().map(this::mapPreDefMoneyflowData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 

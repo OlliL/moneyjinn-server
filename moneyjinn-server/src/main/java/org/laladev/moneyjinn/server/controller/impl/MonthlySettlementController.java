@@ -24,17 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementDeleteResponse;
@@ -54,36 +43,37 @@ import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.service.api.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/monthlysettlement/")
 public class MonthlySettlementController extends AbstractController {
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private IMonthlySettlementService monthlySettlementService;
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 	@Inject
-	IImportedMonthlySettlementService importedMonthlySettlementService;
+	private IImportedMonthlySettlementService importedMonthlySettlementService;
 	@Inject
-	IMoneyflowService moneyflowService;
+	private IMoneyflowService moneyflowService;
 	@Inject
-	IUserService userService;
+	private IUserService userService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void addBeanMapper() {
@@ -200,8 +190,8 @@ public class MonthlySettlementController extends AbstractController {
 		LocalDate lastDate = this.monthlySettlementService.getMaxSettlementDate(userId);
 
 		boolean previousSettlementExists = false;
-		Short nextYear = null;
-		Month nextMonth = null;
+		Short nextYear;
+		Month nextMonth;
 
 		if (lastDate != null) {
 			final LocalDate nextDateBegin = lastDate.plusMonths(1).withDayOfMonth(1);
@@ -214,8 +204,8 @@ public class MonthlySettlementController extends AbstractController {
 			nextMonth = lastDate.getMonth();
 		}
 
-		Short year = null;
-		Month month = null;
+		Short year;
+		Month month;
 		if (requestYear == null && requestMonth == null) {
 			year = nextYear;
 			month = nextMonth;
@@ -268,7 +258,7 @@ public class MonthlySettlementController extends AbstractController {
 
 			if (selectedMonthDoesExist) {
 				monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
-				/**
+				/*
 				 * I could be, that for an already fixed month, a "new" capitalsource gets valid
 				 * afterwards. To make it possible to create a settlement for this new source, add
 				 * it here.
@@ -388,10 +378,9 @@ public class MonthlySettlementController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ShowMonthlySettlementDeleteResponse response = new ShowMonthlySettlementDeleteResponse();
 
-		final Short year = requestYear;
 		final Month month = this.getMonth(requestMonth);
 
-		final List<MonthlySettlement> monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
+		final List<MonthlySettlement> monthlySettlements = this.getMyEditableMonthlySettlements(userId, requestYear, month);
 
 		if (!monthlySettlements.isEmpty()) {
 			response.setMonthlySettlementTransports(

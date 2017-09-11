@@ -24,17 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowContractpartnerAccountListResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowDeleteContractpartnerAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowEditContractpartnerAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.UpdateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.*;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -50,20 +41,19 @@ import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartneraccount/")
 public class ContractpartnerAccountController extends AbstractController {
 	@Inject
-	IContractpartnerService contractpartnerService;
+	private IContractpartnerService contractpartnerService;
 	@Inject
-	IContractpartnerAccountService contractpartnerAccountService;
+	private IContractpartnerAccountService contractpartnerAccountService;
 
 	@Override
 	protected void addBeanMapper() {

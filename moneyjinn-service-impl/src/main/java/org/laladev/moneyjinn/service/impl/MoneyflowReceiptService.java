@@ -26,13 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
@@ -42,6 +35,12 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowReceiptDataMapper;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -55,7 +54,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 		super.registerBeanMapper(new MoneyflowReceiptDataMapper());
 	}
 
-	private final MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
+	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
 		if (moneyflowReceiptData != null) {
 			return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
 		}
@@ -81,7 +80,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 		final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao.getMoneyflowIdsWithReceipt(moneyflowIdLongs);
 
 		if (moneyflowIdsWithReceipt != null) {
-			return moneyflowIdsWithReceipt.stream().map(id -> new MoneyflowID(id)).collect(Collectors.toCollection(ArrayList::new));
+			return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new).collect(Collectors.toCollection(ArrayList::new));
 		} else {
 			return new ArrayList<>();
 		}

@@ -24,36 +24,12 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractCreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractShowUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowCreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowDeleteUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.*;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
-import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserAttribute;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.*;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
@@ -70,11 +46,13 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -171,8 +149,8 @@ public class UserController extends AbstractController {
 		}
 
 		final ShowUserListResponse response = new ShowUserListResponse();
-		final Set<Group> groupSet = new HashSet<Group>();
-		final List<AccessRelation> accessRelationList = new ArrayList<AccessRelation>();
+		final Set<Group> groupSet = new HashSet<>();
+		final List<AccessRelation> accessRelationList = new ArrayList<>();
 		if (users != null && !users.isEmpty()) {
 			for (final User user : users) {
 				final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(user.getId());
@@ -187,7 +165,7 @@ public class UserController extends AbstractController {
 
 			response.setUserTransports(super.mapList(users, UserTransport.class));
 			response.setAccessRelationTransports(super.mapList(accessRelationList, AccessRelationTransport.class));
-			response.setGroupTransports(super.mapList(new ArrayList<Group>(groupSet), GroupTransport.class));
+			response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
 		}
 		response.setInitials(initials);
 

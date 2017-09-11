@@ -26,16 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -49,6 +39,15 @@ import org.laladev.moneyjinn.service.dao.ImportedMonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 public class ImportedMonthlySettlementService extends AbstractService implements IImportedMonthlySettlementService {
@@ -64,7 +63,7 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 		super.registerBeanMapper(new ImportedMonthlySettlementDataMapper());
 	}
 
-	private final ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
+	private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
 			final ImportedMonthlySettlementData importedMonthlySettlementData) {
 
 		if (importedMonthlySettlementData != null) {
@@ -89,7 +88,7 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 		return null;
 	}
 
-	private final List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
+	private List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
 			final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList) {
 		return importedMonthlySettlementDataList.stream()
 				.map(element -> this.mapImportedMonthlySettlementData(userId, element))

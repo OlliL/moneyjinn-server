@@ -26,16 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -54,6 +44,15 @@ import org.laladev.moneyjinn.service.dao.MonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MonthlySettlementDataMapper;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 public class MonthlySettlementService extends AbstractService implements IMonthlySettlementService {
@@ -96,7 +95,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		return validationResult;
 	}
 
-	private final MonthlySettlement mapMonthlySettlementData(final MonthlySettlementData monthlySettlementData) {
+	private MonthlySettlement mapMonthlySettlementData(final MonthlySettlementData monthlySettlementData) {
 		if (monthlySettlementData != null) {
 			final MonthlySettlement monthlySettlement = super.map(monthlySettlementData, MonthlySettlement.class);
 			final UserID userId = monthlySettlement.getUser().getId();
@@ -120,9 +119,9 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		return null;
 	}
 
-	private final List<MonthlySettlement> mapMonthlySettlementDataList(
+	private List<MonthlySettlement> mapMonthlySettlementDataList(
 			final List<MonthlySettlementData> monthlySettlementDataList) {
-		return monthlySettlementDataList.stream().map(element -> this.mapMonthlySettlementData(element))
+		return monthlySettlementDataList.stream().map(this::mapMonthlySettlementData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
@@ -179,14 +178,14 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		Assert.notNull(monthlySettlements, "monthlySettlements must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
-		monthlySettlements.stream()
+		monthlySettlements
 				.forEach(ms -> validationResult.mergeValidationResult(this.validateMonthlySettlement(ms)));
 
 		if (validationResult.isValid()) {
 			final List<MonthlySettlementData> monthlySettlementDatas = super.mapList(monthlySettlements,
 					MonthlySettlementData.class);
 
-			monthlySettlementDatas.stream().forEach(msd -> this.monthlySettlementDao.upsertMonthlySettlement(msd));
+			monthlySettlementDatas.forEach(msd -> this.monthlySettlementDao.upsertMonthlySettlement(msd));
 		}
 
 		return validationResult;

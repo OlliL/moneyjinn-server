@@ -26,21 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.*;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -58,6 +45,14 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Named
 public class ContractpartnerAccountService extends AbstractService implements IContractpartnerAccountService {
@@ -96,8 +91,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
 					|| !contractpartnerAccountChecked.getId().equals(contractpartnerAccount.getId()))) {
 				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
-						Arrays.asList(contractpartnerAccountChecked.getContractpartner().getName())));
+						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER, Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
 			}
 		}
 
@@ -116,7 +110,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		return validationResult;
 	}
 
-	private final ContractpartnerAccount mapContractpartnerAccountData(final UserID userId,
+	private ContractpartnerAccount mapContractpartnerAccountData(final UserID userId,
 			final ContractpartnerAccountData contractpartnerAccountData) {
 		if (contractpartnerAccountData != null) {
 			final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountData,
@@ -135,7 +129,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 	}
 
-	private final List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
+	private List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
 			final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
 		return contractpartnerAccountDataList.stream()
 				.map(element -> this.mapContractpartnerAccountData(userId, element))
@@ -250,7 +244,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				contractpartnerId);
 		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
 			this.contractpartnerAccountDao.deleteContractpartnerAccounts(userId.getId(), contractpartnerId.getId());
-			contractpartnerAccounts.stream().forEach(
+			contractpartnerAccounts.forEach(
 					ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));
 		}
 

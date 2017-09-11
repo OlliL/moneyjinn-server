@@ -24,37 +24,10 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractAddMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.*;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.*;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
@@ -74,33 +47,21 @@ import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchResultTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.laladev.moneyjinn.service.api.ISettingService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.server.controller.mapper.*;
+import org.laladev.moneyjinn.service.api.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -417,7 +378,7 @@ public class MoneyflowController extends AbstractController {
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
 		if (validationResult.isValid()) {
-			this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
+			this.moneyflowService.createMoneyflows(Collections.singletonList(moneyflow));
 
 			PreDefMoneyflowID preDefMoneyflowId = null;
 			if (preDefMoneyflowIdLong != null) {
@@ -495,7 +456,7 @@ public class MoneyflowController extends AbstractController {
 				if (request.getUpdateMoneyflowSplitEntryTransports() != null) {
 					updateMoneyflowSplitEntries = super.mapList(request.getUpdateMoneyflowSplitEntryTransports(),
 							MoneyflowSplitEntry.class);
-					updateMoneyflowSplitEntries.stream().forEach(mse -> {
+					updateMoneyflowSplitEntries.forEach(mse -> {
 						mse.setMoneyflowId(moneyflowId);
 						validationResult.mergeValidationResult(
 								this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
@@ -505,7 +466,7 @@ public class MoneyflowController extends AbstractController {
 				if (request.getInsertMoneyflowSplitEntryTransports() != null) {
 					insertMoneyflowSplitEntries = super.mapList(request.getInsertMoneyflowSplitEntryTransports(),
 							MoneyflowSplitEntry.class);
-					insertMoneyflowSplitEntries.stream().forEach(mse -> {
+					insertMoneyflowSplitEntries.forEach(mse -> {
 						mse.setMoneyflowId(moneyflowId);
 						validationResult.mergeValidationResult(
 								this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
@@ -515,7 +476,7 @@ public class MoneyflowController extends AbstractController {
 				if (validationResult.isValid()) {
 					if (request.getDeleteMoneyflowSplitEntryIds() != null) {
 						deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream()
-								.map(id -> new MoneyflowSplitEntryID(id))
+								.map(MoneyflowSplitEntryID::new)
 								.collect(Collectors.toCollection(ArrayList::new));
 					}
 
@@ -561,7 +522,7 @@ public class MoneyflowController extends AbstractController {
 							}
 
 							if (updateMoneyflowSplitEntries != null) {
-								updateMoneyflowSplitEntries.stream().forEach(
+								updateMoneyflowSplitEntries.forEach(
 										mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
 							}
 

@@ -26,6 +26,22 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.model.setting.*;
+import org.laladev.moneyjinn.service.api.ISettingService;
+import org.laladev.moneyjinn.service.dao.SettingDao;
+import org.laladev.moneyjinn.service.dao.data.SettingData;
+import org.laladev.moneyjinn.service.dao.data.mapper.SettingTypeConverter;
+import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -52,35 +68,6 @@ import java.util.Arrays;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
-import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
-import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidContractpartnerSetting;
-import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
-import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
-import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
-import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
-import org.laladev.moneyjinn.model.setting.SettingType;
-import org.laladev.moneyjinn.service.api.ISettingService;
-import org.laladev.moneyjinn.service.dao.SettingDao;
-import org.laladev.moneyjinn.service.dao.data.SettingData;
-import org.laladev.moneyjinn.service.dao.data.mapper.SettingTypeConverter;
-import org.springframework.util.Assert;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Named
 public class SettingService extends AbstractService implements ISettingService {
@@ -177,7 +164,7 @@ public class SettingService extends AbstractService implements ISettingService {
 		Assert.notNull(accessId, "accessId must not be null!");
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES));
-		Boolean setting = null;
+		Boolean setting;
 		if (settingData != null && "1".equals(settingData.getValue())) {
 			setting = Boolean.TRUE;
 		} else {
@@ -205,7 +192,7 @@ public class SettingService extends AbstractService implements ISettingService {
 		Assert.notNull(accessId, "accessId must not be null!");
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER));
-		Boolean setting = null;
+		Boolean setting;
 		if (settingData != null && "1".equals(settingData.getValue())) {
 			setting = Boolean.TRUE;
 		} else {

@@ -24,23 +24,10 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.util.Base64;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataRequest;
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.ShowCompareDataFormResponse;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataMatchingTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInDatabaseTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInFileTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.comparedata.transport.*;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.model.access.Group;
@@ -49,13 +36,7 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
-import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
-import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
-import org.laladev.moneyjinn.model.comparedata.CompareDataMatching;
-import org.laladev.moneyjinn.model.comparedata.CompareDataNotInDatabase;
-import org.laladev.moneyjinn.model.comparedata.CompareDataNotInFile;
-import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
-import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
+import org.laladev.moneyjinn.model.comparedata.*;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -74,6 +55,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.inject.Inject;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.util.Base64;
+import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -131,15 +119,10 @@ public class CompareDataController extends AbstractController {
 					.getGroupCapitalsourcesByDateRange(userId, today, today);
 
 			if (capitalsources != null && !capitalsources.isEmpty()) {
-				final Iterator<Capitalsource> iterator = capitalsources.iterator();
-				while (iterator.hasNext()) {
-					final Capitalsource capitalsource = iterator.next();
+				Predicate<Capitalsource> capitalsourcePredicate = c -> c.getType()!= CapitalsourceType.CURRENT_ASSET
+						|| c.getState() != CapitalsourceState.NON_CACHE;
+				capitalsources.removeIf(capitalsourcePredicate);
 
-					if (capitalsource.getType() != CapitalsourceType.CURRENT_ASSET
-							|| capitalsource.getState() != CapitalsourceState.NON_CACHE) {
-						iterator.remove();
-					}
-				}
 				response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 				final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
 						.getClientCompareDataSelectedCapitalsource(userId);
@@ -165,7 +148,7 @@ public class CompareDataController extends AbstractController {
 			final LocalDate startDate = request.getStartDate().toLocalDate();
 			final LocalDate endDate = request.getEndDate().toLocalDate();
 			final boolean useImportedData = request.getUseImportedData() != null
-					&& request.getUseImportedData().compareTo(new Short((short) 1)) == 0;
+					&& request.getUseImportedData().compareTo((short) 1) == 0;
 
 			if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {
 				final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(request.getFormatId());
