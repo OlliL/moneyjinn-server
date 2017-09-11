@@ -26,15 +26,14 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -66,7 +65,7 @@ public interface IContractpartnerAccountService {
 	 *            {@link ContractpartnerAccount}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validateContractpartnerAccount(UserID userId,
+	ValidationResult validateContractpartnerAccount(UserID userId,
 			ContractpartnerAccount contractpartnerAccount);
 
 	/**
@@ -78,7 +77,7 @@ public interface IContractpartnerAccountService {
 	 *            {@link ContractpartnerAccountID}
 	 * @return {@link ContractpartnerAccount}
 	 */
-	public ContractpartnerAccount getContractpartnerAccountById(UserID userId,
+	ContractpartnerAccount getContractpartnerAccountById(UserID userId,
 			ContractpartnerAccountID contractpartnerAccountId);
 
 	/**
@@ -91,7 +90,7 @@ public interface IContractpartnerAccountService {
 	 *            {@link ContractpartnerID}
 	 * @return list of {@link ContractpartnerAccount}s
 	 */
-	public List<ContractpartnerAccount> getContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
+	List<ContractpartnerAccount> getContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
 	/**
 	 * This method persists (creates) the given {@link ContractpartnerAccount}.
@@ -100,9 +99,8 @@ public interface IContractpartnerAccountService {
 	 *            {@link UserID}
 	 * @param contractpartnerAccount
 	 *            {@link ContractpartnerAccount}
-	 * @throws BusinessException
 	 */
-	public void createContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
+	void createContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
 	/**
 	 * This method persists (updates) the given {@link ContractpartnerAccount}.
@@ -111,9 +109,8 @@ public interface IContractpartnerAccountService {
 	 *            {@link UserID}
 	 * @param contractpartnerAccount
 	 *            {@link ContractpartnerAccount}
-	 * @throws BusinessException
 	 */
-	public void updateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
+	void updateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
 	/**
 	 * This method deletes the given {@link ContractpartnerAccountID}.
@@ -122,9 +119,8 @@ public interface IContractpartnerAccountService {
 	 *            {@link UserID}
 	 * @param contractpartnerAccountId
 	 *            {@link ContractpartnerAccountID}
-	 * @throws BusinessException
 	 */
-	public void deleteContractpartnerAccountById(UserID userId, ContractpartnerAccountID contractpartnerAccountId);
+	void deleteContractpartnerAccountById(UserID userId, ContractpartnerAccountID contractpartnerAccountId);
 
 	/**
 	 * This method deletes the {@link ContractpartnerAccount}s assigned to a given
@@ -135,7 +131,7 @@ public interface IContractpartnerAccountService {
 	 * @param contractpartnerId
 	 *            {@link ContractpartnerID}
 	 */
-	public void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
+	void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
 	/**
 	 * This method selects all {@link ContractpartnerAccount}s for the given {@link BankAccount}s
@@ -144,7 +140,7 @@ public interface IContractpartnerAccountService {
 	 *            {@link UserID}
 	 * @param bankAccounts
 	 *            List of {@link BankAccount}
-	 * @return
+	 * @return List of all found {@link ContractpartnerAccount}
 	 */
-	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
+	List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
 }

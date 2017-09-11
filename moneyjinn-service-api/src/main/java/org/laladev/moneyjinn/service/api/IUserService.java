@@ -61,7 +61,7 @@ public interface IUserService {
 	 *            the {@link User}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validateUser(final User user);
+	ValidationResult validateUser(final User user);
 
 	/**
 	 * This Service returns the {@link User} for the given {@link UserID}.
@@ -70,28 +70,28 @@ public interface IUserService {
 	 *            the {@link UserID}
 	 * @return User
 	 */
-	public User getUserById(final UserID userId);
+	User getUserById(final UserID userId);
 
 	/**
 	 * This Service returns the distinct initials of all usernames in the database in uppercase.
 	 *
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllUserInitials();
+	Set<Character> getAllUserInitials();
 
 	/**
 	 * This Service returns the number of all existing users
 	 *
 	 * @return number of {@link User}s
 	 */
-	public Integer countAllUsers();
+	Integer countAllUsers();
 
 	/**
 	 * This Service returns all existing {@link User}s
 	 *
 	 * @return list of all {@link User}s
 	 */
-	public List<User> getAllUsers();
+	List<User> getAllUsers();
 
 	/**
 	 * This Service returns all existing {@link User}s which name start with the specified initial
@@ -101,7 +101,7 @@ public interface IUserService {
 	 *            the first letter of the {@link User}s name
 	 * @return a list of {@link User}s
 	 */
-	public List<User> getAllUsersByInitial(final Character initial);
+	List<User> getAllUsersByInitial(final Character initial);
 
 	/**
 	 * This Service returns the {@link User} for the specified name
@@ -110,7 +110,7 @@ public interface IUserService {
 	 *            the User-Name
 	 * @return {@link User}
 	 */
-	public User getUserByName(final String name);
+	User getUserByName(final String name);
 
 	/**
 	 * This service creates a {@link User}. Before the {@link User} is created it is validated for
@@ -122,7 +122,7 @@ public interface IUserService {
 	 *             If the validation of the given {@link User} failed.
 	 * @return {@link UserID} of the created {@link User}
 	 */
-	public UserID createUser(final User user);
+	UserID createUser(final User user);
 
 	/**
 	 * This service changes a {@link User}. Before the {@link User} is changed, the new values are
@@ -134,7 +134,7 @@ public interface IUserService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link User} failed.
 	 */
-	public void updateUser(final User user);
+	void updateUser(final User user);
 
 	/**
 	 * This service sets a new User-Password for the given User-Id. The password has to be given in
@@ -146,7 +146,7 @@ public interface IUserService {
 	 * @param password
 	 *            The new User-Password
 	 */
-	public void setPassword(final UserID userId, final String password);
+	void setPassword(final UserID userId, final String password);
 
 	/**
 	 * This service sets a new User-Password for the given User-Id. The password has to be given in
@@ -158,7 +158,7 @@ public interface IUserService {
 	 * @param password
 	 *            The new User-Password
 	 */
-	public void resetPassword(final UserID userId, final String password);
+	void resetPassword(final UserID userId, final String password);
 
 	/**
 	 * This service deletes a {@link User} from the system
@@ -169,6 +169,6 @@ public interface IUserService {
 	 *             If the deletion fails an error is throws. It is always assumed that it fails
 	 *             because of a Foreign Key Constraint Violation on the DB level
 	 */
-	public void deleteUser(final UserID userId);
+	void deleteUser(final UserID userId);
 
 }

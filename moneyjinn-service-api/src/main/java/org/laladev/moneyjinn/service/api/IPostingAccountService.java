@@ -60,7 +60,7 @@ public interface IPostingAccountService {
 	 *            the {@link PostingAccount}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validatePostingAccount(PostingAccount postingAccount);
+	ValidationResult validatePostingAccount(PostingAccount postingAccount);
 
 	/**
 	 * Returns the {@link PostingAccount} for the given {@link PostingAccountID}.
@@ -69,7 +69,7 @@ public interface IPostingAccountService {
 	 *            the {@link PostingAccountID}
 	 * @return
 	 */
-	public PostingAccount getPostingAccountById(PostingAccountID postingAccountId);
+	PostingAccount getPostingAccountById(PostingAccountID postingAccountId);
 
 	/**
 	 * This Service returns the distinct initials of all postingAccountnames in the database in
@@ -77,21 +77,21 @@ public interface IPostingAccountService {
 	 *
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllPostingAccountInitials();
+	Set<Character> getAllPostingAccountInitials();
 
 	/**
 	 * This Service returns the number of all existing postingAccounts
 	 *
 	 * @return number of {@link PostingAccount}s
 	 */
-	public Integer countAllPostingAccounts();
+	Integer countAllPostingAccounts();
 
 	/**
 	 * This Service returns all existing {@link PostingAccount}s
 	 *
 	 * @return list of all {@link PostingAccount}s
 	 */
-	public List<PostingAccount> getAllPostingAccounts();
+	List<PostingAccount> getAllPostingAccounts();
 
 	/**
 	 * This Service returns all existing {@link PostingAccount}s which name start with the specified
@@ -101,7 +101,7 @@ public interface IPostingAccountService {
 	 *            the first letter of the {@link PostingAccount}s name
 	 * @return a list of {@link PostingAccount}s
 	 */
-	public List<PostingAccount> getAllPostingAccountsByInitial(Character initial);
+	List<PostingAccount> getAllPostingAccountsByInitial(Character initial);
 
 	/**
 	 * This Service returns the {@link PostingAccount} for the specified name
@@ -110,7 +110,7 @@ public interface IPostingAccountService {
 	 *            the PostingAccount-Name
 	 * @return {@link PostingAccount}
 	 */
-	public PostingAccount getPostingAccountByName(String name);
+	PostingAccount getPostingAccountByName(String name);
 
 	/**
 	 * This service creates a {@link PostingAccount}. Before the {@link PostingAccount} is created
@@ -121,7 +121,7 @@ public interface IPostingAccountService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PostingAccount} failed.
 	 */
-	public void createPostingAccount(PostingAccount postingAccount);
+	void createPostingAccount(PostingAccount postingAccount);
 
 	/**
 	 * This service changes a {@link PostingAccount}. Before the {@link PostingAccount} is changed,
@@ -132,7 +132,7 @@ public interface IPostingAccountService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PostingAccount} failed.
 	 */
-	public void updatePostingAccount(PostingAccount postingAccount);
+	void updatePostingAccount(PostingAccount postingAccount);
 
 	/**
 	 * This service deletes a {@link PostingAccount} from the system
@@ -143,6 +143,6 @@ public interface IPostingAccountService {
 	 *             If the deletion fails an error is throws. It is always assumed that it fails
 	 *             because of a Foreign Key Constraint Violation on the DB level
 	 */
-	public void deletePostingAccount(PostingAccountID postingAccountId);
+	void deletePostingAccount(PostingAccountID postingAccountId);
 
 }

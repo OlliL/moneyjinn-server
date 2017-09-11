@@ -60,7 +60,7 @@ public interface IGroupService {
 	 *            the {@link Group}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validateGroup(Group group);
+	ValidationResult validateGroup(Group group);
 
 	/**
 	 * Returns the {@link Group} for the given {@link GroupID}.
@@ -69,28 +69,28 @@ public interface IGroupService {
 	 *            the {@link GroupID}
 	 * @return
 	 */
-	public Group getGroupById(GroupID groupId);
+	Group getGroupById(GroupID groupId);
 
 	/**
 	 * This Service returns the distinct initials of all groupnames in the database in uppercase.
 	 *
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllGroupInitials();
+	Set<Character> getAllGroupInitials();
 
 	/**
 	 * This Service returns the number of all existing groups
 	 *
 	 * @return number of {@link Group}s
 	 */
-	public Integer countAllGroups();
+	Integer countAllGroups();
 
 	/**
 	 * This Service returns all existing {@link Group}s
 	 *
 	 * @return list of all {@link Group}s
 	 */
-	public List<Group> getAllGroups();
+	List<Group> getAllGroups();
 
 	/**
 	 * This Service returns all existing {@link Group}s which name start with the specified initial
@@ -100,7 +100,7 @@ public interface IGroupService {
 	 *            the first letter of the {@link Group}s name
 	 * @return a list of {@link Group}s
 	 */
-	public List<Group> getAllGroupsByInitial(Character initial);
+	List<Group> getAllGroupsByInitial(Character initial);
 
 	/**
 	 * This Service returns the {@link Group} for the specified name
@@ -109,7 +109,7 @@ public interface IGroupService {
 	 *            the Group-Name
 	 * @return {@link Group}
 	 */
-	public Group getGroupByName(String name);
+	Group getGroupByName(String name);
 
 	/**
 	 * This service creates a {@link Group}. Before the {@link Group} is created it is validated for
@@ -120,7 +120,7 @@ public interface IGroupService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link Group} failed.
 	 */
-	public void createGroup(Group group);
+	void createGroup(Group group);
 
 	/**
 	 * This service changes a {@link Group}. Before the {@link Group} is changed, the new values are
@@ -131,7 +131,7 @@ public interface IGroupService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link Group} failed.
 	 */
-	public void updateGroup(Group group);
+	void updateGroup(Group group);
 
 	/**
 	 * This service deletes a {@link Group} from the system
@@ -142,6 +142,6 @@ public interface IGroupService {
 	 *             If the deletion fails an error is throws. It is always assumed that it fails
 	 *             because of a Foreign Key Constraint Violation on the DB level
 	 */
-	public void deleteGroup(GroupID groupId);
+	void deleteGroup(GroupID groupId);
 
 }

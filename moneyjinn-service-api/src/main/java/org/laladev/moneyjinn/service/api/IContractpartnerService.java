@@ -72,7 +72,7 @@ public interface IContractpartnerService {
 	 *            the {@link Contractpartner} to validate
 	 * @return ValidationResult
 	 */
-	public ValidationResult validateContractpartner(Contractpartner contractpartner);
+	ValidationResult validateContractpartner(Contractpartner contractpartner);
 
 	/**
 	 * This method returns the {@link Contractpartner} specified by its Id
@@ -83,7 +83,7 @@ public interface IContractpartnerService {
 	 *            {@link ContractpartnerID}
 	 * @return {@link Contractpartner}
 	 */
-	public Contractpartner getContractpartnerById(UserID userId, ContractpartnerID contractpartnerId);
+	Contractpartner getContractpartnerById(UserID userId, ContractpartnerID contractpartnerId);
 
 	/**
 	 * This method returns all initials of all accessable {@link Contractpartner}s
@@ -92,7 +92,7 @@ public interface IContractpartnerService {
 	 *            {@link UserID}
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllContractpartnerInitials(UserID userId);
+	Set<Character> getAllContractpartnerInitials(UserID userId);
 
 	/**
 	 * This method returns all initials of all {@link Contractpartner}s valid between the given
@@ -106,7 +106,7 @@ public interface IContractpartnerService {
 	 *            {@link LocalDate}
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllContractpartnerInitialsByDateRange(UserID userId, LocalDate validFrom,
+	Set<Character> getAllContractpartnerInitialsByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
 
 	/**
@@ -116,7 +116,7 @@ public interface IContractpartnerService {
 	 *            {@link UserID}
 	 * @return number of {@link Contractpartner}s
 	 */
-	public Integer countAllContractpartners(UserID userId);
+	Integer countAllContractpartners(UserID userId);
 
 	/**
 	 * This method counts all {@link Contractpartner}s valid between the given Dates.
@@ -129,7 +129,7 @@ public interface IContractpartnerService {
 	 *            {@link LocalDate}
 	 * @return number of {@link Contractpartner}s
 	 */
-	public Integer countAllContractpartnersByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
+	Integer countAllContractpartnersByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
 	/**
 	 * This method returns all {@link Contractpartner}s where the given user has reading
@@ -139,7 +139,7 @@ public interface IContractpartnerService {
 	 *            {@link UserID}
 	 * @return a list of {@link Contractpartner}s
 	 */
-	public List<Contractpartner> getAllContractpartners(UserID userId);
+	List<Contractpartner> getAllContractpartners(UserID userId);
 
 	/**
 	 * This method returns all {@link Contractpartner}s where the given user has reading permissions
@@ -153,7 +153,7 @@ public interface IContractpartnerService {
 	 *            {@link LocalDate}
 	 * @return a list of {@link Contractpartner}s
 	 */
-	public List<Contractpartner> getAllContractpartnersByDateRange(UserID userId, LocalDate validFrom,
+	List<Contractpartner> getAllContractpartnersByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
 
 	/**
@@ -166,7 +166,7 @@ public interface IContractpartnerService {
 	 *            the first letter of the {@link Contractpartner}s name
 	 * @return a list of {@link Contractpartner}s
 	 */
-	public List<Contractpartner> getAllContractpartnersByInitial(UserID userId, Character initial);
+	List<Contractpartner> getAllContractpartnersByInitial(UserID userId, Character initial);
 
 	/**
 	 * This method returns all {@link Contractpartner}s where the given <code>initial</code> is the
@@ -182,7 +182,7 @@ public interface IContractpartnerService {
 	 *            the first letter of the {@link Contractpartner}s name
 	 * @return a list of {@link Contractpartner}s
 	 */
-	public List<Contractpartner> getAllContractpartnersByInitialAndDateRange(UserID userId, Character initial,
+	List<Contractpartner> getAllContractpartnersByInitialAndDateRange(UserID userId, Character initial,
 			LocalDate validFrom, LocalDate validTil);
 
 	/**
@@ -194,7 +194,7 @@ public interface IContractpartnerService {
 	 * @param name
 	 * @return {@link Contractpartner}
 	 */
-	public Contractpartner getContractpartnerByName(UserID userId, String name);
+	Contractpartner getContractpartnerByName(UserID userId, String name);
 
 	/**
 	 * This method persists (updates) the given {@link Contractpartner}.
@@ -203,7 +203,7 @@ public interface IContractpartnerService {
 	 *            {@link Contractpartner}
 	 * @throws BusinessException
 	 */
-	public void updateContractpartner(Contractpartner contractpartner);
+	void updateContractpartner(Contractpartner contractpartner);
 
 	/**
 	 * This method persists (creates) the given {@link Contractpartner}.
@@ -213,7 +213,7 @@ public interface IContractpartnerService {
 	 * @return The {@link ContractpartnerID} of the created {@link Contractpartner}
 	 * @throws BusinessException
 	 */
-	public ContractpartnerID createContractpartner(Contractpartner contractpartner);
+	ContractpartnerID createContractpartner(Contractpartner contractpartner);
 
 	/**
 	 * This method deletes the {@link Contractpartner} specified by its Id.
@@ -226,6 +226,6 @@ public interface IContractpartnerService {
 	 *            {@link ContractpartnerID}
 	 * @throws BusinessException
 	 */
-	public void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
+	void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
 
 }

@@ -26,16 +26,12 @@
 
 package org.laladev.moneyjinn.service.api;
 
+import org.laladev.moneyjinn.model.access.*;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
@@ -64,16 +60,16 @@ public interface IAccessRelationService {
 	 *            the {@link AccessRelation}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validateAccessRelation(final AccessRelation accessRelation);
+	ValidationResult validateAccessRelation(final AccessRelation accessRelation);
 
 	/**
 	 * Returns all {@link AccessRelation}s for the given user.
 	 *
 	 * @param userId
 	 *            the {@link UserID}
-	 * @return
+	 * @return The found {@link AccessRelation}
 	 */
-	public List<AccessRelation> getAllAccessRelationsById(AccessID userId);
+	List<AccessRelation> getAllAccessRelationsById(AccessID userId);
 
 	/**
 	 * Persists the given {@link AccessRelation} for an existing User.
@@ -82,7 +78,7 @@ public interface IAccessRelationService {
 	 *            the {@link AccessRelation}.
 	 * @return {@link ValidationResult} if the given Object was not valid
 	 */
-	public ValidationResult setAccessRelationForExistingUser(AccessRelation accessRelation);
+	ValidationResult setAccessRelationForExistingUser(AccessRelation accessRelation);
 
 	/**
 	 * Persists the given {@link AccessRelation} for a new User.
@@ -91,57 +87,57 @@ public interface IAccessRelationService {
 	 *            the {@link AccessRelation}.
 	 * @return {@link ValidationResult} if the given Object was not valid
 	 */
-	public ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
+	ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
 
 	/**
 	 * Gets the currently valid {@link AccessRelation} for the given {@link UserID} or
 	 * {@link GroupID}.
 	 *
-	 * @param accessRelationID
-	 * @return
+	 * @param accessRelationID The {@link AccessID}
+	 * @return  The found {@link AccessRelation}
 	 */
-	public AccessRelation getAccessRelationById(final AccessID accessRelationID);
+	AccessRelation getAccessRelationById(final AccessID accessRelationID);
 
 	/**
 	 * The valid {@link AccessRelation} for the given {@link UserID} or {@link GroupID} at the given
 	 * {@link LocalDate}.
 	 *
-	 * @param accessRelationID
-	 * @param date
-	 * @return
+	 * @param accessRelationID The {@link AccessID}
+	 * @param date The date when the Relation must have been valid
+	 * @return The found {@link AccessRelation}
 	 */
-	public AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
+	AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
 
 	/**
 	 * Delets all relations to the given AccessID
 	 *
-	 * @param userId
+	 * @param accessRelationID The {@link AccessID}
 	 */
-	public void deleteAllAccessRelation(AccessID accessRelationID);
+	void deleteAllAccessRelation(AccessID accessRelationID);
 
 	/**
 	 * Gives the Group the {@link AccessID} is attached to.
 	 *
-	 * @param userId
-	 * @param date
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @param date The date of the {@link Group} assignment
+	 * @return The found {@link Group}
 	 */
-	public Group getAccessor(AccessID userId, LocalDate date);
+	Group getAccessor(AccessID userId, LocalDate date);
 
 	/**
 	 * Gives the Group the {@link AccessID} is attached to.
 	 *
-	 * @param userId
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @return The found {@link Group}
 	 */
-	public Group getAccessor(AccessID userId);
+	Group getAccessor(AccessID userId);
 
 	/**
 	 * Gives all {@link UserID}s who are or where in the same group the given user is or was.
 	 *
-	 * @param groupID
-	 * @return
+	 * @param userID The {@link UserID}
+	 * @return The found List of {@link UserID}
 	 */
-	public Set<UserID> getAllUserWithSameGroup(AccessID userID);
+	Set<UserID> getAllUserWithSameGroup(AccessID userID);
 
 }

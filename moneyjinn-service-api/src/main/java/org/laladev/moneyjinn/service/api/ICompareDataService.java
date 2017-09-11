@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
@@ -37,6 +34,9 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -66,14 +66,14 @@ public interface ICompareDataService {
 	 * @param compareDataFormatId
 	 * @return
 	 */
-	public CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
+	CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
 
 	/**
 	 * Returns all existing {@link CompareDataFormat}s.
 	 *
 	 * @return
 	 */
-	public List<CompareDataFormat> getAllCompareDataFormats();
+	List<CompareDataFormat> getAllCompareDataFormats();
 
 	/**
 	 * Parses the given fileContens based on the also given {@link CompareDataFormatID} and tries to
@@ -88,7 +88,7 @@ public interface ICompareDataService {
 	 * @param fileContents
 	 * @return
 	 */
-	public CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
+	CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
 			CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
 
 	/**
@@ -101,6 +101,6 @@ public interface ICompareDataService {
 	 * @param endDate
 	 * @return
 	 */
-	public CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId, LocalDate startDate,
+	CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId, LocalDate startDate,
 			LocalDate endDate);
 }

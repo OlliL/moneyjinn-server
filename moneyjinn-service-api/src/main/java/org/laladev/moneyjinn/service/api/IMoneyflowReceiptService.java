@@ -59,7 +59,7 @@ public interface IMoneyflowReceiptService {
 	 * @param moneyflowId
 	 *            The {@link MoneyflowID} of the {@link MoneyflowReceipt}
 	 */
-	public MoneyflowReceipt getMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
+	MoneyflowReceipt getMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
 
 	/**
 	 * Returns a list of {@link MoneyflowID}s which have a Receipt in the DB
@@ -68,7 +68,7 @@ public interface IMoneyflowReceiptService {
 	 *            {@link UserID}
 	 * @return
 	 */
-	public List<MoneyflowID> getMoneyflowIdsWithReceipt(UserID userId, List<MoneyflowID> moneyflowIds);
+	List<MoneyflowID> getMoneyflowIdsWithReceipt(UserID userId, List<MoneyflowID> moneyflowIds);
 
 	/**
 	 * Deletes the {@link MoneyflowReceipt}
@@ -79,5 +79,5 @@ public interface IMoneyflowReceiptService {
 	 *            {@link MoneyflowReceipt}
 	 * @return
 	 */
-	public void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
+	void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
 }

@@ -62,7 +62,7 @@ public interface IPreDefMoneyflowService {
 	 *            the {@link PreDefMoneyflow}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+	ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
 	/**
 	 * Returns the {@link PreDefMoneyflow} for the given {@link PreDefMoneyflowID}.
@@ -73,7 +73,7 @@ public interface IPreDefMoneyflowService {
 	 *            the {@link PreDefMoneyflowID}
 	 * @return
 	 */
-	public PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+	PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
 	/**
 	 * This Service returns the distinct initials of all {@link Contractpartner} names from all
@@ -83,7 +83,7 @@ public interface IPreDefMoneyflowService {
 	 *            {@link UserID}
 	 * @return all uppercased initials
 	 */
-	public Set<Character> getAllPreDefMoneyflowInitials(UserID userId);
+	Set<Character> getAllPreDefMoneyflowInitials(UserID userId);
 
 	/**
 	 * This Service returns the number of all existing preDefMoneyflows
@@ -92,7 +92,7 @@ public interface IPreDefMoneyflowService {
 	 *            {@link UserID}
 	 * @return number of {@link PreDefMoneyflow}s
 	 */
-	public Integer countAllPreDefMoneyflows(UserID userId);
+	Integer countAllPreDefMoneyflows(UserID userId);
 
 	/**
 	 * This Service returns all existing {@link PreDefMoneyflow}s
@@ -101,7 +101,7 @@ public interface IPreDefMoneyflowService {
 	 *            {@link UserID}
 	 * @return list of all {@link PreDefMoneyflow}s
 	 */
-	public List<PreDefMoneyflow> getAllPreDefMoneyflows(UserID userId);
+	List<PreDefMoneyflow> getAllPreDefMoneyflows(UserID userId);
 
 	/**
 	 * This Service returns all existing {@link PreDefMoneyflow}s which name start with the
@@ -113,7 +113,7 @@ public interface IPreDefMoneyflowService {
 	 *            the first letter of the {@link PreDefMoneyflow}s name
 	 * @return a list of {@link PreDefMoneyflow}s
 	 */
-	public List<PreDefMoneyflow> getAllPreDefMoneyflowsByInitial(UserID userId, Character initial);
+	List<PreDefMoneyflow> getAllPreDefMoneyflowsByInitial(UserID userId, Character initial);
 
 	/**
 	 * This service creates a {@link PreDefMoneyflow}. Before the {@link PreDefMoneyflow} is created
@@ -124,7 +124,7 @@ public interface IPreDefMoneyflowService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PreDefMoneyflow} failed.
 	 */
-	public PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+	PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
 	/**
 	 * This service changes a {@link PreDefMoneyflow}. Before the {@link PreDefMoneyflow} is
@@ -135,7 +135,7 @@ public interface IPreDefMoneyflowService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PreDefMoneyflow} failed.
 	 */
-	public void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+	void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
 	/**
 	 * This service deletes a {@link PreDefMoneyflow} from the system
@@ -145,7 +145,7 @@ public interface IPreDefMoneyflowService {
 	 * @param preDefMoneyflowId
 	 *            The {@link PreDefMoneyflowID} of the to-be-deleted {@link PreDefMoneyflow}
 	 */
-	public void deletePreDefMoneyflow(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+	void deletePreDefMoneyflow(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
 	/**
 	 * Updates the "lastUsedDate" information for a {@link PreDefMoneyflow}. It is meant to be
@@ -155,5 +155,5 @@ public interface IPreDefMoneyflowService {
 	 *            {@link UserID}
 	 * @param preDefMoneyflowId
 	 */
-	public void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+	void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 }

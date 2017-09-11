@@ -26,15 +26,15 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -57,29 +57,29 @@ public interface IImportedMoneyflowService {
 	/**
 	 * Validates the given {@link ImportedMoneyflow} for correctness.
 	 *
-	 * @param importedMoneyflow
-	 * @return
+	 * @param importedMoneyflow The {@link ImportedMoneyflow}
+	 * @return The {@link ValidationResult}
 	 */
 	ValidationResult validateImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
 	/**
 	 * Counts how much {@link ImportedMoneyflow} are there to be processed.
 	 *
-	 * @param userId
-	 * @param capitalsourceIds
-	 * @param status
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @param capitalsourceIds List of all {@link CapitalsourceID} to be checked
+	 * @param status {@link ImportedMoneyflowStatus} to be checked
+	 * @return Number of matching {@link ImportedMoneyflow}
 	 */
 	Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
 
 	/**
 	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given {@link CapitalsourceID}s.
 	 *
-	 * @param userId
-	 * @param capitalsourceIds
-	 * @param dateFrom
-	 * @param dateTil
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @param capitalsourceIds List of all {@link CapitalsourceID} to be checked
+	 * @param dateFrom Begin of checking period
+	 * @param dateTil End of checking period
+	 * @return List of found {@link ImportedMoneyflow}
 	 */
 	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId, List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom,
 			LocalDate dateTil);
@@ -87,42 +87,42 @@ public interface IImportedMoneyflowService {
 	/**
 	 * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the given {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
 	 *
-	 * @param userId
-	 * @param capitalsourceIds
-	 * @param status
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @param capitalsourceIds List of all {@link CapitalsourceID} to be checked
+	 * @param status {@link ImportedMoneyflowStatus} to be checked
+	 * @return List of found {@link ImportedMoneyflow}
 	 */
 	List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId, List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
 
 	/**
 	 * Persists the given {@link ImportedMoneyflow}.
 	 *
-	 * @param importedMoneyflow
+	 * @param importedMoneyflow The {@link ImportedMoneyflow}
 	 */
 	void createImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
 	/**
 	 * Sets a new {@link ImportedMoneyflowStatus} for the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.
 	 *
-	 * @param userId
-	 * @param importedMoneyflowId
-	 * @param status
+	 * @param userId The {@link UserID}
+	 * @param importedMoneyflowId The {@link ImportedMoneyflow}
+	 * @param status {@link ImportedMoneyflowStatus} to be checked
 	 */
 	void updateImportedMoneyflowStatus(UserID userId, ImportedMoneyflowID importedMoneyflowId, ImportedMoneyflowStatus status);
 
 	/**
 	 * Deletes the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.
 	 *
-	 * @param userId
-	 * @param importedMoneyflowId
+	 * @param userId The {@link UserID}
+	 * @param importedMoneyflowId The {@link ImportedMoneyflowID}
 	 */
 	void deleteImportedMoneyflowById(UserID userId, ImportedMoneyflowID importedMoneyflowId);
 
 	/**
 	 * checks if the externalId of a {@link ImportedMoneyflow} is already in the database.
 	 * 
-	 * @param externalId
-	 * @return
+	 * @param externalId An ID from an external system referencing our {@link ImportedMoneyflow}
+	 * @return true if externalid is already in the system, otherwise false
 	 */
 	boolean checkIfExternalIdAlreadyExists(String externalId);
 

@@ -67,7 +67,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
 	 */
-	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId);
+	ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given {@link UserID}
@@ -77,7 +77,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientReportingUnselectedPostingAccountIdsSetting}
 	 */
-	public void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId, ClientReportingUnselectedPostingAccountIdsSetting setting);
+	void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId, ClientReportingUnselectedPostingAccountIdsSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}
@@ -86,7 +86,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientTrendCapitalsourceIDsSetting}
 	 */
-	public ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
+	ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}
@@ -96,7 +96,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientTrendCapitalsourceIDsSetting}
 	 */
-	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId, final ClientTrendCapitalsourceIDsSetting setting);
+	void setClientTrendCapitalsourceIDsSetting(final AccessID accessId, final ClientTrendCapitalsourceIDsSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientMaxRowsSetting} for the given {@link UserID}
@@ -105,7 +105,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientMaxRowsSetting}
 	 */
-	public ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId);
+	ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientMaxRowsSetting} for the given {@link UserID}
@@ -115,7 +115,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientMaxRowsSetting}
 	 */
-	public void setClientMaxRowsSetting(final AccessID accessId, final ClientMaxRowsSetting setting);
+	void setClientMaxRowsSetting(final AccessID accessId, final ClientMaxRowsSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientDateFormatSetting} for the given {@link UserID}
@@ -124,7 +124,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientDateFormatSetting}
 	 */
-	public ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId);
+	ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientDateFormatSetting} for the given {@link UserID}
@@ -134,7 +134,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientDateFormatSetting}
 	 */
-	public void setClientDateFormatSetting(final AccessID accessId, final ClientDateFormatSetting setting);
+	void setClientDateFormatSetting(final AccessID accessId, final ClientDateFormatSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientDisplayedLanguageSetting} for the given {@link UserID}
@@ -143,7 +143,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientDisplayedLanguageSetting}
 	 */
-	public ClientDisplayedLanguageSetting getClientDisplayedLanguageSetting(final AccessID accessId);
+	ClientDisplayedLanguageSetting getClientDisplayedLanguageSetting(final AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientDisplayedLanguageSetting} for the given {@link UserID}
@@ -153,21 +153,21 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientDisplayedLanguageSetting}
 	 */
-	public void setClientDisplayedLanguageSetting(final AccessID accessId, final ClientDisplayedLanguageSetting setting);
+	void setClientDisplayedLanguageSetting(final AccessID accessId, final ClientDisplayedLanguageSetting setting);
 
 	/**
 	 * Initializes the settings for a new {@link User} by copying the default settings.
 	 *
 	 * @param newUserID
 	 */
-	public void initSettings(final UserID userId);
+	void initSettings(final UserID userId);
 
 	/**
 	 * Deletes all settings for the given {@link UserID}
 	 *
 	 * @param userId
 	 */
-	public void deleteSettings(final UserID userId);
+	void deleteSettings(final UserID userId);
 
 	/**
 	 * This Service returns the {@link ClientNumFreeMoneyflowsSetting} for the given {@link UserID}
@@ -176,7 +176,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientNumFreeMoneyflowsSetting}
 	 */
-	public ClientNumFreeMoneyflowsSetting getClientNumFreeMoneyflowsSetting(final AccessID accessId);
+	ClientNumFreeMoneyflowsSetting getClientNumFreeMoneyflowsSetting(final AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientNumFreeMoneyflowsSetting} for the given {@link UserID}
@@ -186,7 +186,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientNumFreeMoneyflowsSetting}
 	 */
-	public void setClientNumFreeMoneyflowsSetting(final AccessID accessId, final ClientNumFreeMoneyflowsSetting setting);
+	void setClientNumFreeMoneyflowsSetting(final AccessID accessId, final ClientNumFreeMoneyflowsSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientCurrentlyValidCapitalsourcesSetting} for the given {@link UserID}
@@ -195,7 +195,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientCurrentlyValidCapitalsourcesSetting}
 	 */
-	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(AccessID accessId);
+	ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientCurrentlyValidCapitalsourcesSetting} for the given {@link UserID}
@@ -205,7 +205,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientCurrentlyValidCapitalsourcesSetting}
 	 */
-	public void setClientCurrentlyValidCapitalsourcesSetting(AccessID accessId, ClientCurrentlyValidCapitalsourcesSetting setting);
+	void setClientCurrentlyValidCapitalsourcesSetting(AccessID accessId, ClientCurrentlyValidCapitalsourcesSetting setting);
 
 	/**
 	 * This Service returns the {@link ClientCurrentlyValidContractpartnerSetting} for the given {@link UserID}
@@ -214,7 +214,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientCurrentlyValidContractpartnerSetting}
 	 */
-	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(AccessID accessId);
+	ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientCurrentlyValidContractpartnerSetting} for the given {@link UserID}
@@ -224,7 +224,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientCurrentlyValidContractpartnerSetting}
 	 */
-	public void setClientCurrentlyValidContractpartnerSetting(AccessID accessId, ClientCurrentlyValidContractpartnerSetting setting);
+	void setClientCurrentlyValidContractpartnerSetting(AccessID accessId, ClientCurrentlyValidContractpartnerSetting setting);
 
 	/**
 	 * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the given {@link UserID}
@@ -234,7 +234,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientCompareDataSelectedCapitalsource}
 	 */
-	public void setClientCompareDataSelectedCapitalsource(AccessID accessId, ClientCompareDataSelectedCapitalsource setting);
+	void setClientCompareDataSelectedCapitalsource(AccessID accessId, ClientCompareDataSelectedCapitalsource setting);
 
 	/**
 	 * This Service returns the {@link ClientCompareDataSelectedCapitalsource} for the given {@link UserID}
@@ -243,7 +243,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientCompareDataSelectedCapitalsource}
 	 */
-	public ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(AccessID accessId);
+	ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
@@ -253,7 +253,7 @@ public interface ISettingService {
 	 * @param setting
 	 *            the {@link ClientCompareDataSelectedFormat}
 	 */
-	public void setClientCompareDataSelectedFormat(AccessID accessId, ClientCompareDataSelectedFormat setting);
+	void setClientCompareDataSelectedFormat(AccessID accessId, ClientCompareDataSelectedFormat setting);
 
 	/**
 	 * This Service returns the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
@@ -262,7 +262,7 @@ public interface ISettingService {
 	 *            or groupID {@link AccessID}
 	 * @return {@link ClientCompareDataSelectedFormat}
 	 */
-	public ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(AccessID accessId);
+	ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(AccessID accessId);
 
 	/**
 	 * This Service sets the {@link ClientCompareDataSelectedSourceIsFile} for the given {@link UserID}

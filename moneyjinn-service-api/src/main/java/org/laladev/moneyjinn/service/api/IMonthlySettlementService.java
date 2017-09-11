@@ -64,7 +64,7 @@ public interface IMonthlySettlementService {
 	 *            The {@link UserID}
 	 * @return list of years
 	 */
-	public List<Short> getAllYears(UserID userId);
+	List<Short> getAllYears(UserID userId);
 
 	/**
 	 * Returns a list of {@link Month}s where {@link MonthlySettlement}s where created for in the
@@ -75,7 +75,7 @@ public interface IMonthlySettlementService {
 	 * @param year
 	 * @return list of {@link Month}s
 	 */
-	public List<Month> getAllMonth(UserID userId, Short year);
+	List<Month> getAllMonth(UserID userId, Short year);
 
 	/**
 	 * Returns a list of {@link MonthlySettlement}s for the given year and {@link Month}.
@@ -87,7 +87,7 @@ public interface IMonthlySettlementService {
 	 *            The {@link Month}
 	 * @return list of {@link MonthlySettlement}s
 	 */
-	public List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(UserID userId, Short year, Month month);
+	List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(UserID userId, Short year, Month month);
 
 	/**
 	 * Returns the last date a {@link MonthlySettlement} was created by the given {@link UserId}.
@@ -95,7 +95,7 @@ public interface IMonthlySettlementService {
 	 * @param userId
 	 * @return
 	 */
-	public LocalDate getMaxSettlementDate(UserID userId);
+	LocalDate getMaxSettlementDate(UserID userId);
 
 	/**
 	 * Checks if at the given year and month, the also given {@link UserId} has already created a
@@ -106,7 +106,7 @@ public interface IMonthlySettlementService {
 	 * @param month
 	 * @return
 	 */
-	public boolean checkMonthlySettlementsExists(UserID userId, Short year, Month month);
+	boolean checkMonthlySettlementsExists(UserID userId, Short year, Month month);
 
 	/**
 	 * This method inserts or updates the given {@link MonthlySettlement}s.
@@ -114,7 +114,7 @@ public interface IMonthlySettlementService {
 	 * @param monthlySettlements
 	 * @return
 	 */
-	public ValidationResult upsertMonthlySettlements(List<MonthlySettlement> monthlySettlements);
+	ValidationResult upsertMonthlySettlements(List<MonthlySettlement> monthlySettlements);
 
 	/**
 	 * This method deletes the {@link MonthlySettlement}s for the given year and {@link Month}
@@ -123,7 +123,7 @@ public interface IMonthlySettlementService {
 	 * @param year
 	 * @param month
 	 */
-	public void deleteMonthlySettlement(UserID userId, Short year, Month month);
+	void deleteMonthlySettlement(UserID userId, Short year, Month month);
 
 	/**
 	 * Returns all {@link MonthlySettlement}s between the given dates for all given
@@ -135,6 +135,6 @@ public interface IMonthlySettlementService {
 	 * @param capitalsourceIds
 	 * @return
 	 */
-	public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(UserID userId, LocalDate begin,
+	List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(UserID userId, LocalDate begin,
 			LocalDate end, List<CapitalsourceID> capitalsourceIds);
 }

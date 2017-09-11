@@ -64,7 +64,7 @@ public interface IMoneyflowSplitEntryService {
 	 *            the {@link MoneyflowSplitEntry}
 	 * @return {@link ValidationResult}
 	 */
-	public ValidationResult validateMoneyflowSplitEntry(MoneyflowSplitEntry moneyflowSplitEntry);
+	ValidationResult validateMoneyflowSplitEntry(MoneyflowSplitEntry moneyflowSplitEntry);
 
 	/**
 	 * This method persists (creates) the given {@link MoneyflowSplitEntry}s.
@@ -74,7 +74,7 @@ public interface IMoneyflowSplitEntryService {
 	 * @throws BusinessException
 	 */
 
-	public void createMoneyflowSplitEntries(UserID userId, List<MoneyflowSplitEntry> moneyflowSplitEntries);
+	void createMoneyflowSplitEntries(UserID userId, List<MoneyflowSplitEntry> moneyflowSplitEntries);
 
 	/**
 	 * This service changes a {@link MoneyflowSplitEntry}. Before the {@link MoneyflowSplitEntry} is
@@ -83,7 +83,7 @@ public interface IMoneyflowSplitEntryService {
 	 * @param moneyflowSplitEntry
 	 *            the new {@link MoneyflowSplitEntry} attributes
 	 */
-	public void updateMoneyflowSplitEntry(UserID userId, MoneyflowSplitEntry moneyflowSplitEntry);
+	void updateMoneyflowSplitEntry(UserID userId, MoneyflowSplitEntry moneyflowSplitEntry);
 
 	/**
 	 * This service retrieves all {@link MoneyflowSplitEntry}s for a given {@link MoneyflowID} from
@@ -94,7 +94,7 @@ public interface IMoneyflowSplitEntryService {
 	 * @param moneyflowId
 	 *            The {@link MoneyflowID} of the {@link MoneyflowSplitEntry}s
 	 */
-	public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
+	List<MoneyflowSplitEntry> getMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 
 	/**
 	 * This service retrieves all {@link MoneyflowSplitEntry}s for all given {@link MoneyflowID}s
@@ -105,7 +105,7 @@ public interface IMoneyflowSplitEntryService {
 	 * @param moneyflowIds
 	 *            The {@link MoneyflowID}s of the {@link MoneyflowSplitEntry}s
 	 */
-	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(UserID userId,
+	Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(UserID userId,
 			List<MoneyflowID> moneyflowIds);
 
 	/**
@@ -120,7 +120,7 @@ public interface IMoneyflowSplitEntryService {
 	 *            The {@link MoneyflowSplitEntryID} of the to-be-deleted
 	 *            {@link MoneyflowSplitEntry}s
 	 */
-	public void deleteMoneyflowSplitEntry(UserID userId, MoneyflowID moneyflowId,
+	void deleteMoneyflowSplitEntry(UserID userId, MoneyflowID moneyflowId,
 			MoneyflowSplitEntryID moneyflowSplitEntryId);
 
 	/**
@@ -132,5 +132,5 @@ public interface IMoneyflowSplitEntryService {
 	 * @param moneyflowId
 	 *            The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
 	 */
-	public void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
+	void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 }

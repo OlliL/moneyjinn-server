@@ -26,8 +26,38 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.model.validation.ValidationResultItem;
+import org.laladev.moneyjinn.service.CacheNames;
+import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.service.dao.ContractpartnerDao;
+import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
+import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
+import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.SimpleKey;
+import org.springframework.util.Assert;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -53,42 +83,6 @@ import java.util.ArrayList;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IGroupService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IUserService;
-import org.laladev.moneyjinn.service.dao.ContractpartnerDao;
-import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
-import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.SimpleKey;
-import org.springframework.util.Assert;
-
 @Named
 @EnableCaching
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
@@ -111,7 +105,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	}
 
-	private final Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
+	private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
 		if (contractpartnerData != null) {
 			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
 			final UserID userId = contractpartner.getUser().getId();
@@ -133,9 +127,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 		return null;
 	}
 
-	private final List<Contractpartner> mapContractpartnerDataList(
+	private List<Contractpartner> mapContractpartnerDataList(
 			final List<ContractpartnerData> contractpartnerDataList) {
-		return contractpartnerDataList.stream().map(element -> this.mapContractpartnerData(element))
+		return contractpartnerDataList.stream().map(this::mapContractpartnerData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
@@ -145,10 +139,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	 *
 	 * @param contractpartner
 	 *            {@link Contractpartner}
-	 *
-	 * @return Contractpartner
 	 */
-	private final void prepareContractpartner(final Contractpartner contractpartner) {
+	private void prepareContractpartner(final Contractpartner contractpartner) {
 		if (contractpartner.getValidFrom() == null) {
 			contractpartner.setValidFrom(LocalDate.now());
 		}
@@ -254,7 +246,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(validTil, "validTil must not be null!");
 
 		final Cache cache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE, userId.getId().toString());
-		List<Contractpartner> contractpartners = null;
+		List<Contractpartner> contractpartners;
 		final SimpleKey key = new SimpleKey(validFrom, validTil);
 		contractpartners = cache.get(key, List.class);
 

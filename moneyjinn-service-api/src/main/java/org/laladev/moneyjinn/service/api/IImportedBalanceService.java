@@ -26,12 +26,12 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -57,24 +57,24 @@ public interface IImportedBalanceService {
 	/**
 	 * Validates the given {@link ImportedBalance} for correctness.
 	 *
-	 * @param importedBalance
-	 * @return
+	 * @param importedBalance The {@link ImportedBalance}
+	 * @return The {@link ValidationResult}
 	 */
 	ValidationResult validateImportedBalance(ImportedBalance importedBalance);
 
 	/**
 	 * Persists the given {@link ImportedBalance}.
 	 *
-	 * @param importedBalance
+	 * @param importedBalance The {@link ImportedBalance}
 	 */
 	void upsertImportedBalance(ImportedBalance importedBalance);
 
 	/**
 	 * Retrives all {@link ImportedBalance}s for the given {@link CapitalsourceID}s
 	 *
-	 * @param userId
-	 * @param capitalsourceIds
-	 * @return
+	 * @param userId The {@link UserID}
+	 * @param capitalsourceIds The {@link ImportedBalance}
+	 * @return List of all matching {@link ImportedBalance}
 	 */
 	List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(UserID userId,
 			List<CapitalsourceID> capitalsourceIds);
