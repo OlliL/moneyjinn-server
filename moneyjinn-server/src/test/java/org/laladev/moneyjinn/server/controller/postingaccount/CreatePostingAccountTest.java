@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
+import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -66,12 +66,12 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 		validationItems
 				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
-		final ValidationResponse expected = new ValidationResponse();
+		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreatePostingAccountResponse.class);
 
 		Assert.assertEquals(expected, actual);
 
@@ -110,7 +110,11 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 
 		request.setPostingAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+		expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
+
+		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreatePostingAccountResponse.class);
 
 		final PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);
@@ -150,6 +154,12 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
 		request.setPostingAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+		expected.setPostingAccountId(1L);
+
+		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreatePostingAccountResponse.class);
+
+		Assert.assertEquals(expected, actual);
 	}
 }

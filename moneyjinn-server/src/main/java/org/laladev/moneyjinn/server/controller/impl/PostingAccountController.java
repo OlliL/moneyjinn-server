@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.AbstractPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
+import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowDeletePostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowEditPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
@@ -119,15 +120,16 @@ public class PostingAccountController extends AbstractController {
 
 		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
+		final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
-		this.postingAccountService.createPostingAccount(postingAccount);
-		return null;
+		final PostingAccountID postingAccountId = this.postingAccountService.createPostingAccount(postingAccount);
+		response.setPostingAccountId(postingAccountId.getId());
+		return response;
 	}
 
 	@RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })

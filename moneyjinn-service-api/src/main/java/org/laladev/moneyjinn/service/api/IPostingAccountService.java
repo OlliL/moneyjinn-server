@@ -121,7 +121,7 @@ public interface IPostingAccountService {
 	 * @throws BusinessException
 	 *             If the validation of the given {@link PostingAccount} failed.
 	 */
-	void createPostingAccount(PostingAccount postingAccount);
+	PostingAccountID createPostingAccount(PostingAccount postingAccount);
 
 	/**
 	 * This service changes a {@link PostingAccount}. Before the {@link PostingAccount} is changed,

@@ -143,7 +143,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	public void createPostingAccount(final PostingAccount postingAccount) {
+	public PostingAccountID createPostingAccount(final PostingAccount postingAccount) {
 		Assert.notNull(postingAccount, "postingAccount must not be null!");
 		postingAccount.setId(null);
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
@@ -156,6 +156,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
 		final Long postingAccountId = this.postingAccountDao.createPostingAccount(postingAccountData);
 		this.evictPostingAccountCache(new PostingAccountID(postingAccountId));
+		return new PostingAccountID(postingAccountId);
 	}
 
 	@Override
