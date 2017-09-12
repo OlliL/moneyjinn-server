@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -73,12 +73,12 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		validationItems
 				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
-		final ValidationResponse expected = new ValidationResponse();
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
 
 		Assert.assertEquals(expected, actual);
 
@@ -149,7 +149,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		request.setCapitalsourceTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -170,7 +176,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		request.setCapitalsourceTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -192,7 +204,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		request.setCapitalsourceTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -217,7 +235,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		transport.setBankCode(null);
 		request.setCapitalsourceTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -253,7 +277,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		request.setCapitalsourceTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+		expected.setCapitalsourceId(1L);
+
+		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateCapitalsourceResponse.class);
+
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.ADMINGROUP_ID);
