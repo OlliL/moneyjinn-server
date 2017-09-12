@@ -26,6 +26,15 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -54,14 +63,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -281,7 +282,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public void createCapitalsource(final Capitalsource capitalsource) {
+	public CapitalsourceID createCapitalsource(final Capitalsource capitalsource) {
 		Assert.notNull(capitalsource, "Capitalsource must not be null!");
 		capitalsource.setId(null);
 		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
@@ -295,6 +296,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		final Long capitalsourceId = this.capitalsourceDao.createCapitalsource(capitalsourceData);
 		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
 				new CapitalsourceID(capitalsourceId));
+
+		return new CapitalsourceID(capitalsourceId);
 	}
 
 	@Override

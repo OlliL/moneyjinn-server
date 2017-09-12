@@ -24,8 +24,20 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.*;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.AbstractCapitalsourceResponse;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceResponse;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowCapitalsourceListResponse;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowDeleteCapitalsourceResponse;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowEditCapitalsourceResponse;
+import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
@@ -45,12 +57,11 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -169,7 +180,7 @@ public class CapitalsourceController extends AbstractController {
 
 	@RequestMapping(value = "createCapitalsource", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public ValidationResponse createCapitalsource(@RequestBody final CreateCapitalsourceRequest request) {
+	public CreateCapitalsourceResponse createCapitalsource(@RequestBody final CreateCapitalsourceRequest request) {
 		final UserID userId = super.getUserId();
 		final Capitalsource capitalsource = super.map(request.getCapitalsourceTransport(), Capitalsource.class);
 
@@ -181,16 +192,18 @@ public class CapitalsourceController extends AbstractController {
 		capitalsource.setAccess(accessor);
 
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
+		final CreateCapitalsourceResponse response = new CreateCapitalsourceResponse();
 
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
-		this.capitalsourceService.createCapitalsource(capitalsource);
-		return null;
+		final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
+		response.setCapitalsourceId(capitalsourceId.getId());
+
+		return response;
 	}
 
 	@RequestMapping(value = "updateCapitalsource", method = { RequestMethod.PUT })

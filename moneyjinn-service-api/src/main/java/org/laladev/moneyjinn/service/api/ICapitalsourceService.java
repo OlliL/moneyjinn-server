@@ -26,6 +26,10 @@
 
 package org.laladev.moneyjinn.service.api;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -33,10 +37,6 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -110,8 +110,7 @@ public interface ICapitalsourceService {
 	 *            {@link LocalDate}
 	 * @return all uppercased initials
 	 */
-	Set<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom,
-			LocalDate validTil);
+	Set<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
 	/**
 	 * This method counts all existing accessable {@link Capitalsource}s.
@@ -184,8 +183,8 @@ public interface ICapitalsourceService {
 	 *            the first letter of the {@link Capitalsource}s name
 	 * @return a list of {@link Capitalsource}s
 	 */
-	List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(UserID userId, Character initial,
-			LocalDate validFrom, LocalDate validTil);
+	List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(UserID userId, Character initial, LocalDate validFrom,
+			LocalDate validTil);
 
 	/**
 	 * This method look the {@link Capitalsource} up which is valid on the given date and has the
@@ -193,8 +192,10 @@ public interface ICapitalsourceService {
 	 *
 	 * @param userId
 	 *            {@link UserID}
-	 * @param comment The comment to look fo
-	 * @param date The date where the {@link Capitalsource} must have been valid at
+	 * @param comment
+	 *            The comment to look fo
+	 * @param date
+	 *            The date where the {@link Capitalsource} must have been valid at
 	 * @return {@link Capitalsource}
 	 */
 	Capitalsource getCapitalsourceByComment(UserID userId, String comment, LocalDate date);
@@ -212,8 +213,9 @@ public interface ICapitalsourceService {
 	 *
 	 * @param capitalsource
 	 *            updateCapitalsource
+	 * @return The created {@link CapitalsourceID}
 	 */
-	void createCapitalsource(Capitalsource capitalsource);
+	CapitalsourceID createCapitalsource(Capitalsource capitalsource);
 
 	/**
 	 * This method deletes the {@link Capitalsource} specified by its Id.
@@ -250,14 +252,15 @@ public interface ICapitalsourceService {
 	 *            {@link LocalDate}
 	 * @return a list of {@link Capitalsource}s
 	 */
-	List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
-			LocalDate validTil);
+	List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
 	/**
 	 * Determines the {@link Capitalsource} by the given {@link BankAccount}
 	 *
-	 * @param bankAccount The {@link BankAccount}
-	 * @param date The date to wich the {@link Capitalsource} must have been valid at
+	 * @param bankAccount
+	 *            The {@link BankAccount}
+	 * @param date
+	 *            The date to wich the {@link Capitalsource} must have been valid at
 	 * @return The matching {@link Capitalsource}
 	 */
 	Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
