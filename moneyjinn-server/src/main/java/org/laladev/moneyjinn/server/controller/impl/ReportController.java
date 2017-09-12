@@ -542,17 +542,13 @@ public class ReportController extends AbstractController {
 						}
 					}
 
-					final List<String> validCapitalsourceIdLongs = validCapitalsources.stream().map(Capitalsource::getComment)
+					// Sort turnover Capitalsources in the same way all valid Capitalsources where sorted.
+					final List<String> validCapitalsourceComments = validCapitalsources.stream().map(Capitalsource::getComment)
 							.collect(Collectors.toCollection(ArrayList::new));
+					Comparator<String> orderingComparator = Comparator.comparingInt(validCapitalsourceComments::indexOf);
+					turnoverCapitalsources.sort((ReportTurnoverCapitalsourceTransport left, ReportTurnoverCapitalsourceTransport right)
+							-> orderingComparator.compare(left.getCapitalsourceComment(),right.getCapitalsourceComment()));
 
-					//TODO Replace by Lists.sort and Lambdas
-					Collections.sort(turnoverCapitalsources, new Comparator<ReportTurnoverCapitalsourceTransport>() {
-						@Override
-						public int compare(final ReportTurnoverCapitalsourceTransport left, final ReportTurnoverCapitalsourceTransport right) {
-							return Integer.compare(validCapitalsourceIdLongs.indexOf(left.getCapitalsourceComment()),
-									validCapitalsourceIdLongs.indexOf(right.getCapitalsourceComment()));
-						}
-					});
 
 					final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
 					final List<Capitalsource> yearlyValidCapitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, beginOfYear,
