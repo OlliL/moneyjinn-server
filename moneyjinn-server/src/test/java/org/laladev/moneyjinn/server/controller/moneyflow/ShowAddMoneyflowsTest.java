@@ -72,11 +72,13 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow3().build());
 		expected.setPreDefMoneyflowTransports(preDefMoneyflowTransports);
 
-		expected.setSettingNumberOfFreeMoneyflows(1);
-
 		final ShowAddMoneyflowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowAddMoneyflowsResponse.class);
 
+		Assert.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
+		Assert.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
+		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
 		Assert.assertEquals(expected, actual);
 	}
 
@@ -94,10 +96,14 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final ShowAddMoneyflowsResponse expected = new ShowAddMoneyflowsResponse();
-		expected.setSettingNumberOfFreeMoneyflows(1);
+
 		final ShowAddMoneyflowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowAddMoneyflowsResponse.class);
 
+		Assert.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
+		Assert.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
+		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
 		Assert.assertEquals(expected, actual);
 	}
 }

@@ -24,10 +24,36 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.*;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.*;
+import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
@@ -43,25 +69,36 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
-import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.controller.mapper.*;
-import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchResultTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
+import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
+import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
+import org.laladev.moneyjinn.service.api.ISettingService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -102,38 +139,6 @@ public class MoneyflowController extends AbstractController {
 		super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
 	}
 
-	private void fillAbstractAddMoneyflowResponse(final UserID userId, final AbstractAddMoneyflowResponse response) {
-		final LocalDate today = LocalDate.now();
-
-		final List<Capitalsource> capitalsources = this.capitalsourceService
-				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-		if (capitalsources != null && !capitalsources.isEmpty()) {
-			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
-		}
-
-		final List<Contractpartner> contractpartner = this.contractpartnerService
-				.getAllContractpartnersByDateRange(userId, today, today);
-		if (contractpartner != null && !contractpartner.isEmpty()) {
-			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
-		}
-
-		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		}
-
-		List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-			preDefMoneyflows = preDefMoneyflows.stream().filter(pdm -> !this.isOnceAMonthAndAlreadyUsed(today, pdm))
-					.collect(Collectors.toCollection(ArrayList::new));
-			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
-		}
-
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(userId);
-		response.setSettingNumberOfFreeMoneyflows(clientNumFreeMoneyflowsSetting.getSetting());
-	}
-
 	private boolean isOnceAMonthAndAlreadyUsed(final LocalDate today, final PreDefMoneyflow preDefMoneyflow) {
 		final LocalDate lastUsedDate = preDefMoneyflow.getLastUsedDate();
 
@@ -164,7 +169,31 @@ public class MoneyflowController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ShowAddMoneyflowsResponse response = new ShowAddMoneyflowsResponse();
 
-		this.fillAbstractAddMoneyflowResponse(userId, response);
+		final LocalDate today = LocalDate.now();
+
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
+		if (capitalsources != null && !capitalsources.isEmpty()) {
+			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+		}
+
+		final List<Contractpartner> contractpartner = this.contractpartnerService
+				.getAllContractpartnersByDateRange(userId, today, today);
+		if (contractpartner != null && !contractpartner.isEmpty()) {
+			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
+		}
+
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
+			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		}
+
+		List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
+			preDefMoneyflows = preDefMoneyflows.stream().filter(pdm -> !this.isOnceAMonthAndAlreadyUsed(today, pdm))
+					.collect(Collectors.toCollection(ArrayList::new));
+			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
+		}
 
 		return response;
 	}
@@ -290,7 +319,7 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreateMoneyflowResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
+	public ValidationResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
 
 		final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
@@ -374,7 +403,7 @@ public class MoneyflowController extends AbstractController {
 			}
 		}
 
-		final CreateMoneyflowResponse response = new CreateMoneyflowResponse();
+		final ValidationResponse response = new ValidationResponse();
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
 		if (validationResult.isValid()) {
@@ -412,17 +441,13 @@ public class MoneyflowController extends AbstractController {
 			if (preDefMoneyflowId != null) {
 				this.preDefMoneyflowService.setLastUsedDate(userId, preDefMoneyflowId);
 			}
-			response.setResult(true);
+
+			return null;
 		} else {
 			response.setResult(false);
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		}
-
-		// It is important that the "last used" of any predefmoneyflows is set before selecting any
-		// relevant predefmoneyflows because of "once a month" they might not be relevant. Thats why
-		// the response data is created at last
-		this.fillAbstractAddMoneyflowResponse(userId, response);
 
 		return response;
 	}
@@ -476,8 +501,7 @@ public class MoneyflowController extends AbstractController {
 				if (validationResult.isValid()) {
 					if (request.getDeleteMoneyflowSplitEntryIds() != null) {
 						deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream()
-								.map(MoneyflowSplitEntryID::new)
-								.collect(Collectors.toCollection(ArrayList::new));
+								.map(MoneyflowSplitEntryID::new).collect(Collectors.toCollection(ArrayList::new));
 					}
 
 					if (insertMoneyflowSplitEntries != null || updateMoneyflowSplitEntries != null
