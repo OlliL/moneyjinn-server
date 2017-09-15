@@ -1,17 +1,13 @@
 package org.laladev.moneyjinn.core.mapper;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.error.MoneyjinnException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class AbstractMapperSupport {
 	private static final Logger LOG = Logger.getLogger(AbstractMapperSupport.class.getName());
@@ -19,9 +15,9 @@ public abstract class AbstractMapperSupport {
 	private static final String MAPPER_UNDEFINED = "Mapper undefined!";
 
 	// -----returnTyp---------parameter- Method of Object to execute
-	Map<Class<?>, Map<Class<?>, Method>> mapperMethods = new HashMap<Class<?>, Map<Class<?>, Method>>();
+	private Map<Class<?>, Map<Class<?>, Method>> mapperMethods = new HashMap<Class<?>, Map<Class<?>, Method>>();
 	// -----returnTyp---------parameter- Object to execute
-	Map<Class<?>, Map<Class<?>, IMapper<?, ?>>> mapperClasses = new HashMap<Class<?>, Map<Class<?>, IMapper<?, ?>>>();
+	private Map<Class<?>, Map<Class<?>, IMapper<?, ?>>> mapperClasses = new HashMap<Class<?>, Map<Class<?>, IMapper<?, ?>>>();
 
 	protected AbstractMapperSupport() {
 		this.addBeanMapper();
@@ -70,8 +66,8 @@ public abstract class AbstractMapperSupport {
 
 	protected <T> T map(final Object args, final Class<T> clazz) {
 		if (args != null) {
-			Method method = null;
-			IMapper<?, ?> obj = null;
+			Method method;
+			IMapper<?, ?> obj;
 			try {
 				method = this.mapperMethods.get(clazz).get(args.getClass());
 				obj = this.mapperClasses.get(clazz).get(args.getClass());
