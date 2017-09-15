@@ -27,7 +27,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -409,21 +408,20 @@ public class MoneyflowController extends AbstractController {
 		final ValidationResponse response = new ValidationResponse();
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
-		final MoneyflowID moneyflowId = moneyflow.getId();
 		if (!moneyflowSplitEntries.isEmpty()) {
 			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
 					.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-			moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
 
 			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflowId,
+				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
 						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
 			}
 		}
 
 		if (validationResult.isValid()) {
-			this.moneyflowService.createMoneyflows(Collections.singletonList(moneyflow));
+			final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
 			if (!moneyflowSplitEntries.isEmpty()) {
+				moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
 				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
 			}
 
