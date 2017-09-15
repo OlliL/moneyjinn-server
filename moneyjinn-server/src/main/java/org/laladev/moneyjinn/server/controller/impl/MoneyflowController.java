@@ -323,6 +323,9 @@ public class MoneyflowController extends AbstractController {
 		final UserID userId = super.getUserId();
 
 		final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
+				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+
 		final Long preDefMoneyflowIdLong = request.getUsedPreDefMoneyflowId();
 
 		boolean saveAsPreDefMoneyflow = false;
@@ -406,8 +409,23 @@ public class MoneyflowController extends AbstractController {
 		final ValidationResponse response = new ValidationResponse();
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
+		final MoneyflowID moneyflowId = moneyflow.getId();
+		if (!moneyflowSplitEntries.isEmpty()) {
+			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+					.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+			moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+
+			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+				validationResult.addValidationResultItem(new ValidationResultItem(moneyflowId,
+						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+			}
+		}
+
 		if (validationResult.isValid()) {
 			this.moneyflowService.createMoneyflows(Collections.singletonList(moneyflow));
+			if (!moneyflowSplitEntries.isEmpty()) {
+				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
+			}
 
 			PreDefMoneyflowID preDefMoneyflowId = null;
 			if (preDefMoneyflowIdLong != null) {
