@@ -26,14 +26,20 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
+import java.util.List;
+
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName("createMoneyflowRequest")
 public class CreateMoneyflowRequest extends AbstractRequest {
 	private MoneyflowTransport moneyflowTransport;
+	@JsonProperty("insertMoneyflowSplitEntryTransport")
+	public List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports;
 	private Long usedPreDefMoneyflowId;
 	private Short saveAsPreDefMoneyflow;
 
@@ -43,6 +49,15 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 
 	public final void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
 		this.moneyflowTransport = moneyflowTransport;
+	}
+
+	public final List<MoneyflowSplitEntryTransport> getInsertMoneyflowSplitEntryTransports() {
+		return this.insertMoneyflowSplitEntryTransports;
+	}
+
+	public final void setInsertMoneyflowSplitEntryTransports(
+			final List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports) {
+		this.insertMoneyflowSplitEntryTransports = insertMoneyflowSplitEntryTransports;
 	}
 
 	public final Long getUsedPreDefMoneyflowId() {
@@ -65,6 +80,8 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((this.insertMoneyflowSplitEntryTransports == null) ? 0
+				: this.insertMoneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
 		result = prime * result + ((this.saveAsPreDefMoneyflow == null) ? 0 : this.saveAsPreDefMoneyflow.hashCode());
 		result = prime * result + ((this.usedPreDefMoneyflowId == null) ? 0 : this.usedPreDefMoneyflowId.hashCode());
@@ -83,6 +100,13 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 			return false;
 		}
 		final CreateMoneyflowRequest other = (CreateMoneyflowRequest) obj;
+		if (this.insertMoneyflowSplitEntryTransports == null) {
+			if (other.insertMoneyflowSplitEntryTransports != null) {
+				return false;
+			}
+		} else if (!this.insertMoneyflowSplitEntryTransports.equals(other.insertMoneyflowSplitEntryTransports)) {
+			return false;
+		}
 		if (this.moneyflowTransport == null) {
 			if (other.moneyflowTransport != null) {
 				return false;
@@ -112,6 +136,8 @@ public class CreateMoneyflowRequest extends AbstractRequest {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("CreateMoneyflowRequest [moneyflowTransport=");
 		builder.append(this.moneyflowTransport);
+		builder.append(", insertMoneyflowSplitEntryTransports=");
+		builder.append(this.insertMoneyflowSplitEntryTransports);
 		builder.append(", usedPreDefMoneyflowId=");
 		builder.append(this.usedPreDefMoneyflowId);
 		builder.append(", saveAsPreDefMoneyflow=");
