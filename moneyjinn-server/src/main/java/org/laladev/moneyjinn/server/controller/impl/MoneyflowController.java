@@ -339,7 +339,87 @@ public class MoneyflowController extends AbstractController {
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 
+		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
+
+		final ValidationResponse response = new ValidationResponse();
+		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+
+		if (!moneyflowSplitEntries.isEmpty()) {
+			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+					.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
+						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+			}
+		}
+
+		if (validationResult.isValid()) {
+			final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
+			if (!moneyflowSplitEntries.isEmpty()) {
+				moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
+			}
+
+			PreDefMoneyflowID preDefMoneyflowId = null;
+			if (preDefMoneyflowIdLong != null) {
+				preDefMoneyflowId = new PreDefMoneyflowID(preDefMoneyflowIdLong);
+			}
+
+			if (saveAsPreDefMoneyflow) {
+				final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
+				preDefMoneyflow.setAmount(moneyflow.getAmount());
+				preDefMoneyflow.setCapitalsource(moneyflow.getCapitalsource());
+				preDefMoneyflow.setComment(moneyflow.getComment());
+				preDefMoneyflow.setContractpartner(moneyflow.getContractpartner());
+				preDefMoneyflow.setPostingAccount(moneyflow.getPostingAccount());
+				preDefMoneyflow.setUser(user);
+
+				if (preDefMoneyflowId != null) {
+					final PreDefMoneyflow preDefMoneyflowOrig = this.preDefMoneyflowService
+							.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+					if (preDefMoneyflowOrig != null) {
+						preDefMoneyflow.setId(preDefMoneyflowId);
+						preDefMoneyflow.setOnceAMonth(preDefMoneyflowOrig.isOnceAMonth());
+
+						this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+					}
+				} else {
+					preDefMoneyflow.setOnceAMonth(false);
+					preDefMoneyflowId = this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
+				}
+			}
+
+			if (preDefMoneyflowId != null) {
+				this.preDefMoneyflowService.setLastUsedDate(userId, preDefMoneyflowId);
+			}
+
+			return null;
+		} else {
+			response.setResult(false);
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+		}
+
+		return response;
+	}
+
+	/**
+	 * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity
+	 * is modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries
+	 * where provided with data from the first MoneyflowSplitEntry.
+	 *
+	 * @param userId
+	 * @param moneyflow
+	 * @param moneyflowSplitEntries
+	 * @param group
+	 */
+	private void prepareForValidityCheck(final Moneyflow moneyflow,
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
 		final LocalDate bookingDate = moneyflow.getBookingDate();
+
+		final UserID userId = moneyflow.getUser().getId();
+		final Group group = moneyflow.getGroup();
 
 		if (bookingDate != null) {
 
@@ -405,67 +485,19 @@ public class MoneyflowController extends AbstractController {
 			}
 		}
 
-		final ValidationResponse response = new ValidationResponse();
-		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
-
+		// use the comment and postingaccount of the 1st split booking for the main booking if
+		// nothing is specified
 		if (!moneyflowSplitEntries.isEmpty()) {
-			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
-					.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
 
-			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
-						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+			if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
+				moneyflow.setComment(moneyflowSplitEntry.getComment());
+			}
+
+			if (moneyflow.getPostingAccount() == null) {
+				moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
 			}
 		}
-
-		if (validationResult.isValid()) {
-			final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
-			if (!moneyflowSplitEntries.isEmpty()) {
-				moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
-				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
-			}
-
-			PreDefMoneyflowID preDefMoneyflowId = null;
-			if (preDefMoneyflowIdLong != null) {
-				preDefMoneyflowId = new PreDefMoneyflowID(preDefMoneyflowIdLong);
-			}
-
-			if (saveAsPreDefMoneyflow) {
-				final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
-				preDefMoneyflow.setAmount(moneyflow.getAmount());
-				preDefMoneyflow.setCapitalsource(moneyflow.getCapitalsource());
-				preDefMoneyflow.setComment(moneyflow.getComment());
-				preDefMoneyflow.setContractpartner(moneyflow.getContractpartner());
-				preDefMoneyflow.setPostingAccount(moneyflow.getPostingAccount());
-				preDefMoneyflow.setUser(user);
-
-				if (preDefMoneyflowId != null) {
-					final PreDefMoneyflow preDefMoneyflowOrig = this.preDefMoneyflowService
-							.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-					if (preDefMoneyflowOrig != null) {
-						preDefMoneyflow.setId(preDefMoneyflowId);
-						preDefMoneyflow.setOnceAMonth(preDefMoneyflowOrig.isOnceAMonth());
-
-						this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
-					}
-				} else {
-					preDefMoneyflow.setOnceAMonth(false);
-					preDefMoneyflowId = this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
-				}
-			}
-
-			if (preDefMoneyflowId != null) {
-				this.preDefMoneyflowService.setLastUsedDate(userId, preDefMoneyflowId);
-			}
-
-			return null;
-		} else {
-			response.setResult(false);
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		}
-
-		return response;
 	}
 
 	@RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
