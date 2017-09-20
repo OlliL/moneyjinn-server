@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.moneyflow;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
+import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.DateUtil;
@@ -43,6 +45,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -51,6 +54,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 
 	@Inject
 	private IMoneyflowService moneyflowService;
+	@Inject
+	private IMoneyflowSplitEntryService moneyflowSpliEntryService;
 	@Inject
 	private IPreDefMoneyflowService preDefMoneyflowService;
 	@Inject
@@ -83,17 +88,21 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private void testError(final MoneyflowTransport transport, final ErrorCode... errorCodes) throws Exception {
+	private void testError(final MoneyflowTransport transport,
+			final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports, final ErrorCode... errorCodes)
+			throws Exception {
 		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
 
 		request.setMoneyflowTransport(transport);
+		request.setInsertMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
 
-		final ValidationResponse expected = this.getCompleteResponseObject();
+		final ValidationResponse expected = new ValidationResponse();
 		expected.setResult(Boolean.FALSE);
 
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
 		for (final ErrorCode errorCode : errorCodes) {
-			validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+			validationItems.add(new ValidationItemTransportBuilder()
+					.withKey(transport.getId() == null ? null : transport.getId().intValue())
 					.withError(errorCode.getErrorCode()).build());
 		}
 		expected.setValidationItemTransports(validationItems);
@@ -105,14 +114,10 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		Assert.assertEquals(expected.getResult(), actual.getResult());
 		Assert.assertEquals(expected.getValidationItemTransports(), actual.getValidationItemTransports());
 		Assert.assertEquals(expected, actual);
-
 	}
 
-	private ValidationResponse getCompleteResponseObject() {
-		final ValidationResponse expected = new ValidationResponse();
-
-		expected.setResult(Boolean.TRUE);
-		return expected;
+	private void testError(final MoneyflowTransport transport, final ErrorCode... errorCodes) throws Exception {
+		this.testError(transport, new ArrayList<>(), errorCodes);
 	}
 
 	@Test
@@ -543,107 +548,194 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
 	}
 
-	// TODO implement me
 	@Test
-	public void test_SplitEntries_Successfull() {
+	public void test_SplitEntries_Successfull() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
+
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(mseTransport1, mseTransport2));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSpliEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(2, moneyflowSplitEntries.size());
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), mseTransport1.getAmount());
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), mseTransport1.getComment());
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId().getId(),
+				mseTransport1.getPostingaccountid());
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount(), mseTransport2.getAmount());
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), mseTransport2.getComment());
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getPostingAccount().getId().getId(),
+				mseTransport2.getPostingaccountid());
 
 	}
 
-	// TODO implement me
-	@Test
-	public void test_SplitEntries_SumNotMatchingOverallAmount_Error() {
-
+	private MoneyflowSplitEntryTransport getMseTransport2(final MoneyflowTransport transport) {
+		return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+				.withComment("comment2").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)
+				.build();
 	}
 
-	// TODO implement me
-	@Test
-	public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking() {
-
+	private MoneyflowSplitEntryTransport getMseTransport1(final MoneyflowTransport transport) {
+		return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+				.withComment("comment1").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID)
+				.build();
 	}
 
-	// TODO implement me
+	@Test
+	public void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(transport.getAmount());
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
+				ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
+	}
+
+	@Test
+	public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
+
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setComment(null);
+		transport.setPostingaccountid(null);
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(mseTransport1, mseTransport2));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(mseTransport1.getComment(), moneyflow.getComment());
+		Assert.assertEquals(mseTransport1.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+	}
+
 	@Test
 	public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setComment("");
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setComment("");
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
 	}
 
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setAmount(BigDecimal.ZERO);
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(BigDecimal.ZERO);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
 
 	// make sure it 0 is compared with compareTo not with equals
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setAmount(new BigDecimal("0.00000"));
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(new BigDecimal("0.00000"));
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
 
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setComment(null);
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.COMMENT_IS_NOT_SET);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setComment(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
 	}
 
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setAmount(null);
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.AMOUNT_IS_ZERO);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
 
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setPostingaccountid(null);
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setPostingaccountid(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
-		final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
-				.forNewMoneyflowSplitEntry().build();
-		mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		request.setMoneyflowTransport(transport);
 
-		// this.testError(transport, null, null, null, null, Arrays.asList(mseTransport),
-		// mseTransport.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	@Test

@@ -345,12 +345,19 @@ public class MoneyflowController extends AbstractController {
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
 		if (!moneyflowSplitEntries.isEmpty()) {
-			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
-					.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+			moneyflowSplitEntries.stream().forEach(mse -> {
+				validationResult
+						.mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
+			});
 
-			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
-						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+			if (validationResult.isValid()) {
+				final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+						.map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+				if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+					validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
+							ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+				}
 			}
 		}
 

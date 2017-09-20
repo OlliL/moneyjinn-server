@@ -43,6 +43,21 @@ public class MoneyflowSplitEntryTransportBuilder extends MoneyflowSplitEntryTran
 		return this;
 	}
 
+	public MoneyflowSplitEntryTransportBuilder withComment(final String comment) {
+		super.setComment(comment);
+		return this;
+	}
+
+	public MoneyflowSplitEntryTransportBuilder withAmount(final BigDecimal amount) {
+		super.setAmount(amount);
+		return this;
+	}
+
+	public MoneyflowSplitEntryTransportBuilder withPostingaccountid(final Long postingaccountid) {
+		super.setPostingaccountid(postingaccountid);
+		return this;
+	}
+
 	public MoneyflowSplitEntryTransport build() {
 		final MoneyflowSplitEntryTransport transport = new MoneyflowSplitEntryTransport();
 
