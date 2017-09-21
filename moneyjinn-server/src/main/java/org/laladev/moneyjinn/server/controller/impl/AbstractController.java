@@ -40,10 +40,10 @@ public abstract class AbstractController extends AbstractMapperSupport {
 	private SessionEnvironment sessionEnvironment;
 
 	protected UserID getUserId() {
-		if (this.sessionEnvironment.getUserID() == null) {
+		if (this.sessionEnvironment.getUserId() == null) {
 			throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
 		}
-		return this.sessionEnvironment.getUserID();
+		return this.sessionEnvironment.getUserId();
 	}
 
 	protected ValidationResponse returnValidationResponse(final ValidationResult validationResult) {

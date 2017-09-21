@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -127,7 +126,7 @@ public class MoneyflowServiceTest extends AbstractTest {
 		moneyflow.setUser(new User(new UserID(1l)));
 		moneyflow.setGroup(new Group(new GroupID(1l)));
 
-		this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
+		this.moneyflowService.createMoneyflow(moneyflow);
 	}
 
 	@Test(expected = BusinessException.class)
@@ -181,7 +180,7 @@ public class MoneyflowServiceTest extends AbstractTest {
 		moneyflow.setBookingDate(LocalDate.now());
 
 		// this should also modify the cache of user 1!
-		this.moneyflowService.createMoneyflows(Arrays.asList(moneyflow));
+		this.moneyflowService.createMoneyflow(moneyflow);
 
 		final List<Short> allYears2 = this.moneyflowService.getAllYears(user1ID);
 

@@ -83,8 +83,8 @@ public class GroupController extends AbstractController {
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
 	public ShowGroupListResponse showGroupList(@PathVariable(value = "restriction") final String restriction) {
-		final UserID userID = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userID);
+		final UserID userId = super.getUserId();
+		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final Set<Character> initials = this.groupService.getAllGroupInitials();
 		final Integer count = this.groupService.countAllGroups();
 

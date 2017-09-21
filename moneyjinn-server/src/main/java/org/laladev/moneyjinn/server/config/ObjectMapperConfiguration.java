@@ -24,11 +24,11 @@ package org.laladev.moneyjinn.server.config;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.laladev.moneyjinn.core.rest.util.MyObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class ObjectMapperConfiguration {

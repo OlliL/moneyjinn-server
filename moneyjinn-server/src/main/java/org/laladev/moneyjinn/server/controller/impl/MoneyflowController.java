@@ -35,7 +35,6 @@ import javax.inject.Inject;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.AbstractEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
@@ -44,7 +43,6 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowRespon
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
@@ -88,11 +86,9 @@ import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,8 +112,6 @@ public class MoneyflowController extends AbstractController {
 	private IContractpartnerService contractpartnerService;
 	@Inject
 	private IPostingAccountService postingAccountService;
-	@Inject
-	private ISettingService settingService;
 	@Inject
 	private IMoneyflowService moneyflowService;
 	@Inject
@@ -144,22 +138,6 @@ public class MoneyflowController extends AbstractController {
 		return preDefMoneyflow.isOnceAMonth() //
 				&& lastUsedDate != null && lastUsedDate.getMonth().equals(today.getMonth()) //
 				&& lastUsedDate.getYear() == today.getYear();
-	}
-
-	private void fillAbstractEditMoneyflowResponse(final Moneyflow moneyflow,
-			final AbstractEditMoneyflowResponse response) {
-		Assert.notNull(moneyflow.getUser(), "User must not be null!");
-
-		final UserID userId = moneyflow.getUser().getId();
-
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupBookableCapitalsources(userId);
-		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
-
-		final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
-		response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
-
-		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 	}
 
 	@RequestMapping(value = "showAddMoneyflows", method = { RequestMethod.GET })
@@ -216,7 +194,14 @@ public class MoneyflowController extends AbstractController {
 						super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
 			}
 
-			this.fillAbstractEditMoneyflowResponse(moneyflow, response);
+			final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupBookableCapitalsources(userId);
+			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+
+			final List<Contractpartner> contractpartner = this.contractpartnerService.getAllContractpartners(userId);
+			response.setContractpartnerTransports(super.mapList(contractpartner, ContractpartnerTransport.class));
+
+			final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
 
 		return response;
@@ -417,9 +402,13 @@ public class MoneyflowController extends AbstractController {
 	 * where provided with data from the first MoneyflowSplitEntry.
 	 *
 	 * @param userId
+	 *            UserId
 	 * @param moneyflow
+	 *            Moneyflow
 	 * @param moneyflowSplitEntries
+	 *            MoneyflowSplitEntries
 	 * @param group
+	 *            Group
 	 */
 	private void prepareForValidityCheck(final Moneyflow moneyflow,
 			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
@@ -509,7 +498,7 @@ public class MoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public UpdateMoneyflowResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
+	public ValidationResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getAccessor(userId);
@@ -620,12 +609,7 @@ public class MoneyflowController extends AbstractController {
 			}
 
 			if (!validationResult.isValid()) {
-				final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
-				this.fillAbstractEditMoneyflowResponse(moneyflow, response);
-				response.setResult(validationResult.isValid());
-				response.setValidationItemTransports(
-						super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-				return response;
+				return super.returnValidationResponse(validationResult);
 			}
 		}
 

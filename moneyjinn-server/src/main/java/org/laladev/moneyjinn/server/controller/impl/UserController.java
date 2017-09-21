@@ -24,12 +24,36 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.*;
+import org.laladev.moneyjinn.core.rest.model.user.AbstractCreateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.AbstractShowUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
+import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
+import org.laladev.moneyjinn.core.rest.model.user.ShowCreateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.ShowDeleteUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
+import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
+import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
-import org.laladev.moneyjinn.model.access.*;
+import org.laladev.moneyjinn.model.access.AccessRelation;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserAttribute;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
@@ -46,13 +70,11 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -97,7 +119,8 @@ public class UserController extends AbstractController {
 
 		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
 		if (accessRelation != null) {
-			final ValidationResult validationResultAccess = this.accessRelationService.validateAccessRelation(accessRelation);
+			final ValidationResult validationResultAccess = this.accessRelationService
+					.validateAccessRelation(accessRelation);
 			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
@@ -107,7 +130,8 @@ public class UserController extends AbstractController {
 				this.userService.resetPassword(user.getId(), user.getPassword());
 			}
 			if (accessRelation != null) {
-				validationResult.mergeValidationResult(this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
+				validationResult.mergeValidationResult(
+						this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
 			}
 		}
 
@@ -116,7 +140,8 @@ public class UserController extends AbstractController {
 			final UpdateUserResponse response = new UpdateUserResponse();
 			this.fillAbstractUpdateUserResponse(user.getId(), response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
@@ -157,7 +182,8 @@ public class UserController extends AbstractController {
 				if (accessRelation != null) {
 					accessRelationList.add(accessRelation);
 					if (accessRelation.getParentAccessRelation() != null) {
-						final Group group = this.groupService.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+						final Group group = this.groupService
+								.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
 						groupSet.add(group);
 					}
 				}
@@ -196,7 +222,8 @@ public class UserController extends AbstractController {
 		if (accessRelation != null) {
 			accessRelation.setId(null);
 
-			final ValidationResult validationResultAccess = this.accessRelationService.validateAccessRelation(accessRelation);
+			final ValidationResult validationResultAccess = this.accessRelationService
+					.validateAccessRelation(accessRelation);
 			validationResult.mergeValidationResult(validationResultAccess);
 		}
 
@@ -204,15 +231,16 @@ public class UserController extends AbstractController {
 			final CreateUserResponse response = new CreateUserResponse();
 			this.fillAbstractCreateUserResponse(response);
 			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
-		final UserID newUserID = this.userService.createUser(user);
-		if (newUserID != null) {
-			this.settingService.initSettings(newUserID);
+		final UserID newUserId = this.userService.createUser(user);
+		if (newUserId != null) {
+			this.settingService.initSettings(newUserId);
 			if (accessRelation != null) {
-				accessRelation.setId(newUserID);
+				accessRelation.setId(newUserId);
 				this.accessRelationService.setAccessRelationForNewUser(accessRelation);
 			}
 		}
@@ -231,7 +259,8 @@ public class UserController extends AbstractController {
 
 	@RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	public GetUserSettingsForStartupResponse getUserSettingsForStartup(@PathVariable(value = "name") final String name) {
+	public GetUserSettingsForStartupResponse getUserSettingsForStartup(
+			@PathVariable(value = "name") final String name) {
 		final User user = this.userService.getUserByName(name);
 		final GetUserSettingsForStartupResponse response = new GetUserSettingsForStartupResponse();
 
@@ -240,8 +269,10 @@ public class UserController extends AbstractController {
 
 			response.setUserId(userId.getId());
 
-			final ClientDateFormatSetting clientDateFormatSetting = this.settingService.getClientDateFormatSetting(userId);
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService.getClientDisplayedLanguageSetting(userId);
+			final ClientDateFormatSetting clientDateFormatSetting = this.settingService
+					.getClientDateFormatSetting(userId);
+			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
+					.getClientDisplayedLanguageSetting(userId);
 			response.setSettingDateFormat(clientDateFormatSetting.getSetting());
 			response.setSettingDisplayedLanguage(clientDisplayedLanguageSetting.getSetting());
 			response.setAttributeNew(user.getAttributes().contains(UserAttribute.IS_NEW));
@@ -269,7 +300,8 @@ public class UserController extends AbstractController {
 
 	private void fillAbstractUpdateUserResponse(final UserID userId, final AbstractUpdateUserResponse response) {
 		final List<AccessRelation> accessRelations = this.accessRelationService.getAllAccessRelationsById(userId);
-		final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations, AccessRelationTransport.class);
+		final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
+				AccessRelationTransport.class);
 
 		response.setAccessRelationTransports(accessRelationTransports);
 		this.fillAbstractCreateUserResponse(response);

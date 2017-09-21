@@ -42,7 +42,7 @@ public class HttpHeadersBuilder {
 
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
 			final String uri, final String body, final HttpMethod httpMethod)
-					throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
+			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		this.sha1MD.reset();
 		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);
 		if (userName != null && userPassword != null) {

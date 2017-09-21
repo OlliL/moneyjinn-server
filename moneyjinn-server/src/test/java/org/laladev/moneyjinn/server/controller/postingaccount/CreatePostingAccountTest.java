@@ -113,8 +113,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
 		expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
 
-		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreatePostingAccountResponse.class);
+		super.callUsecaseWithContent("", this.method, request, false, CreatePostingAccountResponse.class);
 
 		final PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);

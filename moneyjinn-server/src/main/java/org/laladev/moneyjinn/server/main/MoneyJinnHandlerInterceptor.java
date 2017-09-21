@@ -136,9 +136,9 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 				final String contentType = request.getContentType();
 				final byte[] body = ((MoneyJinnRequestWrapper) request).getBody().getBytes();
 				final String method = ((MoneyJinnRequestWrapper) request).getMethod().toString();
-				final String requestURL = ((MoneyJinnRequestWrapper) request).getRequestURI();
+				final String requestUrl = ((MoneyJinnRequestWrapper) request).getRequestURI();
 				final String serverAuthorization = this.restAuthorization.getRESTAuthorization(
-						user.getPassword().getBytes(), method, contentType, requestURL, dateHeaderString, body,
+						user.getPassword().getBytes(), method, contentType, requestUrl, dateHeaderString, body,
 						userName);
 
 				if (serverAuthorization.equals(clientAuthorization)) {
@@ -149,7 +149,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 						throw new BusinessException("You must be an admin to access this functionality!",
 								ErrorCode.USER_IS_NO_ADMIN);
 					}
-					this.sessionEnvironment.setUserID(user.getId());
+					this.sessionEnvironment.setUserId(user.getId());
 				} else {
 					throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
 				}

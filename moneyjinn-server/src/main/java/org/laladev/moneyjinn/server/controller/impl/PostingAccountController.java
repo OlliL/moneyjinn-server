@@ -85,8 +85,8 @@ public class PostingAccountController extends AbstractController {
 	@RequiresPermissionAdmin
 	public ShowPostingAccountListResponse showPostingAccountList(
 			@PathVariable(value = "restriction") final String restriction) {
-		final UserID userID = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userID);
+		final UserID userId = super.getUserId();
+		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
 		final Integer count = this.postingAccountService.countAllPostingAccounts();
 
