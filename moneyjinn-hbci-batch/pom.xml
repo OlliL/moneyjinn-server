@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.laladev.moneyjinn</groupId>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 
 	<properties>
 		<moneyjinn-client-core.version>0.0.1-SNAPSHOT</moneyjinn-client-core.version>
-		<moneyjinn-hbci-core.version>0.0.5-SNAPSHOT</moneyjinn-hbci-core.version>
+		<moneyjinn-hbci-core.version>0.0.6-SNAPSHOT</moneyjinn-hbci-core.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
