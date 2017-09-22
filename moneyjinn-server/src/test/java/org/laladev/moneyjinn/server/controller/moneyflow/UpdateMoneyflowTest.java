@@ -14,7 +14,6 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -710,7 +709,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 		request.setMoneyflowTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, UpdateMoneyflowResponse.class);
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 	}
 
 }
