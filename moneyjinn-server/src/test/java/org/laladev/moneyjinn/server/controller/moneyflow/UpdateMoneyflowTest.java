@@ -786,6 +786,30 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		transport.setComment(null);
+		transport.setPostingaccountid(null);
+		request.setMoneyflowTransport(transport);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), moneyflow.getComment());
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId(),
+				moneyflow.getPostingAccount().getId());
+	}
+
+	@Test
 	public void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
