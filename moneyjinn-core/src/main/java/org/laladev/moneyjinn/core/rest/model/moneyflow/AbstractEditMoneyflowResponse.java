@@ -26,15 +26,13 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 	@JsonProperty("capitalsourceTransport")
@@ -43,8 +41,7 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 	private List<ContractpartnerTransport> contractpartnerTransports;
 	@JsonProperty("postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
-	@JsonProperty("moneyflowSplitEntryTransport")
-	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
+
 
 
 	public final List<CapitalsourceTransport> getCapitalsourceTransports() {
@@ -71,23 +68,12 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 		this.postingAccountTransports = postingAccountTransports;
 	}
 
-	
-	public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
-		return moneyflowSplitEntryTransports;
-	}
-
-	public final void setMoneyflowSplitEntryTransports(List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
-		this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
 		result = prime * result + ((contractpartnerTransports == null) ? 0 : contractpartnerTransports.hashCode());
-		result = prime * result
-				+ ((moneyflowSplitEntryTransports == null) ? 0 : moneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((postingAccountTransports == null) ? 0 : postingAccountTransports.hashCode());
 		return result;
 	}
@@ -111,11 +97,6 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 				return false;
 		} else if (!contractpartnerTransports.equals(other.contractpartnerTransports))
 			return false;
-		if (moneyflowSplitEntryTransports == null) {
-			if (other.moneyflowSplitEntryTransports != null)
-				return false;
-		} else if (!moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports))
-			return false;
 		if (postingAccountTransports == null) {
 			if (other.postingAccountTransports != null)
 				return false;
@@ -133,8 +114,6 @@ public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
 		builder.append(contractpartnerTransports);
 		builder.append(", postingAccountTransports=");
 		builder.append(postingAccountTransports);
-		builder.append(", moneyflowSplitEntryTransports=");
-		builder.append(moneyflowSplitEntryTransports);
 		builder.append("]");
 		return builder.toString();
 	}

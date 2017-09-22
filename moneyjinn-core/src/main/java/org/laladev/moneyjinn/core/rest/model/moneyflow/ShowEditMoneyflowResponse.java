@@ -26,13 +26,26 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import java.util.List;
+
 @JsonRootName("showEditMoneyflowResponse")
 public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
-	private MoneyflowTransport moneyflowTransport;
+	@JsonProperty("moneyflowSplitEntryTransport")
+	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;	private MoneyflowTransport moneyflowTransport;
+
+	public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
+		return moneyflowSplitEntryTransports;
+	}
+
+	public final void setMoneyflowSplitEntryTransports(List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
+		this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
+	}
 
 	public final MoneyflowTransport getMoneyflowTransport() {
 		return this.moneyflowTransport;
@@ -46,6 +59,8 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result
+				+ ((moneyflowSplitEntryTransports == null) ? 0 : moneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
 		return result;
 	}
@@ -62,6 +77,11 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 			return false;
 		}
 		final ShowEditMoneyflowResponse other = (ShowEditMoneyflowResponse) obj;
+		if (moneyflowSplitEntryTransports == null) {
+			if (other.moneyflowSplitEntryTransports != null)
+				return false;
+		} else if (!moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports))
+			return false;
 		if (this.moneyflowTransport == null) {
 			if (other.moneyflowTransport != null) {
 				return false;
@@ -75,7 +95,10 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ShowEditMoneyflowResponse [moneyflowTransport=");
+		builder.append("ShowEditMoneyflowResponse [");
+		builder.append("moneyflowSplitEntryTransports=");
+		builder.append(moneyflowSplitEntryTransports);
+		builder.append(", moneyflowTransport=");
 		builder.append(moneyflowTransport);
 		builder.append(", getCapitalsourceTransports()=");
 		builder.append(getCapitalsourceTransports());
@@ -83,8 +106,6 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 		builder.append(getContractpartnerTransports());
 		builder.append(", getPostingAccountTransports()=");
 		builder.append(getPostingAccountTransports());
-		builder.append(", getMoneyflowSplitEntryTransports()=");
-		builder.append(getMoneyflowSplitEntryTransports());
 		builder.append("]");
 		return builder.toString();
 	}
