@@ -17,13 +17,19 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.DateUtil;
+import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
@@ -31,6 +37,8 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.springframework.http.HttpMethod;
@@ -39,9 +47,13 @@ import org.springframework.test.context.jdbc.Sql;
 public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	@Inject
-	IMoneyflowService moneyflowService;
+	private IMoneyflowService moneyflowService;
 	@Inject
-	IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	@Inject
+	private ICapitalsourceService capitalsourceService;
+	@Inject
+	private IContractpartnerService contractpartnerService;
 
 	@Inject
 	IAccessRelationService accessRelationService;
@@ -109,7 +121,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_emptyComment_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
 		transport.setComment("");
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
@@ -117,7 +129,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullComment_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
 		transport.setComment(null);
 
 		this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
@@ -148,11 +160,52 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_noLongerValidCapitalsource_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+	public void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceID = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
 
-		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		request.setMoneyflowTransport(transport);
+
+		final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+		Assert.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assert.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
+	}
+
+	@Test
+	public void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceID = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setCapitalsourceid(capitalsourceID.getId());
+		transport.setBookingdate(DateUtil.getGMTDate("2000-01-01"));
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		request.setMoneyflowTransport(transport);
+
+		final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+		Assert.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assert.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
 	}
 
 	@Test
@@ -172,12 +225,53 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_noLongerValidContractpartner_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
-		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
-		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
+	public void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final ContractpartnerID contractpartnerID = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
 
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
+		transport.setContractpartnerid(contractpartnerID.getId());
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		request.setMoneyflowTransport(transport);
+
+		final Contractpartner contractpartnerOrig = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+		Assert.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assert.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidTil());
+	}
+
+	@Test
+	public void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final ContractpartnerID contractpartnerID = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setBookingdate(DateUtil.getGMTDate("2000-01-01"));
+		transport.setContractpartnerid(contractpartnerID.getId());
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		request.setMoneyflowTransport(transport);
+
+		final Contractpartner contractpartnerOrig = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+		Assert.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assert.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidFrom());
 	}
 
 	@Test
@@ -207,7 +301,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	@Test
 	public void test_nullPostingAccount_Error() throws Exception {
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
 		transport.setPostingaccountid(null);
 
 		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
@@ -267,11 +361,11 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	@Test
 	public void test_existing_UpdateDone() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
 
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 
-		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
