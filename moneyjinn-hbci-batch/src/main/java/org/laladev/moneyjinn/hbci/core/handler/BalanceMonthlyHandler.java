@@ -76,8 +76,10 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 					calendar.setTime(accountMovement.getBalanceDate());
 
 					if (balanceMonthly != null) {
-						if (!balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))
-								|| !balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))) {
+						if (balanceMonthly.getBalanceYear().compareTo(calendar.get(Calendar.YEAR)) < 0
+								|| (balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
+										&& balanceMonthly.getBalanceMonth()
+												.compareTo(calendar.get(Calendar.MONTH)) < 0)) {
 							/*
 							 * The month of the current movement is different from the month of the
 							 * previous movement so we can be sure that the previous movement was
@@ -109,15 +111,17 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 					 * that for the month of the last movement, the end of month balance can be
 					 * written.
 					 */
-					if (!balanceMonthly.getBalanceYear().equals(currentCalendar.get(Calendar.YEAR))
-							|| !balanceMonthly.getBalanceMonth().equals(currentCalendar.get(Calendar.MONTH))) {
+					if (balanceMonthly.getBalanceYear().compareTo(currentCalendar.get(Calendar.YEAR)) < 0
+							|| (balanceMonthly.getBalanceYear().equals(currentCalendar.get(Calendar.YEAR))
+									&& balanceMonthly.getBalanceMonth()
+											.compareTo(currentCalendar.get(Calendar.MONTH)) < 0)) {
 						this.insertBalanceMonthly(balanceMonthly);
+						/*
+						 * now also write the balance of the last movement for all following month
+						 * until the current month is reached
+						 */
+						this.prolongBalance(balanceMonthly, currentCalendar);
 					}
-					/*
-					 * now also write the balance of the last movement for all following month until
-					 * the current month is reached
-					 */
-					this.prolongBalance(balanceMonthly, currentCalendar);
 				}
 			} else {
 				final Calendar previousCalendar = Calendar.getInstance();
@@ -160,11 +164,13 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 			// we don't save the balance if we reached the same month as our current
 			// movement is.
-			if (balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
-					&& balanceMonthly.getBalanceMonth().equals(calendar.get(Calendar.MONTH))) {
+			if (balanceMonthly.getBalanceYear().compareTo(calendar.get(Calendar.YEAR)) < 0
+					|| (balanceMonthly.getBalanceYear().equals(calendar.get(Calendar.YEAR))
+							&& balanceMonthly.getBalanceMonth().compareTo(calendar.get(Calendar.MONTH)) < 0)) {
+				this.insertBalanceMonthly(balanceMonthly);
+			} else {
 				break;
 			}
-			this.insertBalanceMonthly(balanceMonthly);
 		}
 	}
 
@@ -205,8 +211,12 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 		predicates.add(builder.equal(root.get("balanceMonth"), balanceMonthly.getBalanceMonth()));
 
 		query.select(root).where(predicates.toArray(new Predicate[] {}));
-
-		final BalanceMonthly uniqueResult = this.entityManager.createQuery(query).getSingleResult();
-		return uniqueResult;
+		System.out.println(balanceMonthly);
+		System.out.println(query.getParameters());
+		final List<BalanceMonthly> results = this.entityManager.createQuery(query).getResultList();
+		if (results.isEmpty()) {
+			return null;
+		}
+		return results.iterator().next();
 	}
 }

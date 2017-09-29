@@ -74,9 +74,8 @@ public class AccountMovementHandler extends AbstractHandler {
 
 			query.select(root).where(predicates.toArray(new Predicate[] {}));
 
-			final AccountMovement oldMovement = this.entityManager.createQuery(query).getSingleResult();
-
-			if (oldMovement == null) {
+			final List<AccountMovement> results = this.entityManager.createQuery(query).getResultList();
+			if (results.isEmpty()) {
 				this.entityManager.persist(accountMovement);
 				this.setChanged();
 				this.notifyObservers(accountMovement);

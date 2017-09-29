@@ -77,7 +77,10 @@ public class BalanceDailyHandler extends AbstractHandler {
 
 		query.select(root).where(predicates.toArray(new Predicate[] {}));
 
-		final BalanceDaily uniqueResult = this.entityManager.createQuery(query).getSingleResult();
-		return uniqueResult;
+		final List<BalanceDaily> results = this.entityManager.createQuery(query).getResultList();
+		if (results.isEmpty()) {
+			return null;
+		}
+		return results.iterator().next();
 	}
 }
