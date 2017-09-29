@@ -67,243 +67,243 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
 
-	@Column
+	@Column(name = "creation_time")
 	public final Timestamp getCreationTime() {
-		return creationTime;
+		return this.creationTime;
 	}
 
 	public final void setCreationTime(final Timestamp creationTime) {
 		this.creationTime = creationTime;
 	}
 
-	@Column
+	@Column(name = "booking_date")
 	public final Date getBookingDate() {
-		return bookingDate;
+		return this.bookingDate;
 	}
 
 	public final void setBookingDate(final Date bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 
-	@Column
+	@Column(name = "value_date")
 	public final Date getValueDate() {
-		return valueDate;
+		return this.valueDate;
 	}
 
 	public final void setValueDate(final Date valueDate) {
 		this.valueDate = valueDate;
 	}
 
-	@Column
+	@Column(name = "invoice_timestamp")
 	public final Timestamp getInvoiceTimestamp() {
-		return invoiceTimestamp;
+		return this.invoiceTimestamp;
 	}
 
 	public final void setInvoiceTimestamp(final Timestamp invoiceTimestamp) {
 		this.invoiceTimestamp = invoiceTimestamp;
 	}
 
-	@Column
+	@Column(name = "other_iban")
 	public final String getOtherIban() {
-		return otherIban;
+		return this.otherIban;
 	}
 
 	public final void setOtherIban(final String otherIban) {
 		this.otherIban = otherIban;
 	}
 
-	@Column
+	@Column(name = "other_bic")
 	public final String getOtherBic() {
-		return otherBic;
+		return this.otherBic;
 	}
 
 	public final void setOtherBic(final String otherBic) {
 		this.otherBic = otherBic;
 	}
 
-	@Column
+	@Column(name = "other_accountnumber")
 	public final Long getOtherAccountnumber() {
-		return otherAccountnumber;
+		return this.otherAccountnumber;
 	}
 
 	public final void setOtherAccountnumber(final Long otherAccountnumber) {
 		this.otherAccountnumber = otherAccountnumber;
 	}
 
-	@Column
+	@Column(name = "other_bankcode")
 	public final Integer getOtherBankcode() {
-		return otherBankcode;
+		return this.otherBankcode;
 	}
 
 	public final void setOtherBankcode(final Integer otherBankcode) {
 		this.otherBankcode = otherBankcode;
 	}
 
-	@Column
+	@Column(name = "other_name")
 	public final String getOtherName() {
-		return otherName;
+		return this.otherName;
 	}
 
 	public final void setOtherName(final String otherName) {
 		this.otherName = otherName;
 	}
 
-	@Column
+	@Column(name = "charge_value")
 	public final BigDecimal getChargeValue() {
-		return chargeValue;
+		return this.chargeValue;
 	}
 
 	public final void setChargeValue(final BigDecimal chargeValue) {
 		this.chargeValue = chargeValue;
 	}
 
-	@Column
+	@Column(name = "charge_currency")
 	public final String getChargeCurrency() {
-		return chargeCurrency;
+		return this.chargeCurrency;
 	}
 
 	public final void setChargeCurrency(final String chargeCurrency) {
 		this.chargeCurrency = chargeCurrency;
 	}
 
-	@Column
+	@Column(name = "original_value")
 	public final BigDecimal getOriginalValue() {
-		return originalValue;
+		return this.originalValue;
 	}
 
 	public final void setOriginalValue(final BigDecimal originalValue) {
 		this.originalValue = originalValue;
 	}
 
-	@Column
+	@Column(name = "original_currency")
 	public final String getOriginalCurrency() {
-		return originalCurrency;
+		return this.originalCurrency;
 	}
 
 	public final void setOriginalCurrency(final String originalCurrency) {
 		this.originalCurrency = originalCurrency;
 	}
 
-	@Column
+	@Column(name = "movement_value")
 	public final BigDecimal getMovementValue() {
-		return movementValue;
+		return this.movementValue;
 	}
 
 	public final void setMovementValue(final BigDecimal movementValue) {
 		this.movementValue = movementValue;
 	}
 
-	@Column
+	@Column(name = "movement_currency")
 	public final String getMovementCurrency() {
-		return movementCurrency;
+		return this.movementCurrency;
 	}
 
 	public final void setMovementCurrency(final String movementCurrency) {
 		this.movementCurrency = movementCurrency;
 	}
 
-	@Column
+	@Column(name = "movement_reason")
 	public final String getMovementReason() {
-		return movementReason;
+		return this.movementReason;
 	}
 
 	public final void setMovementReason(final String movementReason) {
 		this.movementReason = movementReason;
 	}
 
-	@Column
+	@Column(name = "movement_type_code")
 	public final Short getMovementTypeCode() {
-		return movementTypeCode;
+		return this.movementTypeCode;
 	}
 
 	public final void setMovementTypeCode(final Short movementTypeCode) {
 		this.movementTypeCode = movementTypeCode;
 	}
 
-	@Column
+	@Column(name = "movement_type_text")
 	public final String getMovementTypeText() {
-		return movementTypeText;
+		return this.movementTypeText;
 	}
 
 	public final void setMovementTypeText(final String movementTypeText) {
 		this.movementTypeText = movementTypeText;
 	}
 
-	@Column
+	@Column(name = "customer_reference")
 	public final String getCustomerReference() {
-		return customerReference;
+		return this.customerReference;
 	}
 
 	public final void setCustomerReference(final String customerReference) {
 		this.customerReference = customerReference;
 	}
 
-	@Column
+	@Column(name = "bank_reference")
 	public final String getBankReference() {
-		return bankReference;
+		return this.bankReference;
 	}
 
 	public final void setBankReference(final String bankReference) {
 		this.bankReference = bankReference;
 	}
 
-	@Column
+	@Column(name = "cancellation")
 	public final Boolean getCancellation() {
-		return cancellation;
+		return this.cancellation;
 	}
 
 	public final void setCancellation(final Boolean cancellation) {
 		this.cancellation = cancellation;
 	}
 
-	@Column
+	@Column(name = "additional_information")
 	public final String getAdditionalInformation() {
-		return additionalInformation;
+		return this.additionalInformation;
 	}
 
 	public final void setAdditionalInformation(final String additionalInformation) {
 		this.additionalInformation = additionalInformation;
 	}
 
-	@Column
+	@Column(name = "additional_key")
 	public final Short getAdditionalKey() {
-		return additionalKey;
+		return this.additionalKey;
 	}
 
 	public final void setAdditionalKey(final Short additionalKey) {
 		this.additionalKey = additionalKey;
 	}
 
-	@Column
+	@Column(name = "prima_nota")
 	public final String getPrimaNota() {
-		return primaNota;
+		return this.primaNota;
 	}
 
 	public final void setPrimaNota(final String primaNota) {
 		this.primaNota = primaNota;
 	}
 
-	@Column
+	@Column(name = "balance_date")
 	public final Date getBalanceDate() {
-		return balanceDate;
+		return this.balanceDate;
 	}
 
 	public final void setBalanceDate(final Date blanceDate) {
 		this.balanceDate = blanceDate;
 	}
 
-	@Column
+	@Column(name = "balance_value")
 	public final BigDecimal getBalanceValue() {
-		return balanceValue;
+		return this.balanceValue;
 	}
 
 	public final void setBalanceValue(final BigDecimal balanceValue) {
 		this.balanceValue = balanceValue;
 	}
 
-	@Column
+	@Column(name = "balance_currency")
 	public final String getBalanceCurrency() {
-		return balanceCurrency;
+		return this.balanceCurrency;
 	}
 
 	public final void setBalanceCurrency(final String balanceCurrency) {
@@ -316,20 +316,22 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		builder.append("AccountMovement [id=").append(super.getId()).append(", myIban=").append(super.getMyIban())
 				.append(", myBic=").append(super.getMyBic()).append(", myAccountnumber=")
 				.append(super.getMyAccountnumber()).append(", myBankcode=").append(super.getMyBankcode())
-				.append(", bookingDate=").append(bookingDate).append(", valueDate=").append(valueDate)
-				.append(", invoiceDate=").append(invoiceTimestamp).append(", otherIban=").append(otherIban)
-				.append(", otherBic=").append(otherBic).append(", otherAccountnumber=").append(otherAccountnumber)
-				.append(", otherBankcode=").append(otherBankcode).append(", otherName=").append(otherName)
-				.append(", chargeValue=").append(chargeValue).append(", chargeCurrency=").append(chargeCurrency)
-				.append(", originalValue=").append(originalValue).append(", originalCurrency=").append(originalCurrency)
-				.append(", movementValue=").append(movementValue).append(", movementCurrency=").append(movementCurrency)
-				.append(", movementReason=").append(movementReason).append(", movementTypeCode=")
-				.append(movementTypeCode).append(", movementTypeText=").append(movementTypeText)
-				.append(", customerReference=").append(customerReference).append(", bankReference=")
-				.append(bankReference).append(", cancellation=").append(cancellation).append(", additionalInformation=")
-				.append(additionalInformation).append(", additionalKey=").append(additionalKey).append(", primaNota=")
-				.append(primaNota).append(", balanceDate=").append(balanceDate).append(", balanceValue=")
-				.append(balanceValue).append(", balanceCurrency=").append(balanceCurrency).append("]");
+				.append(", bookingDate=").append(this.bookingDate).append(", valueDate=").append(this.valueDate)
+				.append(", invoiceDate=").append(this.invoiceTimestamp).append(", otherIban=").append(this.otherIban)
+				.append(", otherBic=").append(this.otherBic).append(", otherAccountnumber=")
+				.append(this.otherAccountnumber).append(", otherBankcode=").append(this.otherBankcode)
+				.append(", otherName=").append(this.otherName).append(", chargeValue=").append(this.chargeValue)
+				.append(", chargeCurrency=").append(this.chargeCurrency).append(", originalValue=")
+				.append(this.originalValue).append(", originalCurrency=").append(this.originalCurrency)
+				.append(", movementValue=").append(this.movementValue).append(", movementCurrency=")
+				.append(this.movementCurrency).append(", movementReason=").append(this.movementReason)
+				.append(", movementTypeCode=").append(this.movementTypeCode).append(", movementTypeText=")
+				.append(this.movementTypeText).append(", customerReference=").append(this.customerReference)
+				.append(", bankReference=").append(this.bankReference).append(", cancellation=")
+				.append(this.cancellation).append(", additionalInformation=").append(this.additionalInformation)
+				.append(", additionalKey=").append(this.additionalKey).append(", primaNota=").append(this.primaNota)
+				.append(", balanceDate=").append(this.balanceDate).append(", balanceValue=").append(this.balanceValue)
+				.append(", balanceCurrency=").append(this.balanceCurrency).append("]");
 		return builder.toString();
 	}
 

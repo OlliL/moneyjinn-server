@@ -52,54 +52,54 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
 	private String balanceCurrency;
 	private Timestamp lastBalanceUpdate;
 
-	@Column
+	@Column(name = "balance_date")
 	public Date getBalanceDate() {
-		return balanceDate;
+		return this.balanceDate;
 	}
 
 	public void setBalanceDate(final Date balanceDate) {
 		this.balanceDate = balanceDate;
 	}
 
-	@Column
+	@Column(name = "last_transaction_date")
 	public Timestamp getLastTransactionDate() {
-		return lastTransactionDate;
+		return this.lastTransactionDate;
 	}
 
 	public void setLastTransactionDate(final Timestamp lastTransactionDate) {
 		this.lastTransactionDate = lastTransactionDate;
 	}
 
-	@Column
+	@Column(name = "balance_available_value")
 	public BigDecimal getBalanceAvailableValue() {
-		return balanceAvailableValue;
+		return this.balanceAvailableValue;
 	}
 
 	public void setBalanceAvailableValue(final BigDecimal balanceAvailableValue) {
 		this.balanceAvailableValue = balanceAvailableValue;
 	}
 
-	@Column
+	@Column(name = "line_of_credit_value")
 	public BigDecimal getLineOfCreditValue() {
-		return lineOfCreditValue;
+		return this.lineOfCreditValue;
 	}
 
 	public void setLineOfCreditValue(final BigDecimal lineOfCreditValue) {
 		this.lineOfCreditValue = lineOfCreditValue;
 	}
 
-	@Column
+	@Column(name = "balance_currency")
 	public String getBalanceCurrency() {
-		return balanceCurrency;
+		return this.balanceCurrency;
 	}
 
 	public void setBalanceCurrency(final String balanceCurrency) {
 		this.balanceCurrency = balanceCurrency;
 	}
 
-	@Column
+	@Column(name = "last_balance_update")
 	public Timestamp getLastBalanceUpdate() {
-		return lastBalanceUpdate;
+		return this.lastBalanceUpdate;
 	}
 
 	public void setLastBalanceUpdate(final Timestamp lastBalanceUpdate) {
@@ -123,7 +123,7 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 31 * result + balanceDate.hashCode();
+		result = 31 * result + this.balanceDate.hashCode();
 		return result;
 	}
 
@@ -131,9 +131,9 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
 	public String toString() {
 		return "BalanceDaily{" + "id=" + super.getId() + ", myIban='" + super.getMyIban() + '\'' + ", myBic='"
 				+ super.getMyBic() + '\'' + ", myAccountnumber=" + super.getMyAccountnumber() + ", myBankcode="
-				+ super.getMyBankcode() + ", balanceDate=" + balanceDate + ", lastTransactionDate="
-				+ lastTransactionDate + ", balanceAvailableValue=" + balanceAvailableValue + ", lineOfCreditValue="
-				+ lineOfCreditValue + ", balanceCurrency='" + balanceCurrency + '\'' + ", lastBalanceUpdate="
-				+ lastBalanceUpdate + '}';
+				+ super.getMyBankcode() + ", balanceDate=" + this.balanceDate + ", lastTransactionDate="
+				+ this.lastTransactionDate + ", balanceAvailableValue=" + this.balanceAvailableValue
+				+ ", lineOfCreditValue=" + this.lineOfCreditValue + ", balanceCurrency='" + this.balanceCurrency + '\''
+				+ ", lastBalanceUpdate=" + this.lastBalanceUpdate + '}';
 	}
 }

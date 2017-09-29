@@ -6,7 +6,7 @@
 	<version>0.0.6-SNAPSHOT</version>
 
 	<properties>
-		<hibernate-core.version>4.3.11.Final</hibernate-core.version>
+		<hibernate-core.version>5.2.11.Final</hibernate-core.version>
 		<mysql.version>5.1.44</mysql.version>
 		<hbci4java.version>3.0.10</hbci4java.version>
 		<slf4j.version>1.7.12</slf4j.version>

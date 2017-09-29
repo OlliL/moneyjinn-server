@@ -43,43 +43,43 @@ public class AbstractAccountEntitiy {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	public final Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public final void setId(final Integer id) {
 		this.id = id;
 	}
 
-	@Column
+	@Column(name = "my_iban")
 	public final String getMyIban() {
-		return myIban;
+		return this.myIban;
 	}
 
 	public final void setMyIban(final String myIban) {
 		this.myIban = myIban;
 	}
 
-	@Column
+	@Column(name = "my_bic")
 	public final String getMyBic() {
-		return myBic;
+		return this.myBic;
 	}
 
 	public final void setMyBic(final String myBic) {
 		this.myBic = myBic;
 	}
 
-	@Column
+	@Column(name = "my_accountnumber")
 	public final Long getMyAccountnumber() {
-		return myAccountnumber;
+		return this.myAccountnumber;
 	}
 
 	public final void setMyAccountnumber(final Long myAccountnumber) {
 		this.myAccountnumber = myAccountnumber;
 	}
 
-	@Column
+	@Column(name = "my_bankcode")
 	public final Integer getMyBankcode() {
-		return myBankcode;
+		return this.myBankcode;
 	}
 
 	public final void setMyBankcode(final Integer myBankcode) {
@@ -90,11 +90,11 @@ public class AbstractAccountEntitiy {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((myAccountnumber == null) ? 0 : myAccountnumber.hashCode());
-		result = prime * result + ((myBankcode == null) ? 0 : myBankcode.hashCode());
-		result = prime * result + ((myBic == null) ? 0 : myBic.hashCode());
-		result = prime * result + ((myIban == null) ? 0 : myIban.hashCode());
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((this.myAccountnumber == null) ? 0 : this.myAccountnumber.hashCode());
+		result = prime * result + ((this.myBankcode == null) ? 0 : this.myBankcode.hashCode());
+		result = prime * result + ((this.myBic == null) ? 0 : this.myBic.hashCode());
+		result = prime * result + ((this.myIban == null) ? 0 : this.myIban.hashCode());
 		return result;
 	}
 
@@ -106,43 +106,43 @@ public class AbstractAccountEntitiy {
 		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
 		final AbstractAccountEntitiy other = (AbstractAccountEntitiy) obj;
-		if (id == null) {
+		if (this.id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!this.id.equals(other.id)) {
 			return false;
 		}
-		if (myAccountnumber == null) {
+		if (this.myAccountnumber == null) {
 			if (other.myAccountnumber != null) {
 				return false;
 			}
-		} else if (!myAccountnumber.equals(other.myAccountnumber)) {
+		} else if (!this.myAccountnumber.equals(other.myAccountnumber)) {
 			return false;
 		}
-		if (myBankcode == null) {
+		if (this.myBankcode == null) {
 			if (other.myBankcode != null) {
 				return false;
 			}
-		} else if (!myBankcode.equals(other.myBankcode)) {
+		} else if (!this.myBankcode.equals(other.myBankcode)) {
 			return false;
 		}
-		if (myBic == null) {
+		if (this.myBic == null) {
 			if (other.myBic != null) {
 				return false;
 			}
-		} else if (!myBic.equals(other.myBic)) {
+		} else if (!this.myBic.equals(other.myBic)) {
 			return false;
 		}
-		if (myIban == null) {
+		if (this.myIban == null) {
 			if (other.myIban != null) {
 				return false;
 			}
-		} else if (!myIban.equals(other.myIban)) {
+		} else if (!this.myIban.equals(other.myIban)) {
 			return false;
 		}
 		return true;

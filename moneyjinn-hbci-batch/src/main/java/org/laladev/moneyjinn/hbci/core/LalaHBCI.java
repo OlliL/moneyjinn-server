@@ -34,9 +34,7 @@ import java.util.Properties;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.manager.HBCIUtilsInternal;
@@ -256,11 +254,6 @@ public final class LalaHBCI {
 	 * @return {@link SessionFactory}
 	 */
 	private SessionFactory getSessionFactory() {
-		final Configuration configuration = new Configuration().setNamingStrategy(ImprovedNamingStrategy.INSTANCE)
-				.configure();
-		final StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-				.applySettings(configuration.getProperties());
-		return configuration.buildSessionFactory(builder.build());
-
+		return new Configuration().configure().buildSessionFactory();
 	}
 }

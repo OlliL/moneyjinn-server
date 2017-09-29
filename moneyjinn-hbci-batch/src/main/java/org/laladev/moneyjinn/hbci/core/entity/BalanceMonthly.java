@@ -42,36 +42,36 @@ public class BalanceMonthly extends AbstractAccountEntitiy implements Serializab
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
 
-	@Column
+	@Column(name = "balance_year")
 	public final Integer getBalanceYear() {
-		return balanceYear;
+		return this.balanceYear;
 	}
 
 	public final void setBalanceYear(final Integer balanceYear) {
 		this.balanceYear = balanceYear;
 	}
 
-	@Column
+	@Column(name = "balance_month")
 	public final Integer getBalanceMonth() {
-		return balanceMonth;
+		return this.balanceMonth;
 	}
 
 	public final void setBalanceMonth(final Integer balanceMonth) {
 		this.balanceMonth = balanceMonth;
 	}
 
-	@Column
+	@Column(name = "balance_value")
 	public final BigDecimal getBalanceValue() {
-		return balanceValue;
+		return this.balanceValue;
 	}
 
 	public final void setBalanceValue(final BigDecimal balanceValue) {
 		this.balanceValue = balanceValue;
 	}
 
-	@Column
+	@Column(name = "balance_currency")
 	public final String getBalanceCurrency() {
-		return balanceCurrency;
+		return this.balanceCurrency;
 	}
 
 	public final void setBalanceCurrency(final String balanceCurrency) {
@@ -84,9 +84,9 @@ public class BalanceMonthly extends AbstractAccountEntitiy implements Serializab
 		builder.append("BalanceMonthly [id=").append(super.getId()).append(", myIban=").append(super.getMyIban())
 				.append(", myBic=").append(super.getMyBic()).append(", myAccountnumber=")
 				.append(super.getMyAccountnumber()).append(", myBankcode=").append(super.getMyBankcode())
-				.append(", balanceYear=").append(balanceYear).append(", balanceMonth=").append(balanceMonth)
-				.append(", balanceValue=").append(balanceValue).append(", balanceCurrency=").append(balanceCurrency)
-				.append("]");
+				.append(", balanceYear=").append(this.balanceYear).append(", balanceMonth=").append(this.balanceMonth)
+				.append(", balanceValue=").append(this.balanceValue).append(", balanceCurrency=")
+				.append(this.balanceCurrency).append("]");
 		return builder.toString();
 	}
 
