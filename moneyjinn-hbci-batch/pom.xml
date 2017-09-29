@@ -6,8 +6,8 @@
 	<version>0.0.6-SNAPSHOT</version>
 
 	<properties>
-		<hibernate-core.version>4.3.8.Final</hibernate-core.version>
-		<mysql.version>5.1.36</mysql.version>
+		<hibernate-core.version>4.3.11.Final</hibernate-core.version>
+		<mysql.version>5.1.44</mysql.version>
 		<hbci4java.version>3.0.10</hbci4java.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<slf4j-log4j12.version>1.7.12</slf4j-log4j12.version>
