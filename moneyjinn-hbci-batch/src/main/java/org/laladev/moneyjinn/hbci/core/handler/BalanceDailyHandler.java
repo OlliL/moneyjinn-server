@@ -1,5 +1,7 @@
 //
 //Copyright (c) 2015 Dennis Garske <d.garske@gmx.de>
+//Copyright (c) 2017 Oliver Lehmann <oliver@laladev.org>
+//
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -25,21 +27,24 @@
 //
 package org.laladev.moneyjinn.hbci.core.handler;
 
-import org.hibernate.Query;
-import org.hibernate.StatelessSession;
-import org.hibernate.exception.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
 
-/**
- * @author Dennis Garske
- */
 public class BalanceDailyHandler extends AbstractHandler {
-	private final StatelessSession session;
+	private final EntityManager entityManager;
 	private final BalanceDaily balanceDaily;
 
-	public BalanceDailyHandler(final StatelessSession session, final BalanceDaily balanceDaily) {
-		this.session = session;
+	public BalanceDailyHandler(final EntityManager entityManager, final BalanceDaily balanceDaily) {
+		this.entityManager = entityManager;
 		this.balanceDaily = balanceDaily;
 	}
 
@@ -47,29 +52,32 @@ public class BalanceDailyHandler extends AbstractHandler {
 	public void handle() {
 		final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
 		if (this.balanceDaily != null) {
-			try {
-				session.insert(balanceDaily);
-			} catch (final ConstraintViolationException e) {
-				// here is already a balance value for today in the database, update it
-				final BalanceDaily oldBalance = getBalanceFromDB(balanceDaily);
-				if (oldBalance != null) {
-					session.update(balanceDailyMapper.mergeSaldoResult(oldBalance, balanceDaily));
-				} else {
-					throw e;
-				}
+			final BalanceDaily oldBalance = this.searchEntityInDB(this.balanceDaily);
+			if (oldBalance != null) {
+				this.entityManager.merge(balanceDailyMapper.mergeBalanceDaily(oldBalance, this.balanceDaily));
+			} else {
+				this.entityManager.persist(this.balanceDaily);
 			}
-			setChanged();
-			notifyObservers(balanceDaily);
+			this.setChanged();
+			this.notifyObservers(this.balanceDaily);
 		}
 	}
 
-	private BalanceDaily getBalanceFromDB(final BalanceDaily currentBalance) {
-		final Query query = session.getNamedQuery("findDailyBalance").setString("myIban", currentBalance.getMyIban())
-				.setString("myBic", currentBalance.getMyBic())
-				.setLong("myAccountnumber", currentBalance.getMyAccountnumber())
-				.setLong("myBankcode", currentBalance.getMyBankcode())
-				.setDate("balanceDate", currentBalance.getBalanceDate());
+	private BalanceDaily searchEntityInDB(final BalanceDaily balanceDaily) {
+		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		final CriteriaQuery<BalanceDaily> query = builder.createQuery(BalanceDaily.class);
+		final Root<BalanceDaily> root = query.from(BalanceDaily.class);
 
-		return (BalanceDaily) query.uniqueResult();
+		final List<Predicate> predicates = new ArrayList<>();
+		predicates.add(builder.equal(root.get("myIban"), balanceDaily.getMyIban()));
+		predicates.add(builder.equal(root.get("myBic"), balanceDaily.getMyBic()));
+		predicates.add(builder.equal(root.get("myAccountnumber"), balanceDaily.getMyAccountnumber()));
+		predicates.add(builder.equal(root.get("myBankcode"), balanceDaily.getMyBankcode()));
+		predicates.add(builder.equal(root.get("balanceDate"), balanceDaily.getBalanceDate()));
+
+		query.select(root).where(predicates.toArray(new Predicate[] {}));
+
+		final BalanceDaily uniqueResult = this.entityManager.createQuery(query).getSingleResult();
+		return uniqueResult;
 	}
 }

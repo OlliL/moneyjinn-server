@@ -25,12 +25,16 @@
 //
 package org.laladev.moneyjinn.hbci.core.handler;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.StatelessSession;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
@@ -46,15 +50,18 @@ import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
  *
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
-	private final StatelessSession session;
+	private final EntityManager entityManager;
 	private final BalanceDaily balanceDaily;
 	private final List<AccountMovement> accountMovements;
+	private final BalanceMonthlyMapper mapper;
 
-	public BalanceMonthlyHandler(final StatelessSession session, final BalanceDaily balanceDaily,
+	public BalanceMonthlyHandler(final EntityManager entityManager, final BalanceDaily balanceDaily,
 			final List<AccountMovement> accountMovements) {
-		this.session = session;
+		this.entityManager = entityManager;
 		this.accountMovements = accountMovements;
 		this.balanceDaily = balanceDaily;
+		this.mapper = new BalanceMonthlyMapper();
+
 	}
 
 	@Override
@@ -165,26 +172,15 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 		try {
 			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() + 1);
 
-			final Criteria cr = this.session.createCriteria(BalanceMonthly.class);
-			cr.add(Restrictions.eq("myIban", balanceMonthly.getMyIban()));
-			cr.add(Restrictions.eq("myBic", balanceMonthly.getMyBic()));
-			cr.add(Restrictions.eq("myAccountnumber", balanceMonthly.getMyAccountnumber()));
-			cr.add(Restrictions.eq("myBankcode", balanceMonthly.getMyBankcode()));
-			cr.add(Restrictions.eq("balanceYear", balanceMonthly.getBalanceYear()));
-			cr.add(Restrictions.eq("balanceMonth", balanceMonthly.getBalanceMonth()));
-
-			final Object uniqueResult = cr.uniqueResult();
-			if (uniqueResult != null && uniqueResult instanceof BalanceMonthly) {
-				final BalanceMonthly balanceMonthlyRead = (BalanceMonthly) uniqueResult;
-				if (balanceMonthlyRead.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
-					balanceMonthlyRead.setBalanceValue(balanceMonthly.getBalanceValue());
-					balanceMonthlyRead.setBalanceCurrency(balanceMonthly.getBalanceCurrency());
-					this.session.update(balanceMonthlyRead);
+			final BalanceMonthly oldBalance = this.searchEntityInDB(balanceMonthly);
+			if (oldBalance != null) {
+				if (oldBalance.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
+					this.entityManager.merge(this.mapper.mergeBalanceMonthly(oldBalance, balanceMonthly));
 					this.setChanged();
-					this.notifyObservers(balanceMonthlyRead);
+					this.notifyObservers(balanceMonthly);
 				}
 			} else {
-				this.session.insert(balanceMonthly);
+				this.entityManager.persist(balanceMonthly);
 				this.setChanged();
 				this.notifyObservers(balanceMonthly);
 			}
@@ -193,5 +189,24 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() - 1);
 		}
 
+	}
+
+	private BalanceMonthly searchEntityInDB(final BalanceMonthly balanceMonthly) {
+		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		final CriteriaQuery<BalanceMonthly> query = builder.createQuery(BalanceMonthly.class);
+		final Root<BalanceMonthly> root = query.from(BalanceMonthly.class);
+
+		final List<Predicate> predicates = new ArrayList<>();
+		predicates.add(builder.equal(root.get("myIban"), balanceMonthly.getMyIban()));
+		predicates.add(builder.equal(root.get("myBic"), balanceMonthly.getMyBic()));
+		predicates.add(builder.equal(root.get("myAccountnumber"), balanceMonthly.getMyAccountnumber()));
+		predicates.add(builder.equal(root.get("myBankcode"), balanceMonthly.getMyBankcode()));
+		predicates.add(builder.equal(root.get("balanceYear"), balanceMonthly.getBalanceYear()));
+		predicates.add(builder.equal(root.get("balanceMonth"), balanceMonthly.getBalanceMonth()));
+
+		query.select(root).where(predicates.toArray(new Predicate[] {}));
+
+		final BalanceMonthly uniqueResult = this.entityManager.createQuery(query).getSingleResult();
+		return uniqueResult;
 	}
 }

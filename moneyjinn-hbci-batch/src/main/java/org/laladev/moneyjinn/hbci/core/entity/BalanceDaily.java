@@ -32,13 +32,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-@NamedQueries({
-		@NamedQuery(name = "findDailyBalance", query = "FROM BalanceDaily b WHERE b.myIban = :myIban AND b.myBic = :myBic AND b.myAccountnumber = :myAccountnumber"
-				+ " AND  b.myBankcode = :myBankcode AND b.balanceDate = :balanceDate") })
 
 @Entity
 @Table(name = "balance_daily")

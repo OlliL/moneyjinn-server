@@ -30,7 +30,7 @@ public class BalanceDailyMapper {
 		return balanceDaily;
 	}
 
-	public BalanceDaily mergeSaldoResult(BalanceDaily oldSaldo, BalanceDaily newSaldo) {
+	public BalanceDaily mergeBalanceDaily(BalanceDaily oldSaldo, BalanceDaily newSaldo) {
 
 		oldSaldo.setBalanceAvailableValue(newSaldo.getBalanceAvailableValue());
 		oldSaldo.setLineOfCreditValue(newSaldo.getLineOfCreditValue());

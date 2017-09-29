@@ -11,7 +11,7 @@
 
 DROP TABLE IF EXISTS account_movements;
 CREATE TABLE account_movements (
-  account_movement_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
   creation_time datetime NOT NULL,
   my_iban varchar(34) NOT NULL,
   my_bic varchar(11) NOT NULL,

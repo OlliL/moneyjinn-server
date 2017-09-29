@@ -31,9 +31,10 @@ import java.util.List;
 import java.util.Observer;
 import java.util.Properties;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
@@ -63,14 +64,13 @@ public final class LalaHBCI {
 		HBCIUtils.init(this.getHbciProperties(), new LalaHBCICallback());
 
 		final SessionFactory sf = this.getSessionFactory();
-		final StatelessSession session = sf.openStatelessSession();
-
+		final EntityManager entityManager = sf.createEntityManager();
 		try {
 			for (final String passport : passports) {
-				this.process(passport, session, observerList);
+				this.process(passport, entityManager, observerList);
 			}
 		} finally {
-			session.close();
+			entityManager.close();
 			sf.close();
 			HBCIUtils.done();
 		}
@@ -84,7 +84,7 @@ public final class LalaHBCI {
 	 * @param observerList
 	 * @throws IOException
 	 */
-	private void process(final String passport, final StatelessSession session, final List<Observer> observerList)
+	private void process(final String passport, final EntityManager entityManager, final List<Observer> observerList)
 			throws IOException {
 
 		((LalaHBCICallback) HBCIUtilsInternal.getCallback()).setPassportPassword(this.getPassword(passport));
@@ -101,7 +101,8 @@ public final class LalaHBCI {
 					+ " not supported (only PinTan and RDHNew supported)!");
 		}
 
-		final Transaction tx = session.beginTransaction();
+		final EntityTransaction tx = entityManager.getTransaction();
+		tx.begin();
 		final HBCIPassport hbciPassport = AbstractHBCIPassport.getInstance(type);
 
 		HBCIHandler hbciHandler = null;
@@ -126,9 +127,10 @@ public final class LalaHBCI {
 					this.addIbanBic(balanceDaily);
 				}
 
-				this.executeHandler(new AccountMovementHandler(session, accountMovements), observerList);
-				this.executeHandler(new BalanceDailyHandler(session, balanceDaily), observerList);
-				this.executeHandler(new BalanceMonthlyHandler(session, balanceDaily, accountMovements), observerList);
+				this.executeHandler(new AccountMovementHandler(entityManager, accountMovements), observerList);
+				this.executeHandler(new BalanceDailyHandler(entityManager, balanceDaily), observerList);
+				this.executeHandler(new BalanceMonthlyHandler(entityManager, balanceDaily, accountMovements),
+						observerList);
 			}
 
 		} finally {

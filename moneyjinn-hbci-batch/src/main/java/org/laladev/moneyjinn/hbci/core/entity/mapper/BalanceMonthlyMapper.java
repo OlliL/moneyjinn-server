@@ -22,4 +22,13 @@ public class BalanceMonthlyMapper {
 		balanceMonthly.setBalanceValue(balanceValue);
 		return balanceMonthly;
 	}
+
+	public BalanceMonthly mergeBalanceMonthly(final BalanceMonthly oldSaldo, final BalanceMonthly newSaldo) {
+
+		oldSaldo.setBalanceValue(newSaldo.getBalanceValue());
+		oldSaldo.setBalanceCurrency(newSaldo.getBalanceCurrency());
+
+		return oldSaldo;
+	}
+
 }
