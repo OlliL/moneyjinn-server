@@ -14,5 +14,5 @@
 		<mapping class="org.laladev.moneyjinn.hbci.core.entity.AccountMovement"></mapping>
 		<mapping class="org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly"></mapping>
 		<mapping class="org.laladev.moneyjinn.hbci.core.entity.BalanceDaily"></mapping>
-			</session-factory>
+	</session-factory>
 </hibernate-configuration>
