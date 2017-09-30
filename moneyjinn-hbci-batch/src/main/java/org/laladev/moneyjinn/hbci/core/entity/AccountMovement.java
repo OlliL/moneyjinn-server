@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2017 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@ package org.laladev.moneyjinn.hbci.core.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,10 +39,10 @@ import javax.persistence.Table;
 public class AccountMovement extends AbstractAccountEntitiy implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Timestamp creationTime;
-	private Date bookingDate;
-	private Date valueDate;
-	private Timestamp invoiceTimestamp;
+	private LocalDateTime creationTime;
+	private LocalDate bookingDate;
+	private LocalDate valueDate;
+	private LocalDateTime invoiceTimestamp;
 	private String otherIban;
 	private String otherBic;
 	private Long otherAccountnumber;
@@ -63,43 +63,43 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 	private String additionalInformation;
 	private Short additionalKey;
 	private String primaNota;
-	private Date balanceDate;
+	private LocalDate balanceDate;
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
 
 	@Column(name = "creation_time")
-	public final Timestamp getCreationTime() {
+	public final LocalDateTime getCreationTime() {
 		return this.creationTime;
 	}
 
-	public final void setCreationTime(final Timestamp creationTime) {
+	public final void setCreationTime(final LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
 
 	@Column(name = "booking_date")
-	public final Date getBookingDate() {
+	public final LocalDate getBookingDate() {
 		return this.bookingDate;
 	}
 
-	public final void setBookingDate(final Date bookingDate) {
+	public final void setBookingDate(final LocalDate bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 
 	@Column(name = "value_date")
-	public final Date getValueDate() {
+	public final LocalDate getValueDate() {
 		return this.valueDate;
 	}
 
-	public final void setValueDate(final Date valueDate) {
+	public final void setValueDate(final LocalDate valueDate) {
 		this.valueDate = valueDate;
 	}
 
 	@Column(name = "invoice_timestamp")
-	public final Timestamp getInvoiceTimestamp() {
+	public final LocalDateTime getInvoiceTimestamp() {
 		return this.invoiceTimestamp;
 	}
 
-	public final void setInvoiceTimestamp(final Timestamp invoiceTimestamp) {
+	public final void setInvoiceTimestamp(final LocalDateTime invoiceTimestamp) {
 		this.invoiceTimestamp = invoiceTimestamp;
 	}
 
@@ -284,11 +284,11 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 	}
 
 	@Column(name = "balance_date")
-	public final Date getBalanceDate() {
+	public final LocalDate getBalanceDate() {
 		return this.balanceDate;
 	}
 
-	public final void setBalanceDate(final Date blanceDate) {
+	public final void setBalanceDate(final LocalDate blanceDate) {
 		this.balanceDate = blanceDate;
 	}
 

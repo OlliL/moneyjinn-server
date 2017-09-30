@@ -1,7 +1,10 @@
 package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Assert;
@@ -12,6 +15,7 @@ import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
+//TODO Migrate to Java 8 java.time.*
 public class AccountMovementMapperTest {
 	private final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
 	private final Calendar expectedCalendar = Calendar.getInstance();
@@ -28,8 +32,8 @@ public class AccountMovementMapperTest {
 		final AccountMovement accountMovement = this.accountMovementMapper.map(entry, account);
 		Assert.assertNotNull(accountMovement);
 		Assert.assertNotNull(accountMovement.getInvoiceTimestamp());
-		final Calendar invoiceCalendar = Calendar.getInstance();
-		invoiceCalendar.setTime(accountMovement.getInvoiceTimestamp());
+		final GregorianCalendar invoiceCalendar = GregorianCalendar
+				.from(ZonedDateTime.of(accountMovement.getInvoiceTimestamp(), ZoneId.systemDefault()));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
 		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
@@ -56,7 +60,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_ArrayIndexOutOfBoundException_notRaised() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "100601031885492151200031520";
 
 		usage.add("EREF+YYIJ222224K446NA PP.53");
@@ -76,7 +80,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_OLV_is_not_at_beginning() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 
 		usage.add("Referenz 091217053064422201");
 		usage.add("20003152");
@@ -94,7 +98,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_correctDateUsed() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "100601031885492151200031520";
 
 		usage.add("304-2383932-4629952  0983583325674196");
@@ -107,7 +111,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp5ELV() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "ELV12345678 10.06 01.03";
 		usage.add("123456789012345678901234567");
 		usage.add(usageLine);
@@ -117,7 +121,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp107ELV() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "ELV12345678 10.06 01.03 ME2";
 		usage.add("123456789012345678901234567");
 		usage.add(usageLine);
@@ -127,7 +131,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp5OLV() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "OLV12345678 10.06 01.03";
 		usage.add("123456789012345678901234567");
 		usage.add(usageLine);
@@ -137,7 +141,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp5OLVFirstLine() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "OLV12345678 10.06 01.03";
 		usage.add(usageLine);
 
@@ -149,7 +153,7 @@ public class AccountMovementMapperTest {
 		this.expectedCalendar.set(Calendar.YEAR, 2015);
 		this.expectedCalendar.set(Calendar.SECOND, 22);
 
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "EC XXXXXXXX 100615010322IC1";
 		usage.add(usageLine);
 
@@ -158,7 +162,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp5Lastschrift() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "100601031885492151200031520";
 		usage.add(usageLine);
 
@@ -167,7 +171,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp83TaNr() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "10.06 01.03 TA-NR. XXXXXX";
 		usage.add(usageLine);
 
@@ -176,7 +180,7 @@ public class AccountMovementMapperTest {
 
 	@Test
 	public void test_InvoiceTimestamp83Uhr() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "10.06/01.03UHR XXXXXXXXXX";
 		usage.add(usageLine);
 
@@ -187,7 +191,7 @@ public class AccountMovementMapperTest {
 	public void test_InvoiceTimestampPreviousYear() {
 		this.expectedCalendar.set(Calendar.YEAR, this.currentCalendar.get(Calendar.YEAR) - 1);
 		this.expectedCalendar.set(Calendar.MONTH, Calendar.DECEMBER);
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "10.12/01.03UHR XXXXXXXXXX";
 		usage.add(usageLine);
 
@@ -199,7 +203,7 @@ public class AccountMovementMapperTest {
 		this.expectedCalendar.set(Calendar.SECOND, 22);
 		this.expectedCalendar.set(Calendar.YEAR, 2015);
 
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "2015-06-10T01:03:22";
 		usage.add(usageLine);
 
@@ -209,7 +213,7 @@ public class AccountMovementMapperTest {
 	@Test
 	@Ignore
 	public void test_InvoiceTimestamp96Kontouebertrag() {
-		final List<String> usage = new ArrayList<String>();
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "DATUM 10.06.2015,01.03 UHR, 1.TAN 123456";
 		usage.add(usageLine);
 

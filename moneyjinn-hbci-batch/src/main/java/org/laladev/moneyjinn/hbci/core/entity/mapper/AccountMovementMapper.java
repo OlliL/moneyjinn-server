@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2017 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,13 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +43,7 @@ import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
+// TODO Migrate to Java 8 java.time.*
 public class AccountMovementMapper {
 	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");
 	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
@@ -52,14 +58,18 @@ public class AccountMovementMapper {
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
-		accountMovement.setCreationTime(new Timestamp(System.currentTimeMillis()));
+		accountMovement.setCreationTime(LocalDateTime.now());
 		accountMovement.setMyIban(myAccount.iban);
 		accountMovement.setMyBic(myAccount.bic);
 		accountMovement.setMyAccountnumber(Long.valueOf(myAccount.number));
 		accountMovement.setMyBankcode(Integer.valueOf(myAccount.blz));
 
-		accountMovement.setBookingDate(new Date(entry.bdate.getTime()));
-		accountMovement.setValueDate(new Date(entry.valuta.getTime()));
+		final Instant instantBookingDate = Instant.ofEpochMilli(entry.bdate.getTime());
+		final Instant instantValueDate = Instant.ofEpochMilli(entry.valuta.getTime());
+
+		accountMovement
+				.setBookingDate(LocalDateTime.ofInstant(instantBookingDate, ZoneId.systemDefault()).toLocalDate());
+		accountMovement.setValueDate(LocalDateTime.ofInstant(instantValueDate, ZoneId.systemDefault()).toLocalDate());
 
 		if (entry.other != null) {
 			if (entry.other.isSEPAAccount() && entry.other.iban != null && !entry.other.iban.isEmpty()) {
@@ -133,13 +143,17 @@ public class AccountMovementMapper {
 		}
 
 		accountMovement.setPrimaNota(entry.primanota);
-		accountMovement.setBalanceDate(new Date(entry.saldo.timestamp.getTime()));
+
+		final Instant instantBalanceDate = Instant.ofEpochMilli(entry.saldo.timestamp.getTime());
+
+		accountMovement
+				.setBalanceDate(LocalDateTime.ofInstant(instantBalanceDate, ZoneId.systemDefault()).toLocalDate());
 		accountMovement.setBalanceValue(entry.saldo.value.getBigDecimalValue());
 		accountMovement.setBalanceCurrency(entry.saldo.value.getCurr());
 
 		final Timestamp invoiceDate = this.getInvoiceTimestamp(accountMovement);
 		if (invoiceDate != null) {
-			accountMovement.setInvoiceTimestamp(invoiceDate);
+			accountMovement.setInvoiceTimestamp(invoiceDate.toLocalDateTime());
 		}
 
 		return accountMovement;
@@ -200,9 +214,9 @@ public class AccountMovementMapper {
 								 * the invoice date must be before or equal than the bookingdate and
 								 * not more than two weeks before the bookingdate
 								 */
-								if (invoiceDate.before(accountMovement.getBookingDate())
-										&& accountMovement.getBookingDate().getTime() - invoiceDate.getTime() > 14
-												* 86400000) {
+								final Date bookingDate = Date.valueOf(accountMovement.getBookingDate());
+								if (invoiceDate.before(bookingDate)
+										&& bookingDate.getTime() - invoiceDate.getTime() > 14 * 86400000) {
 									invoiceDate = null;
 								} else {
 									break;
@@ -248,11 +262,11 @@ public class AccountMovementMapper {
 		return new Timestamp(invoiceDate.getTime());
 	}
 
-	private void setYear(final Date bookingDate, final java.util.Date invoiceDate) {
+	private void setYear(final LocalDate bookingDate, final java.util.Date invoiceDate) {
 		// in case we found an invoiceDate, the year information is missing. We are now going to do
 		// our best to restore it
-		final Calendar calValuta = Calendar.getInstance();
-		calValuta.setTime(bookingDate);
+		final Calendar calValuta = GregorianCalendar.from(bookingDate.atStartOfDay(ZoneId.systemDefault()));
+
 		final Calendar calInvoice = Calendar.getInstance();
 		calInvoice.setTime(invoiceDate);
 		if (calInvoice.get(Calendar.MONTH) > calValuta.get(Calendar.MONTH)) {

@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2017 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@ package org.laladev.moneyjinn.hbci.core.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,28 +39,28 @@ import javax.persistence.Table;
 public class BalanceDaily extends AbstractAccountEntitiy implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Date balanceDate;
-	private Timestamp lastTransactionDate;
+	private LocalDate balanceDate;
+	private LocalDateTime lastTransactionDate;
 	private BigDecimal balanceAvailableValue;
 	private BigDecimal lineOfCreditValue;
 	private String balanceCurrency;
-	private Timestamp lastBalanceUpdate;
+	private LocalDateTime lastBalanceUpdate;
 
 	@Column(name = "balance_date")
-	public Date getBalanceDate() {
+	public LocalDate getBalanceDate() {
 		return this.balanceDate;
 	}
 
-	public void setBalanceDate(final Date balanceDate) {
+	public void setBalanceDate(final LocalDate balanceDate) {
 		this.balanceDate = balanceDate;
 	}
 
 	@Column(name = "last_transaction_date")
-	public Timestamp getLastTransactionDate() {
+	public LocalDateTime getLastTransactionDate() {
 		return this.lastTransactionDate;
 	}
 
-	public void setLastTransactionDate(final Timestamp lastTransactionDate) {
+	public void setLastTransactionDate(final LocalDateTime lastTransactionDate) {
 		this.lastTransactionDate = lastTransactionDate;
 	}
 
@@ -92,11 +92,11 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
 	}
 
 	@Column(name = "last_balance_update")
-	public Timestamp getLastBalanceUpdate() {
+	public LocalDateTime getLastBalanceUpdate() {
 		return this.lastBalanceUpdate;
 	}
 
-	public void setLastBalanceUpdate(final Timestamp lastBalanceUpdate) {
+	public void setLastBalanceUpdate(final LocalDateTime lastBalanceUpdate) {
 		this.lastBalanceUpdate = lastBalanceUpdate;
 	}
 

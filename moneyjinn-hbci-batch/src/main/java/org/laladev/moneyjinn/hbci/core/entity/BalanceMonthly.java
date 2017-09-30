@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2017 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -76,6 +76,60 @@ public class BalanceMonthly extends AbstractAccountEntitiy implements Serializab
 
 	public final void setBalanceCurrency(final String balanceCurrency) {
 		this.balanceCurrency = balanceCurrency;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.balanceCurrency == null) ? 0 : this.balanceCurrency.hashCode());
+		result = prime * result + ((this.balanceMonth == null) ? 0 : this.balanceMonth.hashCode());
+		result = prime * result + ((this.balanceValue == null) ? 0 : this.balanceValue.hashCode());
+		result = prime * result + ((this.balanceYear == null) ? 0 : this.balanceYear.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final BalanceMonthly other = (BalanceMonthly) obj;
+		if (this.balanceCurrency == null) {
+			if (other.balanceCurrency != null) {
+				return false;
+			}
+		} else if (!this.balanceCurrency.equals(other.balanceCurrency)) {
+			return false;
+		}
+		if (this.balanceMonth == null) {
+			if (other.balanceMonth != null) {
+				return false;
+			}
+		} else if (!this.balanceMonth.equals(other.balanceMonth)) {
+			return false;
+		}
+		if (this.balanceValue == null) {
+			if (other.balanceValue != null) {
+				return false;
+			}
+		} else if (!this.balanceValue.equals(other.balanceValue)) {
+			return false;
+		}
+		if (this.balanceYear == null) {
+			if (other.balanceYear != null) {
+				return false;
+			}
+		} else if (!this.balanceYear.equals(other.balanceYear)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
