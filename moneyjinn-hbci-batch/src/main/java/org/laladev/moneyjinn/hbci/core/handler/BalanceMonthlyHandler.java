@@ -157,26 +157,19 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 	}
 
 	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
-		try {
-			final BalanceMonthly oldBalance = this.searchEntityInDB(balanceMonthly);
-			if (oldBalance != null) {
-				if (oldBalance.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
-					final BalanceMonthly mergeBalanceMonthly = this.mapper.mergeBalanceMonthly(oldBalance,
-							balanceMonthly);
-					this.entityManager.merge(mergeBalanceMonthly);
-					this.setChanged();
-					this.notifyObservers(mergeBalanceMonthly);
-				}
-			} else {
-				this.entityManager.persist(balanceMonthly);
+		final BalanceMonthly oldBalance = this.searchEntityInDB(balanceMonthly);
+		if (oldBalance != null) {
+			if (oldBalance.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
+				final BalanceMonthly mergeBalanceMonthly = this.mapper.mergeBalanceMonthly(oldBalance, balanceMonthly);
+				this.entityManager.merge(mergeBalanceMonthly);
 				this.setChanged();
-				this.notifyObservers(balanceMonthly);
+				this.notifyObservers(mergeBalanceMonthly);
 			}
-
-		} finally {
-			balanceMonthly.setBalanceMonth(balanceMonthly.getBalanceMonth() - 1);
+		} else {
+			this.entityManager.persist(balanceMonthly);
+			this.setChanged();
+			this.notifyObservers(balanceMonthly);
 		}
-
 	}
 
 	private BalanceMonthly searchEntityInDB(final BalanceMonthly balanceMonthly) {
