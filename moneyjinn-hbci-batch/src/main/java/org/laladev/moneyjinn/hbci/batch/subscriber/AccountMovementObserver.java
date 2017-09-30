@@ -28,14 +28,10 @@
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.TimeZone;
 
 import org.laladev.moneyjinn.client.core.config.Configuration;
 import org.laladev.moneyjinn.client.core.rest.util.MessageConverter;
@@ -57,7 +53,7 @@ public class AccountMovementObserver implements Observer {
 		this.restTemplate.getMessageConverters().clear();
 		this.restTemplate.getMessageConverters().add(new MessageConverter());
 
-		final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
+		final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
 		interceptors.add(new RequestInterceptor());
 		this.restTemplate.setInterceptors(interceptors);
 	}
@@ -70,29 +66,16 @@ public class AccountMovementObserver implements Observer {
 
 	}
 
-	private Date getGMTDate(final Date date) {
-		final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		final TimeZone tz = TimeZone.getTimeZone("GMT");
-
-		final String dateStr = formatter.format(date);
-		formatter.setTimeZone(tz);
-		try {
-			return new Date(formatter.parse(dateStr).getTime());
-		} catch (final ParseException e) {
-			return date;
-		}
-	}
-
 	private void notify(final AccountMovement transaction) {
 		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransport();
 		transport.setAccountNumberCapitalsource(transaction.getMyIban());
 		transport.setBankCodeCapitalsource(transaction.getMyBic());
 		transport.setExternalid(transaction.getId().toString());
-		transport.setBookingdate(this.getGMTDate(transaction.getValueDate()));
+		transport.setBookingdate(Date.valueOf(transaction.getValueDate()));
 		if (transaction.getInvoiceTimestamp() == null) {
-			transport.setInvoicedate(this.getGMTDate(transaction.getBookingDate()));
+			transport.setInvoicedate(Date.valueOf(transaction.getBookingDate()));
 		} else {
-			transport.setInvoicedate(this.getGMTDate(new Date(transaction.getInvoiceTimestamp().getTime())));
+			transport.setInvoicedate(Date.valueOf(transaction.getInvoiceTimestamp().toLocalDate()));
 		}
 		transport.setName(transaction.getOtherName());
 		transport.setAccountNumber(transaction.getOtherAccountnumber() == null ? transaction.getOtherIban()
