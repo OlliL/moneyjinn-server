@@ -44,9 +44,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<compilerVersion>{$java.version}</compilerVersion>
-					<source>{$java.version}</source>
-					<target>{$java.version}</target>
+					<compilerVersion>${java.version}</compilerVersion>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
