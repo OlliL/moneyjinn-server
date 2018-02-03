@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showMoneyflowReceiptResponse")
+@XmlRootElement(name = "showMoneyflowReceiptResponse")
 public class ShowMoneyflowReceiptResponse extends AbstractResponse {
 	private String receipt;
 	private Short receiptType;

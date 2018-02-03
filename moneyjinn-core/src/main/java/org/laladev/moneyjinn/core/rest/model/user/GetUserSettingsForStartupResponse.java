@@ -29,9 +29,9 @@ package org.laladev.moneyjinn.core.rest.model.user;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("getUserSettingsForStartupResponse")
+@XmlRootElement(name = "getUserSettingsForStartupResponse")
 public class GetUserSettingsForStartupResponse extends AbstractResponse {
 	private Long userId;
 	private String settingDateFormat;

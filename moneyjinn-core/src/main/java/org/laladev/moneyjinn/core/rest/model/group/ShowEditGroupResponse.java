@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.group;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showEditGroupResponse")
+@XmlRootElement(name = "showEditGroupResponse")
 public class ShowEditGroupResponse extends AbstractGroupResponse {
 }

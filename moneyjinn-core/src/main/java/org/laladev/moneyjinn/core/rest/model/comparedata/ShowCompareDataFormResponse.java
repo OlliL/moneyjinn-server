@@ -32,14 +32,14 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showCompareDataFormResponse")
+@XmlRootElement(name = "showCompareDataFormResponse")
 public class ShowCompareDataFormResponse extends AbstractResponse {
-	@JsonProperty("compareDataFormatTransport")
+	@XmlElement(name = "compareDataFormatTransport")
 	private List<CompareDataFormatTransport> compareDataFormatTransports;
-	@JsonProperty("capitalsourceTransport")
+	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
 	private Long selectedCapitalsourceId;
 	private Long selectedDataFormat;

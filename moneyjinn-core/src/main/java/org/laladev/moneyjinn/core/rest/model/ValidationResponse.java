@@ -2,6 +2,9 @@ package org.laladev.moneyjinn.core.rest.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 //
 // Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -30,13 +33,10 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-
-@JsonRootName("validationResponse")
+@XmlRootElement(name = "validationResponse")
 public class ValidationResponse extends AbstractResponse {
 	private Boolean result;
-	@JsonProperty("validationItemTransport")
+	@XmlElement(name = "validationItemTransport")
 	private List<ValidationItemTransport> validationItemTransports;
 
 	public final Boolean getResult() {
@@ -60,8 +60,7 @@ public class ValidationResponse extends AbstractResponse {
 		final int prime = 31;
 		int res = super.hashCode();
 		res = prime * res + ((this.result == null) ? 0 : this.result.hashCode());
-		res = prime * res
-				+ ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
+		res = prime * res + ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
 		return res;
 	}
 

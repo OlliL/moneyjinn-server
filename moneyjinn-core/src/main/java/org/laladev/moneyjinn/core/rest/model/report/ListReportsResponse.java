@@ -33,20 +33,20 @@ import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapi
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("listReportsResponse")
+@XmlRootElement(name = "listReportsResponse")
 public class ListReportsResponse {
-	@JsonProperty("moneyflowTransport")
+	@XmlElement(name = "moneyflowTransport")
 	private List<MoneyflowTransport> moneyflowTransports;
-	@JsonProperty("moneyflowSplitEntryTransport")
+	@XmlElement(name = "moneyflowSplitEntryTransport")
 	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
 	private Short year;
 	private Short month;
 	private List<Short> allYears;
 	private List<Short> allMonth;
-	@JsonProperty("reportTurnoverCapitalsourceTransport")
+	@XmlElement(name = "reportTurnoverCapitalsourceTransport")
 	private List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports;
 	private BigDecimal turnoverEndOfYearCalculated;
 	private BigDecimal amountBeginOfYear;

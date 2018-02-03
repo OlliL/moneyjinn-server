@@ -31,9 +31,9 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showTrendsGraphRequest")
+@XmlRootElement(name = "showTrendsGraphRequest")
 public class ShowTrendsGraphRequest extends AbstractRequest {
 	private List<Long> capitalSourceIds;
 	private Date startDate;

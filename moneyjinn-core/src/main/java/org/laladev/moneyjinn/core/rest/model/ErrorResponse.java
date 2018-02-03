@@ -27,9 +27,9 @@
 //
 package org.laladev.moneyjinn.core.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("error")
+@XmlRootElement(name = "error")
 public class ErrorResponse {
 	private Integer code;
 	private String message;

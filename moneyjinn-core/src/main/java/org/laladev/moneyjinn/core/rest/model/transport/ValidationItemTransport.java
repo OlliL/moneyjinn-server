@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("validationItemTransport")
+@XmlRootElement(name = "validationItemTransport")
 public class ValidationItemTransport {
 	private Object key;
 	private Integer error;

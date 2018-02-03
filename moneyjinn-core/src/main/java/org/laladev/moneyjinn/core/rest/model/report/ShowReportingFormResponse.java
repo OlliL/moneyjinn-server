@@ -31,15 +31,15 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showReportingFormResponse")
+@XmlRootElement(name = "showReportingFormResponse")
 public class ShowReportingFormResponse extends AbstractResponse {
 	private List<Short> allYears;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
-	@JsonProperty("postingAccountIdsNo")
+	@XmlElement(name = "postingAccountIdsNo")
 	private List<Long> postingAccountIds;
 
 	public final List<Short> getAllYears() {

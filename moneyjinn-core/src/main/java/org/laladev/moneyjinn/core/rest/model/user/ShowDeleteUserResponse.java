@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showDeleteUserResponse")
+@XmlRootElement(name = "showDeleteUserResponse")
 public class ShowDeleteUserResponse extends AbstractShowUserResponse {
 	@Override
 	public String toString() {

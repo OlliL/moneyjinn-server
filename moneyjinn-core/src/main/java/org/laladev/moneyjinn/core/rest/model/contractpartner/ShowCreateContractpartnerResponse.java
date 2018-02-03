@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
@@ -32,11 +32,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 //SUCH DAMAGE.
 //
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showCreateContractpartnerResponse")
+@XmlRootElement(name = "showCreateContractpartnerResponse")
 public class ShowCreateContractpartnerResponse {
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 	public final List<PostingAccountTransport> getPostingAccountTransports() {

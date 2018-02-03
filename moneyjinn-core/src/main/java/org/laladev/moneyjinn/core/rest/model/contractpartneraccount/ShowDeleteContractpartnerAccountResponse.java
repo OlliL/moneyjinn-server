@@ -26,8 +26,8 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 //SUCH DAMAGE.
 //
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showDeleteContractpartnerAccountResponse")
+@XmlRootElement(name = "showDeleteContractpartnerAccountResponse")
 public class ShowDeleteContractpartnerAccountResponse extends AbstractContractpartnerAccountResponse {
 }

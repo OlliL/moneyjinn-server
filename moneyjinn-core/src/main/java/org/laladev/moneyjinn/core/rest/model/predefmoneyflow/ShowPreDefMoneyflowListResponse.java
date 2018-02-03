@@ -32,13 +32,13 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showPreDefMoneyflowListResponse")
+@XmlRootElement(name = "showPreDefMoneyflowListResponse")
 public class ShowPreDefMoneyflowListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("preDefMoneyflowTransport")
+	@XmlElement(name = "preDefMoneyflowTransport")
 	private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
 
 	public final Set<Character> getInitials() {

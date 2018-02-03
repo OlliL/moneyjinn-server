@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.capitalsource;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createCapitalsourceResponse")
+@XmlRootElement(name = "createCapitalsourceResponse")
 public class CreateCapitalsourceResponse extends ValidationResponse {
 	private Long capitalsourceId;
 

@@ -32,17 +32,17 @@ import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("updateMoneyflowRequest")
+@XmlRootElement(name = "updateMoneyflowRequest")
 public class UpdateMoneyflowRequest extends AbstractRequest {
 	private MoneyflowTransport moneyflowTransport;
 
 	public List<Long> deleteMoneyflowSplitEntryIds;
-	@JsonProperty("updateMoneyflowSplitEntryTransport")
+	@XmlElement(name = "updateMoneyflowSplitEntryTransport")
 	public List<MoneyflowSplitEntryTransport> updateMoneyflowSplitEntryTransports;
-	@JsonProperty("insertMoneyflowSplitEntryTransport")
+	@XmlElement(name = "insertMoneyflowSplitEntryTransport")
 	public List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports;
 
 	public final MoneyflowTransport getMoneyflowTransport() {

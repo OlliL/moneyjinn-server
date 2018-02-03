@@ -5,10 +5,10 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractCreateUserResponse extends ValidationResponse {
-	@JsonProperty("groupTransport")
+	@XmlElement(name = "groupTransport")
 	private List<GroupTransport> groupTransports;
 
 	public final List<GroupTransport> getGroupTransports() {

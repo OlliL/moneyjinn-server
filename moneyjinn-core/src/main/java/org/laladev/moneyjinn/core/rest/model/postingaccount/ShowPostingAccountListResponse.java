@@ -6,13 +6,13 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showPostingAccountListResponse")
+@XmlRootElement(name = "showPostingAccountListResponse")
 public class ShowPostingAccountListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 	public final Set<Character> getInitials() {

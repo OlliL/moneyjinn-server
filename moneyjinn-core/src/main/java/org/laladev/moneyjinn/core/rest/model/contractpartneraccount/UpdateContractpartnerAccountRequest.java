@@ -26,8 +26,8 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("updateContractpartnerAccountRequest")
+@XmlRootElement(name = "updateContractpartnerAccountRequest")
 public class UpdateContractpartnerAccountRequest extends AbstractContractpartnerAccountRequest {
 }

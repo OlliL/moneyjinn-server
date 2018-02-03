@@ -5,12 +5,12 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("upsertMonthlySettlementRequest")
+@XmlRootElement(name = "upsertMonthlySettlementRequest")
 public class UpsertMonthlySettlementRequest extends AbstractRequest {
-	@JsonProperty("monthlySettlementTransport")
+	@XmlElement(name = "monthlySettlementTransport")
 	private List<MonthlySettlementTransport> monthlySettlementTransports;
 
 	public final List<MonthlySettlementTransport> getMonthlySettlementTransports() {

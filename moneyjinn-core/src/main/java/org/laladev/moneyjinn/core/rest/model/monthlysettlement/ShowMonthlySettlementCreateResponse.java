@@ -5,17 +5,17 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showMonthlySettlementCreateResponse")
+@XmlRootElement(name = "showMonthlySettlementCreateResponse")
 public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
 	private Short year;
 	private Short month;
 	private Short editMode;
-	@JsonProperty("monthlySettlementTransport")
+	@XmlElement(name = "monthlySettlementTransport")
 	private List<MonthlySettlementTransport> monthlySettlementTransports;
-	@JsonProperty("importedMonthlySettlementTransport")
+	@XmlElement(name = "importedMonthlySettlementTransport")
 	private List<MonthlySettlementTransport> importedMonthlySettlementTransports;
 
 	public final Short getYear() {

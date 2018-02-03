@@ -8,17 +8,17 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showUserListResponse")
+@XmlRootElement(name = "showUserListResponse")
 public class ShowUserListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("userTransport")
+	@XmlElement(name = "userTransport")
 	private List<UserTransport> userTransports;
-	@JsonProperty("groupTransport")
+	@XmlElement(name = "groupTransport")
 	private List<GroupTransport> groupTransports;
-	@JsonProperty("accessRelationTransport")
+	@XmlElement(name = "accessRelationTransport")
 	private List<AccessRelationTransport> accessRelationTransports;
 
 	public final Set<Character> getInitials() {

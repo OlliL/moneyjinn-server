@@ -36,18 +36,18 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNo
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("compareDataResponse")
+@XmlRootElement(name = "compareDataResponse")
 public class CompareDataResponse extends AbstractResponse {
-	@JsonProperty("compareDataMatchingTransport")
+	@XmlElement(name = "compareDataMatchingTransport")
 	private final List<CompareDataMatchingTransport> compareDataMatchingTransports = new ArrayList<CompareDataMatchingTransport>();
-	@JsonProperty("compareDataWrongCapitalsourceTransport")
+	@XmlElement(name = "compareDataWrongCapitalsourceTransport")
 	private final List<CompareDataWrongCapitalsourceTransport> compareDataWrongCapitalsourceTransports = new ArrayList<CompareDataWrongCapitalsourceTransport>();
-	@JsonProperty("compareDataNotInFileTransport")
+	@XmlElement(name = "compareDataNotInFileTransport")
 	private final List<CompareDataNotInFileTransport> compareDataNotInFileTransports = new ArrayList<CompareDataNotInFileTransport>();
-	@JsonProperty("compareDataNotInDatabaseTransport")
+	@XmlElement(name = "compareDataNotInDatabaseTransport")
 	private final List<CompareDataNotInDatabaseTransport> compareDataNotInDatabaseTransports = new ArrayList<CompareDataNotInDatabaseTransport>();
 	private CapitalsourceTransport capitalsourceTransport;
 

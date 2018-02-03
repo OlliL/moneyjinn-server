@@ -8,8 +8,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
@@ -37,15 +37,15 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 //SUCH DAMAGE.
 //
 
-@JsonRootName("showAddImportedMoneyflowsResponse")
+@XmlRootElement(name = "showAddImportedMoneyflowsResponse")
 public class ShowAddImportedMoneyflowsResponse extends ValidationResponse {
-	@JsonProperty("importedMoneyflowTransport")
+	@XmlElement(name = "importedMoneyflowTransport")
 	private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
-	@JsonProperty("capitalsourceTransport")
+	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
-	@JsonProperty("contractpartnerTransport")
+	@XmlElement(name = "contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 	public final List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {

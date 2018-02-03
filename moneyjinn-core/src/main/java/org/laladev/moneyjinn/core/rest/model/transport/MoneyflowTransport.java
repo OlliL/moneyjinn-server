@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 public class MoneyflowTransport {
 	private Long id;
@@ -42,7 +42,7 @@ public class MoneyflowTransport {
 	private Long contractpartnerid;
 	private String contractpartnername;
 	private String comment;
-	@JsonProperty("private")
+	@XmlElement(name = "private")
 	private Short privat;
 	private Long postingaccountid;
 	private String postingaccountname;

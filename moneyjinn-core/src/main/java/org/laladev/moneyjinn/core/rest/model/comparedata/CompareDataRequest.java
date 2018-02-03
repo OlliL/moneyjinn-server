@@ -30,13 +30,13 @@ import java.sql.Date;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("compareDataRequest")
+@XmlRootElement(name = "compareDataRequest")
 public class CompareDataRequest extends AbstractRequest {
 	private Long formatId;
-	@JsonProperty("capitalSourceId")
+	@XmlElement(name = "capitalSourceId")
 	private Long capitalsourceId;
 	private Date startDate;
 	private Date endDate;

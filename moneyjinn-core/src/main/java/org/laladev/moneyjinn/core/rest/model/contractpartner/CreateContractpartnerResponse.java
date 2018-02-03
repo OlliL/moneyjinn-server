@@ -28,9 +28,9 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //SUCH DAMAGE.
 //
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createContractpartnerResponse")
+@XmlRootElement(name = "createContractpartnerResponse")
 public class CreateContractpartnerResponse extends ValidationResponse {
 	private Long contractpartnerId;
 

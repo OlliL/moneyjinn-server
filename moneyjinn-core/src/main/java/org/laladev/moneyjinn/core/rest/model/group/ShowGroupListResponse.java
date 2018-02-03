@@ -6,13 +6,13 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showGroupListResponse")
+@XmlRootElement(name = "showGroupListResponse")
 public class ShowGroupListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("groupTransport")
+	@XmlElement(name = "groupTransport")
 	private List<GroupTransport> groupTransports;
 
 	public final Set<Character> getInitials() {

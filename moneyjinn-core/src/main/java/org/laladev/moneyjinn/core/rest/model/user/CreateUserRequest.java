@@ -4,9 +4,9 @@ import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createUserRequest")
+@XmlRootElement(name = "createUserRequest")
 public class CreateUserRequest extends AbstractRequest {
 	private UserTransport userTransport;
 	private AccessRelationTransport accessRelationTransport;

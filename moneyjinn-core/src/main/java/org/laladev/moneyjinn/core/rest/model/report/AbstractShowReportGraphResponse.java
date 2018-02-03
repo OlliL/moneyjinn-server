@@ -6,12 +6,12 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 public class AbstractShowReportGraphResponse extends AbstractResponse {
-	@JsonProperty("postingAccountAmountTransport")
+	@XmlElement(name = "postingAccountAmountTransport")
 	private List<PostingAccountAmountTransport> postingAccountAmountTransports;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 	public final List<PostingAccountAmountTransport> getPostingAccountAmountTransports() {

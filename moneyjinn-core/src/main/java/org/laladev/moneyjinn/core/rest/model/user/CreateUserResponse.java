@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createUserResponse")
+@XmlRootElement(name = "createUserResponse")
 public class CreateUserResponse extends AbstractCreateUserResponse {
 	@Override
 	public String toString() {

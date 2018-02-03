@@ -6,13 +6,13 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showCapitalsourceListResponse")
+@XmlRootElement(name = "showCapitalsourceListResponse")
 public class ShowCapitalsourceListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("capitalsourceTransport")
+	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
 	private boolean currentlyValid;
 

@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.capitalsource;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showEditCapitalsourceResponse")
+@XmlRootElement(name = "showEditCapitalsourceResponse")
 public class ShowEditCapitalsourceResponse extends AbstractCapitalsourceResponse {
 }

@@ -26,15 +26,15 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
 import java.util.List;
 
-@JsonRootName("showAddMoneyflowsResponse")
+@XmlRootElement(name = "showAddMoneyflowsResponse")
 public class ShowAddMoneyflowsResponse extends AbstractEditMoneyflowResponse {
-	@JsonProperty("preDefMoneyflowTransport")
+	@XmlElement(name = "preDefMoneyflowTransport")
 	private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
 
 	public final List<PreDefMoneyflowTransport> getPreDefMoneyflowTransports() {

@@ -32,12 +32,12 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("importImportedMoneyflowRequest")
+@XmlRootElement(name = "importImportedMoneyflowRequest")
 public class ImportImportedMoneyflowRequest extends AbstractRequest {
-	@JsonProperty("importedMoneyflowTransport")
+	@XmlElement(name = "importedMoneyflowTransport")
 	private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
 
 	public final List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {

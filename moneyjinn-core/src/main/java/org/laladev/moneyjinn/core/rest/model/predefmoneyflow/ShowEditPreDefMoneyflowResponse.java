@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 //SUCH DAMAGE.
 //
 
-@JsonRootName("showEditPreDefMoneyflowResponse")
+@XmlRootElement(name = "showEditPreDefMoneyflowResponse")
 public class ShowEditPreDefMoneyflowResponse extends AbstractCreatePreDefMoneyflowResponse {
 	private PreDefMoneyflowTransport preDefMoneyflowTransport;
 

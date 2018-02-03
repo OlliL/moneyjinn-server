@@ -29,9 +29,9 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("searchMoneyflowsRequest")
+@XmlRootElement(name = "searchMoneyflowsRequest")
 public class SearchMoneyflowsRequest extends AbstractRequest {
 	private MoneyflowSearchParamsTransport moneyflowSearchParamsTransport;
 

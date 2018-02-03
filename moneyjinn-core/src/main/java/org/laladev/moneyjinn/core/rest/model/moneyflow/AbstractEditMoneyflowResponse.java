@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
@@ -35,11 +35,11 @@ import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import java.util.List;
 
 public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
-	@JsonProperty("capitalsourceTransport")
+	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
-	@JsonProperty("contractpartnerTransport")
+	@XmlElement(name = "contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 

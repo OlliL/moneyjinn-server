@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.group;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createGroupRequest")
+@XmlRootElement(name = "createGroupRequest")
 public class CreateGroupRequest extends AbstractGroupRequest {
 }

@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.postingaccount;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showDeletePostingAccountResponse")
+@XmlRootElement(name = "showDeletePostingAccountResponse")
 public class ShowDeletePostingAccountResponse extends AbstractPostingAccountResponse {
 }

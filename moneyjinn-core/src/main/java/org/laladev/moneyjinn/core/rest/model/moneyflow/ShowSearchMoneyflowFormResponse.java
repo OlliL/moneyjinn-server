@@ -32,14 +32,14 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showSearchMoneyflowFormResponse")
+@XmlRootElement(name = "showSearchMoneyflowFormResponse")
 public class ShowSearchMoneyflowFormResponse extends AbstractResponse {
-	@JsonProperty("contractpartnerTransport")
+	@XmlElement(name = "contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
-	@JsonProperty("postingAccountTransport")
+	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
 	public final List<ContractpartnerTransport> getContractpartnerTransports() {

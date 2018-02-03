@@ -26,8 +26,8 @@ package org.laladev.moneyjinn.core.rest.model.contractpartner;
 //SUCH DAMAGE.
 //
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("updateContractpartnerRequest")
+@XmlRootElement(name = "updateContractpartnerRequest")
 public class UpdateContractpartnerRequest extends AbstractContractpartnerRequest {
 }

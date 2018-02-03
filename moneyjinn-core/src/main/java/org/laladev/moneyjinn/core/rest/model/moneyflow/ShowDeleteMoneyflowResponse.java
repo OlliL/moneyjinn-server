@@ -29,9 +29,9 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showDeleteMoneyflowResponse")
+@XmlRootElement(name = "showDeleteMoneyflowResponse")
 public class ShowDeleteMoneyflowResponse extends AbstractResponse {
 	private MoneyflowTransport moneyflowTransport;
 

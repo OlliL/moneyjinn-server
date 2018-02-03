@@ -31,12 +31,12 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showContractpartnerAccountListResponse")
+@XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {
-	@JsonProperty("contractpartnerAccountTransport")
+	@XmlElement(name = "contractpartnerAccountTransport")
 	private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
 	private String contractpartnerName;
 

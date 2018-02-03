@@ -32,14 +32,14 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showTrendsGraphResponse")
+@XmlRootElement(name = "showTrendsGraphResponse")
 public class ShowTrendsGraphResponse extends AbstractResponse {
-	@JsonProperty("trendsSettledTransport")
+	@XmlElement(name = "trendsSettledTransport")
 	private List<TrendsSettledTransport> trendsSettledTransports;
-	@JsonProperty("trendsCalculatedTransport")
+	@XmlElement(name = "trendsCalculatedTransport")
 	private List<TrendsCalculatedTransport> trendsCalculatedTransports;
 
 	public final List<TrendsSettledTransport> getTrendsSettledTransports() {

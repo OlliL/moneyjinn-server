@@ -32,13 +32,13 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showContractpartnerListResponse")
+@XmlRootElement(name = "showContractpartnerListResponse")
 public class ShowContractpartnerListResponse extends AbstractResponse {
 	private Set<Character> initials;
-	@JsonProperty("contractpartnerTransport")
+	@XmlElement(name = "contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
 	private boolean currentlyValid;
 

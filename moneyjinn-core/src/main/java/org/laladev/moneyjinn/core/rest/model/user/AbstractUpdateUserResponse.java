@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractUpdateUserResponse extends AbstractCreateUserResponse {
-	@JsonProperty("accessRelationTransport")
+	@XmlElement(name = "accessRelationTransport")
 	private List<AccessRelationTransport> accessRelationTransports;
 
 	public final List<AccessRelationTransport> getAccessRelationTransports() {

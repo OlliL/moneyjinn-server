@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.core.rest.model.setting;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("updateDefaultSettingsRequest")
+@XmlRootElement(name = "updateDefaultSettingsRequest")
 public class UpdateDefaultSettingsRequest extends AbstractUpdateSettingsRequest {
 
 	@Override

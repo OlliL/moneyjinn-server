@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.setting;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showPersonalSettingsResponse")
+@XmlRootElement(name = "showPersonalSettingsResponse")
 public class ShowPersonalSettingsResponse extends AbstractShowSettingsResponse {
 }

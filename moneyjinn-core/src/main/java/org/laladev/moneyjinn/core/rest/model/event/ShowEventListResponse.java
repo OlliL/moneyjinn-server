@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.event;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showEventListResponse")
+@XmlRootElement(name = "showEventListResponse")
 public class ShowEventListResponse extends AbstractResponse {
 	private boolean monthlySettlementMissing;
 	private Short monthlySettlementMonth;

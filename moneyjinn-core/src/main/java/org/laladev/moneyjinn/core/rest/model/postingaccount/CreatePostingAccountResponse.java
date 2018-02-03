@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.postingaccount;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("createPostingAccountResponse")
+@XmlRootElement(name = "createPostingAccountResponse")
 public class CreatePostingAccountResponse extends ValidationResponse {
 	private Long postingAccountId;
 

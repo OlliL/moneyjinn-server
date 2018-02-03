@@ -31,15 +31,15 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonRootName("showTrendsFormResponse")
+@XmlRootElement(name = "showTrendsFormResponse")
 public class ShowTrendsFormResponse extends AbstractResponse {
 	private List<Short> allYears;
-	@JsonProperty("capitalsourceTransport")
+	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
-	@JsonProperty("settingTrendCapitalsourceId")
+	@XmlElement(name = "settingTrendCapitalsourceId")
 	private List<Long> settingTrendCapitalsourceIds;
 
 	public final List<Short> getAllYears() {
