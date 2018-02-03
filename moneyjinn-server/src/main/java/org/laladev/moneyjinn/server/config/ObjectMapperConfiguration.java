@@ -26,7 +26,6 @@ package org.laladev.moneyjinn.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.laladev.moneyjinn.core.rest.util.MyObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
