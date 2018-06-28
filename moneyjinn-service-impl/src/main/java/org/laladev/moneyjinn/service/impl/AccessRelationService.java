@@ -26,10 +26,23 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.access.*;
+import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.access.AccessRelation;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
@@ -45,14 +58,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -281,7 +286,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 			//=================================================================================================================================
 			//   current:   | 1             || 2           || 1          |
 			//   change:                     | 3                         |
-			//   new:       | 1             || 4           || 1          | (i) replace 2 by 3
+			//   new:       | 1             || 3           || 1          | (i) replace 2 by 3
 			// @non-java-end
 			// @formatter:on
 
