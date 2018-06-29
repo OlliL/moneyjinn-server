@@ -61,7 +61,22 @@
 		 LIMIT 1
 	</select>
 	
-    	<insert id="upsertMonthlySettlement"
+	<select id="getMinSettlementDate" resultType="java.time.LocalDate">
+		SELECT CONCAT(
+		              CONCAT(
+		                     CONCAT(year
+		                           ,'-')
+		                    ,LPAD(month,2,'0'))
+		             ,'-01')
+		           
+		  FROM monthlysettlements
+		 WHERE mac_id_creator = #{userId}
+		 ORDER BY year  ASC
+		        , month ASC
+		 LIMIT 1
+	</select>
+	
+		<insert id="upsertMonthlySettlement"
 		parameterType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
 		INSERT

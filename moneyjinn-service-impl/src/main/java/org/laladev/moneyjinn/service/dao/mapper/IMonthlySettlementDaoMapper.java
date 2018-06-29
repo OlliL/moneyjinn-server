@@ -42,6 +42,8 @@ public interface IMonthlySettlementDaoMapper {
 
 	public LocalDate getMaxSettlementDate(Long userId);
 
+	public LocalDate getMinSettlementDate(Long userId);
+
 	public Short checkMonthlySettlementsExists(@Param("userId") Long userId, @Param("year") Short year,
 			@Param("month") Short month);
 

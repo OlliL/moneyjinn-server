@@ -57,6 +57,10 @@ public class MonthlySettlementDao {
 		return this.mapper.getMaxSettlementDate(userId);
 	}
 
+	public LocalDate getMinSettlementDate(final Long userId) {
+		return this.mapper.getMinSettlementDate(userId);
+	}
+
 	public boolean checkMonthlySettlementsExists(final Long userId, final Short year, final Short month) {
 		final Short exists = this.mapper.checkMonthlySettlementsExists(userId, year, month);
 		return exists != null;

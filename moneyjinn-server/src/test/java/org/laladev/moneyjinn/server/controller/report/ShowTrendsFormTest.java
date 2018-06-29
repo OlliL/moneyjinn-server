@@ -17,6 +17,7 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
@@ -68,7 +69,9 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource6().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 
-		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
+		expected.setMinDate(DateUtil.getGMTDate("2008-11-01"));
+		expected.setMaxDate(DateUtil.getGMTDate("2010-05-03"));
+
 		return expected;
 	}
 
@@ -88,7 +91,8 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 
 		final ShowTrendsFormResponse expected = this.getDefaultResponse();
 
-		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowTrendsFormResponse.class);
+		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowTrendsFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -97,24 +101,29 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 	public void test_noSetting_defaultsResponse() throws Exception {
 		final ShowTrendsFormResponse expected = this.getDefaultResponse();
 
-		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowTrendsFormResponse.class);
+		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowTrendsFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void test_witDefaultSelection_defaultsResponse() throws Exception {
-		final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(Arrays.asList(
-				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID), new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID),
-				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID), new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE6_ID)));
+		final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
+				Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID),
+						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID),
+						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID),
+						new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE6_ID)));
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
 
 		final ShowTrendsFormResponse expected = this.getDefaultResponse();
-		expected.setSettingTrendCapitalsourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
-				CapitalsourceTransportBuilder.CAPITALSOURCE5_ID, CapitalsourceTransportBuilder.CAPITALSOURCE6_ID));
+		expected.setSettingTrendCapitalsourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+				CapitalsourceTransportBuilder.CAPITALSOURCE6_ID));
 
-		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowTrendsFormResponse.class);
+		final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowTrendsFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

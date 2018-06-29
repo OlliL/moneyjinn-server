@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Month;
@@ -233,20 +234,15 @@ public class ReportController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ShowTrendsFormResponse response = new ShowTrendsFormResponse();
 
-		final List<Short> allYears = this.monthlySettlementService.getAllYears(userId);
 		final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
+		final LocalDate minMonthlysettlementwDate = this.monthlySettlementService.getMinSettlementDate(userId);
+
 		if (maxMoneyflowDate != null) {
-			final Short maxYear = (short) maxMoneyflowDate.getYear();
-			// if the last recorded settlement is for example December 2013, but we are now in
-			// January 2014, we also need to display 2014 as a selectable year for showing the
-			// trends. Otherwise we would not be able to show the forcast of January 2014.
-			Short maxSettledYear = allYears.get(allYears.size() - 1);
-			while (maxSettledYear < maxYear) {
-				maxSettledYear = (short) (maxSettledYear + 1);
-				allYears.add(maxSettledYear);
-			}
+			response.setMaxDate(Date.valueOf(maxMoneyflowDate));
 		}
-		response.setAllYears(allYears);
+		if (minMonthlysettlementwDate != null) {
+			response.setMinDate(Date.valueOf(minMonthlysettlementwDate));
+		}
 
 		final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
 		response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));

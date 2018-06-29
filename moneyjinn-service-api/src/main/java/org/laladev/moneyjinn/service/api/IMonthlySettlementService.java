@@ -98,6 +98,15 @@ public interface IMonthlySettlementService {
 	LocalDate getMaxSettlementDate(UserID userId);
 
 	/**
+	 * Returns the earliest date a {@link MonthlySettlement} was created by the given
+	 * {@link UserId}.
+	 *
+	 * @param userId
+	 * @return
+	 */
+	LocalDate getMinSettlementDate(UserID userId);
+
+	/**
 	 * Checks if at the given year and month, the also given {@link UserId} has already created a
 	 * {@link MonthlySettlement}.
 	 *

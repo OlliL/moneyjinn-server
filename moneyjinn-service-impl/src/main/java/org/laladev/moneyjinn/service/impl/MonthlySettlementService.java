@@ -26,6 +26,16 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -44,15 +54,6 @@ import org.laladev.moneyjinn.service.dao.MonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MonthlySettlementDataMapper;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Named
 public class MonthlySettlementService extends AbstractService implements IMonthlySettlementService {
@@ -165,6 +166,13 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	}
 
 	@Override
+	public LocalDate getMinSettlementDate(final UserID userId) {
+		Assert.notNull(userId, "UserId must not be null!");
+
+		return this.monthlySettlementDao.getMinSettlementDate(userId.getId());
+	}
+
+	@Override
 	public boolean checkMonthlySettlementsExists(final UserID userId, final Short year, final Month month) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(year, "year must not be null!");
@@ -178,8 +186,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		Assert.notNull(monthlySettlements, "monthlySettlements must not be null!");
 
 		final ValidationResult validationResult = new ValidationResult();
-		monthlySettlements
-				.forEach(ms -> validationResult.mergeValidationResult(this.validateMonthlySettlement(ms)));
+		monthlySettlements.forEach(ms -> validationResult.mergeValidationResult(this.validateMonthlySettlement(ms)));
 
 		if (validationResult.isValid()) {
 			final List<MonthlySettlementData> monthlySettlementDatas = super.mapList(monthlySettlements,
