@@ -1,5 +1,5 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2018 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -26,28 +26,38 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
+import java.sql.Date;
 import java.util.List;
-
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
+
 @XmlRootElement(name = "showTrendsFormResponse")
 public class ShowTrendsFormResponse extends AbstractResponse {
-	private List<Short> allYears;
+	private Date minDate;
+	private Date maxDate;
 	@XmlElement(name = "capitalsourceTransport")
 	private List<CapitalsourceTransport> capitalsourceTransports;
 	@XmlElement(name = "settingTrendCapitalsourceId")
 	private List<Long> settingTrendCapitalsourceIds;
 
-	public final List<Short> getAllYears() {
-		return this.allYears;
+	public final Date getMinDate() {
+		return this.minDate;
 	}
 
-	public final void setAllYears(final List<Short> allYears) {
-		this.allYears = allYears;
+	public final void setMinDate(final Date minDate) {
+		this.minDate = minDate;
+	}
+
+	public final Date getMaxDate() {
+		return this.maxDate;
+	}
+
+	public final void setMaxDate(final Date maxDate) {
+		this.maxDate = maxDate;
 	}
 
 	public final List<CapitalsourceTransport> getCapitalsourceTransports() {
@@ -70,9 +80,10 @@ public class ShowTrendsFormResponse extends AbstractResponse {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((this.allYears == null) ? 0 : this.allYears.hashCode());
 		result = prime * result
 				+ ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
+		result = prime * result + ((this.maxDate == null) ? 0 : this.maxDate.hashCode());
+		result = prime * result + ((this.minDate == null) ? 0 : this.minDate.hashCode());
 		result = prime * result
 				+ ((this.settingTrendCapitalsourceIds == null) ? 0 : this.settingTrendCapitalsourceIds.hashCode());
 		return result;
@@ -90,18 +101,25 @@ public class ShowTrendsFormResponse extends AbstractResponse {
 			return false;
 		}
 		final ShowTrendsFormResponse other = (ShowTrendsFormResponse) obj;
-		if (this.allYears == null) {
-			if (other.allYears != null) {
-				return false;
-			}
-		} else if (!this.allYears.equals(other.allYears)) {
-			return false;
-		}
 		if (this.capitalsourceTransports == null) {
 			if (other.capitalsourceTransports != null) {
 				return false;
 			}
 		} else if (!this.capitalsourceTransports.equals(other.capitalsourceTransports)) {
+			return false;
+		}
+		if (this.maxDate == null) {
+			if (other.maxDate != null) {
+				return false;
+			}
+		} else if (!this.maxDate.equals(other.maxDate)) {
+			return false;
+		}
+		if (this.minDate == null) {
+			if (other.minDate != null) {
+				return false;
+			}
+		} else if (!this.minDate.equals(other.minDate)) {
 			return false;
 		}
 		if (this.settingTrendCapitalsourceIds == null) {
@@ -117,8 +135,10 @@ public class ShowTrendsFormResponse extends AbstractResponse {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowTrendsFormResponse [allYears=");
-		builder.append(this.allYears);
+		builder.append("ShowTrendsFormResponse [minDate=");
+		builder.append(this.minDate);
+		builder.append(", maxDate=");
+		builder.append(this.maxDate);
 		builder.append(", capitalsourceTransports=");
 		builder.append(this.capitalsourceTransports);
 		builder.append(", settingTrendCapitalsourceIds=");

@@ -1,6 +1,6 @@
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
+//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //
 //Redistribution and use in source and binary forms, with or without
 //modification, are permitted provided that the following conditions
@@ -28,12 +28,12 @@ package org.laladev.moneyjinn.core.rest.model.report;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showTrendsGraphResponse")
 public class ShowTrendsGraphResponse extends AbstractResponse {
