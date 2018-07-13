@@ -33,9 +33,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 
 /**
  * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}
@@ -55,11 +52,12 @@ public class BufferFilter implements Filter {
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
 		final ServletRequest req = new MoneyJinnRequestWrapper((HttpServletRequest) request);
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-		((HttpServletResponse) response).setHeader("Access-Control-Max-Age", "3600");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Headers",
-				"Content-Type, " + RESTAuthorization.DATE_HEADER_NAME + ", " + RESTAuthorization.AUTH_HEADER_NAME);
+		// ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
+		// ((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods", "POST, PUT,
+		// GET, OPTIONS, DELETE");
+		// ((HttpServletResponse) response).setHeader("Access-Control-Max-Age", "3600");
+		// ((HttpServletResponse) response).setHeader("Access-Control-Allow-Headers", "Content-Type,
+		// " + RESTAuthorization.DATE_HEADER_NAME + ", " + RESTAuthorization.AUTH_HEADER_NAME);
 		// ((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials", "true");
 		chain.doFilter(req, response);
 	}
