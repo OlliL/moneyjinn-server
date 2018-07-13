@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.server.main;
 
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015, 2018 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -99,14 +99,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 				String userName = null;
 				String hmacHash = null;
 
-				if (clientAuthorization != null && clientAuthorization.length() > 3 // TODO das mit
-																					// der laenge
-																					// unittesten!
-																					// Also Empty
-																					// String
-																					// schicken darf
-																					// nicht
-																					// abbrechen!
+				if (clientAuthorization != null && clientAuthorization.length() > 3
 						&& clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
 					final String[] authorizationArray = clientAuthorization.substring(3)
 							.split(RESTAuthorization.AUTH_HEADER_SEPERATOR);

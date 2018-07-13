@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.server.main;
 
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015, 2018 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -52,9 +52,7 @@ public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
 		BufferedReader bufferedReader = null;
 		try {
 			final ServletInputStream inputStream = request.getInputStream();
-			// problematic for unittests (DelegatingServletInputStream does not implement isFinished
-			// violating javax.servlet API 3.1) - thats why uncommenting that for now
-			if (inputStream != null /* && !inputStream.isFinished() */) {
+			if (inputStream != null && !inputStream.isFinished()) {
 				bufferedReader = new BufferedReader(new InputStreamReader(inputStream, this.encoding));
 				final char[] charBuffer = new char[128];
 				int bytesRead = -1;
