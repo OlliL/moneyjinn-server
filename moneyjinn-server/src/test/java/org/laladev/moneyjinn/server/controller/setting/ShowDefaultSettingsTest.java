@@ -43,7 +43,6 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 		expected.setDateFormat("YYYY-MM-DD");
 		expected.setLanguage(1);
 		expected.setMaxRows(40);
-		expected.setNumFreeMoneyflows(1);
 		final ShowDefaultSettingsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowDefaultSettingsResponse.class);
 

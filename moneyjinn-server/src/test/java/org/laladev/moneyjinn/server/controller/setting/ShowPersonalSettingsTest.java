@@ -42,7 +42,6 @@ public class ShowPersonalSettingsTest extends AbstractControllerTest {
 		expected.setDateFormat("YYYY-MM-DD");
 		expected.setLanguage(1);
 		expected.setMaxRows(1);
-		expected.setNumFreeMoneyflows(1);
 		final ShowPersonalSettingsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPersonalSettingsResponse.class);
 

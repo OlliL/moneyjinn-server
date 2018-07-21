@@ -28,22 +28,34 @@ package org.laladev.moneyjinn.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
-import org.laladev.moneyjinn.model.setting.*;
+import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
+import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
+import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
+import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
+import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidContractpartnerSetting;
+import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
+import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
+import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
+import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.model.setting.SettingType;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.SettingTypeConverter;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
-import java.util.Arrays;
 
 //Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 //All rights reserved.
@@ -83,13 +95,15 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId) {
+	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
+			final AccessID accessId) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS));
 		if (settingData != null) {
 			try {
-				final PostingAccountID[] postingAccountIds = this.objectMapper.readValue(settingData.getValue(), PostingAccountID[].class);
+				final PostingAccountID[] postingAccountIds = this.objectMapper.readValue(settingData.getValue(),
+						PostingAccountID[].class);
 				return new ClientReportingUnselectedPostingAccountIdsSetting(Arrays.asList(postingAccountIds));
 			} catch (final IOException e) {
 			}
@@ -98,15 +112,17 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId, final ClientReportingUnselectedPostingAccountIdsSetting setting) {
+	public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId,
+			final ClientReportingUnselectedPostingAccountIdsSetting setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
 
 		try {
-			final String settingString = this.objectMapper.writeValueAsString(setting.getSetting().toArray(new PostingAccountID[0]));
-			final SettingData settingData = new SettingData(accessId.getId(),
-					SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS), settingString);
+			final String settingString = this.objectMapper
+					.writeValueAsString(setting.getSetting().toArray(new PostingAccountID[0]));
+			final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+					.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS), settingString);
 			this.settingDao.setSetting(settingData);
 		} catch (final JsonProcessingException e) {
 		}
@@ -119,7 +135,8 @@ public class SettingService extends AbstractService implements ISettingService {
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS));
 		if (settingData != null) {
 			try {
-				final CapitalsourceID[] capitalsourceIds = this.objectMapper.readValue(settingData.getValue(), CapitalsourceID[].class);
+				final CapitalsourceID[] capitalsourceIds = this.objectMapper.readValue(settingData.getValue(),
+						CapitalsourceID[].class);
 				return new ClientTrendCapitalsourceIDsSetting(Arrays.asList(capitalsourceIds));
 			} catch (final IOException e) {
 			}
@@ -128,15 +145,18 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId, final ClientTrendCapitalsourceIDsSetting setting) {
+	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+			final ClientTrendCapitalsourceIDsSetting setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
 
 		try {
-			final String settingString = this.objectMapper.writeValueAsString(setting.getSetting().toArray(new CapitalsourceID[0]));
+			final String settingString = this.objectMapper
+					.writeValueAsString(setting.getSetting().toArray(new CapitalsourceID[0]));
 			final SettingData settingData = new SettingData(accessId.getId(),
-					SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS), settingString);
+					SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS),
+					settingString);
 			this.settingDao.setSetting(settingData);
 		} catch (final JsonProcessingException e) {
 		}
@@ -145,7 +165,8 @@ public class SettingService extends AbstractService implements ISettingService {
 	@Override
 	public ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId) {
 		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS));
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS));
 		return new ClientMaxRowsSetting(Integer.valueOf(settingData.getValue()));
 	}
 
@@ -154,13 +175,15 @@ public class SettingService extends AbstractService implements ISettingService {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS),
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS),
 				setting.getSetting().toString());
 		this.settingDao.setSetting(settingData);
 	}
 
 	@Override
-	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(final AccessID accessId) {
+	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(
+			final AccessID accessId) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES));
@@ -174,7 +197,8 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCurrentlyValidCapitalsourcesSetting(final AccessID accessId, final ClientCurrentlyValidCapitalsourcesSetting setting) {
+	public void setClientCurrentlyValidCapitalsourcesSetting(final AccessID accessId,
+			final ClientCurrentlyValidCapitalsourcesSetting setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
@@ -183,12 +207,14 @@ public class SettingService extends AbstractService implements ISettingService {
 			settingValue = "1";
 		}
 		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES), settingValue);
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES),
+				settingValue);
 		this.settingDao.setSetting(settingData);
 	}
 
 	@Override
-	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(final AccessID accessId) {
+	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(
+			final AccessID accessId) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER));
@@ -202,7 +228,8 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCurrentlyValidContractpartnerSetting(final AccessID accessId, final ClientCurrentlyValidContractpartnerSetting setting) {
+	public void setClientCurrentlyValidContractpartnerSetting(final AccessID accessId,
+			final ClientCurrentlyValidContractpartnerSetting setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
@@ -211,7 +238,8 @@ public class SettingService extends AbstractService implements ISettingService {
 			settingValue = "1";
 		}
 		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER), settingValue);
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER),
+				settingValue);
 		this.settingDao.setSetting(settingData);
 	}
 
@@ -224,30 +252,13 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientDisplayedLanguageSetting(final AccessID accessId, final ClientDisplayedLanguageSetting setting) {
+	public void setClientDisplayedLanguageSetting(final AccessID accessId,
+			final ClientDisplayedLanguageSetting setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-
-	}
-
-	@Override
-	public ClientNumFreeMoneyflowsSetting getClientNumFreeMoneyflowsSetting(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_NUM_FREE_MONEYFLOWS));
-		return new ClientNumFreeMoneyflowsSetting(Integer.valueOf(settingData.getValue()));
-	}
-
-	@Override
-	public void setClientNumFreeMoneyflowsSetting(final AccessID accessId, final ClientNumFreeMoneyflowsSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_NUM_FREE_MONEYFLOWS),
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE),
 				setting.getSetting().toString());
 		this.settingDao.setSetting(settingData);
 
@@ -256,7 +267,8 @@ public class SettingService extends AbstractService implements ISettingService {
 	@Override
 	public ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId) {
 		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT));
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT));
 		return new ClientDateFormatSetting(settingData.getValue());
 	}
 
@@ -265,18 +277,20 @@ public class SettingService extends AbstractService implements ISettingService {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT),
-				setting.getSetting());
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT), setting.getSetting());
 		this.settingDao.setSetting(settingData);
 	}
 
 	@Override
-	public void setClientCompareDataSelectedCapitalsource(final AccessID accessId, final ClientCompareDataSelectedCapitalsource setting) {
+	public void setClientCompareDataSelectedCapitalsource(final AccessID accessId,
+			final ClientCompareDataSelectedCapitalsource setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
 		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE), setting.getSetting().getId().toString());
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE),
+				setting.getSetting().getId().toString());
 		this.settingDao.setSetting(settingData);
 	}
 
@@ -292,12 +306,14 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCompareDataSelectedFormat(final AccessID accessId, final ClientCompareDataSelectedFormat setting) {
+	public void setClientCompareDataSelectedFormat(final AccessID accessId,
+			final ClientCompareDataSelectedFormat setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
 		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT), setting.getSetting().getId().toString());
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT),
+				setting.getSetting().getId().toString());
 		this.settingDao.setSetting(settingData);
 
 	}
@@ -314,7 +330,8 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCompareDataSelectedSourceIsFile(final AccessID accessId, final ClientCompareDataSelectedSourceIsFile setting) {
+	public void setClientCompareDataSelectedSourceIsFile(final AccessID accessId,
+			final ClientCompareDataSelectedSourceIsFile setting) {
 		Assert.notNull(accessId, "accessId must not be null!");
 		Assert.notNull(setting, "setting must not be null!");
 		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
@@ -346,7 +363,6 @@ public class SettingService extends AbstractService implements ISettingService {
 		this.setClientDateFormatSetting(userId, this.getClientDateFormatSetting(ROOT_ACCESS_ID));
 		this.setClientDisplayedLanguageSetting(userId, this.getClientDisplayedLanguageSetting(ROOT_ACCESS_ID));
 		this.setClientMaxRowsSetting(userId, this.getClientMaxRowsSetting(ROOT_ACCESS_ID));
-		this.setClientNumFreeMoneyflowsSetting(userId, this.getClientNumFreeMoneyflowsSetting(ROOT_ACCESS_ID));
 	}
 
 	@Override

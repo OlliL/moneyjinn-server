@@ -41,7 +41,6 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -117,13 +116,10 @@ public class SettingController extends AbstractController {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		response.setLanguage(clientDisplayedLanguageSetting.getSetting());
 		response.setDateFormat(clientDateFormatSetting.getSetting());
 		response.setMaxRows(clientMaxRowsSetting.getSetting());
-		response.setNumFreeMoneyflows(clientNumFreeMoneyflowsSetting.getSetting());
 	}
 
 	private void updateStandardSettings(final AbstractUpdateSettingsRequest request, final AccessID accessId) {
@@ -144,11 +140,6 @@ public class SettingController extends AbstractController {
 			this.settingService.setClientMaxRowsSetting(accessId, clientMaxRowsSetting);
 		}
 
-		if (request.getNumFreeMoneyflows() != null) {
-			final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = new ClientNumFreeMoneyflowsSetting(
-					request.getNumFreeMoneyflows());
-			this.settingService.setClientNumFreeMoneyflowsSetting(accessId, clientNumFreeMoneyflowsSetting);
-		}
 	}
 
 }

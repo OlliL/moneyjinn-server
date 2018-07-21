@@ -12,7 +12,6 @@ import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -53,7 +52,6 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 		request.setDateFormat("YYYYMMDD");
 		request.setLanguage(2);
 		request.setMaxRows(10);
-		request.setNumFreeMoneyflows(20);
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
 		final AccessID accessId = new AccessID(0l);
@@ -63,13 +61,10 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
-		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
 	}
 
 	@Test

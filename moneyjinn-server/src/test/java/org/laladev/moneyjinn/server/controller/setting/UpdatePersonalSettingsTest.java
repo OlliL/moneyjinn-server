@@ -14,7 +14,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.model.setting.ClientNumFreeMoneyflowsSetting;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -61,7 +60,6 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		request.setDateFormat("YYYYMMDD");
 		request.setLanguage(2);
 		request.setMaxRows(10);
-		request.setNumFreeMoneyflows(20);
 
 		// Set password so the "new user" flag is reset
 		final UserID accessId = new UserID(UserTransportBuilder.ADMIN_ID);
@@ -74,13 +72,10 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
-		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assert.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
@@ -94,7 +89,6 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		request.setDateFormat("YYYYMMDD");
 		request.setLanguage(2);
 		request.setMaxRows(10);
-		request.setNumFreeMoneyflows(20);
 		request.setPassword("");
 
 		// Set password so the "new user" flag is reset
@@ -108,13 +102,10 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
-		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assert.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
@@ -128,7 +119,6 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		request.setDateFormat("YYYYMMDD");
 		request.setLanguage(2);
 		request.setMaxRows(10);
-		request.setNumFreeMoneyflows(20);
 		request.setPassword(UserTransportBuilder.USER2_PASSWORD);
 
 		// Set password so the "new user" flag is reset
@@ -142,13 +132,10 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
-		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assert.assertEquals(UserTransportBuilder.USER2_PASSWORD_SHA1, user.getPassword());
@@ -169,7 +156,6 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		request.setDateFormat("YYYYMMDD");
 		request.setLanguage(2);
 		request.setMaxRows(10);
-		request.setNumFreeMoneyflows(20);
 		request.setPassword(UserTransportBuilder.USER2_PASSWORD);
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
@@ -180,13 +166,10 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-		final ClientNumFreeMoneyflowsSetting clientNumFreeMoneyflowsSetting = this.settingService
-				.getClientNumFreeMoneyflowsSetting(accessId);
 
 		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
 		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
 		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
-		Assert.assertEquals(new Integer(20), clientNumFreeMoneyflowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(accessId);
 		Assert.assertEquals(UserTransportBuilder.USER2_PASSWORD_SHA1, user.getPassword());

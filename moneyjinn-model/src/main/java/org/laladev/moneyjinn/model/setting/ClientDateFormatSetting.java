@@ -1,16 +1,8 @@
 package org.laladev.moneyjinn.model.setting;
 
-import org.laladev.moneyjinn.model.access.User;
-
 /**
  * <p>
- * This Setting describes the maximum number of entities the user wants to see in the "default view"
- * when listing Entites ({@link User}, {@link Capitalsource}, ...) before the default switches to
- * "show nothing".
- * </p>
- * <p>
- * This helps to prevent showing a massive amount of data when navigating into the entity for just
- * looking up a specific entity
+ * This Setting describes how a date should be displayed in the client (Date Format)
  * </p>
  *
  * @author olivleh1
