@@ -707,6 +707,104 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-1.10"));
 	}
 
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Create_MSE_for_Moneyflow_2()
+			throws Exception {
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport insertTransport1 = new MoneyflowSplitEntryTransportBuilder()
+				.forMoneyflowSplitEntry1().build();
+		insertTransport1.setAmount(new BigDecimal(".10"));
+		insertTransport1.setComment("inserted1");
+		insertTransport1.setMoneyflowid(moneyflowId.getId());
+		final MoneyflowSplitEntryTransport insertTransport2 = new MoneyflowSplitEntryTransportBuilder()
+				.forMoneyflowSplitEntry1().build();
+		insertTransport2.setAmount(BigDecimal.TEN);
+		insertTransport2.setComment("inserted2");
+		insertTransport2.setMoneyflowid(moneyflowId.getId());
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport1, insertTransport2));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+	}
+
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_MSE_for_Moneyflow_1()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntriesMoneyflow1 = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.size(), 2);
+		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getId().getId(),
+				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID);
+		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getAmount(),
+				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_AMOUNT);
+		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getId().getId(),
+				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
+		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getAmount(),
+				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_AMOUNT);
+	}
+
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_MSE_for_Moneyflow_2()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount().compareTo(new BigDecimal(".10")), 0);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted1");
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(),
+				Long.valueOf(Long.sum(MoneyflowSplitEntryTransportBuilder.NEXT_ID.longValue(), 1L)));
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount().compareTo(BigDecimal.TEN), 0);
+		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted2");
+	}
+
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Do_Wrong_Stuff_For_Moneyflow_2()
+			throws Exception {
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		request.setMoneyflowTransport(transport);
+
+		// This belongs to Moneyflow 1 (must remain there)
+		request.setDeleteMoneyflowSplitEntryIds(
+				Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+
+		// This belongs to Moneyflow 1 (must remain untouched)
+		final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder()
+				.forMoneyflowSplitEntry2().build();
+		updateTransport.setAmount(new BigDecimal("-5.10"));
+		request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+	}
+
+	@Test
+	public void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected() throws Exception {
+		//
+		// first create a new Moneyflow-Split Entry set for Moneyflow 2 and validate that everything
+		// went OK
+		//
+		this.test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Create_MSE_for_Moneyflow_2();
+		this.test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_MSE_for_Moneyflow_2();
+
+		//
+		// Now Try to delete stuff which does not belong to this moneyflow - but in fact all sent
+		// data should be silently ignored/dropped
+		//
+		this.test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Do_Wrong_Stuff_For_Moneyflow_2();
+
+		//
+		// Now check that neither Moneyflow 1 nor Moneyflow 2 was touched by the forged data sent
+		// previously
+		//
+		this.test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_MSE_for_Moneyflow_1();
+		this.test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_MSE_for_Moneyflow_2();
+	}
+
 	@Test
 	public void test_SplitEntries_DeleteInsert_ChangesDone() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -753,6 +851,33 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		insertTransport.setAmount(new BigDecimal("10.10"));
 		insertTransport.setComment("inserted");
 		insertTransport.setMoneyflowid(moneyflowId.getId());
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
+		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_With_Wrong_MoneyflowId_GetsCorrected() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
+
+		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
+
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
+		request.setMoneyflowTransport(transport);
+
+		// Create a MSE Transport but for Moneyflow 1 - while we are going to make an Update to
+		// Moneyflow 2
+		final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder()
+				.forMoneyflowSplitEntry1().build();
+		insertTransport.setAmount(new BigDecimal("10.10"));
+		insertTransport.setComment("inserted");
 		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
 
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);

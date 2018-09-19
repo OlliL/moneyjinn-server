@@ -44,7 +44,8 @@
 		   SET amount                = #{amount}
 		      ,mpa_postingaccountid  = #{mpaPostingAccountId}
 		      ,comment               = #{comment}
-		 WHERE moneyflowsplitentryid = #{id}
+		 WHERE mmf_moneyflowid       = #{mmfMoneyflowId}
+		   AND moneyflowsplitentryid = #{id}
 		 LIMIT 1
 	</update>
 
