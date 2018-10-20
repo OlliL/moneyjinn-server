@@ -78,6 +78,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/predefmoneyflow/")
 public class PreDefMoneyflowController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IAccessRelationService accessRelationService;
 	@Inject
@@ -111,19 +112,26 @@ public class PreDefMoneyflowController extends AbstractController {
 	public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(
 			@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-		final Set<Character> initials = this.preDefMoneyflowService.getAllPreDefMoneyflowInitials(userId);
-		final Integer count = this.preDefMoneyflowService.countAllPreDefMoneyflows(userId);
 
 		List<PreDefMoneyflow> preDefMoneyflows = null;
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-		} else if (restriction != null && restriction.length() == 1) {
-			preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId,
-					restriction.toCharArray()[0]);
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+			} else if (restriction.length() == 1) {
+				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId,
+						restriction.toCharArray()[0]);
+			}
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			final Integer count = this.preDefMoneyflowService.countAllPreDefMoneyflows(userId);
+
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+			}
 		}
+
+		final Set<Character> initials = this.preDefMoneyflowService.getAllPreDefMoneyflowInitials(userId);
 
 		final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
 		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {

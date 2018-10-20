@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/group/")
 public class GroupController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IGroupService groupService;
 	@Inject
@@ -84,18 +85,25 @@ public class GroupController extends AbstractController {
 	@RequiresPermissionAdmin
 	public ShowGroupListResponse showGroupList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-		final Set<Character> initials = this.groupService.getAllGroupInitials();
-		final Integer count = this.groupService.countAllGroups();
 
 		List<Group> groups = null;
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			groups = this.groupService.getAllGroups();
-		} else if (restriction != null && restriction.length() == 1) {
-			groups = this.groupService.getAllGroupsByInitial(restriction.toCharArray()[0]);
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				groups = this.groupService.getAllGroups();
+			} else if (restriction.length() == 1) {
+				groups = this.groupService.getAllGroupsByInitial(restriction.toCharArray()[0]);
+			}
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			final Integer count = this.groupService.countAllGroups();
+
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				groups = this.groupService.getAllGroups();
+			}
 		}
+
+		final Set<Character> initials = this.groupService.getAllGroupInitials();
 
 		final ShowGroupListResponse response = new ShowGroupListResponse();
 		if (groups != null && !groups.isEmpty()) {

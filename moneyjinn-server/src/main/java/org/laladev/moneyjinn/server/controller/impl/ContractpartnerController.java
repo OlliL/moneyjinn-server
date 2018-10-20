@@ -73,6 +73,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartner/")
 public class ContractpartnerController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IAccessRelationService accessRelationService;
 	@Inject
@@ -145,34 +146,48 @@ public class ContractpartnerController extends AbstractController {
 
 	private ShowContractpartnerListResponse doShowContractpartnerList(final UserID userId, final String restriction,
 			final boolean currentlyValid) {
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
 		Set<Character> initials;
-		Integer count;
+
 		if (currentlyValid) {
 			initials = this.contractpartnerService.getAllContractpartnerInitialsByDateRange(userId, now, now);
-			count = this.contractpartnerService.countAllContractpartnersByDateRange(userId, now, now);
 		} else {
 			initials = this.contractpartnerService.getAllContractpartnerInitials(userId);
-			count = this.contractpartnerService.countAllContractpartners(userId);
 		}
 
 		List<Contractpartner> contractpartners = null;
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			if (currentlyValid) {
-				contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, now, now);
-			} else {
-				contractpartners = this.contractpartnerService.getAllContractpartners(userId);
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				if (currentlyValid) {
+					contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, now, now);
+				} else {
+					contractpartners = this.contractpartnerService.getAllContractpartners(userId);
+				}
+			} else if (restriction.length() == 1) {
+				if (currentlyValid) {
+					contractpartners = this.contractpartnerService.getAllContractpartnersByInitialAndDateRange(userId,
+							restriction.toCharArray()[0], now, now);
+				} else {
+					contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId,
+							restriction.toCharArray()[0]);
+				}
 			}
-		} else if (restriction != null && restriction.length() == 1) {
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			Integer count;
 			if (currentlyValid) {
-				contractpartners = this.contractpartnerService.getAllContractpartnersByInitialAndDateRange(userId,
-						restriction.toCharArray()[0], now, now);
+				count = this.contractpartnerService.countAllContractpartnersByDateRange(userId, now, now);
 			} else {
-				contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId,
-						restriction.toCharArray()[0]);
+				count = this.contractpartnerService.countAllContractpartners(userId);
+			}
+
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				if (currentlyValid) {
+					contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, now, now);
+				} else {
+					contractpartners = this.contractpartnerService.getAllContractpartners(userId);
+				}
 			}
 		}
 

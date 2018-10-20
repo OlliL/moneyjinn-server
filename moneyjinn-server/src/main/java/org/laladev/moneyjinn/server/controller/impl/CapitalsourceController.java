@@ -67,6 +67,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/capitalsource/")
 public class CapitalsourceController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IAccessRelationService accessRelationService;
 	@Inject
@@ -134,38 +135,53 @@ public class CapitalsourceController extends AbstractController {
 
 	private ShowCapitalsourceListResponse doShowCapitalsourceList(final UserID userId, final String restriction,
 			final boolean currentlyValid) {
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
 		final LocalDate now = LocalDate.now();
 		Set<Character> initials;
-		Integer count;
+
 		if (currentlyValid) {
 			initials = this.capitalsourceService.getAllCapitalsourceInitialsByDateRange(userId, now, now);
-			count = this.capitalsourceService.countAllCapitalsourcesByDateRange(userId, now, now);
 		} else {
 			initials = this.capitalsourceService.getAllCapitalsourceInitials(userId);
-			count = this.capitalsourceService.countAllCapitalsources(userId);
 		}
 
 		List<Capitalsource> capitalsources = null;
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			if (currentlyValid) {
-				capitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, now, now);
-			} else {
-				capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				if (currentlyValid) {
+					capitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, now, now);
+				} else {
+					capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+				}
+			} else if (restriction.length() == 1) {
+				if (currentlyValid) {
+					capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitialAndDateRange(userId,
+							restriction.toCharArray()[0], now, now);
+				} else {
+					capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitial(userId,
+							restriction.toCharArray()[0]);
+				}
 			}
-		} else if (restriction != null && restriction.length() == 1) {
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			Integer count;
 			if (currentlyValid) {
-				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitialAndDateRange(userId,
-						restriction.toCharArray()[0], now, now);
+				count = this.capitalsourceService.countAllCapitalsourcesByDateRange(userId, now, now);
 			} else {
-				capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitial(userId,
-						restriction.toCharArray()[0]);
+				count = this.capitalsourceService.countAllCapitalsources(userId);
+			}
+
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				if (currentlyValid) {
+					capitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, now, now);
+				} else {
+					capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+				}
 			}
 		}
 
 		final ShowCapitalsourceListResponse response = new ShowCapitalsourceListResponse();
+
 		if (capitalsources != null && !capitalsources.isEmpty()) {
 			response.setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
 		}

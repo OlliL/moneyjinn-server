@@ -62,6 +62,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/postingaccount/")
 public class PostingAccountController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IPostingAccountService postingAccountService;
 	@Inject
@@ -86,24 +87,31 @@ public class PostingAccountController extends AbstractController {
 	public ShowPostingAccountListResponse showPostingAccountList(
 			@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
-		final Integer count = this.postingAccountService.countAllPostingAccounts();
 
 		List<PostingAccount> postingAccounts = null;
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		} else if (restriction != null && restriction.length() == 1) {
-			postingAccounts = this.postingAccountService.getAllPostingAccountsByInitial(restriction.toCharArray()[0]);
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				postingAccounts = this.postingAccountService.getAllPostingAccounts();
+			} else if (restriction.length() == 1) {
+				postingAccounts = this.postingAccountService
+						.getAllPostingAccountsByInitial(restriction.toCharArray()[0]);
+			}
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			final Integer count = this.postingAccountService.countAllPostingAccounts();
+
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				postingAccounts = this.postingAccountService.getAllPostingAccounts();
+			}
 		}
+
+		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
 
 		final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
 		if (postingAccounts != null && !postingAccounts.isEmpty()) {
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		}
-
 		if (initials != null && !initials.isEmpty()) {
 			response.setInitials(initials);
 		}
