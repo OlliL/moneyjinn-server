@@ -763,7 +763,6 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Do_Wrong_Stuff_For_Moneyflow_2()
 			throws Exception {
-		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
 		final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
 		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
 		request.setMoneyflowTransport(transport);
