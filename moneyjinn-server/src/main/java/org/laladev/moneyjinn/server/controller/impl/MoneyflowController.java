@@ -519,19 +519,15 @@ public class MoneyflowController extends AbstractController {
 			if (deleteMoneyflowSplitEntryIds != null && deleteMoneyflowSplitEntryIds.contains(entry.getId())) {
 				entryIterator.remove();
 			} else {
-				if (updateMoneyflowSplitEntries != null) {
-					final MoneyflowSplitEntry matchingUpdateEntry = updateMoneyflowSplitEntries.stream()
-							.filter(mse -> mse.getId().equals(entry.getId())).findAny().orElse(null);
-					if (matchingUpdateEntry != null) {
-						entryIterator.set(matchingUpdateEntry);
-					}
+				final MoneyflowSplitEntry matchingUpdateEntry = updateMoneyflowSplitEntries.stream()
+						.filter(mse -> mse.getId().equals(entry.getId())).findAny().orElse(null);
+				if (matchingUpdateEntry != null) {
+					entryIterator.set(matchingUpdateEntry);
 				}
 			}
 		}
 
-		if (insertMoneyflowSplitEntries != null) {
-			moneyflowSplitEntries.addAll(insertMoneyflowSplitEntries);
-		}
+		moneyflowSplitEntries.addAll(insertMoneyflowSplitEntries);
 
 		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
 
