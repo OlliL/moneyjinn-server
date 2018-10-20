@@ -80,6 +80,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/user/")
 public class UserController extends AbstractController {
+	private static final String RESTRICTION_ALL = "all";
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -160,21 +161,26 @@ public class UserController extends AbstractController {
 	@RequiresPermissionAdmin
 	public ShowUserListResponse showUserList(@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-		final Set<Character> initials = this.userService.getAllUserInitials();
-		final Integer count = this.userService.countAllUsers();
 
 		List<User> users = null;
+		if (restriction != null) {
+			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+				users = this.userService.getAllUsers();
+			} else if (restriction.length() == 1) {
+				users = this.userService.getAllUsersByInitial(restriction.toCharArray()[0]);
+			}
+		} else {
+			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
+			final Integer count = this.userService.countAllUsers();
 
-		if ((restriction != null && restriction.equals(String.valueOf("all")))
-				|| (restriction == null && clientMaxRowsSetting.getSetting().compareTo(count) >= 0)) {
-			users = this.userService.getAllUsers();
-		} else if (restriction != null && restriction.length() == 1) {
-			users = this.userService.getAllUsersByInitial(restriction.toCharArray()[0]);
+			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+				users = this.userService.getAllUsers();
+			}
 		}
 
 		final ShowUserListResponse response = new ShowUserListResponse();
 		final Set<Group> groupSet = new HashSet<>();
+
 		final List<AccessRelation> accessRelationList = new ArrayList<>();
 		if (users != null && !users.isEmpty()) {
 			for (final User user : users) {
@@ -193,6 +199,8 @@ public class UserController extends AbstractController {
 			response.setAccessRelationTransports(super.mapList(accessRelationList, AccessRelationTransport.class));
 			response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
 		}
+
+		final Set<Character> initials = this.userService.getAllUserInitials();
 		response.setInitials(initials);
 
 		return response;
