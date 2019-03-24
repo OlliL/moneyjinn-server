@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.model.capitalsource;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without

@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.config;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-//Copyright (c) 2015-2016 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015-2016 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
