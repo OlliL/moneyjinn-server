@@ -29,24 +29,34 @@ package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 
 import java.util.List;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+
 @XmlRootElement(name = "importImportedMoneyflowRequest")
 public class ImportImportedMoneyflowRequest extends AbstractRequest {
-	@XmlElement(name = "importedMoneyflowTransport")
-	private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
+	private ImportedMoneyflowTransport importedMoneyflowTransport;
+	@XmlElement(name = "insertMoneyflowSplitEntryTransport")
+	public List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports;
 
-	public final List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {
-		return this.importedMoneyflowTransports;
+	public final ImportedMoneyflowTransport getImportedMoneyflowTransport() {
+		return this.importedMoneyflowTransport;
 	}
 
-	public final void setImportedMoneyflowTransports(
-			final List<ImportedMoneyflowTransport> importedMoneyflowTransports) {
-		this.importedMoneyflowTransports = importedMoneyflowTransports;
+	public final void setImportedMoneyflowTransport(final ImportedMoneyflowTransport importedMoneyflowTransport) {
+		this.importedMoneyflowTransport = importedMoneyflowTransport;
+	}
+
+	public final List<MoneyflowSplitEntryTransport> getInsertMoneyflowSplitEntryTransports() {
+		return this.insertMoneyflowSplitEntryTransports;
+	}
+
+	public final void setInsertMoneyflowSplitEntryTransports(
+			final List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports) {
+		this.insertMoneyflowSplitEntryTransports = insertMoneyflowSplitEntryTransports;
 	}
 
 	@Override
@@ -54,7 +64,9 @@ public class ImportImportedMoneyflowRequest extends AbstractRequest {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((this.importedMoneyflowTransports == null) ? 0 : this.importedMoneyflowTransports.hashCode());
+				+ ((this.importedMoneyflowTransport == null) ? 0 : this.importedMoneyflowTransport.hashCode());
+		result = prime * result + ((this.insertMoneyflowSplitEntryTransports == null) ? 0
+				: this.insertMoneyflowSplitEntryTransports.hashCode());
 		return result;
 	}
 
@@ -70,14 +82,32 @@ public class ImportImportedMoneyflowRequest extends AbstractRequest {
 			return false;
 		}
 		final ImportImportedMoneyflowRequest other = (ImportImportedMoneyflowRequest) obj;
-		if (this.importedMoneyflowTransports == null) {
-			if (other.importedMoneyflowTransports != null) {
+		if (this.importedMoneyflowTransport == null) {
+			if (other.importedMoneyflowTransport != null) {
 				return false;
 			}
-		} else if (!this.importedMoneyflowTransports.equals(other.importedMoneyflowTransports)) {
+		} else if (!this.importedMoneyflowTransport.equals(other.importedMoneyflowTransport)) {
+			return false;
+		}
+		if (this.insertMoneyflowSplitEntryTransports == null) {
+			if (other.insertMoneyflowSplitEntryTransports != null) {
+				return false;
+			}
+		} else if (!this.insertMoneyflowSplitEntryTransports.equals(other.insertMoneyflowSplitEntryTransports)) {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ImportImportedMoneyflowRequest [importedMoneyflowTransport=");
+		builder.append(this.importedMoneyflowTransport);
+		builder.append(", insertMoneyflowSplitEntryTransports=");
+		builder.append(this.insertMoneyflowSplitEntryTransports);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }
