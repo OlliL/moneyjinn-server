@@ -4,7 +4,7 @@ import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
 //
-//Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
