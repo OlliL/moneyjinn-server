@@ -1,6 +1,6 @@
 //
 //Copyright (c) 2015 Dennis Garske <d.garske@gmx.de>
-//Copyright (c) 2017 Oliver Lehmann <oliver@laladev.org>
+//Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
 //
 //All rights reserved.
 //
