@@ -50,6 +50,7 @@ import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -258,13 +259,109 @@ public class ImportedMoneyflowController extends AbstractController {
 				ImportedMoneyflowStatus.IGNORED);
 	}
 
+	/**
+	 * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity
+	 * is modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries
+	 * where provided with data from the first MoneyflowSplitEntry.
+	 *
+	 * @param moneyflow
+	 *            Moneyflow
+	 * @param moneyflowSplitEntries
+	 *            MoneyflowSplitEntries
+	 */
+	private void prepareForValidityCheck(final Moneyflow moneyflow,
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+		final LocalDate bookingDate = moneyflow.getBookingDate();
+
+		final UserID userId = moneyflow.getUser().getId();
+		final Group group = moneyflow.getGroup();
+
+		if (bookingDate != null) {
+
+			final AccessRelation accessRelation = this.accessRelationService
+					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+			// Only modify Capitalsources or Contractpartner if the Bookingdate is within the
+			// current group assignment validity period
+			if (!bookingDate.isBefore(accessRelation.getValidFrom())
+					&& !bookingDate.isAfter(accessRelation.getValidTil())) {
+				// Check if used Capitalsource is valid at bookingDate - if not, change its
+				// validity so it fits.
+				if (moneyflow.getCapitalsource() != null) {
+					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+							group.getId(), moneyflow.getCapitalsource().getId());
+
+					if (capitalsource != null) {
+						final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
+								.equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
+
+						if (userMayUseCapitalsource) {
+							final boolean bookingDateIsBeforeValidity = bookingDate
+									.isBefore(capitalsource.getValidFrom());
+							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
+
+							if (bookingDateIsBeforeValidity) {
+								capitalsource.setValidFrom(bookingDate);
+							}
+							if (bookingDateIsAfterValidity) {
+								capitalsource.setValidTil(bookingDate);
+							}
+							if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+								this.capitalsourceService.updateCapitalsource(capitalsource);
+
+							}
+
+						}
+					}
+				}
+
+				// Check if used Contractpartner is valid at bookingDate - if not, change its
+				// validity so it fits.
+				if (moneyflow.getContractpartner() != null) {
+					final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+							moneyflow.getContractpartner().getId());
+
+					if (contractpartner != null) {
+						final boolean bookingDateIsBeforeValidity = bookingDate
+								.isBefore(contractpartner.getValidFrom());
+						final boolean bookingDateIsAfterValidity = bookingDate.isAfter(contractpartner.getValidTil());
+
+						if (bookingDateIsBeforeValidity) {
+							contractpartner.setValidFrom(bookingDate);
+						}
+						if (bookingDateIsAfterValidity) {
+							contractpartner.setValidTil(bookingDate);
+						}
+						if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+							this.contractpartnerService.updateContractpartner(contractpartner);
+
+						}
+					}
+				}
+			}
+		}
+
+		// use the comment and postingaccount of the 1st split booking for the main booking if
+		// nothing is specified
+		if (!moneyflowSplitEntries.isEmpty()) {
+			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
+
+			if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
+				moneyflow.setComment(moneyflowSplitEntry.getComment());
+			}
+
+			if (moneyflow.getPostingAccount() == null) {
+				moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
+			}
+		}
+	}
+
 	@RequestMapping(value = "importImportedMoneyflows", method = { RequestMethod.POST })
 	@RequiresAuthorization
 	public ValidationResponse importImportedMoneyflows(@RequestBody final ImportImportedMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
 		final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
 				ImportedMoneyflow.class);
-		// TODO: book it!
+
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
 				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 
@@ -275,6 +372,8 @@ public class ImportedMoneyflowController extends AbstractController {
 		importedMoneyflow.setGroup(group);
 
 		final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();
+		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
+
 		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
 		if (validationResult.isValid()) {
