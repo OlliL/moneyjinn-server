@@ -27,10 +27,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 	@Inject
-	IImportedMoneyflowService importedMoneyflowService;
-
+	private IImportedMoneyflowService importedMoneyflowService;
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 
 	private final HttpMethod method = HttpMethod.POST;
 
