@@ -33,10 +33,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class ShowEventListTest extends AbstractControllerTest {
 
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
-
+	private IMonthlySettlementService monthlySettlementService;
 	@Inject
-	IImportedMoneyflowService importedMoneyflowService;
+	private IImportedMoneyflowService importedMoneyflowService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
@@ -73,7 +72,8 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
-		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowEventListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -86,7 +86,8 @@ public class ShowEventListTest extends AbstractControllerTest {
 		final MonthlySettlement monthlySettlement = new MonthlySettlement();
 		monthlySettlement.setYear((short) lastMonth.getYear());
 		monthlySettlement.setMonth(lastMonth.getMonth());
-		monthlySettlement.setCapitalsource(new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
+		monthlySettlement.setCapitalsource(
+				new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
 		monthlySettlement.setAmount(BigDecimal.TEN);
 		monthlySettlement.setUser(new User(new UserID(UserTransportBuilder.USER1_ID)));
 		monthlySettlement.setGroup(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
@@ -98,14 +99,16 @@ public class ShowEventListTest extends AbstractControllerTest {
 		expected.setMonthlySettlementNumberOfAddableSettlements(3);
 		expected.setNumberOfImportedMoneyflows(2);
 
-		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowEventListResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void test_deletedImportedMoneyflow_isIgnored() throws Exception {
-		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowEventListResponse.class);
 
 		Assert.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
 
@@ -119,13 +122,15 @@ public class ShowEventListTest extends AbstractControllerTest {
 
 	@Test
 	public void test_importedImportedMoneyflow_isIgnored() throws Exception {
-		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
+		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowEventListResponse.class);
 
 		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
-		int numberOfImportedMoneyflows = actual.getNumberOfImportedMoneyflows().intValue();
+		final int numberOfImportedMoneyflows = actual.getNumberOfImportedMoneyflows().intValue();
 
 		this.importedMoneyflowService.updateImportedMoneyflowStatus(new UserID(UserTransportBuilder.USER1_ID),
-				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID), ImportedMoneyflowStatus.PROCESSED);
+				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID),
+				ImportedMoneyflowStatus.PROCESSED);
 
 		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 

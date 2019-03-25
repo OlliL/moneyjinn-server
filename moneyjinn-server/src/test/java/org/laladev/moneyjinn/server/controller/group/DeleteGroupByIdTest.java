@@ -18,7 +18,7 @@ import org.springframework.http.HttpMethod;
 public class DeleteGroupByIdTest extends AbstractControllerTest {
 
 	@Inject
-	IGroupService groupService;
+	private IGroupService groupService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

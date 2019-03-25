@@ -27,10 +27,9 @@ import org.springframework.http.HttpMethod;
 public class UpdateGroupTest extends AbstractControllerTest {
 
 	@Inject
-	IGroupService groupService;
-
+	private IGroupService groupService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;

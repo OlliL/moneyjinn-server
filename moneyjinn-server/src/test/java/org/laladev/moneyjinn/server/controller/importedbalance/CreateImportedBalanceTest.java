@@ -31,10 +31,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class CreateImportedBalanceTest extends AbstractControllerTest {
 
 	@Inject
-	IImportedBalanceService importedBalanceService;
-
+	private IImportedBalanceService importedBalanceService;
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 
 	private final HttpMethod method = HttpMethod.POST;
 

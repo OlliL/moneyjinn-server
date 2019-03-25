@@ -14,11 +14,17 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ImportImportedMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
@@ -27,7 +33,9 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.DateUtil;
+import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
+import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -35,6 +43,7 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
@@ -43,16 +52,15 @@ import org.springframework.test.context.jdbc.Sql;
 public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 	@Inject
-	IImportedMoneyflowService importedMoneyflowService;
-
+	private IImportedMoneyflowService importedMoneyflowService;
 	@Inject
-	IMoneyflowService moneyflowService;
-
+	private IMoneyflowService moneyflowService;
 	@Inject
-	ICapitalsourceService capitalsourceService;
-
+	private ICapitalsourceService capitalsourceService;
 	@Inject
-	IContractpartnerAccountService contractpartnerAccountService;
+	private IContractpartnerService contractpartnerService;
+	@Inject
+	private IContractpartnerAccountService contractpartnerAccountService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;
@@ -80,9 +88,16 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	private void testError(final ImportedMoneyflowTransport transport, final ErrorCode... errorCodes) throws Exception {
+		this.testError(transport, new ArrayList<>(), errorCodes);
+	}
+
+	private void testError(final ImportedMoneyflowTransport transport,
+			final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports, final ErrorCode... errorCodes)
+			throws Exception {
 		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
 
 		request.setImportedMoneyflowTransport(transport);
+		request.setInsertMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
 
 		final ValidationResponse expected = new ValidationResponse();
 		expected.setResult(Boolean.FALSE);
@@ -373,6 +388,109 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceID = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+		request.setImportedMoneyflowTransport(transport);
+
+		final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+		Assert.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assert.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
+	}
+
+	@Test
+	public void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final CapitalsourceID capitalsourceID = new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		transport.setCapitalsourceid(capitalsourceID.getId());
+		transport.setBookingdate(DateUtil.getGMTDate("2000-01-01"));
+
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+		request.setImportedMoneyflowTransport(transport);
+
+		final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+				capitalsourceID);
+		Assert.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assert.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
+	}
+
+	@Test
+	public void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final ContractpartnerID contractpartnerID = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
+		transport.setContractpartnerid(contractpartnerID.getId());
+
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+		request.setImportedMoneyflowTransport(transport);
+
+		final Contractpartner contractpartnerOrig = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+		Assert.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assert.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidTil());
+	}
+
+	@Test
+	public void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final ContractpartnerID contractpartnerID = new ContractpartnerID(
+				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		transport.setBookingdate(DateUtil.getGMTDate("2000-01-01"));
+		transport.setContractpartnerid(contractpartnerID.getId());
+
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+		request.setImportedMoneyflowTransport(transport);
+
+		final Contractpartner contractpartnerOrig = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+				contractpartnerID);
+		Assert.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assert.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidFrom());
+	}
+
+	@Test
 	public void test_emptyComment_Error() throws Exception {
 		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
 				.forImportedMoneyflow1ToImport().build();
@@ -409,15 +527,6 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_noLongerValidCapitalsource_Error() throws Exception {
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
-				.forImportedMoneyflow1ToImport().build();
-		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
-
-		this.testError(transport, ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
-	}
-
-	@Test
 	public void test_nullContractpartner_Error() throws Exception {
 		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
 				.forImportedMoneyflow1ToImport().build();
@@ -433,16 +542,6 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-	}
-
-	@Test
-	public void test_noLongerValidContractpartner_Error() throws Exception {
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
-				.forImportedMoneyflow1ToImport().build();
-		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
-		transport.setBookingdate(DateUtil.getGMTDate("2011-01-01"));
-
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 	}
 
 	@Test
@@ -517,6 +616,175 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 		transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
 
 		this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	private MoneyflowSplitEntryTransport getMseTransport2(final MoneyflowTransport transport) {
+		return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+				.withComment("comment2").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)
+				.build();
+	}
+
+	private MoneyflowSplitEntryTransport getMseTransport1(final MoneyflowTransport transport) {
+		return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+				.withComment("comment1").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID)
+				.build();
+	}
+
+	@Test
+	public void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(transport.getAmount());
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
+				ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
+	}
+
+	@Test
+	public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
+			throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
+
+		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		transport.setComment(null);
+		transport.setPostingaccountid(null);
+		request.setImportedMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(mseTransport1, mseTransport2));
+
+		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+
+		Assert.assertNotNull(moneyflow);
+		Assert.assertEquals(mseTransport1.getComment(), moneyflow.getComment());
+		Assert.assertEquals(mseTransport1.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setComment("");
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(BigDecimal.ZERO);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	// make sure it 0 is compared with compareTo not with equals
+	@Test
+	public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(new BigDecimal("0.00000"));
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setComment(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setAmount(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+		mseTransport2.setAmount(transport.getAmount());
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
+	}
+
+	@Test
+	public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setPostingaccountid(null);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+	}
+
+	// TODO implement me
+	@Test
+	public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
+		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
+				.forImportedMoneyflow1ToImport().build();
+		request.setMoneyflowTransport(transport);
+
+		final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
+		mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
+		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
+
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		transport.setId(null);
+		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
 	@Test

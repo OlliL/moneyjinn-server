@@ -19,7 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 
 	@Inject
-	IPostingAccountService postingAccountService;
+	private IPostingAccountService postingAccountService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

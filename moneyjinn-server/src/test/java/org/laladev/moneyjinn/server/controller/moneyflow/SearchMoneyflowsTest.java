@@ -36,10 +36,9 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 	private static final Short SHORT_1 = (short) 1;
 
 	@Inject
-	IMoneyflowService moneyflowService;
-
+	private IMoneyflowService moneyflowService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;
@@ -86,10 +85,12 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 
 	private void assertEquals(final SearchMoneyflowsResponse expected, final SearchMoneyflowsResponse actual) {
 		if (expected.getMoneyflowSearchResultTransports() != null) {
-			Collections.sort(expected.getMoneyflowSearchResultTransports(), new MoneyflowSearchResultTransportComparator());
+			Collections.sort(expected.getMoneyflowSearchResultTransports(),
+					new MoneyflowSearchResultTransportComparator());
 		}
 		if (actual.getMoneyflowSearchResultTransports() != null) {
-			Collections.sort(actual.getMoneyflowSearchResultTransports(), new MoneyflowSearchResultTransportComparator());
+			Collections.sort(actual.getMoneyflowSearchResultTransports(),
+					new MoneyflowSearchResultTransportComparator());
 		}
 
 		Assert.assertEquals(expected, actual);
@@ -159,7 +160,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -175,10 +177,12 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009)
+				.withAmount("-10.00").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -195,23 +199,24 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(5).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(6).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(7).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(8).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(9).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(10).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(11).withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(5)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(6)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(7)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(8)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(9)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(10)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withMonth(11)
+				.withAmount("-10.00").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -227,16 +232,24 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(5).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(6).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(7).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(8).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(9).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(10).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(11).withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(5)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(6).withAmount("10.00")
+				.withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(7)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(8).withAmount("10.00")
+				.withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(9)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(10)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withMonth(11)
+				.withAmount("-10.00").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -250,16 +263,19 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withAmount("15.10").withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME).withAmount("-5.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withAmount("15.10")
+				.withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME).withAmount("-5.00")
+				.withComment("generated").build());
 
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -274,26 +290,27 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2008).withAmount("10.10")
-						.withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2009).withAmount("10.00")
-						.withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2010).withAmount("-5.00")
-						.withComment("generated").build());
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID)
-						.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME).withYear(2010).withAmount("-5.00")
-						.withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2008)
+				.withAmount("10.10").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2009)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME).withYear(2010)
+				.withAmount("-5.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder()
+				.withContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID)
+				.withContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME).withYear(2010)
+				.withAmount("-5.00").withComment("generated").build());
 
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -308,7 +325,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -324,7 +342,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -340,7 +359,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -356,7 +376,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -373,7 +394,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -389,7 +411,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -404,7 +427,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -420,7 +444,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -437,7 +462,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		this.fillYearlySearchGenerated(expected);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -452,11 +478,14 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withAmount("-50.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010).withAmount("-30.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009)
+				.withAmount("-50.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010)
+				.withAmount("-30.00").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -471,11 +500,14 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
 		// Moneyflow Split Entries suppot checked here -1.10 -> -1.00
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withAmount("-1.00").withComment("split1").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008).withAmount("10.10").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009)
+				.withAmount("-1.00").withComment("split1").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008)
+				.withAmount("10.10").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -489,13 +521,16 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports
-				.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withAmount("8.90").withComment("split2,split1,generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008).withAmount("10.10").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010).withAmount("-5.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009)
+				.withAmount("8.90").withComment("split2,split1,generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008)
+				.withAmount("10.10").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010)
+				.withAmount("-5.00").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
@@ -511,19 +546,24 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008).withAmount("10.10").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008)
+				.withAmount("10.10").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		this.assertEquals(expected, actual);
 	}
 
 	private void fillYearlySearchGenerated(final SearchMoneyflowsResponse expected) {
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009).withAmount("10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010).withAmount("-10.00").withComment("generated").build());
-		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008).withAmount("10.10").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2009)
+				.withAmount("10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2010)
+				.withAmount("-10.00").withComment("generated").build());
+		moneyflowSearchResultTransports.add(new MoneyflowSearchResultTransportBuilder().withYear(2008)
+				.withAmount("10.10").withComment("generated").build());
 		expected.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
 	}
 
@@ -557,11 +597,13 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		validationItemTransport1.setError(ErrorCode.NO_SEARCH_CRITERIA_ENTERED.getErrorCode());
 		final ValidationItemTransport validationItemTransport2 = new ValidationItemTransport();
 		validationItemTransport2.setError(ErrorCode.NO_GROUPING_CRITERIA_GIVEN.getErrorCode());
-		final List<ValidationItemTransport> validationItemTransports = Arrays.asList(validationItemTransport1, validationItemTransport2);
+		final List<ValidationItemTransport> validationItemTransports = Arrays.asList(validationItemTransport1,
+				validationItemTransport2);
 		expected.setValidationItemTransports(validationItemTransports);
 		expected.setResult(Boolean.FALSE);
 
-		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false, SearchMoneyflowsResponse.class);
+		final SearchMoneyflowsResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				SearchMoneyflowsResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

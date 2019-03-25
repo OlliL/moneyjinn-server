@@ -1,5 +1,10 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,22 +22,14 @@ import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-
 public class UpdateContractpartnerTest extends AbstractControllerTest {
 
 	@Inject
-	IContractpartnerService contractpartnerService;
-
-	@Inject
-	IAccessRelationService accessRelationService;
+	private IContractpartnerService contractpartnerService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;

@@ -31,7 +31,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private IMonthlySettlementService monthlySettlementService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;

@@ -1,5 +1,11 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,23 +22,14 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CreateContractpartnerTest extends AbstractControllerTest {
 
 	@Inject
-	IContractpartnerService contractpartnerService;
-
-	@Inject
-	IAccessRelationService accessRelationService;
+	private IContractpartnerService contractpartnerService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;
@@ -122,7 +119,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected,actual);
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -148,7 +145,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected,actual);
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -175,7 +172,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected,actual);
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -208,7 +205,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected,actual);
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
@@ -257,7 +254,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected,actual);
+		Assert.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);

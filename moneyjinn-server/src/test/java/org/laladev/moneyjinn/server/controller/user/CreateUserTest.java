@@ -30,16 +30,16 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
+//import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
 
 public class CreateUserTest extends AbstractControllerTest {
 
 	@Inject
-	IUserService userService;
-
+	private IUserService userService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;

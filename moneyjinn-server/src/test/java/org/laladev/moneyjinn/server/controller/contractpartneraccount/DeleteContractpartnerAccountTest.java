@@ -19,7 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
 
 	@Inject
-	IContractpartnerAccountService contractpartnerAccountService;
+	private IContractpartnerAccountService contractpartnerAccountService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

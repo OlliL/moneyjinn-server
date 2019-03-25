@@ -30,10 +30,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 
 	@Inject
-	IContractpartnerAccountService contractpartnerAccountService;
-
+	private IContractpartnerAccountService contractpartnerAccountService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;

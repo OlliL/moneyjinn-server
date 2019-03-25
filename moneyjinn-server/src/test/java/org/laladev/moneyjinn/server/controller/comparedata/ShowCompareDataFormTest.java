@@ -22,7 +22,6 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -30,9 +29,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class ShowCompareDataFormTest extends AbstractControllerTest {
 
 	@Inject
-	ISettingService settingService;
-	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private ISettingService settingService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
@@ -82,7 +79,8 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 	public void test_noSetting_defaultsResponse() throws Exception {
 		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 
-		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowCompareDataFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -99,7 +97,8 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 				new CompareDataFormatID(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID));
 		this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
 
-		final ClientCompareDataSelectedSourceIsFile settingSource = new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE);
+		final ClientCompareDataSelectedSourceIsFile settingSource = new ClientCompareDataSelectedSourceIsFile(
+				Boolean.TRUE);
 		this.settingService.setClientCompareDataSelectedSourceIsFile(userId, settingSource);
 
 		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
@@ -107,7 +106,8 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 		expected.setSelectedDataFormat(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
 		expected.setSelectedSourceIsFile((short) 1);
 
-		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false, ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+				ShowCompareDataFormResponse.class);
 
 		Assert.assertEquals(expected, actual);
 	}

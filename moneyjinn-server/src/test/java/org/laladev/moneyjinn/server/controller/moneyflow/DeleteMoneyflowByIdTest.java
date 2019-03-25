@@ -25,11 +25,11 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 	@Inject
-	IMoneyflowService moneyflowService;
+	private IMoneyflowService moneyflowService;
 	@Inject
-	IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
 	@Inject
-	IMoneyflowReceiptService moneyflowReceiptService;
+	private IMoneyflowReceiptService moneyflowReceiptService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;
@@ -71,10 +71,11 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 		Assert.assertNull(moneyflow);
 
-		MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
+		final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
 		Assert.assertNull(moneyflowReceipt);
 
-		List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId, moneyflowId);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assert.assertTrue(moneyflowSplitEntries.isEmpty());
 	}
 
@@ -87,7 +88,8 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		Assert.assertNull(moneyflow);
 
-		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true, Object.class);
+		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true,
+				Object.class);
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 

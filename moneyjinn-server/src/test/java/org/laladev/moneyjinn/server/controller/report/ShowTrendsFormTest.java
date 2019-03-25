@@ -28,9 +28,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class ShowTrendsFormTest extends AbstractControllerTest {
 
 	@Inject
-	ISettingService settingService;
+	private ISettingService settingService;
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private IMonthlySettlementService monthlySettlementService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;

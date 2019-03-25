@@ -19,7 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
 
 	@Inject
-	IPreDefMoneyflowService preDefMoneyflowService;
+	private IPreDefMoneyflowService preDefMoneyflowService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

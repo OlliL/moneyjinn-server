@@ -28,10 +28,9 @@ import org.springframework.test.context.jdbc.Sql;
 public class UpdatePostingAccountTest extends AbstractControllerTest {
 
 	@Inject
-	IPostingAccountService postingAccountService;
-
+	private IPostingAccountService postingAccountService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;

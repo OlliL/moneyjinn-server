@@ -21,7 +21,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 
 	@Inject
-	IMonthlySettlementService monthlySettlementService;
+	private IMonthlySettlementService monthlySettlementService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

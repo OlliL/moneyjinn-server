@@ -26,10 +26,9 @@ import org.springframework.http.HttpMethod;
 public class CreateGroupTest extends AbstractControllerTest {
 
 	@Inject
-	IGroupService groupService;
-
+	private IGroupService groupService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;

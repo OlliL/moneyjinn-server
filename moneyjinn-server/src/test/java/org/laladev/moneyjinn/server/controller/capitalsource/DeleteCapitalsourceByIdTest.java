@@ -22,7 +22,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
 
 	@Inject
-	ICapitalsourceService capitalsourceService;
+	private ICapitalsourceService capitalsourceService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

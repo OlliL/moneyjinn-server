@@ -39,10 +39,9 @@ import org.springframework.http.HttpMethod;
 public class UpdateUserTest extends AbstractControllerTest {
 
 	@Inject
-	IUserService userService;
-
+	private IUserService userService;
 	@Inject
-	IAccessRelationService accessRelationService;
+	private IAccessRelationService accessRelationService;
 
 	private final AccessID accessIDUser1 = new AccessID(UserTransportBuilder.USER1_ID);
 	private final AccessID accessIDUser2 = new AccessID(UserTransportBuilder.USER2_ID);
@@ -224,7 +223,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 
 	private void help_AccessRelation_Testing(final UserTransport transport,
 			final AccessRelationTransport accessRelationTransport, final List<AccessRelation> expectedAccessRelations)
-					throws Exception {
+			throws Exception {
 		final UpdateUserRequest request = new UpdateUserRequest();
 
 		request.setUserTransport(transport);
