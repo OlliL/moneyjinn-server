@@ -216,6 +216,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 	@Test
 	public void test_emptyBankAccount_Successfull() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final List<CapitalsourceID> capitalsourceIds = Arrays
+				.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 
 		final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
 
@@ -226,6 +228,12 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 		request.setImportedMoneyflowTransport(transport);
 
+		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+						ImportedMoneyflowStatus.PROCESSED);
+		Assert.assertNotNull(importedMoneyflows);
+		final int sizeBeforeImportInStateProcessed = importedMoneyflows.size();
+
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
@@ -233,6 +241,13 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
 		Assert.assertNotNull(moneyflow);
 		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
+
+		// Also make sure the Imported Moneyflow gets marked as processed!
+		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
+				capitalsourceIds, ImportedMoneyflowStatus.PROCESSED);
+		Assert.assertNotNull(importedMoneyflows);
+		Assert.assertEquals(sizeBeforeImportInStateProcessed + 1, importedMoneyflows.size());
+
 	}
 
 	@Test

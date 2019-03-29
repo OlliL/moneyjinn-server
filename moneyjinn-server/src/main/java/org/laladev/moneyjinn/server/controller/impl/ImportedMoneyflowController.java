@@ -396,6 +396,15 @@ public class ImportedMoneyflowController extends AbstractController {
 				this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
 			}
 
+			/*
+			 * Add the BankAccount information to the selected contractpartner so it can be
+			 * preselected the next time something is imported with the same BankAccount.
+			 * Additionally, create a counter booking if the BankAccount is also a capitalsource in
+			 * our system which does not support importing moneyflows. For example if a moneyflow
+			 * from Capitalsource 1 to Capitalsource 2 happend. Importing is only allowed for
+			 * Capitalsource 2. Then the matching booking for Capitalsource 1 will be created here
+			 * automatically.
+			 */
 			if (importedMoneyflow.getBankAccount() != null) {
 				final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
 				contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
@@ -420,10 +429,10 @@ public class ImportedMoneyflowController extends AbstractController {
 					importedMoneyflow.setAmount(importedMoneyflow.getAmount().negate());
 					this.moneyflowService.createMoneyflow(importedMoneyflow.getMoneyflow());
 				}
-
-				this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
-						ImportedMoneyflowStatus.PROCESSED);
 			}
+
+			this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
+					ImportedMoneyflowStatus.PROCESSED);
 		} else {
 			for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
 				item.setKey(importedMoneyflow.getId());
