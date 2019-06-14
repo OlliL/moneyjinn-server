@@ -40,7 +40,7 @@ public interface IPostingAccountDaoMapper {
 
 	public LinkedHashSet<Character> getAllPostingAccountInitials();
 
-	public List<PostingAccountData> getAllPostingAccountsByInitial(Character initial);
+	public List<PostingAccountData> getAllPostingAccountsByInitial(String initial);
 
 	public PostingAccountData getPostingAccountByName(String name);
 

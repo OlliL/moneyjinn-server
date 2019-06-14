@@ -58,7 +58,8 @@ public class PostingAccountDao {
 	}
 
 	public List<PostingAccountData> getAllPostingAccountsByInitial(final Character initial) {
-		return this.mapper.getAllPostingAccountsByInitial(initial);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllPostingAccountsByInitial(initialString);
 	}
 
 	public PostingAccountData getPostingAccountByName(final String name) {

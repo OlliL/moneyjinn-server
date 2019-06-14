@@ -42,7 +42,7 @@
 		 ORDER BY postingaccountname
 	</select>
 	
-	<select id="getAllPostingAccountsByInitial" parameterType="java.lang.Character" 
+	<select id="getAllPostingAccountsByInitial" parameterType="java.lang.String" 
 		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
 
 		SELECT <include refid="postingAccountColumns" />
