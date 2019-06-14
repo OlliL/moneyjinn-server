@@ -128,7 +128,6 @@ public class ShowGroupListTest extends AbstractControllerTest {
 		// interpreted as LIKE SQL special char
 		final Group group = new Group();
 		group.setName("_1");
-		;
 		this.groupService.createGroup(group);
 
 		final ShowGroupListResponse expected = new ShowGroupListResponse();
@@ -153,7 +152,6 @@ public class ShowGroupListTest extends AbstractControllerTest {
 		// interpreted as LIKE SQL special char
 		final Group group = new Group();
 		group.setName("%1");
-		;
 		this.groupService.createGroup(group);
 
 		final ShowGroupListResponse expected = new ShowGroupListResponse();
