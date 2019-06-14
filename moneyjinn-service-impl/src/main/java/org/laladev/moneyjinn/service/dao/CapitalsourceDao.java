@@ -74,12 +74,14 @@ public class CapitalsourceDao {
 	}
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitial(final Long userId, final Character initial) {
-		return this.mapper.getAllCapitalsourcesByInitial(userId, initial);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllCapitalsourcesByInitial(userId, initialString);
 	}
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(final Long userId, final Character initial,
 			final LocalDate validFrom, final LocalDate validTil) {
-		return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initial, validFrom, validTil);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initialString, validFrom, validTil);
 	}
 
 	public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment, final LocalDate date) {

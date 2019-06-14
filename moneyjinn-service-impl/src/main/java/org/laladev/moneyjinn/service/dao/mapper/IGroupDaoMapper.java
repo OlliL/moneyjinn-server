@@ -40,7 +40,7 @@ public interface IGroupDaoMapper {
 
 	public Set<Character> getAllGroupInitials();
 
-	public List<GroupData> getAllGroupsByInitial(Character initial);
+	public List<GroupData> getAllGroupsByInitial(String initial);
 
 	public GroupData getGroupByName(String name);
 

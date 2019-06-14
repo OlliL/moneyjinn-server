@@ -78,10 +78,10 @@ public interface ICapitalsourceDaoMapper {
 			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitial(@Param("userId") Long userId,
-			@Param("initial") Character initial);
+			@Param("initial") String initial);
 
 	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(@Param("userId") Long userId,
-			@Param("initial") Character initial, @Param("validFrom") LocalDate validFrom,
+			@Param("initial") String initial, @Param("validFrom") LocalDate validFrom,
 			@Param("validTil") LocalDate validTil);
 
 	public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId, @Param("comment") String comment,

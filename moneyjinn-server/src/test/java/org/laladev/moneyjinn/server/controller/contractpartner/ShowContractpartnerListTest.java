@@ -1,5 +1,6 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,11 +14,19 @@ import org.junit.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.access.AccessID;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.DateUtil;
+import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -26,6 +35,8 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 	@Inject
 	private SettingService settingService;
+	@Inject
+	private IContractpartnerService contractpartnerService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;
@@ -54,7 +65,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 	private ShowContractpartnerListResponse getCompleteResponse() {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S')));
 
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
@@ -69,7 +80,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 	private ShowContractpartnerListResponse getCurrentlyValidResponse() {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 
 		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner1().build());
@@ -111,7 +122,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
@@ -155,7 +166,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 	public void test_initialQ_AResponseObject() throws Exception {
 		// set default to 0
 		ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q', 'S')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S')));
 		List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner3().build());
@@ -172,7 +183,7 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
 		// this must change the default-setting to 1
 		expected = new ShowContractpartnerListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 		contractpartnerTransports = new ArrayList<>();
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner2().build());
 		expected.setContractpartnerTransports(contractpartnerTransports);
@@ -186,6 +197,66 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 				ShowContractpartnerListResponse.class);
 		Assert.assertEquals(expected, actual);
 
+	}
+
+	@Test
+	public void test_initialUnderscore_AResponseObject() throws Exception {
+		// make sure that requesting data starting with _ only returns matching data and _ is not
+		// interpreted as LIKE SQL special char
+		final Contractpartner contractpartner = new Contractpartner();
+		contractpartner.setUser(new User(new UserID(UserTransportBuilder.USER1_ID)));
+		contractpartner.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
+		contractpartner.setName("_1");
+		contractpartner.setValidFrom(LocalDate.now());
+		contractpartner.setValidTil(LocalDate.now());
+		this.contractpartnerService.createContractpartner(contractpartner);
+
+		final ContractpartnerTransport contractpartnerTransport = new ContractpartnerTransport();
+		contractpartnerTransport.setId(ContractpartnerTransportBuilder.NEXT_ID);
+		contractpartnerTransport.setUserid(UserTransportBuilder.USER1_ID);
+		contractpartnerTransport.setName(contractpartner.getName());
+		contractpartnerTransport.setValidFrom(DateUtil.getGMTDate(contractpartner.getValidFrom().toString()));
+		contractpartnerTransport.setValidTil(DateUtil.getGMTDate(contractpartner.getValidTil().toString()));
+
+		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S', '_')));
+		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
+		contractpartnerTransports.add(contractpartnerTransport);
+		expected.setContractpartnerTransports(contractpartnerTransports);
+		expected.setCurrentlyValid(false);
+		final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("/_/currentlyValid/0",
+				this.method, false, ShowContractpartnerListResponse.class);
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test_initialPercent_AResponseObject() throws Exception {
+		// make sure that requesting data starting with % only returns matching data and % is not
+		// interpreted as LIKE SQL special char
+		final Contractpartner contractpartner = new Contractpartner();
+		contractpartner.setUser(new User(new UserID(UserTransportBuilder.USER1_ID)));
+		contractpartner.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
+		contractpartner.setName("%1");
+		contractpartner.setValidFrom(LocalDate.now());
+		contractpartner.setValidTil(LocalDate.now());
+		this.contractpartnerService.createContractpartner(contractpartner);
+
+		final ContractpartnerTransport contractpartnerTransport = new ContractpartnerTransport();
+		contractpartnerTransport.setId(ContractpartnerTransportBuilder.NEXT_ID);
+		contractpartnerTransport.setUserid(UserTransportBuilder.USER1_ID);
+		contractpartnerTransport.setName(contractpartner.getName());
+		contractpartnerTransport.setValidFrom(DateUtil.getGMTDate(contractpartner.getValidFrom().toString()));
+		contractpartnerTransport.setValidTil(DateUtil.getGMTDate(contractpartner.getValidTil().toString()));
+
+		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S', '%')));
+		final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
+		contractpartnerTransports.add(contractpartnerTransport);
+		expected.setContractpartnerTransports(contractpartnerTransports);
+		expected.setCurrentlyValid(false);
+		final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("/%/currentlyValid/0",
+				this.method, false, ShowContractpartnerListResponse.class);
+		Assert.assertEquals(expected, actual);
 	}
 
 	@Test

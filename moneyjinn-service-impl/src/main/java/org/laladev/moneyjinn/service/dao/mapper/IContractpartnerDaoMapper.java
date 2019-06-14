@@ -68,8 +68,8 @@ public interface IContractpartnerDaoMapper {
 
 	public Integer countAllContractpartners(@Param("userId") Long userId);
 
-	public Integer countAllContractpartnersByDateRange(@Param("userId") Long userId, @Param("validFrom") LocalDate validFrom,
-			@Param("validTil") LocalDate validTil);
+	public Integer countAllContractpartnersByDateRange(@Param("userId") Long userId,
+			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public Set<Character> getAllContractpartnerInitials(@Param("userId") Long userId);
 
@@ -77,10 +77,11 @@ public interface IContractpartnerDaoMapper {
 			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
 	public List<ContractpartnerData> getAllContractpartnersByInitial(@Param("userId") Long userId,
-			@Param("initial") Character initial);
+			@Param("initial") String initial);
 
 	public List<ContractpartnerData> getAllContractpartnersByInitialAndDateRange(@Param("userId") Long userId,
-			@Param("initial") Character initial, @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+			@Param("initial") String initial, @Param("validFrom") LocalDate validFrom,
+			@Param("validTil") LocalDate validTil);
 
 	public ContractpartnerData getContractpartnerByName(@Param("userId") Long userId, @Param("name") String name);
 

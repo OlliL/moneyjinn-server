@@ -41,7 +41,7 @@ public interface IUserDaoMapper {
 
 	public Set<Character> getAllUserInitials();
 
-	public List<UserData> getAllUsersByInitial(Character initial);
+	public List<UserData> getAllUsersByInitial(String initial);
 
 	public UserData getUserByName(String name);
 

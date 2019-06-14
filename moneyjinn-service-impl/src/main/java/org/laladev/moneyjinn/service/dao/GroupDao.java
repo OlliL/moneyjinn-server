@@ -58,7 +58,8 @@ public class GroupDao {
 	}
 
 	public List<GroupData> getAllGroupsByInitial(final Character initial) {
-		return this.mapper.getAllGroupsByInitial(initial);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllGroupsByInitial(initialString);
 	}
 
 	public GroupData getGroupByName(final String name) {

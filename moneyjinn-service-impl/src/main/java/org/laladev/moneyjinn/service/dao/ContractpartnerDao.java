@@ -59,7 +59,8 @@ public class ContractpartnerDao {
 		return this.mapper.countAllContractpartners(userId);
 	}
 
-	public Integer countAllContractpartnersByDateRange(final Long userId, final LocalDate validFrom, final LocalDate validTil) {
+	public Integer countAllContractpartnersByDateRange(final Long userId, final LocalDate validFrom,
+			final LocalDate validTil) {
 		return this.mapper.countAllContractpartnersByDateRange(userId, validFrom, validTil);
 	}
 
@@ -73,12 +74,14 @@ public class ContractpartnerDao {
 	}
 
 	public List<ContractpartnerData> getAllContractpartnersByInitial(final Long userId, final Character initial) {
-		return this.mapper.getAllContractpartnersByInitial(userId, initial);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllContractpartnersByInitial(userId, initialString);
 	}
 
 	public List<ContractpartnerData> getAllContractpartnersByInitialAndDateRange(final Long userId,
 			final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-		return this.mapper.getAllContractpartnersByInitialAndDateRange(userId, initial, validFrom, validTil);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllContractpartnersByInitialAndDateRange(userId, initialString, validFrom, validTil);
 	}
 
 	public ContractpartnerData getContractpartnerByName(final Long userId, final String name) {

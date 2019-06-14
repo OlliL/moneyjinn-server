@@ -58,7 +58,8 @@ public class UserDao {
 	}
 
 	public List<UserData> getAllUsersByInitial(final Character initial) {
-		return this.mapper.getAllUsersByInitial(initial);
+		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+		return this.mapper.getAllUsersByInitial(initialString);
 	}
 
 	public UserData getUserByName(final String name) {

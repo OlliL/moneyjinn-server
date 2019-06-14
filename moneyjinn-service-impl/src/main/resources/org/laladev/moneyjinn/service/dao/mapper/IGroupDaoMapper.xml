@@ -52,7 +52,7 @@
 		 ORDER BY name
 	</select>
 	
-	<select id="getAllGroupsByInitial" parameterType="java.lang.Character" 
+	<select id="getAllGroupsByInitial" parameterType="java.lang.String" 
 		resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
 
 		SELECT <include refid="groupColumns" />

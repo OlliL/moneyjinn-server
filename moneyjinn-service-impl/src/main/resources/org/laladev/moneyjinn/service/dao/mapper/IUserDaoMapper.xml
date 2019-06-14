@@ -52,7 +52,7 @@
 		 WHERE att_user = 1
 	</select>
 
-	<select id="getAllUsersByInitial" parameterType="java.lang.Character" 
+	<select id="getAllUsersByInitial" parameterType="java.lang.String" 
 		resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
 		SELECT <include refid="userColumns" />
