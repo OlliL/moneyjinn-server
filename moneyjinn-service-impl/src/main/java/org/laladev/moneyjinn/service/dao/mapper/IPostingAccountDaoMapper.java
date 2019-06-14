@@ -26,8 +26,8 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 
@@ -38,7 +38,7 @@ public interface IPostingAccountDaoMapper {
 
 	public Integer countAllPostingAccounts();
 
-	public Set<Character> getAllPostingAccountInitials();
+	public LinkedHashSet<Character> getAllPostingAccountInitials();
 
 	public List<PostingAccountData> getAllPostingAccountsByInitial(Character initial);
 

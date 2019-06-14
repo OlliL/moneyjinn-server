@@ -26,8 +26,8 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 
@@ -38,7 +38,7 @@ public interface IGroupDaoMapper {
 
 	public Integer countAllGroups();
 
-	public Set<Character> getAllGroupInitials();
+	public LinkedHashSet<Character> getAllGroupInitials();
 
 	public List<GroupData> getAllGroupsByInitial(String initial);
 
