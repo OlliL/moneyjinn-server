@@ -48,7 +48,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4));
 		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
 		expected.setYear((short) 2010);
-		expected.setNumberOfAddableSettlements(3);
+		expected.setNumberOfAddableSettlements(2);
 		return expected;
 	}
 
@@ -125,7 +125,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
 		expected.setYear((short) 2008);
 		expected.setMonth((short) 12);
-		expected.setNumberOfAddableSettlements(3);
+		expected.setNumberOfAddableSettlements(2);
 		expected.setNumberOfEditableSettlements(2);
 		expected.setMonthlySettlementTransports(monthlySettlementTransports);
 

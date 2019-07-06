@@ -155,7 +155,9 @@ public class MonthlySettlementController extends AbstractController {
 				today, today);
 
 		if (capitalSources != null && !capitalSources.isEmpty()) {
-			response.setNumberOfAddableSettlements(capitalSources.size());
+			response.setNumberOfAddableSettlements(
+					Long.valueOf(capitalSources.stream().filter(cs -> cs.getUser().getId().equals(userId)).count())
+							.intValue());
 		}
 
 		if (allYears != null && !allYears.isEmpty()) {
