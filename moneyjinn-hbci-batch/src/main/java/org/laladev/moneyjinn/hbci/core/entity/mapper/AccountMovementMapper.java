@@ -185,7 +185,9 @@ public class AccountMovementMapper {
 							// Usage text starts with " OLVXXXX" and continues on the next line with
 							// "XXXX 09.12 17.05 ME0"
 							line = line.substring(1) + lineIterator.next();
-						} else if (line.startsWith("ELV") || line.startsWith("OLV")) {
+						}
+
+						if (line.startsWith("ELV") || line.startsWith("OLV")) {
 							// Usage text starts with "ELVXXXXXXXX 15.12 16.29 ME1"
 							invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(line.substring(12, 23));
 							this.setYear(accountMovement.getBookingDate(), invoiceDate);
