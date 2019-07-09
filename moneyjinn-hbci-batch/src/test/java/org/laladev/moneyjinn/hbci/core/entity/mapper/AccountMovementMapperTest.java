@@ -97,6 +97,24 @@ public class AccountMovementMapperTest {
 	}
 
 	@Test
+	public void test_ELplus() {
+		final List<String> usage = new ArrayList<>();
+
+		usage.add("Referenz 636756724689973223");
+		usage.add("88953224");
+		usage.add("2344B5662");
+		usage.add("Mandat 56756756743232689005");
+		usage.add("43");
+		usage.add("Einreicher-ID DE41224232572");
+		usage.add("AAAA4");
+		usage.add("EL+ 61257899 10.06 01:03 KA");
+		usage.add("AAA04 ZU");
+		usage.add("GJHZTSASF ASDGGGHGFA");
+
+		this.testInvoiceDate(usage, "107");
+	}
+
+	@Test
 	public void test_correctDateUsed() {
 		final List<String> usage = new ArrayList<>();
 		final String usageLine = "100601031885492151200031520";
