@@ -25,6 +25,10 @@
 //
 package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
+import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
+import org.kapott.hbci.structures.Konto;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -39,22 +43,18 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
-import org.kapott.hbci.structures.Konto;
-import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
-
 // TODO Migrate to Java 8 java.time.*
 public class AccountMovementMapper {
-	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");
-	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
-	private final DateFormat dateTimeWithoutYearSpaceFormatter = new SimpleDateFormat("dd.MM HH.mm");
-	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
-	private final DateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
 	private static final short MOVEMENT_TYPE_DIRECT_DEBIT = (short) 5;
 	private static final short MOVEMENT_TYPE_WITHDRAWAL = (short) 83;
 	private static final short MOVEMENT_TYPE_SEPA_CARDS_CLEARING = (short) 106;
 	private static final short MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS = (short) 107;
+	private final DateFormat dateTimeWithYearFormatter = new SimpleDateFormat("ddMMyyHHmmss");
+	private final DateFormat dateTimeWithoutYearFormatter = new SimpleDateFormat("ddMMHHmm");
+	private final DateFormat dateTimeWithoutYearSpaceFormatterDot = new SimpleDateFormat("dd.MM HH.mm");
+	private final DateFormat dateTimeWithoutYearSpaceFormatterColon = new SimpleDateFormat("dd.MM HH:mm");
+	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
+	private final DateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
@@ -67,8 +67,7 @@ public class AccountMovementMapper {
 		final Instant instantBookingDate = Instant.ofEpochMilli(entry.bdate.getTime());
 		final Instant instantValueDate = Instant.ofEpochMilli(entry.valuta.getTime());
 
-		accountMovement
-				.setBookingDate(LocalDateTime.ofInstant(instantBookingDate, ZoneId.systemDefault()).toLocalDate());
+		accountMovement.setBookingDate(LocalDateTime.ofInstant(instantBookingDate, ZoneId.systemDefault()).toLocalDate());
 		accountMovement.setValueDate(LocalDateTime.ofInstant(instantValueDate, ZoneId.systemDefault()).toLocalDate());
 
 		if (entry.other != null) {
@@ -146,8 +145,7 @@ public class AccountMovementMapper {
 
 		final Instant instantBalanceDate = Instant.ofEpochMilli(entry.saldo.timestamp.getTime());
 
-		accountMovement
-				.setBalanceDate(LocalDateTime.ofInstant(instantBalanceDate, ZoneId.systemDefault()).toLocalDate());
+		accountMovement.setBalanceDate(LocalDateTime.ofInstant(instantBalanceDate, ZoneId.systemDefault()).toLocalDate());
 		accountMovement.setBalanceValue(entry.saldo.value.getBigDecimalValue());
 		accountMovement.setBalanceCurrency(entry.saldo.value.getCurr());
 
@@ -163,8 +161,7 @@ public class AccountMovementMapper {
 	 * This method tries to compute the Invoice date of a {@link AccountMovement} by analysing its
 	 * usage text based on the used Business-AccountMovement-Code + Text. <br>
 	 *
-	 * @param {@link
-	 * 			AccountMovement} accountMovement
+	 * @param {@link AccountMovement} accountMovement
 	 * @return {@link Date} invoiceDate (or null if not determinable)
 	 */
 	private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
@@ -176,16 +173,15 @@ public class AccountMovementMapper {
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
 				final List<String> lines = Arrays.asList(movementReason.split("\r\n|\r|\n"));
 
-				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)
-						|| movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
+				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT) || movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
 
 					final Iterator<String> lineIterator = lines.iterator();
 
-					lineloop: while (lineIterator.hasNext()) {
+					lineloop:
+					while (lineIterator.hasNext()) {
 						String line = lineIterator.next();
 
-						if ((line.startsWith(" ELV") || line.startsWith(" OLV")) && line.length() == 8
-								&& lineIterator.hasNext()) {
+						if ((line.startsWith(" ELV") || line.startsWith(" OLV")) && line.length() == 8 && lineIterator.hasNext()) {
 							// Usage text starts with " OLVXXXX" and continues on the next line with
 							// "XXXX 09.12 17.05 ME0"
 							line = line.substring(1) + lineIterator.next();
@@ -193,7 +189,13 @@ public class AccountMovementMapper {
 
 						if (line.startsWith("ELV") || line.startsWith("OLV")) {
 							// Usage text starts with "ELVXXXXXXXX 15.12 16.29 ME1"
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(12, 23));
+							invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(line.substring(12, 23));
+							this.setYear(accountMovement.getBookingDate(), invoiceDate);
+							break;
+
+						} else if (line.startsWith("EL+")) {
+							// Usage text starts with "EL+ XXXXXXXX 06.07 09:46 KA"
+							invoiceDate = this.dateTimeWithoutYearSpaceFormatterColon.parse(line.substring(13, 24));
 							this.setYear(accountMovement.getBookingDate(), invoiceDate);
 							break;
 
@@ -215,8 +217,7 @@ public class AccountMovementMapper {
 								 * not more than two weeks before the bookingdate
 								 */
 								final Date bookingDate = Date.valueOf(accountMovement.getBookingDate());
-								if (invoiceDate.before(bookingDate)
-										&& bookingDate.getTime() - invoiceDate.getTime() > 14 * 86400000) {
+								if (invoiceDate.before(bookingDate) && bookingDate.getTime() - invoiceDate.getTime() > 14 * 86400000) {
 									invoiceDate = null;
 								} else {
 									break;
@@ -229,7 +230,7 @@ public class AccountMovementMapper {
 					for (final String line : lines) {
 						if (line.contains("TA-NR.")) {
 							// 10.02 16.56 TA-NR. XXXXXX
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatter.parse(line.substring(0, 11));
+							invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(line.substring(0, 11));
 							break;
 						} else if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
 							// 16.02/07.49UHR XXXXXXXXXX
@@ -242,8 +243,7 @@ public class AccountMovementMapper {
 					}
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_CARDS_CLEARING)) {
 					for (final String line : lines) {
-						if (line.matches(
-								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+						if (line.matches("^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
 							// 2015-09-22T17:16:41
 							invoiceDate = this.dateTimeFormatter.parse(line);
 							break;
