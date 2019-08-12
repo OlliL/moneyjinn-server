@@ -101,6 +101,8 @@ public final class LalaHBCI {
 					+ " not supported (only PinTan and RDHNew supported)!");
 		}
 
+		HBCIUtils.setParam("client.errors.ignoreWrongJobDataErrors", "yes");
+
 		final EntityTransaction tx = entityManager.getTransaction();
 		tx.begin();
 		final HBCIPassport hbciPassport = AbstractHBCIPassport.getInstance(type);

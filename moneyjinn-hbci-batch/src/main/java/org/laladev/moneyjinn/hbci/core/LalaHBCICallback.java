@@ -61,6 +61,7 @@ public class LalaHBCICallback extends HBCICallbackConsole {
 			break;
 		case NEED_CONNECTION:
 		case CLOSE_CONNECTION:
+		case HAVE_INST_MSG:
 			break;
 		default:
 			super.callback(passport, reason, msg, dataType, retData);
