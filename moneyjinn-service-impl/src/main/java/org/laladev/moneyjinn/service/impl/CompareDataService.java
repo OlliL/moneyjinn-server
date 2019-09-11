@@ -30,12 +30,41 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.comparedata.*;
+import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatType;
+import org.laladev.moneyjinn.model.comparedata.CompareDataMatching;
+import org.laladev.moneyjinn.model.comparedata.CompareDataNotInDatabase;
+import org.laladev.moneyjinn.model.comparedata.CompareDataNotInFile;
+import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
+import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -50,20 +79,6 @@ import org.laladev.moneyjinn.service.dao.CompareDataFormatDao;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.service.dao.data.mapper.CompareDataFormatDataMapper;
 import org.xml.sax.InputSource;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Named
 public class CompareDataService extends AbstractService implements ICompareDataService {
@@ -131,7 +146,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		List<CompareDataDataset> compareDataDatasets = null;
 
 		final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-				.getAllImportedMoneyflowsByCapitalsourceIds(userId, Collections.singletonList(capitalsourceId), startDate, endDate);
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId, Collections.singletonList(capitalsourceId),
+						startDate, endDate);
 
 		if (importedMoneyflows != null) {
 			compareDataDatasets = this.mapImportedMoneyflows(importedMoneyflows);
@@ -175,7 +191,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 				final List<Moneyflow> moneyflows = new ArrayList<>();
 				// find all recorded moneyflows which could possibly match the file dataset
 				for (final Moneyflow moneyflow : allMoneyflows) {
-					if (moneyflow.getAmount().equals(compareDataDataset.getAmount())
+					if (moneyflow.getAmount().compareTo(compareDataDataset.getAmount()) == 0
 							&& moneyflow.getBookingDate().isAfter(bookingDateLeft)
 							&& moneyflow.getBookingDate().isBefore(bookingDateRight)) {
 						moneyflows.add(moneyflow);
@@ -249,7 +265,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		// does our source contain bank account information?
 		if (compareDataDataset.getPartnerBankAccount() != null) {
 			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-					.getAllContractpartnerByAccounts(userId, Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
+					.getAllContractpartnerByAccounts(userId,
+							Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
 
 			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
 				if (contractpartnerAccounts.get(0).getContractpartner().getId()
@@ -305,7 +322,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
 		final BankToCustomerAccountReportMapper xmlMapper = new BankToCustomerAccountReportMapper();
 		final StringReader characterStream = new StringReader(fileContents);
-		InputSource xml = new InputSource(characterStream);
+		final InputSource xml = new InputSource(characterStream);
 
 		try {
 			final BankToCustomerAccountReport bankToCustomerAccountReport = xmlMapper.mapXml(xml);
