@@ -8,7 +8,7 @@
 	<properties>
 		<hibernate-core.version>5.2.11.Final</hibernate-core.version>
 		<mysql.version>8.0.16</mysql.version>
-		<hbci4java.version>3.1.9</hbci4java.version>
+		<hbci4java.version>3.1.13</hbci4java.version>
 		<slf4j.version>1.7.26</slf4j.version>
 		<slf4j-log4j12.version>1.7.26</slf4j-log4j12.version>
 		<junit.version>4.12</junit.version>

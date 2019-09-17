@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observer;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -110,6 +111,7 @@ public final class LalaHBCI {
 		HBCIHandler hbciHandler = null;
 		try {
 			hbciHandler = new HBCIHandler(null, hbciPassport);
+			final Properties updAlt = hbciPassport.getUPD();
 			final Konto[] accounts = hbciPassport.getAccounts();
 
 			for (final Konto account : accounts) {
@@ -117,7 +119,9 @@ public final class LalaHBCI {
 				final BalanceDailyCollector balanceDailyCollector = new BalanceDailyCollector();
 
 				final List<AccountMovement> accountMovements = accountMovementCollector.collect(hbciHandler, account);
+				this.mergeMissingUPD(hbciPassport, hbciHandler, updAlt);
 				final BalanceDaily balanceDaily = balanceDailyCollector.collect(hbciHandler, account);
+				this.mergeMissingUPD(hbciPassport, hbciHandler, updAlt);
 
 				if (accountMovements != null && !accountMovements.isEmpty()) {
 					for (final AccountMovement accountMovement : accountMovements) {
@@ -145,6 +149,30 @@ public final class LalaHBCI {
 
 		tx.commit();
 
+	}
+
+	/**
+	 * It happens, that during dialog init a UPD is returned which does not contain IBAN or BIC
+	 * information. hbci4java does then just use this new UPD and overwrites the old UPD in the
+	 * passport file. Because of that, IBAN and BIC is now missing in the UPD and the Account no
+	 * longer contains those information. This renders the whole stuff useless for us.
+	 *
+	 * @param hbciPassport
+	 * @param hbciHandler
+	 * @param updAlt
+	 */
+	private void mergeMissingUPD(final HBCIPassport hbciPassport, final HBCIHandler hbciHandler,
+			final Properties updAlt) {
+		final Properties updNeu = hbciPassport.getUPD();
+		final Set<String> propertyNames = updAlt.stringPropertyNames();
+		System.out.println("Merging UPD...");
+		for (final String name : propertyNames) {
+			if (!updNeu.containsKey(name)) {
+				System.out.println("UPD is missing: " + name);
+				updNeu.setProperty(name, updAlt.getProperty(name));
+			}
+		}
+		hbciHandler.getPassport().saveChanges();
 	}
 
 	private void addIbanBic(final AbstractAccountEntitiy accountEntity) {
