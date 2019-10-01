@@ -25,6 +25,8 @@
 //
 package org.laladev.moneyjinn.hbci.core.collector;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +42,11 @@ import org.laladev.moneyjinn.hbci.core.entity.mapper.AccountMovementMapper;
 public class AccountMovementCollector {
 	public List<AccountMovement> collect(final HBCIHandler hbciHandler, final Konto account) {
 		final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
-		final List<AccountMovement> accountMovements = new ArrayList<AccountMovement>();
+		final List<AccountMovement> accountMovements = new ArrayList<>();
 
 		final HBCIJob hbciJob = hbciHandler.newJob("KUmsAll");
 		hbciJob.setParam("my", account);
+		hbciJob.setParam("startdate", LocalDate.now().minusDays(40).format(DateTimeFormatter.ISO_DATE));
 		hbciJob.addToQueue();
 
 		final HBCIExecStatus ret = hbciHandler.execute();
