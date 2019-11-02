@@ -270,11 +270,8 @@ public final class LalaHBCI {
 	 */
 	private Properties getHbciProperties() {
 		final Properties hbciProperties = new Properties();
-		hbciProperties.setProperty("client.product.name", "HBCI4Java");
-		hbciProperties.setProperty("client.product.version", "2.5");
 		hbciProperties.setProperty("client.passport.PinTan.checkcert", "1");
 		hbciProperties.setProperty("client.passport.PinTan.init", "1");
-		// hbciProperties.setProperty("client.passport.default", "PinTan");
 		hbciProperties.setProperty("log.loglevel.default", "0");
 		hbciProperties.setProperty("log.filter", "3");
 		return hbciProperties;
