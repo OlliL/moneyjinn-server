@@ -30,6 +30,7 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -447,7 +448,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 					compareDataDatasets.add(data);
 				}
 			}
-		} catch (final IOException e) {
+		} catch (final IOException | CsvException e) {
 			throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
 		} finally {
 			try {

@@ -26,7 +26,6 @@ public class TestDatabaseConfiguration {
 	private SimpleDriverDataSource simpleDriverDataSource() {
 
 		final Mode mode = Mode.getInstance("MYSQL");
-		mode.convertInsertNullToZero = false;
 
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(Driver.class);
