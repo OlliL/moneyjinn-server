@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
@@ -117,11 +118,10 @@ public abstract class AbstractControllerTest extends AbstractTest {
 		// builder.headers(this.getAuthHeaders(uri.getPath(), body, httpMethod));
 		builder.headers(this.getAuthHeaders(UriComponentsBuilder.fromUriString(uri).toUriString(), body, httpMethod));
 
-		final MvcResult result = this.mvc
-				.perform(builder.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-				.andReturn();
+		final MvcResult result = this.mvc.perform(builder.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8.name())).andReturn();
 
-		final String content = result.getResponse().getContentAsString();
+		final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		Assert.assertNotNull(content);
 
 		Assert.assertEquals(content, status.value(), result.getResponse().getStatus());
