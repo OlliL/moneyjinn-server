@@ -45,7 +45,7 @@ public class BalanceDailyCollector {
 		final HBCIExecStatus ret = hbciHandler.execute();
 		final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
 
-		if (saldoResult.isOK()) {
+		if (saldoResult.isOK() && saldoResult.getEntries() != null && saldoResult.getEntries().length > 0) {
 
 			final Info balanceInfo = saldoResult.getEntries()[0];
 			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
