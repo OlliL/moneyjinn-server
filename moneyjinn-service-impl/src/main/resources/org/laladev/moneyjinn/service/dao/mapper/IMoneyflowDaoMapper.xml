@@ -191,13 +191,13 @@
  	
 	<select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
 		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
-		SELECT MIN(mmf.bookingdate)                                       date
+		SELECT MIN(mmf.invoicedate)                                       date
 		      ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
       	      ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
 		  FROM vw_moneyflows mmf
 		  LEFT OUTER JOIN moneyflowsplitentries mse
 		    ON mmf.moneyflowid = mse.mmf_moneyflowid 
-		 WHERE mmf.bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
+		 WHERE mmf.invoicedate    BETWEEN #{dateFrom} AND #{dateTil}
 		   AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN 
 		   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
 		      open="(" separator="," close=")">
@@ -210,8 +210,8 @@
 		          OR
 		        mmf.mac_id_creator     = #{userId}
 		       )
-		 GROUP BY YEAR(mmf.bookingdate)
-		         ,MONTH(mmf.bookingdate)
+		 GROUP BY YEAR(mmf.invoicedate)
+		         ,MONTH(mmf.invoicedate)
 		         ,mpaPostingAccountId
  		 ORDER BY 1
 		         ,2
@@ -220,13 +220,13 @@
 
 	<select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
 		resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
-		SELECT CONCAT(YEAR(MIN(mmf.bookingdate)),'-01-01')                date
+		SELECT CONCAT(YEAR(MIN(mmf.invoicedate)),'-01-01')                date
 		      ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
       	      ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
 		  FROM vw_moneyflows mmf
 		  LEFT OUTER JOIN moneyflowsplitentries mse
 		    ON mmf.moneyflowid = mse.mmf_moneyflowid 
-		 WHERE mmf.bookingdate    BETWEEN #{dateFrom} AND #{dateTil}
+		 WHERE mmf.invoicedate    BETWEEN #{dateFrom} AND #{dateTil}
 		   AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN 
 		   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
 		      open="(" separator="," close=")">
@@ -239,7 +239,7 @@
 		          OR
 		        mmf.mac_id_creator     = #{userId}
 		       )
-		 GROUP BY YEAR(mmf.bookingdate)
+		 GROUP BY YEAR(mmf.invoicedate)
 		         ,mpaPostingAccountId
  		 ORDER BY 1
 		         ,2
