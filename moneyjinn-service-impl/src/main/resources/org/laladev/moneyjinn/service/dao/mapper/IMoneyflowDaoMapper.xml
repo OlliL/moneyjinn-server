@@ -203,7 +203,6 @@
 		      open="(" separator="," close=")">
 		        #{postingAccountId}
 		   </foreach>
-		   AND IFNULL(mse.amount, mmf.amount)             <![CDATA[ < ]]> 0
 		   AND mmf.maf_id              = #{userId}
 		   AND (
 		        mmf.private            = 0
@@ -232,7 +231,6 @@
 		      open="(" separator="," close=")">
 		        #{postingAccountId}
 		   </foreach>
-		   AND IFNULL(mse.amount, mmf.amount)             <![CDATA[ < ]]> 0
 		   AND mmf.maf_id              = #{userId}
 		   AND (
 		        mmf.private            = 0
