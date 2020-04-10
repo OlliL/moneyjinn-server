@@ -68,23 +68,41 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
 		// Respect Moneyflow Split Entries -1.10 -> -1.00
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
+				.withDate("2008-12-01").withAmount("10.10").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
 				.withDate("2009-01-01").withAmount("-1.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-01-01").withAmount("-0.10").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-02-01").withAmount("10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-03-01").withAmount("-10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-04-01").withAmount("10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-05-01").withAmount("-10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-06-01").withAmount("10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-07-01").withAmount("-10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-08-01").withAmount("10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-09-01").withAmount("-10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-10-01").withAmount("10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2009-11-01").withAmount("-10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2009-12-01").withAmount("10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2010-01-01").withAmount("-10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2010-02-01").withAmount("10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2010-03-01").withAmount("-10.00").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
+				.withDate("2010-04-01").withAmount("10.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
 				.withDate("2010-05-01").withAmount("-10.00").build());
 		expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
@@ -156,6 +174,8 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 		final ShowMonthlyReportGraphResponse expected = new ShowMonthlyReportGraphResponse();
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
 		// Respect Moneyflow Split Entries -1.10 -> -1.00
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
+				.withDate("2008-12-01").withAmount("10.10").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
 				.withDate("2009-01-01").withAmount("-1.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()

@@ -68,11 +68,13 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
 		// Respect Moneyflow Split Entries -1.10 -> -1.00
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
+				.withDate("2008-01-01").withAmount("10.10").build());
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
 				.withDate("2009-01-01").withAmount("-1.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
-				.withDate("2009-01-01").withAmount("-50.10").build());
+				.withDate("2009-01-01").withAmount("9.90").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
-				.withDate("2010-01-01").withAmount("-30.00").build());
+				.withDate("2010-01-01").withAmount("-10.00").build());
 		expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
 
 		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
@@ -142,6 +144,8 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphResponse expected = new ShowYearlyReportGraphResponse();
 		final List<PostingAccountAmountTransport> postingAccountAmountTransports = new ArrayList<>();
 		// Respect Moneyflow Split Entries -1.10 -> -1.00
+		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
+				.withDate("2008-01-01").withAmount("10.10").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount1()
 				.withDate("2009-01-01").withAmount("-1.00").build());
 		postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder().forPostingAccount2()
