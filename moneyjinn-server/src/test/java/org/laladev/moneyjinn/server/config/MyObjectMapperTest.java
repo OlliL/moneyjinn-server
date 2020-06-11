@@ -1,5 +1,7 @@
 package org.laladev.moneyjinn.server.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -10,9 +12,6 @@ import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.laladev.moneyjinn.server.config.MyObjectMapper;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class MyObjectMapperTest {
 
@@ -69,9 +68,11 @@ public class MyObjectMapperTest {
 		final String date = "2015-01-01";
 		final Timestamp timestampJava = Timestamp.valueOf("2015-01-01 01:02:03.004");
 
-		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.GERMANY);
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.GERMANY);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-		final String timestampJSON = dateFormat.format(timestampJava);
+		// Should be changed back to X in the Formatter instead of hardcoding +00:00 with Jackson 3
+		// see https://github.com/FasterXML/jackson-databind/issues/2643
+		final String timestampJSON = dateFormat.format(timestampJava) + "+00:00";
 
 		restObject.setAttribute3(Date.valueOf(date));
 		restObject.setAttribute4(timestampJava);
