@@ -24,7 +24,6 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,8 +32,6 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
 	@Inject
 	private IContractpartnerAccountService contractpartnerAccountService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;

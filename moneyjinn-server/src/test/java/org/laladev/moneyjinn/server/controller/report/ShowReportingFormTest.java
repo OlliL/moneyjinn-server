@@ -18,7 +18,6 @@ import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccou
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -27,8 +26,6 @@ public class ShowReportingFormTest extends AbstractControllerTest {
 
 	@Inject
 	private ISettingService settingService;
-	@Inject
-	private IMonthlySettlementService monthlySettlementService;
 
 	private final HttpMethod method = HttpMethod.GET;
 	private String userName;

@@ -19,7 +19,6 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,8 +27,6 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 
 	@Inject
 	private IPostingAccountService postingAccountService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;

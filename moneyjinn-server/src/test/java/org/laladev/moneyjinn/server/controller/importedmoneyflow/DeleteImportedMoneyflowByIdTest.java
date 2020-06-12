@@ -17,7 +17,6 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -26,8 +25,6 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 
 	@Inject
 	private IImportedMoneyflowService importedMoneyflowService;
-	@Inject
-	private ICapitalsourceService capitalsourceService;
 
 	private final HttpMethod method = HttpMethod.DELETE;
 	private String userName;

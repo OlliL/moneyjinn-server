@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,19 +24,12 @@ import org.laladev.moneyjinn.server.builder.MoneyflowSearchResultTransportBuilde
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class SearchMoneyflowsTest extends AbstractControllerTest {
 
 	private static final Short SHORT_1 = (short) 1;
-
-	@Inject
-	private IMoneyflowService moneyflowService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.PUT;
 	private String userName;

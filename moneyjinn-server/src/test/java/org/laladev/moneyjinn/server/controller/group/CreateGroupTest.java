@@ -19,7 +19,6 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
 
@@ -27,8 +26,6 @@ public class CreateGroupTest extends AbstractControllerTest {
 
 	@Inject
 	private IGroupService groupService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	private final HttpMethod method = HttpMethod.POST;
 	private String userName;
