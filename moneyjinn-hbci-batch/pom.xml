@@ -7,7 +7,7 @@
 
 	<properties>
 		<moneyjinn-client-core.version>0.0.1-SNAPSHOT</moneyjinn-client-core.version>
-		<moneyjinn-hbci-core.version>0.0.8-SNAPSHOT</moneyjinn-hbci-core.version>
+		<moneyjinn-hbci-core.version>0.0.9-SNAPSHOT</moneyjinn-hbci-core.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
