@@ -563,12 +563,10 @@ public class MoneyflowController extends AbstractController {
 									.deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
 						}
 
-						if (updateMoneyflowSplitEntries != null) {
-							updateMoneyflowSplitEntries.forEach(
-									mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
-						}
+						updateMoneyflowSplitEntries
+								.forEach(mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
 
-						if (insertMoneyflowSplitEntries != null) {
+						if (!insertMoneyflowSplitEntries.isEmpty()) {
 							this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId,
 									insertMoneyflowSplitEntries);
 						}

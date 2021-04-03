@@ -227,8 +227,8 @@ public class ContractpartnerController extends AbstractController {
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
-		final ContractpartnerID contractpartnerID = this.contractpartnerService.createContractpartner(contractpartner);
-		response.setContractpartnerId(contractpartnerID.getId());
+		final ContractpartnerID contractpartnerId = this.contractpartnerService.createContractpartner(contractpartner);
+		response.setContractpartnerId(contractpartnerId.getId());
 		return response;
 	}
 

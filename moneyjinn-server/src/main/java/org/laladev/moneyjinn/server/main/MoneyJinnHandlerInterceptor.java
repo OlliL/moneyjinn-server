@@ -45,8 +45,8 @@ import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets
@@ -56,7 +56,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @since 0.0.1
  */
 @Named
-public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
+public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 	private static final long MAX_MINUTES_CLOCK_OFF = 15L;
 
 	MoneyJinnRequestWrapper requestWrapper;
@@ -147,7 +147,7 @@ public class MoneyJinnHandlerInterceptor extends HandlerInterceptorAdapter {
 					throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
 				}
 			}
-			return super.preHandle(request, response, handler);
+			return true;
 		}
 		return false;
 	}
