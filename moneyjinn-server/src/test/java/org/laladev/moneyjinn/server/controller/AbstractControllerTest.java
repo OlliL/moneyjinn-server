@@ -57,11 +57,12 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	protected abstract String getUsecase();
 
 	/**
-	 * Input "user" and "ShowEditUserTest" and get "user/showEditUser" back
+	 * Returns the Usecase URL for the given class. Input "ShowEditUserTest.class" and get
+	 * "user/showEditUser" back.
 	 *
-	 * @param prefix
 	 * @param clazz
-	 * @return
+	 *            The Usecase-Class
+	 * @return Usecase-URL
 	 */
 	protected String getUsecaseFromTestClassName(final Class<?> clazz) {
 		final String usecase = clazz.getSimpleName().replace("Test", "");
@@ -148,7 +149,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	}
 
 	/**
-	 * Clears all Caches before each test execution
+	 * Clears all Caches before each test execution.
 	 */
 	@Override
 	@BeforeEach

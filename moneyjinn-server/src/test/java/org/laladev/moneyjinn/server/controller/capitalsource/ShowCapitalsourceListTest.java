@@ -231,8 +231,8 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		capitalsourceTransport.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 		capitalsourceTransport.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
 		capitalsourceTransport.setComment(capitalsource.getComment());
-		capitalsourceTransport.setValidFrom(DateUtil.getGMTDate(capitalsource.getValidFrom().toString()));
-		capitalsourceTransport.setValidTil(DateUtil.getGMTDate(capitalsource.getValidTil().toString()));
+		capitalsourceTransport.setValidFrom(DateUtil.getGmtDate(capitalsource.getValidFrom().toString()));
+		capitalsourceTransport.setValidTil(DateUtil.getGmtDate(capitalsource.getValidTil().toString()));
 		capitalsourceTransport.setGroupUse(null);
 		capitalsourceTransport.setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
 
@@ -270,8 +270,8 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		capitalsourceTransport.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
 		capitalsourceTransport.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
 		capitalsourceTransport.setComment(capitalsource.getComment());
-		capitalsourceTransport.setValidFrom(DateUtil.getGMTDate(capitalsource.getValidFrom().toString()));
-		capitalsourceTransport.setValidTil(DateUtil.getGMTDate(capitalsource.getValidTil().toString()));
+		capitalsourceTransport.setValidFrom(DateUtil.getGmtDate(capitalsource.getValidFrom().toString()));
+		capitalsourceTransport.setValidTil(DateUtil.getGmtDate(capitalsource.getValidTil().toString()));
 		capitalsourceTransport.setGroupUse(null);
 		capitalsourceTransport.setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
 

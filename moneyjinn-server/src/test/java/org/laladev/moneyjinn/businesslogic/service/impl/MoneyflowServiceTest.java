@@ -149,26 +149,26 @@ public class MoneyflowServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAeditsMoneyflow_userBsameGroupSeesCachedChange() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 
 		// this caches
-		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 
-		moneyflow = this.moneyflowService.getMoneyflowById(user1ID,
+		moneyflow = this.moneyflowService.getMoneyflowById(user1Id,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 
 		final String comment = String.valueOf(System.currentTimeMillis());
 
-		moneyflow.getUser().setId(user1ID);
+		moneyflow.getUser().setId(user1Id);
 		moneyflow.setComment(comment);
 
 		// this should also modify the cache of user 1!
 		this.moneyflowService.updateMoneyflow(moneyflow);
 
 		// this should now retrieve the changed cache entry!
-		moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+		moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 
 		Assertions.assertEquals(comment, moneyflow.getComment());
@@ -176,22 +176,22 @@ public class MoneyflowServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAaddsAMoneyflow_userBsameGroupSeessItTooBecauseCacheWasReset() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 
 		// this caches
-		final List<Short> allYears1 = this.moneyflowService.getAllYears(user1ID);
+		final List<Short> allYears1 = this.moneyflowService.getAllYears(user1Id);
 
-		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2ID,
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 
-		moneyflow.getUser().setId(user2ID);
+		moneyflow.getUser().setId(user2Id);
 		moneyflow.setBookingDate(LocalDate.now());
 
 		// this should also modify the cache of user 1!
 		this.moneyflowService.createMoneyflow(moneyflow);
 
-		final List<Short> allYears2 = this.moneyflowService.getAllYears(user1ID);
+		final List<Short> allYears2 = this.moneyflowService.getAllYears(user1Id);
 
 		// Cache of user1 should have been invalidated and the added Moneyflow should be now
 		// in the List of all years.

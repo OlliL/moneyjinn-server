@@ -12,7 +12,7 @@ public class PostingAccountAmountTransportBuilder extends PostingAccountAmountTr
 	}
 
 	public PostingAccountAmountTransportBuilder withDate(final String date) {
-		super.setDate(DateUtil.getGMTDate(date));
+		super.setDate(DateUtil.getGmtDate(date));
 		return this;
 	}
 

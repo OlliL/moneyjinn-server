@@ -275,12 +275,12 @@ public class MonthlySettlementController extends AbstractController {
 				 * afterwards. To make it possible to create a settlement for this new source, add
 				 * it here.
 				 */
-				final List<CapitalsourceID> capitalsourceIDs = monthlySettlements.stream()
+				final List<CapitalsourceID> capitalsourceIds = monthlySettlements.stream()
 						.map(ms -> ms.getCapitalsource().getId()).collect(Collectors.toCollection(ArrayList::new));
 
 				for (final Capitalsource capitalsource : capitalsources) {
 					if (capitalsource.getUser().getId().equals(userId)
-							&& !capitalsourceIDs.contains(capitalsource.getId())) {
+							&& !capitalsourceIds.contains(capitalsource.getId())) {
 						final MonthlySettlement monthlySettlement = new MonthlySettlement();
 						monthlySettlement.setYear(year);
 						monthlySettlement.setMonth(month);

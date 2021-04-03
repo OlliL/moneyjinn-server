@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.config;
 import javax.sql.DataSource;
 
 import org.h2.Driver;
-import org.h2.engine.Mode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +15,11 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 @Configuration
 public class TestDatabaseConfiguration {
 
+	/**
+	 * Configures the DataSource for the Unit-Test-Context.
+	 *
+	 * @return H2 DataSource
+	 */
 	@Bean
 	public DataSource getDataSource() {
 		final DataSource dataSource = this.simpleDriverDataSource();
@@ -25,7 +29,7 @@ public class TestDatabaseConfiguration {
 
 	private SimpleDriverDataSource simpleDriverDataSource() {
 
-		final Mode mode = Mode.getInstance("MYSQL");
+		// final Mode mode = Mode.getInstance("MYSQL");
 
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(Driver.class);

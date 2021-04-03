@@ -25,8 +25,8 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 		super.setExternalid(IMPORTED_MONEYFLOW1_EXTERNAL_ID);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
-		super.setBookingdate(DateUtil.getGMTDate("2010-01-02"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-01-02"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-01-01"));
 		super.setName("Paul");
 		super.setAccountNumber(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ACCOUNT_NUMBER);
 		super.setBankCode(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_BANK_CODE);
@@ -49,8 +49,8 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 		super.setExternalid("8765421B");
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
-		super.setBookingdate(DateUtil.getGMTDate("2010-01-02"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-01-02"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-01-01"));
 		super.setName("Jane");
 		super.setAccountNumber("888888888888");
 		super.setBankCode("999999");
@@ -73,8 +73,8 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
 		super.setExternalid("ABC123");
 		super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE1_BANKCODE);
 		super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE1_ACCOUNTNUMBER);
-		super.setBookingdate(DateUtil.getGMTDate("2008-01-02"));
-		super.setInvoicedate(DateUtil.getGMTDate("2008-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2008-01-02"));
+		super.setInvoicedate(DateUtil.getGmtDate("2008-01-01"));
 		super.setName("Klaus");
 		super.setAccountNumber("1234");
 		super.setBankCode("ABCD");

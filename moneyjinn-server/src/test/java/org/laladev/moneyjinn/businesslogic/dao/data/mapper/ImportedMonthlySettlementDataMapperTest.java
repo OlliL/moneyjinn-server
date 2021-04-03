@@ -12,7 +12,7 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDa
 
 public class ImportedMonthlySettlementDataMapperTest {
 	@Test
-	public void testWithNullID() {
+	public void testWithNullId() {
 		final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
 		importedMonthlySettlement.setMonth(Month.JANUARY);
 		importedMonthlySettlement.setCapitalsource(new Capitalsource(new CapitalsourceID(1L)));

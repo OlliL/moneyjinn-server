@@ -56,26 +56,26 @@ public class ContractpartnerServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 
 		// this caches
-		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user1ID,
+		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user1Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 
-		contractpartner = this.contractpartnerService.getContractpartnerById(user2ID,
+		contractpartner = this.contractpartnerService.getContractpartnerById(user2Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 
 		final String name = String.valueOf(System.currentTimeMillis());
 
-		contractpartner.getUser().setId(user2ID);
+		contractpartner.getUser().setId(user2Id);
 		contractpartner.setName(name);
 
 		// this should also modify the cache of user 1!
 		this.contractpartnerService.updateContractpartner(contractpartner);
 
 		// this should now retrieve the changed cache entry!
-		contractpartner = this.contractpartnerService.getContractpartnerById(user1ID,
+		contractpartner = this.contractpartnerService.getContractpartnerById(user1Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 
 		Assertions.assertEquals(name, contractpartner.getName());
@@ -83,24 +83,24 @@ public class ContractpartnerServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAaddsAContractpartner_userBsameGroupSeessItTooBecauseCacheWasReset() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 
 		// this caches
-		final List<Contractpartner> allContractpartners1 = this.contractpartnerService.getAllContractpartners(user1ID);
+		final List<Contractpartner> allContractpartners1 = this.contractpartnerService.getAllContractpartners(user1Id);
 
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user2ID,
+		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user2Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 
 		final String name = String.valueOf(System.currentTimeMillis());
 
-		contractpartner.getUser().setId(user2ID);
+		contractpartner.getUser().setId(user2Id);
 		contractpartner.setName(name);
 
 		// this should also modify the cache of user 1!
 		this.contractpartnerService.createContractpartner(contractpartner);
 
-		final List<Contractpartner> allContractpartners2 = this.contractpartnerService.getAllContractpartners(user1ID);
+		final List<Contractpartner> allContractpartners2 = this.contractpartnerService.getAllContractpartners(user1Id);
 
 		// Cache of user1 should have been invalidated and the added Contractpartner should be now
 		// in

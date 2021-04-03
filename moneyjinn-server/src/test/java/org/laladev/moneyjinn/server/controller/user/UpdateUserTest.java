@@ -43,8 +43,8 @@ public class UpdateUserTest extends AbstractControllerTest {
 	@Inject
 	private IAccessRelationService accessRelationService;
 
-	private final AccessID accessIDUser1 = new AccessID(UserTransportBuilder.USER1_ID);
-	private final AccessID accessIDUser2 = new AccessID(UserTransportBuilder.USER2_ID);
+	private final AccessID accessIdUser1 = new AccessID(UserTransportBuilder.USER1_ID);
+	private final AccessID accessIdUser2 = new AccessID(UserTransportBuilder.USER2_ID);
 	private final AccessRelation accessRelationRoot = new AccessRelation(new AccessID(0l));
 	private final AccessRelation accessRelationGroup1 = new AccessRelation(
 			new AccessID(GroupTransportBuilder.GROUP1_ID), this.accessRelationRoot);
@@ -53,13 +53,13 @@ public class UpdateUserTest extends AbstractControllerTest {
 	private final AccessRelation accessRelationAdminGroup = new AccessRelation(
 			new AccessID(GroupTransportBuilder.ADMINGROUP_ID), this.accessRelationRoot);
 
-	private final AccessRelation accessRelationUser1Default1 = new AccessRelation(this.accessIDUser1,
+	private final AccessRelation accessRelationUser1Default1 = new AccessRelation(this.accessIdUser1,
 			this.accessRelationGroup1, LocalDate.parse("2000-01-01"), LocalDate.parse("2599-12-31"));
-	private final AccessRelation accessRelationUser1Default2 = new AccessRelation(this.accessIDUser1,
+	private final AccessRelation accessRelationUser1Default2 = new AccessRelation(this.accessIdUser1,
 			this.accessRelationGroup2, LocalDate.parse("2600-01-01"), LocalDate.parse("2699-12-31"));
-	private final AccessRelation accessRelationUser1Default3 = new AccessRelation(this.accessIDUser1,
+	private final AccessRelation accessRelationUser1Default3 = new AccessRelation(this.accessIdUser1,
 			this.accessRelationGroup1, LocalDate.parse("2700-01-01"), LocalDate.parse("2799-12-31"));
-	private final AccessRelation accessRelationUser1Default4 = new AccessRelation(this.accessIDUser1,
+	private final AccessRelation accessRelationUser1Default4 = new AccessRelation(this.accessIdUser1,
 			this.accessRelationGroup2, LocalDate.parse("2800-01-01"), LocalDate.parse("2999-12-31"));
 
 	private final HttpMethod method = HttpMethod.PUT;
@@ -251,12 +251,12 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER2_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP2_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2100-12-31"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2100-12-31"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
-		accessRelations.add(new AccessRelation(this.accessIDUser2, this.accessRelationGroup1,
+		accessRelations.add(new AccessRelation(this.accessIdUser2, this.accessRelationGroup1,
 				LocalDate.parse("2000-01-01"), LocalDate.parse("2100-12-30")));
-		accessRelations.add(new AccessRelation(this.accessIDUser2, this.accessRelationGroup2,
+		accessRelations.add(new AccessRelation(this.accessIdUser2, this.accessRelationGroup2,
 				LocalDate.parse("2100-12-31"), LocalDate.parse("2999-12-31")));
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
@@ -272,15 +272,15 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP1_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2900-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2900-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
 		accessRelations.add(this.accessRelationUser1Default2);
 		accessRelations.add(this.accessRelationUser1Default3);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup2,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup2,
 				LocalDate.parse("2800-01-01"), LocalDate.parse("2899-12-31")));
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup1,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup1,
 				LocalDate.parse("2900-01-01"), LocalDate.parse("2999-12-31")));
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
@@ -296,7 +296,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP2_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2900-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2900-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
@@ -317,12 +317,12 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP1_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2800-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2800-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
 		accessRelations.add(this.accessRelationUser1Default2);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup1,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup1,
 				LocalDate.parse("2700-01-01"), LocalDate.parse("2999-12-31")));
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
@@ -338,7 +338,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP1_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2700-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2700-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
@@ -359,14 +359,14 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP2_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2780-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2780-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
 		accessRelations.add(this.accessRelationUser1Default2);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup1,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup1,
 				LocalDate.parse("2700-01-01"), LocalDate.parse("2779-12-31")));
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup2,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup2,
 				LocalDate.parse("2780-01-01"), LocalDate.parse("2999-12-31")));
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
@@ -382,13 +382,13 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP1_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2650-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2650-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup2,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup2,
 				LocalDate.parse("2600-01-01"), LocalDate.parse("2649-12-31")));
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup1,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup1,
 				LocalDate.parse("2650-01-01"), LocalDate.parse("2799-12-31")));
 		accessRelations.add(this.accessRelationUser1Default4);
 
@@ -405,11 +405,11 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.GROUP2_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2700-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2700-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationGroup2,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationGroup2,
 				LocalDate.parse("2600-01-01"), LocalDate.parse("2999-12-31")));
 
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
@@ -425,12 +425,12 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
 		accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
 		accessRelationTransport.setRefId(GroupTransportBuilder.ADMINGROUP_ID);
-		accessRelationTransport.setValidfrom(DateUtil.getGMTDate("2700-01-01"));
+		accessRelationTransport.setValidfrom(DateUtil.getGmtDate("2700-01-01"));
 
 		final List<AccessRelation> accessRelations = new ArrayList<>();
 		accessRelations.add(this.accessRelationUser1Default1);
 		accessRelations.add(this.accessRelationUser1Default2);
-		accessRelations.add(new AccessRelation(this.accessIDUser1, this.accessRelationAdminGroup,
+		accessRelations.add(new AccessRelation(this.accessIdUser1, this.accessRelationAdminGroup,
 				LocalDate.parse("2700-01-01"), LocalDate.parse("2799-12-31")));
 		accessRelations.add(this.accessRelationUser1Default4);
 

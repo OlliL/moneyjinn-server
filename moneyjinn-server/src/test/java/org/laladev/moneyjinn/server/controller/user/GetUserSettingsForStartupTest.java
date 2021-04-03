@@ -98,7 +98,7 @@ public class GetUserSettingsForStartupTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_OPTIONS_EmptyResponse() throws Exception {
+	public void test_Options_EmptyResponse() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
 

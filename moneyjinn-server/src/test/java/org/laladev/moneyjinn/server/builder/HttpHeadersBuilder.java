@@ -21,15 +21,16 @@ import org.springframework.http.MediaType;
 public class HttpHeadersBuilder {
 	private final RESTAuthorization restAuthorization;
 	private final DateTimeFormatter dateFormatter;
-	private MessageDigest sha1MD;
+	private MessageDigest sha1Md;
 
 	protected HttpHeadersBuilder() {
 		this.restAuthorization = new RESTAuthorization();
 		this.dateFormatter = DateTimeFormatter.ofPattern(RESTAuthorization.DATE_HEADER_FORMAT, Locale.US)
 				.withZone(ZoneId.of("GMT"));
 		try {
-			this.sha1MD = MessageDigest.getInstance("SHA1");
+			this.sha1Md = MessageDigest.getInstance("SHA1");
 		} catch (final NoSuchAlgorithmException e) {
+			// Ignore Exception
 		}
 	}
 
@@ -43,12 +44,12 @@ public class HttpHeadersBuilder {
 	public HttpHeaders getAuthHeaders(final String userName, final String userPassword, final ZonedDateTime dateTime,
 			final String uri, final String body, final HttpMethod httpMethod)
 			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
-		this.sha1MD.reset();
+		this.sha1Md.reset();
 		final HttpHeaders httpHeaders = this.getDateHeader(dateTime);
 		if (userName != null && userPassword != null) {
 
 			final String contentType = MediaType.APPLICATION_JSON_VALUE;
-			final byte[] secret = BytesToHexConverter.convert(this.sha1MD.digest(userPassword.getBytes())).getBytes();
+			final byte[] secret = BytesToHexConverter.convert(this.sha1Md.digest(userPassword.getBytes())).getBytes();
 
 			final String authString = this.restAuthorization.getRESTAuthorization(secret, httpMethod.toString(),
 					contentType, uri, httpHeaders.getFirst(RESTAuthorization.DATE_HEADER_NAME), body.getBytes(),

@@ -16,16 +16,16 @@ import org.junit.jupiter.api.Test;
 public class MyObjectMapperTest {
 
 	@Test
-	public void test_nullAttribute_notInJSON() throws JsonProcessingException {
+	public void test_nullAttribute_notInJson() throws JsonProcessingException {
 		final MyObjectMapper mapper = new MyObjectMapper();
 		final RestObject restObject = new RestObject();
 		restObject.setAttribute1("l");
 
 		final String json = mapper.writeValueAsString(restObject);
 
-		final boolean attribute2NotExistentInJSON = json.contains("attribute2");
+		final boolean attribute2NotExistentInJson = json.contains("attribute2");
 
-		Assertions.assertFalse(attribute2NotExistentInJSON);
+		Assertions.assertFalse(attribute2NotExistentInJson);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class MyObjectMapperTest {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 		// Should be changed back to X in the Formatter instead of hardcoding +00:00 with Jackson 3
 		// see https://github.com/FasterXML/jackson-databind/issues/2643
-		final String timestampJSON = dateFormat.format(timestampJava) + "+00:00";
+		final String timestampJson = dateFormat.format(timestampJava) + "+00:00";
 
 		restObject.setAttribute3(Date.valueOf(date));
 		restObject.setAttribute4(timestampJava);
@@ -80,7 +80,7 @@ public class MyObjectMapperTest {
 		final String json = mapper.writeValueAsString(restObject);
 
 		final boolean dateContained = json.contains("\"attribute3\":\"" + date + "\"");
-		final boolean timestampContained = json.contains("\"attribute4\":\"" + timestampJSON + "\"");
+		final boolean timestampContained = json.contains("\"attribute4\":\"" + timestampJson + "\"");
 
 		Assertions.assertTrue(dateContained);
 		Assertions.assertTrue(timestampContained);

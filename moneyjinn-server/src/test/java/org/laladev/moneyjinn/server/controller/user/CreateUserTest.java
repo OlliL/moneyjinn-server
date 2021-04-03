@@ -201,7 +201,7 @@ public class CreateUserTest extends AbstractControllerTest {
 		Assertions.assertEquals(accessRelationTransport.getValidfrom().getTime(),
 				accessRelation.getValidFrom().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 		// default if validTil is empty
-		Assertions.assertEquals(DateUtil.getGMTDate("2999-12-31").getTime(),
+		Assertions.assertEquals(DateUtil.getGmtDate("2999-12-31").getTime(),
 				accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 	}
 
@@ -214,7 +214,7 @@ public class CreateUserTest extends AbstractControllerTest {
 
 		final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
 				.forNewUser_2000_01_01().build();
-		accessRelationTransport.setValidtil(DateUtil.getGMTDate("2900-12-31"));
+		accessRelationTransport.setValidtil(DateUtil.getGmtDate("2900-12-31"));
 		request.setAccessRelationTransport(accessRelationTransport);
 
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,

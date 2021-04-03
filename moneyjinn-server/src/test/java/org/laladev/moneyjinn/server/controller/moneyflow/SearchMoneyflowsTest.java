@@ -163,8 +163,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
 		transport.setGroupBy1("year");
 		transport.setSearchString("ENERATED");
-		transport.setStartDate(DateUtil.getGMTDate("2009-05-01"));
-		transport.setEndDate(DateUtil.getGMTDate("2009-11-10"));
+		transport.setStartDate(DateUtil.getGmtDate("2009-05-01"));
+		transport.setEndDate(DateUtil.getGmtDate("2009-11-10"));
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
@@ -185,8 +185,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		transport.setGroupBy1("year");
 		transport.setGroupBy2("month");
 		transport.setSearchString("ENERATED");
-		transport.setStartDate(DateUtil.getGMTDate("2009-05-01"));
-		transport.setEndDate(DateUtil.getGMTDate("2009-11-10"));
+		transport.setStartDate(DateUtil.getGmtDate("2009-05-01"));
+		transport.setEndDate(DateUtil.getGmtDate("2009-11-10"));
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();
@@ -218,8 +218,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
 		transport.setGroupBy2("month");
 		transport.setSearchString("ENERATED");
-		transport.setStartDate(DateUtil.getGMTDate("2009-05-01"));
-		transport.setEndDate(DateUtil.getGMTDate("2009-11-10"));
+		transport.setStartDate(DateUtil.getGmtDate("2009-05-01"));
+		transport.setEndDate(DateUtil.getGmtDate("2009-11-10"));
 		request.setMoneyflowSearchParamsTransport(transport);
 		final SearchMoneyflowsResponse expected = this.getDefaultResponse();
 		final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = new ArrayList<>();

@@ -215,8 +215,8 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 		contractpartnerTransport.setId(ContractpartnerTransportBuilder.NEXT_ID);
 		contractpartnerTransport.setUserid(UserTransportBuilder.USER1_ID);
 		contractpartnerTransport.setName(contractpartner.getName());
-		contractpartnerTransport.setValidFrom(DateUtil.getGMTDate(contractpartner.getValidFrom().toString()));
-		contractpartnerTransport.setValidTil(DateUtil.getGMTDate(contractpartner.getValidTil().toString()));
+		contractpartnerTransport.setValidFrom(DateUtil.getGmtDate(contractpartner.getValidFrom().toString()));
+		contractpartnerTransport.setValidTil(DateUtil.getGmtDate(contractpartner.getValidTil().toString()));
 
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
 		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S', '_')));
@@ -245,8 +245,8 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 		contractpartnerTransport.setId(ContractpartnerTransportBuilder.NEXT_ID);
 		contractpartnerTransport.setUserid(UserTransportBuilder.USER1_ID);
 		contractpartnerTransport.setName(contractpartner.getName());
-		contractpartnerTransport.setValidFrom(DateUtil.getGMTDate(contractpartner.getValidFrom().toString()));
-		contractpartnerTransport.setValidTil(DateUtil.getGMTDate(contractpartner.getValidTil().toString()));
+		contractpartnerTransport.setValidFrom(DateUtil.getGmtDate(contractpartner.getValidFrom().toString()));
+		contractpartnerTransport.setValidTil(DateUtil.getGmtDate(contractpartner.getValidTil().toString()));
 
 		final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
 		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q', 'S', '%')));

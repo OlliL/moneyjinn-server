@@ -42,25 +42,25 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAeditsContractpartnerAccount_userBsameGroupSeesCachedChange() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 
 		// this caches
 		ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(user2ID, new ContractpartnerAccountID(
+				.getContractpartnerAccountById(user2Id, new ContractpartnerAccountID(
 						ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
-		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user1ID,
+		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user1Id,
 				new ContractpartnerAccountID(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
 
 		// this should also modify the cache of user 1!
-		this.contractpartnerAccountService.updateContractpartnerAccount(user1ID, contractpartnerAccount);
+		this.contractpartnerAccountService.updateContractpartnerAccount(user1Id, contractpartnerAccount);
 
 		// this should now retrieve the changed cache entry!
-		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user2ID,
+		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user2Id,
 				new ContractpartnerAccountID(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
 		Assertions.assertEquals(comment, contractpartnerAccount.getBankAccount().getAccountNumber());
@@ -68,27 +68,27 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 
 	@Test
 	public void test_userAaddsAContractpartnerAccount_userBsameGroupSeessItTooBecauseCacheWasReset() {
-		final UserID user1ID = new UserID(UserTransportBuilder.USER1_ID);
-		final UserID user2ID = new UserID(UserTransportBuilder.USER2_ID);
-		final ContractpartnerID contractpartnerID = new ContractpartnerID(
+		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
+		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(
 				ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
 
 		// this caches
 		final List<ContractpartnerAccount> allContractpartnerAccounts1 = this.contractpartnerAccountService
-				.getContractpartnerAccounts(user1ID, contractpartnerID);
+				.getContractpartnerAccounts(user1Id, contractpartnerId);
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(user2ID, new ContractpartnerAccountID(
+				.getContractpartnerAccountById(user2Id, new ContractpartnerAccountID(
 						ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
 
 		// this should also modify the cache of user 1!
-		this.contractpartnerAccountService.createContractpartnerAccount(user2ID, contractpartnerAccount);
+		this.contractpartnerAccountService.createContractpartnerAccount(user2Id, contractpartnerAccount);
 
 		final List<ContractpartnerAccount> allContractpartnerAccounts2 = this.contractpartnerAccountService
-				.getContractpartnerAccounts(user1ID, contractpartnerID);
+				.getContractpartnerAccounts(user1Id, contractpartnerId);
 
 		// Cache of user1 should have been invalidated and the added ContractpartnerAccount should
 		// be now in the List of all ContractpartnerAccounts.

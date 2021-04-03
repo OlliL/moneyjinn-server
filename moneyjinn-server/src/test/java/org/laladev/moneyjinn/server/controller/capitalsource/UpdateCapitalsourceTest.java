@@ -99,8 +99,8 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 	@Test
 	public void test_ValidTilBeforeValidFrom_Error() throws Exception {
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2().build();
-		transport.setValidTil(DateUtil.getGMTDate("2000-01-01"));
-		transport.setValidFrom(DateUtil.getGMTDate("2010-01-01"));
+		transport.setValidTil(DateUtil.getGmtDate("2000-01-01"));
+		transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
 
 		this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
 	}
@@ -108,7 +108,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 	@Test
 	public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1().build();
-		transport.setValidFrom(DateUtil.getGMTDate("2010-01-01"));
+		transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
 
 		this.testError(transport, ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
 	}

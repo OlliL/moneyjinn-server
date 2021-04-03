@@ -26,8 +26,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW1_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat(null);
-		super.setBookingdate(DateUtil.getGMTDate("2009-01-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2009-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2009-01-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-01-01"));
 		super.setAmount(new BigDecimal("-1.10"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -42,8 +42,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 	public MoneyflowTransportBuilder forMoneyflow2() {
 		super.setId(MONEYFLOW2_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setBookingdate(DateUtil.getGMTDate("2008-12-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2008-12-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2008-12-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2008-12-01"));
 		super.setAmount(MONEYFLOW2_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -59,8 +59,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW13_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat((short) 1);
-		super.setBookingdate(DateUtil.getGMTDate("2009-12-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2009-12-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2009-12-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-12-01"));
 		super.setAmount(new BigDecimal("10.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -75,8 +75,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 	public MoneyflowTransportBuilder forMoneyflow14() {
 		super.setId(MONEYFLOW14_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setBookingdate(DateUtil.getGMTDate("2010-01-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-01-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-01-01"));
 		super.setAmount(new BigDecimal("-10.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -92,8 +92,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW15_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat((short) 1);
-		super.setBookingdate(DateUtil.getGMTDate("2010-02-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-02-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-02-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-02-01"));
 		super.setAmount(new BigDecimal("10.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -109,8 +109,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW16_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat((short) 1);
-		super.setBookingdate(DateUtil.getGMTDate("2010-03-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-03-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-03-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-03-01"));
 		super.setAmount(new BigDecimal("-10.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -126,8 +126,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(MONEYFLOW18_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat((short) 1);
-		super.setBookingdate(DateUtil.getGMTDate("2010-05-03"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-05-03"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-05-03"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-05-03"));
 		super.setAmount(new BigDecimal("-5.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -142,8 +142,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 	public MoneyflowTransportBuilder forMoneyflow19() {
 		super.setId(MONEYFLOW19_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
-		super.setBookingdate(DateUtil.getGMTDate("2010-05-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2010-05-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2010-05-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-05-01"));
 		super.setAmount(new BigDecimal("-5.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -159,8 +159,8 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setId(NON_EXISTING_ID);
 		super.setUserid(UserTransportBuilder.USER1_ID);
 		super.setPrivat(null);
-		super.setBookingdate(DateUtil.getGMTDate("2008-01-01"));
-		super.setInvoicedate(DateUtil.getGMTDate("2008-01-01"));
+		super.setBookingdate(DateUtil.getGmtDate("2008-01-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2008-01-01"));
 		super.setAmount(MONEYFLOW2_AMOUNT);
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);

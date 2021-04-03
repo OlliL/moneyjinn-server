@@ -69,8 +69,8 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource6().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
 
-		expected.setMinDate(DateUtil.getGMTDate("2008-11-01"));
-		expected.setMaxDate(DateUtil.getGMTDate("2010-05-03"));
+		expected.setMinDate(DateUtil.getGmtDate("2008-11-01"));
+		expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
 
 		return expected;
 	}
