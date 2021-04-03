@@ -76,14 +76,12 @@ public class PostingAccountController extends AbstractController {
 
 	@RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	@RequiresPermissionAdmin
 	public ShowPostingAccountListResponse showPostingAccountList() {
 		return this.showPostingAccountList(null);
 	}
 
 	@RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
 	@RequiresAuthorization
-	@RequiresPermissionAdmin
 	public ShowPostingAccountListResponse showPostingAccountList(
 			@PathVariable(value = "restriction") final String restriction) {
 		final UserID userId = super.getUserId();

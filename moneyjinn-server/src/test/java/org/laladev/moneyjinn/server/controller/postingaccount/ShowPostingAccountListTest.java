@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
@@ -81,6 +80,20 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		final ShowPostingAccountListResponse expected = this.getCompleteResponse();
+
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
+				ShowPostingAccountListResponse.class);
+
+		Assert.assertEquals(expected, actual);
+
+	}
+
+	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
 		expected.setInitials(new HashSet<>(Arrays.asList('P', 'X')));
@@ -146,28 +159,6 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 				ShowPostingAccountListResponse.class);
 
 		Assert.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
-
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
-
-	}
-
-	@Test
-	public void test_OnlyAdminAllowed_filtered_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/all", this.method, false, ErrorResponse.class);
-
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
-
 	}
 
 	@Test
