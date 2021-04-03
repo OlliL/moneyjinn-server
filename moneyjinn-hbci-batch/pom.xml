@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.laladev.moneyjinn</groupId>
 	<artifactId>moneyjinn-hbci-core</artifactId>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 
 	<properties>
-		<hibernate-core.version>5.2.11.Final</hibernate-core.version>
-		<mysql.version>8.0.16</mysql.version>
-		<hbci4java.version>3.1.13</hbci4java.version>
-		<slf4j.version>1.7.26</slf4j.version>
-		<slf4j-log4j12.version>1.7.26</slf4j-log4j12.version>
+		<hibernate-core.version>5.4.30.Final</hibernate-core.version>
+		<mysql.version>8.0.23</mysql.version>
+		<hbci4java.version>3.1.55</hbci4java.version>
+		<slf4j.version>1.7.30</slf4j.version>
+		<slf4j-log4j12.version>1.7.30</slf4j-log4j12.version>
 		<junit.version>5.7.1</junit.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
