@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.event.ShowEventListResponse;
 import org.laladev.moneyjinn.model.access.Group;
@@ -41,7 +41,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -75,7 +75,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowEventListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowEventListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -110,14 +110,14 @@ public class ShowEventListTest extends AbstractControllerTest {
 		ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowEventListResponse.class);
 
-		Assert.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
+		Assertions.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
 
 		this.importedMoneyflowService.deleteImportedMoneyflowById(new UserID(UserTransportBuilder.USER1_ID),
 				new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
 
 		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
-		Assert.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
+		Assertions.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 
 		actual = super.callUsecaseWithoutContent("", this.method, false, ShowEventListResponse.class);
 
-		Assert.assertEquals(Integer.valueOf(numberOfImportedMoneyflows - 1), actual.getNumberOfImportedMoneyflows());
+		Assertions.assertEquals(Integer.valueOf(numberOfImportedMoneyflows - 1), actual.getNumberOfImportedMoneyflows());
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

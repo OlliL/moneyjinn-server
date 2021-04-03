@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
@@ -68,10 +68,10 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 				.getAllImportedBalancesByCapitalsourceIds(userId,
 						Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
 
-		Assert.assertNotNull(importedBalances);
-		Assert.assertEquals(1, importedBalances.size());
-		Assert.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+		Assertions.assertNotNull(importedBalances);
+		Assertions.assertEquals(1, importedBalances.size());
+		Assertions.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}
 
@@ -100,10 +100,10 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 		final List<ImportedBalance> importedBalances = this.importedBalanceService
 				.getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
 
-		Assert.assertNotNull(importedBalances);
-		Assert.assertEquals(1, importedBalances.size());
-		Assert.assertTrue(BigDecimal.TEN.compareTo(importedBalances.get(0).getBalance()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
+		Assertions.assertNotNull(importedBalances);
+		Assertions.assertEquals(1, importedBalances.size());
+		Assertions.assertTrue(BigDecimal.TEN.compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}
 
@@ -123,10 +123,10 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 				.getAllImportedBalancesByCapitalsourceIds(userId,
 						Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID)));
 
-		Assert.assertNotNull(importedBalances);
-		Assert.assertEquals(1, importedBalances.size());
-		Assert.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+		Assertions.assertNotNull(importedBalances);
+		Assertions.assertEquals(1, importedBalances.size());
+		Assertions.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}
 
@@ -147,7 +147,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

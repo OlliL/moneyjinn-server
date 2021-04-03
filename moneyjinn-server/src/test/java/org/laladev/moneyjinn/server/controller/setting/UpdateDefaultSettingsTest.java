@@ -2,9 +2,9 @@ package org.laladev.moneyjinn.server.controller.setting;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.UpdateDefaultSettingsRequest;
@@ -25,7 +25,7 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -62,9 +62,9 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assert.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
-		Assert.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assert.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
+		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 		final UpdateDefaultSettingsRequest request = new UpdateDefaultSettingsRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -84,7 +84,7 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

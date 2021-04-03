@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
@@ -16,7 +16,7 @@ public class AccessRelationDataMapperTest {
 
 		final AccessRelationData accessRelationData = mapper.mapAToB(accessRelation);
 
-		Assert.assertNull(accessRelationData.getRefId());
+		Assertions.assertNull(accessRelationData.getRefId());
 	}
 
 }

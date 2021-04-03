@@ -2,7 +2,8 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.access.User;
@@ -14,26 +15,32 @@ public class PreDefMoneyflowServiceTest extends AbstractTest {
 	@Inject
 	private IPreDefMoneyflowService preDefMoneyflowService;
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void test_validateNullUser_raisesException() {
 		final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
 
-		this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_createWithInvalidEntity_raisesException() {
 		final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
 		preDefMoneyflow.setUser(new User(new UserID(1l)));
 
-		this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_updateWithInvalidEntity_raisesException() {
 		final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
 		preDefMoneyflow.setUser(new User(new UserID(1l)));
 
-		this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+		});
 	}
 }

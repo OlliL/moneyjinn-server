@@ -2,8 +2,8 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import java.time.Month;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
@@ -21,6 +21,6 @@ public class ImportedMonthlySettlementDataMapperTest {
 		final ImportedMonthlySettlementData importedMonthlySettlementData = importedMonthlySettlementDataMapper
 				.mapAToB(importedMonthlySettlement);
 
-		Assert.assertNull(importedMonthlySettlementData.getId());
+		Assertions.assertNull(importedMonthlySettlementData.getId());
 	}
 }

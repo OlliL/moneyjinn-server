@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowEditContractpartnerAccountResponse;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
@@ -18,7 +18,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -46,7 +46,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 				"/" + ContractpartnerAccountTransportBuilder.NON_EXISTING_ID, this.method, false,
 				ShowEditContractpartnerAccountResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 				"/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID, this.method, false,
 				ShowEditContractpartnerAccountResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 				"/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID, this.method, false,
 				ShowEditContractpartnerAccountResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 				"/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID, this.method, false,
 				ShowEditContractpartnerAccountResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class ShowEditContractpartnerAccountTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
 				ShowEditContractpartnerAccountResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 

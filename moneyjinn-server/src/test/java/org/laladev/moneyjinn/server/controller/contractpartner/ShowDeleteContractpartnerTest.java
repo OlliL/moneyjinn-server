@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowDeleteContractpartnerResponse;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
@@ -17,7 +17,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -45,7 +45,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method, false,
 				ShowDeleteContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
 				ShowDeleteContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
 				ShowDeleteContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
 				ShowDeleteContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -106,6 +106,6 @@ public class ShowDeleteContractpartnerTest extends AbstractControllerTest {
 				"/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method, false,
 				ShowDeleteContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 }

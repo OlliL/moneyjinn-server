@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
@@ -53,7 +53,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
+		Assertions.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
@@ -66,10 +66,10 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+		Assertions.assertNotNull(importedMoneyflows);
+		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
+		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
 	}
 
@@ -81,7 +81,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		final List<ImportedMoneyflow> importedMoneyflowsOrig = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
-		Assert.assertNotNull(importedMoneyflowsOrig);
+		Assertions.assertNotNull(importedMoneyflowsOrig);
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
 		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
@@ -94,7 +94,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
 
-		Assert.assertEquals(importedMoneyflowsOrig, importedMoneyflows);
+		Assertions.assertEquals(importedMoneyflowsOrig, importedMoneyflows);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
+		Assertions.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
@@ -119,12 +119,12 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+		Assertions.assertNotNull(importedMoneyflows);
+		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
+		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getBankCode() + "XXX", importedMoneyflows.get(2).getBankAccount().getBankCode());
+		Assertions.assertEquals(transport.getBankCode() + "XXX", importedMoneyflows.get(2).getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
+		Assertions.assertNotNull(importedMoneyflows);
 		final int sizeBeforeInsert = importedMoneyflows.size();
 
 		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
@@ -149,10 +149,10 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assert.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+		Assertions.assertNotNull(importedMoneyflows);
+		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
+		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
 	}
 
@@ -173,7 +173,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -231,7 +231,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -251,7 +251,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

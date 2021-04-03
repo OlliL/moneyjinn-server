@@ -3,9 +3,9 @@ package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowEditPreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -26,7 +26,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -54,7 +54,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 				"/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false,
 				ShowEditPreDefMoneyflowResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 				"/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, false,
 				ShowEditPreDefMoneyflowResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 				"/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, false,
 				ShowEditPreDefMoneyflowResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -115,6 +115,6 @@ public class ShowEditPreDefMoneyflowTest extends AbstractControllerTest {
 				"/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, false,
 				ShowEditPreDefMoneyflowResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 }

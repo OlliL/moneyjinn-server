@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -23,37 +23,45 @@ public class CapitalsourceServiceTest extends AbstractTest {
 	@Inject
 	private ICapitalsourceService capitalsourceService;
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void test_validateNullUser_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 
-		this.capitalsourceService.validateCapitalsource(capitalsource);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			this.capitalsourceService.validateCapitalsource(capitalsource);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void test_validateNullAccess_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1l)));
 
-		this.capitalsourceService.validateCapitalsource(capitalsource);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			this.capitalsourceService.validateCapitalsource(capitalsource);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_createWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1L)));
 		capitalsource.setAccess(new Group(new GroupID(1L)));
 
-		this.capitalsourceService.createCapitalsource(capitalsource);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.capitalsourceService.createCapitalsource(capitalsource);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_updateWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1l)));
 		capitalsource.setAccess(new Group(new GroupID(1L)));
 
-		this.capitalsourceService.updateCapitalsource(capitalsource);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.capitalsourceService.updateCapitalsource(capitalsource);
+		});
 	}
 
 	@Test
@@ -81,7 +89,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
 		capitalsource = this.capitalsourceService.getCapitalsourceById(user2ID, groupID,
 				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 
-		Assert.assertEquals(comment, capitalsource.getComment());
+		Assertions.assertEquals(comment, capitalsource.getComment());
 	}
 
 	@Test
@@ -108,7 +116,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
 
 		// Cache of user1 should have been invalidated and the added Capitalsource should be now in
 		// the List of all Capitalsources.
-		Assert.assertNotEquals(allCapitalsources1.size(), allCapitalsources2.size());
+		Assertions.assertNotEquals(allCapitalsources1.size(), allCapitalsources2.size());
 	}
 
 }

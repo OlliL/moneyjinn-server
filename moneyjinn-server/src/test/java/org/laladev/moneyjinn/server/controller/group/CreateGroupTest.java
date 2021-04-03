@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -31,7 +31,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -68,7 +68,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ValidationResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -109,8 +109,8 @@ public class CreateGroupTest extends AbstractControllerTest {
 
 		final Group group = this.groupService.getGroupByName(GroupTransportBuilder.NEWGROUP_NAME);
 
-		Assert.assertEquals(GroupTransportBuilder.NEXT_ID, group.getId().getId());
-		Assert.assertEquals(GroupTransportBuilder.NEWGROUP_NAME, group.getName());
+		Assertions.assertEquals(GroupTransportBuilder.NEXT_ID, group.getId().getId());
+		Assertions.assertEquals(GroupTransportBuilder.NEWGROUP_NAME, group.getName());
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 		final CreateGroupRequest request = new CreateGroupRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -130,7 +130,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -32,7 +32,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -67,15 +67,15 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		final ErrorResponse response = super.callUsecaseWithoutContent(
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, false, ErrorResponse.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
-		Assert.assertEquals(expected, response);
+		Assertions.assertNotNull(contractpartner);
+		Assertions.assertEquals(expected, response);
 	}
 
 	@Test
@@ -88,14 +88,14 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 	}
 
 	@Test
@@ -105,21 +105,21 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartnerId);
-		Assert.assertEquals(1, contractpartnerAccounts.size());
+		Assertions.assertEquals(1, contractpartnerAccounts.size());
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 
 		contractpartnerAccounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
 				contractpartnerId);
-		Assert.assertEquals(0, contractpartnerAccounts.size());
+		Assertions.assertEquals(0, contractpartnerAccounts.size());
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 				ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartnerId);
@@ -138,17 +138,17 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 		this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
 		contractpartnerAccounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
 				contractpartnerId);
-		Assert.assertEquals(2, contractpartnerAccounts.size());
+		Assertions.assertEquals(2, contractpartnerAccounts.size());
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 
 		contractpartnerAccounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
 				contractpartnerId);
-		Assert.assertEquals(0, contractpartnerAccounts.size());
+		Assertions.assertEquals(0, contractpartnerAccounts.size());
 	}
 
 	@Test
@@ -159,14 +159,14 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 	}
 
 	@Test
@@ -181,19 +181,19 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		final ErrorResponse response = super.callUsecaseWithoutContent(
 				"/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false, ErrorResponse.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
-		Assert.assertEquals(expected, response);
+		Assertions.assertNotNull(contractpartner);
+		Assertions.assertEquals(expected, response);
 
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartnerId);
-		Assert.assertEquals(2, contractpartnerAccounts.size());
+		Assertions.assertEquals(2, contractpartnerAccounts.size());
 	}
 
 	@Test
@@ -204,14 +204,14 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNull(contractpartner);
+		Assertions.assertNull(contractpartner);
 	}
 
 	@Test
@@ -222,14 +222,14 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
 		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 
 		super.callUsecaseWithoutContent("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID, this.method, true,
 				Object.class);
 
 		contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
 
-		Assert.assertNotNull(contractpartner);
+		Assertions.assertNotNull(contractpartner);
 	}
 
 	@Test
@@ -237,7 +237,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -35,7 +35,7 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -63,20 +63,20 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
+		Assertions.assertNotNull(moneyflow);
 
 		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, true, Object.class);
 
 		// Validate that everything was deleted (and do not rely on foreign key constraints)
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-		Assert.assertNull(moneyflow);
+		Assertions.assertNull(moneyflow);
 
 		final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
-		Assert.assertNull(moneyflowReceipt);
+		Assertions.assertNull(moneyflowReceipt);
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertTrue(moneyflowSplitEntries.isEmpty());
+		Assertions.assertTrue(moneyflowSplitEntries.isEmpty());
 	}
 
 	@Test
@@ -86,14 +86,14 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNull(moneyflow);
+		Assertions.assertNull(moneyflow);
 
 		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true,
 				Object.class);
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNull(moneyflow);
+		Assertions.assertNull(moneyflow);
 	}
 
 	@Test
@@ -105,13 +105,13 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
+		Assertions.assertNotNull(moneyflow);
 
 		super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, true, Object.class);
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
+		Assertions.assertNotNull(moneyflow);
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

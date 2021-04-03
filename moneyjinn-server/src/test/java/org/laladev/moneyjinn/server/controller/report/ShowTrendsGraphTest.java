@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
@@ -39,7 +39,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -118,7 +118,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		final ShowTrendsGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowTrendsGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -162,7 +162,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		final ShowTrendsGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowTrendsGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -184,7 +184,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		final ShowTrendsGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowTrendsGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -212,7 +212,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		final ShowTrendsGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowTrendsGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -220,7 +220,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

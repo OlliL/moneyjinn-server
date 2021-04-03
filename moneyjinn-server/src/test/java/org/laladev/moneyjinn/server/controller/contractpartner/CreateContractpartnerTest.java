@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
@@ -35,7 +35,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -72,7 +72,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -119,15 +119,15 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
 	}
 
 	@Test
@@ -145,15 +145,15 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
 	}
 
 	@Test
@@ -172,17 +172,17 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-		Assert.assertEquals(LocalDate.now(), contractpartner.getValidFrom());
-		Assert.assertEquals(LocalDate.parse("2999-12-31"), contractpartner.getValidTil());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+		Assertions.assertEquals(LocalDate.now(), contractpartner.getValidFrom());
+		Assertions.assertEquals(LocalDate.parse("2999-12-31"), contractpartner.getValidTil());
 	}
 
 	@Test
@@ -205,21 +205,21 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-		Assert.assertNull(contractpartner.getStreet());
-		Assert.assertNull(contractpartner.getPostcode());
-		Assert.assertNull(contractpartner.getTown());
-		Assert.assertNull(contractpartner.getCountry());
-		Assert.assertNull(contractpartner.getMoneyflowComment());
-		Assert.assertNull(contractpartner.getPostingAccount());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+		Assertions.assertNull(contractpartner.getStreet());
+		Assertions.assertNull(contractpartner.getPostcode());
+		Assertions.assertNull(contractpartner.getTown());
+		Assertions.assertNull(contractpartner.getCountry());
+		Assertions.assertNull(contractpartner.getMoneyflowComment());
+		Assertions.assertNull(contractpartner.getPostingAccount());
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -254,15 +254,15 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
-		Assert.assertEquals(contractpartnerId.getId(), contractpartner.getId().getId());
-		Assert.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
+		Assertions.assertEquals(contractpartnerId.getId(), contractpartner.getId().getId());
+		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
 	}
 
 }

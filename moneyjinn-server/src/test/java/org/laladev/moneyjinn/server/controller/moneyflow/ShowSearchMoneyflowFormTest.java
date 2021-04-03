@@ -3,9 +3,9 @@ package org.laladev.moneyjinn.server.controller.moneyflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
@@ -23,7 +23,7 @@ public class ShowSearchMoneyflowFormTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -63,7 +63,7 @@ public class ShowSearchMoneyflowFormTest extends AbstractControllerTest {
 		final ShowSearchMoneyflowFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowSearchMoneyflowFormResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ShowSearchMoneyflowFormTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -83,6 +83,6 @@ public class ShowSearchMoneyflowFormTest extends AbstractControllerTest {
 		final ShowSearchMoneyflowFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowSearchMoneyflowFormResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 }

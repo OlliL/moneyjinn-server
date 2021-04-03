@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -22,29 +22,36 @@ public class ContractpartnerServiceTest extends AbstractTest {
 	@Inject
 	private IContractpartnerService contractpartnerService;
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void test_validateNullUser_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 
-		this.contractpartnerService.validateContractpartner(contractpartner);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			this.contractpartnerService.validateContractpartner(contractpartner);
+		});
+
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_createWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
 		contractpartner.setAccess(new Group(new GroupID(1L)));
 
-		this.contractpartnerService.createContractpartner(contractpartner);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.contractpartnerService.createContractpartner(contractpartner);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_updateWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
 		contractpartner.setAccess(new Group(new GroupID(1L)));
 
-		this.contractpartnerService.updateContractpartner(contractpartner);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.contractpartnerService.updateContractpartner(contractpartner);
+		});
 	}
 
 	@Test
@@ -71,7 +78,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
 		contractpartner = this.contractpartnerService.getContractpartnerById(user1ID,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 
-		Assert.assertEquals(name, contractpartner.getName());
+		Assertions.assertEquals(name, contractpartner.getName());
 	}
 
 	@Test
@@ -98,6 +105,6 @@ public class ContractpartnerServiceTest extends AbstractTest {
 		// Cache of user1 should have been invalidated and the added Contractpartner should be now
 		// in
 		// the List of all partners.
-		Assert.assertNotEquals(allContractpartners1.size(), allContractpartners2.size());
+		Assertions.assertNotEquals(allContractpartners1.size(), allContractpartners2.size());
 	}
 }

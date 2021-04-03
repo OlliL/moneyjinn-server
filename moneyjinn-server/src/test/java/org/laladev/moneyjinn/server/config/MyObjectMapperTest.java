@@ -10,8 +10,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MyObjectMapperTest {
 
@@ -25,7 +25,7 @@ public class MyObjectMapperTest {
 
 		final boolean attribute2NotExistentInJSON = json.contains("attribute2");
 
-		Assert.assertFalse(attribute2NotExistentInJSON);
+		Assertions.assertFalse(attribute2NotExistentInJSON);
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class MyObjectMapperTest {
 
 		final String json = mapper.writeValueAsString(restObject);
 
-		Assert.assertEquals("{\"RestObject\":{}}", json);
+		Assertions.assertEquals("{\"RestObject\":{}}", json);
 
 	}
 
@@ -58,7 +58,7 @@ public class MyObjectMapperTest {
 
 		final RestObject restObjectActual = mapper.readValue(json, RestObject.class);
 
-		Assert.assertEquals(restObject, restObjectActual);
+		Assertions.assertEquals(restObject, restObjectActual);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class MyObjectMapperTest {
 		final boolean dateContained = json.contains("\"attribute3\":\"" + date + "\"");
 		final boolean timestampContained = json.contains("\"attribute4\":\"" + timestampJSON + "\"");
 
-		Assert.assertTrue(dateContained);
-		Assert.assertTrue(timestampContained);
+		Assertions.assertTrue(dateContained);
+		Assertions.assertTrue(timestampContained);
 	}
 }

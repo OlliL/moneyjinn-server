@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -62,7 +62,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -112,10 +112,10 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ValidationResponse.class);
 
-		Assert.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
-		Assert.assertEquals(expected.getResult(), actual.getResult());
-		Assert.assertEquals(expected.getValidationItemTransports(), actual.getValidationItemTransports());
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
+		Assertions.assertEquals(expected.getResult(), actual.getResult());
+		Assertions.assertEquals(expected.getValidationItemTransports(), actual.getValidationItemTransports());
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -178,9 +178,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceID);
-		Assert.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
-		Assert.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
+		Assertions.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assertions.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
 	}
 
 	@Test
@@ -203,9 +203,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceID);
-		Assert.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
-		Assert.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
+		Assertions.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
+		Assertions.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
 	}
 
 	@Test
@@ -244,9 +244,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerID);
-		Assert.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
-		Assert.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidTil());
+		Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assertions.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidTil());
 	}
 
 	@Test
@@ -269,9 +269,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerID);
-		Assert.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
-		Assert.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidFrom());
+		Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
+		Assertions.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), contractpartner.getValidFrom());
 	}
 
 	@Test
@@ -355,7 +355,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNull(moneyflow);
+		Assertions.assertNull(moneyflow);
 	}
 
 	@Test
@@ -369,15 +369,15 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
-		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+		Assertions.assertNotNull(moneyflow);
+		Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assertions.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
 
 		transport.setAmount(BigDecimal.valueOf(1020, 2));
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -394,15 +394,15 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
-		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+		Assertions.assertNotNull(moneyflow);
+		Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assertions.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
 	}
 
 	@Test
@@ -416,15 +416,15 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
-		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+		Assertions.assertNotNull(moneyflow);
+		Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assertions.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
 
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
 		transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
@@ -435,15 +435,15 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
-		Assert.assertEquals(transport.getAmount(), moneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), moneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-		Assert.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-		Assert.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+		Assertions.assertNotNull(moneyflow);
+		Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), moneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), moneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(transport.getPostingaccountid(), moneyflow.getPostingAccount().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+		Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
+		Assertions.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
 	}
 
 	@Test
@@ -672,12 +672,12 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.60"));
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-0.50"));
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.60"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-0.50"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
 	}
 
 	@Test
@@ -702,9 +702,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-1.10"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-1.10"));
 	}
 
 	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Create_MSE_for_Moneyflow_2()
@@ -735,14 +735,14 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 		final List<MoneyflowSplitEntry> moneyflowSplitEntriesMoneyflow1 = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.size(), 2);
-		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntriesMoneyflow1.size(), 2);
+		Assertions.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getId().getId(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID);
-		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getAmount(),
+		Assertions.assertEquals(moneyflowSplitEntriesMoneyflow1.get(0).getAmount(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_AMOUNT);
-		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getId().getId(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
-		Assert.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getAmount(),
+		Assertions.assertEquals(moneyflowSplitEntriesMoneyflow1.get(1).getAmount(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_AMOUNT);
 	}
 
@@ -752,13 +752,13 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount().compareTo(new BigDecimal(".10")), 0);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted1");
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount().compareTo(new BigDecimal(".10")), 0);
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted1");
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getId().getId(),
 				Long.valueOf(Long.sum(MoneyflowSplitEntryTransportBuilder.NEXT_ID.longValue(), 1L)));
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount().compareTo(BigDecimal.TEN), 0);
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted2");
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getAmount().compareTo(BigDecimal.TEN), 0);
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted2");
 	}
 
 	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Do_Wrong_Stuff_For_Moneyflow_2()
@@ -827,12 +827,12 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
 				MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.10"));
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-1.00"));
-		Assert.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-0.10"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getAmount(), new BigDecimal("-1.00"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(1).getComment(), "inserted");
 	}
 
 	@Test
@@ -856,9 +856,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
 	}
 
 	@Test
@@ -883,9 +883,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(), MoneyflowSplitEntryTransportBuilder.NEXT_ID);
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("10.10"));
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), "inserted");
 	}
 
 	@Test
@@ -906,7 +906,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
-		Assert.assertTrue(moneyflowSplitEntries.isEmpty());
+		Assertions.assertTrue(moneyflowSplitEntries.isEmpty());
 	}
 
 	@Test
@@ -927,9 +927,9 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 
-		Assert.assertNotNull(moneyflow);
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getComment(), moneyflow.getComment());
-		Assert.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId(),
+		Assertions.assertNotNull(moneyflow);
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), moneyflow.getComment());
+		Assertions.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId(),
 				moneyflow.getPostingAccount().getId());
 	}
 
@@ -938,7 +938,7 @@ public class UpdateMoneyflowTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

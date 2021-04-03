@@ -10,8 +10,8 @@ import java.time.ZonedDateTime;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
@@ -122,19 +122,19 @@ public abstract class AbstractControllerTest extends AbstractTest {
 				.accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8.name())).andReturn();
 
 		final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		Assert.assertNotNull(content);
+		Assertions.assertNotNull(content);
 
-		Assert.assertEquals(content, status.value(), result.getResponse().getStatus());
+		Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
 
 		if (!noResult) {
-			Assert.assertTrue(content.length() > 0);
+			Assertions.assertTrue(content.length() > 0);
 
 			final T actual = this.objectMapper.readValue(content, clazz);
 
 			return actual;
 		}
 
-		Assert.assertTrue(content.length() == 0);
+		Assertions.assertTrue(content.length() == 0);
 		return null;
 
 	}
@@ -151,7 +151,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	 * Clears all Caches before each test execution
 	 */
 	@Override
-	@Before
+	@BeforeEach
 	public void before() {
 		this.cacheManager.getCacheNames().stream().map(this.cacheManager::getCache).forEach(Cache::clear);
 	}

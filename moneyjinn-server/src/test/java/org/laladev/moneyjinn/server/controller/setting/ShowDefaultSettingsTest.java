@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.server.controller.setting;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.ShowDefaultSettingsResponse;
@@ -16,7 +16,7 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -46,7 +46,7 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 		final ShowDefaultSettingsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowDefaultSettingsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -65,7 +65,7 @@ public class ShowDefaultSettingsTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

@@ -2,9 +2,9 @@ package org.laladev.moneyjinn.server.controller.user;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.User;
@@ -23,7 +23,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -48,26 +48,26 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 	public void test_regularUserNoData_SuccessfullNoContent() throws Exception {
 		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
 
-		Assert.assertNotNull(user);
+		Assertions.assertNotNull(user);
 
 		super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method, true, Object.class);
 
 		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
 
-		Assert.assertNull(user);
+		Assertions.assertNull(user);
 	}
 
 	@Test
 	public void test_nonExistingUser_SuccessfullNoContent() throws Exception {
 		User user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(user);
+		Assertions.assertNull(user);
 
 		super.callUsecaseWithoutContent("/" + UserTransportBuilder.NON_EXISTING_ID, this.method, true, Object.class);
 
 		user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(user);
+		Assertions.assertNull(user);
 	}
 
 	@Test
@@ -78,16 +78,16 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 
 		User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
-		Assert.assertNotNull(user);
+		Assertions.assertNotNull(user);
 
 		final ErrorResponse response = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER3_ID, this.method,
 				false, ErrorResponse.class);
 
 		user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
 
-		Assert.assertNotNull(user);
+		Assertions.assertNotNull(user);
 
-		Assert.assertEquals(expected, response);
+		Assertions.assertEquals(expected, response);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method,
 				false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -107,7 +107,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

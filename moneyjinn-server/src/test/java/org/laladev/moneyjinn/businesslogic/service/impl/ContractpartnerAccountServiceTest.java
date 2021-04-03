@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
@@ -21,18 +21,23 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 	@Inject
 	private IContractpartnerAccountService contractpartnerAccountService;
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_createWithInvalidEntity_raisesException() {
 		final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
 
-		this.contractpartnerAccountService.createContractpartnerAccount(new UserID(1l), contractpartnerAccount);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.contractpartnerAccountService.createContractpartnerAccount(new UserID(1l), contractpartnerAccount);
+		});
+
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_updateWithInvalidEntity_raisesException() {
 		final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
 
-		this.contractpartnerAccountService.updateContractpartnerAccount(new UserID(1l), contractpartnerAccount);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.contractpartnerAccountService.updateContractpartnerAccount(new UserID(1l), contractpartnerAccount);
+		});
 	}
 
 	@Test
@@ -58,7 +63,7 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user2ID,
 				new ContractpartnerAccountID(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 
-		Assert.assertEquals(comment, contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(comment, contractpartnerAccount.getBankAccount().getAccountNumber());
 	}
 
 	@Test
@@ -87,7 +92,7 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
 
 		// Cache of user1 should have been invalidated and the added ContractpartnerAccount should
 		// be now in the List of all ContractpartnerAccounts.
-		Assert.assertNotEquals(allContractpartnerAccounts1.size(), allContractpartnerAccounts2.size());
+		Assertions.assertNotEquals(allContractpartnerAccounts1.size(), allContractpartnerAccounts2.size());
 	}
 
 }

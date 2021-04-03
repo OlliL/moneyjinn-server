@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowRequest;
@@ -41,7 +41,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -103,13 +103,13 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 		final UpdatePreDefMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				UpdatePreDefMoneyflowResponse.class);
 
-		Assert.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
-		Assert.assertEquals(expected.getResult(), actual.getResult());
-		Assert.assertEquals(expected.getValidationItemTransports(), actual.getValidationItemTransports());
-		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
-		Assert.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
-		Assert.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
+		Assertions.assertEquals(expected.getResult(), actual.getResult());
+		Assertions.assertEquals(expected.getValidationItemTransports(), actual.getValidationItemTransports());
+		Assertions.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assertions.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
+		Assertions.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -249,7 +249,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
 				preDefMoneyflowId);
 
-		Assert.assertNull(preDefMoneyflow);
+		Assertions.assertNull(preDefMoneyflow);
 	}
 
 	@Test
@@ -264,13 +264,13 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
 
-		Assert.assertNotNull(preDefMoneyflow);
-		Assert.assertEquals(transport.getAmount(), preDefMoneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), preDefMoneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), preDefMoneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()), preDefMoneyflow.isOnceAMonth());
-		Assert.assertEquals(transport.getPostingaccountid(), preDefMoneyflow.getPostingAccount().getId().getId());
+		Assertions.assertNotNull(preDefMoneyflow);
+		Assertions.assertEquals(transport.getAmount(), preDefMoneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), preDefMoneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), preDefMoneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()), preDefMoneyflow.isOnceAMonth());
+		Assertions.assertEquals(transport.getPostingaccountid(), preDefMoneyflow.getPostingAccount().getId().getId());
 
 		transport.setAmount(BigDecimal.valueOf(1020, 2));
 		transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
@@ -285,13 +285,13 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 
 		preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
 
-		Assert.assertNotNull(preDefMoneyflow);
-		Assert.assertEquals(transport.getAmount(), preDefMoneyflow.getAmount());
-		Assert.assertEquals(transport.getCapitalsourceid(), preDefMoneyflow.getCapitalsource().getId().getId());
-		Assert.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
-		Assert.assertEquals(transport.getContractpartnerid(), preDefMoneyflow.getContractpartner().getId().getId());
-		Assert.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()), preDefMoneyflow.isOnceAMonth());
-		Assert.assertEquals(transport.getPostingaccountid(), preDefMoneyflow.getPostingAccount().getId().getId());
+		Assertions.assertNotNull(preDefMoneyflow);
+		Assertions.assertEquals(transport.getAmount(), preDefMoneyflow.getAmount());
+		Assertions.assertEquals(transport.getCapitalsourceid(), preDefMoneyflow.getCapitalsource().getId().getId());
+		Assertions.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
+		Assertions.assertEquals(transport.getContractpartnerid(), preDefMoneyflow.getContractpartner().getId().getId());
+		Assertions.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()), preDefMoneyflow.isOnceAMonth());
+		Assertions.assertEquals(transport.getPostingaccountid(), preDefMoneyflow.getPostingAccount().getId().getId());
 	}
 
 	@Test
@@ -314,7 +314,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

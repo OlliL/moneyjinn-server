@@ -8,9 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -37,7 +37,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -75,7 +75,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ValidationResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -94,10 +94,10 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransport.getYear(),
 						Month.of(monthlySettlementTransport.getMonth().intValue()));
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertEquals(1, monthlySettlements.size());
-		Assert.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.iterator().next().getYear());
-		Assert.assertEquals(monthlySettlementTransport.getMonth().intValue(),
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertEquals(1, monthlySettlements.size());
+		Assertions.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.iterator().next().getYear());
+		Assertions.assertEquals(monthlySettlementTransport.getMonth().intValue(),
 				monthlySettlements.iterator().next().getMonth().getValue());
 	}
 
@@ -140,13 +140,13 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.get(0).getYear(),
 						Month.of(monthlySettlementTransports.get(0).getMonth().intValue()));
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertEquals(3, monthlySettlements.size());
-		Assert.assertEquals(0,
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertEquals(3, monthlySettlements.size());
+		Assertions.assertEquals(0,
 				monthlySettlementTransport1.getAmount().compareTo(monthlySettlements.get(0).getAmount()));
-		Assert.assertEquals(0,
+		Assertions.assertEquals(0,
 				monthlySettlementTransport2.getAmount().compareTo(monthlySettlements.get(1).getAmount()));
-		Assert.assertEquals(0, new MonthlySettlementTransportBuilder().forMonthlySettlement3().build().getAmount()
+		Assertions.assertEquals(0, new MonthlySettlementTransportBuilder().forMonthlySettlement3().build().getAmount()
 				.compareTo(monthlySettlements.get(2).getAmount()));
 	}
 
@@ -155,7 +155,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

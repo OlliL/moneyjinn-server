@@ -8,9 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowCapitalsourceListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -48,7 +48,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -110,23 +110,23 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		ShowCapitalsourceListResponse expected = this.getCompleteResponse();
 		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
 		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// this must change the default-setting to 1
 		expected = this.getCurrentlyValidResponse();
 		actual = super.callUsecaseWithoutContent("/currentlyValid/1", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
 		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -152,23 +152,23 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		ShowCapitalsourceListResponse expected = this.getCompleteResponse();
 		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
 		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// this must change the default-setting to 1
 		expected = this.getCurrentlyValidResponse();
 		actual = super.callUsecaseWithoutContent("/all/currentlyValid/1", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
 		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -184,12 +184,12 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		expected.setCurrentlyValid(false);
 		ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/S/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
 		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// this must change the default-setting to 1
 		expected = new ShowCapitalsourceListResponse();
@@ -200,12 +200,12 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		expected.setCurrentlyValid(true);
 		actual = super.callUsecaseWithoutContent("/S/currentlyValid/1", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
 		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
 				ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -245,7 +245,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		expected.setCurrentlyValid(false);
 		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/_/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -284,7 +284,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		expected.setCurrentlyValid(false);
 		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/%/currentlyValid/0", this.method,
 				false, ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -293,7 +293,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -302,7 +302,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/0", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -320,7 +320,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -331,7 +331,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
 		final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0",
 				this.method, false, ShowCapitalsourceListResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

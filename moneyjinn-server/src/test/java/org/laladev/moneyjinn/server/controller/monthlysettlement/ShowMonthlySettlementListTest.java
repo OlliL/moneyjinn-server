@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
@@ -22,7 +22,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -59,7 +59,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1972", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010/10", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1/13", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1/0", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/2008", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -170,7 +170,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

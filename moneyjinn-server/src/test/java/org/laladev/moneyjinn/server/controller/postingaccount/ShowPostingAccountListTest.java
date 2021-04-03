@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
@@ -35,7 +35,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -76,7 +76,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -104,7 +104,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/all", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/X", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/_", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/all", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
 				ShowPostingAccountListResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

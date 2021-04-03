@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -37,7 +37,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -81,7 +81,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ValidationResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -129,10 +129,10 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
 				contractpartnerAccount.getId().getId());
-		Assert.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
-		Assert.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
+		Assertions.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -153,10 +153,10 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
 				contractpartnerAccount.getId().getId());
-		Assert.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
-		Assert.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
+		Assertions.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -178,10 +178,10 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 
-		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
 				contractpartnerAccount.getId().getId());
-		Assert.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
-		Assert.assertEquals("2", contractpartnerAccount.getBankAccount().getBankCode());
+		Assertions.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals("2", contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -203,10 +203,10 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 
-		Assert.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
 				contractpartnerAccount.getId().getId());
-		Assert.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
-		Assert.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
+		Assertions.assertEquals("1", contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -229,8 +229,8 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		List<ContractpartnerAccount> contractpartner2Accounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartner2Id);
 
-		Assert.assertEquals(2, contractpartner1Accounts.size());
-		Assert.assertTrue(contractpartner2Accounts.isEmpty());
+		Assertions.assertEquals(2, contractpartner1Accounts.size());
+		Assertions.assertTrue(contractpartner2Accounts.isEmpty());
 
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
@@ -239,8 +239,8 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		contractpartner2Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
 				contractpartner2Id);
 
-		Assert.assertEquals(1, contractpartner1Accounts.size());
-		Assert.assertEquals(1, contractpartner2Accounts.size());
+		Assertions.assertEquals(1, contractpartner1Accounts.size());
+		Assertions.assertEquals(1, contractpartner2Accounts.size());
 	}
 
 	@Test
@@ -261,7 +261,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

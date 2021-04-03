@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.ZonedDateTime;
 
-import javax.inject.Inject;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
@@ -17,6 +15,7 @@ import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupRespo
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 import org.laladev.moneyjinn.server.builder.HttpHeadersBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -26,11 +25,11 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
-	@Inject
+	@Autowired
 	private ObjectMapper objectMapper;
-	@Inject
+	@Autowired
 	private MockMvc mvc;
-	@Inject
+	@Autowired
 	private HttpHeadersBuilder httpHeadersBuilder;
 
 	private <T> T callUsecase(final ZonedDateTime dateTime, final String userName, final String userPassword,
@@ -53,16 +52,16 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				.andReturn();
 
 		final String content = result.getResponse().getContentAsString();
-		Assert.assertNotNull(content);
+		Assertions.assertNotNull(content);
 
 		if (!noResult) {
-			Assert.assertTrue(content.length() > 0);
+			Assertions.assertTrue(content.length() > 0);
 
 			final T actual = this.objectMapper.readValue(content, clazz);
 
 			return actual;
 		}
-		Assert.assertTrue(content.length() == 0);
+		Assertions.assertTrue(content.length() == 0);
 		return null;
 	}
 
@@ -74,7 +73,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final GetUserSettingsForStartupResponse response = this.callUsecase(zonedDateTime, userName, userPassword,
 				false, GetUserSettingsForStartupResponse.class, null);
 
-		Assert.assertNotNull(response);
+		Assertions.assertNotNull(response);
 	}
 
 	@Test
@@ -85,8 +84,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, null);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -97,8 +96,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, null);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -109,8 +108,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, null);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -121,8 +120,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, null);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -135,8 +134,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -151,8 +150,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -167,8 +166,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -183,8 +182,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -198,8 +197,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -213,8 +212,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -228,8 +227,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -244,8 +243,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, httpHeaders);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -256,8 +255,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
 				ErrorResponse.class, null);
 
-		Assert.assertNotNull(response);
-		Assert.assertEquals(new Integer(ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode()), response.getCode());
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(new Integer(ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode()), response.getCode());
 	}
 
 }

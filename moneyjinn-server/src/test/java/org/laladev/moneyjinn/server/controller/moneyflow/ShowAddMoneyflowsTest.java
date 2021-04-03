@@ -3,9 +3,9 @@ package org.laladev.moneyjinn.server.controller.moneyflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
@@ -27,7 +27,7 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -75,11 +75,11 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 		final ShowAddMoneyflowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowAddMoneyflowsResponse.class);
 
-		Assert.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
-		Assert.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
-		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
-		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
+		Assertions.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
+		Assertions.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assertions.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -100,10 +100,10 @@ public class ShowAddMoneyflowsTest extends AbstractControllerTest {
 		final ShowAddMoneyflowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowAddMoneyflowsResponse.class);
 
-		Assert.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
-		Assert.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
-		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
-		Assert.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected.getCapitalsourceTransports(), actual.getCapitalsourceTransports());
+		Assertions.assertEquals(expected.getContractpartnerTransports(), actual.getContractpartnerTransports());
+		Assertions.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assertions.assertEquals(expected.getPostingAccountTransports(), actual.getPostingAccountTransports());
+		Assertions.assertEquals(expected, actual);
 	}
 }

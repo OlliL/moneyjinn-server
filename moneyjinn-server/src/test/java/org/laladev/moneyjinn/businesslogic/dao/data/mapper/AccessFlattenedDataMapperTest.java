@@ -2,8 +2,8 @@ package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
 import java.time.LocalDate;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
@@ -34,14 +34,14 @@ public class AccessFlattenedDataMapperTest {
 
 		final AccessFlattenedData accessFlattenedData = mapper.mapAToB(accessRelationMain);
 
-		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getId());
-		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getIdLevel1());
-		Assert.assertEquals(Long.valueOf(1l), accessFlattenedData.getIdLevel2());
-		Assert.assertEquals(Long.valueOf(2l), accessFlattenedData.getIdLevel3());
-		Assert.assertEquals(Long.valueOf(3l), accessFlattenedData.getIdLevel4());
-		Assert.assertEquals(Long.valueOf(4l), accessFlattenedData.getIdLevel5());
-		Assert.assertEquals(validFrom, accessFlattenedData.getValidFrom());
-		Assert.assertEquals(validTil, accessFlattenedData.getValidTil());
+		Assertions.assertEquals(Long.valueOf(0l), accessFlattenedData.getId());
+		Assertions.assertEquals(Long.valueOf(0l), accessFlattenedData.getIdLevel1());
+		Assertions.assertEquals(Long.valueOf(1l), accessFlattenedData.getIdLevel2());
+		Assertions.assertEquals(Long.valueOf(2l), accessFlattenedData.getIdLevel3());
+		Assertions.assertEquals(Long.valueOf(3l), accessFlattenedData.getIdLevel4());
+		Assertions.assertEquals(Long.valueOf(4l), accessFlattenedData.getIdLevel5());
+		Assertions.assertEquals(validFrom, accessFlattenedData.getValidFrom());
+		Assertions.assertEquals(validTil, accessFlattenedData.getValidTil());
 	}
 
 	@Test
@@ -63,16 +63,16 @@ public class AccessFlattenedDataMapperTest {
 
 		final AccessRelation accessRelation = mapper.mapBToA(accessFlattenedData);
 
-		Assert.assertEquals(Long.valueOf(0l), accessRelation.getId().getId());
-		Assert.assertEquals(Long.valueOf(1l), accessRelation.getParentAccessRelation().getId().getId());
-		Assert.assertEquals(Long.valueOf(2l),
+		Assertions.assertEquals(Long.valueOf(0l), accessRelation.getId().getId());
+		Assertions.assertEquals(Long.valueOf(1l), accessRelation.getParentAccessRelation().getId().getId());
+		Assertions.assertEquals(Long.valueOf(2l),
 				accessRelation.getParentAccessRelation().getParentAccessRelation().getId().getId());
-		Assert.assertEquals(Long.valueOf(3l), accessRelation.getParentAccessRelation().getParentAccessRelation()
+		Assertions.assertEquals(Long.valueOf(3l), accessRelation.getParentAccessRelation().getParentAccessRelation()
 				.getParentAccessRelation().getId().getId());
-		Assert.assertEquals(Long.valueOf(4l), accessRelation.getParentAccessRelation().getParentAccessRelation()
+		Assertions.assertEquals(Long.valueOf(4l), accessRelation.getParentAccessRelation().getParentAccessRelation()
 				.getParentAccessRelation().getParentAccessRelation().getId().getId());
-		Assert.assertEquals(accessRelation.getValidFrom(), validFrom);
-		Assert.assertEquals(accessRelation.getValidTil(), validTil);
+		Assertions.assertEquals(accessRelation.getValidFrom(), validFrom);
+		Assertions.assertEquals(accessRelation.getValidTil(), validTil);
 	}
 
 	@Test
@@ -88,14 +88,14 @@ public class AccessFlattenedDataMapperTest {
 
 		final AccessFlattenedData accessFlattenedData = mapper.mapAToB(accessRelationMain);
 
-		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getId());
-		Assert.assertEquals(Long.valueOf(0l), accessFlattenedData.getIdLevel1());
-		Assert.assertNull(accessFlattenedData.getIdLevel2());
-		Assert.assertNull(accessFlattenedData.getIdLevel3());
-		Assert.assertNull(accessFlattenedData.getIdLevel4());
-		Assert.assertNull(accessFlattenedData.getIdLevel5());
-		Assert.assertEquals(validFrom, accessFlattenedData.getValidFrom());
-		Assert.assertEquals(validTil, accessFlattenedData.getValidTil());
+		Assertions.assertEquals(Long.valueOf(0l), accessFlattenedData.getId());
+		Assertions.assertEquals(Long.valueOf(0l), accessFlattenedData.getIdLevel1());
+		Assertions.assertNull(accessFlattenedData.getIdLevel2());
+		Assertions.assertNull(accessFlattenedData.getIdLevel3());
+		Assertions.assertNull(accessFlattenedData.getIdLevel4());
+		Assertions.assertNull(accessFlattenedData.getIdLevel5());
+		Assertions.assertEquals(validFrom, accessFlattenedData.getValidFrom());
+		Assertions.assertEquals(validTil, accessFlattenedData.getValidTil());
 	}
 
 	@Test
@@ -113,9 +113,9 @@ public class AccessFlattenedDataMapperTest {
 
 		final AccessRelation accessRelation = mapper.mapBToA(accessFlattenedData);
 
-		Assert.assertEquals(Long.valueOf(0l), accessRelation.getId().getId());
-		Assert.assertNull(accessRelation.getParentAccessRelation());
-		Assert.assertEquals(accessRelation.getValidFrom(), validFrom);
-		Assert.assertEquals(accessRelation.getValidTil(), validTil);
+		Assertions.assertEquals(Long.valueOf(0l), accessRelation.getId().getId());
+		Assertions.assertNull(accessRelation.getParentAccessRelation());
+		Assertions.assertEquals(accessRelation.getValidFrom(), validFrom);
+		Assertions.assertEquals(accessRelation.getValidTil(), validTil);
 	}
 }

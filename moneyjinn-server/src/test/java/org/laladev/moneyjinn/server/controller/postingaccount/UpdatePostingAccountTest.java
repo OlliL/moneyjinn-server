@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -33,7 +33,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -70,7 +70,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ValidationResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -104,8 +104,8 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 		final PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
 
-		Assert.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, postingAccount.getId().getId());
-		Assert.assertEquals("hugo", postingAccount.getName());
+		Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, postingAccount.getId().getId());
+		Assertions.assertEquals("hugo", postingAccount.getName());
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -125,7 +125,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

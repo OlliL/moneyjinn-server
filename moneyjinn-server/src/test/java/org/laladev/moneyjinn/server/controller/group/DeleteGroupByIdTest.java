@@ -2,9 +2,9 @@ package org.laladev.moneyjinn.server.controller.group;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.Group;
@@ -24,7 +24,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -49,26 +49,26 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
 	public void test_regularGroupNoData_SuccessfullNoContent() throws Exception {
 		Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
 
-		Assert.assertNotNull(group);
+		Assertions.assertNotNull(group);
 
 		super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP3_ID, this.method, true, Object.class);
 
 		group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
 
-		Assert.assertNull(group);
+		Assertions.assertNull(group);
 	}
 
 	@Test
 	public void test_nonExistingGroup_SuccessfullNoContent() throws Exception {
 		Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(group);
+		Assertions.assertNull(group);
 
 		super.callUsecaseWithoutContent("/" + GroupTransportBuilder.NON_EXISTING_ID, this.method, true, Object.class);
 
 		group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(group);
+		Assertions.assertNull(group);
 	}
 
 	@Test
@@ -79,16 +79,16 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
 
 		Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
 
-		Assert.assertNotNull(group);
+		Assertions.assertNotNull(group);
 
 		final ErrorResponse response = super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP1_ID,
 				this.method, false, ErrorResponse.class);
 
 		group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
 
-		Assert.assertNotNull(group);
+		Assertions.assertNotNull(group);
 
-		Assert.assertEquals(expected, response);
+		Assertions.assertEquals(expected, response);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP1_ID, this.method,
 				false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -108,7 +108,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

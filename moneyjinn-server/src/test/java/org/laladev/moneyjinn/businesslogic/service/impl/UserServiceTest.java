@@ -2,7 +2,8 @@ package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -12,17 +13,21 @@ public class UserServiceTest extends AbstractTest {
 	@Inject
 	private IUserService userService;
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_createWithInvalidEntity_raisesException() {
 		final User user = new User();
 
-		this.userService.createUser(user);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.userService.createUser(user);
+		});
 	}
 
-	@Test(expected = BusinessException.class)
+	@Test
 	public void test_updateWithInvalidEntity_raisesException() {
 		final User user = new User();
 
-		this.userService.updateUser(user);
+		Assertions.assertThrows(BusinessException.class, () -> {
+			this.userService.updateUser(user);
+		});
 	}
 }

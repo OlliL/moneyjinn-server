@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
@@ -45,7 +45,7 @@ public class CreateUserTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -91,7 +91,7 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateUserResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -136,14 +136,14 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				CreateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
 
-		Assert.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
-		Assert.assertEquals(null, user.getPassword());
+		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
+		Assertions.assertEquals(null, user.getPassword());
 		// instead of NONE -----------------------------vvvvvv
-		Assert.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
 	}
 
 	@Test
@@ -163,17 +163,17 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				CreateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
 
-		Assert.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
+		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
 		// sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-		Assert.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
-		Assert.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
+		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
+		Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
 		// instead of NONE -----------------------------vvvvvv
-		Assert.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assert.assertEquals(Arrays.asList(UserPermission.ADMIN, UserPermission.LOGIN), user.getPermissions());
+		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN, UserPermission.LOGIN), user.getPermissions());
 	}
 
 	@Test
@@ -190,18 +190,18 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				CreateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final AccessRelation accessRelation = this.accessRelationService
 				.getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
 
-		Assert.assertNotNull(accessRelation);
-		Assert.assertEquals(accessRelationTransport.getRefId(),
+		Assertions.assertNotNull(accessRelation);
+		Assertions.assertEquals(accessRelationTransport.getRefId(),
 				accessRelation.getParentAccessRelation().getId().getId());
-		Assert.assertEquals(accessRelationTransport.getValidfrom().getTime(),
+		Assertions.assertEquals(accessRelationTransport.getValidfrom().getTime(),
 				accessRelation.getValidFrom().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 		// default if validTil is empty
-		Assert.assertEquals(DateUtil.getGMTDate("2999-12-31").getTime(),
+		Assertions.assertEquals(DateUtil.getGMTDate("2999-12-31").getTime(),
 				accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 	}
 
@@ -220,14 +220,14 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				CreateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final AccessRelation accessRelation = this.accessRelationService
 				.getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
 
-		Assert.assertNotNull(accessRelation);
+		Assertions.assertNotNull(accessRelation);
 		// default did not overwrite
-		Assert.assertEquals(accessRelationTransport.getValidtil().getTime(),
+		Assertions.assertEquals(accessRelationTransport.getValidtil().getTime(),
 				accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 	}
 
@@ -259,7 +259,7 @@ public class CreateUserTest extends AbstractControllerTest {
 		final CreateUserRequest request = new CreateUserRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -268,7 +268,7 @@ public class CreateUserTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

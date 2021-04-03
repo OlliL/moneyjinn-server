@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
@@ -66,7 +66,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -118,7 +118,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				UpdateUserResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -150,12 +150,12 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				UpdateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
 
-		Assert.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
-		Assert.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
+		Assertions.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
+		Assertions.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
 	}
 
 	@Test
@@ -179,15 +179,15 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				UpdateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
 		// sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-		Assert.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
-		Assert.assertEquals("hugo", user.getName());
+		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
+		Assertions.assertEquals("hugo", user.getName());
 		// instead of NONE -----------------------------vvvvvv
-		Assert.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assert.assertEquals(Arrays.asList(UserPermission.ADMIN), user.getPermissions());
+		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN), user.getPermissions());
 	}
 
 	@Test
@@ -232,12 +232,12 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
 				UpdateUserResponse.class);
 
-		Assert.assertNull(actual);
+		Assertions.assertNull(actual);
 
 		final List<AccessRelation> accessRelations = this.accessRelationService
 				.getAllAccessRelationsById(new UserID(transport.getId()));
 
-		Assert.assertEquals(expectedAccessRelations, accessRelations);
+		Assertions.assertEquals(expectedAccessRelations, accessRelations);
 
 	}
 
@@ -445,7 +445,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		final UpdateUserRequest request = new UpdateUserRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -454,7 +454,7 @@ public class UpdateUserTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

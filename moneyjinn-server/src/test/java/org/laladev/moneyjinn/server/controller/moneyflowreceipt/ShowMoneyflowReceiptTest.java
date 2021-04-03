@@ -2,9 +2,9 @@ package org.laladev.moneyjinn.server.controller.moneyflowreceipt;
 
 import java.util.Base64;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
@@ -23,7 +23,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -60,7 +60,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 				"/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false,
 				ShowMoneyflowReceiptResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 		final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
 				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowMoneyflowReceiptResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 		final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
 				"/" + MoneyflowTransportBuilder.MONEYFLOW2_ID, this.method, false, ShowMoneyflowReceiptResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 		final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
 				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowMoneyflowReceiptResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

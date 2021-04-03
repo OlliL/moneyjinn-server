@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
@@ -30,7 +30,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -59,12 +59,12 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 
 		List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
 				.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
-		Assert.assertNotNull(importedMoneyflows);
+		Assertions.assertNotNull(importedMoneyflows);
 		final int sizeBeforeDelete = importedMoneyflows.size();
 
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
-		Assert.assertNotNull(importedMoneyflows);
+		Assertions.assertNotNull(importedMoneyflows);
 		final int sizeBeforeDeleteInStateCreated = importedMoneyflows.size();
 
 		super.callUsecaseWithoutContent("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID, this.method,
@@ -73,15 +73,15 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 
-		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeDeleteInStateCreated - 1, importedMoneyflows.size());
+		Assertions.assertNotNull(importedMoneyflows);
+		Assertions.assertEquals(sizeBeforeDeleteInStateCreated - 1, importedMoneyflows.size());
 
 		// No delete happend - it is only marked as "ignored"
 		importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
 				capitalsourceIds, null);
 
-		Assert.assertNotNull(importedMoneyflows);
-		Assert.assertEquals(sizeBeforeDelete, importedMoneyflows.size());
+		Assertions.assertNotNull(importedMoneyflows);
+		Assertions.assertEquals(sizeBeforeDelete, importedMoneyflows.size());
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

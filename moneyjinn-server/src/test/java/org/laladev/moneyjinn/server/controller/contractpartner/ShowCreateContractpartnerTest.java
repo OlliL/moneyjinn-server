@@ -3,9 +3,9 @@ package org.laladev.moneyjinn.server.controller.contractpartner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowCreateContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
@@ -21,7 +21,7 @@ public class ShowCreateContractpartnerTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -54,7 +54,7 @@ public class ShowCreateContractpartnerTest extends AbstractControllerTest {
 		final ShowCreateContractpartnerResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowCreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class ShowCreateContractpartnerTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ShowCreateContractpartnerTest extends AbstractControllerTest {
 		final ShowCreateContractpartnerResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowCreateContractpartnerResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 }

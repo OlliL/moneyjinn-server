@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
@@ -17,7 +17,7 @@ public class BankAccountDataMapperTest {
 
 		final BankAccount bankAccount = bankAccountDataMapper.mapBToA(bankAccountData);
 
-		Assert.assertEquals(bankAccount.getAccountNumber(), bankAccountData.getAccountNumber());
-		Assert.assertEquals(bankAccount.getBankCode(), bankAccountData.getBankCode());
+		Assertions.assertEquals(bankAccount.getAccountNumber(), bankAccountData.getAccountNumber());
+		Assertions.assertEquals(bankAccount.getBankCode(), bankAccountData.getBankCode());
 	}
 }

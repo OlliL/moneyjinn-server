@@ -1,8 +1,8 @@
 package org.laladev.moneyjinn.server.controller.setting;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.ShowPersonalSettingsResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -15,7 +15,7 @@ public class ShowPersonalSettingsTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -45,7 +45,7 @@ public class ShowPersonalSettingsTest extends AbstractControllerTest {
 		final ShowPersonalSettingsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPersonalSettingsResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class ShowPersonalSettingsTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 }

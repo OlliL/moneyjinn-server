@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.businesslogic.dao.data.mapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceStateMapper;
@@ -9,17 +9,18 @@ import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceStateMapper;
 public class CapitalsourceStateMapperTest {
 	@Test
 	public void testNullShort() {
-		Assert.assertNull(CapitalsourceStateMapper.map((Short) null));
+		Assertions.assertNull(CapitalsourceStateMapper.map((Short) null));
 	}
 
 	@Test
 	public void testNullEnum() {
-		Assert.assertNull(CapitalsourceStateMapper.map((CapitalsourceState) null));
+		Assertions.assertNull(CapitalsourceStateMapper.map((CapitalsourceState) null));
 	}
 
-	@Test(expected = TechnicalException.class)
+	@Test
 	public void test_unknownCapitalsourceState_exception() {
-		Assert.assertNull(CapitalsourceStateMapper.map(Short.valueOf("66")));
-
+		Assertions.assertThrows(TechnicalException.class, () -> {
+			Assertions.assertNull(CapitalsourceStateMapper.map(Short.valueOf("66")));
+		});
 	}
 }

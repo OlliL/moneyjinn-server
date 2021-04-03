@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowYearlyReportGraphResponse;
@@ -34,7 +34,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -86,7 +86,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowYearlyReportGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -100,7 +100,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 
 		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowYearlyReportGraphResponse.class);
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -118,15 +118,15 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
 				.getClientReportingUnselectedPostingAccountIdsSetting(userId);
 
-		Assert.assertNull(setting);
+		Assertions.assertNull(setting);
 
 		super.callUsecaseWithContent("", this.method, request, false, ShowYearlyReportGraphResponse.class);
 
 		setting = this.settingService.getClientReportingUnselectedPostingAccountIdsSetting(userId);
-		Assert.assertNotNull(setting);
-		Assert.assertNotNull(setting.getSetting());
-		Assert.assertEquals(1, setting.getSetting().size());
-		Assert.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID, setting.getSetting().get(0).getId());
+		Assertions.assertNotNull(setting);
+		Assertions.assertNotNull(setting.getSetting());
+		Assertions.assertEquals(1, setting.getSetting().size());
+		Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID, setting.getSetting().get(0).getId());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -163,7 +163,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		final ShowYearlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				ShowYearlyReportGraphResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

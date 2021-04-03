@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
@@ -27,7 +27,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -55,17 +55,17 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 				.getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertEquals(3, monthlySettlements.size());
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertEquals(3, monthlySettlements.size());
 
 		super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
 
 		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 2008,
 				Month.DECEMBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertEquals(1, monthlySettlements.size());
-		Assert.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertEquals(1, monthlySettlements.size());
+		Assertions.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
 				monthlySettlements.iterator().next().getId().getId());
 	}
 
@@ -76,16 +76,16 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 				.getAllMonthlySettlementsByYearMonth(userId, (short) 1970, Month.OCTOBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertTrue(monthlySettlements.isEmpty());
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertTrue(monthlySettlements.isEmpty());
 
 		super.callUsecaseWithoutContent("/1970/10", this.method, true, Object.class);
 
 		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 1970,
 				Month.OCTOBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertTrue(monthlySettlements.isEmpty());
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertTrue(monthlySettlements.isEmpty());
 	}
 
 	@Test
@@ -94,16 +94,16 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 				.getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertTrue(monthlySettlements.isEmpty());
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertTrue(monthlySettlements.isEmpty());
 
 		super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
 
 		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 2008,
 				Month.DECEMBER);
 
-		Assert.assertNotNull(monthlySettlements);
-		Assert.assertTrue(monthlySettlements.isEmpty());
+		Assertions.assertNotNull(monthlySettlements);
+		Assertions.assertTrue(monthlySettlements.isEmpty());
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
 				ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test

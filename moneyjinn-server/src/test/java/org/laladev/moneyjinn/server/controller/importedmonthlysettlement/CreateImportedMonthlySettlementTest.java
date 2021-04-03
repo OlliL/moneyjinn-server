@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement.CreateImportedMonthlySettlementRequest;
@@ -59,11 +59,11 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 		final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
 				.getImportedMonthlySettlementsByMonth(userId, transport.getYear(), Month.of(transport.getMonth()));
 
-		Assert.assertNotNull(importedMonthlySettlements);
-		Assert.assertEquals(1, importedMonthlySettlements.size());
-		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
 				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
 	}
 
@@ -82,22 +82,22 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 		List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
 				.getImportedMonthlySettlementsByMonth(userId, transport.getYear(), Month.of(transport.getMonth()));
 
-		Assert.assertNotNull(importedMonthlySettlements);
-		Assert.assertEquals(1, importedMonthlySettlements.size());
-		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assert.assertTrue(BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+		Assertions.assertTrue(BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
 
 		super.callUsecaseWithContent("", this.method, request, true, Object.class);
 
 		importedMonthlySettlements = this.importedMonthlySettlementService.getImportedMonthlySettlementsByMonth(userId,
 				transport.getYear(), Month.of(transport.getMonth()));
 
-		Assert.assertNotNull(importedMonthlySettlements);
-		Assert.assertEquals(1, importedMonthlySettlements.size());
-		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assert.assertTrue(BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+		Assertions.assertTrue(BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
 	}
 
 	@Test
@@ -115,11 +115,11 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 		final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
 				.getImportedMonthlySettlementsByMonth(userId, (short) 2015, Month.FEBRUARY);
 
-		Assert.assertNotNull(importedMonthlySettlements);
-		Assert.assertEquals(1, importedMonthlySettlements.size());
-		Assert.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
 				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
 	}
 
@@ -140,7 +140,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 }

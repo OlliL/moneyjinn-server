@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
@@ -39,7 +39,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
@@ -76,7 +76,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 	}
 
@@ -151,7 +151,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -159,8 +159,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -186,9 +186,9 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
-		Assert.assertEquals(transport.getBankCode() + "XXX", capitalsource.getBankAccount().getBankCode());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assertions.assertEquals(transport.getBankCode() + "XXX", capitalsource.getBankAccount().getBankCode());
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -214,8 +214,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
 	}
 
 	@Test
@@ -237,7 +237,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -245,13 +245,13 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
-		Assert.assertEquals(CapitalsourceState.CACHE, capitalsource.getState());
-		Assert.assertEquals(CapitalsourceType.CURRENT_ASSET, capitalsource.getType());
-		Assert.assertEquals(LocalDate.now(), capitalsource.getValidFrom());
-		Assert.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
-		Assert.assertNull(capitalsource.getBankAccount());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assertions.assertEquals(CapitalsourceState.CACHE, capitalsource.getState());
+		Assertions.assertEquals(CapitalsourceType.CURRENT_ASSET, capitalsource.getType());
+		Assertions.assertEquals(LocalDate.now(), capitalsource.getValidFrom());
+		Assertions.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
+		Assertions.assertNull(capitalsource.getBankAccount());
 	}
 
 	@Test
@@ -259,7 +259,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
@@ -279,7 +279,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
 
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.ADMINGROUP_ID);
@@ -287,8 +287,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assert.assertEquals(new Long(1l), capitalsource.getId().getId());
-		Assert.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
+		Assertions.assertEquals(new Long(1l), capitalsource.getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
 	}
 
 }

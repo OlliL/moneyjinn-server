@@ -2,9 +2,9 @@ package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -25,7 +25,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 	private String userName;
 	private String userPassword;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
@@ -51,7 +51,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
 
-		Assert.assertNotNull(postingAccount);
+		Assertions.assertNotNull(postingAccount);
 
 		super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID, this.method, true,
 				Object.class);
@@ -59,7 +59,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
 
-		Assert.assertNull(postingAccount);
+		Assertions.assertNull(postingAccount);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(postingAccount);
+		Assertions.assertNull(postingAccount);
 
 		super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.NON_EXISTING_ID, this.method, true,
 				Object.class);
@@ -75,7 +75,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
 
-		Assert.assertNull(postingAccount);
+		Assertions.assertNull(postingAccount);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
 
-		Assert.assertNotNull(postingAccount);
+		Assertions.assertNotNull(postingAccount);
 
 		final ErrorResponse response = super.callUsecaseWithoutContent(
 				"/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, false, ErrorResponse.class);
@@ -96,9 +96,9 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
 
-		Assert.assertNotNull(postingAccount);
+		Assertions.assertNotNull(postingAccount);
 
-		Assert.assertEquals(expected, response);
+		Assertions.assertEquals(expected, response);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent(
 				"/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, false, ErrorResponse.class);
 
-		Assert.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
@@ -118,7 +118,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		this.userName = null;
 		this.userPassword = null;
 		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assert.assertEquals(super.accessDeniedErrorResponse(), actual);
+		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
 	@Test
