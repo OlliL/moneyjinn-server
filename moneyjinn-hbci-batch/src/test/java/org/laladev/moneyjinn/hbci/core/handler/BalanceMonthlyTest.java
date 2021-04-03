@@ -7,9 +7,9 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
@@ -18,8 +18,8 @@ public class BalanceMonthlyTest {
 
 	private BalanceMonthlyHandler balanceMonthlyHandler;
 
-	@Before
-	public void beforeClass() {
+	@BeforeEach
+	public void setupHandler() {
 		this.balanceMonthlyHandler = new BalanceMonthlyHandler(null, null, null);
 	}
 
@@ -95,9 +95,9 @@ public class BalanceMonthlyTest {
 
 		final List<BalanceMonthly> balanceMonthlyList = this.balanceMonthlyHandler.getBalanceMonthlyList(ams, null);
 
-		Assert.assertNotNull(balanceMonthlyList);
-		Assert.assertEquals(5, balanceMonthlyList.size());
-		Assert.assertEquals(bms, balanceMonthlyList);
+		Assertions.assertNotNull(balanceMonthlyList);
+		Assertions.assertEquals(5, balanceMonthlyList.size());
+		Assertions.assertEquals(bms, balanceMonthlyList);
 
 	}
 
@@ -119,9 +119,9 @@ public class BalanceMonthlyTest {
 
 		final List<BalanceMonthly> balanceMonthlyList = this.balanceMonthlyHandler.getBalanceMonthlyList(ams, null);
 
-		Assert.assertNotNull(balanceMonthlyList);
-		Assert.assertEquals(5, balanceMonthlyList.size());
-		Assert.assertEquals(bms, balanceMonthlyList);
+		Assertions.assertNotNull(balanceMonthlyList);
+		Assertions.assertEquals(5, balanceMonthlyList.size());
+		Assertions.assertEquals(bms, balanceMonthlyList);
 
 	}
 
@@ -137,9 +137,9 @@ public class BalanceMonthlyTest {
 		final List<BalanceMonthly> balanceMonthlyList = this.balanceMonthlyHandler.getBalanceMonthlyList(null,
 				balanceDaily);
 
-		Assert.assertNotNull(balanceMonthlyList);
-		Assert.assertEquals(3, balanceMonthlyList.size());
-		Assert.assertEquals(bms, balanceMonthlyList);
+		Assertions.assertNotNull(balanceMonthlyList);
+		Assertions.assertEquals(3, balanceMonthlyList.size());
+		Assertions.assertEquals(bms, balanceMonthlyList);
 
 	}
 
@@ -151,8 +151,8 @@ public class BalanceMonthlyTest {
 		final List<BalanceMonthly> balanceMonthlyList = this.balanceMonthlyHandler.getBalanceMonthlyList(null,
 				balanceDaily);
 
-		Assert.assertNotNull(balanceMonthlyList);
-		Assert.assertTrue(balanceMonthlyList.isEmpty());
+		Assertions.assertNotNull(balanceMonthlyList);
+		Assertions.assertTrue(balanceMonthlyList.isEmpty());
 
 	}
 
@@ -164,8 +164,8 @@ public class BalanceMonthlyTest {
 		final List<BalanceMonthly> balanceMonthlyList = this.balanceMonthlyHandler.getBalanceMonthlyList(null,
 				balanceDaily);
 
-		Assert.assertNotNull(balanceMonthlyList);
-		Assert.assertTrue(balanceMonthlyList.isEmpty());
+		Assertions.assertNotNull(balanceMonthlyList);
+		Assertions.assertTrue(balanceMonthlyList.isEmpty());
 
 	}
 

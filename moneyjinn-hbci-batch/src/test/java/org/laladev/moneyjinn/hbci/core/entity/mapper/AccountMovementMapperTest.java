@@ -7,10 +7,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
@@ -30,22 +30,24 @@ public class AccountMovementMapperTest {
 		final Konto account = ObjectBuilder.getKonto();
 
 		final AccountMovement accountMovement = this.accountMovementMapper.map(entry, account);
-		Assert.assertNotNull(accountMovement);
-		Assert.assertNotNull(accountMovement.getInvoiceTimestamp());
+		Assertions.assertNotNull(accountMovement);
+		Assertions.assertNotNull(accountMovement.getInvoiceTimestamp());
 		final GregorianCalendar invoiceCalendar = GregorianCalendar
 				.from(ZonedDateTime.of(accountMovement.getInvoiceTimestamp(), ZoneId.systemDefault()));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.YEAR), invoiceCalendar.get(Calendar.YEAR));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.MONTH), invoiceCalendar.get(Calendar.MONTH));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.DAY_OF_MONTH),
 				invoiceCalendar.get(Calendar.DAY_OF_MONTH));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY), invoiceCalendar.get(Calendar.HOUR_OF_DAY));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
-		Assert.assertEquals(this.expectedCalendar.get(Calendar.MILLISECOND), invoiceCalendar.get(Calendar.MILLISECOND));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.HOUR_OF_DAY),
+				invoiceCalendar.get(Calendar.HOUR_OF_DAY));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.MINUTE), invoiceCalendar.get(Calendar.MINUTE));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.SECOND), invoiceCalendar.get(Calendar.SECOND));
+		Assertions.assertEquals(this.expectedCalendar.get(Calendar.MILLISECOND),
+				invoiceCalendar.get(Calendar.MILLISECOND));
 
 	}
 
-	@Before
+	@BeforeEach
 	public void setCalendar() {
 		this.expectedCalendar.set(Calendar.MONTH, Calendar.JUNE);
 		this.expectedCalendar.set(Calendar.DAY_OF_MONTH, 10);
@@ -229,7 +231,7 @@ public class AccountMovementMapperTest {
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void test_InvoiceTimestamp96Kontouebertrag() {
 		final List<String> usage = new ArrayList<>();
 		final String usageLine = "DATUM 10.06.2015,01.03 UHR, 1.TAN 123456";
