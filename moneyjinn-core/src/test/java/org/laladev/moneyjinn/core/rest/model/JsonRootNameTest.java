@@ -4,8 +4,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
 public class JsonRootNameTest {
@@ -27,7 +27,7 @@ public class JsonRootNameTest {
 			if (jsonRootName != null) {
 				final String annotatedName = jsonRootName.name();
 				if (!model.getSimpleName().equals("ErrorResponse")) {
-					Assert.assertEquals(model.getSimpleName(),
+					Assertions.assertEquals(model.getSimpleName(),
 							Character.toUpperCase(annotatedName.charAt(0)) + annotatedName.substring(1));
 				}
 			}

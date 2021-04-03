@@ -4,8 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class RESTAuthorizationTest {
 
@@ -23,7 +23,7 @@ public class RESTAuthorizationTest {
 		final String ident = "klaus";
 		final String key = this.restAuthorization.getRESTAuthorization(secret, httpVerb, contentType, url, date, body,
 				ident);
-		Assert.assertEquals("MNFklaus:ODg0MjgwMTBiNzhlZTI1NmU4MGE0NWYxNmVlYjYyNTEwYTM3YzJiMA==", key);
+		Assertions.assertEquals("MNFklaus:ODg0MjgwMTBiNzhlZTI1NmU4MGE0NWYxNmVlYjYyNTEwYTM3YzJiMA==", key);
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class RESTAuthorizationTest {
 		final String ident = "klaus";
 		final String key = this.restAuthorization.getRESTAuthorization(secret, httpVerb, contentType, url, date, body,
 				ident);
-		Assert.assertEquals("MNFklaus:MjQ1NTZlNzJiOTg5MTg1ODhjNTc1MmEyMmFiNmIxNTU2MjFiNDdmMQ==", key);
+		Assertions.assertEquals("MNFklaus:MjQ1NTZlNzJiOTg5MTg1ODhjNTc1MmEyMmFiNmIxNTU2MjFiNDdmMQ==", key);
 	}
 
 	@Test
