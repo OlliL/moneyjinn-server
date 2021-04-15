@@ -1,6 +1,7 @@
 package org.laladev.moneyjinn.core.rest.model.etf.transport;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class EtfTransport {
 	private String isin;
@@ -8,6 +9,7 @@ public class EtfTransport {
 	private BigDecimal spentValue;
 	private BigDecimal buyPrice;
 	private BigDecimal sellPrice;
+	private Timestamp pricesTimestamp;
 
 	public final String getIsin() {
 		return this.isin;
@@ -47,6 +49,14 @@ public class EtfTransport {
 
 	public final void setSellPrice(final BigDecimal sellPrice) {
 		this.sellPrice = sellPrice;
+	}
+
+	public final Timestamp getPricesTimestamp() {
+		return this.pricesTimestamp;
+	}
+
+	public final void setPricesTimestamp(final Timestamp pricesTimestamp) {
+		this.pricesTimestamp = pricesTimestamp;
 	}
 
 }
