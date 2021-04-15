@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
@@ -46,27 +47,36 @@ public class EtfController extends AbstractController {
 		final LocalDate beginOfMonth = LocalDate.of(requestYear.intValue(), month, 1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
-		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(endOfMonth);
-		final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(requestYear, month);
-
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
-		final EtfTransport transport = new EtfTransport();
-		transport.setBuyPrice(etfValue.getBuyPrice());
-		transport.setSellPrice(etfValue.getSellPrice());
-		transport.setIsin(etfValue.getIsin());
+		final List<EtfTransport> transports = new ArrayList<>();
 
-		BigDecimal amount = BigDecimal.ZERO;
-		BigDecimal spentValue = BigDecimal.ZERO;
-		for (final EtfFlow flow : etfFlows) {
-			amount = amount.add(flow.getAmount());
-			spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
+		final List<Etf> etfs = this.etfService.getAllEtf();
+		for (final Etf etf : etfs) {
+			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
+			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
+
+			final EtfTransport transport = new EtfTransport();
+			transport.setIsin(etf.getId().getId());
+			transport.setName(etf.getName());
+			transport.setChartUrl(etf.getChartUrl());
+
+			transport.setBuyPrice(etfValue.getBuyPrice());
+			transport.setSellPrice(etfValue.getSellPrice());
+			transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
+
+			BigDecimal amount = BigDecimal.ZERO;
+			BigDecimal spentValue = BigDecimal.ZERO;
+			for (final EtfFlow flow : etfFlows) {
+				amount = amount.add(flow.getAmount());
+				spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
+			}
+			transport.setAmount(amount);
+			transport.setSpentValue(spentValue);
+
+			transports.add(transport);
 		}
 
-		transport.setAmount(amount);
-		transport.setSpentValue(spentValue);
-		transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
-
-		response.setEtfTransports(Arrays.asList(transport));
+		response.setEtfTransports(transports);
 		return response;
 	}
 

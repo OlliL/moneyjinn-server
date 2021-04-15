@@ -30,12 +30,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
 public interface IEtfDaoMapper {
-	public List<EtfFlowData> getAllFlowsUntil(@Param("dateUntil") LocalDate dateUntil);
 
-	public EtfValueData getEtfValueForMonth(@Param("date") LocalDate date);
+	public List<EtfData> getAllEtf();
+
+	public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin, @Param("dateUntil") LocalDate dateUntil);
+
+	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("date") LocalDate date);
 
 }

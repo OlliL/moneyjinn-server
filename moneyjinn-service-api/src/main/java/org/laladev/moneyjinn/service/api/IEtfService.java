@@ -30,11 +30,16 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
+import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 
 public interface IEtfService {
-	List<EtfFlow> getAllEtfFlowsUntil(LocalDate dateUntil);
 
-	EtfValue getEtfValueEndOfMonth(Short year, Month month);
+	List<Etf> getAllEtf();
+
+	List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDate dateUntil);
+
+	EtfValue getEtfValueEndOfMonth(EtfIsin isin, Short year, Month month);
 }

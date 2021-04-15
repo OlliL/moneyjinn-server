@@ -24,37 +24,47 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao;
+package org.laladev.moneyjinn.model.etf;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
+import org.laladev.moneyjinn.model.AbstractEntity;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+public class Etf extends AbstractEntity<EtfIsin> {
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private String wkn;
+	private String ticker;
+	private String chartUrl;
 
-import org.laladev.moneyjinn.service.dao.data.EtfData;
-import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
-import org.laladev.moneyjinn.service.dao.data.EtfValueData;
-import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
-
-@Named
-public class EtfDao {
-
-	@Inject
-	IEtfDaoMapper mapper;
-
-	public List<EtfData> getAllEtf() {
-		return this.mapper.getAllEtf();
+	public final String getName() {
+		return this.name;
 	}
 
-	public EtfValueData getEtfValueForMonth(final String isin, final Short year, final Month month) {
-		final LocalDate date = LocalDate.of(year.intValue(), month, 1);
-
-		return this.mapper.getEtfValueForMonth(isin, date);
+	public final void setName(final String name) {
+		this.name = name;
 	}
 
-	public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDate dateUntil) {
-		return this.mapper.getAllFlowsUntil(isin, dateUntil);
+	public final String getWkn() {
+		return this.wkn;
 	}
+
+	public final void setWkn(final String wkn) {
+		this.wkn = wkn;
+	}
+
+	public final String getTicker() {
+		return this.ticker;
+	}
+
+	public final void setTicker(final String ticker) {
+		this.ticker = ticker;
+	}
+
+	public final String getChartUrl() {
+		return this.chartUrl;
+	}
+
+	public final void setChartUrl(final String chartUrl) {
+		this.chartUrl = chartUrl;
+	}
+
 }

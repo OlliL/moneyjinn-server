@@ -33,12 +33,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.dao.EtfDao;
+import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
+import org.laladev.moneyjinn.service.dao.data.mapper.EtfDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfFlowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 
@@ -52,18 +56,24 @@ public class EtfService extends AbstractService implements IEtfService {
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new EtfFlowDataMapper());
 		super.registerBeanMapper(new EtfValueDataMapper());
-
+		super.registerBeanMapper(new EtfDataMapper());
 	}
 
 	@Override
-	public List<EtfFlow> getAllEtfFlowsUntil(final LocalDate dateUntil) {
-		final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(dateUntil);
+	public List<Etf> getAllEtf() {
+		final List<EtfData> etfData = this.etfDao.getAllEtf();
+		return super.mapList(etfData, Etf.class);
+	}
+
+	@Override
+	public List<EtfFlow> getAllEtfFlowsUntil(final EtfIsin isin, final LocalDate dateUntil) {
+		final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(isin.getId(), dateUntil);
 		return super.mapList(etfFlowData, EtfFlow.class);
 	}
 
 	@Override
-	public EtfValue getEtfValueEndOfMonth(final Short year, final Month month) {
-		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(year, month);
+	public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Short year, final Month month) {
+		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
 		return super.map(etfValueData, EtfValue.class);
 	}
 }

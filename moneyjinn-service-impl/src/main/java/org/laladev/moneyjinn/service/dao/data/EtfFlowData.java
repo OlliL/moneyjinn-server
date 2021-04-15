@@ -7,7 +7,6 @@ public class EtfFlowData {
 	private Long etfflowid;
 	private LocalDate flowdate;
 	private String isin;
-	private String wkn;
 	private BigDecimal amount;
 	private BigDecimal price;
 
@@ -33,14 +32,6 @@ public class EtfFlowData {
 
 	public final void setIsin(final String isin) {
 		this.isin = isin;
-	}
-
-	public final String getWkn() {
-		return this.wkn;
-	}
-
-	public final void setWkn(final String wkn) {
-		this.wkn = wkn;
 	}
 
 	public final BigDecimal getAmount() {

@@ -2,11 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
 
-   	<sql id="etfFlowsColumns">
+   	<sql id="etfColumns">
+		 isin
+		,name
+		,wkn
+		,ticker
+		,chart_url   AS chartUrl
+	</sql>
+	
+	<sql id="etfFlowsColumns">
 		 etfflowid
 		,flowdate
 		,isin
-		,wkn
 		,amount
 		,price
 	</sql>
@@ -18,19 +25,27 @@
 		,sell_price   AS sellPrice
 		,changedate
 	</sql>
+   
+    	<select id="getAllEtf"
+		resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
+		SELECT <include refid="etfColumns" />
+		  FROM etf
+	</select>
    	
-    	<select id="getAllFlowsUntil" parameterType="java.time.LocalDate"
+    	<select id="getAllFlowsUntil"
 		resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
 		SELECT <include refid="etfFlowsColumns" />
 		  FROM etfflows
-		 WHERE flowdate <![CDATA[ <= ]]> #{dateUntil}
+		 WHERE isin = #{isin}
+		   AND flowdate <![CDATA[ <= ]]> #{dateUntil}
 	</select>
 
-	<select id="getEtfValueForMonth" parameterType="java.time.LocalDate"
+	<select id="getEtfValueForMonth"
 		resultType="org.laladev.moneyjinn.service.dao.data.EtfValueData">
 		SELECT <include refid="etfValuesColumns" />
 		  FROM etfvalues
-		 WHERE date BETWEEN #{date} AND LAST_DAY(#{date})
+		 WHERE isin = #{isin}
+		   AND date BETWEEN #{date} AND LAST_DAY(#{date})
 		 ORDER BY date DESC
 		 LIMIT 1
 	</select>
