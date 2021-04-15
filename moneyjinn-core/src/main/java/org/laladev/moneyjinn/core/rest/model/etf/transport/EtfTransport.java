@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 public class EtfTransport {
 	private String isin;
+	private String name;
+	private String chartUrl;
 	private BigDecimal amount;
 	private BigDecimal spentValue;
 	private BigDecimal buyPrice;
@@ -17,6 +19,22 @@ public class EtfTransport {
 
 	public final void setIsin(final String isin) {
 		this.isin = isin;
+	}
+
+	public final String getName() {
+		return this.name;
+	}
+
+	public final void setName(final String name) {
+		this.name = name;
+	}
+
+	public final String getChartUrl() {
+		return this.chartUrl;
+	}
+
+	public final void setChartUrl(final String chartUrl) {
+		this.chartUrl = chartUrl;
 	}
 
 	public final BigDecimal getAmount() {
