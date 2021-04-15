@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
+
+   	<sql id="etfFlowsColumns">
+		 etfflowid
+		,flowdate
+		,isin
+		,wkn
+		,amount
+		,price
+	</sql>
+	
+   	<sql id="etfValuesColumns">
+		 isin
+		,date
+		,buy_price    AS buyPrice
+		,sell_price   AS sellPrice
+		,changedate
+	</sql>
+   	
+    	<select id="getAllFlowsUntil" parameterType="java.time.LocalDate"
+		resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
+		SELECT <include refid="etfFlowsColumns" />
+		  FROM etfflows
+		 WHERE flowdate <![CDATA[ <= ]]> #{dateUntil}
+	</select>
+
+	<select id="getEtfValueForMonth" parameterType="java.time.LocalDate"
+		resultType="org.laladev.moneyjinn.service.dao.data.EtfValueData">
+		SELECT <include refid="etfValuesColumns" />
+		  FROM etfvalues
+		 WHERE date BETWEEN #{date} AND LAST_DAY(#{date})
+		 ORDER BY date DESC
+		 LIMIT 1
+	</select>
+    				
+</mapper>
+ 
