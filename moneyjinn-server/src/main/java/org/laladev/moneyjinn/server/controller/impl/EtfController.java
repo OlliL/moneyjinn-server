@@ -1,6 +1,7 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -63,6 +64,7 @@ public class EtfController extends AbstractController {
 
 		transport.setAmount(amount);
 		transport.setSpentValue(spentValue);
+		transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
 
 		response.setEtfTransports(Arrays.asList(transport));
 		return response;
