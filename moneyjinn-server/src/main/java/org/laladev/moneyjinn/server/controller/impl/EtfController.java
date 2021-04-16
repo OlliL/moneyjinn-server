@@ -10,13 +10,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.laladev.moneyjinn.core.rest.model.etf.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
+import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,21 +45,19 @@ public class EtfController extends AbstractController {
 	@RequiresAuthorization
 	public ListEtfOverviewResponse listEtfOverview(@PathVariable(value = "year") final Short requestYear,
 			@PathVariable(value = "month") final Short requestMonth) {
-		final UserID userId = super.getUserId();
-
 		final Month month = Month.of(requestMonth.intValue());
 		final LocalDate beginOfMonth = LocalDate.of(requestYear.intValue(), month, 1);
 		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
-		final List<EtfTransport> transports = new ArrayList<>();
+		final List<EtfSummaryTransport> transports = new ArrayList<>();
 
 		final List<Etf> etfs = this.etfService.getAllEtf();
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
 			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
 
-			final EtfTransport transport = new EtfTransport();
+			final EtfSummaryTransport transport = new EtfSummaryTransport();
 			transport.setIsin(etf.getId().getId());
 			transport.setName(etf.getName());
 			transport.setChartUrl(etf.getChartUrl());
@@ -76,13 +78,32 @@ public class EtfController extends AbstractController {
 			transports.add(transport);
 		}
 
-		response.setEtfTransports(transports);
+		response.setEtfSummaryTransports(transports);
+		return response;
+	}
+
+	@RequestMapping(value = "listEtfFlows", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ListEtfFlowsResponse listEtfFlows() {
+		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
+
+		final List<Etf> etfs = this.etfService.getAllEtf();
+		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+
+		final List<EtfFlowTransport> transports = new ArrayList<>();
+		for (final Etf etf : etfs) {
+			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDate.now());
+			transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
+		}
+		response.setEtfFlowTransports(transports);
+
 		return response;
 	}
 
 	@Override
 	protected void addBeanMapper() {
-		// TODO Auto-generated method stub
+		super.registerBeanMapper(new EtfFlowTransportMapper());
+		super.registerBeanMapper(new EtfTransportMapper());
 
 	}
 

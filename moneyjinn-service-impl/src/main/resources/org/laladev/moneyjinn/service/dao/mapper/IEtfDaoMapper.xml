@@ -38,6 +38,7 @@
 		  FROM etfflows
 		 WHERE isin = #{isin}
 		   AND flowdate <![CDATA[ <= ]]> #{dateUntil}
+		 ORDER BY flowdate DESC
 	</select>
 
 	<select id="getEtfValueForMonth"
