@@ -24,53 +24,36 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.core.rest.model.etf.transport;
+package org.laladev.moneyjinn.core.rest.model.etf;
 
-public class EtfTransport {
-	private String isin;
-	private String name;
-	private String wkn;
-	private String ticker;
-	private String chartUrl;
+import java.util.List;
 
-	public final String getIsin() {
-		return this.isin;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
+
+@XmlRootElement(name = "listEtfFlowsResponse")
+public class ListEtfFlowsResponse {
+	@XmlElement(name = "etfTransport")
+	private List<EtfTransport> etfTransports;
+	@XmlElement(name = "etfFlowTransport")
+	private List<EtfFlowTransport> etfFlowTransports;
+
+	public final List<EtfTransport> getEtfTransports() {
+		return this.etfTransports;
 	}
 
-	public final void setIsin(final String isin) {
-		this.isin = isin;
+	public final void setEtfTransports(final List<EtfTransport> etfTransports) {
+		this.etfTransports = etfTransports;
 	}
 
-	public final String getName() {
-		return this.name;
+	public final List<EtfFlowTransport> getEtfFlowTransports() {
+		return this.etfFlowTransports;
 	}
 
-	public final void setName(final String name) {
-		this.name = name;
+	public final void setEtfFlowTransports(final List<EtfFlowTransport> etfFlowTransports) {
+		this.etfFlowTransports = etfFlowTransports;
 	}
-
-	public final String getWkn() {
-		return this.wkn;
-	}
-
-	public final void setWkn(final String wkn) {
-		this.wkn = wkn;
-	}
-
-	public final String getTicker() {
-		return this.ticker;
-	}
-
-	public final void setTicker(final String ticker) {
-		this.ticker = ticker;
-	}
-
-	public final String getChartUrl() {
-		return this.chartUrl;
-	}
-
-	public final void setChartUrl(final String chartUrl) {
-		this.chartUrl = chartUrl;
-	}
-
 }

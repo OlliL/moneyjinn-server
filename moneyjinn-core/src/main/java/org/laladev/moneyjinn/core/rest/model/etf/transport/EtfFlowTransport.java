@@ -26,12 +26,24 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf.transport;
 
-public class EtfTransport {
+import java.math.BigDecimal;
+import java.sql.Date;
+
+public class EtfFlowTransport {
+
+	private Long etfflowid;
 	private String isin;
-	private String name;
-	private String wkn;
-	private String ticker;
-	private String chartUrl;
+	private Date date;
+	private BigDecimal amount;
+	private BigDecimal price;
+
+	public final Long getEtfflowid() {
+		return this.etfflowid;
+	}
+
+	public final void setEtfflowid(final Long etfflowid) {
+		this.etfflowid = etfflowid;
+	}
 
 	public final String getIsin() {
 		return this.isin;
@@ -41,36 +53,28 @@ public class EtfTransport {
 		this.isin = isin;
 	}
 
-	public final String getName() {
-		return this.name;
+	public final Date getDate() {
+		return this.date;
 	}
 
-	public final void setName(final String name) {
-		this.name = name;
+	public final void setDate(final Date date) {
+		this.date = date;
 	}
 
-	public final String getWkn() {
-		return this.wkn;
+	public final BigDecimal getAmount() {
+		return this.amount;
 	}
 
-	public final void setWkn(final String wkn) {
-		this.wkn = wkn;
+	public final void setAmount(final BigDecimal amount) {
+		this.amount = amount;
 	}
 
-	public final String getTicker() {
-		return this.ticker;
+	public final BigDecimal getPrice() {
+		return this.price;
 	}
 
-	public final void setTicker(final String ticker) {
-		this.ticker = ticker;
-	}
-
-	public final String getChartUrl() {
-		return this.chartUrl;
-	}
-
-	public final void setChartUrl(final String chartUrl) {
-		this.chartUrl = chartUrl;
+	public final void setPrice(final BigDecimal price) {
+		this.price = price;
 	}
 
 }
