@@ -31,10 +31,11 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 
 @XmlRootElement(name = "listEtfOverviewResponse")
-public class ListEtfOverviewResponse {
+public class ListEtfOverviewResponse extends AbstractResponse {
 	@XmlElement(name = "etfSummaryTransport")
 	private List<EtfSummaryTransport> etfSummaryTransports;
 
