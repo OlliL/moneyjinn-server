@@ -30,7 +30,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,6 +42,11 @@ import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -81,6 +88,7 @@ import org.springframework.util.Assert;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
+// TODO - copy and paste hell, use Optional!
 @Named
 public class SettingService extends AbstractService implements ISettingService {
 	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
@@ -369,5 +377,116 @@ public class SettingService extends AbstractService implements ISettingService {
 	public void deleteSettings(final UserID userId) {
 		Assert.notNull(userId, "UserId must not be null!");
 		this.settingDao.deleteSettings(userId.getId());
+	}
+
+	@Override
+	public void setClientCalcEtfSaleIsin(final AccessID accessId, final ClientCalcEtfSaleIsin setting) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		Assert.notNull(setting, "setting must not be null!");
+		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN), setting.getSetting());
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final AccessID accessId) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN));
+		if (settingData != null && settingData.getValue() != null) {
+			return Optional.of(new ClientCalcEtfSaleIsin(settingData.getValue()));
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public void setClientCalcEtfSaleAskPrice(final AccessID accessId, final ClientCalcEtfSaleAskPrice setting) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		Assert.notNull(setting, "setting must not be null!");
+		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE),
+				setting.getSetting().toString());
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final AccessID accessId) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE));
+		if (settingData != null && settingData.getValue() != null) {
+			return Optional.of(new ClientCalcEtfSaleAskPrice(new BigDecimal(settingData.getValue())));
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public void setClientCalcEtfSaleBidPrice(final AccessID accessId, final ClientCalcEtfSaleBidPrice setting) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		Assert.notNull(setting, "setting must not be null!");
+		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE),
+				setting.getSetting().toString());
+		this.settingDao.setSetting(settingData);
+
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final AccessID accessId) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE));
+		if (settingData != null && settingData.getValue() != null) {
+			return Optional.of(new ClientCalcEtfSaleBidPrice(new BigDecimal(settingData.getValue())));
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public void setClientCalcEtfSalePieces(final AccessID accessId, final ClientCalcEtfSalePieces setting) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		Assert.notNull(setting, "setting must not be null!");
+		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES),
+				setting.getSetting().toString());
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final AccessID accessId) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES));
+		if (settingData != null && settingData.getValue() != null) {
+			return Optional.of(new ClientCalcEtfSalePieces(new BigDecimal(settingData.getValue())));
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public void setClientCalcEtfSaleTransactionCosts(final AccessID accessId,
+			final ClientCalcEtfSaleTransactionCosts setting) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		Assert.notNull(setting, "setting must not be null!");
+		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+		final SettingData settingData = new SettingData(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS),
+				setting.getSetting().toString());
+		this.settingDao.setSetting(settingData);
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(final AccessID accessId) {
+		Assert.notNull(accessId, "accessId must not be null!");
+		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS));
+		if (settingData != null && settingData.getValue() != null) {
+			return Optional.of(new ClientCalcEtfSaleTransactionCosts(new BigDecimal(settingData.getValue())));
+		}
+		return Optional.empty();
 	}
 }

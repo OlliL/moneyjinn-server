@@ -26,10 +26,17 @@
 
 package org.laladev.moneyjinn.service.api;
 
+import java.util.Optional;
+
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -280,4 +287,23 @@ public interface ISettingService {
 	 */
 	ClientCompareDataSelectedSourceIsFile getClientCompareDataSelectedSourceIsFile(AccessID accessId);
 
+	void setClientCalcEtfSaleIsin(AccessID accessId, ClientCalcEtfSaleIsin setting);
+
+	Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(AccessID accessId);
+
+	void setClientCalcEtfSaleAskPrice(AccessID accessId, ClientCalcEtfSaleAskPrice setting);
+
+	Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(AccessID accessId);
+
+	void setClientCalcEtfSaleBidPrice(AccessID accessId, ClientCalcEtfSaleBidPrice setting);
+
+	Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(AccessID accessId);
+
+	void setClientCalcEtfSalePieces(AccessID accessId, ClientCalcEtfSalePieces setting);
+
+	Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(AccessID accessId);
+
+	void setClientCalcEtfSaleTransactionCosts(AccessID accessId, ClientCalcEtfSaleTransactionCosts setting);
+
+	Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(AccessID accessId);
 }

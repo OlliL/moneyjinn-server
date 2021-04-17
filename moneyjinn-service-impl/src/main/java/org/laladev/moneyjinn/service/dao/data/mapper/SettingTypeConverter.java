@@ -56,6 +56,16 @@ public class SettingTypeConverter {
 			return "compare_format";
 		case CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE:
 			return "compare_source_is_file";
+		case CLIENT_CALC_ETF_SALE_ASK_PRICE:
+			return "client_calc_etf_sale_ask_price";
+		case CLIENT_CALC_ETF_SALE_BID_PRICE:
+			return "client_calc_etf_sale_bid_price";
+		case CLIENT_CALC_ETF_SALE_ISIN:
+			return "client_calc_etf_sale_isin";
+		case CLIENT_CALC_ETF_SALE_PIECES:
+			return "client_calc_etf_sale_pieces";
+		case CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS:
+			return "client_calc_etf_sale_transaction_costs";
 		default:
 			throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
 		}

@@ -70,4 +70,73 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		this.price = price;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+		result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
+		result = prime * result + ((this.isin == null) ? 0 : this.isin.hashCode());
+		result = prime * result + ((this.price == null) ? 0 : this.price.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		final EtfFlow other = (EtfFlow) obj;
+		if (this.amount == null) {
+			if (other.amount != null) {
+				return false;
+			}
+		} else if (!this.amount.equals(other.amount)) {
+			return false;
+		}
+		if (this.date == null) {
+			if (other.date != null) {
+				return false;
+			}
+		} else if (!this.date.equals(other.date)) {
+			return false;
+		}
+		if (this.isin == null) {
+			if (other.isin != null) {
+				return false;
+			}
+		} else if (!this.isin.equals(other.isin)) {
+			return false;
+		}
+		if (this.price == null) {
+			if (other.price != null) {
+				return false;
+			}
+		} else if (!this.price.equals(other.price)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("EtfFlow [isin=");
+		builder.append(this.isin);
+		builder.append(", date=");
+		builder.append(this.date);
+		builder.append(", amount=");
+		builder.append(this.amount);
+		builder.append(", price=");
+		builder.append(this.price);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
