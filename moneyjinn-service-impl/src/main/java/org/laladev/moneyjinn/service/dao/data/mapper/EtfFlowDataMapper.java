@@ -14,7 +14,7 @@ public class EtfFlowDataMapper implements IMapper<EtfFlow, EtfFlowData> {
 		a.setId(new EtfFlowID(b.getEtfflowid()));
 
 		a.setIsin(new EtfIsin(b.getIsin()));
-		a.setDate(b.getFlowdate());
+		a.setTime(b.getFlowdate());
 		a.setAmount(b.getAmount());
 		a.setPrice(b.getPrice());
 
@@ -23,8 +23,15 @@ public class EtfFlowDataMapper implements IMapper<EtfFlow, EtfFlowData> {
 
 	@Override
 	public EtfFlowData mapAToB(final EtfFlow a) {
-		// TODO Auto-generated method stub
-		return null;
+		final EtfFlowData b = new EtfFlowData();
+		b.setAmount(a.getAmount());
+		if (a.getId() != null) {
+			b.setEtfflowid(a.getId().getId());
+		}
+		b.setFlowdate(a.getTime());
+		b.setIsin(a.getIsin().getId());
+		b.setPrice(a.getPrice());
+		return b;
 	}
 
 }

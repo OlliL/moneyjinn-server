@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
@@ -48,13 +49,34 @@ public class EtfDao {
 		return this.mapper.getAllEtf();
 	}
 
+	public EtfData getEtfById(final String isin) {
+		return this.mapper.getEtfById(isin);
+	}
+
 	public EtfValueData getEtfValueForMonth(final String isin, final Short year, final Month month) {
 		final LocalDate date = LocalDate.of(year.intValue(), month, 1);
 
 		return this.mapper.getEtfValueForMonth(isin, date);
 	}
 
-	public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDate dateUntil) {
-		return this.mapper.getAllFlowsUntil(isin, dateUntil);
+	public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDateTime timeUntil) {
+		return this.mapper.getAllFlowsUntil(isin, timeUntil);
 	}
+
+	public EtfFlowData getEtfFowById(final Long etfFlowId) {
+		return this.mapper.getEtfFlowById(etfFlowId);
+	}
+
+	public Long createEtfFlow(final EtfFlowData etfFlowData) {
+		return this.mapper.createEtfFlow(etfFlowData);
+	}
+
+	public void updateEtfFlow(final EtfFlowData etfFlowData) {
+		this.mapper.updateEtfFlow(etfFlowData);
+	}
+
+	public void deleteEtfFlow(final Long etfFlowId) {
+		this.mapper.deleteEtfFlow(etfFlowId);
+	}
+
 }

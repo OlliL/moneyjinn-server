@@ -27,14 +27,14 @@
 package org.laladev.moneyjinn.model.etf;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.laladev.moneyjinn.model.AbstractEntity;
 
 public class EtfFlow extends AbstractEntity<EtfFlowID> {
 	private static final long serialVersionUID = 1L;
 	private EtfIsin isin;
-	private LocalDate date;
+	private LocalDateTime time;
 	private BigDecimal amount;
 	private BigDecimal price;
 
@@ -46,12 +46,12 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		this.isin = isin;
 	}
 
-	public final LocalDate getDate() {
-		return this.date;
+	public final LocalDateTime getTime() {
+		return this.time;
 	}
 
-	public final void setDate(final LocalDate date) {
-		this.date = date;
+	public final void setTime(final LocalDateTime time) {
+		this.time = time;
 	}
 
 	public final BigDecimal getAmount() {
@@ -75,9 +75,9 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
 		result = prime * result + ((this.isin == null) ? 0 : this.isin.hashCode());
 		result = prime * result + ((this.price == null) ? 0 : this.price.hashCode());
+		result = prime * result + ((this.time == null) ? 0 : this.time.hashCode());
 		return result;
 	}
 
@@ -100,13 +100,6 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		} else if (!this.amount.equals(other.amount)) {
 			return false;
 		}
-		if (this.date == null) {
-			if (other.date != null) {
-				return false;
-			}
-		} else if (!this.date.equals(other.date)) {
-			return false;
-		}
 		if (this.isin == null) {
 			if (other.isin != null) {
 				return false;
@@ -121,6 +114,13 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		} else if (!this.price.equals(other.price)) {
 			return false;
 		}
+		if (this.time == null) {
+			if (other.time != null) {
+				return false;
+			}
+		} else if (!this.time.equals(other.time)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -129,8 +129,8 @@ public class EtfFlow extends AbstractEntity<EtfFlowID> {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("EtfFlow [isin=");
 		builder.append(this.isin);
-		builder.append(", date=");
-		builder.append(this.date);
+		builder.append(", time=");
+		builder.append(this.time);
 		builder.append(", amount=");
 		builder.append(this.amount);
 		builder.append(", price=");

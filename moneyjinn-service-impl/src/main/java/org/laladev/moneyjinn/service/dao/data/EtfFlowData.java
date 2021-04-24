@@ -1,11 +1,11 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EtfFlowData {
 	private Long etfflowid;
-	private LocalDate flowdate;
+	private LocalDateTime flowdate;
 	private String isin;
 	private BigDecimal amount;
 	private BigDecimal price;
@@ -18,11 +18,11 @@ public class EtfFlowData {
 		this.etfflowid = etfflowid;
 	}
 
-	public final LocalDate getFlowdate() {
+	public final LocalDateTime getFlowdate() {
 		return this.flowdate;
 	}
 
-	public final void setFlowdate(final LocalDate flowdate) {
+	public final void setFlowdate(final LocalDateTime flowdate) {
 		this.flowdate = flowdate;
 	}
 

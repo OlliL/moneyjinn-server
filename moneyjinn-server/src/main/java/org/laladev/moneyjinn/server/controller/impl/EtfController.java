@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -14,16 +14,23 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.ShowCreateEtfFlowResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.ShowDeleteEtfFlowResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.ShowEditEtfFlowResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.UpdateEtfFlowRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
@@ -31,9 +38,11 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,7 +58,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/moneyflow/server/etf/")
 // TODO: Multi-User
 // TODO: Multi-ETF
-// TODO: Enter ETF Buys/Sels
 // TODO: Think about how to display the portfolio when sales happened (FIFO)
 // TODO: Unit-Testing
 public class EtfController extends AbstractController {
@@ -65,8 +73,8 @@ public class EtfController extends AbstractController {
 	public ListEtfOverviewResponse listEtfOverview(@PathVariable(value = "year") final Short requestYear,
 			@PathVariable(value = "month") final Short requestMonth) {
 		final Month month = Month.of(requestMonth.intValue());
-		final LocalDate beginOfMonth = LocalDate.of(requestYear.intValue(), month, 1);
-		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+		final LocalDateTime beginOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999);
+		final LocalDateTime endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
 		final List<EtfSummaryTransport> transports = new ArrayList<>();
@@ -111,7 +119,7 @@ public class EtfController extends AbstractController {
 
 		final List<EtfFlowTransport> transports = new ArrayList<>();
 		for (final Etf etf : etfs) {
-			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDate.now());
+			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDateTime.now());
 			transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
 		}
 		response.setEtfFlowTransports(transports);
@@ -151,7 +159,7 @@ public class EtfController extends AbstractController {
 		BigDecimal openPieces = pieces;
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
 
-		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfIsin, LocalDate.now());
+		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfIsin, LocalDateTime.now());
 		Collections.reverse(etfFlows); // reverse order - FIFO!
 
 		for (final EtfFlow etfFlow : etfFlows) {
@@ -193,10 +201,93 @@ public class EtfController extends AbstractController {
 
 	}
 
+	@RequestMapping(value = "showCreateEtfFlow", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowCreateEtfFlowResponse showCreateEtfFlow() {
+		final ShowCreateEtfFlowResponse response = new ShowCreateEtfFlowResponse();
+
+		final List<Etf> etfs = this.etfService.getAllEtf();
+		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+
+		return response;
+	}
+
+	@RequestMapping(value = "showEditEtfFlow/{id}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowEditEtfFlowResponse showEditEtfFlow(@PathVariable(value = "id") final Long id) {
+		final ShowEditEtfFlowResponse response = new ShowEditEtfFlowResponse();
+
+		final List<Etf> etfs = this.etfService.getAllEtf();
+		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+		final EtfFlow etfFlow = this.etfService.getEtfFlowById(new EtfFlowID(id));
+		response.setEtfFlowTransport(super.map(etfFlow, EtfFlowTransport.class));
+
+		return response;
+	}
+
+	@RequestMapping(value = "showDeleteEtfFlow/{id}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowDeleteEtfFlowResponse showDeleteEtfFlow(@PathVariable(value = "id") final Long id) {
+		final ShowDeleteEtfFlowResponse response = new ShowDeleteEtfFlowResponse();
+
+		final List<Etf> etfs = this.etfService.getAllEtf();
+		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+		final EtfFlow etfFlow = this.etfService.getEtfFlowById(new EtfFlowID(id));
+		response.setEtfFlowTransport(super.map(etfFlow, EtfFlowTransport.class));
+
+		return response;
+	}
+
+	@RequestMapping(value = "createEtfFlow", method = { RequestMethod.POST })
+	@RequiresAuthorization
+	public ValidationResponse createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
+
+		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
+		etfFlow.setId(null);
+		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+
+		if (!validationResult.isValid()) {
+			final ValidationResponse response = new ValidationResponse();
+			response.setResult(validationResult.isValid());
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			return response;
+		}
+
+		this.etfService.createEtfFlow(etfFlow);
+		return null;
+	}
+
+	@RequestMapping(value = "updateEtfFlow", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public ValidationResponse updateEtfFlow(@RequestBody final UpdateEtfFlowRequest request) {
+
+		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
+		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+
+		if (!validationResult.isValid()) {
+			final ValidationResponse response = new ValidationResponse();
+			response.setResult(validationResult.isValid());
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+			return response;
+		}
+
+		this.etfService.updateEtfFlow(etfFlow);
+		return null;
+	}
+
+	@RequestMapping(value = "deleteEtfFlow/{id}", method = { RequestMethod.DELETE })
+	@RequiresAuthorization
+	public void deleteEtfFlow(@PathVariable(value = "id") final Long id) {
+		this.etfService.deleteEtfFlow(new EtfFlowID(id));
+	}
+
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new EtfFlowTransportMapper());
 		super.registerBeanMapper(new EtfTransportMapper());
+		super.registerBeanMapper(new ValidationItemTransportMapper());
 
 	}
 

@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -38,8 +39,18 @@ public interface IEtfDaoMapper {
 
 	public List<EtfData> getAllEtf();
 
-	public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin, @Param("dateUntil") LocalDate dateUntil);
+	public EtfData getEtfById(@Param("isin") String isin);
+
+	public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin, @Param("dateUntil") LocalDateTime timeUntil);
 
 	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("date") LocalDate date);
+
+	public EtfFlowData getEtfFlowById(@Param("id") Long id);
+
+	public Long createEtfFlow(EtfFlowData data);
+
+	public void updateEtfFlow(EtfFlowData data);
+
+	public void deleteEtfFlow(@Param("id") Long id);
 
 }

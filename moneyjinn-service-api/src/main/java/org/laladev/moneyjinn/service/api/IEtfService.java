@@ -26,20 +26,33 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 public interface IEtfService {
 
 	List<Etf> getAllEtf();
 
-	List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDate dateUntil);
+	List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDateTime timeUntil);
 
 	EtfValue getEtfValueEndOfMonth(EtfIsin isin, Short year, Month month);
+
+	EtfFlow getEtfFlowById(EtfFlowID etfFlowId);
+
+	ValidationResult validateEtfFlow(EtfFlow etfFlow);
+
+	EtfFlowID createEtfFlow(EtfFlow etfFlow);
+
+	void updateEtfFlow(EtfFlow etfFlow);
+
+	void deleteEtfFlow(EtfFlowID etfFlowId);
+
 }
