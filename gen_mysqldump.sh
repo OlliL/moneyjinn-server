@@ -10,7 +10,7 @@ else
         PROGPATH=$(dirname $PROGPATH)
 fi
 
-mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --default-character-set=utf8 --tables --add-drop-table --single-transaction --no-data moneyflow \
+mysqldump -u moneyflow -pmoneyflow -h db --skip-triggers --default-character-set=utf8 --tables --add-drop-table --single-transaction --no-data moneyflow \
 	access \
 	access_relation \
 	access_flattened \
@@ -19,12 +19,16 @@ mysqldump -u moneyflow -pmoneyflow -h db --skip-quote-names --skip-triggers --de
 	postingaccounts \
 	contractpartners \
 	contractpartneraccounts \
+	etf \
+	etfflows \
+	etfvalues \
 	moneyflows \
 	moneyflowsplitentries \
 	moneyflowreceipts \
 	monthlysettlements \
 	predefmoneyflows \
 	impbalance \
+	impmoneyflowreceipts \
 	impmoneyflows \
 	impmonthlysettlements \
 	imp_data \

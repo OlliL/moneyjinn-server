@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.30, for FreeBSD10.3 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD11.4 (amd64)
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.6.30
+-- Server version	5.6.51-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -195,6 +195,57 @@ CREATE TABLE `contractpartneraccounts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `etf`
+--
+
+DROP TABLE IF EXISTS `etf`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etf` (
+  `isin` varchar(30) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `wkn` varchar(10) NOT NULL,
+  `ticker` varchar(10) NOT NULL,
+  `chart_url` varchar(255) NOT NULL,
+  PRIMARY KEY (`isin`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etfflows`
+--
+
+DROP TABLE IF EXISTS `etfflows`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etfflows` (
+  `etfflowid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `flowdate` datetime(6) NOT NULL,
+  `isin` varchar(30) NOT NULL,
+  `amount` decimal(10,3) NOT NULL,
+  `price` decimal(6,3) NOT NULL,
+  PRIMARY KEY (`etfflowid`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etfvalues`
+--
+
+DROP TABLE IF EXISTS `etfvalues`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etfvalues` (
+  `isin` varchar(30) NOT NULL,
+  `date` date NOT NULL,
+  `buy_price` decimal(10,3) NOT NULL,
+  `sell_price` decimal(10,3) NOT NULL,
+  `changedate` datetime NOT NULL,
+  UNIQUE KEY `etf_i_01` (`isin`,`date`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `moneyflows`
 --
 
@@ -262,7 +313,7 @@ CREATE TABLE `moneyflowreceipts` (
   `receipt` mediumblob NOT NULL,
   `receipt_type` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`moneyflowreceiptid`),
-  KEY `mrp_mmf_pk` (`mmf_moneyflowid`),
+  UNIQUE KEY `mrp_i_01` (`mmf_moneyflowid`),
   CONSTRAINT `mrp_mmf_pk` FOREIGN KEY (`mmf_moneyflowid`) REFERENCES `moneyflows` (`moneyflowid`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -335,6 +386,28 @@ CREATE TABLE `impbalance` (
   `balance` decimal(8,2) NOT NULL,
   `changedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`mcs_capitalsourceid`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `impmoneyflowreceipts`
+--
+
+DROP TABLE IF EXISTS `impmoneyflowreceipts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `impmoneyflowreceipts` (
+  `impmoneyflowreceiptid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
+  `receipt` mediumblob NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `mediatype` varchar(255) NOT NULL,
+  PRIMARY KEY (`impmoneyflowreceiptid`),
+  KEY `mir_mac_pk_01` (`mac_id_creator`),
+  KEY `mir_mac_pk_02` (`mac_id_accessor`),
+  CONSTRAINT `mir_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mir_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

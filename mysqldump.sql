@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.30, for FreeBSD10.3 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD11.4 (amd64)
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.6.30
+-- Server version	5.6.51-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -195,6 +195,57 @@ CREATE TABLE `contractpartneraccounts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `etf`
+--
+
+DROP TABLE IF EXISTS `etf`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etf` (
+  `isin` varchar(30) COLLATE utf8_bin NOT NULL,
+  `name` varchar(60) COLLATE utf8_bin NOT NULL,
+  `wkn` varchar(10) COLLATE utf8_bin NOT NULL,
+  `ticker` varchar(10) COLLATE utf8_bin NOT NULL,
+  `chart_url` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`isin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='met';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etfflows`
+--
+
+DROP TABLE IF EXISTS `etfflows`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etfflows` (
+  `etfflowid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `flowdate` datetime(6) NOT NULL,
+  `isin` varchar(30) COLLATE utf8_bin NOT NULL,
+  `amount` decimal(10,3) NOT NULL,
+  `price` decimal(6,3) NOT NULL,
+  PRIMARY KEY (`etfflowid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mef';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etfvalues`
+--
+
+DROP TABLE IF EXISTS `etfvalues`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etfvalues` (
+  `isin` varchar(30) COLLATE utf8_bin NOT NULL,
+  `date` date NOT NULL,
+  `buy_price` decimal(10,3) NOT NULL,
+  `sell_price` decimal(10,3) NOT NULL,
+  `changedate` datetime NOT NULL,
+  UNIQUE KEY `etf_i_01` (`isin`,`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mev';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `moneyflows`
 --
 
@@ -262,7 +313,7 @@ CREATE TABLE `moneyflowreceipts` (
   `receipt` mediumblob NOT NULL,
   `receipt_type` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`moneyflowreceiptid`),
-  KEY `mrp_mmf_pk` (`mmf_moneyflowid`),
+  UNIQUE KEY `mrp_i_01` (`mmf_moneyflowid`) USING BTREE,
   CONSTRAINT `mrp_mmf_pk` FOREIGN KEY (`mmf_moneyflowid`) REFERENCES `moneyflows` (`moneyflowid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mrp';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -336,6 +387,28 @@ CREATE TABLE `impbalance` (
   `changedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`mcs_capitalsourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mib';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `impmoneyflowreceipts`
+--
+
+DROP TABLE IF EXISTS `impmoneyflowreceipts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `impmoneyflowreceipts` (
+  `impmoneyflowreceiptid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mac_id_creator` int(10) unsigned NOT NULL,
+  `mac_id_accessor` int(10) unsigned NOT NULL,
+  `receipt` mediumblob NOT NULL,
+  `filename` varchar(255) COLLATE utf8_bin NOT NULL,
+  `mediatype` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`impmoneyflowreceiptid`),
+  KEY `mir_mac_pk_01` (`mac_id_creator`),
+  KEY `mir_mac_pk_02` (`mac_id_accessor`),
+  CONSTRAINT `mir_mac_pk_01` FOREIGN KEY (`mac_id_creator`) REFERENCES `access` (`id`),
+  CONSTRAINT `mir_mac_pk_02` FOREIGN KEY (`mac_id_accessor`) REFERENCES `access` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mir';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +546,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-06 21:57:48
+-- Dump completed on 2021-05-01  1:14:44
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',2,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
