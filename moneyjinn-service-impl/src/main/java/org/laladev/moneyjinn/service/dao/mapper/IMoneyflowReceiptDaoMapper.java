@@ -38,4 +38,6 @@ public interface IMoneyflowReceiptDaoMapper {
 	public List<Long> getMoneyflowIdsWithReceipt(@Param("moneyflowIds") List<Long> moneyflowIds);
 
 	public void deleteMoneyflowReceipt(Long moneyflowId);
+
+	public void createMoneyflowReceipt(MoneyflowReceiptData moneyflowReceiptData);
 }

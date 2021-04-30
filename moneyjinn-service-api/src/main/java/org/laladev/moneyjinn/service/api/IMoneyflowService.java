@@ -284,4 +284,7 @@ public interface IMoneyflowService {
 	 */
 	List<MoneyflowSearchResult> searchMoneyflows(UserID userId, MoneyflowSearchParams moneyflowSearchParams);
 
+	List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(UserID userId, BigDecimal amount, LocalDate dateFrom,
+			LocalDate dateTil);
+
 }

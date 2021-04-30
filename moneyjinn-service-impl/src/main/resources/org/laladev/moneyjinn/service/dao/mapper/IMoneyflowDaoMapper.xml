@@ -253,6 +253,15 @@
 		   AND maf_id              = #{userId}
 	</select>
 
+	<select id="searchMoneyflowsByAbsoluteAmountDate"
+		resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+		SELECT <include refid="moneyflowColumns" />
+		  FROM vw_moneyflows
+		 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
+		   AND ABS(amount)         = CAST(#{amount} AS DECIMAL(8,2))
+		   AND maf_id              = #{userId}
+	</select>
+
 	<select id="getAllMoneyflowsByDateRangeCapitalsourceId"
 		resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
 		SELECT <include refid="moneyflowColumns" />

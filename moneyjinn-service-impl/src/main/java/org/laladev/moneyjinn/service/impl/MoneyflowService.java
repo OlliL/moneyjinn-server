@@ -510,6 +510,20 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
+	public List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(final UserID userId, final BigDecimal amount,
+			final LocalDate dateFrom, final LocalDate dateTil) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(dateFrom, "fromDate must not be null!");
+		Assert.notNull(amount, "amount must not be null!");
+		Assert.notNull(dateTil, "toDate must not be null!");
+
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+				.searchMoneyflowsByAbsoluteAmountDate(userId.getId(), dateFrom, dateTil, amount);
+
+		return this.mapMoneyflowDataList(moneyflowDatas);
+	}
+
+	@Override
 	public List<Moneyflow> searchMoneyflowsByAmountDate(final UserID userId, final LocalDate bookingDate,
 			final BigDecimal amount, final Period searchPeriod) {
 		Assert.notNull(userId, "UserId must not be null!");

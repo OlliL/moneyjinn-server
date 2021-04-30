@@ -89,10 +89,11 @@ public class EtfController extends AbstractController {
 			transport.setName(etf.getName());
 			transport.setChartUrl(etf.getChartUrl());
 
-			transport.setBuyPrice(etfValue.getBuyPrice());
-			transport.setSellPrice(etfValue.getSellPrice());
-			transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
-
+			if (etfValue != null) {
+				transport.setBuyPrice(etfValue.getBuyPrice());
+				transport.setSellPrice(etfValue.getSellPrice());
+				transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
+			}
 			BigDecimal amount = BigDecimal.ZERO;
 			BigDecimal spentValue = BigDecimal.ZERO;
 			for (final EtfFlow flow : etfFlows) {

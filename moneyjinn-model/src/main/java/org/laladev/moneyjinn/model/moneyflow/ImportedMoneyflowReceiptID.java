@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,21 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao;
+package org.laladev.moneyjinn.model.moneyflow;
 
-import java.util.List;
+import org.laladev.moneyjinn.model.AbstractEntityID;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+/**
+ * The unique ID of an {@link ImportedMoneyflowReceipty}
+ *
+ * @author Oliver Lehmann
+ *
+ */
+public class ImportedMoneyflowReceiptID extends AbstractEntityID<Long> {
 
-import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
-import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowReceiptDaoMapper;
+	private static final long serialVersionUID = 1L;
 
-@Named
-public class MoneyflowReceiptDao {
-
-	@Inject
-	IMoneyflowReceiptDaoMapper mapper;
-
-	public MoneyflowReceiptData getMoneyflowReceipt(final Long moneyflowId) {
-		return this.mapper.getMoneyflowReceipt(moneyflowId);
-	}
-
-	public List<Long> getMoneyflowIdsWithReceipt(final List<Long> moneyflowIds) {
-		return this.mapper.getMoneyflowIdsWithReceipt(moneyflowIds);
-	}
-
-	public void deleteMoneyflowReceipt(final Long moneyflowId) {
-		this.mapper.deleteMoneyflowReceipt(moneyflowId);
-	}
-
-	public void createMoneyflowReceipt(final MoneyflowReceiptData moneyflowReceiptData) {
-		this.mapper.createMoneyflowReceipt(moneyflowReceiptData);
-
+	public ImportedMoneyflowReceiptID(final Long id) {
+		super(id);
 	}
 }

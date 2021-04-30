@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,44 +24,21 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao;
+package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 
-import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
-import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowSplitEntryDaoMapper;
+public interface IImportedMoneyflowReceiptDaoMapper {
 
-@Named
-public class MoneyflowSplitEntryDao {
+	void createImportedMoneyflowReceipt(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
 
-	@Inject
-	IMoneyflowSplitEntryDaoMapper mapper;
+	void deleteImportedMoneyflowReceiptById(@Param("groupId") Long groupId, @Param("id") Long id);
 
-	public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(final List<Long> moneyflowIds) {
-		if (moneyflowIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-		return this.mapper.getMoneyflowSplitEntries(moneyflowIds);
-	}
+	List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(@Param("groupId") Long groupId);
 
-	public Long createMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-		this.mapper.createMoneyflowSplitEntry(moneyflowSplitEntryData);
-		return moneyflowSplitEntryData.getId();
-	}
+	ImportedMoneyflowReceiptData getImportedMoneyflowReceiptById(@Param("groupId") Long groupId, @Param("id") Long id);
 
-	public void updateMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-		this.mapper.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
-	}
-
-	public void deleteMoneyflowSplitEntry(final Long moneyflowId, final Long moneyflowSplitEntryId) {
-		this.mapper.deleteMoneyflowSplitEntry(moneyflowId, moneyflowSplitEntryId);
-	}
-
-	public void deleteMoneyflowSplitEntries(final Long moneyflowId) {
-		this.mapper.deleteMoneyflowSplitEntries(moneyflowId);
-	}
 }

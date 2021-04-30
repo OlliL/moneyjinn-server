@@ -9,13 +9,13 @@
 		<result property="receiptType"    javaType="java.lang.Short" column="receiptType" />
 	</resultMap>
   
-    	<sql id="moneyflowReceiptColumns">
+	<sql id="moneyflowReceiptColumns">
 		 moneyflowreceiptid AS id
 		,mmf_moneyflowid    AS mmfMoneyflowId
 		,receipt            AS blob_Data
 		,receipt_type       AS receiptType
 	</sql>
-    	
+
 	<select id="getMoneyflowReceipt" 
 		resultMap="moneyflowReceiptMap">
 		SELECT <include refid="moneyflowReceiptColumns" />
@@ -38,5 +38,20 @@
 		 WHERE mmf_moneyflowid = #{id}
 		 LIMIT 1
 	</delete>
+	
+    	<insert id="createMoneyflowReceipt"
+		parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
+		INSERT INTO moneyflowreceipts
+		      (mmf_moneyflowid
+		      ,receipt
+		      ,receipt_type
+		      )
+		        VALUES
+		      (#{mmfMoneyflowId}
+		      ,#{receipt}
+		      ,#{receiptType}
+		      )
+	</insert>
 
 </mapper>

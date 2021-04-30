@@ -26,9 +26,11 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -36,6 +38,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsByAmountResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
@@ -118,6 +121,8 @@ public class MoneyflowController extends AbstractController {
 	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
 	@Inject
 	private IMoneyflowReceiptService moneyflowReceiptService;
+
+	private static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 	@Override
 	protected void addBeanMapper() {
@@ -609,5 +614,63 @@ public class MoneyflowController extends AbstractController {
 		this.moneyflowSplitEntryService.deleteMoneyflowSplitEntries(userId, moneyflowId);
 		this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
 		this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
+	}
+
+	/**
+	 * Searches for Moneyflows given by an absolut amount and a date range
+	 *
+	 * @param amount
+	 *            ABS amount
+	 * @param dateFromStr
+	 *            date to start searching (format: YYYYMMDD)
+	 * @param dateTil
+	 *            date to end searching (format: YYYYMMDD)
+	 * @return
+	 */
+	@RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
+			RequestMethod.GET })
+	@RequiresAuthorization
+	public SearchMoneyflowsByAmountResponse searchMoneyflowsByAmount(
+			@PathVariable(value = "amount") final BigDecimal amount,
+			@PathVariable(value = "dateFromStr") final String dateFromStr,
+			@PathVariable(value = "dateTilStr") final String dateTilStr) {
+		final UserID userId = super.getUserId();
+		final SearchMoneyflowsByAmountResponse response = new SearchMoneyflowsByAmountResponse();
+		final LocalDate dateFrom = LocalDate.parse(dateFromStr, SEARCH_DATE_FORMATTER);
+		final LocalDate dateTil = LocalDate.parse(dateTilStr, SEARCH_DATE_FORMATTER);
+
+		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAbsoluteAmountDate(userId, amount,
+				dateFrom, dateTil);
+
+		final List<Moneyflow> relevantMoneyflows = moneyflows.stream()
+				.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
+				.getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
+
+		if (moneyflows != null && !moneyflows.isEmpty()) {
+			final List<MoneyflowTransport> moneyflowTransports = relevantMoneyflows.stream()
+					.map(mf -> super.map(mf, MoneyflowTransport.class))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			response.setMoneyflowTransports(moneyflowTransports);
+
+			if (!moneyflowSplitEntries.isEmpty()) {
+				final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
+						.flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
+
+				response.setMoneyflowSplitEntryTransports(
+						super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+			}
+
+			return response;
+		}
+
+		return null;
+
 	}
 }

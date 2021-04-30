@@ -38,8 +38,9 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
  * </p>
  *
  * <p>
- * MoneyflowReceiptService is the Service handling operations around an {@link MoneyflowReceipt} like getting, creating, updating, deleting. Before a
- * {@link MoneyflowReceipt} is created or updated, the {@link MoneyflowReceipt} is validated for correctness.
+ * MoneyflowReceiptService is the Service handling operations around an {@link MoneyflowReceipt}
+ * like getting, creating, updating, deleting. Before a {@link MoneyflowReceipt} is created or
+ * updated, the {@link MoneyflowReceipt} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>moneyflowreceipts</code>.
@@ -52,7 +53,8 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 public interface IMoneyflowReceiptService {
 
 	/**
-	 * This service retrieve a {@link MoneyflowReceipt} for a given {@link MoneyflowID} from the system
+	 * This service retrieve a {@link MoneyflowReceipt} for a given {@link MoneyflowID} from the
+	 * system
 	 *
 	 * @param userId
 	 *            {@link UserID}
@@ -80,4 +82,6 @@ public interface IMoneyflowReceiptService {
 	 * @return
 	 */
 	void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
+
+	void createMoneyflowReceipt(UserID userId, MoneyflowReceipt moneyflowReceipt);
 }
