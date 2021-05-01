@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-16 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,14 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -43,13 +51,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowStatusMapper;
 import org.springframework.util.Assert;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Named
 public class ImportedMoneyflowService extends AbstractService implements IImportedMoneyflowService {
 	@Inject
@@ -64,7 +65,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		super.registerBeanMapper(new ImportedMoneyflowDataMapper());
 	}
 
-	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId, final ImportedMoneyflowData importedMoneyflowData) {
+	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
+			final ImportedMoneyflowData importedMoneyflowData) {
 
 		if (importedMoneyflowData != null) {
 			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);
@@ -83,7 +85,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		return null;
 	}
 
-	private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId, final List<ImportedMoneyflowData> importedMoneyflowDataList) {
+	private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
+			final List<ImportedMoneyflowData> importedMoneyflowDataList) {
 		return importedMoneyflowDataList.stream().map(element -> this.mapImportedMoneyflowData(userId, element))
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
@@ -94,36 +97,42 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	}
 
 	@Override
-	public Integer countImportedMoneyflows(final UserID userId, final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
+	public Integer countImportedMoneyflows(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
+			final ImportedMoneyflowStatus status) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
 
-		return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs, ImportedMoneyflowStatusMapper.map(status));
+		return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs,
+				ImportedMoneyflowStatusMapper.map(status));
 	}
 
 	@Override
-	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
-			final LocalDate dateFrom, final LocalDate dateTil) {
+	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds, final LocalDate dateFrom, final LocalDate dateTil) {
 		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null, dateFrom, dateTil);
 	}
 
 	@Override
-	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
-			final ImportedMoneyflowStatus status) {
+	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
 		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, status, null, null);
 	}
 
-	private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId, final List<CapitalsourceID> capitalsourceIds,
-			final ImportedMoneyflowStatus status, final LocalDate dateFrom, final LocalDate dateTil) {
+	private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
+			final LocalDate dateFrom, final LocalDate dateTil) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
+				.collect(Collectors.toCollection(ArrayList::new));
 
-		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao.getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(),
-				capitalsourceIdLongs, ImportedMoneyflowStatusMapper.map(status), dateFrom, dateTil);
+		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
+				.getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs,
+						ImportedMoneyflowStatusMapper.map(status), dateFrom, dateTil);
 		return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
 	}
 
@@ -132,7 +141,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		Assert.notNull(importedMoneyflow, "importedMoneyflow must not be null!");
 
 		if (!this.checkIfExternalIdAlreadyExists(importedMoneyflow.getExternalId())) {
-			final ImportedMoneyflowData importedMoneyflowData = super.map(importedMoneyflow, ImportedMoneyflowData.class);
+			final ImportedMoneyflowData importedMoneyflowData = super.map(importedMoneyflow,
+					ImportedMoneyflowData.class);
 			this.importedMoneyflowDao.createImportedMoneyflow(importedMoneyflowData);
 		}
 	}
@@ -145,12 +155,14 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	}
 
 	@Override
-	public void updateImportedMoneyflowStatus(final UserID userId, final ImportedMoneyflowID importedMoneyflowId, final ImportedMoneyflowStatus status) {
+	public void updateImportedMoneyflowStatus(final UserID userId, final ImportedMoneyflowID importedMoneyflowId,
+			final ImportedMoneyflowStatus status) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
 		Assert.notNull(status, "status must not be null!");
 
-		this.importedMoneyflowDao.updateImportedMoneyflowStatus(userId.getId(), importedMoneyflowId.getId(), ImportedMoneyflowStatusMapper.map(status));
+		this.importedMoneyflowDao.updateImportedMoneyflowStatus(userId.getId(), importedMoneyflowId.getId(),
+				ImportedMoneyflowStatusMapper.map(status));
 	}
 
 	@Override

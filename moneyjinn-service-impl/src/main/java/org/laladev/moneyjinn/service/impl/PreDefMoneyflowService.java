@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2016 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,24 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.*;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.PostingAccount;
+import org.laladev.moneyjinn.model.PostingAccountID;
+import org.laladev.moneyjinn.model.PreDefMoneyflow;
+import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
@@ -39,7 +55,12 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.PreDefMoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
@@ -48,16 +69,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -142,8 +153,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		return null;
 	}
 
-	private List<PreDefMoneyflow> mapPreDefMoneyflowDataList(
-			final List<PreDefMoneyflowData> preDefMoneyflowDataList) {
+	private List<PreDefMoneyflow> mapPreDefMoneyflowDataList(final List<PreDefMoneyflowData> preDefMoneyflowDataList) {
 		return preDefMoneyflowDataList.stream().map(this::mapPreDefMoneyflowData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}

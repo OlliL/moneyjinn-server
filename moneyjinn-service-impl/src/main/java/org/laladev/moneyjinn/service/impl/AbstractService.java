@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,12 +26,13 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+
+import javax.inject.Inject;
+
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
 
 public abstract class AbstractService extends AbstractMapperSupport {
 	@Inject

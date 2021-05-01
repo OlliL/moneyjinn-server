@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,21 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.*;
+import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerAccount;
+import org.laladev.moneyjinn.model.ContractpartnerAccountID;
+import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -45,14 +58,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Named
 public class ContractpartnerAccountService extends AbstractService implements IContractpartnerAccountService {
@@ -91,7 +96,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
 					|| !contractpartnerAccountChecked.getId().equals(contractpartnerAccount.getId()))) {
 				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER, Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
+						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
+						Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
 			}
 		}
 

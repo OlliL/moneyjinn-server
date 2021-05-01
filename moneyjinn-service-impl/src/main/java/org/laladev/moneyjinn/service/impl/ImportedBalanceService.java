@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,13 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -39,12 +46,6 @@ import org.laladev.moneyjinn.service.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Named
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
@@ -60,8 +61,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 		super.registerBeanMapper(new ImportedBalanceDataMapper());
 	}
 
-	private ImportedBalance mapImportedBalanceData(final UserID userId,
-			final ImportedBalanceData importedBalanceData) {
+	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
 
 		if (importedBalanceData != null) {
 			final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
