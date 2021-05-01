@@ -306,6 +306,13 @@ public class MoneyflowController extends AbstractController {
 		return response;
 	}
 
+	/**
+	 * Creates a new moneyflow together with split entries if they where given.
+	 *
+	 * @param request
+	 *            The request which contains the moneyflow
+	 * @return ValidationResponse
+	 */
 	@RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
 	public ValidationResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
@@ -495,6 +502,13 @@ public class MoneyflowController extends AbstractController {
 		}
 	}
 
+	/**
+	 * Updates the given Moneyflow
+	 *
+	 * @param request
+	 *            The Request object which contains the Moneyflow.
+	 * @return Validation Response
+	 */
 	@RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
 	@RequiresAuthorization
 	public ValidationResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
@@ -606,6 +620,12 @@ public class MoneyflowController extends AbstractController {
 		return validationResult;
 	}
 
+	/**
+	 * Deletes the specified Moneyflow.
+	 *
+	 * @param id
+	 *            The ID of the Moneyflow to delete
+	 */
 	@RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
 	@RequiresAuthorization
 	public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
@@ -617,15 +637,15 @@ public class MoneyflowController extends AbstractController {
 	}
 
 	/**
-	 * Searches for Moneyflows given by an absolut amount and a date range
+	 * Searches for Moneyflows given by an absolut amount and a date range.
 	 *
 	 * @param amount
 	 *            ABS amount
 	 * @param dateFromStr
 	 *            date to start searching (format: YYYYMMDD)
-	 * @param dateTil
+	 * @param dateTilStr
 	 *            date to end searching (format: YYYYMMDD)
-	 * @return
+	 * @return matching Moneyflows
 	 */
 	@RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
 			RequestMethod.GET })
@@ -641,33 +661,34 @@ public class MoneyflowController extends AbstractController {
 
 		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAbsoluteAmountDate(userId, amount,
 				dateFrom, dateTil);
-
-		final List<Moneyflow> relevantMoneyflows = moneyflows.stream()
-				.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-				.collect(Collectors.toCollection(ArrayList::new));
-
-		final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
-				.collect(Collectors.toCollection(ArrayList::new));
-
-		final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
-				.getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
-
 		if (moneyflows != null && !moneyflows.isEmpty()) {
-			final List<MoneyflowTransport> moneyflowTransports = relevantMoneyflows.stream()
-					.map(mf -> super.map(mf, MoneyflowTransport.class))
+			final List<Moneyflow> relevantMoneyflows = moneyflows.stream()
+					.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
 					.collect(Collectors.toCollection(ArrayList::new));
 
-			response.setMoneyflowTransports(moneyflowTransports);
+			if (relevantMoneyflows != null && !relevantMoneyflows.isEmpty()) {
+				final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
+						.collect(Collectors.toCollection(ArrayList::new));
 
-			if (!moneyflowSplitEntries.isEmpty()) {
-				final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
-						.flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
+				final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
+						.getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
 
-				response.setMoneyflowSplitEntryTransports(
-						super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+				final List<MoneyflowTransport> moneyflowTransports = relevantMoneyflows.stream()
+						.map(mf -> super.map(mf, MoneyflowTransport.class))
+						.collect(Collectors.toCollection(ArrayList::new));
+
+				response.setMoneyflowTransports(moneyflowTransports);
+
+				if (!moneyflowSplitEntries.isEmpty()) {
+					final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values()
+							.stream().flatMap(List::stream).collect(Collectors.toCollection(ArrayList::new));
+
+					response.setMoneyflowSplitEntryTransports(
+							super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+				}
+
+				return response;
 			}
-
-			return response;
 		}
 
 		return null;
