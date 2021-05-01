@@ -1,6 +1,4 @@
-package org.laladev.moneyjinn.server.config;
-
-//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2018 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -23,6 +21,8 @@ package org.laladev.moneyjinn.server.config;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
+
+package org.laladev.moneyjinn.server.config;
 
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 import org.laladev.moneyjinn.server.main.BufferFilter;
