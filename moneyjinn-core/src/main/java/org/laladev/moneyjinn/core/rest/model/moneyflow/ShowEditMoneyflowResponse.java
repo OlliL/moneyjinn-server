@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,24 +26,27 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import javax.xml.bind.annotation.XmlElement;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import java.util.List;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 @XmlRootElement(name = "showEditMoneyflowResponse")
 public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 	@XmlElement(name = "moneyflowSplitEntryTransport")
-	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;	private MoneyflowTransport moneyflowTransport;
+	private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
+	private MoneyflowTransport moneyflowTransport;
+	private boolean hasReceipt;
 
 	public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
-		return moneyflowSplitEntryTransports;
+		return this.moneyflowSplitEntryTransports;
 	}
 
-	public final void setMoneyflowSplitEntryTransports(List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
+	public final void setMoneyflowSplitEntryTransports(
+			final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
 		this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
 	}
 
@@ -55,12 +58,21 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 		this.moneyflowTransport = moneyflowTransport;
 	}
 
+	public final boolean isHasReceipt() {
+		return this.hasReceipt;
+	}
+
+	public final void setHasReceipt(final boolean hasReceipt) {
+		this.hasReceipt = hasReceipt;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + (this.hasReceipt ? 1231 : 1237);
 		result = prime * result
-				+ ((moneyflowSplitEntryTransports == null) ? 0 : moneyflowSplitEntryTransports.hashCode());
+				+ ((this.moneyflowSplitEntryTransports == null) ? 0 : this.moneyflowSplitEntryTransports.hashCode());
 		result = prime * result + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
 		return result;
 	}
@@ -77,11 +89,16 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 			return false;
 		}
 		final ShowEditMoneyflowResponse other = (ShowEditMoneyflowResponse) obj;
-		if (moneyflowSplitEntryTransports == null) {
-			if (other.moneyflowSplitEntryTransports != null)
-				return false;
-		} else if (!moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports))
+		if (this.hasReceipt != other.hasReceipt) {
 			return false;
+		}
+		if (this.moneyflowSplitEntryTransports == null) {
+			if (other.moneyflowSplitEntryTransports != null) {
+				return false;
+			}
+		} else if (!this.moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports)) {
+			return false;
+		}
 		if (this.moneyflowTransport == null) {
 			if (other.moneyflowTransport != null) {
 				return false;
@@ -94,20 +111,14 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ShowEditMoneyflowResponse [");
-		builder.append("moneyflowSplitEntryTransports=");
-		builder.append(moneyflowSplitEntryTransports);
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ShowEditMoneyflowResponse [moneyflowSplitEntryTransports=");
+		builder.append(this.moneyflowSplitEntryTransports);
 		builder.append(", moneyflowTransport=");
-		builder.append(moneyflowTransport);
-		builder.append(", getCapitalsourceTransports()=");
-		builder.append(getCapitalsourceTransports());
-		builder.append(", getContractpartnerTransports()=");
-		builder.append(getContractpartnerTransports());
-		builder.append(", getPostingAccountTransports()=");
-		builder.append(getPostingAccountTransports());
+		builder.append(this.moneyflowTransport);
+		builder.append(", hasReceipt=");
+		builder.append(this.hasReceipt);
 		builder.append("]");
 		return builder.toString();
 	}
-
 }
