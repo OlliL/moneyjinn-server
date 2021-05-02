@@ -75,4 +75,17 @@ public class MoneyflowReceiptController extends AbstractController {
 		}
 		return response;
 	}
+
+	@RequestMapping(value = "deleteMoneyflowReceipt/{id}", method = { RequestMethod.DELETE })
+	@RequiresAuthorization
+	public void deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final MoneyflowID moneyflowId = new MoneyflowID(id);
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+		if (moneyflow != null) {
+			this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
+		}
+	}
+
 }

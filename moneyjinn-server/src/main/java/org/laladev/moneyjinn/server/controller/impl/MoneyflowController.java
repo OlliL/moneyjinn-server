@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -207,6 +208,12 @@ public class MoneyflowController extends AbstractController {
 
 			final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
 			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+
+			final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
+					.getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
+
+			response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
+
 		}
 
 		return response;

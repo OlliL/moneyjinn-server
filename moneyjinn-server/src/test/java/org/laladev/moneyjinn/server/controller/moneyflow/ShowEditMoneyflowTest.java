@@ -52,8 +52,8 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 	@Test
 	public void test_unknownMoneyflow_emptyResponseObject() throws Exception {
 		final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
-		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false,
-				ShowEditMoneyflowResponse.class);
+		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent(
+				"/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false, ShowEditMoneyflowResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 	}
@@ -63,8 +63,8 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 		this.userName = UserTransportBuilder.USER3_NAME;
 		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 		final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
-		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,
-				ShowEditMoneyflowResponse.class);
+		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent(
+				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowEditMoneyflowResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 	}
@@ -98,9 +98,10 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
 		capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
 		expected.setCapitalsourceTransports(capitalsourceTransports);
+		expected.setHasReceipt(true);
 
-		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,
-				ShowEditMoneyflowResponse.class);
+		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent(
+				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowEditMoneyflowResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 	}
@@ -119,8 +120,8 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 		this.userName = UserTransportBuilder.ADMIN_NAME;
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
-		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,
-				ShowEditMoneyflowResponse.class);
+		final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent(
+				"/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false, ShowEditMoneyflowResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 	}
