@@ -48,7 +48,8 @@ public class EtfFlowTransportMapper implements IMapper<EtfFlow, EtfFlowTransport
 		etfFlow.setPrice(etfFlowTransport.getPrice());
 		if (etfFlowTransport.getTimestamp() != null) {
 			final LocalDateTime time = etfFlowTransport.getTimestamp().toLocalDateTime();
-			etfFlow.setTime(time.withNano(etfFlowTransport.getNanoseconds()));
+			final int nanos = etfFlowTransport.getNanoseconds() != null ? etfFlowTransport.getNanoseconds() : 0;
+			etfFlow.setTime(time.withNano(nanos));
 		}
 
 		return etfFlow;
