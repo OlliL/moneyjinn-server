@@ -1,4 +1,4 @@
-//Copyright (c) 2015-2018 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2021 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -135,12 +135,19 @@ public class ReportController extends AbstractController {
 		final UserID userId = super.getUserId();
 		final ShowReportingFormResponse response = new ShowReportingFormResponse();
 
-		final List<Short> allYears = this.moneyflowService.getAllYears(userId);
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
 		final ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
 				.getClientReportingUnselectedPostingAccountIdsSetting(userId);
 
-		response.setAllYears(allYears);
+		final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
+		final LocalDate minMonthlysettlementwDate = this.monthlySettlementService.getMinSettlementDate(userId);
+
+		if (maxMoneyflowDate != null) {
+			response.setMaxDate(Date.valueOf(maxMoneyflowDate));
+		}
+		if (minMonthlysettlementwDate != null) {
+			response.setMinDate(Date.valueOf(minMonthlysettlementwDate));
+		}
 		response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
 		if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
 			final List<Long> postingAccountIds = setting.getSetting().stream().map(PostingAccountID::getId)
