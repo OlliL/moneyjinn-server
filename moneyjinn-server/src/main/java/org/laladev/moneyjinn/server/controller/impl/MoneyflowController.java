@@ -47,7 +47,6 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowRespon
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
@@ -69,14 +68,12 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
-import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchResultTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
@@ -134,7 +131,6 @@ public class MoneyflowController extends AbstractController {
 		super.registerBeanMapper(new MoneyflowTransportMapper());
 		super.registerBeanMapper(new ValidationItemTransportMapper());
 		super.registerBeanMapper(new MoneyflowSearchParamsTransportMapper());
-		super.registerBeanMapper(new MoneyflowSearchResultTransportMapper());
 		super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
 	}
 
@@ -275,24 +271,21 @@ public class MoneyflowController extends AbstractController {
 			validationResult
 					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_SEARCH_CRITERIA_ENTERED));
 		}
-		if (moneyflowSearchParams == null
-				|| (moneyflowSearchParams.getGroupBy1() == null && moneyflowSearchParams.getGroupBy2() == null)) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_GROUPING_CRITERIA_GIVEN));
-		}
 
 		if (!validationResult.isValid()) {
 			response.setResult(false);
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		} else {
-			final List<MoneyflowSearchResult> moneyflowSearchResults = this.moneyflowService.searchMoneyflows(userId,
-					moneyflowSearchParams);
-			if (moneyflowSearchResults != null && !moneyflowSearchResults.isEmpty()) {
+			final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflows(userId, moneyflowSearchParams);
+			if (moneyflows != null && !moneyflows.isEmpty()) {
 
-				final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports = super.mapList(
-						moneyflowSearchResults, MoneyflowSearchResultTransport.class);
-				response.setMoneyflowSearchResultTransports(moneyflowSearchResultTransports);
+				final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
+						.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
+						.map(mf -> super.map(mf, MoneyflowTransport.class))
+						.collect(Collectors.toCollection(ArrayList::new));
+
+				response.setMoneyflowTransports(moneyflowTransports);
 			}
 		}
 

@@ -33,7 +33,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
-import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 
 public interface IMoneyflowDaoMapper {
@@ -89,6 +88,6 @@ public interface IMoneyflowDaoMapper {
 			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil,
 			@Param("capitalsourceId") Long capitalsourceId);
 
-	public List<MoneyflowSearchResultData> searchMoneyflows(MoneyflowSearchParamsData moneyflowSearchParamsData);
+	public List<MoneyflowData> searchMoneyflows(MoneyflowSearchParamsData moneyflowSearchParamsData);
 
 }

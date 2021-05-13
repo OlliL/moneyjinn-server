@@ -58,7 +58,6 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
-import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
@@ -71,7 +70,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.MoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
-import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchParamsDataMapper;
@@ -549,8 +547,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	public List<MoneyflowSearchResult> searchMoneyflows(final UserID userId,
-			final MoneyflowSearchParams moneyflowSearchParams) {
+	public List<Moneyflow> searchMoneyflows(final UserID userId, final MoneyflowSearchParams moneyflowSearchParams) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(moneyflowSearchParams, "moneyflowSearchParams must not be null!");
 
@@ -564,21 +561,10 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final MoneyflowSearchParamsData moneyflowSearchParamsData = super.map(moneyflowSearchParams,
 				MoneyflowSearchParamsData.class);
 
-		final List<MoneyflowSearchResultData> moneyflowSearchResultDatas = this.moneyflowDao
-				.searchMoneyflows(userId.getId(), moneyflowSearchParamsData);
-		final List<MoneyflowSearchResult> moneyflowSearchResults = super.mapList(moneyflowSearchResultDatas,
-				MoneyflowSearchResult.class);
+		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflows(userId.getId(),
+				moneyflowSearchParamsData);
 
-		for (final MoneyflowSearchResult moneyflowSearchResult : moneyflowSearchResults) {
-			if (moneyflowSearchResult.getContractpartner() != null) {
-				final ContractpartnerID contractpartnerId = moneyflowSearchResult.getContractpartner().getId();
-				final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-						contractpartnerId);
-				moneyflowSearchResult.setContractpartner(contractpartner);
-			}
-		}
-
-		return moneyflowSearchResults;
+		return this.mapMoneyflowDataList(moneyflowDatas);
 	}
 
 	@Override

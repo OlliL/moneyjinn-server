@@ -32,7 +32,6 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchGroupByType;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 
 public class MoneyflowSearchParamsTransportMapper
@@ -76,23 +75,7 @@ public class MoneyflowSearchParamsTransportMapper
 					.setPostingAccountId(new PostingAccountID(moneyflowSearchParamsTransport.getPostingAccountId()));
 		}
 
-		moneyflowSearchParams.setGroupBy1(this.getGroupBy(moneyflowSearchParamsTransport.getGroupBy1()));
-		moneyflowSearchParams.setGroupBy2(this.getGroupBy(moneyflowSearchParamsTransport.getGroupBy2()));
-
 		return moneyflowSearchParams;
-	}
-
-	private MoneyflowSearchGroupByType getGroupBy(final String groupByTransport) {
-		if (groupByTransport == null) {
-			return null;
-		} else if ("year".equals(groupByTransport)) {
-			return MoneyflowSearchGroupByType.YEAR;
-		} else if ("month".equals(groupByTransport)) {
-			return MoneyflowSearchGroupByType.MONTH;
-		} else if ("contractpartner".equals(groupByTransport)) {
-			return MoneyflowSearchGroupByType.CONTRACTPARTNER;
-		}
-		return null;
 	}
 
 	@Override

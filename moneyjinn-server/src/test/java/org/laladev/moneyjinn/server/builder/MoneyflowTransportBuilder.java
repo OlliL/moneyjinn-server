@@ -13,10 +13,21 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 
 	public static final Long MONEYFLOW1_ID = 1l;
 	public static final Long MONEYFLOW2_ID = 2l;
+	public static final Long MONEYFLOW3_ID = 3l;
+	public static final Long MONEYFLOW4_ID = 4l;
+	public static final Long MONEYFLOW5_ID = 5l;
+	public static final Long MONEYFLOW6_ID = 6l;
+	public static final Long MONEYFLOW7_ID = 7l;
+	public static final Long MONEYFLOW8_ID = 8l;
+	public static final Long MONEYFLOW9_ID = 9l;
+	public static final Long MONEYFLOW10_ID = 10l;
+	public static final Long MONEYFLOW11_ID = 11l;
+	public static final Long MONEYFLOW12_ID = 12l;
 	public static final Long MONEYFLOW13_ID = 13l;
 	public static final Long MONEYFLOW14_ID = 14l;
 	public static final Long MONEYFLOW15_ID = 15l;
 	public static final Long MONEYFLOW16_ID = 16l;
+	public static final Long MONEYFLOW17_ID = 17l;
 	public static final Long MONEYFLOW18_ID = 18l;
 	public static final Long MONEYFLOW19_ID = 19l;
 	public static final Long NON_EXISTING_ID = 666l;
@@ -52,6 +63,176 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
 		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
 		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow3() {
+		super.setId(MONEYFLOW3_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-02-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-02-01"));
+		super.setAmount(new BigDecimal("10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow4() {
+		super.setId(MONEYFLOW4_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-03-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-03-01"));
+		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow5() {
+		super.setId(MONEYFLOW5_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-04-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-04-01"));
+		super.setAmount(new BigDecimal("10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow6() {
+		super.setId(MONEYFLOW6_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-05-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-05-01"));
+		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow7() {
+		super.setId(MONEYFLOW7_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-06-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-06-01"));
+		super.setAmount(new BigDecimal("10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow8() {
+		super.setId(MONEYFLOW8_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-07-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-07-01"));
+		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow9() {
+		super.setId(MONEYFLOW9_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-08-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-08-01"));
+		super.setAmount(new BigDecimal("10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow10() {
+		super.setId(MONEYFLOW10_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-09-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-09-01"));
+		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow11() {
+		super.setId(MONEYFLOW11_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-10-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-10-01"));
+		super.setAmount(new BigDecimal("10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow12() {
+		super.setId(MONEYFLOW12_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2009-11-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2009-11-01"));
+		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
 		return this;
 	}
 
@@ -112,6 +293,23 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
 		super.setBookingdate(DateUtil.getGmtDate("2010-03-01"));
 		super.setInvoicedate(DateUtil.getGmtDate("2010-03-01"));
 		super.setAmount(new BigDecimal("-10.00"));
+		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		super.setComment(MONEYFLOW_GENERATED_COMMENT);
+		super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+		super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+		super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
+		super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+		return this;
+	}
+
+	public MoneyflowTransportBuilder forMoneyflow17() {
+		super.setId(MONEYFLOW17_ID);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setPrivat((short) 1);
+		super.setBookingdate(DateUtil.getGmtDate("2010-04-01"));
+		super.setInvoicedate(DateUtil.getGmtDate("2010-04-01"));
+		super.setAmount(new BigDecimal("10.00"));
 		super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
 		super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		super.setComment(MONEYFLOW_GENERATED_COMMENT);

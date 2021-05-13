@@ -35,7 +35,6 @@ import javax.inject.Named;
 
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
-import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper;
 
@@ -132,7 +131,7 @@ public class MoneyflowDao {
 		return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil, capitalsourceId);
 	}
 
-	public List<MoneyflowSearchResultData> searchMoneyflows(final Long userId,
+	public List<MoneyflowData> searchMoneyflows(final Long userId,
 			final MoneyflowSearchParamsData moneyflowSearchParamsData) {
 
 		if (moneyflowSearchParamsData.getSearchString() != null && !moneyflowSearchParamsData.isFeatureEqual()

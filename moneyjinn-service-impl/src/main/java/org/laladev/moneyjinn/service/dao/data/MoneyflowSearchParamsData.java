@@ -39,8 +39,6 @@ public class MoneyflowSearchParamsData {
 	private boolean featureOnlyMinusAmounts;
 	private Long contractpartnerId;
 	private Long postingAccountId;
-	private String groupBy1;
-	private String groupBy2;
 
 	public final Long getUserId() {
 		return this.userId;
@@ -120,22 +118,6 @@ public class MoneyflowSearchParamsData {
 
 	public final void setPostingAccountId(final Long postingAccountId) {
 		this.postingAccountId = postingAccountId;
-	}
-
-	public final String getGroupBy1() {
-		return this.groupBy1;
-	}
-
-	public final void setGroupBy1(final String groupBy1) {
-		this.groupBy1 = groupBy1;
-	}
-
-	public final String getGroupBy2() {
-		return this.groupBy2;
-	}
-
-	public final void setGroupBy2(final String groupBy2) {
-		this.groupBy2 = groupBy2;
 	}
 
 }

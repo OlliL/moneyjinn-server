@@ -41,8 +41,6 @@ public class MoneyflowSearchParams {
 	private boolean featureOnlyMinusAmounts;
 	private ContractpartnerID contractpartnerId;
 	private PostingAccountID postingAccountId;
-	private MoneyflowSearchGroupByType groupBy1;
-	private MoneyflowSearchGroupByType groupBy2;
 
 	public final LocalDate getStartDate() {
 		return this.startDate;
@@ -116,22 +114,6 @@ public class MoneyflowSearchParams {
 		this.postingAccountId = postingAccountId;
 	}
 
-	public final MoneyflowSearchGroupByType getGroupBy1() {
-		return this.groupBy1;
-	}
-
-	public final void setGroupBy1(final MoneyflowSearchGroupByType groupBy1) {
-		this.groupBy1 = groupBy1;
-	}
-
-	public final MoneyflowSearchGroupByType getGroupBy2() {
-		return this.groupBy2;
-	}
-
-	public final void setGroupBy2(final MoneyflowSearchGroupByType groupBy2) {
-		this.groupBy2 = groupBy2;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -142,8 +124,6 @@ public class MoneyflowSearchParams {
 		result = prime * result + (this.featureEqual ? 1231 : 1237);
 		result = prime * result + (this.featureOnlyMinusAmounts ? 1231 : 1237);
 		result = prime * result + (this.featureRegexp ? 1231 : 1237);
-		result = prime * result + ((this.groupBy1 == null) ? 0 : this.groupBy1.hashCode());
-		result = prime * result + ((this.groupBy2 == null) ? 0 : this.groupBy2.hashCode());
 		result = prime * result + ((this.postingAccountId == null) ? 0 : this.postingAccountId.hashCode());
 		result = prime * result + ((this.searchString == null) ? 0 : this.searchString.hashCode());
 		result = prime * result + ((this.startDate == null) ? 0 : this.startDate.hashCode());
@@ -186,12 +166,6 @@ public class MoneyflowSearchParams {
 			return false;
 		}
 		if (this.featureRegexp != other.featureRegexp) {
-			return false;
-		}
-		if (this.groupBy1 != other.groupBy1) {
-			return false;
-		}
-		if (this.groupBy2 != other.groupBy2) {
 			return false;
 		}
 		if (this.postingAccountId == null) {
@@ -239,10 +213,6 @@ public class MoneyflowSearchParams {
 		builder.append(this.contractpartnerId);
 		builder.append(", postingAccountId=");
 		builder.append(this.postingAccountId);
-		builder.append(", groupBy1=");
-		builder.append(this.groupBy1);
-		builder.append(", groupBy2=");
-		builder.append(this.groupBy2);
 		builder.append("]");
 		return builder.toString();
 	}

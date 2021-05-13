@@ -40,7 +40,6 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
-import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
@@ -282,7 +281,7 @@ public interface IMoneyflowService {
 	 * @param moneyflowSearchParams
 	 * @return
 	 */
-	List<MoneyflowSearchResult> searchMoneyflows(UserID userId, MoneyflowSearchParams moneyflowSearchParams);
+	List<Moneyflow> searchMoneyflows(UserID userId, MoneyflowSearchParams moneyflowSearchParams);
 
 	List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(UserID userId, BigDecimal amount, LocalDate dateFrom,
 			LocalDate dateTil);

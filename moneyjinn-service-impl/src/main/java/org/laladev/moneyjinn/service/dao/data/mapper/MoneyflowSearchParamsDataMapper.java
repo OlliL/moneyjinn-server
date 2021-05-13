@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchGroupByType;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 
@@ -51,9 +50,6 @@ public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchP
 		moneyflowSearchParamsData.setFeatureOnlyMinusAmounts(moneyflowSearchParams.isFeatureOnlyMinusAmounts());
 		moneyflowSearchParamsData.setFeatureRegexp(moneyflowSearchParams.isFeatureRegexp());
 
-		moneyflowSearchParamsData.setGroupBy1(this.getGroupBy(moneyflowSearchParams.getGroupBy1()));
-		moneyflowSearchParamsData.setGroupBy2(this.getGroupBy(moneyflowSearchParams.getGroupBy2()));
-
 		if (moneyflowSearchParams.getContractpartnerId() != null) {
 			moneyflowSearchParamsData.setContractpartnerId(moneyflowSearchParams.getContractpartnerId().getId());
 		}
@@ -62,21 +58,5 @@ public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchP
 		}
 
 		return moneyflowSearchParamsData;
-	}
-
-	private String getGroupBy(final MoneyflowSearchGroupByType groupBy) {
-		if (groupBy == null) {
-			return null;
-		}
-		switch (groupBy) {
-		case CONTRACTPARTNER:
-			return "contractpartnerid";
-		case YEAR:
-			return "year";
-		case MONTH:
-			return "month";
-		default:
-			return null;
-		}
 	}
 }
