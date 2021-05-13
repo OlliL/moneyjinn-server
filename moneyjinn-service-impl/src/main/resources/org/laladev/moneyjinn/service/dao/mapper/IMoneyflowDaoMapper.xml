@@ -331,7 +331,7 @@
 		        mmf.mac_id_creator     = #{userId}
 		       )
 		       <if test="featureOnlyMinusAmounts">
-		           AND mmf.amount <![CDATA[ < ]]> 0
+		           AND IFNULL(mse.amount, mmf.amount) <![CDATA[ < ]]> 0
 		       </if>
 		       <if test="contractpartnerId != null">
 		           AND mmf.mcp_contractpartnerid = #{contractpartnerId}
