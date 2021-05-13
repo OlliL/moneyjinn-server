@@ -107,30 +107,34 @@ public class EtfController extends AbstractController {
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
 			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
+			if (etfFlows != null && !etfFlows.isEmpty()) {
+				final EtfSummaryTransport transport = new EtfSummaryTransport();
+				transport.setIsin(etf.getId().getId());
+				transport.setName(etf.getName());
+				transport.setChartUrl(etf.getChartUrl());
 
-			final EtfSummaryTransport transport = new EtfSummaryTransport();
-			transport.setIsin(etf.getId().getId());
-			transport.setName(etf.getName());
-			transport.setChartUrl(etf.getChartUrl());
+				if (etfValue != null) {
+					transport.setBuyPrice(etfValue.getBuyPrice());
+					transport.setSellPrice(etfValue.getSellPrice());
+					transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
+				}
+				BigDecimal amount = BigDecimal.ZERO;
+				BigDecimal spentValue = BigDecimal.ZERO;
+				for (final EtfFlow flow : etfFlows) {
+					amount = amount.add(flow.getAmount());
+					spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
+				}
+				transport.setAmount(amount);
+				transport.setSpentValue(spentValue);
 
-			if (etfValue != null) {
-				transport.setBuyPrice(etfValue.getBuyPrice());
-				transport.setSellPrice(etfValue.getSellPrice());
-				transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
+				transports.add(transport);
 			}
-			BigDecimal amount = BigDecimal.ZERO;
-			BigDecimal spentValue = BigDecimal.ZERO;
-			for (final EtfFlow flow : etfFlows) {
-				amount = amount.add(flow.getAmount());
-				spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
-			}
-			transport.setAmount(amount);
-			transport.setSpentValue(spentValue);
-
-			transports.add(transport);
 		}
 
-		response.setEtfSummaryTransports(transports);
+		if (!transports.isEmpty()) {
+			response.setEtfSummaryTransports(transports);
+		}
+
 		return response;
 	}
 
