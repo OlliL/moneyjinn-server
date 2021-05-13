@@ -28,30 +28,29 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import java.util.List;
 
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchResultTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
+
 @XmlRootElement(name = "searchMoneyflowsResponse")
 public class SearchMoneyflowsResponse extends ValidationResponse {
-	@XmlElement(name = "moneyflowSearchResultTransport")
-	private List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports;
+	@XmlElement(name = "moneyflowTransport")
+	private List<MoneyflowTransport> moneyflowTransports;
 	@XmlElement(name = "contractpartnerTransport")
 	private List<ContractpartnerTransport> contractpartnerTransports;
 	@XmlElement(name = "postingAccountTransport")
 	private List<PostingAccountTransport> postingAccountTransports;
 
-	public final List<MoneyflowSearchResultTransport> getMoneyflowSearchResultTransports() {
-		return this.moneyflowSearchResultTransports;
+	public final List<MoneyflowTransport> getMoneyflowTransports() {
+		return this.moneyflowTransports;
 	}
 
-	public final void setMoneyflowSearchResultTransports(
-			final List<MoneyflowSearchResultTransport> moneyflowSearchResultTransports) {
-		this.moneyflowSearchResultTransports = moneyflowSearchResultTransports;
+	public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
+		this.moneyflowTransports = moneyflowTransports;
 	}
 
 	public final List<ContractpartnerTransport> getContractpartnerTransports() {
@@ -76,8 +75,7 @@ public class SearchMoneyflowsResponse extends ValidationResponse {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((this.contractpartnerTransports == null) ? 0 : this.contractpartnerTransports.hashCode());
-		result = prime * result + ((this.moneyflowSearchResultTransports == null) ? 0
-				: this.moneyflowSearchResultTransports.hashCode());
+		result = prime * result + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
 		result = prime * result
 				+ ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
 		return result;
@@ -102,11 +100,11 @@ public class SearchMoneyflowsResponse extends ValidationResponse {
 		} else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
 			return false;
 		}
-		if (this.moneyflowSearchResultTransports == null) {
-			if (other.moneyflowSearchResultTransports != null) {
+		if (this.moneyflowTransports == null) {
+			if (other.moneyflowTransports != null) {
 				return false;
 			}
-		} else if (!this.moneyflowSearchResultTransports.equals(other.moneyflowSearchResultTransports)) {
+		} else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
 			return false;
 		}
 		if (this.postingAccountTransports == null) {
@@ -122,8 +120,8 @@ public class SearchMoneyflowsResponse extends ValidationResponse {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("SearchMoneyflowResponse [moneyflowSearchResultTransports=");
-		builder.append(this.moneyflowSearchResultTransports);
+		builder.append("SearchMoneyflowsResponse [moneyflowTransports=");
+		builder.append(this.moneyflowTransports);
 		builder.append(", contractpartnerTransports=");
 		builder.append(this.contractpartnerTransports);
 		builder.append(", postingAccountTransports=");

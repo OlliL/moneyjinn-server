@@ -38,9 +38,6 @@ public class MoneyflowSearchParamsTransport {
 	private Short featureOnlyMinusAmounts;
 	private Long contractpartnerId;
 	private Long postingAccountId;
-	private String groupBy1;
-	private String groupBy2;
-	private String orderBy;
 
 	public final Date getStartDate() {
 		return this.startDate;
@@ -114,30 +111,6 @@ public class MoneyflowSearchParamsTransport {
 		this.postingAccountId = postingAccountId;
 	}
 
-	public final String getGroupBy1() {
-		return this.groupBy1;
-	}
-
-	public final void setGroupBy1(final String groupBy1) {
-		this.groupBy1 = groupBy1;
-	}
-
-	public final String getGroupBy2() {
-		return this.groupBy2;
-	}
-
-	public final void setGroupBy2(final String groupBy2) {
-		this.groupBy2 = groupBy2;
-	}
-
-	public final String getOrderBy() {
-		return this.orderBy;
-	}
-
-	public final void setOrderBy(final String orderBy) {
-		this.orderBy = orderBy;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -149,9 +122,6 @@ public class MoneyflowSearchParamsTransport {
 		result = prime * result
 				+ ((this.featureOnlyMinusAmounts == null) ? 0 : this.featureOnlyMinusAmounts.hashCode());
 		result = prime * result + ((this.featureRegexp == null) ? 0 : this.featureRegexp.hashCode());
-		result = prime * result + ((this.groupBy1 == null) ? 0 : this.groupBy1.hashCode());
-		result = prime * result + ((this.groupBy2 == null) ? 0 : this.groupBy2.hashCode());
-		result = prime * result + ((this.orderBy == null) ? 0 : this.orderBy.hashCode());
 		result = prime * result + ((this.postingAccountId == null) ? 0 : this.postingAccountId.hashCode());
 		result = prime * result + ((this.searchString == null) ? 0 : this.searchString.hashCode());
 		result = prime * result + ((this.startDate == null) ? 0 : this.startDate.hashCode());
@@ -212,27 +182,6 @@ public class MoneyflowSearchParamsTransport {
 		} else if (!this.featureRegexp.equals(other.featureRegexp)) {
 			return false;
 		}
-		if (this.groupBy1 == null) {
-			if (other.groupBy1 != null) {
-				return false;
-			}
-		} else if (!this.groupBy1.equals(other.groupBy1)) {
-			return false;
-		}
-		if (this.groupBy2 == null) {
-			if (other.groupBy2 != null) {
-				return false;
-			}
-		} else if (!this.groupBy2.equals(other.groupBy2)) {
-			return false;
-		}
-		if (this.orderBy == null) {
-			if (other.orderBy != null) {
-				return false;
-			}
-		} else if (!this.orderBy.equals(other.orderBy)) {
-			return false;
-		}
 		if (this.postingAccountId == null) {
 			if (other.postingAccountId != null) {
 				return false;
@@ -278,12 +227,6 @@ public class MoneyflowSearchParamsTransport {
 		builder.append(this.contractpartnerId);
 		builder.append(", postingAccountId=");
 		builder.append(this.postingAccountId);
-		builder.append(", groupBy1=");
-		builder.append(this.groupBy1);
-		builder.append(", groupBy2=");
-		builder.append(this.groupBy2);
-		builder.append(", orderBy=");
-		builder.append(this.orderBy);
 		builder.append("]");
 		return builder.toString();
 	}
