@@ -30,15 +30,14 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.AbstractCreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowCreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowDeletePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowEditPreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
@@ -146,8 +145,7 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
-			@RequestBody final CreatePreDefMoneyflowRequest request) {
+	public ValidationResponse createPreDefMoneyflow(@RequestBody final CreatePreDefMoneyflowRequest request) {
 		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
 		final UserID userId = super.getUserId();
 
@@ -157,8 +155,7 @@ public class PreDefMoneyflowController extends AbstractController {
 		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
 
 		if (!validationResult.isValid()) {
-			final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
-			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
+			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
@@ -170,8 +167,7 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
 	@RequiresAuthorization
-	public UpdatePreDefMoneyflowResponse updatePreDefMoneyflow(
-			@RequestBody final UpdatePreDefMoneyflowRequest request) {
+	public ValidationResponse updatePreDefMoneyflow(@RequestBody final UpdatePreDefMoneyflowRequest request) {
 		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
 		final UserID userId = super.getUserId();
 		preDefMoneyflow.setUser(new User(userId));
@@ -181,8 +177,7 @@ public class PreDefMoneyflowController extends AbstractController {
 		if (validationResult.isValid()) {
 			this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
 		} else {
-			final UpdatePreDefMoneyflowResponse response = new UpdatePreDefMoneyflowResponse();
-			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
+			final ValidationResponse response = new ValidationResponse();
 			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
