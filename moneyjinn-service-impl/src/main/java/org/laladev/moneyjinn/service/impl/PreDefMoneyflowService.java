@@ -211,9 +211,13 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
 		}
 
-		if (preDefMoneyflow.getAmount() == null || preDefMoneyflow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+		final BigDecimal amount = preDefMoneyflow.getAmount();
+		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
+		} else if (amount.precision() - amount.scale() > 6) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.AMOUNT_TO_BIG));
 		}
 
 		if (preDefMoneyflow.getPostingAccount() == null) {

@@ -242,9 +242,13 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
 		}
 
-		if (moneyflow.getAmount() == null || moneyflow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+		final BigDecimal amount = moneyflow.getAmount();
+		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
 			validationResult
 					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
+		} else if (amount.precision() - amount.scale() > 6) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_TO_BIG));
 		}
 
 		if (moneyflow.getPostingAccount() == null) {

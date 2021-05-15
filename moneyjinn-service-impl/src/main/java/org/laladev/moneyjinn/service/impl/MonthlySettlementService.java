@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -93,6 +94,13 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
 		}
+
+		final BigDecimal amount = monthlySettlement.getAmount();
+		if ((amount.signum() == 0 ? 1 : amount.precision() - amount.scale()) > 6) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.AMOUNT_TO_BIG));
+		}
+
 		return validationResult;
 	}
 

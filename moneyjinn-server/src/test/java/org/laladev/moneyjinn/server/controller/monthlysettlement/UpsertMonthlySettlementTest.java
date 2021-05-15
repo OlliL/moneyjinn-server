@@ -119,6 +119,15 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_AmountToBig_Error() throws Exception {
+		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
+				.forMonthlySettlement1().build();
+		monthlySettlementTransport.setAmount(new BigDecimal(9999999));
+
+		this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.AMOUNT_TO_BIG);
+	}
+
+	@Test
 	public void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 

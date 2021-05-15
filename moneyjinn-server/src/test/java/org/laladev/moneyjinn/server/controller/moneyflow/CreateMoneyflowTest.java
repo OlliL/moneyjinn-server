@@ -161,6 +161,14 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_AmountToBig_Error() throws Exception {
+		final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
+		transport.setAmount(new BigDecimal(9999999));
+
+		this.testError(transport, ErrorCode.AMOUNT_TO_BIG);
+	}
+
+	@Test
 	public void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);

@@ -128,6 +128,15 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
 	}
 
 	@Test
+	public void test_AmountToBig_Error() throws Exception {
+		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+				.build();
+		transport.setAmount(new BigDecimal(9999999));
+
+		this.testError(transport, ErrorCode.AMOUNT_TO_BIG);
+	}
+
+	@Test
 	public void test_noLongerValidCapitalsource_Error() throws Exception {
 		final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
 				.build();
