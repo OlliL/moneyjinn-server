@@ -48,12 +48,14 @@ import org.laladev.moneyjinn.core.rest.model.etf.ShowCreateEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ShowDeleteEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ShowEditEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.UpdateEtfFlowRequest;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
@@ -64,6 +66,7 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
+import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -147,11 +150,18 @@ public class EtfController extends AbstractController {
 		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
 
 		final List<EtfFlowTransport> transports = new ArrayList<>();
+		final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
+
 		for (final Etf etf : etfs) {
 			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDateTime.now());
 			transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
+
+			final List<EtfFlow> etfEffectiveFlows = this.etfService.calculateEffectiveEtfFlows(etfFlows);
+			Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
+			effectiveTransports.addAll(super.mapList(etfEffectiveFlows, EtfEffectiveFlowTransport.class));
 		}
 		response.setEtfFlowTransports(transports);
+		response.setEtfEffectiveFlowTransports(effectiveTransports);
 
 		this.settingService.getClientCalcEtfSaleAskPrice(this.getUserId())
 				.ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
@@ -189,9 +199,9 @@ public class EtfController extends AbstractController {
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
 
 		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfIsin, LocalDateTime.now());
-		Collections.reverse(etfFlows); // reverse order - FIFO!
+		final List<EtfFlow> effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(etfFlows);
 
-		for (final EtfFlow etfFlow : etfFlows) {
+		for (final EtfFlow etfFlow : effectiveEtfFlows) {
 			BigDecimal useablePieces = etfFlow.getAmount();
 			if (useablePieces.compareTo(openPieces) == 1) {
 				useablePieces = openPieces;
@@ -315,6 +325,7 @@ public class EtfController extends AbstractController {
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new EtfFlowTransportMapper());
+		super.registerBeanMapper(new EtfEffectiveFlowTransportMapper());
 		super.registerBeanMapper(new EtfTransportMapper());
 		super.registerBeanMapper(new ValidationItemTransportMapper());
 

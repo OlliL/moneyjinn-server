@@ -55,4 +55,6 @@ public interface IEtfService {
 
 	void deleteEtfFlow(EtfFlowID etfFlowId);
 
+	List<EtfFlow> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
+
 }

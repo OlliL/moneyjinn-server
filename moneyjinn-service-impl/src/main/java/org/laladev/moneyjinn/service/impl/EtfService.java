@@ -29,7 +29,11 @@ package org.laladev.moneyjinn.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,6 +41,7 @@ import javax.inject.Named;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
@@ -160,5 +165,33 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(etfFlowId, "etfFlowId must not be null!");
 
 		this.etfDao.deleteEtfFlow(etfFlowId.getId());
+	}
+
+	@Override
+	public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
+		Collections.sort(etfFlows, new EtfFlowComparator());
+		final List<EtfFlow> etfSalesFlows = etfFlows.stream()
+				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) == -1)
+				.collect(Collectors.toCollection(ArrayList::new));
+		final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		for (final EtfFlow etfSalesFlow : etfSalesFlows) {
+			BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
+
+			final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();
+			while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
+				final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
+				if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
+					etfBuyFlowsIterator.remove();
+					salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
+				} else {
+					final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
+					etfBuyFlow.setAmount(newAmount);
+					salesAmount = BigDecimal.ZERO;
+				}
+			}
+		}
+		return etfBuyFlows;
 	}
 }
