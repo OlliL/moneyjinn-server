@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 
@@ -42,6 +43,8 @@ public class ListEtfFlowsResponse extends AbstractResponse {
 	private List<EtfTransport> etfTransports;
 	@XmlElement(name = "etfFlowTransport")
 	private List<EtfFlowTransport> etfFlowTransports;
+	@XmlElement(name = "etfEffectiveFlowTransport")
+	private List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports;
 	private String calcEtfSaleIsin;
 	private BigDecimal calcEtfSalePieces;
 	private BigDecimal calcEtfBidPrice;
@@ -58,6 +61,14 @@ public class ListEtfFlowsResponse extends AbstractResponse {
 
 	public final List<EtfFlowTransport> getEtfFlowTransports() {
 		return this.etfFlowTransports;
+	}
+
+	public final List<EtfEffectiveFlowTransport> getEtfEffectiveFlowTransports() {
+		return this.etfEffectiveFlowTransports;
+	}
+
+	public final void setEtfEffectiveFlowTransports(final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports) {
+		this.etfEffectiveFlowTransports = etfEffectiveFlowTransports;
 	}
 
 	public final void setEtfFlowTransports(final List<EtfFlowTransport> etfFlowTransports) {
@@ -114,6 +125,8 @@ public class ListEtfFlowsResponse extends AbstractResponse {
 		result = prime * result + ((this.calcEtfSalePieces == null) ? 0 : this.calcEtfSalePieces.hashCode());
 		result = prime * result
 				+ ((this.calcEtfTransactionCosts == null) ? 0 : this.calcEtfTransactionCosts.hashCode());
+		result = prime * result
+				+ ((this.etfEffectiveFlowTransports == null) ? 0 : this.etfEffectiveFlowTransports.hashCode());
 		result = prime * result + ((this.etfFlowTransports == null) ? 0 : this.etfFlowTransports.hashCode());
 		result = prime * result + ((this.etfTransports == null) ? 0 : this.etfTransports.hashCode());
 		return result;
@@ -166,6 +179,13 @@ public class ListEtfFlowsResponse extends AbstractResponse {
 		} else if (!this.calcEtfTransactionCosts.equals(other.calcEtfTransactionCosts)) {
 			return false;
 		}
+		if (this.etfEffectiveFlowTransports == null) {
+			if (other.etfEffectiveFlowTransports != null) {
+				return false;
+			}
+		} else if (!this.etfEffectiveFlowTransports.equals(other.etfEffectiveFlowTransports)) {
+			return false;
+		}
 		if (this.etfFlowTransports == null) {
 			if (other.etfFlowTransports != null) {
 				return false;
@@ -190,6 +210,8 @@ public class ListEtfFlowsResponse extends AbstractResponse {
 		builder.append(this.etfTransports);
 		builder.append(", etfFlowTransports=");
 		builder.append(this.etfFlowTransports);
+		builder.append(", etfEffectiveFlowTransports=");
+		builder.append(this.etfEffectiveFlowTransports);
 		builder.append(", calcEtfSaleIsin=");
 		builder.append(this.calcEtfSaleIsin);
 		builder.append(", calcEtfSalePieces=");
