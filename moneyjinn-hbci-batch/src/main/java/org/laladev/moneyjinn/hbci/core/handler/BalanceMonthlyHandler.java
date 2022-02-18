@@ -88,24 +88,42 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 			// Now generate BalanceMonthly entries for each AccountMovement
 			final Iterator<AccountMovement> movementsIterator = movementsUntilToday.iterator();
-			AccountMovement accountMovementPrev = movementsIterator.next();
-			YearMonth yearMonthPrev = YearMonth.from(accountMovementPrev.getBalanceDate());
+			if (movementsIterator.hasNext()) {
+				AccountMovement accountMovementPrev = movementsIterator.next();
+				YearMonth yearMonthPrev = YearMonth.from(accountMovementPrev.getBalanceDate());
 
-			while (movementsIterator.hasNext()) {
-				final AccountMovement accountMovement = movementsIterator.next();
-				final YearMonth yearMonth = YearMonth.from(accountMovement.getBalanceDate());
+				while (movementsIterator.hasNext()) {
+					final AccountMovement accountMovement = movementsIterator.next();
+					final YearMonth yearMonth = YearMonth.from(accountMovement.getBalanceDate());
+
+					/*
+					 * The month of the current movement is different from the month of the previous
+					 * movement so we can be sure that the previous movement was the last one for
+					 * that month and we can save the "end of month" balance. It's also possible,
+					 * that the current movement is not in the next month of the previous movement
+					 * but farer away. In this case, we can assume that the "end of month" balance
+					 * of the previous month is the same as for all the following month until we
+					 * reach the month of the current movement. Example: the previous movement was
+					 * from 2015-01-21. The current movement is from 2015-03-03 -> we save the
+					 * "end of month" balance for January and February with the same value
+					 */
+					while (yearMonth.isAfter(yearMonthPrev)) {
+						final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
+								accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
+						balanceMonthlies.add(bm);
+
+						yearMonthPrev = yearMonthPrev.plusMonths(1L);
+					}
+
+					accountMovementPrev = accountMovement;
+					yearMonthPrev = yearMonth;
+				}
 
 				/*
-				 * The month of the current movement is different from the month of the previous
-				 * movement so we can be sure that the previous movement was the last one for that
-				 * month and we can save the "end of month" balance. It's also possible, that the
-				 * current movement is not in the next month of the previous movement but farer
-				 * away. In this case, we can assume that the "end of month" balance of the previous
-				 * month is the same as for all the following month until we reach the month of the
-				 * current movement. Example: the previous movement was from 2015-01-21. The current
-				 * movement is from 2015-03-03 -> we save the "end of month" balance for January and
-				 * February with the same value
+				 * If the last processed movement is not from the current month, we can assume that
+				 * for the month of the last movement, the end of month balance can be written.
 				 */
+				final YearMonth yearMonth = YearMonth.now();
 				while (yearMonth.isAfter(yearMonthPrev)) {
 					final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
 							accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
@@ -113,22 +131,6 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 					yearMonthPrev = yearMonthPrev.plusMonths(1L);
 				}
-
-				accountMovementPrev = accountMovement;
-				yearMonthPrev = yearMonth;
-			}
-
-			/*
-			 * If the last processed movement is not from the current month, we can assume that for
-			 * the month of the last movement, the end of month balance can be written.
-			 */
-			final YearMonth yearMonth = YearMonth.now();
-			while (yearMonth.isAfter(yearMonthPrev)) {
-				final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
-						accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
-				balanceMonthlies.add(bm);
-
-				yearMonthPrev = yearMonthPrev.plusMonths(1L);
 			}
 		} else if (balanceDaily != null) {
 			final LocalDateTime yesterdayEndOfDay = LocalDate.now().atStartOfDay().minusNanos(1L);
