@@ -109,7 +109,8 @@ public class EtfController extends AbstractController {
 		final List<Etf> etfs = this.etfService.getAllEtf();
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
-			final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
+			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
+			final List<EtfFlow> etfFlows = this.etfService.calculateEffectiveEtfFlows(allEtfFlows);
 			if (etfFlows != null && !etfFlows.isEmpty()) {
 				final EtfSummaryTransport transport = new EtfSummaryTransport();
 				transport.setIsin(etf.getId().getId());

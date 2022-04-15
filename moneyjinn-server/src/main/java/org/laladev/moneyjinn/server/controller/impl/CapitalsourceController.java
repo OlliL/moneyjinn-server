@@ -83,7 +83,7 @@ public class CapitalsourceController extends AbstractController {
 		this.registerBeanMapper(new ValidationItemTransportMapper());
 	}
 
-	@RequestMapping(value = "showCapitalsourceList//currentlyValid/", method = { RequestMethod.GET })
+	@RequestMapping(value = "showCapitalsourceList/currentlyValid", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowCapitalsourceListResponse showCapitalsourceList() {
 		final UserID userId = super.getUserId();
@@ -93,7 +93,7 @@ public class CapitalsourceController extends AbstractController {
 
 	}
 
-	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
+	@RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowCapitalsourceListResponse showCapitalsourceList(
 			@PathVariable(value = "restriction") final String restriction) {
@@ -104,7 +104,7 @@ public class CapitalsourceController extends AbstractController {
 
 	}
 
-	@RequestMapping(value = "showCapitalsourceList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
+	@RequestMapping(value = "showCapitalsourceList/currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowCapitalsourceListResponse showCapitalsourceList(
 			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {

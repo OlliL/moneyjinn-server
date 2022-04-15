@@ -94,7 +94,7 @@ public class ContractpartnerController extends AbstractController {
 		this.registerBeanMapper(new ValidationItemTransportMapper());
 	}
 
-	@RequestMapping(value = "showContractpartnerList//currentlyValid/", method = { RequestMethod.GET })
+	@RequestMapping(value = "showContractpartnerList/currentlyValid", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowContractpartnerListResponse showContractpartnerList() {
 		final UserID userId = super.getUserId();
@@ -104,7 +104,7 @@ public class ContractpartnerController extends AbstractController {
 
 	}
 
-	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/", method = { RequestMethod.GET })
+	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowContractpartnerListResponse showContractpartnerList(
 			@PathVariable(value = "restriction") final String restriction) {
@@ -115,7 +115,7 @@ public class ContractpartnerController extends AbstractController {
 
 	}
 
-	@RequestMapping(value = "showContractpartnerList//currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
+	@RequestMapping(value = "showContractpartnerList/currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowContractpartnerListResponse showContractpartnerList(
 			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {

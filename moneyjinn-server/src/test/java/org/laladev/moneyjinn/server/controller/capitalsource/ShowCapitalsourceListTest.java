@@ -113,7 +113,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
-		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 
@@ -124,7 +124,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
-		actual = super.callUsecaseWithoutContent("/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 	}
@@ -155,7 +155,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
-		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/all/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 
@@ -166,7 +166,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
-		actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/all/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 
@@ -187,7 +187,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the new default 0 must be taken
-		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/S/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 
@@ -203,7 +203,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 
 		// now the default 1 must be taken
-		actual = super.callUsecaseWithoutContent("/S/currentlyValid/", this.method, false,
+		actual = super.callUsecaseWithoutContent("/S/currentlyValid", this.method, false,
 				ShowCapitalsourceListResponse.class);
 		Assertions.assertEquals(expected, actual);
 
@@ -291,7 +291,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	public void test_AuthorizationRequired1_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/", this.method, false,
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/currentlyValid", this.method, false,
 				ErrorResponse.class);
 		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
@@ -300,7 +300,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	public void test_AuthorizationRequired2_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/", this.method, false,
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid", this.method, false,
 				ErrorResponse.class);
 		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
@@ -309,7 +309,7 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
 	public void test_AuthorizationRequired3_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("//currentlyValid/0", this.method, false,
+		final ErrorResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method, false,
 				ErrorResponse.class);
 		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
