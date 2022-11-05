@@ -42,20 +42,20 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
   ,maf_id
   ,monthlysettlementid
   ,mcs_capitalsourceid
-  ,month
-  ,year
+  ,`month`
+  ,`year`
   ,amount
   ) AS
       SELECT mms.mac_id_creator
             ,maf.id
             ,mms.monthlysettlementid
             ,mms.mcs_capitalsourceid
-            ,mms.month
-            ,mms.year
+            ,mms.`month`
+            ,mms.`year`
             ,mms.amount
         FROM monthlysettlements mms
             ,access_flattened   maf
-       WHERE TIMESTAMPADD(DAY,-1, TIMESTAMPADD(MONTH,1, CONCAT(year,'-',LPAD(month,2,'0'),'-01')))
+       WHERE TIMESTAMPADD(DAY,-1, TIMESTAMPADD(MONTH,1, CONCAT(`year`,'-',LPAD(`month`,2,'0'),'-01')))
              /*LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) */
                          BETWEEN maf.validfrom and maf.validtil
          AND mms.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);

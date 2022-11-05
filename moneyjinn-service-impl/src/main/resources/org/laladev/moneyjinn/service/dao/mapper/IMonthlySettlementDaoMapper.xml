@@ -5,33 +5,33 @@
     	<sql id="monthlySettlementsColumns">
 		 monthlysettlementid	AS id
 		,mac_id_creator		AS macIdCreator
-		,year
-		,month
+		,`year`
+		,`month`
 		,amount
 		,mcs_capitalsourceid	AS mcsCapitalsourceId
 	</sql>
     
     	<select id="getAllYears" resultType="java.lang.Short">
-		SELECT DISTINCT year
+		SELECT DISTINCT `year`
 		  FROM vw_monthlysettlements
 		 WHERE maf_id = #{userId}
-		 ORDER BY year ASC
+		 ORDER BY `year` ASC
 	</select>
 	
     	<select id="getAllMonth" resultType="java.lang.Short">
-		SELECT DISTINCT month
+		SELECT DISTINCT `month`
 		  FROM vw_monthlysettlements
 		 WHERE maf_id = #{userId}
-		   AND year   = #{year}
-		 ORDER BY month ASC
+		   AND `year` = #{year}
+		 ORDER BY `month` ASC
 	</select>
     			
      	<select id="getAllMonthlySettlementsByYearMonth"
 		resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
 		SELECT <include refid="monthlySettlementsColumns" />
 		  FROM vw_monthlysettlements
-		 WHERE month  = #{month}
-		   AND year   = #{year}
+		 WHERE `month`= #{month}
+		   AND `year` = #{year}
 		   AND maf_id = #{userId}
 		 ORDER BY CASE WHEN mac_id_creator = #{userId} THEN 1 ELSE 2 END
 		      ,mcs_capitalsourceid
@@ -41,38 +41,38 @@
 		SELECT 1
 		  FROM monthlysettlements
 		 WHERE mac_id_creator = #{userId}
-		   AND year           = #{year}
-		   AND month          = #{month}
+		   AND `year`         = #{year}
+		   AND `month`        = #{month}
 		 LIMIT 1
 	</select>
 
 	<select id="getMaxSettlementDate" resultType="java.time.LocalDate">
 		SELECT CONCAT(
 		              CONCAT(
-		                     CONCAT(year
+		                     CONCAT(`year`
 		                           ,'-')
-		                    ,LPAD(month,2,'0'))
+		                    ,LPAD(`month`,2,'0'))
 		             ,'-01')
 		           
 		  FROM monthlysettlements
 		 WHERE mac_id_creator = #{userId}
-		 ORDER BY year  DESC
-		        , month DESC
+		 ORDER BY `year`  DESC
+		        , `month` DESC
 		 LIMIT 1
 	</select>
 	
 	<select id="getMinSettlementDate" resultType="java.time.LocalDate">
 		SELECT CONCAT(
 		              CONCAT(
-		                     CONCAT(year
+		                     CONCAT(`year`
 		                           ,'-')
-		                    ,LPAD(month,2,'0'))
+		                    ,LPAD(`month`,2,'0'))
 		             ,'-01')
 		           
 		  FROM monthlysettlements
 		 WHERE mac_id_creator = #{userId}
-		 ORDER BY year  ASC
-		        , month ASC
+		 ORDER BY `year`  ASC
+		        , `month` ASC
 		 LIMIT 1
 	</select>
 	
@@ -84,8 +84,8 @@
 		      (mac_id_creator
 		      ,mac_id_accessor
 		      ,mcs_capitalsourceid
-		      ,month
-		      ,year
+		      ,`month`
+		      ,`year`
 		      ,amount
 		      )
 		VALUES
@@ -104,8 +104,8 @@
 		DELETE
 		  FROM monthlysettlements
 		 WHERE mac_id_creator = #{userId}
-		   AND year           = #{year}
-		   AND month          = #{month}
+		   AND `year`         = #{year}
+		   AND `month`        = #{month}
 	</delete>
 
 	<select id="getAllMonthlySettlementsByRangeAndCapitalsource"
@@ -113,10 +113,10 @@
 		SELECT <include refid="monthlySettlementsColumns" />
 		  FROM vw_monthlysettlements
 		 WHERE (
-		              year >  #{startYear} AND year   <![CDATA[ < ]]>  #{endYear}
-		           OR year =  #{startYear} AND month  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
-		           OR year =  #{endYear}   AND month  <![CDATA[ <= ]]> #{endMonth}   AND #{startYear} <![CDATA[ < ]]> #{endYear}
-		           OR year =  #{startYear} AND month BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
+		              `year` >  #{startYear} AND `year`   <![CDATA[ < ]]>  #{endYear}
+		           OR `year` =  #{startYear} AND `month`  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR `year` =  #{endYear}   AND `month`  <![CDATA[ <= ]]> #{endMonth}   AND #{startYear} <![CDATA[ < ]]> #{endYear}
+		           OR `year` =  #{startYear} AND `month` BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
 		       )
 		   AND mcs_capitalsourceid IN
 		   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
@@ -124,8 +124,8 @@
 		        #{mcsCapitalsourceId}
 		   </foreach>
 		   AND maf_id              = #{userId}
-		 ORDER BY year
-		         ,month
+		 ORDER BY `year`
+		         ,`month`
 		         ,CASE WHEN mac_id_creator = #{userId} THEN 1 ELSE 2 END
 		         ,mcs_capitalsourceid
 	</select>

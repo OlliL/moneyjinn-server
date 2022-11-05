@@ -4,8 +4,8 @@
 
     	<sql id="importedMonthlySettlementsColumns">
 		 impmonthlysettlementid	AS id
-		,year
-		,month
+		,`year`
+		,`month`
 		,amount
 		,mcs_capitalsourceid	AS mcsCapitalsourceId
 		,externalid		AS externalId
@@ -15,8 +15,8 @@
 		resultType="org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData">
 		SELECT <include refid="importedMonthlySettlementsColumns" />
 		  FROM impmonthlysettlements
-		 WHERE month  = #{month}
-		   AND year   = #{year}
+		 WHERE `month`  = #{month}
+		   AND `year`   = #{year}
 	</select>
 
     	<insert id="upsertImportedMonthlySettlement"
@@ -26,8 +26,8 @@
 		  INTO impmonthlysettlements
 		      (externalid
 		      ,mcs_capitalsourceid
-		      ,month
-		      ,year
+		      ,`month`
+		      ,`year`
 		      ,amount
 		      )
 		VALUES

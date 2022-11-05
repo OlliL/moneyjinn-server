@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD11.4 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD12.3 (amd64)
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
@@ -223,7 +223,7 @@ CREATE TABLE `etfflows` (
   `flowdate` datetime(6) NOT NULL,
   `isin` varchar(30) NOT NULL,
   `amount` decimal(10,3) NOT NULL,
-  `price` decimal(6,3) NOT NULL,
+  `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;

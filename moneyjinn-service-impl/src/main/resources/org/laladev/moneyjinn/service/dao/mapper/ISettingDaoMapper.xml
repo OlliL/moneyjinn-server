@@ -6,7 +6,7 @@
         <sql id="settingColumns">
 		 mac_id      as accessId
 		,name
-		,value
+		,`value`
 	</sql>
     
     	<select id="getSetting" 
@@ -23,7 +23,7 @@
 		  INTO settings
 		      (mac_id
 		      ,name
-		      ,value
+		      ,`value`
 		      )
 		VALUES
 		      (#{accessId}
@@ -31,7 +31,7 @@
 		      ,#{value}
 		      )
 		    ON DUPLICATE KEY
-		UPDATE value = VALUES(value)
+		UPDATE `value` = VALUES(`value`)
 	</insert>
 	
     	<delete id="deleteSettings">

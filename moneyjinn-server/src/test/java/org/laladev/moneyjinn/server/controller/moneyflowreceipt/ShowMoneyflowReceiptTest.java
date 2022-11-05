@@ -44,15 +44,6 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 		return super.getUsecaseFromTestClassName(this.getClass());
 	}
 
-	private static byte[] hexStringToByteArray(final String s) {
-		final int len = s.length();
-		final byte[] data = new byte[len / 2];
-		for (int i = 0; i < len; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
-		}
-		return data;
-	}
-
 	@Test
 	public void test_unknownMoneyflowReceipt_emptyResponseObject() throws Exception {
 		final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
@@ -66,7 +57,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 	@Test
 	public void test_MoneyflowReceipt1_completeResponseObject() throws Exception {
 		final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
-		expected.setReceipt(Base64.getEncoder().encodeToString(hexStringToByteArray(MONEYFLOW_RECEIPT_1)));
+		expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_1.getBytes()));
 		expected.setReceiptType(MONEYFLOW_RECEIPT_1_TYPE);
 
 		final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
@@ -78,7 +69,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 	@Test
 	public void test_MoneyflowReceipt2_completeResponseObject() throws Exception {
 		final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
-		expected.setReceipt(Base64.getEncoder().encodeToString(hexStringToByteArray(MONEYFLOW_RECEIPT_2)));
+		expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_2.getBytes()));
 		expected.setReceiptType(MONEYFLOW_RECEIPT_2_TYPE);
 
 		final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(

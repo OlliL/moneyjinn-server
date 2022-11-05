@@ -96,7 +96,7 @@
 	</select>
 	
     	<select id="getAllYears" resultType="java.lang.Short">
-		SELECT DISTINCT YEAR(bookingdate) year
+		SELECT DISTINCT YEAR(bookingdate)
 		  FROM vw_moneyflows
 		 WHERE maf_id              = #{userId}
 		   AND (
@@ -104,11 +104,11 @@
 		          OR
 		        mac_id_creator     = #{userId}
 		       )
-		 ORDER BY year ASC
+		 ORDER BY 1 ASC
 	</select>
 	
     	<select id="getAllMonth" resultType="java.lang.Short">
-		SELECT DISTINCT MONTH(bookingdate) month
+		SELECT DISTINCT MONTH(bookingdate)
 		  FROM vw_moneyflows
 		 WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
 		   AND maf_id              = #{userId}
@@ -117,7 +117,7 @@
 		          OR
 		        mac_id_creator     = #{userId}
 		       )
-		 ORDER BY month ASC
+		 ORDER BY 1 ASC
 	</select>
 
 	<select id="getAllMoneyflowsByDateRange"

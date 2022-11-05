@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD11.4 (amd64)
+-- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD12.3 (amd64)
 --
 -- Host: db    Database: moneyflow
 -- ------------------------------------------------------
@@ -223,7 +223,7 @@ CREATE TABLE `etfflows` (
   `flowdate` datetime(6) NOT NULL,
   `isin` varchar(30) COLLATE utf8_bin NOT NULL,
   `amount` decimal(10,3) NOT NULL,
-  `price` decimal(6,3) NOT NULL,
+  `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='mef';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -546,7 +546,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-01  1:14:44
+-- Dump completed on 2022-11-05  2:10:44
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',2,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
@@ -563,4 +563,4 @@ INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'2000-01-
 INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (2,1,'2000-01-01','2999-12-31');
 INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) VALUES (2,'2000-01-01','2999-12-31',2,1,0);
 INSERT INTO settings VALUES (0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
-INSERT INTO settings (SELECT 2,name,value FROM settings WHERE mac_id=0);
+INSERT INTO settings (SELECT 2,name,`value` FROM settings WHERE mac_id=0);
