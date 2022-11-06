@@ -18,19 +18,10 @@
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-service-api</artifactId>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<!-- only used for the SettingService (store 2 settings as JSON in MySQL) -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<!-- only used for CompareDataService (SOUNDEX-like matching of strings) -->
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -48,14 +39,26 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 		</dependency>
+	
+		<!-- only used for the SettingService (store 2 settings as JSON in MySQL) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<!-- only used for CompareDataService (SOUNDEX-like matching of strings) -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<!-- only used for CompareDataService (parsing uploaded CSV files) -->
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 		</dependency>
+		<!-- only used for MoneyflowReceiptService (mediatype detection of uploaded files) -->
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
 		</dependency>
-
 	</dependencies>
 </project>
