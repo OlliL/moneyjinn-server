@@ -60,16 +60,6 @@ public class UserService extends AbstractService implements IUserService {
 
 	@Inject
 	private UserDao userDao;
-	private MessageDigest sha1MD;
-
-	public UserService() {
-		try {
-			this.sha1MD = MessageDigest.getInstance("SHA1");
-		} catch (final NoSuchAlgorithmException e) {
-			LOG.error(e);
-		}
-
-	}
 
 	@Override
 	protected void addBeanMapper() {
@@ -151,8 +141,8 @@ public class UserService extends AbstractService implements IUserService {
 		user.setPassword(cryptedPassword);
 
 		final UserData userData = super.map(user, UserData.class);
-		final Long userIDLong = this.userDao.createUser(userData);
-		return new UserID(userIDLong);
+		final Long userIdLong = this.userDao.createUser(userData);
+		return new UserID(userIdLong);
 	}
 
 	@Override
@@ -210,9 +200,12 @@ public class UserService extends AbstractService implements IUserService {
 
 	private String cryptPassword(final String password) {
 		if (password != null) {
-			this.sha1MD.reset();
-
-			return BytesToHexConverter.convert(this.sha1MD.digest(password.getBytes()));
+			try {
+				final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+				return BytesToHexConverter.convert(sha1Md.digest(password.getBytes()));
+			} catch (final NoSuchAlgorithmException e) {
+				LOG.error(e);
+			}
 		}
 		return null;
 	}
