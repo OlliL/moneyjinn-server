@@ -31,11 +31,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 public class RESTAuthorization {
 
@@ -46,7 +46,7 @@ public class RESTAuthorization {
 	public static final String AUTH_HEADER_SEPERATOR = ":";
 	private static final String MAC_ALGORITHM = "HmacSHA1";
 
-	private final Base64 base64 = new Base64();
+	private final static Encoder ENCODER = Base64.getEncoder();
 
 	/**
 	 * This function works basically as described in
@@ -100,7 +100,7 @@ public class RESTAuthorization {
 
 		final byte[] rawHmac = this.getRawHmac(stringToSign, secret);
 		final byte[] hexBytes = BytesToHexConverter.convert(rawHmac).getBytes();
-		final byte[] base64Bytes = this.base64.encode(hexBytes);
+		final byte[] base64Bytes = ENCODER.encode(hexBytes);
 		authString = new String(base64Bytes);
 
 		return AUTH_HEADER_PREFIX + ident + AUTH_HEADER_SEPERATOR + authString;
