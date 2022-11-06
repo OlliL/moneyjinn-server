@@ -59,6 +59,8 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 	@Inject
 	private ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
 
+	private final Tika tika = new Tika();
+
 	@Override
 	protected void addBeanMapper() {
 		super.registerBeanMapper(new ImportedMoneyflowReceiptDataMapper());
@@ -88,9 +90,7 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 	}
 
 	private void prepareImportedMoneyflowReceipt(final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-		// TODO: consider making Tika a Bean - should be thread safe.
-		final Tika tika = new Tika();
-		final String mediaType = tika.detect(importedMoneyflowReceipt.getReceipt());
+		final String mediaType = this.tika.detect(importedMoneyflowReceipt.getReceipt());
 		importedMoneyflowReceipt.setMediaType(mediaType);
 
 	}
