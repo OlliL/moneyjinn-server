@@ -26,6 +26,15 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -41,7 +50,11 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.service.api.IAccessRelationService;
+import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IGroupService;
+import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ContractpartnerDao;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
@@ -50,14 +63,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Named
 @EnableCaching
@@ -103,15 +108,14 @@ public class ContractpartnerService extends AbstractService implements IContract
 		return null;
 	}
 
-	private List<Contractpartner> mapContractpartnerDataList(
-			final List<ContractpartnerData> contractpartnerDataList) {
+	private List<Contractpartner> mapContractpartnerDataList(final List<ContractpartnerData> contractpartnerDataList) {
 		return contractpartnerDataList.stream().map(this::mapContractpartnerData)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	/**
 	 * This method takes a Contractpartner as argument and sets the properties validFrom and
-	 * validTil if they are NULL to default values
+	 * validTil if they are NULL to default values.
 	 *
 	 * @param contractpartner
 	 *            {@link Contractpartner}

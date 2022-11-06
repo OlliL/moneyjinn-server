@@ -395,9 +395,9 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		}
 	}
 
-	private void evictAccessRelationCache(final AccessID accessID) {
+	private void evictAccessRelationCache(final AccessID accessId) {
 		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-		cache.evict(accessID);
+		cache.evict(accessId);
 	}
 
 }

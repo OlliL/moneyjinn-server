@@ -22,7 +22,6 @@ public class EtfValueDataMapper implements IMapper<EtfValue, EtfValueData> {
 
 	@Override
 	public EtfValueData mapAToB(final EtfValue a) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -30,7 +30,7 @@ import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 
 /**
- * The MyBatis Mapper handling Setting information stored in the Table <code>settings</code>
+ * The MyBatis Mapper handling Setting information stored in the Table <code>settings</code>.
  *
  * @author olivleh1
  *

@@ -33,7 +33,7 @@ import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper;
 
 /**
- * The DAO handling Setting information stored in the Table <code>settings</code>
+ * The DAO handling Setting information stored in the Table <code>settings</code>.
  *
  * @author olivleh1
  *
