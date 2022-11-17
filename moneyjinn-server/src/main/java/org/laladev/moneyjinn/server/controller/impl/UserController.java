@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -40,6 +42,8 @@ import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
+import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
+import org.laladev.moneyjinn.core.rest.model.user.LoginResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowCreateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowDeleteUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
@@ -54,6 +58,7 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
@@ -64,10 +69,13 @@ import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMap
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,6 +97,10 @@ public class UserController extends AbstractController {
 	private IGroupService groupService;
 	@Inject
 	private ISettingService settingService;
+	@Inject
+	AuthenticationManager authenticationManager;
+	@Inject
+	JwtTokenProvider jwtTokenProvider;
 
 	@Override
 	protected void addBeanMapper() {
@@ -97,6 +109,33 @@ public class UserController extends AbstractController {
 		this.registerBeanMapper(new AccessRelationTransportMapper());
 		this.registerBeanMapper(new ValidationItemTransportMapper());
 
+	}
+
+	@RequestMapping(value = "login", method = { RequestMethod.POST })
+	public LoginResponse login(@RequestBody final LoginRequest request) {
+		final String username = request.getUserName();
+		final String password = request.getUserPassword();
+		final LoginResponse response = new LoginResponse();
+
+		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		final User user = this.userService.getUserByName(username);
+		if (user != null && user.getPermissions().contains(UserPermission.LOGIN)) {
+			final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
+					.collect(Collectors.toCollection(ArrayList::new));
+			// userDetails =
+			// org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
+			// .username(username).password(password).roles(permissions.toArray(new String[0]));
+			final String token = this.jwtTokenProvider.createToken(username, permissions);
+
+			final UserTransport userTransport = super.map(user, UserTransport.class);
+
+			response.setUserTransport(userTransport);
+			response.setToken(token);
+
+			return response;
+		}
+
+		throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
 	}
 
 	@RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
@@ -147,6 +186,11 @@ public class UserController extends AbstractController {
 		}
 
 		return null;
+	}
+
+	@RequestMapping(value = "test", method = { RequestMethod.GET })
+	public ShowUserListResponse test() {
+		return this.showUserList(null);
 	}
 
 	@RequestMapping(value = "showUserList", method = { RequestMethod.GET })
