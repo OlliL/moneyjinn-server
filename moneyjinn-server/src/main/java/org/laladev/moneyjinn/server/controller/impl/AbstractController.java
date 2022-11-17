@@ -30,20 +30,36 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.main.SessionEnvironment;
+import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AbstractController extends AbstractMapperSupport {
 	@Inject
 	private SessionEnvironment sessionEnvironment;
+	@Inject
+	private IUserService userService;
 
 	protected UserID getUserId() {
-		if (this.sessionEnvironment.getUserId() == null) {
-			throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
+		if (this.sessionEnvironment.getUserId() != null) {
+			return this.sessionEnvironment.getUserId();
 		}
-		return this.sessionEnvironment.getUserId();
+
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getName() != null) {
+			final String username = authentication.getName();
+			final User user = this.userService.getUserByName(username);
+			if (user != null) {
+				return user.getId();
+			}
+		}
+		throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
+
 	}
 
 	protected ValidationResponse returnValidationResponse(final ValidationResult validationResult) {

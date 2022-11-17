@@ -56,7 +56,7 @@ public class JwtTokenProvider {
 		return null;
 	}
 
-	public String getUsername(final String token) {
+	private String getUsername(final String token) {
 		return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody().getSubject();
 	}
 
