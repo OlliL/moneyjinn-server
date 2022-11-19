@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,8 +38,10 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS,"/moneyflow/server/**").permitAll()
                 .antMatchers("/moneyflow/server/user/login").permitAll()
                 .antMatchers("/moneyflow/server/user/test").authenticated()
+                .antMatchers("/moneyflow/server/report/getAvailableMonth").authenticated()
                 .antMatchers("/moneyflow/server/report/getAvailableMonth**").authenticated()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
