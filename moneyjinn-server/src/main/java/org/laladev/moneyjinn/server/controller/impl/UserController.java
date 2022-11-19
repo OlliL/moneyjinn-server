@@ -24,6 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +53,7 @@ import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -112,19 +115,22 @@ public class UserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public LoginResponse login(@RequestBody final LoginRequest request) {
+	public LoginResponse login(@RequestBody final LoginRequest request) throws NoSuchAlgorithmException {
 		final String username = request.getUserName();
-		final String password = request.getUserPassword();
+
+		final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+		final String password = BytesToHexConverter.convert(sha1Md.digest(request.getUserPassword().getBytes()));
+
 		final LoginResponse response = new LoginResponse();
 
 		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		final User user = this.userService.getUserByName(username);
-		if (user != null && user.getPermissions().contains(UserPermission.LOGIN)) {
+		if (user != null) {
+			if (!user.getPermissions().contains(UserPermission.LOGIN)) {
+				throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
+			}
 			final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
 					.collect(Collectors.toCollection(ArrayList::new));
-			// userDetails =
-			// org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
-			// .username(username).password(password).roles(permissions.toArray(new String[0]));
 			final String token = this.jwtTokenProvider.createToken(username, permissions);
 
 			final UserTransport userTransport = super.map(user, UserTransport.class);

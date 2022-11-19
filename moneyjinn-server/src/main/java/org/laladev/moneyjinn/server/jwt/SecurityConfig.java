@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/moneyflow/server/user/login").permitAll()
                 .antMatchers("/moneyflow/server/user/test").authenticated()
+                .antMatchers("/moneyflow/server/report/getAvailableMonth**").authenticated()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
             .and()

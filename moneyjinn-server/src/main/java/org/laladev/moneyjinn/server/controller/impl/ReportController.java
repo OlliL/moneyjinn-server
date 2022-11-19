@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.laladev.moneyjinn.core.rest.model.report.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphResponse;
@@ -399,6 +400,120 @@ public class ReportController extends AbstractController {
 	private void filterByValidity(final List<CapitalsourceID> capitalsourceIds,
 			final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap, final LocalDate beginOfMonth) {
 		capitalsourceIds.removeIf(csi -> validTilCapitalsourceIdMap.get(csi).isBefore(beginOfMonth));
+	}
+
+	@RequestMapping(value = "getAvailableMonth", method = { RequestMethod.GET })
+	public GetAvailableMonthResponse getAvailableMonth() {
+		return this.getAvailableMonth(null, null);
+	}
+
+	@RequestMapping(value = "getAvailableMonth/{year}", method = { RequestMethod.GET })
+	public GetAvailableMonthResponse getAvailableMonth(@PathVariable(value = "year") final Short requestYear) {
+		return this.getAvailableMonth(requestYear, null);
+	}
+
+	@RequestMapping(value = "getAvailableMonth/{year}/{month}", method = { RequestMethod.GET })
+	public GetAvailableMonthResponse getAvailableMonth(@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
+		final UserID userId = super.getUserId();
+		final GetAvailableMonthResponse response = new GetAvailableMonthResponse();
+
+		final List<Short> allYears = this.moneyflowService.getAllYears(userId);
+
+		boolean nextMonthHasMoneyflows = false;
+		boolean previousMonthHasMoneyflows = false;
+		Month prevMonth = null;
+		Short prevYear = null;
+		Month nextMonth = null;
+		Short nextYear = null;
+		List<Month> allMonth = null;
+
+		Short year = requestYear;
+		Month month = this.getMonth(requestMonth);
+
+		// only continue if settlements where made at all
+		if (allYears != null && !allYears.isEmpty()) {
+
+			// validate if settlements are recorded for the given year, if not fall back to the
+			// last recorded one
+			if (year == null || !allYears.contains(year)) {
+				year = allYears.get(allYears.size() - 1);
+				month = null;
+			}
+			allMonth = this.moneyflowService.getAllMonth(userId, year);
+
+			if (month != null && allMonth != null && allMonth.contains(month)) {
+
+				final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
+				final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+
+				final int indexInAllMonthList = allMonth.indexOf(month);
+
+				LocalDate previousDate = null;
+				LocalDate nextDate = null;
+
+				if (month != Month.JANUARY) {
+					if (indexInAllMonthList > 0) {
+						previousDate = LocalDate.of(year, allMonth.get(indexInAllMonthList - 1), 1);
+					}
+				} else {
+					previousDate = this.moneyflowService.getPreviousMoneyflowDate(userId, beginOfMonth);
+				}
+
+				if (month != Month.DECEMBER) {
+					if (indexInAllMonthList < allMonth.size() - 1) {
+						nextDate = LocalDate.of(year, allMonth.get(indexInAllMonthList + 1), 1);
+					}
+				} else {
+					nextDate = this.moneyflowService.getNextMoneyflowDate(userId, endOfMonth);
+				}
+
+				if (previousDate != null) {
+					previousMonthHasMoneyflows = true;
+					prevMonth = previousDate.getMonth();
+					prevYear = (short) previousDate.getYear();
+				}
+				if (nextDate != null) {
+					nextMonthHasMoneyflows = true;
+					nextMonth = nextDate.getMonth();
+					nextYear = (short) nextDate.getYear();
+				}
+
+			} else {
+				month = null;
+			}
+		}
+
+		response.setYear(year);
+		if (month != null) {
+			response.setMonth((short) month.getValue());
+		}
+
+		if (allYears != null && !allYears.isEmpty()) {
+			response.setAllYears(allYears);
+		}
+
+		if (allMonth != null && !allMonth.isEmpty()) {
+			response.setAllMonth(
+					allMonth.stream().map(m -> (short) m.getValue()).collect(Collectors.toCollection(ArrayList::new)));
+		}
+
+		if (nextMonthHasMoneyflows) {
+			response.setNextMonthHasMoneyflows((short) 1);
+		}
+		if (previousMonthHasMoneyflows) {
+			response.setPreviousMonthHasMoneyflows((short) 1);
+		}
+		if (prevMonth != null) {
+			response.setPreviousMonth((short) prevMonth.getValue());
+		}
+		response.setPreviousYear(prevYear);
+		if (nextMonth != null) {
+			response.setNextMonth((short) nextMonth.getValue());
+		}
+		response.setNextYear(nextYear);
+
+		return response;
 	}
 
 	@RequestMapping(value = "listReports", method = { RequestMethod.GET })
