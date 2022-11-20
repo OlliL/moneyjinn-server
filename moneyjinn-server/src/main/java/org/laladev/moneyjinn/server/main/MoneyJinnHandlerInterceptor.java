@@ -44,6 +44,8 @@ import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -86,6 +88,21 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 				}
 				if (RequiresPermissionAdmin.class.isInstance(annotation)) {
 					requiresAdmin = true;
+				}
+			}
+
+			if (requiresAuthorization || requiresAdmin) {
+				final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				if (authentication != null && authentication.getName() != null) {
+					final String username = authentication.getName();
+					final User user = this.userService.getUserByName(username);
+					if (user != null) {
+						requiresAuthorization = false;
+						if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
+							throw new BusinessException("You must be an admin to access this functionality!",
+									ErrorCode.USER_IS_NO_ADMIN);
+						}
+					}
 				}
 			}
 
