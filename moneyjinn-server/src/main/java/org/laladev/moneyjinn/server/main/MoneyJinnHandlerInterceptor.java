@@ -114,10 +114,10 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 			}
 
 			if (requiresAuthorization || requiresAdmin) {
-				final String dateHeaderString = ((MoneyJinnRequestWrapper) request)
+				final String dateHeaderString = ((HttpServletRequest) request)
 						.getHeader(RESTAuthorization.DATE_HEADER_NAME);
 
-				final String clientAuthorization = ((MoneyJinnRequestWrapper) request)
+				final String clientAuthorization = ((HttpServletRequest) request)
 						.getHeader(RESTAuthorization.AUTH_HEADER_NAME);
 
 				String userName = null;
@@ -135,6 +135,7 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 
 				if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0
 						|| dateHeaderString == null) {
+					response.setStatus(403);
 					throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
 				}
 

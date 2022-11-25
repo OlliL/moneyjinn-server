@@ -19,8 +19,20 @@ public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandle
 		final ErrorResponse errorResponse = new ErrorResponse();
 		errorResponse.setCode(ex.getErrorCode().getErrorCode());
 		errorResponse.setMessage(ex.getErrorMessage());
+		HttpStatus httpStatus;
 
-		return new ResponseEntity<Object>(errorResponse, HttpStatus.OK);
+		switch (ex.getErrorCode()) {
+		case LOGGED_OUT:
+		case USER_IS_NO_ADMIN:
+		case CLIENT_CLOCK_OFF:
+		case USERNAME_PASSWORD_WRONG:
+		case ACCOUNT_IS_LOCKED:
+			httpStatus = HttpStatus.FORBIDDEN;
+			break;
+		default:
+			httpStatus = HttpStatus.OK;
+		}
+		return new ResponseEntity<>(errorResponse, httpStatus);
 	}
 
 	@Override

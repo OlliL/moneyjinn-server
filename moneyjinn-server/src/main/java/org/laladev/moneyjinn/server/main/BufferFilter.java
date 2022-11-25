@@ -36,6 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 /**
  * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}
@@ -45,6 +48,8 @@ import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
  * @author olivleh1
  *
  */
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class BufferFilter implements Filter {
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
