@@ -94,17 +94,20 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 
 			if (requiresAuthorization || requiresAdmin) {
 				final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				final boolean isRefreshOnlyAccess = authentication.getAuthorities().stream()
-						.filter(a -> RefreshOnlyGrantedAuthority.ROLE.equals(a.getAuthority())).findFirst().isPresent();
+				if (authentication != null) {
+					final boolean isRefreshOnlyAccess = authentication.getAuthorities().stream()
+							.filter(a -> RefreshOnlyGrantedAuthority.ROLE.equals(a.getAuthority())).findFirst()
+							.isPresent();
 
-				if (authentication != null && authentication.getName() != null && !isRefreshOnlyAccess) {
-					final String username = authentication.getName();
-					final User user = this.userService.getUserByName(username);
-					if (user != null) {
-						requiresAuthorization = false;
-						if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
-							throw new BusinessException("You must be an admin to access this functionality!",
-									ErrorCode.USER_IS_NO_ADMIN);
+					if (authentication.getName() != null && !isRefreshOnlyAccess) {
+						final String username = authentication.getName();
+						final User user = this.userService.getUserByName(username);
+						if (user != null) {
+							requiresAuthorization = false;
+							if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
+								throw new BusinessException("You must be an admin to access this functionality!",
+										ErrorCode.USER_IS_NO_ADMIN);
+							}
 						}
 					}
 				}
