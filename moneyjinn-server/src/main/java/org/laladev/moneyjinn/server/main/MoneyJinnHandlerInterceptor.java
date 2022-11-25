@@ -42,6 +42,7 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
+import org.laladev.moneyjinn.server.jwt.RefreshOnlyGrantedAuthority;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -93,7 +94,10 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 
 			if (requiresAuthorization || requiresAdmin) {
 				final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				if (authentication != null && authentication.getName() != null) {
+				final boolean isRefreshOnlyAccess = authentication.getAuthorities().stream()
+						.filter(a -> RefreshOnlyGrantedAuthority.ROLE.equals(a.getAuthority())).findFirst().isPresent();
+
+				if (authentication != null && authentication.getName() != null && !isRefreshOnlyAccess) {
 					final String username = authentication.getName();
 					final User user = this.userService.getUserByName(username);
 					if (user != null) {

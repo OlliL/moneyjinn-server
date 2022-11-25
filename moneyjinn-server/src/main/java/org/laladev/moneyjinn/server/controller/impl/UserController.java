@@ -27,6 +27,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,6 +74,7 @@ import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.jwt.JwtTokenProvider;
+import org.laladev.moneyjinn.server.jwt.RefreshOnlyGrantedAuthority;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -125,18 +127,33 @@ public class UserController extends AbstractController {
 
 		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		final User user = this.userService.getUserByName(username);
+		return this.generateLoginResponse(response, user);
+	}
+
+	@RequestMapping(value = "refreshToken", method = { RequestMethod.GET })
+	public LoginResponse refreshToken() throws NoSuchAlgorithmException {
+		final LoginResponse response = new LoginResponse();
+
+		final User user = this.userService.getUserById(super.getUserId());
+		return this.generateLoginResponse(response, user);
+	}
+
+	private LoginResponse generateLoginResponse(final LoginResponse response, final User user) {
 		if (user != null) {
 			if (!user.getPermissions().contains(UserPermission.LOGIN)) {
 				throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
 			}
 			final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
 					.collect(Collectors.toCollection(ArrayList::new));
-			final String token = this.jwtTokenProvider.createToken(username, permissions);
+			final String token = this.jwtTokenProvider.createToken(user.getName(), permissions);
+			final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(),
+					Arrays.asList(RefreshOnlyGrantedAuthority.ROLE));
 
 			final UserTransport userTransport = super.map(user, UserTransport.class);
 
 			response.setUserTransport(userTransport);
 			response.setToken(token);
+			response.setRefreshToken(refreshToken);
 
 			return response;
 		}
