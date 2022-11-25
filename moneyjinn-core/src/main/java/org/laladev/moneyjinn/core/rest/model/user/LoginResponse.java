@@ -9,6 +9,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 public class LoginResponse extends ValidationResponse {
 	public UserTransport userTransport;
 	public String token;
+	public String refreshToken;
 
 	public final UserTransport getUserTransport() {
 		return this.userTransport;
@@ -26,10 +27,19 @@ public class LoginResponse extends ValidationResponse {
 		this.token = token;
 	}
 
+	public final String getRefreshToken() {
+		return this.refreshToken;
+	}
+
+	public final void setRefreshToken(final String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((this.refreshToken == null) ? 0 : this.refreshToken.hashCode());
 		result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
 		result = prime * result + ((this.userTransport == null) ? 0 : this.userTransport.hashCode());
 		return result;
@@ -47,6 +57,13 @@ public class LoginResponse extends ValidationResponse {
 			return false;
 		}
 		final LoginResponse other = (LoginResponse) obj;
+		if (this.refreshToken == null) {
+			if (other.refreshToken != null) {
+				return false;
+			}
+		} else if (!this.refreshToken.equals(other.refreshToken)) {
+			return false;
+		}
 		if (this.token == null) {
 			if (other.token != null) {
 				return false;
@@ -71,6 +88,8 @@ public class LoginResponse extends ValidationResponse {
 		builder.append(this.userTransport);
 		builder.append(", token=");
 		builder.append(this.token);
+		builder.append(", refreshToken=");
+		builder.append(this.refreshToken);
 		builder.append("]");
 		return builder.toString();
 	}
