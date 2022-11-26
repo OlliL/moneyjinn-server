@@ -67,6 +67,7 @@ public class BufferFilter implements Filter {
 				"Content-Type," + RESTAuthorization.DATE_HEADER_NAME + ", " + RESTAuthorization.AUTH_HEADER_NAME + ", "
 						+ "Authorization");
 		((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials", "true");
+		((HttpServletResponse) response).setHeader("Access-Control-Allow-Private-Network", "true");
 		chain.doFilter(req, response);
 	}
 
