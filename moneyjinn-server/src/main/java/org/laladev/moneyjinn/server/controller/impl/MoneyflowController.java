@@ -47,6 +47,7 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowRespon
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
@@ -309,8 +310,7 @@ public class MoneyflowController extends AbstractController {
 	/**
 	 * Creates a new moneyflow together with split entries if they where given.
 	 *
-	 * @param request
-	 *            The request which contains the moneyflow
+	 * @param request The request which contains the moneyflow
 	 * @return ValidationResponse
 	 */
 	@RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
@@ -407,14 +407,13 @@ public class MoneyflowController extends AbstractController {
 	}
 
 	/**
-	 * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity
-	 * is modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries
-	 * where provided with data from the first MoneyflowSplitEntry.
+	 * Checks if capitalsource and contractparter are valid on bookingdate -
+	 * otherwise the validity is modified. Also fills comment and postingaccount if
+	 * it is empty and MoneyflowSplitEntries where provided with data from the first
+	 * MoneyflowSplitEntry.
 	 *
-	 * @param moneyflow
-	 *            Moneyflow
-	 * @param moneyflowSplitEntries
-	 *            MoneyflowSplitEntries
+	 * @param moneyflow             Moneyflow
+	 * @param moneyflowSplitEntries MoneyflowSplitEntries
 	 */
 	private void prepareForValidityCheck(final Moneyflow moneyflow,
 			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
@@ -427,7 +426,8 @@ public class MoneyflowController extends AbstractController {
 
 			final AccessRelation accessRelation = this.accessRelationService
 					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
-			// Only modify Capitalsources or Contractpartner if the Bookingdate is within the
+			// Only modify Capitalsources or Contractpartner if the Bookingdate is within
+			// the
 			// current group assignment validity period
 			if (!bookingDate.isBefore(accessRelation.getValidFrom())
 					&& !bookingDate.isAfter(accessRelation.getValidTil())) {
@@ -487,7 +487,8 @@ public class MoneyflowController extends AbstractController {
 			}
 		}
 
-		// use the comment and postingaccount of the 1st split booking for the main booking if
+		// use the comment and postingaccount of the 1st split booking for the main
+		// booking if
 		// nothing is specified
 		if (!moneyflowSplitEntries.isEmpty()) {
 			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
@@ -505,8 +506,53 @@ public class MoneyflowController extends AbstractController {
 	/**
 	 * Updates the given Moneyflow
 	 *
-	 * @param request
-	 *            The Request object which contains the Moneyflow.
+	 * @param request The Request object which contains the Moneyflow.
+	 * @return Validation Response
+	 */
+	@RequestMapping(value = "updateMoneyflowV2", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public UpdateMoneyflowResponse updateMoneyflowV2(@RequestBody final UpdateMoneyflowRequest request) {
+		final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
+		final ValidationResponse valResponse = this.updateMoneyflow(request);
+
+		if (valResponse == null) {
+			response.setResult(true);
+		} else {
+			response.setResult(valResponse.getResult());
+			response.setValidationItemTransports(valResponse.getValidationItemTransports());
+		}
+		if (!response.getResult()) {
+			return response;
+		}
+		final UserID userId = super.getUserId();
+
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
+				new MoneyflowID(request.getMoneyflowTransport().getId()));
+
+		if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
+			response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
+
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
+					.getMoneyflowSplitEntries(userId, moneyflow.getId());
+			if (!moneyflowSplitEntries.isEmpty()) {
+				response.setMoneyflowSplitEntryTransports(
+						super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
+			}
+
+			final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
+					.getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
+
+			response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
+
+		}
+
+		return response;
+	}
+
+	/**
+	 * Updates the given Moneyflow
+	 *
+	 * @param request The Request object which contains the Moneyflow.
 	 * @return Validation Response
 	 */
 	@RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
@@ -529,7 +575,8 @@ public class MoneyflowController extends AbstractController {
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 
-		// build a List of all MoneyflowSplitEntries which will be there after his update
+		// build a List of all MoneyflowSplitEntries which will be there after his
+		// update
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflow.getId());
 		final ListIterator<MoneyflowSplitEntry> entryIterator = moneyflowSplitEntries.listIterator();
@@ -623,8 +670,7 @@ public class MoneyflowController extends AbstractController {
 	/**
 	 * Deletes the specified Moneyflow.
 	 *
-	 * @param id
-	 *            The ID of the Moneyflow to delete
+	 * @param id The ID of the Moneyflow to delete
 	 */
 	@RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
 	@RequiresAuthorization
@@ -639,12 +685,9 @@ public class MoneyflowController extends AbstractController {
 	/**
 	 * Searches for Moneyflows given by an absolut amount and a date range.
 	 *
-	 * @param amount
-	 *            ABS amount
-	 * @param dateFromStr
-	 *            date to start searching (format: YYYYMMDD)
-	 * @param dateTilStr
-	 *            date to end searching (format: YYYYMMDD)
+	 * @param amount      ABS amount
+	 * @param dateFromStr date to start searching (format: YYYYMMDD)
+	 * @param dateTilStr  date to end searching (format: YYYYMMDD)
 	 * @return matching Moneyflows
 	 */
 	@RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
