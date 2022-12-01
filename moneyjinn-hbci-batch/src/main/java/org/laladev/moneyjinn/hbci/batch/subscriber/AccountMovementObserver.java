@@ -106,10 +106,12 @@ public class AccountMovementObserver implements Observer {
 
 		if (response != null) {
 			if (response.getErrorResponse() != null) {
-				throw (new RuntimeException("error: " + response.getErrorResponse().getMessage()));
+				throw (new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
+						+ transport.getBankCodeCapitalsource() + ") " + response.getErrorResponse().getMessage()));
 			} else if (response.getResult().equals(Boolean.FALSE)) {
 				throw (new RuntimeException(
-						"error: " + response.getValidationItemTransports().get(0).getError().toString()));
+						"error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode() + ") "
+								+ response.getValidationItemTransports().get(0).getError().toString()));
 			}
 
 		}
