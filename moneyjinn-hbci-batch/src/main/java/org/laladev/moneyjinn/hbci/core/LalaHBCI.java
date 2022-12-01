@@ -152,10 +152,11 @@ public final class LalaHBCI {
 	}
 
 	/**
-	 * It happens, that during dialog init a UPD is returned which does not contain IBAN or BIC
-	 * information. hbci4java does then just use this new UPD and overwrites the old UPD in the
-	 * passport file. Because of that, IBAN and BIC is now missing in the UPD and the Account no
-	 * longer contains those information. This renders the whole stuff useless for us.
+	 * It happens, that during dialog init a UPD is returned which does not contain
+	 * IBAN or BIC information. hbci4java does then just use this new UPD and
+	 * overwrites the old UPD in the passport file. Because of that, IBAN and BIC is
+	 * now missing in the UPD and the Account no longer contains those information.
+	 * This renders the whole stuff useless for us.
 	 *
 	 * @param hbciPassport
 	 * @param hbciHandler
@@ -176,6 +177,9 @@ public final class LalaHBCI {
 	}
 
 	private void addIbanBic(final AbstractAccountEntitiy accountEntity) {
+		System.out.println("====> MyIban: " + accountEntity.getMyIban());
+		System.out.println("====> MyAccountnumber: " + accountEntity.getMyAccountnumber());
+		System.out.println("====> MyBankcode: " + accountEntity.getMyBankcode());
 		if (accountEntity.getMyIban() == null && accountEntity.getMyAccountnumber() != null
 				&& accountEntity.getMyBankcode() != null) {
 			accountEntity.setMyIban(this.getProperty("hbci.mapping.iban."
@@ -237,7 +241,8 @@ public final class LalaHBCI {
 	}
 
 	/**
-	 * returns the configured online banking PIN for the given {@link HBCIPassport} filename
+	 * returns the configured online banking PIN for the given {@link HBCIPassport}
+	 * filename
 	 *
 	 * @param passport
 	 * @return online banking PIN
