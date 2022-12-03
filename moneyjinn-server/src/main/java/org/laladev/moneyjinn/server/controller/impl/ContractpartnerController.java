@@ -219,16 +219,17 @@ public class ContractpartnerController extends AbstractController {
 		contractpartner.setAccess(accessor);
 
 		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
-
 		final CreateContractpartnerResponse response = new CreateContractpartnerResponse();
+
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 		final ContractpartnerID contractpartnerId = this.contractpartnerService.createContractpartner(contractpartner);
 		response.setContractpartnerId(contractpartnerId.getId());
+
 		return response;
 	}
 
@@ -245,12 +246,16 @@ public class ContractpartnerController extends AbstractController {
 
 		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
 
-		if (!validationResult.isValid()) {
-			return super.returnValidationResponse(validationResult);
-		}
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
 
-		this.contractpartnerService.updateContractpartner(contractpartner);
-		return null;
+		if (!validationResult.isValid()) {
+			response.setValidationItemTransports(
+					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
+		} else {
+			this.contractpartnerService.updateContractpartner(contractpartner);
+		}
+		return response;
 	}
 
 	@RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })

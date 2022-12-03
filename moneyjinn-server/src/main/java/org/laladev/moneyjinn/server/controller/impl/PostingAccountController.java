@@ -120,15 +120,15 @@ public class PostingAccountController extends AbstractController {
 	@RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
-	public ValidationResponse createPostingAccount(@RequestBody final CreatePostingAccountRequest request) {
+	public CreatePostingAccountResponse createPostingAccount(@RequestBody final CreatePostingAccountRequest request) {
 		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
 		postingAccount.setId(null);
 
 		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
 		final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;

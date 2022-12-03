@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowContractpartnerAccountListResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowDeleteContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowEditContractpartnerAccountResponse;
@@ -106,7 +107,7 @@ public class ContractpartnerAccountController extends AbstractController {
 
 	@RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public ValidationResponse createContractpartnerAccount(
+	public CreateContractpartnerAccountResponse createContractpartnerAccount(
 			@RequestBody final CreateContractpartnerAccountRequest request) {
 		final UserID userId = super.getUserId();
 
@@ -117,15 +118,17 @@ public class ContractpartnerAccountController extends AbstractController {
 		final ValidationResult validationResult = this.contractpartnerAccountService
 				.validateContractpartnerAccount(userId, contractpartnerAccount);
 
+		final CreateContractpartnerAccountResponse response = new CreateContractpartnerAccountResponse();
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
-		this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
-		return null;
+		final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
+				.createContractpartnerAccount(userId, contractpartnerAccount);
+		response.setcontractpartnerAccountId(contractpartnerAccountID.getId());
+		return response;
 	}
 
 	@RequestMapping(value = "updateContractpartnerAccount", method = { RequestMethod.PUT })
@@ -140,15 +143,15 @@ public class ContractpartnerAccountController extends AbstractController {
 		final ValidationResult validationResult = this.contractpartnerAccountService
 				.validateContractpartnerAccount(userId, contractpartnerAccount);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
+		} else {
+			this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
 		}
-		this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "deleteContractpartnerAccount/{id}", method = { RequestMethod.DELETE })

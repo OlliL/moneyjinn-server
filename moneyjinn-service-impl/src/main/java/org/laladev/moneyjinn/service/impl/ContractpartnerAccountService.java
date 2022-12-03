@@ -124,7 +124,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
-			// this secures the Account - a user which has no access to the partner may not modify
+			// this secures the Account - a user which has no access to the partner may not
+			// modify
 			// its accounts
 			if (contractpartner != null) {
 				contractpartnerAccount.setContractpartner(contractpartner);
@@ -177,7 +178,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public void createContractpartnerAccount(final UserID userId, final ContractpartnerAccount contractpartnerAccount) {
+	public ContractpartnerAccountID createContractpartnerAccount(final UserID userId,
+			final ContractpartnerAccount contractpartnerAccount) {
 		Assert.notNull(userId, "UserId must not be null!");
 		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
 		contractpartnerAccount.setId(null);
@@ -194,6 +196,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				.createContractpartnerAccount(contractpartnerAccountData);
 		this.evictContractpartnerAccountCache(userId, new ContractpartnerAccountID(contractpartnerAccountId),
 				contractpartnerAccount.getContractpartner().getId());
+		return new ContractpartnerAccountID(contractpartnerAccountId);
 
 	}
 

@@ -52,8 +52,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets
- * the {@link HttpStatus} to 204 if the {@link HttpServletResponse} body is empty.
+ * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the
+ * client and also sets the {@link HttpStatus} to 204 if the
+ * {@link HttpServletResponse} body is empty.
  *
  * @author olivleh1
  * @since 0.0.1
@@ -107,6 +108,8 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
 							if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
 								throw new BusinessException("You must be an admin to access this functionality!",
 										ErrorCode.USER_IS_NO_ADMIN);
+							} else {
+								requiresAdmin = false;
 							}
 						}
 					}

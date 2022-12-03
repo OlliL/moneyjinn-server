@@ -210,8 +210,8 @@ public class CapitalsourceController extends AbstractController {
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 		final CreateCapitalsourceResponse response = new CreateCapitalsourceResponse();
 
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
@@ -235,17 +235,17 @@ public class CapitalsourceController extends AbstractController {
 
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
+
 		if (validationResult.isValid()) {
 			this.capitalsourceService.updateCapitalsource(capitalsource);
 		} else {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
+		return response;
 
-		return null;
 	}
 
 	@RequestMapping(value = "deleteCapitalsourceById/{id}", method = { RequestMethod.DELETE })
