@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.monthlysettlement.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementDeleteResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementListResponse;
@@ -92,6 +93,83 @@ public class MonthlySettlementController extends AbstractController {
 		this.registerBeanMapper(new ValidationItemTransportMapper());
 	}
 
+	@RequestMapping(value = "getAvailableMonth", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public GetAvailableMonthResponse getAvailableMonth() {
+		return this.getAvailableMonth(null, null);
+	}
+
+	@RequestMapping(value = "getAvailableMonth/{year}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public GetAvailableMonthResponse getAvailableMonth(@PathVariable(value = "year") final Short year) {
+		return this.getAvailableMonth(year, null);
+	}
+
+	@RequestMapping(value = "getAvailableMonth/{year}/{month}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public GetAvailableMonthResponse getAvailableMonth(@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
+		final UserID userId = super.getUserId();
+		final GetAvailableMonthResponse response = new GetAvailableMonthResponse();
+
+		final List<Short> allYears = this.monthlySettlementService.getAllYears(userId);
+		List<Month> allMonth = null;
+
+		Short year = requestYear;
+		Month month = this.getMonth(requestMonth);
+
+		// only continue if settlements where made at all
+		if (allYears != null && !allYears.isEmpty()) {
+
+			// validate if settlements are recorded for the given year, if not fall back to
+			// the last recorded one
+			if (year == null || !allYears.contains(year)) {
+				year = allYears.get(allYears.size() - 1);
+				month = null;
+			}
+
+			allMonth = this.monthlySettlementService.getAllMonth(userId, year);
+
+			if (allMonth != null && !allMonth.isEmpty()) {
+				response.setAllMonth(allMonth.stream().map(m -> (short) m.getValue())
+						.collect(Collectors.toCollection(ArrayList::new)));
+				if (month != null && allMonth.contains(month)) {
+					response.setMonth((short) month.getValue());
+				}
+			}
+			response.setYear(year);
+			response.setAllYears(allYears);
+		}
+
+		return response;
+	}
+
+	@RequestMapping(value = "showMonthlySettlementListV2/{year}/{month}", method = { RequestMethod.GET })
+	@RequiresAuthorization
+	public ShowMonthlySettlementListResponse showMonthlySettlementListV2(
+			@PathVariable(value = "year") final Short requestYear,
+			@PathVariable(value = "month") final Short requestMonth) {
+		final UserID userId = super.getUserId();
+		final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
+
+		final Short year = requestYear;
+		final Month month = this.getMonth(requestMonth);
+
+		List<MonthlySettlementTransport> monthlySettlementTransports = null;
+
+		// only continue if settlements where made at all
+		if (month != null && year != null) {
+
+			final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+					.getAllMonthlySettlementsByYearMonth(userId, year, month);
+
+			monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+			response.setMonthlySettlementTransports(monthlySettlementTransports);
+		}
+
+		return response;
+	}
+
 	@RequestMapping(value = "showMonthlySettlementList", method = { RequestMethod.GET })
 	@RequiresAuthorization
 	public ShowMonthlySettlementListResponse showMonthlySettlementList() {
@@ -124,7 +202,8 @@ public class MonthlySettlementController extends AbstractController {
 		// only continue if settlements where made at all
 		if (allYears != null && !allYears.isEmpty()) {
 
-			// validate if settlements are recorded for the given year, if not fall back to the
+			// validate if settlements are recorded for the given year, if not fall back to
+			// the
 			// last recorded one
 			if (year == null || !allYears.contains(year)) {
 				year = allYears.get(allYears.size() - 1);
@@ -244,7 +323,8 @@ public class MonthlySettlementController extends AbstractController {
 		boolean editMode = false;
 
 		if (year.equals(nextYear) && month.equals(nextMonth)) {
-			// if the specified month is the month after the last settled month, it goes like the
+			// if the specified month is the month after the last settled month, it goes
+			// like the
 			// default selection
 			selectedMonthIsNextSettlementMonth = true;
 		} else {
@@ -272,8 +352,8 @@ public class MonthlySettlementController extends AbstractController {
 				monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
 				/*
 				 * I could be, that for an already fixed month, a "new" capitalsource gets valid
-				 * afterwards. To make it possible to create a settlement for this new source, add
-				 * it here.
+				 * afterwards. To make it possible to create a settlement for this new source,
+				 * add it here.
 				 */
 				final List<CapitalsourceID> capitalsourceIds = monthlySettlements.stream()
 						.map(ms -> ms.getCapitalsource().getId()).collect(Collectors.toCollection(ArrayList::new));
@@ -421,15 +501,14 @@ public class MonthlySettlementController extends AbstractController {
 		final ValidationResult validationResult = this.monthlySettlementService
 				.upsertMonthlySettlements(monthlySettlements);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
+
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
-
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "deleteMonthlySettlement/{year}/{month}", method = { RequestMethod.DELETE })

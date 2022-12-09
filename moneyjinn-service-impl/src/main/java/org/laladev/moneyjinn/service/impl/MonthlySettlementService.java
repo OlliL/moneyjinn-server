@@ -88,7 +88,8 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 				monthlySettlement.getUser().getId(), monthlySettlement.getGroup().getId(),
 				monthlySettlement.getCapitalsource().getId());
 
-		// You must not change, or create MonthlySettlements for Capitalsources not belonging to
+		// You must not change, or create MonthlySettlements for Capitalsources not
+		// belonging to
 		// you.
 		if (capitalsource == null || !capitalsource.getUser().getId().equals(monthlySettlement.getUser().getId())) {
 			validationResult.addValidationResultItem(
@@ -96,7 +97,10 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		}
 
 		final BigDecimal amount = monthlySettlement.getAmount();
-		if ((amount.signum() == 0 ? 1 : amount.precision() - amount.scale()) > 6) {
+		if (amount == null) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED));
+		} else if ((amount.signum() == 0 ? 1 : amount.precision() - amount.scale()) > 6) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.AMOUNT_TO_BIG));
 		}
