@@ -278,6 +278,7 @@ public class MoneyflowController extends AbstractController {
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 		} else {
+			response.setResult(true);
 			final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflows(userId, moneyflowSearchParams);
 			if (moneyflows != null && !moneyflows.isEmpty()) {
 
