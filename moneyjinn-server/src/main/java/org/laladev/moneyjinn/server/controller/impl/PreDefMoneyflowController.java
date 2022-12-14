@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.AbstractCreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowRequest;
+import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowCreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowDeletePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowEditPreDefMoneyflowResponse;
@@ -145,7 +146,8 @@ public class PreDefMoneyflowController extends AbstractController {
 
 	@RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public ValidationResponse createPreDefMoneyflow(@RequestBody final CreatePreDefMoneyflowRequest request) {
+	public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
+			@RequestBody final CreatePreDefMoneyflowRequest request) {
 		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
 		final UserID userId = super.getUserId();
 
@@ -154,15 +156,18 @@ public class PreDefMoneyflowController extends AbstractController {
 
 		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
 
+		final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
+		response.setResult(validationResult.isValid());
+
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
+		} else {
+			final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
+					.createPreDefMoneyflow(preDefMoneyflow);
+			response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
 		}
-		this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
@@ -237,7 +242,8 @@ public class PreDefMoneyflowController extends AbstractController {
 
 		final List<Capitalsource> capitalsources = this.capitalsourceService
 				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-		// if the Capitalsource is no longer valid, it was not returned by the service call above
+		// if the Capitalsource is no longer valid, it was not returned by the service
+		// call above
 		// but must be in the list to make it selectable.
 		if (preDefMoneyflow != null) {
 			Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
@@ -263,7 +269,8 @@ public class PreDefMoneyflowController extends AbstractController {
 
 		final List<Contractpartner> contractpartners = this.contractpartnerService
 				.getAllContractpartnersByDateRange(userId, today, today);
-		// if the Contractpartner is no longer valid, it was not returned by the service call above
+		// if the Contractpartner is no longer valid, it was not returned by the service
+		// call above
 		// but must be in the list to make it selectable.
 		if (preDefMoneyflow != null) {
 			Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
