@@ -56,7 +56,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 	public void test_default_FullResponseObject() throws Exception {
 		final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
 
-		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -139,7 +139,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 	public void test_AuthorizationRequired_1_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
 	}
 
@@ -167,7 +167,7 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
 		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
 
-		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowMonthlySettlementListResponse.class);
 
 		Assertions.assertEquals(expected, actual);

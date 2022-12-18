@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +19,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
@@ -54,7 +54,7 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
 	private ShowPreDefMoneyflowListResponse getCompleteResponse() {
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 
 		final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
 		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
@@ -71,7 +71,7 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
 		final ShowPreDefMoneyflowListResponse expected = this.getCompleteResponse();
 
-		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPreDefMoneyflowListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -80,12 +80,12 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 	@Test
 	public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID), setting);
 
-		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPreDefMoneyflowListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -107,7 +107,7 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 	@Test
 	public void test_initialP_responseObjectcontainingP() throws Exception {
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 
 		final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
 		preDefMoneyflowTransports.add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
@@ -122,7 +122,7 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 	@Test
 	public void test_initialX_responseObjectContainingNoPreDefMoneyflow() throws Exception {
 		final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-		expected.setInitials(new HashSet<Character>(Arrays.asList('P', 'Q')));
+		expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
 
 		final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/X", this.method, false,
 				ShowPreDefMoneyflowListResponse.class);

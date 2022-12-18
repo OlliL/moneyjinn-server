@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +25,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 
@@ -88,12 +88,14 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 				.forNewMonthlySettlement().build();
 		request.setMonthlySettlementTransports(Arrays.asList(monthlySettlementTransport));
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
 
 		final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransport.getYear(),
 						Month.of(monthlySettlementTransport.getMonth().intValue()));
 
+		Assertions.assertTrue(actual.getResult());
 		Assertions.assertNotNull(monthlySettlements);
 		Assertions.assertEquals(1, monthlySettlements.size());
 		Assertions.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.iterator().next().getYear());
@@ -143,12 +145,14 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 
 		request.setMonthlySettlementTransports(monthlySettlementTransports);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
 
 		final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.get(0).getYear(),
 						Month.of(monthlySettlementTransports.get(0).getMonth().intValue()));
 
+		Assertions.assertTrue(actual.getResult());
 		Assertions.assertNotNull(monthlySettlements);
 		Assertions.assertEquals(3, monthlySettlements.size());
 		Assertions.assertEquals(0,

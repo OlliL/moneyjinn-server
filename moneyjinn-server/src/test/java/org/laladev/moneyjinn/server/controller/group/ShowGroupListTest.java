@@ -74,7 +74,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 	public void test_default_FullResponseObject() throws Exception {
 		final ShowGroupListResponse expected = this.getCompleteResponse();
 
-		final ShowGroupListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowGroupListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowGroupListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -88,7 +88,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowGroupListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowGroupListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowGroupListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -175,7 +175,7 @@ public class ShowGroupListTest extends AbstractControllerTest {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/", this.method, false, ErrorResponse.class);
+		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
 
 		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 

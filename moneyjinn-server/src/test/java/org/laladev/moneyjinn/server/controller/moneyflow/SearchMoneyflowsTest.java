@@ -72,6 +72,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 		contractpartnerTransports.add(new ContractpartnerTransportBuilder().forContractpartner4().build());
 		expected.setContractpartnerTransports(contractpartnerTransports);
 
+		expected.setResult(true);
+
 		return expected;
 	}
 

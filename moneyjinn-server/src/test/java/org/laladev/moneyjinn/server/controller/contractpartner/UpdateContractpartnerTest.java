@@ -3,8 +3,6 @@ package org.laladev.moneyjinn.server.controller.contractpartner;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class UpdateContractpartnerTest extends AbstractControllerTest {
 
@@ -122,11 +122,13 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 		transport.setName("hugo");
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
 
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
+		Assertions.assertTrue(actual.getResult());
 		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, contractpartner.getId().getId());
 		Assertions.assertEquals("hugo", contractpartner.getName());
 	}
@@ -143,11 +145,13 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 		transport.setName("hugo");
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
 
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
+		Assertions.assertTrue(actual.getResult());
 		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, contractpartner.getId().getId());
 		Assertions.assertEquals("hugo", contractpartner.getName());
 	}
@@ -164,11 +168,13 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 		transport.setName("hugo");
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
 
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 				contractpartnerId);
 
+		Assertions.assertTrue(actual.getResult());
 		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID, contractpartner.getId().getId());
 		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_NAME, contractpartner.getName());
 	}
@@ -191,7 +197,10 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
 		request.setContractpartnerTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+
+		Assertions.assertTrue(actual.getResult());
 
 	}
 }

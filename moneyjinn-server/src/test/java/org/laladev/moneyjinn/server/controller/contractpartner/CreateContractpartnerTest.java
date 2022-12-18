@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class CreateContractpartnerTest extends AbstractControllerTest {
 
@@ -115,6 +115,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
@@ -141,6 +142,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
@@ -168,6 +170,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
@@ -201,6 +204,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);
@@ -250,6 +254,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
 		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
 		expected.setContractpartnerId(1l);
+		expected.setResult(true);
 
 		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateContractpartnerResponse.class);

@@ -73,7 +73,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 	public void test_default_FullResponseObject() throws Exception {
 		final ShowPostingAccountListResponse expected = this.getCompleteResponse();
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPostingAccountListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -101,7 +101,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 		final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
 		this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.ADMIN_ID), setting);
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPostingAccountListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -185,7 +185,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
 		final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
 
-		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("/", this.method, false,
+		final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
 				ShowPostingAccountListResponse.class);
 
 		Assertions.assertEquals(expected, actual);
