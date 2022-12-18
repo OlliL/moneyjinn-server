@@ -42,6 +42,7 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.CreateEtfFlowRequest;
+import org.laladev.moneyjinn.core.rest.model.etf.CreateEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ShowCreateEtfFlowResponse;
@@ -226,6 +227,7 @@ public class EtfController extends AbstractController {
 			final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
 			final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
 
+			response.setResult(Boolean.TRUE);
 			response.setNewBuyPrice(newBuyPrice);
 			response.setSellPrice(sellPrice);
 			response.setTransactionCosts(transactionCosts);
@@ -280,22 +282,25 @@ public class EtfController extends AbstractController {
 
 	@RequestMapping(value = "createEtfFlow", method = { RequestMethod.POST })
 	@RequiresAuthorization
-	public ValidationResponse createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
+	public CreateEtfFlowResponse createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
 
 		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
 		etfFlow.setId(null);
 		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
 
+		final CreateEtfFlowResponse response = new CreateEtfFlowResponse();
+		response.setResult(validationResult.isValid());
+
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
-		this.etfService.createEtfFlow(etfFlow);
-		return null;
+		final EtfFlowID etfFlowId = this.etfService.createEtfFlow(etfFlow);
+		response.setEtfFlowId(etfFlowId.getId());
+
+		return response;
 	}
 
 	@RequestMapping(value = "updateEtfFlow", method = { RequestMethod.PUT })
@@ -305,16 +310,16 @@ public class EtfController extends AbstractController {
 		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
 		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
 		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
 			return response;
 		}
 
 		this.etfService.updateEtfFlow(etfFlow);
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "deleteEtfFlow/{id}", method = { RequestMethod.DELETE })
