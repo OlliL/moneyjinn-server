@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationIntrospector;
 
 public class MyObjectMapper extends ObjectMapper {
 
@@ -41,6 +41,6 @@ public class MyObjectMapper extends ObjectMapper {
 		super.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 		super.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		super.setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
+		super.setAnnotationIntrospector(new JakartaXmlBindAnnotationIntrospector(TypeFactory.defaultInstance()));
 	}
 }

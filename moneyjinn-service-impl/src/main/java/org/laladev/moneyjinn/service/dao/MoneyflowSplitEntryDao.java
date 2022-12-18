@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.service.dao;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowSplitEntryDaoMapper;

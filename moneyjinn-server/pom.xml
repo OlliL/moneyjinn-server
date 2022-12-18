@@ -5,25 +5,7 @@
 		<artifactId>moneyjinn-server-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
 	<artifactId>moneyjinn-server</artifactId>
-
-	<properties>
-		<spring-security.version>5.8.0</spring-security.version>
-	</properties>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-bom</artifactId>
-				<version>${spring-security.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
@@ -69,7 +51,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -88,8 +70,8 @@
 			<artifactId>mybatis-spring</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
+			<groupId>jakarta.inject</groupId>
+			<artifactId>jakarta.inject-api</artifactId>
 		</dependency>
 		<!-- TEST SCOPE -->
 		<dependency>

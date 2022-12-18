@@ -41,7 +41,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.core.rest.model.report.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;

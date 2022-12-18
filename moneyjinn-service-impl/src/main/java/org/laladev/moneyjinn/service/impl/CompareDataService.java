@@ -49,8 +49,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.laladev.moneyjinn.core.error.ErrorCode;

@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.tika.Tika;
 import org.laladev.moneyjinn.core.error.ErrorCode;

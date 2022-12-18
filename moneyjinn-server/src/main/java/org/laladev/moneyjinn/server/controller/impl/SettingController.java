@@ -24,7 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractShowSettingsResponse;

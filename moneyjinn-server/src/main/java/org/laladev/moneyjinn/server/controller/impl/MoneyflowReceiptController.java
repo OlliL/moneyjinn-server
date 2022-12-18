@@ -26,7 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import java.util.Base64;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;

@@ -28,8 +28,8 @@ package org.laladev.moneyjinn.service.dao;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.service.dao.mapper.ICompareDataFormatDaoMapper;

@@ -24,7 +24,7 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;

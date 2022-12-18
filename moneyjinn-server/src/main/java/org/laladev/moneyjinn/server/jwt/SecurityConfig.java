@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.server.jwt;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,21 +37,22 @@ public class SecurityConfig {
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS,"/moneyflow/server/**").permitAll()
-                .antMatchers("/moneyflow/server/user/login").permitAll()
-                .antMatchers("/moneyflow/server/user/test").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-                .antMatchers("/moneyflow/server/report/getAvailableMonth").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/report/getAvailableMonth/*").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/report/getAvailableMonth/*/*").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/report/listReportsV2").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/report/listReportsV2/*").hasAuthority("LOGIN")
-                .antMatchers("/moneyflow/server/report/listReportsV2/*/*").hasAuthority("LOGIN")
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
+            .apply(new JwtConfigurer(this.jwtTokenProvider))
             .and()
-            .apply(new JwtConfigurer(this.jwtTokenProvider));
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS,"/moneyflow/server/**").permitAll()
+                .requestMatchers("/moneyflow/server/user/login").permitAll()
+                .requestMatchers("/moneyflow/server/user/test").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+                .requestMatchers("/moneyflow/server/report/getAvailableMonth").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/report/getAvailableMonth/*").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/report/getAvailableMonth/*/*").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/report/listReportsV2").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/report/listReportsV2/*").hasAuthority("LOGIN")
+                .requestMatchers("/moneyflow/server/report/listReportsV2/*/*").hasAuthority("LOGIN")
+                .requestMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+            );
         //@formatter:on
 		return http.build();
 	}

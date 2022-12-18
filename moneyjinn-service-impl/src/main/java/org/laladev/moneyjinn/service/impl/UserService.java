@@ -31,9 +31,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -52,6 +49,9 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @EnableCaching

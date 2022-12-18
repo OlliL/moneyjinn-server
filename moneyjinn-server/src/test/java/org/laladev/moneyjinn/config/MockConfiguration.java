@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.config;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.server.main.BufferFilter;
 import org.springframework.context.annotation.Bean;

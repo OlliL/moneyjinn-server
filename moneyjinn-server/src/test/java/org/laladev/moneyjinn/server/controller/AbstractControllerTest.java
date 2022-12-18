@@ -8,7 +8,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,20 +95,20 @@ public abstract class AbstractControllerTest extends AbstractTest {
 		// uriParameters);
 		final String uri = "/moneyflow/server/" + this.getUsecase() + uriParameters;
 
-		switch (httpMethod) {
-		case GET:
+		switch (httpMethod.name()) {
+		case "GET":
 			builder = MockMvcRequestBuilders.get(uri);
 			break;
-		case DELETE:
+		case "DELETE":
 			builder = MockMvcRequestBuilders.delete(uri);
 			break;
-		case PUT:
+		case "PUT":
 			builder = MockMvcRequestBuilders.put(uri).content(body);
 			break;
-		case POST:
+		case "POST":
 			builder = MockMvcRequestBuilders.post(uri).content(body);
 			break;
-		case OPTIONS:
+		case "OPTIONS":
 			builder = MockMvcRequestBuilders.options(uri);
 			break;
 		default:

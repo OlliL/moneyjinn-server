@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.service.dao;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper;

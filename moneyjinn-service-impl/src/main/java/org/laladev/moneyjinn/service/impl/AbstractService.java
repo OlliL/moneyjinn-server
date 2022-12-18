@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.time.LocalDate;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.springframework.cache.Cache;

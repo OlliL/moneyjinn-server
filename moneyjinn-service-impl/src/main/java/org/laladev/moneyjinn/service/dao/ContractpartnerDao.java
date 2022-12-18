@@ -30,8 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper;

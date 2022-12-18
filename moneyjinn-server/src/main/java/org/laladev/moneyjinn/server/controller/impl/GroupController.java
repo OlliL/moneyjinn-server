@@ -27,7 +27,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.group.AbstractGroupResponse;

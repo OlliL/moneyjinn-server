@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.config.MockConfiguration;

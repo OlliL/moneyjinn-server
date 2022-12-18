@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;

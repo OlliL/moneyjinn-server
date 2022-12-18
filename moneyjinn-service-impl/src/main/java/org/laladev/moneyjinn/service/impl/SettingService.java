@@ -34,8 +34,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessID;
