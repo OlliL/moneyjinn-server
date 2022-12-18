@@ -26,6 +26,8 @@ package org.laladev.moneyjinn.server.main;
 
 import java.io.IOException;
 
+import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -35,21 +37,17 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
 /**
- * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}
- * where it would be normally not be possible. Unfortunately the Interceptor is needed because
- * raised Exceptions here are NOT handled by {@see ErrorResponseExceptionHandler}
+ * This filter buffers the Body of the request to access it in the
+ * {@see AuthenticationInterceptor} where it would be normally not be possible.
+ * Unfortunately the Interceptor is needed because raised Exceptions here are
+ * NOT handled by {@see ErrorResponseExceptionHandler}
  *
  * @author olivleh1
  *
  */
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class BufferFilter implements Filter {
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {

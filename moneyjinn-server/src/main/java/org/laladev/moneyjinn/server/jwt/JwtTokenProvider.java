@@ -1,13 +1,11 @@
 package org.laladev.moneyjinn.server.jwt;
 
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +24,12 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenProvider {
-	@Value("${security.jwt.token.secret-key}")
-	private String secretKey;
+	private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 	@Value("${security.jwt.token.expiration-time-in-ms}")
 	private long validityInMilliseconds;
 	@Value("${security.jwt.token.refresh-expiration-time-in-ms}")
@@ -38,11 +37,6 @@ public class JwtTokenProvider {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-
-	@PostConstruct
-	protected void init() {
-		this.secretKey = Base64.getEncoder().encodeToString(this.secretKey.getBytes());
-	}
 
 	public String createToken(final String username, final List<String> roles) {
 		final Claims claims = Jwts.claims().setSubject(username);
@@ -53,7 +47,7 @@ public class JwtTokenProvider {
 				.setClaims(claims)//
 				.setIssuedAt(now)//
 				.setExpiration(validity)//
-				.signWith(SignatureAlgorithm.HS512, this.secretKey)//
+				.signWith(this.secretKey)//
 				.compact();
 	}
 
@@ -66,7 +60,7 @@ public class JwtTokenProvider {
 				.setClaims(claims)//
 				.setIssuedAt(now)//
 				.setExpiration(validity)//
-				.signWith(SignatureAlgorithm.HS512, this.secretKey)//
+				.signWith(this.secretKey)//
 				.compact();
 	}
 
