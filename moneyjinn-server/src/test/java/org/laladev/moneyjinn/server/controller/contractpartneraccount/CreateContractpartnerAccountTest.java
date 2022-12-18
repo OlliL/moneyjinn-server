@@ -3,15 +3,13 @@ package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
@@ -25,6 +23,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 
@@ -66,12 +66,12 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 		validationItems
 				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
-		final ValidationResponse expected = new ValidationResponse();
+		final CreateContractpartnerAccountResponse expected = new CreateContractpartnerAccountResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
+				false, CreateContractpartnerAccountResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 
@@ -131,7 +131,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_SuccessfullNewIdReturned() throws Exception {
 		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
 
 		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
@@ -139,7 +139,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 
 		request.setContractpartnerAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
+				false, CreateContractpartnerAccountResponse.class);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
@@ -148,6 +149,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 
 		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, contractpartnerAccount.getId().getId());
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, actual.getcontractpartnerAccountId());
+
 	}
 
 	@Test
@@ -160,7 +163,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 		transport.setBankCode("ABCDEFGH");
 		request.setContractpartnerAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
+				false, CreateContractpartnerAccountResponse.class);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
@@ -169,6 +173,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 
 		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, contractpartnerAccount.getId().getId());
+		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, actual.getcontractpartnerAccountId());
 		Assertions.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
