@@ -6,7 +6,7 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public class AbstractShowReportGraphResponse extends AbstractResponse {
 	@XmlElement(name = "postingAccountAmountTransport")

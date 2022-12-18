@@ -26,7 +26,7 @@ package org.laladev.moneyjinn.core.rest.model.contractpartner;
 //SUCH DAMAGE.
 //
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createContractpartnerRequest")
 public class CreateContractpartnerRequest extends AbstractContractpartnerRequest {

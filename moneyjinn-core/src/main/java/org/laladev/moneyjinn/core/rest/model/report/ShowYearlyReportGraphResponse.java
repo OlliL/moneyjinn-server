@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showYearlyReportGraphResponse")
 public class ShowYearlyReportGraphResponse extends AbstractShowReportGraphResponse {

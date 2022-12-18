@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createContractpartnerAccountRequest")
 public class CreateContractpartnerAccountRequest extends AbstractContractpartnerAccountRequest {

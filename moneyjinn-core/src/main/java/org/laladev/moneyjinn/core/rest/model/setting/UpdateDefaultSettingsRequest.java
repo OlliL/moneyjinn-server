@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.core.rest.model.setting;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "updateDefaultSettingsRequest")
 public class UpdateDefaultSettingsRequest extends AbstractUpdateSettingsRequest {

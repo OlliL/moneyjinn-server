@@ -36,8 +36,8 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNo
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "compareDataResponse")
 public class CompareDataResponse extends AbstractResponse {

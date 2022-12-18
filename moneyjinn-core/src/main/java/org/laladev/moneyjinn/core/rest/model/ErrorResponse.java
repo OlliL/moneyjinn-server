@@ -27,7 +27,7 @@
 //
 package org.laladev.moneyjinn.core.rest.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "error")
 public class ErrorResponse {

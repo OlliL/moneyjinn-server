@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.core.rest.model.event;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showEventListResponse")
 public class ShowEventListResponse extends AbstractResponse {

@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.core.rest.model.capitalsource;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createCapitalsourceResponse")
 public class CreateCapitalsourceResponse extends ValidationResponse {

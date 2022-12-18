@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractUpdateUserResponse extends AbstractCreateUserResponse {
 	@XmlElement(name = "accessRelationTransport")

@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;

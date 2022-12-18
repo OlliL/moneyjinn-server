@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "validationItemTransport")
 public class ValidationItemTransport {

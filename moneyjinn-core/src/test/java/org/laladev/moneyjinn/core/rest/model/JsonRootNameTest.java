@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.core.rest.model;
 
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

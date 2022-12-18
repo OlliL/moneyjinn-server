@@ -30,7 +30,7 @@ package org.laladev.moneyjinn.core.rest.model.importedbalance;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createImportedBalanceRequest")
 public class CreateImportedBalanceRequest extends AbstractRequest {

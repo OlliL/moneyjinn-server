@@ -8,8 +8,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showUserListResponse")
 public class ShowUserListResponse extends AbstractResponse {

@@ -5,7 +5,7 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractCreateUserResponse extends ValidationResponse {
 	@XmlElement(name = "groupTransport")

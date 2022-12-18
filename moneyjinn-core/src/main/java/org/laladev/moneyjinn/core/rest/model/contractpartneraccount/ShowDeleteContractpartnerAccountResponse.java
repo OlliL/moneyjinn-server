@@ -26,7 +26,7 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 //SUCH DAMAGE.
 //
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showDeleteContractpartnerAccountResponse")
 public class ShowDeleteContractpartnerAccountResponse extends AbstractContractpartnerAccountResponse {

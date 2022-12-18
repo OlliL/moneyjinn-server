@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>

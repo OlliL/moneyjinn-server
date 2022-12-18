@@ -1,6 +1,6 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 

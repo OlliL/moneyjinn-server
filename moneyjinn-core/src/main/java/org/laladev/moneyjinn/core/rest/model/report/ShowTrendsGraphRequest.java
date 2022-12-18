@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showTrendsGraphRequest")
 public class ShowTrendsGraphRequest extends AbstractRequest {

@@ -31,8 +31,8 @@ import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {

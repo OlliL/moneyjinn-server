@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showDeleteMoneyflowResponse")
 public class ShowDeleteMoneyflowResponse extends AbstractResponse {

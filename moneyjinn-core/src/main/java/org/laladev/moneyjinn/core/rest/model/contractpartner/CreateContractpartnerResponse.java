@@ -28,7 +28,7 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //SUCH DAMAGE.
 //
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createContractpartnerResponse")
 public class CreateContractpartnerResponse extends ValidationResponse {

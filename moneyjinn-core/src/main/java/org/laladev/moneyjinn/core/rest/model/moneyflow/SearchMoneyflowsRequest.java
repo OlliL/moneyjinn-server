@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "searchMoneyflowsRequest")
 public class SearchMoneyflowsRequest extends AbstractRequest {

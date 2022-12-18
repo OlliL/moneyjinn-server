@@ -30,7 +30,7 @@ package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createImportedMoneyflowRequest")
 public class CreateImportedMoneyflowRequest extends AbstractRequest {

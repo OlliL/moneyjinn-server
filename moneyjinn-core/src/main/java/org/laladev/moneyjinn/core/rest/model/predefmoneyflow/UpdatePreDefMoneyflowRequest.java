@@ -26,7 +26,7 @@ package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 //SUCH DAMAGE.
 //
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "updatePreDefMoneyflowRequest")
 public class UpdatePreDefMoneyflowRequest extends AbstractPreDefMoneyflowRequest {

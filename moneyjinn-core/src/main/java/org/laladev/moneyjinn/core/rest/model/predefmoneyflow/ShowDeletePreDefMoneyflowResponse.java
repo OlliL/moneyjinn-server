@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>

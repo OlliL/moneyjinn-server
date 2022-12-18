@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlElement;
 //SUCH DAMAGE.
 //
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showCreateContractpartnerResponse")
 public class ShowCreateContractpartnerResponse {

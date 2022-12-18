@@ -8,8 +8,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>

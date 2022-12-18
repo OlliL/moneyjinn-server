@@ -27,7 +27,7 @@ package org.laladev.moneyjinn.core.rest.model.etf;
 
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 

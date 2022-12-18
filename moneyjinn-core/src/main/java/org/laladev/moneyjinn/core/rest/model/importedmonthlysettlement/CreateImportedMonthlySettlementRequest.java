@@ -30,7 +30,7 @@ package org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createImportedMonthlySettlementRequest")
 public class CreateImportedMonthlySettlementRequest extends AbstractRequest {

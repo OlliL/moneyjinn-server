@@ -2,7 +2,7 @@ package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 

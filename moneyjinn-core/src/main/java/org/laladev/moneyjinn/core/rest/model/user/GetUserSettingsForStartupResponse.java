@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.core.rest.model.user;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "getUserSettingsForStartupResponse")
 public class GetUserSettingsForStartupResponse extends AbstractResponse {

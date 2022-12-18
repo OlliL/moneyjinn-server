@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.core.rest.model.monthlysettlement;
 import java.util.List;
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "getAvailableMonthResponse")
 public class GetAvailableMonthResponse {

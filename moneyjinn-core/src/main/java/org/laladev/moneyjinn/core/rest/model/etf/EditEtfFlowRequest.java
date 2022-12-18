@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "editEtfFlowRequest")
 public class EditEtfFlowRequest extends AbstractEtfFlowRequest {
