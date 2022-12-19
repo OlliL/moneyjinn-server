@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +27,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class CreateCapitalsourceTest extends AbstractControllerTest {
 
@@ -138,7 +138,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
 
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
@@ -147,6 +147,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
@@ -174,6 +175,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
@@ -202,6 +204,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
@@ -219,7 +222,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_checkDefaults_SuccessfullNoContent() throws Exception {
+	public void test_checkDefaults_Successfull() throws Exception {
 		final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
 
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
@@ -233,6 +236,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
+		expected.setResult(true);
 
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);
@@ -275,6 +279,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
 		final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
 		expected.setCapitalsourceId(1L);
+		expected.setResult(true);
 
 		final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method, request, false,
 				CreateCapitalsourceResponse.class);

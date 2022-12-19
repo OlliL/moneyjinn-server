@@ -33,7 +33,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 	private HttpHeadersBuilder httpHeadersBuilder;
 
 	private <T> T callUsecase(final ZonedDateTime dateTime, final String userName, final String userPassword,
-			final boolean noResult, final Class<T> clazz, HttpHeaders httpHeaders) throws Exception {
+			final boolean isError, final Class<T> clazz, HttpHeaders httpHeaders) throws Exception {
 
 		final String uri = "/moneyflow/server/user/getUserSettingsForStartup/admin";
 
@@ -43,8 +43,8 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		}
 
 		ResultMatcher status = status().isOk();
-		if (noResult) {
-			status = status().isNoContent();
+		if (isError) {
+			status = status().isForbidden();
 		}
 
 		final MvcResult result = this.mvc.perform(MockMvcRequestBuilders.get(uri).headers(httpHeaders)
@@ -54,15 +54,11 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final String content = result.getResponse().getContentAsString();
 		Assertions.assertNotNull(content);
 
-		if (!noResult) {
-			Assertions.assertTrue(content.length() > 0);
+		Assertions.assertTrue(content.length() > 0);
 
-			final T actual = this.objectMapper.readValue(content, clazz);
+		final T actual = this.objectMapper.readValue(content, clazz);
 
-			return actual;
-		}
-		Assertions.assertTrue(content.length() == 0);
-		return null;
+		return actual;
 	}
 
 	@Test
@@ -81,7 +77,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now();
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = "Wrong Password";
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
@@ -93,7 +89,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now();
 		final String userName = "Non Existing";
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
@@ -105,7 +101,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now().minusMinutes(16l);
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
@@ -117,7 +113,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now().plusMinutes(17l);
 		final String userName = UserTransportBuilder.ADMIN_NAME;
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
@@ -131,7 +127,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final String userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -147,7 +143,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
 				RESTAuthorization.AUTH_HEADER_PREFIX + RESTAuthorization.AUTH_HEADER_SEPERATOR + "aaaaa");
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -163,7 +159,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
 				RESTAuthorization.AUTH_HEADER_PREFIX + "klaus" + RESTAuthorization.AUTH_HEADER_SEPERATOR);
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -179,7 +175,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
 				"XXX" + "klaus" + RESTAuthorization.AUTH_HEADER_SEPERATOR + "aaa");
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -194,7 +190,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, RESTAuthorization.AUTH_HEADER_PREFIX + "klausaaa");
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -209,7 +205,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, RESTAuthorization.AUTH_HEADER_PREFIX);
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -224,7 +220,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final HttpHeaders httpHeaders = this.httpHeadersBuilder.getDateHeader(zonedDateTime);
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME, "");
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -240,7 +236,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		httpHeaders.add(RESTAuthorization.AUTH_HEADER_NAME,
 				RESTAuthorization.AUTH_HEADER_PREFIX + RESTAuthorization.AUTH_HEADER_SEPERATOR);
 
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
@@ -252,7 +248,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now();
 		final String userName = UserTransportBuilder.USER2_NAME;
 		final String userPassword = UserTransportBuilder.USER2_PASSWORD;
-		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, false,
+		final ErrorResponse response = this.callUsecase(zonedDateTime, userName, userPassword, true,
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);

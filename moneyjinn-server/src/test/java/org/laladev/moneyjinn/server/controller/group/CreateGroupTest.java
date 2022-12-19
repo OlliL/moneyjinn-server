@@ -3,8 +3,6 @@ package org.laladev.moneyjinn.server.controller.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +19,8 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
+
+import jakarta.inject.Inject;
 
 public class CreateGroupTest extends AbstractControllerTest {
 
@@ -121,7 +121,7 @@ public class CreateGroupTest extends AbstractControllerTest {
 		final CreateGroupRequest request = new CreateGroupRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 

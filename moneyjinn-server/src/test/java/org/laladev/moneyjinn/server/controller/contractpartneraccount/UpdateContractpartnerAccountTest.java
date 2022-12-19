@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +25,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
@@ -125,13 +125,16 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
 		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
 		request.setContractpartnerAccountTransport(transport2);
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
 				contractpartnerAccount.getId().getId());
-		Assertions.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(transport2.getAccountNumber(),
+				contractpartnerAccount.getBankAccount().getAccountNumber());
 		Assertions.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
@@ -149,18 +152,21 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
 		final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
 		request.setContractpartnerAccountTransport(transport2);
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
 				contractpartnerAccount.getId().getId());
-		Assertions.assertEquals(transport2.getAccountNumber(), contractpartnerAccount.getBankAccount().getAccountNumber());
+		Assertions.assertEquals(transport2.getAccountNumber(),
+				contractpartnerAccount.getBankAccount().getAccountNumber());
 		Assertions.assertEquals(transport2.getBankCode(), contractpartnerAccount.getBankAccount().getBankCode());
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
 				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
@@ -173,7 +179,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		transport.setBankCode("2");
 		request.setContractpartnerAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -198,7 +206,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		transport.setBankCode("ABCDEFGH");
 		request.setContractpartnerAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -232,7 +242,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 		Assertions.assertEquals(2, contractpartner1Accounts.size());
 		Assertions.assertTrue(contractpartner2Accounts.isEmpty());
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		contractpartner1Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
 				contractpartner1Id);
