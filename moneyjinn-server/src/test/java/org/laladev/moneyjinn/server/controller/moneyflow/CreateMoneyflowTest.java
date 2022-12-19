@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +47,8 @@ import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class CreateMoneyflowTest extends AbstractControllerTest {
 
@@ -348,7 +348,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT,
 				ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 
-		// make sure, The validity period of Capitalsource and Contractpartner where not adjusted
+		// make sure, The validity period of Capitalsource and Contractpartner where not
+		// adjusted
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
@@ -382,7 +383,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT,
 				ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 
-		// make sure, The validity period of Capitalsource and Contractpartner where not adjusted
+		// make sure, The validity period of Capitalsource and Contractpartner where not
+		// adjusted
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
@@ -647,7 +649,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		mseTransport1.setComment("");
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
 	}
@@ -663,7 +666,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 		mseTransport2.setAmount(transport.getAmount());
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
@@ -680,7 +684,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 		mseTransport2.setAmount(transport.getAmount());
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
@@ -695,7 +700,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		mseTransport1.setComment(null);
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.COMMENT_IS_NOT_SET);
 	}
@@ -711,7 +717,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 		mseTransport2.setAmount(transport.getAmount());
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.AMOUNT_IS_ZERO);
 	}
@@ -726,12 +733,12 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		mseTransport1.setPostingaccountid(null);
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}
 
-	// TODO implement me
 	@Test
 	public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
 		final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
@@ -742,7 +749,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
 		mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
 		final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
 
-		// Hack because error is reported for the MoneyflowSplitEntry which has ID null set
+		// Hack because error is reported for the MoneyflowSplitEntry which has ID null
+		// set
 		transport.setId(null);
 		this.testError(transport, Arrays.asList(mseTransport1, mseTransport2), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 	}

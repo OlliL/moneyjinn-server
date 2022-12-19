@@ -35,8 +35,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleRequest;
@@ -81,12 +79,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.inject.Inject;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/etf/")
 // TODO: Multi-User
 // TODO: Multi-ETF
-// TODO: Think about how to display the portfolio when sales happened (FIFO)
 // TODO: Unit-Testing
 public class EtfController extends AbstractController {
 
