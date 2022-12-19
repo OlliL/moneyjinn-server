@@ -69,7 +69,7 @@ public class ShowEditPostingAccountTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent(
 				"/" + PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID, this.method, false, ErrorResponse.class);
 
-		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 

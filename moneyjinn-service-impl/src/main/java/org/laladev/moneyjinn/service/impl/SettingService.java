@@ -34,9 +34,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -63,6 +60,9 @@ import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.SettingTypeConverter;
 import org.springframework.util.Assert;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -308,7 +308,8 @@ public class SettingService extends AbstractService implements ISettingService {
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE));
 		if (settingData != null && settingData.getValue() != null) {
-			return new ClientCompareDataSelectedCapitalsource(new CapitalsourceID(new Long(settingData.getValue())));
+			return new ClientCompareDataSelectedCapitalsource(
+					new CapitalsourceID(Long.valueOf(settingData.getValue())));
 		}
 		return null;
 	}
@@ -332,7 +333,7 @@ public class SettingService extends AbstractService implements ISettingService {
 		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
 				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT));
 		if (settingData != null && settingData.getValue() != null) {
-			return new ClientCompareDataSelectedFormat(new CompareDataFormatID(new Long(settingData.getValue())));
+			return new ClientCompareDataSelectedFormat(new CompareDataFormatID(Long.valueOf(settingData.getValue())));
 		}
 		return null;
 	}

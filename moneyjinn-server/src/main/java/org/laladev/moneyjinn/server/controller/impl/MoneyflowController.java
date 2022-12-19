@@ -34,8 +34,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
@@ -97,11 +95,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.inject.Inject;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/moneyflow/")
 public class MoneyflowController extends AbstractController {
-	private static final Short SHORT_1 = new Short("1");
+	private static final Short SHORT_1 = Short.valueOf("1");
 	@Inject
 	private IUserService userService;
 	@Inject

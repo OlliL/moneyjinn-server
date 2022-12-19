@@ -73,9 +73,9 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(2), clientDisplayedLanguageSetting.getSetting());
 		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(10), clientMaxRowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assertions.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
@@ -103,9 +103,9 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(2), clientDisplayedLanguageSetting.getSetting());
 		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(10), clientMaxRowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assertions.assertEquals(UserTransportBuilder.ADMIN_PASSWORD_SHA1, user.getPassword());
@@ -133,9 +133,9 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(2), clientDisplayedLanguageSetting.getSetting());
 		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(10), clientMaxRowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(new UserID(accessId.getId()));
 		Assertions.assertEquals(UserTransportBuilder.USER2_PASSWORD_SHA1, user.getPassword());
@@ -147,7 +147,7 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 		final ErrorResponse response = super.callUsecaseWithContent("", this.method, request, false,
 				ErrorResponse.class);
 
-		Assertions.assertEquals(new Integer(ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -167,9 +167,9 @@ public class UpdatePersonalSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(2), clientDisplayedLanguageSetting.getSetting());
 		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(10), clientMaxRowsSetting.getSetting());
 
 		final User user = this.userService.getUserById(accessId);
 		Assertions.assertEquals(UserTransportBuilder.USER2_PASSWORD_SHA1, user.getPassword());

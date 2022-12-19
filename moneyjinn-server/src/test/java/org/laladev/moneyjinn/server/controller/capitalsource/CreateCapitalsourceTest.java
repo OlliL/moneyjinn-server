@@ -292,7 +292,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
 				capitalsourceId);
 
-		Assertions.assertEquals(new Long(1l), capitalsource.getId().getId());
+		Assertions.assertEquals(Long.valueOf(1l), capitalsource.getId().getId());
 		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
 	}
 

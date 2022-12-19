@@ -22,7 +22,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -77,12 +76,12 @@ public class JwtTokenProvider {
 	}
 
 	private String getUsername(final String token) {
-		return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody().getSubject();
+		return Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token).getBody().getSubject();
 	}
 
 	private boolean isRefreshToken(final String token) {
-		final Collection<?> roles = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody()
-				.get("roles", Collection.class);
+		final Collection<?> roles = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token)
+				.getBody().get("roles", Collection.class);
 		if (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE)) {
 			return true;
 		}
@@ -99,10 +98,8 @@ public class JwtTokenProvider {
 
 	public boolean validateToken(final String authToken) {
 		try {
-			Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(authToken);
+			Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(authToken);
 			return true;
-		} catch (final SignatureException e) {
-			this.logger.error("Invalid JWT signature: {}", e.getMessage());
 		} catch (final MalformedJwtException e) {
 			this.logger.error("Invalid JWT token: {}", e.getMessage());
 		} catch (final ExpiredJwtException e) {

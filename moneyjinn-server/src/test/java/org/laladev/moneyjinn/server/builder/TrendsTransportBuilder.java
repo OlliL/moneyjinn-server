@@ -1,5 +1,6 @@
 package org.laladev.moneyjinn.server.builder;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 import org.laladev.moneyjinn.core.rest.model.report.transport.AbstractTrendsTransport;
@@ -22,8 +23,9 @@ public class TrendsTransportBuilder extends AbstractTrendsTransport {
 	}
 
 	public <T extends AbstractTrendsTransport> T build(final Class<T> clazz)
-			throws InstantiationException, IllegalAccessException {
-		final T transport = clazz.newInstance();
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		final T transport = clazz.getDeclaredConstructor().newInstance();
 
 		transport.setYear(super.getYear());
 		transport.setMonth(super.getMonth());

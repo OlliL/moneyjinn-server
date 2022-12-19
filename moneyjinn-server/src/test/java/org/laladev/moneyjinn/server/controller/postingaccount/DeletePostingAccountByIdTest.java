@@ -109,7 +109,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseWithoutContent(
 				"/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, false, ErrorResponse.class);
 
-		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 

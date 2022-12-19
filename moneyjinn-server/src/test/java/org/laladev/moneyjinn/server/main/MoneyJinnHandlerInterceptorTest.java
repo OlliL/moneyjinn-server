@@ -81,7 +81,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USERNAME_PASSWORD_WRONG.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.CLIENT_CLOCK_OFF.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -240,7 +240,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, httpHeaders);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.LOGGED_OUT.getErrorCode()), response.getCode());
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class MoneyJinnHandlerInterceptorTest extends AbstractTest {
 				ErrorResponse.class, null);
 
 		Assertions.assertNotNull(response);
-		Assertions.assertEquals(new Integer(ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode()), response.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode()), response.getCode());
 	}
 
 }

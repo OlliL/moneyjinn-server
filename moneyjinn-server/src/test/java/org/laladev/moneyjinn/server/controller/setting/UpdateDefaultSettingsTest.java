@@ -62,9 +62,9 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 				.getClientDateFormatSetting(accessId);
 		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
 
-		Assertions.assertEquals(new Integer(2), clientDisplayedLanguageSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(2), clientDisplayedLanguageSetting.getSetting());
 		Assertions.assertEquals("YYYYMMDD", clientDateFormatSetting.getSetting());
-		Assertions.assertEquals(new Integer(10), clientMaxRowsSetting.getSetting());
+		Assertions.assertEquals(Integer.valueOf(10), clientMaxRowsSetting.getSetting());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
 		final UpdateDefaultSettingsRequest request = new UpdateDefaultSettingsRequest();
 		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
 
-		Assertions.assertEquals(new Integer(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
+		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
 
 	}
 
