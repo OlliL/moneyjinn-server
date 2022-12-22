@@ -4,27 +4,47 @@
 	<groupId>org.laladev.moneyjinn</groupId>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
 	<version>0.0.10-SNAPSHOT</version>
-
 	<properties>
-		<moneyjinn-client-core.version>0.0.1-SNAPSHOT</moneyjinn-client-core.version>
 		<moneyjinn-hbci-core.version>0.0.9-SNAPSHOT</moneyjinn-hbci-core.version>
-
+		<moneyjinn-core.version>0.0.1-SNAPSHOT</moneyjinn-core.version>
+		<spring.version>6.0.3</spring.version>
+		<jackson.version>2.14.1</jackson.version>
+		<commons.io.version>2.11.0</commons.io.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<java.version>17</java.version>
 	</properties>
-
 	<dependencies>
-		<dependency>
-			<groupId>org.laladev.moneyjinn</groupId>
-			<artifactId>moneyjinn-client-core</artifactId>
-			<version>${moneyjinn-client-core.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-hbci-core</artifactId>
 			<version>${moneyjinn-hbci-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-core</artifactId>
+			<version>${moneyjinn-core.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -27,19 +27,15 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.laladev.moneyjinn.client.core.config.Configuration;
-import org.laladev.moneyjinn.client.core.rest.util.MessageConverter;
-import org.laladev.moneyjinn.client.core.rest.util.RequestInterceptor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
+import org.laladev.moneyjinn.hbci.batch.config.Configuration;
+import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 public class BalanceDailyObserver implements Observer {
@@ -51,10 +47,6 @@ public class BalanceDailyObserver implements Observer {
 
 		this.restTemplate.getMessageConverters().clear();
 		this.restTemplate.getMessageConverters().add(new MessageConverter());
-
-		final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-		interceptors.add(new RequestInterceptor());
-		this.restTemplate.setInterceptors(interceptors);
 	}
 
 	@Override
