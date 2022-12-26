@@ -28,23 +28,23 @@ package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 
 public interface IImportedMoneyflowDaoMapper {
+  Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
+      @Param("status") Short status);
 
-	Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status);
+  List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
+      @Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status,
+      @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
-	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(@Param("capitalsourceIds") List<Long> capitalsourceIds,
-			@Param("status") Short status, @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
+  void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId,
+      @Param("status") Short status);
 
-	void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Short status);
+  void deleteImportedMoneyflowById(Long impMoneyflowId);
 
-	void deleteImportedMoneyflowById(Long impMoneyflowId);
+  void createImportedMoneyflow(ImportedMoneyflowData importedMoneyflowData);
 
-	void createImportedMoneyflow(ImportedMoneyflowData importedMoneyflowData);
-
-	Boolean checkIfExternalIdAlreadyExists(String externalId);
-
+  Boolean checkIfExternalIdAlreadyExists(String externalId);
 }

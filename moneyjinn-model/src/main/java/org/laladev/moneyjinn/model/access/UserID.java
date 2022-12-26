@@ -27,17 +27,15 @@
 package org.laladev.moneyjinn.model.access;
 
 /**
- * The unique ID of {@link User}
+ * The unique ID of {@link User}.
  *
  * @author olivleh1
  *
  */
 public class UserID extends AccessID {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public UserID(final Long id) {
-		super(id);
-	}
-
+  public UserID(final Long id) {
+    super(id);
+  }
 }

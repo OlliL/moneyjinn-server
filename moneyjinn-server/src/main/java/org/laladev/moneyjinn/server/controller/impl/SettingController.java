@@ -25,7 +25,6 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractShowSettingsResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractUpdateSettingsRequest;
@@ -56,90 +55,87 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/setting/")
 public class SettingController extends AbstractController {
-	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
-	@Inject
-	private IUserService userService;
-	@Inject
-	private ISettingService settingService;
+  private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
+  @Inject
+  private IUserService userService;
+  @Inject
+  private ISettingService settingService;
 
-	@Override
-	protected void addBeanMapper() {
-		// No Mapping needed.
-	}
+  @Override
+  protected void addBeanMapper() {
+    // No Mapping needed.
+  }
 
-	@RequestMapping(value = "showDefaultSettings", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowDefaultSettingsResponse showDefaultSettings() {
-		final ShowDefaultSettingsResponse response = new ShowDefaultSettingsResponse();
+  @RequestMapping(value = "showDefaultSettings", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowDefaultSettingsResponse showDefaultSettings() {
+    final ShowDefaultSettingsResponse response = new ShowDefaultSettingsResponse();
+    this.getStandardSettings(ROOT_ACCESS_ID, response);
+    return response;
+  }
 
-		this.getStandardSettings(ROOT_ACCESS_ID, response);
-		return response;
-	}
+  @RequestMapping(value = "updateDefaultSettings", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public void updateDefaultSettings(@RequestBody final UpdateDefaultSettingsRequest request) {
+    this.updateStandardSettings(request, ROOT_ACCESS_ID);
+  }
 
-	@RequestMapping(value = "updateDefaultSettings", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public void updateDefaultSettings(@RequestBody final UpdateDefaultSettingsRequest request) {
-		this.updateStandardSettings(request, ROOT_ACCESS_ID);
-	}
+  @RequestMapping(value = "showPersonalSettings", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowPersonalSettingsResponse showPersonalSettings() {
+    final UserID userId = super.getUserId();
+    final ShowPersonalSettingsResponse response = new ShowPersonalSettingsResponse();
+    this.getStandardSettings(userId, response);
+    return response;
+  }
 
-	@RequestMapping(value = "showPersonalSettings", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowPersonalSettingsResponse showPersonalSettings() {
-		final UserID userId = super.getUserId();
-		final ShowPersonalSettingsResponse response = new ShowPersonalSettingsResponse();
+  @RequestMapping(value = "updatePersonalSettings", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  public void updatePersonalSettings(@RequestBody final UpdatePersonalSettingsRequest request) {
+    final UserID userId = super.getUserId();
+    final User user = this.userService.getUserById(userId);
+    final String password = request.getPassword();
+    this.updateStandardSettings(request, userId);
+    if (password != null && !password.trim().isEmpty()) {
+      this.userService.setPassword(userId, password);
+    } else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
+      throw new BusinessException("You have to change your password!",
+          ErrorCode.PASSWORD_MUST_BE_CHANGED);
+    }
+  }
 
-		this.getStandardSettings(userId, response);
-		return response;
-	}
+  private void getStandardSettings(final AccessID accessId,
+      final AbstractShowSettingsResponse response) {
+    final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
+        .getClientDisplayedLanguageSetting(accessId);
+    final ClientDateFormatSetting clientDateFormatSetting = this.settingService
+        .getClientDateFormatSetting(accessId);
+    final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+        .getClientMaxRowsSetting(accessId);
+    response.setLanguage(clientDisplayedLanguageSetting.getSetting());
+    response.setDateFormat(clientDateFormatSetting.getSetting());
+    response.setMaxRows(clientMaxRowsSetting.getSetting());
+  }
 
-	@RequestMapping(value = "updatePersonalSettings", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	public void updatePersonalSettings(@RequestBody final UpdatePersonalSettingsRequest request) {
-		final UserID userId = super.getUserId();
-		final User user = this.userService.getUserById(userId);
-		final String password = request.getPassword();
-
-		this.updateStandardSettings(request, userId);
-
-		if (password != null && !password.trim().isEmpty()) {
-			this.userService.setPassword(userId, password);
-		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);
-		}
-	}
-
-	private void getStandardSettings(final AccessID accessId, final AbstractShowSettingsResponse response) {
-		final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
-				.getClientDisplayedLanguageSetting(accessId);
-		final ClientDateFormatSetting clientDateFormatSetting = this.settingService
-				.getClientDateFormatSetting(accessId);
-		final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(accessId);
-
-		response.setLanguage(clientDisplayedLanguageSetting.getSetting());
-		response.setDateFormat(clientDateFormatSetting.getSetting());
-		response.setMaxRows(clientMaxRowsSetting.getSetting());
-	}
-
-	private void updateStandardSettings(final AbstractUpdateSettingsRequest request, final AccessID accessId) {
-		if (request.getLanguage() != null) {
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(
-					request.getLanguage());
-			this.settingService.setClientDisplayedLanguageSetting(accessId, clientDisplayedLanguageSetting);
-		}
-
-		if (request.getDateFormat() != null) {
-			final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(
-					request.getDateFormat());
-			this.settingService.setClientDateFormatSetting(accessId, clientDateFormatSetting);
-		}
-
-		if (request.getMaxRows() != null) {
-			final ClientMaxRowsSetting clientMaxRowsSetting = new ClientMaxRowsSetting(request.getMaxRows());
-			this.settingService.setClientMaxRowsSetting(accessId, clientMaxRowsSetting);
-		}
-
-	}
-
+  private void updateStandardSettings(final AbstractUpdateSettingsRequest request,
+      final AccessID accessId) {
+    if (request.getLanguage() != null) {
+      final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = new ClientDisplayedLanguageSetting(
+          request.getLanguage());
+      this.settingService.setClientDisplayedLanguageSetting(accessId,
+          clientDisplayedLanguageSetting);
+    }
+    if (request.getDateFormat() != null) {
+      final ClientDateFormatSetting clientDateFormatSetting = new ClientDateFormatSetting(
+          request.getDateFormat());
+      this.settingService.setClientDateFormatSetting(accessId, clientDateFormatSetting);
+    }
+    if (request.getMaxRows() != null) {
+      final ClientMaxRowsSetting clientMaxRowsSetting = new ClientMaxRowsSetting(
+          request.getMaxRows());
+      this.settingService.setClientMaxRowsSetting(accessId, clientMaxRowsSetting);
+    }
+  }
 }

@@ -26,57 +26,53 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-import java.util.Set;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
+import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper;
 
 @Named
 public class GroupDao {
+  @Inject
+  private IGroupDaoMapper mapper;
 
-	@Inject
-	IGroupDaoMapper mapper;
+  public List<GroupData> getAllGroups() {
+    return this.mapper.getAllGroups();
+  }
 
-	public List<GroupData> getAllGroups() {
-		return this.mapper.getAllGroups();
-	}
+  public GroupData getGroupById(final Long id) {
+    return this.mapper.getGroupById(id);
+  }
 
-	public GroupData getGroupById(final Long id) {
-		return this.mapper.getGroupById(id);
-	}
+  public Integer countAllGroups() {
+    return this.mapper.countAllGroups();
+  }
 
-	public Integer countAllGroups() {
-		return this.mapper.countAllGroups();
-	}
+  public Set<Character> getAllGroupInitials() {
+    return this.mapper.getAllGroupInitials();
+  }
 
-	public Set<Character> getAllGroupInitials() {
-		return this.mapper.getAllGroupInitials();
-	}
+  public List<GroupData> getAllGroupsByInitial(final Character initial) {
+    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+    return this.mapper.getAllGroupsByInitial(initialString);
+  }
 
-	public List<GroupData> getAllGroupsByInitial(final Character initial) {
-		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-		return this.mapper.getAllGroupsByInitial(initialString);
-	}
+  public GroupData getGroupByName(final String name) {
+    return this.mapper.getGroupByName(name);
+  }
 
-	public GroupData getGroupByName(final String name) {
-		return this.mapper.getGroupByName(name);
-	}
+  public Long createGroup(final GroupData groupData) {
+    this.mapper.createGroup(groupData);
+    return groupData.getId();
+  }
 
-	public Long createGroup(final GroupData groupData) {
-		this.mapper.createGroup(groupData);
-		return groupData.getId();
-	}
+  public void updateGroup(final GroupData groupData) {
+    this.mapper.updateGroup(groupData);
+  }
 
-	public void updateGroup(final GroupData groupData) {
-		this.mapper.updateGroup(groupData);
-	}
-
-	public void deleteGroup(final Long id) {
-		this.mapper.deleteGroup(id);
-	}
-
+  public void deleteGroup(final Long id) {
+    this.mapper.deleteGroup(id);
+  }
 }

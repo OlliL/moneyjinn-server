@@ -29,45 +29,43 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 import org.laladev.moneyjinn.model.setting.SettingType;
 
 public class SettingTypeConverter {
+  private SettingTypeConverter() {
+  }
 
-	private SettingTypeConverter() {
-
-	}
-
-	public static String getSettingNameByType(final SettingType type) {
-		switch (type) {
-		case CLIENT_MAX_ROWS:
-			return "max_rows";
-		case CLIENT_TREND_CAPITALSOURCEIDS:
-			return "trend_capitalsourceid";
-		case CLIENT_DATE_FORMAT:
-			return "date_format";
-		case CLIENT_DISPLAYED_LANGUAGE:
-			return "displayed_language";
-		case CLIENT_CURRENTLY_VALID_CAPITALSOURCES:
-			return "currently_valid_capitalsources";
-		case CLIENT_CURRENTLY_VALID_CONTRACTPARTNER:
-			return "currently_valid_contractpartner";
-		case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
-			return "reporting_postingaccountids";
-		case CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE:
-			return "compare_capitalsource";
-		case CLIENT_COMPARE_DATA_SELECTED_FORMAT:
-			return "compare_format";
-		case CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE:
-			return "compare_source_is_file";
-		case CLIENT_CALC_ETF_SALE_ASK_PRICE:
-			return "client_calc_etf_sale_ask_price";
-		case CLIENT_CALC_ETF_SALE_BID_PRICE:
-			return "client_calc_etf_sale_bid_price";
-		case CLIENT_CALC_ETF_SALE_ISIN:
-			return "client_calc_etf_sale_isin";
-		case CLIENT_CALC_ETF_SALE_PIECES:
-			return "client_calc_etf_sale_pieces";
-		case CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS:
-			return "client_calc_etf_sale_transaction_costs";
-		default:
-			throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
-		}
-	}
+  public static String getSettingNameByType(final SettingType type) {
+    switch (type) {
+      case CLIENT_MAX_ROWS:
+        return "max_rows";
+      case CLIENT_TREND_CAPITALSOURCEIDS:
+        return "trend_capitalsourceid";
+      case CLIENT_DATE_FORMAT:
+        return "date_format";
+      case CLIENT_DISPLAYED_LANGUAGE:
+        return "displayed_language";
+      case CLIENT_CURRENTLY_VALID_CAPITALSOURCES:
+        return "currently_valid_capitalsources";
+      case CLIENT_CURRENTLY_VALID_CONTRACTPARTNER:
+        return "currently_valid_contractpartner";
+      case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
+        return "reporting_postingaccountids";
+      case CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE:
+        return "compare_capitalsource";
+      case CLIENT_COMPARE_DATA_SELECTED_FORMAT:
+        return "compare_format";
+      case CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE:
+        return "compare_source_is_file";
+      case CLIENT_CALC_ETF_SALE_ASK_PRICE:
+        return "client_calc_etf_sale_ask_price";
+      case CLIENT_CALC_ETF_SALE_BID_PRICE:
+        return "client_calc_etf_sale_bid_price";
+      case CLIENT_CALC_ETF_SALE_ISIN:
+        return "client_calc_etf_sale_isin";
+      case CLIENT_CALC_ETF_SALE_PIECES:
+        return "client_calc_etf_sale_pieces";
+      case CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS:
+        return "client_calc_etf_sale_transaction_costs";
+      default:
+        throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
+    }
+  }
 }

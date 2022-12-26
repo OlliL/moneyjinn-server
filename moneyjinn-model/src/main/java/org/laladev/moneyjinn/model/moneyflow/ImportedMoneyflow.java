@@ -29,141 +29,140 @@ package org.laladev.moneyjinn.model.moneyflow;
 import org.laladev.moneyjinn.model.BankAccount;
 
 public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
-	private static final long serialVersionUID = 1L;
-	private String externalId;
-	private String name;
-	private BankAccount bankAccount;
-	private String usage;
-	private ImportedMoneyflowStatus status;
+  private static final long serialVersionUID = 1L;
+  private String externalId;
+  private String name;
+  private BankAccount bankAccount;
+  private String usage;
+  private ImportedMoneyflowStatus status;
 
-	public final String getExternalId() {
-		return this.externalId;
-	}
+  public final String getExternalId() {
+    return this.externalId;
+  }
 
-	public final void setExternalId(final String externalId) {
-		this.externalId = externalId;
-	}
+  public final void setExternalId(final String externalId) {
+    this.externalId = externalId;
+  }
 
-	public final String getName() {
-		return this.name;
-	}
+  public final String getName() {
+    return this.name;
+  }
 
-	public final void setName(final String name) {
-		this.name = name;
-	}
+  public final void setName(final String name) {
+    this.name = name;
+  }
 
-	public final BankAccount getBankAccount() {
-		return this.bankAccount;
-	}
+  public final BankAccount getBankAccount() {
+    return this.bankAccount;
+  }
 
-	public final void setBankAccount(final BankAccount bankAccount) {
-		this.bankAccount = bankAccount;
-	}
+  public final void setBankAccount(final BankAccount bankAccount) {
+    this.bankAccount = bankAccount;
+  }
 
-	public final String getUsage() {
-		return this.usage;
-	}
+  public final String getUsage() {
+    return this.usage;
+  }
 
-	public final void setUsage(final String usage) {
-		this.usage = usage;
-	}
+  public final void setUsage(final String usage) {
+    this.usage = usage;
+  }
 
-	public final ImportedMoneyflowStatus getStatus() {
-		return this.status;
-	}
+  public final ImportedMoneyflowStatus getStatus() {
+    return this.status;
+  }
 
-	public final void setStatus(final ImportedMoneyflowStatus status) {
-		this.status = status;
-	}
+  public final void setStatus(final ImportedMoneyflowStatus status) {
+    this.status = status;
+  }
 
-	public Moneyflow getMoneyflow() {
-		final Moneyflow moneyflow = new Moneyflow();
-		moneyflow.setUser(super.getUser());
-		moneyflow.setGroup(super.getGroup());
-		moneyflow.setBookingDate(super.getBookingDate());
-		moneyflow.setInvoiceDate(super.getInvoiceDate());
-		moneyflow.setAmount(super.getAmount());
-		moneyflow.setCapitalsource(super.getCapitalsource());
-		moneyflow.setContractpartner(super.getContractpartner());
-		moneyflow.setComment(super.getComment());
-		moneyflow.setPrivat(super.isPrivat());
-		moneyflow.setPostingAccount(super.getPostingAccount());
-		return moneyflow;
-	}
+  public Moneyflow getMoneyflow() {
+    final Moneyflow moneyflow = new Moneyflow();
+    moneyflow.setUser(super.getUser());
+    moneyflow.setGroup(super.getGroup());
+    moneyflow.setBookingDate(super.getBookingDate());
+    moneyflow.setInvoiceDate(super.getInvoiceDate());
+    moneyflow.setAmount(super.getAmount());
+    moneyflow.setCapitalsource(super.getCapitalsource());
+    moneyflow.setContractpartner(super.getContractpartner());
+    moneyflow.setComment(super.getComment());
+    moneyflow.setPrivat(super.isPrivat());
+    moneyflow.setPostingAccount(super.getPostingAccount());
+    return moneyflow;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.bankAccount == null) ? 0 : this.bankAccount.hashCode());
-		result = prime * result + ((this.externalId == null) ? 0 : this.externalId.hashCode());
-		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-		result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
-		result = prime * result + ((this.usage == null) ? 0 : this.usage.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.bankAccount == null) ? 0 : this.bankAccount.hashCode());
+    result = prime * result + ((this.externalId == null) ? 0 : this.externalId.hashCode());
+    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+    result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+    result = prime * result + ((this.usage == null) ? 0 : this.usage.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ImportedMoneyflow other = (ImportedMoneyflow) obj;
-		if (this.bankAccount == null) {
-			if (other.bankAccount != null) {
-				return false;
-			}
-		} else if (!this.bankAccount.equals(other.bankAccount)) {
-			return false;
-		}
-		if (this.externalId == null) {
-			if (other.externalId != null) {
-				return false;
-			}
-		} else if (!this.externalId.equals(other.externalId)) {
-			return false;
-		}
-		if (this.name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!this.name.equals(other.name)) {
-			return false;
-		}
-		if (this.status != other.status) {
-			return false;
-		}
-		if (this.usage == null) {
-			if (other.usage != null) {
-				return false;
-			}
-		} else if (!this.usage.equals(other.usage)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ImportedMoneyflow other = (ImportedMoneyflow) obj;
+    if (this.bankAccount == null) {
+      if (other.bankAccount != null) {
+        return false;
+      }
+    } else if (!this.bankAccount.equals(other.bankAccount)) {
+      return false;
+    }
+    if (this.externalId == null) {
+      if (other.externalId != null) {
+        return false;
+      }
+    } else if (!this.externalId.equals(other.externalId)) {
+      return false;
+    }
+    if (this.name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!this.name.equals(other.name)) {
+      return false;
+    }
+    if (this.status != other.status) {
+      return false;
+    }
+    if (this.usage == null) {
+      if (other.usage != null) {
+        return false;
+      }
+    } else if (!this.usage.equals(other.usage)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ImportedMoneyflow [externalId=");
-		builder.append(this.externalId);
-		builder.append(", name=");
-		builder.append(this.name);
-		builder.append(", bankAccount=");
-		builder.append(this.bankAccount);
-		builder.append(", usage=");
-		builder.append(this.usage);
-		builder.append(", status=");
-		builder.append(this.status);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ImportedMoneyflow [externalId=");
+    builder.append(this.externalId);
+    builder.append(", name=");
+    builder.append(this.name);
+    builder.append(", bankAccount=");
+    builder.append(this.bankAccount);
+    builder.append(", usage=");
+    builder.append(this.usage);
+    builder.append(", status=");
+    builder.append(this.status);
+    builder.append("]");
+    return builder.toString();
+  }
 }

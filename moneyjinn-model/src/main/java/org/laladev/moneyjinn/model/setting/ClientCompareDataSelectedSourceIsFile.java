@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 /**
@@ -9,14 +10,12 @@ package org.laladev.moneyjinn.model.setting;
  *
  */
 public class ClientCompareDataSelectedSourceIsFile extends AbstractSetting<Boolean> {
+  public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE;
+  }
 }

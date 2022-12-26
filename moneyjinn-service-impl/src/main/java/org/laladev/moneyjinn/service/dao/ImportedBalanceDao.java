@@ -26,26 +26,23 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedBalanceDaoMapper;
 
 @Named
 public class ImportedBalanceDao {
-	@Inject
-	IImportedBalanceDaoMapper mapper;
+  @Inject
+  private IImportedBalanceDaoMapper mapper;
 
-	public void upsertImportedBalance(final ImportedBalanceData importedBalanceData) {
-		this.mapper.upsertImportedBalance(importedBalanceData);
-	}
+  public void upsertImportedBalance(final ImportedBalanceData importedBalanceData) {
+    this.mapper.upsertImportedBalance(importedBalanceData);
+  }
 
-	public List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(final Long userId,
-			final List<Long> capitalsourceIdLongs) {
-		return this.mapper.getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
-	}
-
+  public List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(final Long userId,
+      final List<Long> capitalsourceIdLongs) {
+    return this.mapper.getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
+  }
 }

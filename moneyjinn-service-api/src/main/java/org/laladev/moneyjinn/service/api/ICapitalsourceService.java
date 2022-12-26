@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.api;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -57,228 +56,230 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface ICapitalsourceService {
+  /**
+   * This method validates a given {@link Capitalsource} for correctness.
+   * <ul>
+   * <li>check that the given valid-from is before the given valid-til</li>
+   * <li>check that the specified comment is unique and not already used by a different
+   * <code>Capitalsource</code></li>
+   * <li>check that when there are no recorded <code>Moneyflow</code>s outside the new validty
+   * period changing an existing <code>Capitalsource</code></li>
+   * <li>check that the given account number is nummeric</li>
+   * <li>check that the given bank code is nummeric</li>
+   * <li>check that the comment of the <code>Capitalsource</code> is not empty</li>
+   * </ul>
+   *
+   * @param capitalsource
+   *          the {@link Capitalsource} to validate
+   * @return ValidationResult
+   */
+  ValidationResult validateCapitalsource(Capitalsource capitalsource);
 
-	/**
-	 * This method validates a given {@link Capitalsource} for correctness.
-	 * <ul>
-	 * <li>check that the given valid-from is before the given valid-til</li>
-	 * <li>check that the specified comment is unique and not already used by a different
-	 * <code>Capitalsource</code></li>
-	 * <li>check that when there are no recorded <code>Moneyflow</code>s outside the new validty
-	 * period changing an existing <code>Capitalsource</code></li>
-	 * <li>check that the given account number is nummeric</li>
-	 * <li>check that the given bank code is nummeric</li>
-	 * <li>check that the comment of the <code>Capitalsource</code> is not empty</li>
-	 * </ul>
-	 *
-	 * @param capitalsource
-	 *            the {@link Capitalsource} to validate
-	 * @return ValidationResult
-	 */
-	ValidationResult validateCapitalsource(Capitalsource capitalsource);
+  /**
+   * This method returns the {@link Capitalsource} specified by its Id
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param groupId
+   *          {@link GroupID}
+   * @param capitalsourceId
+   *          {@link CapitalsourceID}
+   * @return {@link Capitalsource}
+   */
+  Capitalsource getCapitalsourceById(UserID userId, GroupID groupId,
+      CapitalsourceID capitalsourceId);
 
-	/**
-	 * This method returns the {@link Capitalsource} specified by its Id
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param groupId
-	 *            {@link GroupID}
-	 * @param capitalsourceId
-	 *            {@link CapitalsourceID}
-	 * @return {@link Capitalsource}
-	 */
-	Capitalsource getCapitalsourceById(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
+  /**
+   * This method returns all initials of all accessable {@link Capitalsource}s
+   *
+   * @param userId
+   *          {@link UserID}
+   * @return all uppercased initials
+   */
+  Set<Character> getAllCapitalsourceInitials(UserID userId);
 
-	/**
-	 * This method returns all initials of all accessable {@link Capitalsource}s
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @return all uppercased initials
-	 */
-	Set<Character> getAllCapitalsourceInitials(UserID userId);
+  /**
+   * This method returns all initials of all {@link Capitalsource}s valid between the given Dates.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @return all uppercased initials
+   */
+  Set<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom,
+      LocalDate validTil);
 
-	/**
-	 * This method returns all initials of all {@link Capitalsource}s valid between the given Dates.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @return all uppercased initials
-	 */
-	Set<Character> getAllCapitalsourceInitialsByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
+  /**
+   * This method counts all existing accessable {@link Capitalsource}s.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @return number of {@link Capitalsource}s
+   */
+  Integer countAllCapitalsources(UserID userId);
 
-	/**
-	 * This method counts all existing accessable {@link Capitalsource}s.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @return number of {@link Capitalsource}s
-	 */
-	Integer countAllCapitalsources(UserID userId);
+  /**
+   * This method counts all {@link Capitalsource}s valid between the given Dates.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @return number of {@link Capitalsource}s
+   */
+  Integer countAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
-	/**
-	 * This method counts all {@link Capitalsource}s valid between the given Dates.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @return number of {@link Capitalsource}s
-	 */
-	Integer countAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
+  /**
+   * This method returns all {@link Capitalsource}s where the given user has reading permissions.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getAllCapitalsources(UserID userId);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the given user has reading permissions.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getAllCapitalsources(UserID userId);
+  /**
+   * This method returns all {@link Capitalsource}s where the given user has reading permissions
+   * valid between the given Dates.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+      LocalDate validTil);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the given user has reading permissions
-	 * valid between the given Dates.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
+  /**
+   * This method returns all {@link Capitalsource}s where the given <code>initial</code> is the
+   * first letter of the comment (case-insensitive).
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param initial
+   *          the first letter of the {@link Capitalsource}s name
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getAllCapitalsourcesByInitial(UserID userId, Character initial);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the given <code>initial</code> is the
-	 * first letter of the comment (case-insensitive).
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param initial
-	 *            the first letter of the {@link Capitalsource}s name
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getAllCapitalsourcesByInitial(UserID userId, Character initial);
+  /**
+   * This method returns all {@link Capitalsource}s where the given <code>initial</code> is the
+   * first letter of the comment (case-insensitive) and which are valid between the given Dates.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @param initial
+   *          the first letter of the {@link Capitalsource}s name
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(UserID userId, Character initial,
+      LocalDate validFrom, LocalDate validTil);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the given <code>initial</code> is the
-	 * first letter of the comment (case-insensitive) and which are valid between the given Dates.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @param initial
-	 *            the first letter of the {@link Capitalsource}s name
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(UserID userId, Character initial, LocalDate validFrom,
-			LocalDate validTil);
+  /**
+   * This method look the {@link Capitalsource} up which is valid on the given date and has the
+   * specified comment.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param comment
+   *          The comment to look fo
+   * @param date
+   *          The date where the {@link Capitalsource} must have been valid at
+   * @return {@link Capitalsource}
+   */
+  Capitalsource getCapitalsourceByComment(UserID userId, String comment, LocalDate date);
 
-	/**
-	 * This method look the {@link Capitalsource} up which is valid on the given date and has the
-	 * specified comment.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param comment
-	 *            The comment to look fo
-	 * @param date
-	 *            The date where the {@link Capitalsource} must have been valid at
-	 * @return {@link Capitalsource}
-	 */
-	Capitalsource getCapitalsourceByComment(UserID userId, String comment, LocalDate date);
+  /**
+   * This method persists (updates) the given {@link Capitalsource}.
+   *
+   * @param capitalsource
+   *          updateCapitalsource
+   */
+  void updateCapitalsource(Capitalsource capitalsource);
 
-	/**
-	 * This method persists (updates) the given {@link Capitalsource}.
-	 *
-	 * @param capitalsource
-	 *            updateCapitalsource
-	 */
-	void updateCapitalsource(Capitalsource capitalsource);
+  /**
+   * This method persists (creates) the given {@link Capitalsource}.
+   *
+   * @param capitalsource
+   *          updateCapitalsource
+   * @return The created {@link CapitalsourceID}
+   */
+  CapitalsourceID createCapitalsource(Capitalsource capitalsource);
 
-	/**
-	 * This method persists (creates) the given {@link Capitalsource}.
-	 *
-	 * @param capitalsource
-	 *            updateCapitalsource
-	 * @return The created {@link CapitalsourceID}
-	 */
-	CapitalsourceID createCapitalsource(Capitalsource capitalsource);
+  /**
+   * This method deletes the {@link Capitalsource} specified by its Id.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param groupId
+   *          {@link GroupID}
+   * @param capitalsourceId
+   *          {@link CapitalsourceID}
+   */
+  void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
 
-	/**
-	 * This method deletes the {@link Capitalsource} specified by its Id.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param groupId
-	 *            {@link GroupID}
-	 * @param capitalsourceId
-	 *            {@link CapitalsourceID}
-	 */
-	void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
+  /**
+   * This method returns all {@link Capitalsource}s where the given {@link UserID} has usage for
+   * creating a {@link Moneyflow}. {@link Capitalsource}s for which no {@link Moneyflow} must be
+   * created, are filtered out.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getGroupBookableCapitalsources(UserID userId);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the given {@link UserID} has usage for
-	 * creating a {@link Moneyflow}. {@link Capitalsource}s for which no {@link Moneyflow} must be
-	 * created, are filtered out.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getGroupBookableCapitalsources(UserID userId);
+  /**
+   * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
+   * like creating a {@link Moneyflow} and which valid between the given Dates.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+      LocalDate validTil);
 
-	/**
-	 * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
-	 * like creating a {@link Moneyflow} and which valid between the given Dates.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
+  /**
+   * Determines the {@link Capitalsource} by the given {@link BankAccount}
+   *
+   * @param bankAccount
+   *          The {@link BankAccount}
+   * @param date
+   *          The date to wich the {@link Capitalsource} must have been valid at
+   * @return The matching {@link Capitalsource}
+   */
+  Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
 
-	/**
-	 * Determines the {@link Capitalsource} by the given {@link BankAccount}
-	 *
-	 * @param bankAccount
-	 *            The {@link BankAccount}
-	 * @param date
-	 *            The date to wich the {@link Capitalsource} must have been valid at
-	 * @return The matching {@link Capitalsource}
-	 */
-	Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
-
-	/**
-	 * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
-	 * for creating a {@link Moneyflow} and which valid between the given Dates.
-	 * {@link Capitalsource}s for which no {@link Moneyflow} must be created, are filtered out.
-	 *
-	 * @param userId
-	 *            {@link UserID}
-	 * @param validFrom
-	 *            {@link LocalDate}
-	 * @param validTil
-	 *            {@link LocalDate}
-	 * @return a list of {@link Capitalsource}s
-	 */
-	List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
-			LocalDate validTil);
-
+  /**
+   * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
+   * for creating a {@link Moneyflow} and which valid between the given Dates.
+   * {@link Capitalsource}s for which no {@link Moneyflow} must be created, are filtered out.
+   *
+   * @param userId
+   *          {@link UserID}
+   * @param validFrom
+   *          {@link LocalDate}
+   * @param validTil
+   *          {@link LocalDate}
+   * @return a list of {@link Capitalsource}s
+   */
+  List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+      LocalDate validTil);
 }

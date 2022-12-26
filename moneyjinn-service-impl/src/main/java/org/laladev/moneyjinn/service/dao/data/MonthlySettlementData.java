@@ -29,68 +29,67 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.math.BigDecimal;
 
 public class MonthlySettlementData {
-	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
-	private Long mcsCapitalsourceId;
-	private Short month;
-	private Short year;
-	private BigDecimal amount;
+  private Long id;
+  private Long macIdCreator;
+  private Long macIdAccessor;
+  private Long mcsCapitalsourceId;
+  private Short month;
+  private Short year;
+  private BigDecimal amount;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getMacIdCreator() {
-		return this.macIdCreator;
-	}
+  public final Long getMacIdCreator() {
+    return this.macIdCreator;
+  }
 
-	public final void setMacIdCreator(final Long macIdCreator) {
-		this.macIdCreator = macIdCreator;
-	}
+  public final void setMacIdCreator(final Long macIdCreator) {
+    this.macIdCreator = macIdCreator;
+  }
 
-	public final Long getMacIdAccessor() {
-		return this.macIdAccessor;
-	}
+  public final Long getMacIdAccessor() {
+    return this.macIdAccessor;
+  }
 
-	public final void setMacIdAccessor(final Long macIdAccessor) {
-		this.macIdAccessor = macIdAccessor;
-	}
+  public final void setMacIdAccessor(final Long macIdAccessor) {
+    this.macIdAccessor = macIdAccessor;
+  }
 
-	public final Long getMcsCapitalsourceId() {
-		return this.mcsCapitalsourceId;
-	}
+  public final Long getMcsCapitalsourceId() {
+    return this.mcsCapitalsourceId;
+  }
 
-	public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
-		this.mcsCapitalsourceId = mcsCapitalsourceId;
-	}
+  public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
+    this.mcsCapitalsourceId = mcsCapitalsourceId;
+  }
 
-	public final Short getMonth() {
-		return this.month;
-	}
+  public final Short getMonth() {
+    return this.month;
+  }
 
-	public final void setMonth(final Short month) {
-		this.month = month;
-	}
+  public final void setMonth(final Short month) {
+    this.month = month;
+  }
 
-	public final Short getYear() {
-		return this.year;
-	}
+  public final Short getYear() {
+    return this.year;
+  }
 
-	public final void setYear(final Short year) {
-		this.year = year;
-	}
+  public final void setYear(final Short year) {
+    this.year = year;
+  }
 
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
+  public final BigDecimal getAmount() {
+    return this.amount;
+  }
 
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
-	}
-
+  public final void setAmount(final BigDecimal amount) {
+    this.amount = amount;
+  }
 }

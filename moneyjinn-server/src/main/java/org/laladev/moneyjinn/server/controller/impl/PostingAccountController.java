@@ -24,9 +24,9 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.AbstractPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
@@ -56,141 +56,136 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/postingaccount/")
 public class PostingAccountController extends AbstractController {
-	private static final String RESTRICTION_ALL = "all";
-	@Inject
-	private IPostingAccountService postingAccountService;
-	@Inject
-	private ISettingService settingService;
+  private static final String RESTRICTION_ALL = "all";
+  @Inject
+  private IPostingAccountService postingAccountService;
+  @Inject
+  private ISettingService settingService;
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new PostingAccountTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new PostingAccountTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowPostingAccountListResponse showPostingAccountList() {
-		return this.showPostingAccountList(null);
-	}
+  @RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowPostingAccountListResponse showPostingAccountList() {
+    return this.showPostingAccountList(null);
+  }
 
-	@RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowPostingAccountListResponse showPostingAccountList(
-			@PathVariable(value = "restriction") final String restriction) {
-		final UserID userId = super.getUserId();
+  @RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowPostingAccountListResponse showPostingAccountList(
+      @PathVariable(value = "restriction") final String restriction) {
+    final UserID userId = super.getUserId();
+    List<PostingAccount> postingAccounts = null;
+    if (restriction != null) {
+      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+        postingAccounts = this.postingAccountService.getAllPostingAccounts();
+      } else if (restriction.length() == 1) {
+        postingAccounts = this.postingAccountService
+            .getAllPostingAccountsByInitial(restriction.toCharArray()[0]);
+      }
+    } else {
+      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+          .getClientMaxRowsSetting(userId);
+      final Integer count = this.postingAccountService.countAllPostingAccounts();
+      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+        postingAccounts = this.postingAccountService.getAllPostingAccounts();
+      }
+    }
+    final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
+    final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
+    if (postingAccounts != null && !postingAccounts.isEmpty()) {
+      response.setPostingAccountTransports(
+          super.mapList(postingAccounts, PostingAccountTransport.class));
+    }
+    if (initials != null && !initials.isEmpty()) {
+      response.setInitials(initials);
+    }
+    return response;
+  }
 
-		List<PostingAccount> postingAccounts = null;
+  @RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public CreatePostingAccountResponse createPostingAccount(
+      @RequestBody final CreatePostingAccountRequest request) {
+    final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
+        PostingAccount.class);
+    postingAccount.setId(null);
+    final ValidationResult validationResult = this.postingAccountService
+        .validatePostingAccount(postingAccount);
+    final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    final PostingAccountID postingAccountId = this.postingAccountService
+        .createPostingAccount(postingAccount);
+    response.setPostingAccountId(postingAccountId.getId());
+    return response;
+  }
 
-		if (restriction != null) {
-			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-				postingAccounts = this.postingAccountService.getAllPostingAccounts();
-			} else if (restriction.length() == 1) {
-				postingAccounts = this.postingAccountService
-						.getAllPostingAccountsByInitial(restriction.toCharArray()[0]);
-			}
-		} else {
-			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-			final Integer count = this.postingAccountService.countAllPostingAccounts();
+  @RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ValidationResponse updatePostingAccount(
+      @RequestBody final UpdatePostingAccountRequest request) {
+    final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
+        PostingAccount.class);
+    final ValidationResult validationResult = this.postingAccountService
+        .validatePostingAccount(postingAccount);
+    final ValidationResponse response = new ValidationResponse();
+    response.setResult(validationResult.isValid());
+    if (validationResult.isValid()) {
+      this.postingAccountService.updatePostingAccount(postingAccount);
+    } else {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    }
+    return response;
+  }
 
-			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-				postingAccounts = this.postingAccountService.getAllPostingAccounts();
-			}
-		}
+  @RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
+    final PostingAccountID postingAccountId = new PostingAccountID(id);
+    this.postingAccountService.deletePostingAccount(postingAccountId);
+  }
 
-		final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
+  @RequestMapping(value = "showEditPostingAccount/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowEditPostingAccountResponse showEditPostingAccount(
+      @PathVariable(value = "id") final Long postingAccountId) {
+    final ShowEditPostingAccountResponse response = new ShowEditPostingAccountResponse();
+    this.fillAbstractPostingAccountResponse(postingAccountId, response);
+    return response;
+  }
 
-		final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
-		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		}
-		if (initials != null && !initials.isEmpty()) {
-			response.setInitials(initials);
-		}
+  @RequestMapping(value = "showDeletePostingAccount/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowDeletePostingAccountResponse showDeletePostingAccount(
+      @PathVariable(value = "id") final Long postingAccountId) {
+    final ShowDeletePostingAccountResponse response = new ShowDeletePostingAccountResponse();
+    this.fillAbstractPostingAccountResponse(postingAccountId, response);
+    return response;
+  }
 
-		return response;
-	}
-
-	@RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public CreatePostingAccountResponse createPostingAccount(@RequestBody final CreatePostingAccountRequest request) {
-		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
-		postingAccount.setId(null);
-
-		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
-
-		final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
-		response.setResult(validationResult.isValid());
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-		final PostingAccountID postingAccountId = this.postingAccountService.createPostingAccount(postingAccount);
-		response.setPostingAccountId(postingAccountId.getId());
-		return response;
-	}
-
-	@RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ValidationResponse updatePostingAccount(@RequestBody final UpdatePostingAccountRequest request) {
-		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
-
-		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
-
-		final ValidationResponse response = new ValidationResponse();
-		response.setResult(validationResult.isValid());
-
-		if (validationResult.isValid()) {
-			this.postingAccountService.updatePostingAccount(postingAccount);
-		} else {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		}
-
-		return response;
-	}
-
-	@RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
-		final PostingAccountID postingAccountId = new PostingAccountID(id);
-		this.postingAccountService.deletePostingAccount(postingAccountId);
-	}
-
-	@RequestMapping(value = "showEditPostingAccount/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowEditPostingAccountResponse showEditPostingAccount(
-			@PathVariable(value = "id") final Long postingAccountId) {
-		final ShowEditPostingAccountResponse response = new ShowEditPostingAccountResponse();
-		this.fillAbstractPostingAccountResponse(postingAccountId, response);
-		return response;
-	}
-
-	@RequestMapping(value = "showDeletePostingAccount/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowDeletePostingAccountResponse showDeletePostingAccount(
-			@PathVariable(value = "id") final Long postingAccountId) {
-		final ShowDeletePostingAccountResponse response = new ShowDeletePostingAccountResponse();
-		this.fillAbstractPostingAccountResponse(postingAccountId, response);
-		return response;
-	}
-
-	private void fillAbstractPostingAccountResponse(final Long postingAccountId,
-			final AbstractPostingAccountResponse response) {
-		final PostingAccount postingAccount = this.postingAccountService
-				.getPostingAccountById(new PostingAccountID(postingAccountId));
-		response.setPostingAccountTransport(super.map(postingAccount, PostingAccountTransport.class));
-	}
+  private void fillAbstractPostingAccountResponse(final Long postingAccountId,
+      final AbstractPostingAccountResponse response) {
+    final PostingAccount postingAccount = this.postingAccountService
+        .getPostingAccountById(new PostingAccountID(postingAccountId));
+    response.setPostingAccountTransport(super.map(postingAccount, PostingAccountTransport.class));
+  }
 }

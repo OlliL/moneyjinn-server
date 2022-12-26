@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.time.Month;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
@@ -36,40 +35,37 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlementID
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 
 public class ImportedMonthlySettlementDataMapper
-		implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {
+    implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {
+  @Override
+  public ImportedMonthlySettlement mapBToA(
+      final ImportedMonthlySettlementData importedMonthlySettlementData) {
+    final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
+    importedMonthlySettlement
+        .setId(new ImportedMonthlySettlementID(importedMonthlySettlementData.getId()));
+    importedMonthlySettlement.setAmount(importedMonthlySettlementData.getAmount());
+    importedMonthlySettlement
+        .setMonth(Month.of(importedMonthlySettlementData.getMonth().intValue()));
+    importedMonthlySettlement.setYear(importedMonthlySettlementData.getYear());
+    importedMonthlySettlement.setCapitalsource(new Capitalsource(
+        new CapitalsourceID(importedMonthlySettlementData.getMcsCapitalsourceId())));
+    importedMonthlySettlement.setExternalId(importedMonthlySettlementData.getExternalId());
+    return importedMonthlySettlement;
+  }
 
-	@Override
-	public ImportedMonthlySettlement mapBToA(final ImportedMonthlySettlementData importedMonthlySettlementData) {
-		final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
-		importedMonthlySettlement.setId(new ImportedMonthlySettlementID(importedMonthlySettlementData.getId()));
-		importedMonthlySettlement.setAmount(importedMonthlySettlementData.getAmount());
-		importedMonthlySettlement.setMonth(Month.of(importedMonthlySettlementData.getMonth().intValue()));
-		importedMonthlySettlement.setYear(importedMonthlySettlementData.getYear());
-
-		importedMonthlySettlement.setCapitalsource(
-				new Capitalsource(new CapitalsourceID(importedMonthlySettlementData.getMcsCapitalsourceId())));
-
-		importedMonthlySettlement.setExternalId(importedMonthlySettlementData.getExternalId());
-
-		return importedMonthlySettlement;
-	}
-
-	@Override
-	public ImportedMonthlySettlementData mapAToB(final ImportedMonthlySettlement importedMonthlySettlement) {
-		final ImportedMonthlySettlementData importedMonthlySettlementData = new ImportedMonthlySettlementData();
-		// might be null for new ImportedMonthlySettlements
-		if (importedMonthlySettlement.getId() != null) {
-			importedMonthlySettlementData.setId(importedMonthlySettlement.getId().getId());
-		}
-		importedMonthlySettlementData.setAmount(importedMonthlySettlement.getAmount());
-		importedMonthlySettlementData.setMonth((short) importedMonthlySettlement.getMonth().getValue());
-		importedMonthlySettlementData.setYear(importedMonthlySettlement.getYear());
-
-		importedMonthlySettlementData
-				.setMcsCapitalsourceId(importedMonthlySettlement.getCapitalsource().getId().getId());
-
-		importedMonthlySettlementData.setExternalId(importedMonthlySettlement.getExternalId());
-
-		return importedMonthlySettlementData;
-	}
+  @Override
+  public ImportedMonthlySettlementData mapAToB(
+      final ImportedMonthlySettlement importedMonthlySettlement) {
+    final ImportedMonthlySettlementData importedMonthlySettlementData = new ImportedMonthlySettlementData();
+    // might be null for new ImportedMonthlySettlements
+    if (importedMonthlySettlement.getId() != null) {
+      importedMonthlySettlementData.setId(importedMonthlySettlement.getId().getId());
+    }
+    importedMonthlySettlementData.setAmount(importedMonthlySettlement.getAmount());
+    importedMonthlySettlementData.setMonth((short) importedMonthlySettlement.getMonth().getValue());
+    importedMonthlySettlementData.setYear(importedMonthlySettlement.getYear());
+    importedMonthlySettlementData
+        .setMcsCapitalsourceId(importedMonthlySettlement.getCapitalsource().getId().getId());
+    importedMonthlySettlementData.setExternalId(importedMonthlySettlement.getExternalId());
+    return importedMonthlySettlementData;
+  }
 }

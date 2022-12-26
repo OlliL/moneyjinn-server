@@ -32,24 +32,21 @@ import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 
 public class GroupTransportMapper implements IMapper<Group, GroupTransport> {
+  @Override
+  public Group mapBToA(final GroupTransport groupTransport) {
+    final Group group = new Group();
+    if (groupTransport.getId() != null) {
+      group.setId(new GroupID(groupTransport.getId()));
+    }
+    group.setName(groupTransport.getName());
+    return group;
+  }
 
-	@Override
-	public Group mapBToA(final GroupTransport groupTransport) {
-		final Group group = new Group();
-		if (groupTransport.getId() != null) {
-			group.setId(new GroupID(groupTransport.getId()));
-		}
-		group.setName(groupTransport.getName());
-
-		return group;
-	}
-
-	@Override
-	public GroupTransport mapAToB(final Group group) {
-		final GroupTransport groupTransport = new GroupTransport();
-		groupTransport.setId(group.getId().getId());
-		groupTransport.setName(group.getName());
-
-		return groupTransport;
-	}
+  @Override
+  public GroupTransport mapAToB(final Group group) {
+    final GroupTransport groupTransport = new GroupTransport();
+    groupTransport.setId(group.getId().getId());
+    groupTransport.setName(group.getName());
+    return groupTransport;
+  }
 }

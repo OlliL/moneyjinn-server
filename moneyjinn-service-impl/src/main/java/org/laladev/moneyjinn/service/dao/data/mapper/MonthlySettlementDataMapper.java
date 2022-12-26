@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.time.Month;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -37,42 +36,39 @@ import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlementID;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 
-public class MonthlySettlementDataMapper implements IMapper<MonthlySettlement, MonthlySettlementData> {
+public class MonthlySettlementDataMapper
+    implements IMapper<MonthlySettlement, MonthlySettlementData> {
+  @Override
+  public MonthlySettlement mapBToA(final MonthlySettlementData monthlySettlementData) {
+    final MonthlySettlement monthlySettlement = new MonthlySettlement();
+    monthlySettlement.setId(new MonthlySettlementID(monthlySettlementData.getId()));
+    monthlySettlement.setAmount(monthlySettlementData.getAmount());
+    monthlySettlement.setMonth(Month.of(monthlySettlementData.getMonth().intValue()));
+    monthlySettlement.setYear(monthlySettlementData.getYear());
+    monthlySettlement.setCapitalsource(
+        new Capitalsource(new CapitalsourceID(monthlySettlementData.getMcsCapitalsourceId())));
+    monthlySettlement.setUser(new User(new UserID(monthlySettlementData.getMacIdCreator())));
+    return monthlySettlement;
+  }
 
-	@Override
-	public MonthlySettlement mapBToA(final MonthlySettlementData monthlySettlementData) {
-		final MonthlySettlement monthlySettlement = new MonthlySettlement();
-		monthlySettlement.setId(new MonthlySettlementID(monthlySettlementData.getId()));
-		monthlySettlement.setAmount(monthlySettlementData.getAmount());
-		monthlySettlement.setMonth(Month.of(monthlySettlementData.getMonth().intValue()));
-		monthlySettlement.setYear(monthlySettlementData.getYear());
-
-		monthlySettlement.setCapitalsource(
-				new Capitalsource(new CapitalsourceID(monthlySettlementData.getMcsCapitalsourceId())));
-		monthlySettlement.setUser(new User(new UserID(monthlySettlementData.getMacIdCreator())));
-
-		return monthlySettlement;
-	}
-
-	@Override
-	public MonthlySettlementData mapAToB(final MonthlySettlement monthlySettlement) {
-		final MonthlySettlementData monthlySettlementData = new MonthlySettlementData();
-		// might be null for new MonthlySettlements
-		if (monthlySettlement.getId() != null) {
-			monthlySettlementData.setId(monthlySettlement.getId().getId());
-		}
-		monthlySettlementData.setAmount(monthlySettlement.getAmount());
-		monthlySettlementData.setMonth((short) monthlySettlement.getMonth().getValue());
-		monthlySettlementData.setYear(monthlySettlement.getYear());
-
-		monthlySettlementData.setMcsCapitalsourceId(monthlySettlement.getCapitalsource().getId().getId());
-		if (monthlySettlement.getUser() != null) {
-			monthlySettlementData.setMacIdCreator(monthlySettlement.getUser().getId().getId());
-		}
-		if (monthlySettlement.getGroup() != null) {
-			monthlySettlementData.setMacIdAccessor(monthlySettlement.getGroup().getId().getId());
-		}
-
-		return monthlySettlementData;
-	}
+  @Override
+  public MonthlySettlementData mapAToB(final MonthlySettlement monthlySettlement) {
+    final MonthlySettlementData monthlySettlementData = new MonthlySettlementData();
+    // might be null for new MonthlySettlements
+    if (monthlySettlement.getId() != null) {
+      monthlySettlementData.setId(monthlySettlement.getId().getId());
+    }
+    monthlySettlementData.setAmount(monthlySettlement.getAmount());
+    monthlySettlementData.setMonth((short) monthlySettlement.getMonth().getValue());
+    monthlySettlementData.setYear(monthlySettlement.getYear());
+    monthlySettlementData
+        .setMcsCapitalsourceId(monthlySettlement.getCapitalsource().getId().getId());
+    if (monthlySettlement.getUser() != null) {
+      monthlySettlementData.setMacIdCreator(monthlySettlement.getUser().getId().getId());
+    }
+    if (monthlySettlement.getGroup() != null) {
+      monthlySettlementData.setMacIdAccessor(monthlySettlement.getGroup().getId().getId());
+    }
+    return monthlySettlementData;
+  }
 }

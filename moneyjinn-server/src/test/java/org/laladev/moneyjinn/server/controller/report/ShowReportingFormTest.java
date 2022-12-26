@@ -1,11 +1,10 @@
+
 package org.laladev.moneyjinn.server.controller.report;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,90 +23,82 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowReportingFormTest extends AbstractControllerTest {
+  @Inject
+  private ISettingService settingService;
+  private final HttpMethod method = HttpMethod.GET;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private ISettingService settingService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.GET;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  private ShowReportingFormResponse getDefaultResponse() {
+    final ShowReportingFormResponse expected = new ShowReportingFormResponse();
+    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
+    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
+    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
+    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
+    expected.setPostingAccountTransports(postingAccountTransports);
+    expected.setMinDate(DateUtil.getGmtDate("2008-11-01"));
+    expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
+    return expected;
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_noSetting_defaultsResponse() throws Exception {
+    final ShowReportingFormResponse expected = this.getDefaultResponse();
+    final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ShowReportingFormResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	private ShowReportingFormResponse getDefaultResponse() {
-		final ShowReportingFormResponse expected = new ShowReportingFormResponse();
+  @Test
+  public void test_witDefaultSelection_defaultsResponse() throws Exception {
+    final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
+        Arrays.asList(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID),
+            new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)));
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
+    final ShowReportingFormResponse expected = this.getDefaultResponse();
+    expected.setPostingAccountIds(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
+        PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+    final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ShowReportingFormResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-		final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-		postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-		expected.setPostingAccountTransports(postingAccountTransports);
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-		expected.setMinDate(DateUtil.getGmtDate("2008-11-01"));
-		expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
-		return expected;
-	}
-
-	@Test
-	public void test_noSetting_defaultsResponse() throws Exception {
-		final ShowReportingFormResponse expected = this.getDefaultResponse();
-
-		final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowReportingFormResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_witDefaultSelection_defaultsResponse() throws Exception {
-		final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-				Arrays.asList(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID),
-						new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)));
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
-
-		final ShowReportingFormResponse expected = this.getDefaultResponse();
-		expected.setPostingAccountIds(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-				PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
-
-		final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-				ShowReportingFormResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		super.callUsecaseWithoutContent("", this.method, false, ShowReportingFormResponse.class);
-	}
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    super.callUsecaseWithoutContent("", this.method, false, ShowReportingFormResponse.class);
+  }
 }

@@ -29,95 +29,94 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.time.LocalDate;
 
 public class MoneyflowSearchParamsData {
-	private Long userId;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private String searchString;
-	private boolean featureEqual;
-	private boolean featureRegexp;
-	private boolean featureCaseSensitive;
-	private boolean featureOnlyMinusAmounts;
-	private Long contractpartnerId;
-	private Long postingAccountId;
+  private Long userId;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private String searchString;
+  private boolean featureEqual;
+  private boolean featureRegexp;
+  private boolean featureCaseSensitive;
+  private boolean featureOnlyMinusAmounts;
+  private Long contractpartnerId;
+  private Long postingAccountId;
 
-	public final Long getUserId() {
-		return this.userId;
-	}
+  public final Long getUserId() {
+    return this.userId;
+  }
 
-	public final void setUserId(final Long userId) {
-		this.userId = userId;
-	}
+  public final void setUserId(final Long userId) {
+    this.userId = userId;
+  }
 
-	public final LocalDate getStartDate() {
-		return this.startDate;
-	}
+  public final LocalDate getStartDate() {
+    return this.startDate;
+  }
 
-	public final void setStartDate(final LocalDate startDate) {
-		this.startDate = startDate;
-	}
+  public final void setStartDate(final LocalDate startDate) {
+    this.startDate = startDate;
+  }
 
-	public final LocalDate getEndDate() {
-		return this.endDate;
-	}
+  public final LocalDate getEndDate() {
+    return this.endDate;
+  }
 
-	public final void setEndDate(final LocalDate endDate) {
-		this.endDate = endDate;
-	}
+  public final void setEndDate(final LocalDate endDate) {
+    this.endDate = endDate;
+  }
 
-	public final String getSearchString() {
-		return this.searchString;
-	}
+  public final String getSearchString() {
+    return this.searchString;
+  }
 
-	public final void setSearchString(final String searchString) {
-		this.searchString = searchString;
-	}
+  public final void setSearchString(final String searchString) {
+    this.searchString = searchString;
+  }
 
-	public final boolean isFeatureEqual() {
-		return this.featureEqual;
-	}
+  public final boolean isFeatureEqual() {
+    return this.featureEqual;
+  }
 
-	public final void setFeatureEqual(final boolean featureEqual) {
-		this.featureEqual = featureEqual;
-	}
+  public final void setFeatureEqual(final boolean featureEqual) {
+    this.featureEqual = featureEqual;
+  }
 
-	public final boolean isFeatureRegexp() {
-		return this.featureRegexp;
-	}
+  public final boolean isFeatureRegexp() {
+    return this.featureRegexp;
+  }
 
-	public final void setFeatureRegexp(final boolean featureRegexp) {
-		this.featureRegexp = featureRegexp;
-	}
+  public final void setFeatureRegexp(final boolean featureRegexp) {
+    this.featureRegexp = featureRegexp;
+  }
 
-	public final boolean isFeatureCaseSensitive() {
-		return this.featureCaseSensitive;
-	}
+  public final boolean isFeatureCaseSensitive() {
+    return this.featureCaseSensitive;
+  }
 
-	public final void setFeatureCaseSensitive(final boolean featureCaseSensitive) {
-		this.featureCaseSensitive = featureCaseSensitive;
-	}
+  public final void setFeatureCaseSensitive(final boolean featureCaseSensitive) {
+    this.featureCaseSensitive = featureCaseSensitive;
+  }
 
-	public final boolean isFeatureOnlyMinusAmounts() {
-		return this.featureOnlyMinusAmounts;
-	}
+  public final boolean isFeatureOnlyMinusAmounts() {
+    return this.featureOnlyMinusAmounts;
+  }
 
-	public final void setFeatureOnlyMinusAmounts(final boolean featureOnlyMinusAmounts) {
-		this.featureOnlyMinusAmounts = featureOnlyMinusAmounts;
-	}
+  public final void setFeatureOnlyMinusAmounts(final boolean featureOnlyMinusAmounts) {
+    this.featureOnlyMinusAmounts = featureOnlyMinusAmounts;
+  }
 
-	public final Long getContractpartnerId() {
-		return this.contractpartnerId;
-	}
+  public final Long getContractpartnerId() {
+    return this.contractpartnerId;
+  }
 
-	public final void setContractpartnerId(final Long contractpartnerId) {
-		this.contractpartnerId = contractpartnerId;
-	}
+  public final void setContractpartnerId(final Long contractpartnerId) {
+    this.contractpartnerId = contractpartnerId;
+  }
 
-	public final Long getPostingAccountId() {
-		return this.postingAccountId;
-	}
+  public final Long getPostingAccountId() {
+    return this.postingAccountId;
+  }
 
-	public final void setPostingAccountId(final Long postingAccountId) {
-		this.postingAccountId = postingAccountId;
-	}
-
+  public final void setPostingAccountId(final Long postingAccountId) {
+    this.postingAccountId = postingAccountId;
+  }
 }

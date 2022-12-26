@@ -1,8 +1,9 @@
+
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,183 +25,163 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import jakarta.inject.Inject;
-
 public class UpdateContractpartnerTest extends AbstractControllerTest {
+  @Inject
+  private IContractpartnerService contractpartnerService;
+  private final HttpMethod method = HttpMethod.PUT;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IContractpartnerService contractpartnerService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.PUT;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode)
+      throws Exception {
+    final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+    request.setContractpartnerTransport(transport);
+    final List<ValidationItemTransport> validationItems = new ArrayList<>();
+    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+        .withError(errorCode.getErrorCode()).build());
+    final ValidationResponse expected = new ValidationResponse();
+    expected.setValidationItemTransports(validationItems);
+    expected.setResult(Boolean.FALSE);
+    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ValidationResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner2().build();
+    transport.setName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+    this.testError(transport, ErrorCode.NAME_ALREADY_EXISTS);
+  }
 
-	private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode) throws Exception {
-		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+  @Test
+  public void test_EmptyContractpartnername_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner2().build();
+    transport.setName("");
+    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
 
-		request.setContractpartnerTransport(transport);
+  @Test
+  public void test_ValidTilBeforeValidFrom_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner2().build();
+    transport.setValidTil(DateUtil.getGmtDate("2000-01-01"));
+    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
+  }
 
-		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
-				.withError(errorCode.getErrorCode()).build());
+  @Test
+  public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner1().build();
+    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    this.testError(transport, ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD);
+  }
 
-		final ValidationResponse expected = new ValidationResponse();
-		expected.setValidationItemTransports(validationItems);
-		expected.setResult(Boolean.FALSE);
+  @Test
+  public void test_standardRequest_Successfull() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+    final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner1().build();
+    transport.setName("hugo");
+    request.setContractpartnerTransport(transport);
+    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ValidationResponse.class);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertTrue(actual.getResult());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals("hugo", contractpartner.getName());
+  }
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+  @Test
+  public void test_ContractpartnerFromSameGroupButNotMe_SuccessfullNoContent() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
+    final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner3().build();
+    transport.setName("hugo");
+    request.setContractpartnerTransport(transport);
+    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ValidationResponse.class);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertTrue(actual.getResult());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals("hugo", contractpartner.getName());
+  }
 
-		Assertions.assertEquals(expected, actual);
+  @Test
+  public void test_ContractpartnerFromDifferentGroup_notSuccessfull() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID);
+    final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner3().build();
+    transport.setName("hugo");
+    request.setContractpartnerTransport(transport);
+    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ValidationResponse.class);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertTrue(actual.getResult());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_NAME,
+        contractpartner.getName());
+  }
 
-	}
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-	@Test
-	public void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner2().build();
-		transport.setName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
-
-		this.testError(transport, ErrorCode.NAME_ALREADY_EXISTS);
-	}
-
-	@Test
-	public void test_EmptyContractpartnername_Error() throws Exception {
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner2().build();
-		transport.setName("");
-
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-	}
-
-	@Test
-	public void test_ValidTilBeforeValidFrom_Error() throws Exception {
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner2().build();
-		transport.setValidTil(DateUtil.getGmtDate("2000-01-01"));
-		transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
-
-		this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
-	}
-
-	@Test
-	public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
-		transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
-
-		this.testError(transport, ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD);
-	}
-
-	@Test
-	public void test_standardRequest_Successfull() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(
-				ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
-
-		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
-		transport.setName("hugo");
-		request.setContractpartnerTransport(transport);
-
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
-
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertTrue(actual.getResult());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, contractpartner.getId().getId());
-		Assertions.assertEquals("hugo", contractpartner.getName());
-	}
-
-	@Test
-	public void test_ContractpartnerFromSameGroupButNotMe_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(
-				ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
-
-		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner3().build();
-		transport.setName("hugo");
-		request.setContractpartnerTransport(transport);
-
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
-
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertTrue(actual.getResult());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, contractpartner.getId().getId());
-		Assertions.assertEquals("hugo", contractpartner.getName());
-	}
-
-	@Test
-	public void test_ContractpartnerFromDifferentGroup_notSuccessfull() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(
-				ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID);
-
-		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner3().build();
-		transport.setName("hugo");
-		request.setContractpartnerTransport(transport);
-
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
-
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertTrue(actual.getResult());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID, contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_NAME, contractpartner.getName());
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
-		request.setContractpartnerTransport(transport);
-
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
-
-		Assertions.assertTrue(actual.getResult());
-
-	}
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forContractpartner1().build();
+    request.setContractpartnerTransport(transport);
+    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ValidationResponse.class);
+    Assertions.assertTrue(actual.getResult());
+  }
 }

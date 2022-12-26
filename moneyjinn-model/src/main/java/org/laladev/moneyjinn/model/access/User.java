@@ -36,112 +36,111 @@ import java.util.Collection;
  *
  */
 public class User extends AbstractAccess<UserID> {
-	private static final long serialVersionUID = 1L;
-	private String password;
-	private Collection<UserAttribute> attributes;
-	private Collection<UserPermission> permissions;
+  private static final long serialVersionUID = 1L;
+  private String password;
+  private Collection<UserAttribute> attributes;
+  private Collection<UserPermission> permissions;
 
-	public User() {
-		// Default Constructor because ID can be empty for newly created Groups.
-	}
+  public User() {
+    // Default Constructor because ID can be empty for newly created Groups.
+  }
 
-	public User(final UserID id) {
-		super(id);
-	}
+  public User(final UserID id) {
+    super(id);
+  }
 
-	public User(final UserID id, final String name, final String password, final Collection<UserAttribute> attributes,
-			final Collection<UserPermission> permissions) {
-		super(id, name);
-		this.password = password;
-		this.attributes = attributes;
-		this.permissions = permissions;
-	}
+  public User(final UserID id, final String name, final String password,
+      final Collection<UserAttribute> attributes, final Collection<UserPermission> permissions) {
+    super(id, name);
+    this.password = password;
+    this.attributes = attributes;
+    this.permissions = permissions;
+  }
 
-	public final String getPassword() {
-		return this.password;
-	}
+  public final String getPassword() {
+    return this.password;
+  }
 
-	public final void setPassword(final String password) {
-		this.password = password;
-	}
+  public final void setPassword(final String password) {
+    this.password = password;
+  }
 
-	public final Collection<UserAttribute> getAttributes() {
-		return this.attributes;
-	}
+  public final Collection<UserAttribute> getAttributes() {
+    return this.attributes;
+  }
 
-	public final void setAttributes(final Collection<UserAttribute> attributes) {
-		this.attributes = attributes;
-	}
+  public final void setAttributes(final Collection<UserAttribute> attributes) {
+    this.attributes = attributes;
+  }
 
-	public final Collection<UserPermission> getPermissions() {
-		return this.permissions;
-	}
+  public final Collection<UserPermission> getPermissions() {
+    return this.permissions;
+  }
 
-	public final void setPermissions(final Collection<UserPermission> permissions) {
-		this.permissions = permissions;
-	}
+  public final void setPermissions(final Collection<UserPermission> permissions) {
+    this.permissions = permissions;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.attributes == null) ? 0 : this.attributes.hashCode());
-		result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
-		result = prime * result + ((this.permissions == null) ? 0 : this.permissions.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.attributes == null) ? 0 : this.attributes.hashCode());
+    result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
+    result = prime * result + ((this.permissions == null) ? 0 : this.permissions.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final User other = (User) obj;
-		if (this.attributes == null) {
-			if (other.attributes != null) {
-				return false;
-			}
-		} else if (!this.attributes.equals(other.attributes)) {
-			return false;
-		}
-		if (this.password == null) {
-			if (other.password != null) {
-				return false;
-			}
-		} else if (!this.password.equals(other.password)) {
-			return false;
-		}
-		if (this.permissions == null) {
-			if (other.permissions != null) {
-				return false;
-			}
-		} else if (!this.permissions.equals(other.permissions)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final User other = (User) obj;
+    if (this.attributes == null) {
+      if (other.attributes != null) {
+        return false;
+      }
+    } else if (!this.attributes.equals(other.attributes)) {
+      return false;
+    }
+    if (this.password == null) {
+      if (other.password != null) {
+        return false;
+      }
+    } else if (!this.password.equals(other.password)) {
+      return false;
+    }
+    if (this.permissions == null) {
+      if (other.permissions != null) {
+        return false;
+      }
+    } else if (!this.permissions.equals(other.permissions)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("User [password=");
-		builder.append(this.password);
-		builder.append(", attributes=");
-		builder.append(this.attributes);
-		builder.append(", permissions=");
-		builder.append(this.permissions);
-		builder.append(", getName()=");
-		builder.append(this.getName());
-		builder.append(", getId()=");
-		builder.append(this.getId());
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("User [password=");
+    builder.append(this.password);
+    builder.append(", attributes=");
+    builder.append(this.attributes);
+    builder.append(", permissions=");
+    builder.append(this.permissions);
+    builder.append(", getName()=");
+    builder.append(this.getName());
+    builder.append(", getId()=");
+    builder.append(this.getId());
+    builder.append("]");
+    return builder.toString();
+  }
 }

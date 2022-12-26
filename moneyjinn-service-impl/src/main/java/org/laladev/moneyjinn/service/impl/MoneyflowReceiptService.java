@@ -26,13 +26,11 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
@@ -46,65 +44,61 @@ import org.springframework.util.Assert;
 @Named
 @EnableCaching
 public class MoneyflowReceiptService extends AbstractService implements IMoneyflowReceiptService {
+  @Inject
+  private MoneyflowReceiptDao moneyflowReceiptDao;
 
-	@Inject
-	private MoneyflowReceiptDao moneyflowReceiptDao;
+  @Override
+  protected void addBeanMapper() {
+    super.registerBeanMapper(new MoneyflowReceiptDataMapper());
+  }
 
-	@Override
-	protected void addBeanMapper() {
-		super.registerBeanMapper(new MoneyflowReceiptDataMapper());
-	}
+  private MoneyflowReceipt mapMoneyflowReceiptData(
+      final MoneyflowReceiptData moneyflowReceiptData) {
+    if (moneyflowReceiptData != null) {
+      return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
+    }
+    return null;
+  }
 
-	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
-		if (moneyflowReceiptData != null) {
-			return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
-		}
-		return null;
-	}
+  @Override
+  public MoneyflowReceipt getMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(moneyflowId, "moneyflowId must not be null!");
+    final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
+        .getMoneyflowReceipt(moneyflowId.getId());
+    return this.mapMoneyflowReceiptData(moneyflowReceiptData);
+  }
 
-	@Override
-	public MoneyflowReceipt getMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
+  @Override
+  public List<MoneyflowID> getMoneyflowIdsWithReceipt(final UserID userId,
+      final List<MoneyflowID> moneyflowIds) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
+    final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
+        .collect(Collectors.toCollection(ArrayList::new));
+    final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
+        .getMoneyflowIdsWithReceipt(moneyflowIdLongs);
+    if (moneyflowIdsWithReceipt != null) {
+      return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new)
+          .collect(Collectors.toCollection(ArrayList::new));
+    } else {
+      return new ArrayList<>();
+    }
+  }
 
-		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
-				.getMoneyflowReceipt(moneyflowId.getId());
-		return this.mapMoneyflowReceiptData(moneyflowReceiptData);
-	}
+  @Override
+  public void deleteMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(moneyflowId, "moneyflowId must not be null!");
+    this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
+  }
 
-	@Override
-	public List<MoneyflowID> getMoneyflowIdsWithReceipt(final UserID userId, final List<MoneyflowID> moneyflowIds) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
-
-		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
-				.collect(Collectors.toCollection(ArrayList::new));
-
-		final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
-				.getMoneyflowIdsWithReceipt(moneyflowIdLongs);
-
-		if (moneyflowIdsWithReceipt != null) {
-			return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new)
-					.collect(Collectors.toCollection(ArrayList::new));
-		} else {
-			return new ArrayList<>();
-		}
-	}
-
-	@Override
-	public void deleteMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
-		this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
-	}
-
-	@Override
-	public void createMoneyflowReceipt(final UserID userId, final MoneyflowReceipt moneyflowReceipt) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(moneyflowReceipt, "MoneyflowReceipt must not be null!");
-		final MoneyflowReceiptData moneyflowReceiptData = super.map(moneyflowReceipt, MoneyflowReceiptData.class);
-		this.moneyflowReceiptDao.createMoneyflowReceipt(moneyflowReceiptData);
-
-	}
-
+  @Override
+  public void createMoneyflowReceipt(final UserID userId, final MoneyflowReceipt moneyflowReceipt) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(moneyflowReceipt, "MoneyflowReceipt must not be null!");
+    final MoneyflowReceiptData moneyflowReceiptData = super.map(moneyflowReceipt,
+        MoneyflowReceiptData.class);
+    this.moneyflowReceiptDao.createMoneyflowReceipt(moneyflowReceiptData);
+  }
 }

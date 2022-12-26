@@ -29,16 +29,15 @@ package org.laladev.moneyjinn.model.moneyflow;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
 /**
- * The unique ID of a {@link ImportedMoneyflow}
+ * The unique ID of a {@link ImportedMoneyflow}.
  *
  * @author olivleh1
  *
  */
 public class ImportedMoneyflowID extends AbstractEntityID<Long> {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public ImportedMoneyflowID(final Long id) {
-		super(id);
-	}
+  public ImportedMoneyflowID(final Long id) {
+    super(id);
+  }
 }

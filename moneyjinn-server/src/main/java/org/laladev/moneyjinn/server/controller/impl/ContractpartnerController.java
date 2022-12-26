@@ -24,12 +24,10 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.AbstractContractpartnerResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
@@ -73,242 +71,239 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartner/")
 public class ContractpartnerController extends AbstractController {
-	private static final String RESTRICTION_ALL = "all";
-	@Inject
-	private IAccessRelationService accessRelationService;
-	@Inject
-	private IContractpartnerService contractpartnerService;
-	@Inject
-	private IContractpartnerAccountService contractpartnerAccountService;
-	@Inject
-	private IPostingAccountService postingAccountService;
-	@Inject
-	private ISettingService settingService;
-	@Inject
-	private IUserService userService;
+  private static final String RESTRICTION_ALL = "all";
+  @Inject
+  private IAccessRelationService accessRelationService;
+  @Inject
+  private IContractpartnerService contractpartnerService;
+  @Inject
+  private IContractpartnerAccountService contractpartnerAccountService;
+  @Inject
+  private IPostingAccountService postingAccountService;
+  @Inject
+  private ISettingService settingService;
+  @Inject
+  private IUserService userService;
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new ContractpartnerTransportMapper());
-		this.registerBeanMapper(new PostingAccountTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new ContractpartnerTransportMapper());
+    this.registerBeanMapper(new PostingAccountTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@RequestMapping(value = "showContractpartnerList/currentlyValid", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList() {
-		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
-				.getClientCurrentlyValidContractpartnerSetting(userId);
-		return this.doShowContractpartnerList(userId, null, setting.getSetting());
+  @RequestMapping(value = "showContractpartnerList/currentlyValid", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowContractpartnerListResponse showContractpartnerList() {
+    final UserID userId = super.getUserId();
+    final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
+        .getClientCurrentlyValidContractpartnerSetting(userId);
+    return this.doShowContractpartnerList(userId, null, setting.getSetting());
+  }
 
-	}
+  @RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid", method = {
+      RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowContractpartnerListResponse showContractpartnerList(
+      @PathVariable(value = "restriction") final String restriction) {
+    final UserID userId = super.getUserId();
+    final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
+        .getClientCurrentlyValidContractpartnerSetting(userId);
+    return this.doShowContractpartnerList(userId, restriction, setting.getSetting());
+  }
 
-	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "restriction") final String restriction) {
-		final UserID userId = super.getUserId();
-		final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
-				.getClientCurrentlyValidContractpartnerSetting(userId);
-		return this.doShowContractpartnerList(userId, restriction, setting.getSetting());
+  @RequestMapping(value = "showContractpartnerList/currentlyValid/{currentlyValid}", method = {
+      RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowContractpartnerListResponse showContractpartnerList(
+      @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
+    final UserID userId = super.getUserId();
+    final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, null,
+        currentlyValid);
+    final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
+        currentlyValid);
+    this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
+    return response;
+  }
 
-	}
+  @RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/{currentlyValid}", method = {
+      RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowContractpartnerListResponse showContractpartnerList(
+      @PathVariable(value = "restriction") final String restriction,
+      @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
+    final UserID userId = super.getUserId();
+    final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId,
+        restriction, currentlyValid);
+    final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
+        currentlyValid);
+    this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
+    return response;
+  }
 
-	@RequestMapping(value = "showContractpartnerList/currentlyValid/{currentlyValid}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
-		final UserID userId = super.getUserId();
-		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, null, currentlyValid);
-		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
-				currentlyValid);
-		this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
+  private ShowContractpartnerListResponse doShowContractpartnerList(final UserID userId,
+      final String restriction, final boolean currentlyValid) {
+    final LocalDate now = LocalDate.now();
+    Set<Character> initials;
+    if (currentlyValid) {
+      initials = this.contractpartnerService.getAllContractpartnerInitialsByDateRange(userId, now,
+          now);
+    } else {
+      initials = this.contractpartnerService.getAllContractpartnerInitials(userId);
+    }
+    List<Contractpartner> contractpartners = null;
+    if (restriction != null) {
+      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+        if (currentlyValid) {
+          contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId,
+              now, now);
+        } else {
+          contractpartners = this.contractpartnerService.getAllContractpartners(userId);
+        }
+      } else if (restriction.length() == 1) {
+        if (currentlyValid) {
+          contractpartners = this.contractpartnerService
+              .getAllContractpartnersByInitialAndDateRange(userId, restriction.toCharArray()[0],
+                  now, now);
+        } else {
+          contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId,
+              restriction.toCharArray()[0]);
+        }
+      }
+    } else {
+      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+          .getClientMaxRowsSetting(userId);
+      Integer count;
+      if (currentlyValid) {
+        count = this.contractpartnerService.countAllContractpartnersByDateRange(userId, now, now);
+      } else {
+        count = this.contractpartnerService.countAllContractpartners(userId);
+      }
+      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+        if (currentlyValid) {
+          contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId,
+              now, now);
+        } else {
+          contractpartners = this.contractpartnerService.getAllContractpartners(userId);
+        }
+      }
+    }
+    final ShowContractpartnerListResponse response = new ShowContractpartnerListResponse();
+    if (contractpartners != null && !contractpartners.isEmpty()) {
+      response.setContractpartnerTransports(
+          super.mapList(contractpartners, ContractpartnerTransport.class));
+    }
+    if (initials != null && !initials.isEmpty()) {
+      response.setInitials(initials);
+    }
+    response.setCurrentlyValid(currentlyValid);
+    return response;
+  }
 
-		return response;
-	}
+  @RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  public CreateContractpartnerResponse createContractpartner(
+      @RequestBody final CreateContractpartnerRequest request) {
+    final UserID userId = super.getUserId();
+    final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(),
+        Contractpartner.class);
+    final User user = this.userService.getUserById(userId);
+    final Group accessor = this.accessRelationService.getAccessor(userId);
+    contractpartner.setId(null);
+    contractpartner.setUser(user);
+    contractpartner.setAccess(accessor);
+    final ValidationResult validationResult = this.contractpartnerService
+        .validateContractpartner(contractpartner);
+    final CreateContractpartnerResponse response = new CreateContractpartnerResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    final ContractpartnerID contractpartnerId = this.contractpartnerService
+        .createContractpartner(contractpartner);
+    response.setContractpartnerId(contractpartnerId.getId());
+    return response;
+  }
 
-	@RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/{currentlyValid}", method = {
-			RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowContractpartnerListResponse showContractpartnerList(
-			@PathVariable(value = "restriction") final String restriction,
-			@PathVariable(value = "currentlyValid") final boolean currentlyValid) {
-		final UserID userId = super.getUserId();
-		final ShowContractpartnerListResponse response = this.doShowContractpartnerList(userId, restriction,
-				currentlyValid);
-		final ClientCurrentlyValidContractpartnerSetting setting = new ClientCurrentlyValidContractpartnerSetting(
-				currentlyValid);
-		this.settingService.setClientCurrentlyValidContractpartnerSetting(userId, setting);
+  @RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  public ValidationResponse updateContractpartner(
+      @RequestBody final UpdateContractpartnerRequest request) {
+    final UserID userId = super.getUserId();
+    final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(),
+        Contractpartner.class);
+    final User user = this.userService.getUserById(userId);
+    final Group accessor = this.accessRelationService.getAccessor(userId);
+    contractpartner.setUser(user);
+    contractpartner.setAccess(accessor);
+    final ValidationResult validationResult = this.contractpartnerService
+        .validateContractpartner(contractpartner);
+    final ValidationResponse response = new ValidationResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    } else {
+      this.contractpartnerService.updateContractpartner(contractpartner);
+    }
+    return response;
+  }
 
-		return response;
-	}
+  @RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  public void deleteContractpartner(@PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final Group accessor = this.accessRelationService.getAccessor(userId);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
+    this.contractpartnerAccountService.deleteContractpartnerAccounts(userId, contractpartnerId);
+    this.contractpartnerService.deleteContractpartner(userId, accessor.getId(), contractpartnerId);
+  }
 
-	private ShowContractpartnerListResponse doShowContractpartnerList(final UserID userId, final String restriction,
-			final boolean currentlyValid) {
-		final LocalDate now = LocalDate.now();
-		Set<Character> initials;
+  @RequestMapping(value = "showCreateContractpartner", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowCreateContractpartnerResponse showCreateContractpartner() {
+    final ShowCreateContractpartnerResponse response = new ShowCreateContractpartnerResponse();
+    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+    if (postingAccounts != null && !postingAccounts.isEmpty()) {
+      response.setPostingAccountTransports(
+          super.mapList(postingAccounts, PostingAccountTransport.class));
+    }
+    return response;
+  }
 
-		if (currentlyValid) {
-			initials = this.contractpartnerService.getAllContractpartnerInitialsByDateRange(userId, now, now);
-		} else {
-			initials = this.contractpartnerService.getAllContractpartnerInitials(userId);
-		}
+  @RequestMapping(value = "showEditContractpartner/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowEditContractpartnerResponse showEditContractpartner(
+      @PathVariable(value = "id") final Long contractpartnerId) {
+    final ShowEditContractpartnerResponse response = new ShowEditContractpartnerResponse();
+    this.fillAbstractContractpartnerResponse(contractpartnerId, response);
+    if (response.getContractpartnerTransport() != null) {
+      final List<PostingAccount> postingAccounts = this.postingAccountService
+          .getAllPostingAccounts();
+      response.setPostingAccountTransports(
+          super.mapList(postingAccounts, PostingAccountTransport.class));
+    }
+    return response;
+  }
 
-		List<Contractpartner> contractpartners = null;
+  @RequestMapping(value = "showDeleteContractpartner/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowDeleteContractpartnerResponse showDeleteContractpartner(
+      @PathVariable(value = "id") final Long contractpartnerId) {
+    final ShowDeleteContractpartnerResponse response = new ShowDeleteContractpartnerResponse();
+    this.fillAbstractContractpartnerResponse(contractpartnerId, response);
+    return response;
+  }
 
-		if (restriction != null) {
-			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-				if (currentlyValid) {
-					contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, now, now);
-				} else {
-					contractpartners = this.contractpartnerService.getAllContractpartners(userId);
-				}
-			} else if (restriction.length() == 1) {
-				if (currentlyValid) {
-					contractpartners = this.contractpartnerService.getAllContractpartnersByInitialAndDateRange(userId,
-							restriction.toCharArray()[0], now, now);
-				} else {
-					contractpartners = this.contractpartnerService.getAllContractpartnersByInitial(userId,
-							restriction.toCharArray()[0]);
-				}
-			}
-		} else {
-			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-			Integer count;
-			if (currentlyValid) {
-				count = this.contractpartnerService.countAllContractpartnersByDateRange(userId, now, now);
-			} else {
-				count = this.contractpartnerService.countAllContractpartners(userId);
-			}
-
-			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-				if (currentlyValid) {
-					contractpartners = this.contractpartnerService.getAllContractpartnersByDateRange(userId, now, now);
-				} else {
-					contractpartners = this.contractpartnerService.getAllContractpartners(userId);
-				}
-			}
-		}
-
-		final ShowContractpartnerListResponse response = new ShowContractpartnerListResponse();
-		if (contractpartners != null && !contractpartners.isEmpty()) {
-			response.setContractpartnerTransports(super.mapList(contractpartners, ContractpartnerTransport.class));
-		}
-
-		if (initials != null && !initials.isEmpty()) {
-			response.setInitials(initials);
-		}
-		response.setCurrentlyValid(currentlyValid);
-
-		return response;
-	}
-
-	@RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	public CreateContractpartnerResponse createContractpartner(
-			@RequestBody final CreateContractpartnerRequest request) {
-		final UserID userId = super.getUserId();
-		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
-
-		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getAccessor(userId);
-
-		contractpartner.setId(null);
-		contractpartner.setUser(user);
-		contractpartner.setAccess(accessor);
-
-		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
-		final CreateContractpartnerResponse response = new CreateContractpartnerResponse();
-
-		response.setResult(validationResult.isValid());
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-		final ContractpartnerID contractpartnerId = this.contractpartnerService.createContractpartner(contractpartner);
-		response.setContractpartnerId(contractpartnerId.getId());
-
-		return response;
-	}
-
-	@RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	public ValidationResponse updateContractpartner(@RequestBody final UpdateContractpartnerRequest request) {
-		final UserID userId = super.getUserId();
-		final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(), Contractpartner.class);
-		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getAccessor(userId);
-
-		contractpartner.setUser(user);
-		contractpartner.setAccess(accessor);
-
-		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
-
-		final ValidationResponse response = new ValidationResponse();
-		response.setResult(validationResult.isValid());
-
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		} else {
-			this.contractpartnerService.updateContractpartner(contractpartner);
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	public void deleteContractpartner(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final Group accessor = this.accessRelationService.getAccessor(userId);
-
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
-
-		this.contractpartnerAccountService.deleteContractpartnerAccounts(userId, contractpartnerId);
-		this.contractpartnerService.deleteContractpartner(userId, accessor.getId(), contractpartnerId);
-	}
-
-	@RequestMapping(value = "showCreateContractpartner", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowCreateContractpartnerResponse showCreateContractpartner() {
-		final ShowCreateContractpartnerResponse response = new ShowCreateContractpartnerResponse();
-		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "showEditContractpartner/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowEditContractpartnerResponse showEditContractpartner(
-			@PathVariable(value = "id") final Long contractpartnerId) {
-		final ShowEditContractpartnerResponse response = new ShowEditContractpartnerResponse();
-		this.fillAbstractContractpartnerResponse(contractpartnerId, response);
-		if (response.getContractpartnerTransport() != null) {
-			final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "showDeleteContractpartner/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowDeleteContractpartnerResponse showDeleteContractpartner(
-			@PathVariable(value = "id") final Long contractpartnerId) {
-		final ShowDeleteContractpartnerResponse response = new ShowDeleteContractpartnerResponse();
-		this.fillAbstractContractpartnerResponse(contractpartnerId, response);
-		return response;
-	}
-
-	private void fillAbstractContractpartnerResponse(final Long id, final AbstractContractpartnerResponse response) {
-		final UserID userId = super.getUserId();
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-		response.setContractpartnerTransport(super.map(contractpartner, ContractpartnerTransport.class));
-	}
-
+  private void fillAbstractContractpartnerResponse(final Long id,
+      final AbstractContractpartnerResponse response) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    response
+        .setContractpartnerTransport(super.map(contractpartner, ContractpartnerTransport.class));
+  }
 }

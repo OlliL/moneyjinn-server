@@ -2,104 +2,104 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
 
-   	<sql id="etfColumns">
-		 isin
-		,name
-		,wkn
-		,ticker
-		,chart_url   AS chartUrl
-	</sql>
-	
-	<sql id="etfFlowsColumns">
-		 etfflowid
-		,flowdate
-		,isin
-		,amount
-		,price
-	</sql>
-	
-   	<sql id="etfValuesColumns">
-		 isin
-		,date
-		,buy_price    AS buyPrice
-		,sell_price   AS sellPrice
-		,changedate
-	</sql>
+           <sql id="etfColumns">
+                 isin
+                ,name
+                ,wkn
+                ,ticker
+                ,chart_url   AS chartUrl
+        </sql>
+        
+        <sql id="etfFlowsColumns">
+                 etfflowid
+                ,flowdate
+                ,isin
+                ,amount
+                ,price
+        </sql>
+        
+           <sql id="etfValuesColumns">
+                 isin
+                ,date
+                ,buy_price    AS buyPrice
+                ,sell_price   AS sellPrice
+                ,changedate
+        </sql>
    
-    	<select id="getAllEtf"
-		resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
-		SELECT <include refid="etfColumns" />
-		  FROM etf
-	</select>
-    	<select id="getEtfById"
-		resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
-		SELECT <include refid="etfColumns" />
-		  FROM etf
-		 WHERE isin     = #{isin}
-		 LIMIT 1
-	</select>
-    		
-    	<select id="getAllFlowsUntil"
-		resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
-		SELECT <include refid="etfFlowsColumns" />
-		  FROM etfflows
-		 WHERE isin = #{isin}
-		   AND flowdate <![CDATA[ <= ]]> #{dateUntil}
-		 ORDER BY flowdate DESC
-	</select>
+            <select id="getAllEtf"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
+                SELECT <include refid="etfColumns" />
+                  FROM etf
+        </select>
+            <select id="getEtfById"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
+                SELECT <include refid="etfColumns" />
+                  FROM etf
+                 WHERE isin     = #{isin}
+                 LIMIT 1
+        </select>
+                    
+            <select id="getAllFlowsUntil"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
+                SELECT <include refid="etfFlowsColumns" />
+                  FROM etfflows
+                 WHERE isin = #{isin}
+                   AND flowdate <![CDATA[ <= ]]> #{dateUntil}
+                 ORDER BY flowdate DESC
+        </select>
 
-	<select id="getEtfValueForMonth"
-		resultType="org.laladev.moneyjinn.service.dao.data.EtfValueData">
-		SELECT <include refid="etfValuesColumns" />
-		  FROM etfvalues
-		 WHERE isin = #{isin}
-		   AND date BETWEEN #{date} AND LAST_DAY(#{date})
-		 ORDER BY date DESC
-		 LIMIT 1
-	</select>
+        <select id="getEtfValueForMonth"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfValueData">
+                SELECT <include refid="etfValuesColumns" />
+                  FROM etfvalues
+                 WHERE isin = #{isin}
+                   AND date BETWEEN #{date} AND LAST_DAY(#{date})
+                 ORDER BY date DESC
+                 LIMIT 1
+        </select>
 
-    	<select id="getEtfFlowById"
-		resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
-		SELECT <include refid="etfFlowsColumns" />
-		  FROM etfflows
-		 WHERE etfflowid     = #{id}
-		 LIMIT 1
-	</select>
-	
-    	<insert id="createEtfFlow"
-		parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData"
-		useGeneratedKeys="true" keyProperty="etfflowid" keyColumn="etfflowid">
-		INSERT
-		  INTO etfflows
-		      (flowdate
-		      ,isin
-		      ,amount
-		      ,price
-		      )
-		VALUES
-		      (#{flowdate}
-		      ,#{isin}
-		      ,#{amount}
-		      ,#{price}
-		      )
-	</insert>
-	
-	<update id="updateEtfFlow" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
-		UPDATE etfflows
-		   SET flowdate      = #{flowdate}
-		      ,isin          = #{isin}
-		      ,amount        = #{amount}
-		      ,price         = #{price}
-		 WHERE etfflowid     = #{etfflowid}
-		 LIMIT 1
-	</update>
+            <select id="getEtfFlowById"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
+                SELECT <include refid="etfFlowsColumns" />
+                  FROM etfflows
+                 WHERE etfflowid     = #{id}
+                 LIMIT 1
+        </select>
+        
+            <insert id="createEtfFlow"
+                parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData"
+                useGeneratedKeys="true" keyProperty="etfflowid" keyColumn="etfflowid">
+                INSERT
+                  INTO etfflows
+                      (flowdate
+                      ,isin
+                      ,amount
+                      ,price
+                      )
+                VALUES
+                      (#{flowdate}
+                      ,#{isin}
+                      ,#{amount}
+                      ,#{price}
+                      )
+        </insert>
+        
+        <update id="updateEtfFlow" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
+                UPDATE etfflows
+                   SET flowdate      = #{flowdate}
+                      ,isin          = #{isin}
+                      ,amount        = #{amount}
+                      ,price         = #{price}
+                 WHERE etfflowid     = #{etfflowid}
+                 LIMIT 1
+        </update>
 
-	<delete id="deleteEtfFlow">
-		DELETE
-		  FROM etfflows
-		 WHERE etfflowid     = #{id}
-		 LIMIT 1
-	</delete>
-	
+        <delete id="deleteEtfFlow">
+                DELETE
+                  FROM etfflows
+                 WHERE etfflowid     = #{id}
+                 LIMIT 1
+        </delete>
+        
 </mapper>
  

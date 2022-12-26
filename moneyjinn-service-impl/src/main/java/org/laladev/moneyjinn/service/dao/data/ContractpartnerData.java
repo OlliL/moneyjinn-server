@@ -29,113 +29,112 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.time.LocalDate;
 
 public class ContractpartnerData {
-	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
-	private String name;
-	private String street;
-	private Integer postcode;
-	private String town;
-	private String country;
-	private LocalDate validTil;
-	private LocalDate validFrom;
-	private String mmfComment;
-	private Long mpaPostingAccountId;
+  private Long id;
+  private Long macIdCreator;
+  private Long macIdAccessor;
+  private String name;
+  private String street;
+  private Integer postcode;
+  private String town;
+  private String country;
+  private LocalDate validTil;
+  private LocalDate validFrom;
+  private String mmfComment;
+  private Long mpaPostingAccountId;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getMacIdCreator() {
-		return this.macIdCreator;
-	}
+  public final Long getMacIdCreator() {
+    return this.macIdCreator;
+  }
 
-	public final void setMacIdCreator(final Long macIdCreator) {
-		this.macIdCreator = macIdCreator;
-	}
+  public final void setMacIdCreator(final Long macIdCreator) {
+    this.macIdCreator = macIdCreator;
+  }
 
-	public final Long getMacIdAccessor() {
-		return this.macIdAccessor;
-	}
+  public final Long getMacIdAccessor() {
+    return this.macIdAccessor;
+  }
 
-	public final void setMacIdAccessor(final Long macIdAccessor) {
-		this.macIdAccessor = macIdAccessor;
-	}
+  public final void setMacIdAccessor(final Long macIdAccessor) {
+    this.macIdAccessor = macIdAccessor;
+  }
 
-	public final String getName() {
-		return this.name;
-	}
+  public final String getName() {
+    return this.name;
+  }
 
-	public final void setName(final String name) {
-		this.name = name;
-	}
+  public final void setName(final String name) {
+    this.name = name;
+  }
 
-	public final String getStreet() {
-		return this.street;
-	}
+  public final String getStreet() {
+    return this.street;
+  }
 
-	public final void setStreet(final String street) {
-		this.street = street;
-	}
+  public final void setStreet(final String street) {
+    this.street = street;
+  }
 
-	public final Integer getPostcode() {
-		return this.postcode;
-	}
+  public final Integer getPostcode() {
+    return this.postcode;
+  }
 
-	public final void setPostcode(final Integer postcode) {
-		this.postcode = postcode;
-	}
+  public final void setPostcode(final Integer postcode) {
+    this.postcode = postcode;
+  }
 
-	public final String getTown() {
-		return this.town;
-	}
+  public final String getTown() {
+    return this.town;
+  }
 
-	public final void setTown(final String town) {
-		this.town = town;
-	}
+  public final void setTown(final String town) {
+    this.town = town;
+  }
 
-	public final String getCountry() {
-		return this.country;
-	}
+  public final String getCountry() {
+    return this.country;
+  }
 
-	public final void setCountry(final String country) {
-		this.country = country;
-	}
+  public final void setCountry(final String country) {
+    this.country = country;
+  }
 
-	public final LocalDate getValidTil() {
-		return this.validTil;
-	}
+  public final LocalDate getValidTil() {
+    return this.validTil;
+  }
 
-	public final void setValidTil(final LocalDate validTil) {
-		this.validTil = validTil;
-	}
+  public final void setValidTil(final LocalDate validTil) {
+    this.validTil = validTil;
+  }
 
-	public final LocalDate getValidFrom() {
-		return this.validFrom;
-	}
+  public final LocalDate getValidFrom() {
+    return this.validFrom;
+  }
 
-	public final void setValidFrom(final LocalDate validFrom) {
-		this.validFrom = validFrom;
-	}
+  public final void setValidFrom(final LocalDate validFrom) {
+    this.validFrom = validFrom;
+  }
 
-	public final String getMmfComment() {
-		return this.mmfComment;
-	}
+  public final String getMmfComment() {
+    return this.mmfComment;
+  }
 
-	public final void setMmfComment(final String mmfComment) {
-		this.mmfComment = mmfComment;
-	}
+  public final void setMmfComment(final String mmfComment) {
+    this.mmfComment = mmfComment;
+  }
 
-	public final Long getMpaPostingAccountId() {
-		return this.mpaPostingAccountId;
-	}
+  public final Long getMpaPostingAccountId() {
+    return this.mpaPostingAccountId;
+  }
 
-	public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
-		this.mpaPostingAccountId = mpaPostingAccountId;
-	}
-
+  public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
+    this.mpaPostingAccountId = mpaPostingAccountId;
+  }
 }

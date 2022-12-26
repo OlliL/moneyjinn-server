@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.model.access.User;
@@ -37,57 +36,51 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
 
 public class UserTransportMapper implements IMapper<User, UserTransport> {
-	@Override
-	public User mapBToA(final UserTransport userTransport) {
-		final Collection<UserAttribute> attributes = new ArrayList<UserAttribute>();
-		final Collection<UserPermission> permissions = new ArrayList<UserPermission>();
-		if (this.isTrue(userTransport.getUserIsAdmin())) {
-			permissions.add(UserPermission.ADMIN);
-		}
-		if (this.isTrue(userTransport.getUserCanLogin())) {
-			permissions.add(UserPermission.LOGIN);
-		}
-		if (permissions.isEmpty()) {
-			permissions.add(UserPermission.NONE);
-		}
+  @Override
+  public User mapBToA(final UserTransport userTransport) {
+    final Collection<UserAttribute> attributes = new ArrayList<UserAttribute>();
+    final Collection<UserPermission> permissions = new ArrayList<UserPermission>();
+    if (this.isTrue(userTransport.getUserIsAdmin())) {
+      permissions.add(UserPermission.ADMIN);
+    }
+    if (this.isTrue(userTransport.getUserCanLogin())) {
+      permissions.add(UserPermission.LOGIN);
+    }
+    if (permissions.isEmpty()) {
+      permissions.add(UserPermission.NONE);
+    }
+    if (this.isTrue(userTransport.getUserIsNew())) {
+      attributes.add(UserAttribute.IS_NEW);
+    }
+    if (attributes.isEmpty()) {
+      attributes.add(UserAttribute.NONE);
+    }
+    UserID userId = null;
+    if (userTransport.getId() != null) {
+      userId = new UserID(userTransport.getId());
+    }
+    return new User(userId, userTransport.getUserName(), userTransport.getUserPassword(),
+        attributes, permissions);
+  }
 
-		if (this.isTrue(userTransport.getUserIsNew())) {
-			attributes.add(UserAttribute.IS_NEW);
-		}
-		if (attributes.isEmpty()) {
-			attributes.add(UserAttribute.NONE);
-		}
-		UserID userId = null;
-		if (userTransport.getId() != null) {
-			userId = new UserID(userTransport.getId());
-		}
+  private boolean isTrue(final Short property) {
+    return property != null && property.equals(Short.valueOf((short) 1));
+  }
 
-		return new User(userId, userTransport.getUserName(), userTransport.getUserPassword(), attributes, permissions);
-	}
-
-	private boolean isTrue(final Short property) {
-		return property != null && property.equals(Short.valueOf((short) 1));
-	}
-
-	@Override
-	public UserTransport mapAToB(final User user) {
-		final UserTransport userTransport = new UserTransport();
-		userTransport.setId(user.getId().getId());
-		userTransport.setUserName(user.getName());
-
-		if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-			userTransport.setUserIsNew(Short.valueOf((short) 1));
-		}
-
-		if (user.getPermissions().contains(UserPermission.ADMIN)) {
-			userTransport.setUserIsAdmin(Short.valueOf((short) 1));
-		}
-
-		if (user.getPermissions().contains(UserPermission.LOGIN)) {
-			userTransport.setUserCanLogin(Short.valueOf((short) 1));
-		}
-
-		return userTransport;
-	}
-
+  @Override
+  public UserTransport mapAToB(final User user) {
+    final UserTransport userTransport = new UserTransport();
+    userTransport.setId(user.getId().getId());
+    userTransport.setUserName(user.getName());
+    if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
+      userTransport.setUserIsNew(Short.valueOf((short) 1));
+    }
+    if (user.getPermissions().contains(UserPermission.ADMIN)) {
+      userTransport.setUserIsAdmin(Short.valueOf((short) 1));
+    }
+    if (user.getPermissions().contains(UserPermission.LOGIN)) {
+      userTransport.setUserCanLogin(Short.valueOf((short) 1));
+    }
+    return userTransport;
+  }
 }

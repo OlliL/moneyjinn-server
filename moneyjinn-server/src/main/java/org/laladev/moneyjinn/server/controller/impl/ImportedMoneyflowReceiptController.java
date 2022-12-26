@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
-
+import java.util.List;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.CreateImportedMoneyflowReceiptsRequest;
@@ -65,125 +63,113 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/importedmoneyflowreceipt/")
 public class ImportedMoneyflowReceiptController extends AbstractController {
-	@Inject
-	private IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
-	@Inject
-	private IMoneyflowReceiptService moneyflowReceiptService;
-	@Inject
-	private IMoneyflowService moneyflowService;
-	@Inject
-	private IAccessRelationService accessRelationService;
-	@Inject
-	private IUserService userService;
+  @Inject
+  private IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
+  @Inject
+  private IMoneyflowReceiptService moneyflowReceiptService;
+  @Inject
+  private IMoneyflowService moneyflowService;
+  @Inject
+  private IAccessRelationService accessRelationService;
+  @Inject
+  private IUserService userService;
+  private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
+  private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
 
-	private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
-	private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new ImportedMoneyflowReceiptTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new ImportedMoneyflowReceiptTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @RequestMapping(value = "createImportedMoneyflowReceipts", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  public ValidationResponse createImportedMoneyflowReceipts(
+      @RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
+    final UserID userId = super.getUserId();
+    final User user = this.userService.getUserById(userId);
+    final Group group = this.accessRelationService.getAccessor(userId);
+    final ValidationResult validationResult = new ValidationResult();
+    final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = super.mapList(
+        request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
+    importedMoneyflowReceipts.stream().forEach(iMR -> {
+      iMR.setUser(user);
+      iMR.setAccess(group);
+      iMR.setId(null);
+      validationResult.mergeValidationResult(
+          this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(iMR));
+    });
+    if (!validationResult.isValid()) {
+      final ValidationResponse response = new ValidationResponse();
+      response.setResult(false);
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    importedMoneyflowReceipts.stream()
+        .forEach(iMR -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(iMR));
+    return null;
+  }
 
-	@RequestMapping(value = "createImportedMoneyflowReceipts", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	public ValidationResponse createImportedMoneyflowReceipts(
-			@RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
-		final UserID userId = super.getUserId();
-		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getAccessor(userId);
+  @RequestMapping(value = "showImportImportedMoneyflowReceipts", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowImportImportedMoneyflowReceiptsResponse showImportImportedMoneyflowReceipts() {
+    final UserID userId = super.getUserId();
+    final Group group = this.accessRelationService.getAccessor(userId);
+    final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
+    final List<ImportedMoneyflowReceipt> allImportedMoneyflowReceipts = this.importedMoneyflowReceiptService
+        .getAllImportedMoneyflowReceipts(userId, group.getId());
+    final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = super.mapList(
+        allImportedMoneyflowReceipts, ImportedMoneyflowReceiptTransport.class);
+    response.setImportedMoneyflowReceiptTransports(allImportedMoneyflowReceiptTransports);
+    return response;
+  }
 
-		final ValidationResult validationResult = new ValidationResult();
-		final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = super.mapList(
-				request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
+  @RequestMapping(value = "deleteImportedMoneyflowReceiptById/{id}", method = {
+      RequestMethod.DELETE })
+  @RequiresAuthorization
+  public void deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final Group group = this.accessRelationService.getAccessor(userId);
+    final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(
+        id);
+    this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
+        importedMoneyflowReceiptId);
+  }
 
-		importedMoneyflowReceipts.stream().forEach(iMR -> {
-			iMR.setUser(user);
-			iMR.setAccess(group);
-			iMR.setId(null);
-			validationResult
-					.mergeValidationResult(this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(iMR));
-		});
-
-		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(false);
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-
-		importedMoneyflowReceipts.stream()
-				.forEach(iMR -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(iMR));
-
-		return null;
-	}
-
-	@RequestMapping(value = "showImportImportedMoneyflowReceipts", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowImportImportedMoneyflowReceiptsResponse showImportImportedMoneyflowReceipts() {
-		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getAccessor(userId);
-
-		final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
-		final List<ImportedMoneyflowReceipt> allImportedMoneyflowReceipts = this.importedMoneyflowReceiptService
-				.getAllImportedMoneyflowReceipts(userId, group.getId());
-		final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = super.mapList(
-				allImportedMoneyflowReceipts, ImportedMoneyflowReceiptTransport.class);
-		response.setImportedMoneyflowReceiptTransports(allImportedMoneyflowReceiptTransports);
-
-		return response;
-	}
-
-	@RequestMapping(value = "deleteImportedMoneyflowReceiptById/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	public void deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getAccessor(userId);
-
-		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);
-		this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
-				importedMoneyflowReceiptId);
-	}
-
-	@RequestMapping(value = "importImportedMoneyflowReceipt/{id}/{moneyflowid}", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	public void importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
-			@PathVariable(value = "moneyflowid") final Long moneyflowid) {
-		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getAccessor(userId);
-
-		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);
-		final MoneyflowID moneyflowId = new MoneyflowID(moneyflowid);
-
-		final ImportedMoneyflowReceipt importedMoneyflowReceipt = this.importedMoneyflowReceiptService
-				.getImportedMoneyflowReceiptById(userId, group.getId(), importedMoneyflowReceiptId);
-
-		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-
-		final MoneyflowReceipt checkMoneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId,
-				moneyflowId);
-
-		if (checkMoneyflowReceipt != null) {
-			throw new BusinessException("Moneyflow already has a receipt attached!", ErrorCode.RECEIPT_ALREADY_EXISTS);
-		}
-
-		if (importedMoneyflowReceipt != null && moneyflow != null) {
-			final MoneyflowReceipt moneyflowReceipt = new MoneyflowReceipt();
-			moneyflowReceipt.setMoneyflowId(moneyflowId);
-			moneyflowReceipt.setReceipt(importedMoneyflowReceipt.getReceipt());
-			if (MEDIA_TYPE_IMAGE_JPEG.equals(importedMoneyflowReceipt.getMediaType())) {
-				moneyflowReceipt.setMoneyflowReceiptType(MoneyflowReceiptType.JPEG);
-			} else if (MEDIA_TYPE_APPLICATION_PDF.equals(importedMoneyflowReceipt.getMediaType())) {
-				moneyflowReceipt.setMoneyflowReceiptType(MoneyflowReceiptType.PDF);
-			} else {
-				throw new BusinessException("Media Type not supported", ErrorCode.UNSUPPORTED_MEDIA_TYPE);
-			}
-
-			this.moneyflowReceiptService.createMoneyflowReceipt(userId, moneyflowReceipt);
-			this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
-					importedMoneyflowReceiptId);
-		}
-
-	}
+  @RequestMapping(value = "importImportedMoneyflowReceipt/{id}/{moneyflowid}", method = {
+      RequestMethod.POST })
+  @RequiresAuthorization
+  public void importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
+      @PathVariable(value = "moneyflowid") final Long moneyflowid) {
+    final UserID userId = super.getUserId();
+    final Group group = this.accessRelationService.getAccessor(userId);
+    final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(
+        id);
+    final MoneyflowID moneyflowId = new MoneyflowID(moneyflowid);
+    final ImportedMoneyflowReceipt importedMoneyflowReceipt = this.importedMoneyflowReceiptService
+        .getImportedMoneyflowReceiptById(userId, group.getId(), importedMoneyflowReceiptId);
+    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+    final MoneyflowReceipt checkMoneyflowReceipt = this.moneyflowReceiptService
+        .getMoneyflowReceipt(userId, moneyflowId);
+    if (checkMoneyflowReceipt != null) {
+      throw new BusinessException("Moneyflow already has a receipt attached!",
+          ErrorCode.RECEIPT_ALREADY_EXISTS);
+    }
+    if (importedMoneyflowReceipt != null && moneyflow != null) {
+      final MoneyflowReceipt moneyflowReceipt = new MoneyflowReceipt();
+      moneyflowReceipt.setMoneyflowId(moneyflowId);
+      moneyflowReceipt.setReceipt(importedMoneyflowReceipt.getReceipt());
+      if (MEDIA_TYPE_IMAGE_JPEG.equals(importedMoneyflowReceipt.getMediaType())) {
+        moneyflowReceipt.setMoneyflowReceiptType(MoneyflowReceiptType.JPEG);
+      } else if (MEDIA_TYPE_APPLICATION_PDF.equals(importedMoneyflowReceipt.getMediaType())) {
+        moneyflowReceipt.setMoneyflowReceiptType(MoneyflowReceiptType.PDF);
+      } else {
+        throw new BusinessException("Media Type not supported", ErrorCode.UNSUPPORTED_MEDIA_TYPE);
+      }
+      this.moneyflowReceiptService.createMoneyflowReceipt(userId, moneyflowReceipt);
+      this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
+          importedMoneyflowReceiptId);
+    }
+  }
 }

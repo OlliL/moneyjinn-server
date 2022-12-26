@@ -28,152 +28,151 @@ package org.laladev.moneyjinn.model.comparedata;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import org.laladev.moneyjinn.model.BankAccount;
 
 public class CompareDataDataset {
-	private LocalDate bookingDate;
-	private LocalDate invoiceDate;
-	private BigDecimal amount;
-	private String partner;
-	private String comment;
-	private BankAccount partnerBankAccount;
+  private LocalDate bookingDate;
+  private LocalDate invoiceDate;
+  private BigDecimal amount;
+  private String partner;
+  private String comment;
+  private BankAccount partnerBankAccount;
 
-	public final LocalDate getBookingDate() {
-		return this.bookingDate;
-	}
+  public final LocalDate getBookingDate() {
+    return this.bookingDate;
+  }
 
-	public final void setBookingDate(final LocalDate bookingDate) {
-		this.bookingDate = bookingDate;
-	}
+  public final void setBookingDate(final LocalDate bookingDate) {
+    this.bookingDate = bookingDate;
+  }
 
-	public final LocalDate getInvoiceDate() {
-		return this.invoiceDate;
-	}
+  public final LocalDate getInvoiceDate() {
+    return this.invoiceDate;
+  }
 
-	public final void setInvoiceDate(final LocalDate invoiceDate) {
-		this.invoiceDate = invoiceDate;
-	}
+  public final void setInvoiceDate(final LocalDate invoiceDate) {
+    this.invoiceDate = invoiceDate;
+  }
 
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
+  public final BigDecimal getAmount() {
+    return this.amount;
+  }
 
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
-	}
+  public final void setAmount(final BigDecimal amount) {
+    this.amount = amount;
+  }
 
-	public final String getPartner() {
-		return this.partner;
-	}
+  public final String getPartner() {
+    return this.partner;
+  }
 
-	public final void setPartner(final String partner) {
-		this.partner = partner;
-	}
+  public final void setPartner(final String partner) {
+    this.partner = partner;
+  }
 
-	public final String getComment() {
-		return this.comment;
-	}
+  public final String getComment() {
+    return this.comment;
+  }
 
-	public final void setComment(final String comment) {
-		this.comment = comment;
-	}
+  public final void setComment(final String comment) {
+    this.comment = comment;
+  }
 
-	public final BankAccount getPartnerBankAccount() {
-		return this.partnerBankAccount;
-	}
+  public final BankAccount getPartnerBankAccount() {
+    return this.partnerBankAccount;
+  }
 
-	public final void setPartnerBankAccount(final BankAccount partnerBankAccount) {
-		this.partnerBankAccount = partnerBankAccount;
-	}
+  public final void setPartnerBankAccount(final BankAccount partnerBankAccount) {
+    this.partnerBankAccount = partnerBankAccount;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.bookingDate == null) ? 0 : this.bookingDate.hashCode());
-		result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
-		result = prime * result + ((this.invoiceDate == null) ? 0 : this.invoiceDate.hashCode());
-		result = prime * result + ((this.partner == null) ? 0 : this.partner.hashCode());
-		result = prime * result + ((this.partnerBankAccount == null) ? 0 : this.partnerBankAccount.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+    result = prime * result + ((this.bookingDate == null) ? 0 : this.bookingDate.hashCode());
+    result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
+    result = prime * result + ((this.invoiceDate == null) ? 0 : this.invoiceDate.hashCode());
+    result = prime * result + ((this.partner == null) ? 0 : this.partner.hashCode());
+    result = prime * result
+        + ((this.partnerBankAccount == null) ? 0 : this.partnerBankAccount.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CompareDataDataset other = (CompareDataDataset) obj;
-		if (this.amount == null) {
-			if (other.amount != null) {
-				return false;
-			}
-		} else if (!this.amount.equals(other.amount)) {
-			return false;
-		}
-		if (this.bookingDate == null) {
-			if (other.bookingDate != null) {
-				return false;
-			}
-		} else if (!this.bookingDate.equals(other.bookingDate)) {
-			return false;
-		}
-		if (this.comment == null) {
-			if (other.comment != null) {
-				return false;
-			}
-		} else if (!this.comment.equals(other.comment)) {
-			return false;
-		}
-		if (this.invoiceDate == null) {
-			if (other.invoiceDate != null) {
-				return false;
-			}
-		} else if (!this.invoiceDate.equals(other.invoiceDate)) {
-			return false;
-		}
-		if (this.partner == null) {
-			if (other.partner != null) {
-				return false;
-			}
-		} else if (!this.partner.equals(other.partner)) {
-			return false;
-		}
-		if (this.partnerBankAccount == null) {
-			if (other.partnerBankAccount != null) {
-				return false;
-			}
-		} else if (!this.partnerBankAccount.equals(other.partnerBankAccount)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CompareDataDataset other = (CompareDataDataset) obj;
+    if (this.amount == null) {
+      if (other.amount != null) {
+        return false;
+      }
+    } else if (!this.amount.equals(other.amount)) {
+      return false;
+    }
+    if (this.bookingDate == null) {
+      if (other.bookingDate != null) {
+        return false;
+      }
+    } else if (!this.bookingDate.equals(other.bookingDate)) {
+      return false;
+    }
+    if (this.comment == null) {
+      if (other.comment != null) {
+        return false;
+      }
+    } else if (!this.comment.equals(other.comment)) {
+      return false;
+    }
+    if (this.invoiceDate == null) {
+      if (other.invoiceDate != null) {
+        return false;
+      }
+    } else if (!this.invoiceDate.equals(other.invoiceDate)) {
+      return false;
+    }
+    if (this.partner == null) {
+      if (other.partner != null) {
+        return false;
+      }
+    } else if (!this.partner.equals(other.partner)) {
+      return false;
+    }
+    if (this.partnerBankAccount == null) {
+      if (other.partnerBankAccount != null) {
+        return false;
+      }
+    } else if (!this.partnerBankAccount.equals(other.partnerBankAccount)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CompareDataDataset [bookingDate=");
-		builder.append(this.bookingDate);
-		builder.append(", invoiceDate=");
-		builder.append(this.invoiceDate);
-		builder.append(", amount=");
-		builder.append(this.amount);
-		builder.append(", partner=");
-		builder.append(this.partner);
-		builder.append(", comment=");
-		builder.append(this.comment);
-		builder.append(", partnerBankAccount=");
-		builder.append(this.partnerBankAccount);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CompareDataDataset [bookingDate=");
+    builder.append(this.bookingDate);
+    builder.append(", invoiceDate=");
+    builder.append(this.invoiceDate);
+    builder.append(", amount=");
+    builder.append(this.amount);
+    builder.append(", partner=");
+    builder.append(this.partner);
+    builder.append(", comment=");
+    builder.append(this.comment);
+    builder.append(", partnerBankAccount=");
+    builder.append(this.partnerBankAccount);
+    builder.append("]");
+    return builder.toString();
+  }
 }

@@ -27,34 +27,30 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.time.Month;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 
-public class MoneyflowSearchResultDataMapper implements IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
+public class MoneyflowSearchResultDataMapper
+    implements IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
+  @Override
+  public MoneyflowSearchResult mapBToA(final MoneyflowSearchResultData moneyflowSearchResultData) {
+    final MoneyflowSearchResult moneyflowSearchResult = new MoneyflowSearchResult();
+    moneyflowSearchResult.setAmount(moneyflowSearchResultData.getAmount());
+    moneyflowSearchResult.setComment(moneyflowSearchResultData.getComment());
+    if (moneyflowSearchResultData.getMonth() != null) {
+      moneyflowSearchResult.setMonth(Month.of(moneyflowSearchResultData.getMonth().intValue()));
+    }
+    moneyflowSearchResult.setYear(moneyflowSearchResultData.getYear());
+    moneyflowSearchResult.setContractpartner(new Contractpartner(
+        new ContractpartnerID(moneyflowSearchResultData.getContractpartnerid())));
+    return moneyflowSearchResult;
+  }
 
-	@Override
-	public MoneyflowSearchResult mapBToA(final MoneyflowSearchResultData moneyflowSearchResultData) {
-		final MoneyflowSearchResult moneyflowSearchResult = new MoneyflowSearchResult();
-
-		moneyflowSearchResult.setAmount(moneyflowSearchResultData.getAmount());
-		moneyflowSearchResult.setComment(moneyflowSearchResultData.getComment());
-		if (moneyflowSearchResultData.getMonth() != null) {
-			moneyflowSearchResult.setMonth(Month.of(moneyflowSearchResultData.getMonth().intValue()));
-		}
-		moneyflowSearchResult.setYear(moneyflowSearchResultData.getYear());
-		moneyflowSearchResult.setContractpartner(
-				new Contractpartner(new ContractpartnerID(moneyflowSearchResultData.getContractpartnerid())));
-
-		return moneyflowSearchResult;
-	}
-
-	@Override
-	public MoneyflowSearchResultData mapAToB(final MoneyflowSearchResult moneyflowSearchResult) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
-
+  @Override
+  public MoneyflowSearchResultData mapAToB(final MoneyflowSearchResult moneyflowSearchResult) {
+    throw new UnsupportedOperationException("Mapping not supported!");
+  }
 }

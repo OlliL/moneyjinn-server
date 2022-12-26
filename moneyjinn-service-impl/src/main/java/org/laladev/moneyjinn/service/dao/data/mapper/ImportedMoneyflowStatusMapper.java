@@ -31,44 +31,42 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 
 public class ImportedMoneyflowStatusMapper {
-	private static final Short CREATED = Short.valueOf((short) 0);
-	private static final Short PROCESSED = Short.valueOf((short) 1);
-	private static final Short IGNORED = Short.valueOf((short) 2);
+  private static final Short CREATED = Short.valueOf((short) 0);
+  private static final Short PROCESSED = Short.valueOf((short) 1);
+  private static final Short IGNORED = Short.valueOf((short) 2);
 
-	private ImportedMoneyflowStatusMapper() {
+  private ImportedMoneyflowStatusMapper() {
+  }
 
-	}
+  public static ImportedMoneyflowStatus map(final Short type) {
+    if (type != null) {
+      switch (type) {
+        case 0:
+          return ImportedMoneyflowStatus.CREATED;
+        case 1:
+          return ImportedMoneyflowStatus.PROCESSED;
+        case 2:
+          return ImportedMoneyflowStatus.IGNORED;
+        default:
+          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 
-	public static ImportedMoneyflowStatus map(final Short type) {
-		if (type != null) {
-			switch (type) {
-			case 0:
-				return ImportedMoneyflowStatus.CREATED;
-			case 1:
-				return ImportedMoneyflowStatus.PROCESSED;
-			case 2:
-				return ImportedMoneyflowStatus.IGNORED;
-			default:
-				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
-
-	public static Short map(final ImportedMoneyflowStatus type) {
-		if (type != null) {
-			switch (type) {
-			case CREATED:
-				return CREATED;
-			case PROCESSED:
-				return PROCESSED;
-			case IGNORED:
-				return IGNORED;
-			default:
-				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
-
+  public static Short map(final ImportedMoneyflowStatus type) {
+    if (type != null) {
+      switch (type) {
+        case CREATED:
+          return CREATED;
+        case PROCESSED:
+          return PROCESSED;
+        case IGNORED:
+          return IGNORED;
+        default:
+          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 }

@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
@@ -37,64 +36,57 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 
 public class UserDataMapper implements IMapper<User, UserData> {
-	@Override
-	public User mapBToA(final UserData b) {
-		final Collection<UserAttribute> attributes = new ArrayList<>();
-		final Collection<UserPermission> permissions = new ArrayList<>();
-		if (b.isPermAdmin()) {
-			permissions.add(UserPermission.ADMIN);
-		}
-		if (b.isPermLogin()) {
-			permissions.add(UserPermission.LOGIN);
-		}
-		if (permissions.isEmpty()) {
-			permissions.add(UserPermission.NONE);
-		}
+  @Override
+  public User mapBToA(final UserData b) {
+    final Collection<UserAttribute> attributes = new ArrayList<>();
+    final Collection<UserPermission> permissions = new ArrayList<>();
+    if (b.isPermAdmin()) {
+      permissions.add(UserPermission.ADMIN);
+    }
+    if (b.isPermLogin()) {
+      permissions.add(UserPermission.LOGIN);
+    }
+    if (permissions.isEmpty()) {
+      permissions.add(UserPermission.NONE);
+    }
+    if (b.isAttChangePassword()) {
+      attributes.add(UserAttribute.IS_NEW);
+    }
+    if (attributes.isEmpty()) {
+      attributes.add(UserAttribute.NONE);
+    }
+    return new User(new UserID(b.getId()), b.getName(), b.getPassword(), attributes, permissions);
+  }
 
-		if (b.isAttChangePassword()) {
-			attributes.add(UserAttribute.IS_NEW);
-		}
-		if (attributes.isEmpty()) {
-			attributes.add(UserAttribute.NONE);
-		}
-
-		return new User(new UserID(b.getId()), b.getName(), b.getPassword(), attributes, permissions);
-	}
-
-	@Override
-	public UserData mapAToB(final User a) {
-		final UserData userData = new UserData();
-		// might be null for new users
-		if (a.getId() != null) {
-			userData.setId(a.getId().getId());
-		}
-		userData.setName(a.getName());
-		userData.setPassword(a.getPassword());
-
-		if (a.getAttributes() != null && a.getAttributes().contains(UserAttribute.IS_NEW)) {
-			userData.setAttChangePassword(true);
-		} else {
-			userData.setAttChangePassword(false);
-		}
-
-		if (a.getPermissions() != null) {
-			if (a.getPermissions().contains(UserPermission.ADMIN)) {
-				userData.setPermAdmin(true);
-			} else {
-				userData.setPermAdmin(false);
-			}
-
-			if (a.getPermissions().contains(UserPermission.LOGIN)) {
-				userData.setPermLogin(true);
-			} else {
-				userData.setPermLogin(false);
-			}
-		} else {
-			userData.setPermAdmin(false);
-			userData.setPermLogin(false);
-		}
-
-		return userData;
-	}
-
+  @Override
+  public UserData mapAToB(final User a) {
+    final UserData userData = new UserData();
+    // might be null for new users
+    if (a.getId() != null) {
+      userData.setId(a.getId().getId());
+    }
+    userData.setName(a.getName());
+    userData.setPassword(a.getPassword());
+    if (a.getAttributes() != null && a.getAttributes().contains(UserAttribute.IS_NEW)) {
+      userData.setAttChangePassword(true);
+    } else {
+      userData.setAttChangePassword(false);
+    }
+    if (a.getPermissions() != null) {
+      if (a.getPermissions().contains(UserPermission.ADMIN)) {
+        userData.setPermAdmin(true);
+      } else {
+        userData.setPermAdmin(false);
+      }
+      if (a.getPermissions().contains(UserPermission.LOGIN)) {
+        userData.setPermLogin(true);
+      } else {
+        userData.setPermLogin(false);
+      }
+    } else {
+      userData.setPermAdmin(false);
+      userData.setPermLogin(false);
+    }
+    return userData;
+  }
 }

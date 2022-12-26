@@ -29,55 +29,55 @@ package org.laladev.moneyjinn.service.dao.mapper;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 
 public interface ICapitalsourceDaoMapper {
-	public List<CapitalsourceData> getAllCapitalsources(@Param("userId") Long userId);
+  public List<CapitalsourceData> getAllCapitalsources(@Param("userId") Long userId);
 
-	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+  public List<CapitalsourceData> getAllCapitalsourcesByDateRange(@Param("userId") Long userId,
+      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
-	public CapitalsourceData getCapitalsourceById(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
-			@Param("id") Long id);
+  public CapitalsourceData getCapitalsourceById(@Param("userId") Long userId,
+      @Param("accessorId") Long accessorId, @Param("id") Long id);
 
-	public Integer countAllCapitalsources(@Param("userId") Long userId);
+  public Integer countAllCapitalsources(@Param("userId") Long userId);
 
-	public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+  public Integer countAllCapitalsourcesByDateRange(@Param("userId") Long userId,
+      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
-	public LinkedHashSet<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
+  public LinkedHashSet<Character> getAllCapitalsourceInitials(@Param("userId") Long userId);
 
-	public LinkedHashSet<Character> getAllCapitalsourceInitialsByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+  public LinkedHashSet<Character> getAllCapitalsourceInitialsByDateRange(
+      @Param("userId") Long userId, @Param("validFrom") LocalDate validFrom,
+      @Param("validTil") LocalDate validTil);
 
-	public List<CapitalsourceData> getAllCapitalsourcesByInitial(@Param("userId") Long userId,
-			@Param("initial") String initial);
+  public List<CapitalsourceData> getAllCapitalsourcesByInitial(@Param("userId") Long userId,
+      @Param("initial") String initial);
 
-	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(@Param("userId") Long userId,
-			@Param("initial") String initial, @Param("validFrom") LocalDate validFrom,
-			@Param("validTil") LocalDate validTil);
+  public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(
+      @Param("userId") Long userId, @Param("initial") String initial,
+      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
-	public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId, @Param("comment") String comment,
-			@Param("date") LocalDate date);
+  public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId,
+      @Param("comment") String comment, @Param("date") LocalDate date);
 
-	public void createCapitalsource(CapitalsourceData capitalsourceData);
+  public void createCapitalsource(CapitalsourceData capitalsourceData);
 
-	public void updateCapitalsource(CapitalsourceData capitalsourceData);
+  public void updateCapitalsource(CapitalsourceData capitalsourceData);
 
-	public void deleteCapitalsource(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
-			@Param("id") Long id);
+  public void deleteCapitalsource(@Param("userId") Long userId,
+      @Param("accessorId") Long accessorId, @Param("id") Long id);
 
-	public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+  public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId,
+      @Param("id") Long id, @Param("validFrom") LocalDate validFrom,
+      @Param("validTil") LocalDate validTil);
 
-	public List<CapitalsourceData> getGroupCapitalsources(@Param("userId") Long userId);
+  public List<CapitalsourceData> getGroupCapitalsources(@Param("userId") Long userId);
 
-	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+  public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
+      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
-	public CapitalsourceData getCapitalsourceByAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber, @Param("date") LocalDate date);
-
+  public CapitalsourceData getCapitalsourceByAccount(@Param("bankCode") String bankCode,
+      @Param("accountNumber") String accountNumber, @Param("date") LocalDate date);
 }

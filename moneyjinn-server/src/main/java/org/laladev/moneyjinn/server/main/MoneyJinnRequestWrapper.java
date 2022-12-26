@@ -1,5 +1,10 @@
+
 package org.laladev.moneyjinn.server.main;
 
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 //Copyright (c) 2015, 2018 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -23,7 +28,6 @@ package org.laladev.moneyjinn.server.main;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,77 +35,72 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import jakarta.servlet.ReadListener;
-import jakarta.servlet.ServletInputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-
 public class MoneyJinnRequestWrapper extends HttpServletRequestWrapper {
-	private final String body;
-	private final Charset encoding;
+  private final String body;
+  private final Charset encoding;
 
-	public MoneyJinnRequestWrapper(final HttpServletRequest request) throws IOException {
-		super(request);
-		if (request.getCharacterEncoding() != null) {
-			this.encoding = Charset.forName(request.getCharacterEncoding());
-		} else {
-			this.encoding = StandardCharsets.UTF_8;
-		}
+  public MoneyJinnRequestWrapper(final HttpServletRequest request) throws IOException {
+    super(request);
+    if (request.getCharacterEncoding() != null) {
+      this.encoding = Charset.forName(request.getCharacterEncoding());
+    } else {
+      this.encoding = StandardCharsets.UTF_8;
+    }
+    final StringBuilder stringBuilder = new StringBuilder();
+    BufferedReader bufferedReader = null;
+    try {
+      final ServletInputStream inputStream = request.getInputStream();
+      if (inputStream != null && !inputStream.isFinished()) {
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream, this.encoding));
+        final char[] charBuffer = new char[128];
+        int bytesRead = -1;
+        while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+          stringBuilder.append(charBuffer, 0, bytesRead);
+        }
+      } else {
+        stringBuilder.append("");
+      }
+    } finally {
+      if (bufferedReader != null) {
+        bufferedReader.close();
+      }
+    }
+    this.body = stringBuilder.toString();
+  }
 
-		final StringBuilder stringBuilder = new StringBuilder();
-		BufferedReader bufferedReader = null;
-		try {
-			final ServletInputStream inputStream = request.getInputStream();
-			if (inputStream != null && !inputStream.isFinished()) {
-				bufferedReader = new BufferedReader(new InputStreamReader(inputStream, this.encoding));
-				final char[] charBuffer = new char[128];
-				int bytesRead = -1;
-				while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-					stringBuilder.append(charBuffer, 0, bytesRead);
-				}
-			} else {
-				stringBuilder.append("");
-			}
-		} finally {
-			if (bufferedReader != null) {
-				bufferedReader.close();
-			}
-		}
-		this.body = stringBuilder.toString();
-	}
+  @Override
+  public ServletInputStream getInputStream() throws IOException {
+    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+        this.body.getBytes(this.encoding));
+    return new ServletInputStream() {
+      @Override
+      public int read() throws IOException {
+        return byteArrayInputStream.read();
+      }
 
-	@Override
-	public ServletInputStream getInputStream() throws IOException {
-		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body.getBytes(this.encoding));
-		return new ServletInputStream() {
-			@Override
-			public int read() throws IOException {
-				return byteArrayInputStream.read();
-			}
+      @Override
+      public boolean isFinished() {
+        return byteArrayInputStream.available() == 0;
+      }
 
-			@Override
-			public boolean isFinished() {
-				return byteArrayInputStream.available() == 0;
-			}
+      @Override
+      public boolean isReady() {
+        return true;
+      }
 
-			@Override
-			public boolean isReady() {
-				return true;
-			}
+      @Override
+      public void setReadListener(final ReadListener listener) {
+        throw new UnsupportedOperationException("Not implemented");
+      }
+    };
+  }
 
-			@Override
-			public void setReadListener(final ReadListener listener) {
-				throw new UnsupportedOperationException("Not implemented");
-			}
-		};
-	}
+  @Override
+  public BufferedReader getReader() throws IOException {
+    return new BufferedReader(new InputStreamReader(this.getInputStream()));
+  }
 
-	@Override
-	public BufferedReader getReader() throws IOException {
-		return new BufferedReader(new InputStreamReader(this.getInputStream()));
-	}
-
-	public String getBody() {
-		return this.body;
-	}
+  public String getBody() {
+    return this.body;
+  }
 }

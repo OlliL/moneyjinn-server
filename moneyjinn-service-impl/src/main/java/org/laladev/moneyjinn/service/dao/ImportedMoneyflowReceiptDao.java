@@ -26,35 +26,32 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowReceiptDaoMapper;
 
 @Named
 public class ImportedMoneyflowReceiptDao {
+  @Inject
+  private IImportedMoneyflowReceiptDaoMapper mapper;
 
-	@Inject
-	IImportedMoneyflowReceiptDaoMapper mapper;
+  public List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(final Long groupId) {
+    return this.mapper.getAllImportedMoneyflowReceipts(groupId);
+  }
 
-	public List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(final Long groupId) {
-		return this.mapper.getAllImportedMoneyflowReceipts(groupId);
-	}
+  public Long createImportedMoneyflowReceipt(final ImportedMoneyflowReceiptData data) {
+    this.mapper.createImportedMoneyflowReceipt(data);
+    return data.getId();
+  }
 
-	public Long createImportedMoneyflowReceipt(final ImportedMoneyflowReceiptData data) {
-		this.mapper.createImportedMoneyflowReceipt(data);
-		return data.getId();
-	}
+  public void deleteImportedMoneyflowReceipt(final Long groupId, final Long id) {
+    this.mapper.deleteImportedMoneyflowReceiptById(groupId, id);
+  }
 
-	public void deleteImportedMoneyflowReceipt(final Long groupId, final Long id) {
-		this.mapper.deleteImportedMoneyflowReceiptById(groupId, id);
-	}
-
-	public ImportedMoneyflowReceiptData getImportedMoneyflowReceiptById(final Long groupId, final Long id) {
-		return this.mapper.getImportedMoneyflowReceiptById(groupId, id);
-
-	}
+  public ImportedMoneyflowReceiptData getImportedMoneyflowReceiptById(final Long groupId,
+      final Long id) {
+    return this.mapper.getImportedMoneyflowReceiptById(groupId, id);
+  }
 }

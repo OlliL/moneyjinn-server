@@ -30,21 +30,19 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
 
-public class ImportedBalanceTransportMapper implements IMapper<ImportedBalance, ImportedBalanceTransport> {
+public class ImportedBalanceTransportMapper
+    implements IMapper<ImportedBalance, ImportedBalanceTransport> {
+  @Override
+  public ImportedBalance mapBToA(final ImportedBalanceTransport importedBalanceTransport) {
+    final ImportedBalance importedBalance = new ImportedBalance();
+    importedBalance.setBalance(importedBalanceTransport.getBalance());
+    return importedBalance;
+  }
 
-	@Override
-	public ImportedBalance mapBToA(final ImportedBalanceTransport importedBalanceTransport) {
-		final ImportedBalance importedBalance = new ImportedBalance();
-		importedBalance.setBalance(importedBalanceTransport.getBalance());
-
-		return importedBalance;
-	}
-
-	@Override
-	public ImportedBalanceTransport mapAToB(final ImportedBalance importedBalance) {
-		final ImportedBalanceTransport importedBalanceTransport = new ImportedBalanceTransport();
-		importedBalanceTransport.setBalance(importedBalance.getBalance());
-
-		return importedBalanceTransport;
-	}
+  @Override
+  public ImportedBalanceTransport mapAToB(final ImportedBalance importedBalance) {
+    final ImportedBalanceTransport importedBalanceTransport = new ImportedBalanceTransport();
+    importedBalanceTransport.setBalance(importedBalance.getBalance());
+    return importedBalanceTransport;
+  }
 }

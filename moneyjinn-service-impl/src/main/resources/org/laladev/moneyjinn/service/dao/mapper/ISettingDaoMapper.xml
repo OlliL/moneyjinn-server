@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-	namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
+        namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
 
         <sql id="settingColumns">
-		 mac_id      as accessId
-		,name
-		,`value`
-	</sql>
+                 mac_id      as accessId
+                ,name
+                ,`value`
+        </sql>
     
-    	<select id="getSetting" 
-		resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
-		SELECT <include refid="settingColumns" />
-		  FROM settings
-		 WHERE mac_id = #{accessId}
-		   AND name = #{name}
-		 LIMIT 1
-	</select>
+            <select id="getSetting" 
+                resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
+                SELECT <include refid="settingColumns" />
+                  FROM settings
+                 WHERE mac_id = #{accessId}
+                   AND name = #{name}
+                 LIMIT 1
+        </select>
 
-    	<insert id="setSetting" >
-		INSERT
-		  INTO settings
-		      (mac_id
-		      ,name
-		      ,`value`
-		      )
-		VALUES
-		      (#{accessId}
-		      ,#{name}
-		      ,#{value}
-		      )
-		    ON DUPLICATE KEY
-		UPDATE `value` = VALUES(`value`)
-	</insert>
-	
-    	<delete id="deleteSettings">
-		DELETE
-		  FROM settings
-		 WHERE mac_id = #{accessId}
-    	</delete>
-    	
+            <insert id="setSetting" >
+                INSERT
+                  INTO settings
+                      (mac_id
+                      ,name
+                      ,`value`
+                      )
+                VALUES
+                      (#{accessId}
+                      ,#{name}
+                      ,#{value}
+                      )
+                    ON DUPLICATE KEY
+                UPDATE `value` = VALUES(`value`)
+        </insert>
+        
+            <delete id="deleteSettings">
+                DELETE
+                  FROM settings
+                 WHERE mac_id = #{accessId}
+            </delete>
+            
 </mapper>
  

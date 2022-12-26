@@ -2,87 +2,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerAccountDaoMapper">
 
-    	<sql id="contractpartnerAccountColumns">
-		 contractpartneraccountid AS id
-		,mcp_contractpartnerid    AS mcpContractpartnerId
-		,accountnumber            AS accountNumber
-		,bankcode                 AS bankCode
-	</sql>
+            <sql id="contractpartnerAccountColumns">
+                 contractpartneraccountid AS id
+                ,mcp_contractpartnerid    AS mcpContractpartnerId
+                ,accountnumber            AS accountNumber
+                ,bankcode                 AS bankCode
+        </sql>
     
-    	<select id="getContractpartnerAccountByBankAccount"
-		resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
-		SELECT <include refid="contractpartnerAccountColumns" />
-		  FROM contractpartneraccounts
-		 WHERE accountnumber = #{accountNumber}
-		   AND bankcode      = #{bankCode}
-		 LIMIT 1
-	</select>
+            <select id="getContractpartnerAccountByBankAccount"
+                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
+                SELECT <include refid="contractpartnerAccountColumns" />
+                  FROM contractpartneraccounts
+                 WHERE accountnumber = #{accountNumber}
+                   AND bankcode      = #{bankCode}
+                 LIMIT 1
+        </select>
 
-	<select id="getContractpartnerAccountById"
-		resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
+        <select id="getContractpartnerAccountById"
+                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
 
-		SELECT <include refid="contractpartnerAccountColumns" />
-		  FROM contractpartneraccounts
-		 WHERE contractpartneraccountid = #{id}
-		 LIMIT 1
-	</select>
-    	
-	<select id="getContractpartnerAccounts" 
-		resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
-		SELECT <include refid="contractpartnerAccountColumns" />
-		  FROM contractpartneraccounts
-		 WHERE mcp_contractpartnerid = #{contractpartnerId}
-		 ORDER BY bankcode
-		         ,accountnumber
-	</select>
+                SELECT <include refid="contractpartnerAccountColumns" />
+                  FROM contractpartneraccounts
+                 WHERE contractpartneraccountid = #{id}
+                 LIMIT 1
+        </select>
+            
+        <select id="getContractpartnerAccounts" 
+                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
+                SELECT <include refid="contractpartnerAccountColumns" />
+                  FROM contractpartneraccounts
+                 WHERE mcp_contractpartnerid = #{contractpartnerId}
+                 ORDER BY bankcode
+                         ,accountnumber
+        </select>
 
-	<select id="getAllContractpartnerByAccounts" 
-		resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
-		SELECT <include refid="contractpartnerAccountColumns" />
-		  FROM contractpartneraccounts
-		 WHERE (accountnumber,bankcode) IN 
-		   <foreach item="bankAccountData" index="index" collection="list"
-		      open="(" separator="," close=")">
-		        ( #{bankAccountData.accountNumber} , #{bankAccountData.bankCode} ) 
-		   </foreach>
-	</select>
-	
-	<insert id="createContractpartnerAccount"
-		parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData"
-		useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartneraccountid">
-		INSERT
-		  INTO contractpartneraccounts
-		      (mcp_contractpartnerid
-		      ,accountnumber
-		      ,bankcode
-		      )
-		VALUES
-		      (#{mcpContractpartnerId}
-		      ,#{accountNumber}
-		      ,#{bankCode}
-		      )
-	</insert>
-	
-	<update id="updateContractpartnerAccount" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
-		UPDATE contractpartneraccounts
-		   SET mcp_contractpartnerid = #{mcpContractpartnerId}
-		      ,accountnumber         = #{accountNumber}
-		      ,bankcode              = #{bankCode}
-		 WHERE contractpartneraccountid = #{id}
-		 LIMIT 1
-	</update>
+        <select id="getAllContractpartnerByAccounts" 
+                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
+                SELECT <include refid="contractpartnerAccountColumns" />
+                  FROM contractpartneraccounts
+                 WHERE (accountnumber,bankcode) IN 
+                   <foreach item="bankAccountData" index="index" collection="list"
+                      open="(" separator="," close=")">
+                        ( #{bankAccountData.accountNumber} , #{bankAccountData.bankCode} ) 
+                   </foreach>
+        </select>
+        
+        <insert id="createContractpartnerAccount"
+                parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData"
+                useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartneraccountid">
+                INSERT
+                  INTO contractpartneraccounts
+                      (mcp_contractpartnerid
+                      ,accountnumber
+                      ,bankcode
+                      )
+                VALUES
+                      (#{mcpContractpartnerId}
+                      ,#{accountNumber}
+                      ,#{bankCode}
+                      )
+        </insert>
+        
+        <update id="updateContractpartnerAccount" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
+                UPDATE contractpartneraccounts
+                   SET mcp_contractpartnerid = #{mcpContractpartnerId}
+                      ,accountnumber         = #{accountNumber}
+                      ,bankcode              = #{bankCode}
+                 WHERE contractpartneraccountid = #{id}
+                 LIMIT 1
+        </update>
 
-	<delete id="deleteContractpartnerAccount">
-		DELETE
-		  FROM contractpartneraccounts
-		 WHERE contractpartneraccountid = #{id}
-		 LIMIT 1
-	</delete>
+        <delete id="deleteContractpartnerAccount">
+                DELETE
+                  FROM contractpartneraccounts
+                 WHERE contractpartneraccountid = #{id}
+                 LIMIT 1
+        </delete>
 
-	<delete id="deleteContractpartnerAccounts">
-		DELETE
-		  FROM contractpartneraccounts
-		 WHERE mcp_contractpartnerid = #{contractpartnerId}
-	</delete>
+        <delete id="deleteContractpartnerAccounts">
+                DELETE
+                  FROM contractpartneraccounts
+                 WHERE mcp_contractpartnerid = #{contractpartnerId}
+        </delete>
 </mapper>
  

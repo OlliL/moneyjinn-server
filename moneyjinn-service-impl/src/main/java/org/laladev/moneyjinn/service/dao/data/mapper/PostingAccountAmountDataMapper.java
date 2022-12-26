@@ -32,20 +32,20 @@ import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 
-public class PostingAccountAmountDataMapper implements IMapper<PostingAccountAmount, PostingAccountAmountData> {
+public class PostingAccountAmountDataMapper
+    implements IMapper<PostingAccountAmount, PostingAccountAmountData> {
+  @Override
+  public PostingAccountAmount mapBToA(final PostingAccountAmountData postingAccountAmountData) {
+    final PostingAccountAmount postingAccountAmount = new PostingAccountAmount();
+    postingAccountAmount.setAmount(postingAccountAmountData.getAmount());
+    postingAccountAmount.setDate(postingAccountAmountData.getDate().withDayOfMonth(1));
+    postingAccountAmount.setPostingAccount(new PostingAccount(
+        new PostingAccountID(postingAccountAmountData.getMpaPostingAccountId())));
+    return postingAccountAmount;
+  }
 
-	@Override
-	public PostingAccountAmount mapBToA(final PostingAccountAmountData postingAccountAmountData) {
-		final PostingAccountAmount postingAccountAmount = new PostingAccountAmount();
-		postingAccountAmount.setAmount(postingAccountAmountData.getAmount());
-		postingAccountAmount.setDate(postingAccountAmountData.getDate().withDayOfMonth(1));
-		postingAccountAmount.setPostingAccount(
-				new PostingAccount(new PostingAccountID(postingAccountAmountData.getMpaPostingAccountId())));
-		return postingAccountAmount;
-	}
-
-	@Override
-	public PostingAccountAmountData mapAToB(final PostingAccountAmount postingAccountAmount) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
+  @Override
+  public PostingAccountAmountData mapAToB(final PostingAccountAmount postingAccountAmount) {
+    throw new UnsupportedOperationException("Mapping not supported!");
+  }
 }

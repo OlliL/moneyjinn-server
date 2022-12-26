@@ -29,15 +29,14 @@ package org.laladev.moneyjinn.model.access;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
 public class AccessID extends AbstractEntityID<Long> implements Cloneable {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+  public AccessID(final Long id) {
+    super(id);
+  }
 
-	public AccessID(final Long id) {
-		super(id);
-	}
-
-	@Override
-	public AccessID clone() throws CloneNotSupportedException {
-		return (AccessID) super.clone();
-	}
+  @Override
+  public AccessID clone() throws CloneNotSupportedException {
+    return (AccessID) super.clone();
+  }
 }

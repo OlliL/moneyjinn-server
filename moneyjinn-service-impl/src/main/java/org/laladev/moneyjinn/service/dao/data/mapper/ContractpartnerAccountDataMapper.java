@@ -34,35 +34,36 @@ import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 
-public class ContractpartnerAccountDataMapper implements IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
+public class ContractpartnerAccountDataMapper
+    implements IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
+  @Override
+  public ContractpartnerAccount mapBToA(
+      final ContractpartnerAccountData contractpartnerAccountData) {
+    final BankAccount bankAccount = new BankAccount(contractpartnerAccountData.getAccountNumber(),
+        contractpartnerAccountData.getBankCode());
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+        contractpartnerAccountData.getId());
+    final Contractpartner contractpartner = new Contractpartner(
+        new ContractpartnerID(contractpartnerAccountData.getMcpContractpartnerId()));
+    return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
+  }
 
-	@Override
-	public ContractpartnerAccount mapBToA(final ContractpartnerAccountData contractpartnerAccountData) {
-		final BankAccount bankAccount = new BankAccount(contractpartnerAccountData.getAccountNumber(),
-				contractpartnerAccountData.getBankCode());
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-				contractpartnerAccountData.getId());
-		final Contractpartner contractpartner = new Contractpartner(
-				new ContractpartnerID(contractpartnerAccountData.getMcpContractpartnerId()));
-		return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
-	}
-
-	@Override
-	public ContractpartnerAccountData mapAToB(final ContractpartnerAccount contractpartnerAccount) {
-		final ContractpartnerAccountData contractpartnerAccountData = new ContractpartnerAccountData();
-		if (contractpartnerAccount.getId() != null) {
-			contractpartnerAccountData.setId(contractpartnerAccount.getId().getId());
-		}
-		if (contractpartnerAccount.getBankAccount() != null) {
-			contractpartnerAccountData.setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
-			contractpartnerAccountData.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
-		}
-		if (contractpartnerAccount.getContractpartner() != null
-				&& contractpartnerAccount.getContractpartner().getId() != null) {
-			contractpartnerAccountData
-					.setMcpContractpartnerId(contractpartnerAccount.getContractpartner().getId().getId());
-		}
-
-		return contractpartnerAccountData;
-	}
+  @Override
+  public ContractpartnerAccountData mapAToB(final ContractpartnerAccount contractpartnerAccount) {
+    final ContractpartnerAccountData contractpartnerAccountData = new ContractpartnerAccountData();
+    if (contractpartnerAccount.getId() != null) {
+      contractpartnerAccountData.setId(contractpartnerAccount.getId().getId());
+    }
+    if (contractpartnerAccount.getBankAccount() != null) {
+      contractpartnerAccountData
+          .setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
+      contractpartnerAccountData.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
+    }
+    if (contractpartnerAccount.getContractpartner() != null
+        && contractpartnerAccount.getContractpartner().getId() != null) {
+      contractpartnerAccountData
+          .setMcpContractpartnerId(contractpartnerAccount.getContractpartner().getId().getId());
+    }
+    return contractpartnerAccountData;
+  }
 }

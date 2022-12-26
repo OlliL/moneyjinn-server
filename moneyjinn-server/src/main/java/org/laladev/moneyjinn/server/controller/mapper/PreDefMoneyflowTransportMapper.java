@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Date;
 import java.time.LocalDate;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -41,77 +40,76 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
-public class PreDefMoneyflowTransportMapper implements IMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
-	private static final Short ONCE_A_MONTH_SHORT = Short.valueOf((short) 1);
+public class PreDefMoneyflowTransportMapper
+    implements IMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
+  private static final Short ONCE_A_MONTH_SHORT = Short.valueOf((short) 1);
 
-	@Override
-	public PreDefMoneyflow mapBToA(final PreDefMoneyflowTransport preDefMoneyflowTransport) {
-		final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
-		if (preDefMoneyflowTransport.getId() != null) {
-			preDefMoneyflow.setId(new PreDefMoneyflowID(preDefMoneyflowTransport.getId()));
-		}
-		preDefMoneyflow.setAmount(preDefMoneyflowTransport.getAmount());
-		if (preDefMoneyflowTransport.getCreatedate() != null) {
-			final LocalDate creationDate = preDefMoneyflowTransport.getCreatedate().toLocalDate();
-			preDefMoneyflow.setCreationDate(creationDate);
-		}
-		if (preDefMoneyflowTransport.getCapitalsourceid() != null) {
-			final Capitalsource capitalsource = new Capitalsource(
-					new CapitalsourceID(preDefMoneyflowTransport.getCapitalsourceid()));
-			preDefMoneyflow.setCapitalsource(capitalsource);
-		}
-		if (preDefMoneyflowTransport.getContractpartnerid() != null) {
-			final Contractpartner contractpartner = new Contractpartner(
-					new ContractpartnerID(preDefMoneyflowTransport.getContractpartnerid()));
-			preDefMoneyflow.setContractpartner(contractpartner);
-		}
-		preDefMoneyflow.setComment(preDefMoneyflowTransport.getComment());
-		if (preDefMoneyflowTransport.getLastUsed() != null) {
-			final LocalDate lastUsedDate = preDefMoneyflowTransport.getLastUsed().toLocalDate();
-			preDefMoneyflow.setLastUsedDate(lastUsedDate);
-		}
-		if (preDefMoneyflowTransport.getOnceAMonth() != null
-				&& ONCE_A_MONTH_SHORT.equals(preDefMoneyflowTransport.getOnceAMonth())) {
-			preDefMoneyflow.setOnceAMonth(true);
-		}
-		if (preDefMoneyflowTransport.getPostingaccountid() != null) {
-			final PostingAccount postingAccount = new PostingAccount(
-					new PostingAccountID(preDefMoneyflowTransport.getPostingaccountid()));
-			preDefMoneyflow.setPostingAccount(postingAccount);
-		}
+  @Override
+  public PreDefMoneyflow mapBToA(final PreDefMoneyflowTransport preDefMoneyflowTransport) {
+    final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
+    if (preDefMoneyflowTransport.getId() != null) {
+      preDefMoneyflow.setId(new PreDefMoneyflowID(preDefMoneyflowTransport.getId()));
+    }
+    preDefMoneyflow.setAmount(preDefMoneyflowTransport.getAmount());
+    if (preDefMoneyflowTransport.getCreatedate() != null) {
+      final LocalDate creationDate = preDefMoneyflowTransport.getCreatedate().toLocalDate();
+      preDefMoneyflow.setCreationDate(creationDate);
+    }
+    if (preDefMoneyflowTransport.getCapitalsourceid() != null) {
+      final Capitalsource capitalsource = new Capitalsource(
+          new CapitalsourceID(preDefMoneyflowTransport.getCapitalsourceid()));
+      preDefMoneyflow.setCapitalsource(capitalsource);
+    }
+    if (preDefMoneyflowTransport.getContractpartnerid() != null) {
+      final Contractpartner contractpartner = new Contractpartner(
+          new ContractpartnerID(preDefMoneyflowTransport.getContractpartnerid()));
+      preDefMoneyflow.setContractpartner(contractpartner);
+    }
+    preDefMoneyflow.setComment(preDefMoneyflowTransport.getComment());
+    if (preDefMoneyflowTransport.getLastUsed() != null) {
+      final LocalDate lastUsedDate = preDefMoneyflowTransport.getLastUsed().toLocalDate();
+      preDefMoneyflow.setLastUsedDate(lastUsedDate);
+    }
+    if (preDefMoneyflowTransport.getOnceAMonth() != null
+        && ONCE_A_MONTH_SHORT.equals(preDefMoneyflowTransport.getOnceAMonth())) {
+      preDefMoneyflow.setOnceAMonth(true);
+    }
+    if (preDefMoneyflowTransport.getPostingaccountid() != null) {
+      final PostingAccount postingAccount = new PostingAccount(
+          new PostingAccountID(preDefMoneyflowTransport.getPostingaccountid()));
+      preDefMoneyflow.setPostingAccount(postingAccount);
+    }
+    return preDefMoneyflow;
+  }
 
-		return preDefMoneyflow;
-	}
-
-	@Override
-	public PreDefMoneyflowTransport mapAToB(final PreDefMoneyflow preDefMoneyflow) {
-		final PreDefMoneyflowTransport preDefMoneyflowTransport = new PreDefMoneyflowTransport();
-		preDefMoneyflowTransport.setId(preDefMoneyflow.getId().getId());
-		preDefMoneyflowTransport.setAmount(preDefMoneyflow.getAmount());
-		if (preDefMoneyflow.getCreationDate() != null) {
-			final Date creationDate = Date.valueOf(preDefMoneyflow.getCreationDate());
-			preDefMoneyflowTransport.setCreatedate(creationDate);
-		}
-		final Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
-		preDefMoneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
-		preDefMoneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
-		final Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
-		preDefMoneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
-		preDefMoneyflowTransport.setContractpartnername(contractpartner.getName());
-		preDefMoneyflowTransport.setComment(preDefMoneyflow.getComment());
-		if (preDefMoneyflow.getLastUsedDate() != null) {
-			final Date lastUserDate = Date.valueOf(preDefMoneyflow.getLastUsedDate());
-			preDefMoneyflowTransport.setLastUsed(lastUserDate);
-		}
-		if (preDefMoneyflow.isOnceAMonth()) {
-			preDefMoneyflowTransport.setOnceAMonth(ONCE_A_MONTH_SHORT);
-		}
-		final User user = preDefMoneyflow.getUser();
-		preDefMoneyflowTransport.setUserid(user.getId().getId());
-		final PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
-		preDefMoneyflowTransport.setPostingaccountid(postingAccount.getId().getId());
-		preDefMoneyflowTransport.setPostingaccountname(postingAccount.getName());
-
-		return preDefMoneyflowTransport;
-	}
+  @Override
+  public PreDefMoneyflowTransport mapAToB(final PreDefMoneyflow preDefMoneyflow) {
+    final PreDefMoneyflowTransport preDefMoneyflowTransport = new PreDefMoneyflowTransport();
+    preDefMoneyflowTransport.setId(preDefMoneyflow.getId().getId());
+    preDefMoneyflowTransport.setAmount(preDefMoneyflow.getAmount());
+    if (preDefMoneyflow.getCreationDate() != null) {
+      final Date creationDate = Date.valueOf(preDefMoneyflow.getCreationDate());
+      preDefMoneyflowTransport.setCreatedate(creationDate);
+    }
+    final Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
+    preDefMoneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
+    preDefMoneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
+    final Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
+    preDefMoneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
+    preDefMoneyflowTransport.setContractpartnername(contractpartner.getName());
+    preDefMoneyflowTransport.setComment(preDefMoneyflow.getComment());
+    if (preDefMoneyflow.getLastUsedDate() != null) {
+      final Date lastUserDate = Date.valueOf(preDefMoneyflow.getLastUsedDate());
+      preDefMoneyflowTransport.setLastUsed(lastUserDate);
+    }
+    if (preDefMoneyflow.isOnceAMonth()) {
+      preDefMoneyflowTransport.setOnceAMonth(ONCE_A_MONTH_SHORT);
+    }
+    final User user = preDefMoneyflow.getUser();
+    preDefMoneyflowTransport.setUserid(user.getId().getId());
+    final PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
+    preDefMoneyflowTransport.setPostingaccountid(postingAccount.getId().getId());
+    preDefMoneyflowTransport.setPostingaccountname(postingAccount.getName());
+    return preDefMoneyflowTransport;
+  }
 }

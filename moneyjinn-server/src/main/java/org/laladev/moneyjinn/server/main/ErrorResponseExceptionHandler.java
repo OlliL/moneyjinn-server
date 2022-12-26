@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.server.main;
 
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
@@ -12,41 +13,40 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandler implements BeanPostProcessor {
-	@ExceptionHandler(BusinessException.class)
-	@ResponseBody
-	ResponseEntity<Object> handleControllerException(final BusinessException ex) {
-		final ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setCode(ex.getErrorCode().getErrorCode());
-		errorResponse.setMessage(ex.getErrorMessage());
-		HttpStatus httpStatus;
+public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandler
+    implements BeanPostProcessor {
+  @ExceptionHandler(BusinessException.class)
+  @ResponseBody
+  ResponseEntity<Object> handleControllerException(final BusinessException ex) {
+    final ErrorResponse errorResponse = new ErrorResponse();
+    errorResponse.setCode(ex.getErrorCode().getErrorCode());
+    errorResponse.setMessage(ex.getErrorMessage());
+    HttpStatus httpStatus;
+    switch (ex.getErrorCode()) {
+      case LOGGED_OUT:
+      case USER_IS_NO_ADMIN:
+      case CLIENT_CLOCK_OFF:
+      case USERNAME_PASSWORD_WRONG:
+      case ACCOUNT_IS_LOCKED:
+        httpStatus = HttpStatus.FORBIDDEN;
+        break;
+      default:
+        httpStatus = HttpStatus.OK;
+    }
+    return new ResponseEntity<>(errorResponse, httpStatus);
+  }
 
-		switch (ex.getErrorCode()) {
-		case LOGGED_OUT:
-		case USER_IS_NO_ADMIN:
-		case CLIENT_CLOCK_OFF:
-		case USERNAME_PASSWORD_WRONG:
-		case ACCOUNT_IS_LOCKED:
-			httpStatus = HttpStatus.FORBIDDEN;
-			break;
-		default:
-			httpStatus = HttpStatus.OK;
-		}
-		return new ResponseEntity<>(errorResponse, httpStatus);
-	}
+  @Override
+  public Object postProcessBeforeInitialization(final Object bean, final String beanName) {
+    if (bean instanceof DispatcherServlet) { // otherwise we get a 404 before our exception
+                                             // handler kicks in
+      ((DispatcherServlet) bean).setThrowExceptionIfNoHandlerFound(true);
+    }
+    return bean;
+  }
 
-	@Override
-	public Object postProcessBeforeInitialization(final Object bean, final String beanName) {
-		if (bean instanceof DispatcherServlet) { // otherwise we get a 404 before our exception
-													// handler kicks in
-			((DispatcherServlet) bean).setThrowExceptionIfNoHandlerFound(true);
-		}
-		return bean;
-	}
-
-	@Override
-	public Object postProcessAfterInitialization(final Object bean, final String beanName) {
-		return bean;
-	}
-
+  @Override
+  public Object postProcessAfterInitialization(final Object bean, final String beanName) {
+    return bean;
+  }
 }

@@ -28,12 +28,12 @@ package org.laladev.moneyjinn.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
-
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -60,10 +60,6 @@ import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.SettingTypeConverter;
 import org.springframework.util.Assert;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -91,403 +87,420 @@ import jakarta.inject.Named;
 // TODO - copy and paste hell, use Optional!
 @Named
 public class SettingService extends AbstractService implements ISettingService {
-	private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
-	@Inject
-	private SettingDao settingDao;
-	@Inject
-	private ObjectMapper objectMapper;
+  private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
+  @Inject
+  private SettingDao settingDao;
+  @Inject
+  private ObjectMapper objectMapper;
 
-	@Override
-	protected void addBeanMapper() {
-		// no Mapper needed
-	}
+  @Override
+  protected void addBeanMapper() {
+    // no Mapper needed
+  }
 
-	@Override
-	public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
-			final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS));
-		if (settingData != null) {
-			try {
-				final PostingAccountID[] postingAccountIds = this.objectMapper.readValue(settingData.getValue(),
-						PostingAccountID[].class);
-				return new ClientReportingUnselectedPostingAccountIdsSetting(Arrays.asList(postingAccountIds));
-			} catch (final IOException e) {
-			}
-		}
-		return null;
-	}
+  @Override
+  public ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS));
+    if (settingData != null) {
+      try {
+        final PostingAccountID[] postingAccountIds = this.objectMapper
+            .readValue(settingData.getValue(), PostingAccountID[].class);
+        return new ClientReportingUnselectedPostingAccountIdsSetting(
+            Arrays.asList(postingAccountIds));
+      } catch (final IOException e) {
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId,
-			final ClientReportingUnselectedPostingAccountIdsSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+  @Override
+  public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId,
+      final ClientReportingUnselectedPostingAccountIdsSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    try {
+      final String settingString = this.objectMapper
+          .writeValueAsString(setting.getSetting().toArray(new PostingAccountID[0]));
+      final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+          .getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS),
+          settingString);
+      this.settingDao.setSetting(settingData);
+    } catch (final JsonProcessingException e) {
+    }
+  }
 
-		try {
-			final String settingString = this.objectMapper
-					.writeValueAsString(setting.getSetting().toArray(new PostingAccountID[0]));
-			final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
-					.getSettingNameByType(SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS), settingString);
-			this.settingDao.setSetting(settingData);
-		} catch (final JsonProcessingException e) {
-		}
-	}
+  @Override
+  public ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS));
+    if (settingData != null) {
+      try {
+        final CapitalsourceID[] capitalsourceIds = this.objectMapper
+            .readValue(settingData.getValue(), CapitalsourceID[].class);
+        return new ClientTrendCapitalsourceIDsSetting(Arrays.asList(capitalsourceIds));
+      } catch (final IOException e) {
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS));
-		if (settingData != null) {
-			try {
-				final CapitalsourceID[] capitalsourceIds = this.objectMapper.readValue(settingData.getValue(),
-						CapitalsourceID[].class);
-				return new ClientTrendCapitalsourceIDsSetting(Arrays.asList(capitalsourceIds));
-			} catch (final IOException e) {
-			}
-		}
-		return null;
-	}
+  @Override
+  public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+      final ClientTrendCapitalsourceIDsSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    try {
+      final String settingString = this.objectMapper
+          .writeValueAsString(setting.getSetting().toArray(new CapitalsourceID[0]));
+      final SettingData settingData = new SettingData(accessId.getId(),
+          SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS),
+          settingString);
+      this.settingDao.setSetting(settingData);
+    } catch (final JsonProcessingException e) {
+    }
+  }
 
-	@Override
-	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
-			final ClientTrendCapitalsourceIDsSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+  @Override
+  public ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS));
+    return new ClientMaxRowsSetting(Integer.valueOf(settingData.getValue()));
+  }
 
-		try {
-			final String settingString = this.objectMapper
-					.writeValueAsString(setting.getSetting().toArray(new CapitalsourceID[0]));
-			final SettingData settingData = new SettingData(accessId.getId(),
-					SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_TREND_CAPITALSOURCEIDS),
-					settingString);
-			this.settingDao.setSetting(settingData);
-		} catch (final JsonProcessingException e) {
-		}
-	}
+  @Override
+  public void setClientMaxRowsSetting(final AccessID accessId, final ClientMaxRowsSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public ClientMaxRowsSetting getClientMaxRowsSetting(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS));
-		return new ClientMaxRowsSetting(Integer.valueOf(settingData.getValue()));
-	}
+  @Override
+  public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES));
+    Boolean setting;
+    if (settingData != null && "1".equals(settingData.getValue())) {
+      setting = Boolean.TRUE;
+    } else {
+      setting = Boolean.FALSE;
+    }
+    return new ClientCurrentlyValidCapitalsourcesSetting(setting);
+  }
 
-	@Override
-	public void setClientMaxRowsSetting(final AccessID accessId, final ClientMaxRowsSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_MAX_ROWS),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public void setClientCurrentlyValidCapitalsourcesSetting(final AccessID accessId,
+      final ClientCurrentlyValidCapitalsourcesSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    String settingValue = "0";
+    if (Boolean.TRUE.equals(setting.getSetting())) {
+      settingValue = "1";
+    }
+    final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+        .getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES), settingValue);
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public ClientCurrentlyValidCapitalsourcesSetting getClientCurrentlyValidCapitalsourcesSetting(
-			final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES));
-		Boolean setting;
-		if (settingData != null && "1".equals(settingData.getValue())) {
-			setting = Boolean.TRUE;
-		} else {
-			setting = Boolean.FALSE;
-		}
-		return new ClientCurrentlyValidCapitalsourcesSetting(setting);
-	}
+  @Override
+  public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER));
+    Boolean setting;
+    if (settingData != null && "1".equals(settingData.getValue())) {
+      setting = Boolean.TRUE;
+    } else {
+      setting = Boolean.FALSE;
+    }
+    return new ClientCurrentlyValidContractpartnerSetting(setting);
+  }
 
-	@Override
-	public void setClientCurrentlyValidCapitalsourcesSetting(final AccessID accessId,
-			final ClientCurrentlyValidCapitalsourcesSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		String settingValue = "0";
-		if (Boolean.TRUE.equals(setting.getSetting())) {
-			settingValue = "1";
-		}
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES),
-				settingValue);
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public void setClientCurrentlyValidContractpartnerSetting(final AccessID accessId,
+      final ClientCurrentlyValidContractpartnerSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    String settingValue = "0";
+    if (Boolean.TRUE.equals(setting.getSetting())) {
+      settingValue = "1";
+    }
+    final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+        .getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER), settingValue);
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public ClientCurrentlyValidContractpartnerSetting getClientCurrentlyValidContractpartnerSetting(
-			final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER));
-		Boolean setting;
-		if (settingData != null && "1".equals(settingData.getValue())) {
-			setting = Boolean.TRUE;
-		} else {
-			setting = Boolean.FALSE;
-		}
-		return new ClientCurrentlyValidContractpartnerSetting(setting);
-	}
+  @Override
+  public ClientDisplayedLanguageSetting getClientDisplayedLanguageSetting(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE));
+    return new ClientDisplayedLanguageSetting(Integer.valueOf(settingData.getValue()));
+  }
 
-	@Override
-	public void setClientCurrentlyValidContractpartnerSetting(final AccessID accessId,
-			final ClientCurrentlyValidContractpartnerSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		String settingValue = "0";
-		if (Boolean.TRUE.equals(setting.getSetting())) {
-			settingValue = "1";
-		}
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CURRENTLY_VALID_CONTRACTPARTNER),
-				settingValue);
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public void setClientDisplayedLanguageSetting(final AccessID accessId,
+      final ClientDisplayedLanguageSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public ClientDisplayedLanguageSetting getClientDisplayedLanguageSetting(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE));
-		return new ClientDisplayedLanguageSetting(Integer.valueOf(settingData.getValue()));
-	}
+  @Override
+  public ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT));
+    return new ClientDateFormatSetting(settingData.getValue());
+  }
 
-	@Override
-	public void setClientDisplayedLanguageSetting(final AccessID accessId,
-			final ClientDisplayedLanguageSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DISPLAYED_LANGUAGE),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
+  @Override
+  public void setClientDateFormatSetting(final AccessID accessId,
+      final ClientDateFormatSetting setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT),
+        setting.getSetting());
+    this.settingDao.setSetting(settingData);
+  }
 
-	}
+  @Override
+  public void setClientCompareDataSelectedCapitalsource(final AccessID accessId,
+      final ClientCompareDataSelectedCapitalsource setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE),
+        setting.getSetting().getId().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public ClientDateFormatSetting getClientDateFormatSetting(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT));
-		return new ClientDateFormatSetting(settingData.getValue());
-	}
+  @Override
+  public ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE));
+    if (settingData != null && settingData.getValue() != null) {
+      return new ClientCompareDataSelectedCapitalsource(
+          new CapitalsourceID(Long.valueOf(settingData.getValue())));
+    }
+    return null;
+  }
 
-	@Override
-	public void setClientDateFormatSetting(final AccessID accessId, final ClientDateFormatSetting setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_DATE_FORMAT), setting.getSetting());
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public void setClientCompareDataSelectedFormat(final AccessID accessId,
+      final ClientCompareDataSelectedFormat setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT),
+        setting.getSetting().getId().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void setClientCompareDataSelectedCapitalsource(final AccessID accessId,
-			final ClientCompareDataSelectedCapitalsource setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE),
-				setting.getSetting().getId().toString());
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT));
+    if (settingData != null && settingData.getValue() != null) {
+      return new ClientCompareDataSelectedFormat(
+          new CompareDataFormatID(Long.valueOf(settingData.getValue())));
+    }
+    return null;
+  }
 
-	@Override
-	public ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE));
-		if (settingData != null && settingData.getValue() != null) {
-			return new ClientCompareDataSelectedCapitalsource(
-					new CapitalsourceID(Long.valueOf(settingData.getValue())));
-		}
-		return null;
-	}
+  @Override
+  public void setClientCompareDataSelectedSourceIsFile(final AccessID accessId,
+      final ClientCompareDataSelectedSourceIsFile setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE),
+        Boolean.TRUE.equals(setting.getSetting()) ? "1" : "0");
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void setClientCompareDataSelectedFormat(final AccessID accessId,
-			final ClientCompareDataSelectedFormat setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT),
-				setting.getSetting().getId().toString());
-		this.settingDao.setSetting(settingData);
+  @Override
+  public ClientCompareDataSelectedSourceIsFile getClientCompareDataSelectedSourceIsFile(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE));
+    if (settingData != null && settingData.getValue() != null) {
+      Boolean result = Boolean.FALSE;
+      if (settingData.getValue().compareTo("1") == 0) {
+        result = Boolean.TRUE;
+      }
+      return new ClientCompareDataSelectedSourceIsFile(result);
+    }
+    return null;
+  }
 
-	}
+  @Override
+  public void initSettings(final UserID userId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    this.setClientDateFormatSetting(userId, this.getClientDateFormatSetting(ROOT_ACCESS_ID));
+    this.setClientDisplayedLanguageSetting(userId,
+        this.getClientDisplayedLanguageSetting(ROOT_ACCESS_ID));
+    this.setClientMaxRowsSetting(userId, this.getClientMaxRowsSetting(ROOT_ACCESS_ID));
+  }
 
-	@Override
-	public ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_FORMAT));
-		if (settingData != null && settingData.getValue() != null) {
-			return new ClientCompareDataSelectedFormat(new CompareDataFormatID(Long.valueOf(settingData.getValue())));
-		}
-		return null;
-	}
+  @Override
+  public void deleteSettings(final UserID userId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    this.settingDao.deleteSettings(userId.getId());
+  }
 
-	@Override
-	public void setClientCompareDataSelectedSourceIsFile(final AccessID accessId,
-			final ClientCompareDataSelectedSourceIsFile setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE),
-				Boolean.TRUE.equals(setting.getSetting()) ? "1" : "0");
-		this.settingDao.setSetting(settingData);
+  @Override
+  public void setClientCalcEtfSaleIsin(final AccessID accessId,
+      final ClientCalcEtfSaleIsin setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN),
+        setting.getSetting());
+    this.settingDao.setSetting(settingData);
+  }
 
-	}
+  @Override
+  public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN));
+    if (settingData != null && settingData.getValue() != null) {
+      return Optional.of(new ClientCalcEtfSaleIsin(settingData.getValue()));
+    }
+    return Optional.empty();
+  }
 
-	@Override
-	public ClientCompareDataSelectedSourceIsFile getClientCompareDataSelectedSourceIsFile(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE));
-		if (settingData != null && settingData.getValue() != null) {
-			Boolean result = Boolean.FALSE;
-			if (settingData.getValue().compareTo("1") == 0) {
-				result = Boolean.TRUE;
-			}
-			return new ClientCompareDataSelectedSourceIsFile(result);
-		}
-		return null;
-	}
+  @Override
+  public void setClientCalcEtfSaleAskPrice(final AccessID accessId,
+      final ClientCalcEtfSaleAskPrice setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void initSettings(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		this.setClientDateFormatSetting(userId, this.getClientDateFormatSetting(ROOT_ACCESS_ID));
-		this.setClientDisplayedLanguageSetting(userId, this.getClientDisplayedLanguageSetting(ROOT_ACCESS_ID));
-		this.setClientMaxRowsSetting(userId, this.getClientMaxRowsSetting(ROOT_ACCESS_ID));
-	}
+  @Override
+  public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE));
+    if (settingData != null && settingData.getValue() != null) {
+      return Optional.of(new ClientCalcEtfSaleAskPrice(new BigDecimal(settingData.getValue())));
+    }
+    return Optional.empty();
+  }
 
-	@Override
-	public void deleteSettings(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		this.settingDao.deleteSettings(userId.getId());
-	}
+  @Override
+  public void setClientCalcEtfSaleBidPrice(final AccessID accessId,
+      final ClientCalcEtfSaleBidPrice setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void setClientCalcEtfSaleIsin(final AccessID accessId, final ClientCalcEtfSaleIsin setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN), setting.getSetting());
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE));
+    if (settingData != null && settingData.getValue() != null) {
+      return Optional.of(new ClientCalcEtfSaleBidPrice(new BigDecimal(settingData.getValue())));
+    }
+    return Optional.empty();
+  }
 
-	@Override
-	public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ISIN));
-		if (settingData != null && settingData.getValue() != null) {
-			return Optional.of(new ClientCalcEtfSaleIsin(settingData.getValue()));
-		}
-		return Optional.empty();
-	}
+  @Override
+  public void setClientCalcEtfSalePieces(final AccessID accessId,
+      final ClientCalcEtfSalePieces setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void setClientCalcEtfSaleAskPrice(final AccessID accessId, final ClientCalcEtfSaleAskPrice setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-	}
+  @Override
+  public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES));
+    if (settingData != null && settingData.getValue() != null) {
+      return Optional.of(new ClientCalcEtfSalePieces(new BigDecimal(settingData.getValue())));
+    }
+    return Optional.empty();
+  }
 
-	@Override
-	public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_ASK_PRICE));
-		if (settingData != null && settingData.getValue() != null) {
-			return Optional.of(new ClientCalcEtfSaleAskPrice(new BigDecimal(settingData.getValue())));
-		}
-		return Optional.empty();
-	}
+  @Override
+  public void setClientCalcEtfSaleTransactionCosts(final AccessID accessId,
+      final ClientCalcEtfSaleTransactionCosts setting) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    Assert.notNull(setting, "setting must not be null!");
+    Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
+    final SettingData settingData = new SettingData(accessId.getId(), SettingTypeConverter
+        .getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS),
+        setting.getSetting().toString());
+    this.settingDao.setSetting(settingData);
+  }
 
-	@Override
-	public void setClientCalcEtfSaleBidPrice(final AccessID accessId, final ClientCalcEtfSaleBidPrice setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_BID_PRICE));
-		if (settingData != null && settingData.getValue() != null) {
-			return Optional.of(new ClientCalcEtfSaleBidPrice(new BigDecimal(settingData.getValue())));
-		}
-		return Optional.empty();
-	}
-
-	@Override
-	public void setClientCalcEtfSalePieces(final AccessID accessId, final ClientCalcEtfSalePieces setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_PIECES));
-		if (settingData != null && settingData.getValue() != null) {
-			return Optional.of(new ClientCalcEtfSalePieces(new BigDecimal(settingData.getValue())));
-		}
-		return Optional.empty();
-	}
-
-	@Override
-	public void setClientCalcEtfSaleTransactionCosts(final AccessID accessId,
-			final ClientCalcEtfSaleTransactionCosts setting) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		Assert.notNull(setting, "setting must not be null!");
-		Assert.notNull(setting.getSetting(), "setting.getSetting() must not be null!");
-		final SettingData settingData = new SettingData(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS),
-				setting.getSetting().toString());
-		this.settingDao.setSetting(settingData);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(final AccessID accessId) {
-		Assert.notNull(accessId, "accessId must not be null!");
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
-				SettingTypeConverter.getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS));
-		if (settingData != null && settingData.getValue() != null) {
-			return Optional.of(new ClientCalcEtfSaleTransactionCosts(new BigDecimal(settingData.getValue())));
-		}
-		return Optional.empty();
-	}
+  @Override
+  public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(
+      final AccessID accessId) {
+    Assert.notNull(accessId, "accessId must not be null!");
+    final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+        SettingTypeConverter
+            .getSettingNameByType(SettingType.CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS));
+    if (settingData != null && settingData.getValue() != null) {
+      return Optional
+          .of(new ClientCalcEtfSaleTransactionCosts(new BigDecimal(settingData.getValue())));
+    }
+    return Optional.empty();
+  }
 }

@@ -33,25 +33,22 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 
 public class ImportedBalanceDataMapper implements IMapper<ImportedBalance, ImportedBalanceData> {
+  @Override
+  public ImportedBalance mapBToA(final ImportedBalanceData importedBalanceData) {
+    final ImportedBalance importedBalance = new ImportedBalance();
+    importedBalance.setBalance(importedBalanceData.getBalance());
+    importedBalance.setDate(importedBalanceData.getChangedate());
+    importedBalance.setCapitalsource(
+        new Capitalsource(new CapitalsourceID(importedBalanceData.getMcsCapitalsourceId())));
+    return importedBalance;
+  }
 
-	@Override
-	public ImportedBalance mapBToA(final ImportedBalanceData importedBalanceData) {
-		final ImportedBalance importedBalance = new ImportedBalance();
-		importedBalance.setBalance(importedBalanceData.getBalance());
-		importedBalance.setDate(importedBalanceData.getChangedate());
-		importedBalance
-				.setCapitalsource(new Capitalsource(new CapitalsourceID(importedBalanceData.getMcsCapitalsourceId())));
-
-		return importedBalance;
-	}
-
-	@Override
-	public ImportedBalanceData mapAToB(final ImportedBalance importedBalance) {
-		final ImportedBalanceData importedBalanceData = new ImportedBalanceData();
-		importedBalanceData.setBalance(importedBalance.getBalance());
-		importedBalanceData.setMcsCapitalsourceId(importedBalance.getCapitalsource().getId().getId());
-		importedBalanceData.setChangedate(importedBalance.getDate());
-
-		return importedBalanceData;
-	}
+  @Override
+  public ImportedBalanceData mapAToB(final ImportedBalance importedBalance) {
+    final ImportedBalanceData importedBalanceData = new ImportedBalanceData();
+    importedBalanceData.setBalance(importedBalance.getBalance());
+    importedBalanceData.setMcsCapitalsourceId(importedBalance.getCapitalsource().getId().getId());
+    importedBalanceData.setChangedate(importedBalance.getDate());
+    return importedBalanceData;
+  }
 }

@@ -1,9 +1,10 @@
+
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,250 +25,218 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import jakarta.inject.Inject;
-
 public class CreateContractpartnerTest extends AbstractControllerTest {
+  @Inject
+  private IContractpartnerService contractpartnerService;
+  private final HttpMethod method = HttpMethod.POST;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IContractpartnerService contractpartnerService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.POST;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode)
+      throws Exception {
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    request.setContractpartnerTransport(transport);
+    final List<ValidationItemTransport> validationItems = new ArrayList<>();
+    validationItems.add(new ValidationItemTransportBuilder().withKey(null)
+        .withError(errorCode.getErrorCode()).build());
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setValidationItemTransports(validationItems);
+    expected.setResult(Boolean.FALSE);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+    this.testError(transport, ErrorCode.NAME_ALREADY_EXISTS);
+  }
 
-	private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode) throws Exception {
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+  @Test
+  public void test_emptyContractpartnername_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setName("");
+    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
 
-		request.setContractpartnerTransport(transport);
+  @Test
+  public void test_nullContractpartnername_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setName(null);
+    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
 
-		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems
-				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
+  @Test
+  public void test_standardRequest_SuccessfullNoContent() throws Exception {
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    request.setContractpartnerTransport(transport);
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+    expected.setResult(true);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.NEXT_ID);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME,
+        contractpartner.getName());
+  }
 
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setValidationItemTransports(validationItems);
-		expected.setResult(Boolean.FALSE);
+  @Test
+  public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setUserid(UserTransportBuilder.ADMIN_ID);
+    request.setContractpartnerTransport(transport);
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+    expected.setResult(true);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.NEXT_ID);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME,
+        contractpartner.getName());
+  }
 
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
+  @Test
+  public void test_checkDefaults_SuccessfullNoContent() throws Exception {
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setValidFrom(null);
+    transport.setValidTil(null);
+    request.setContractpartnerTransport(transport);
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+    expected.setResult(true);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.NEXT_ID);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME,
+        contractpartner.getName());
+    Assertions.assertEquals(LocalDate.now(), contractpartner.getValidFrom());
+    Assertions.assertEquals(LocalDate.parse("2999-12-31"), contractpartner.getValidTil());
+  }
 
-		Assertions.assertEquals(expected, actual);
+  @Test
+  public void test_optionalFields_SuccessfullNoContent() throws Exception {
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setStreet(null);
+    transport.setPostcode(null);
+    transport.setTown(null);
+    transport.setCountry(null);
+    transport.setMoneyflowComment(null);
+    transport.setPostingAccountId(null);
+    request.setContractpartnerTransport(transport);
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
+    expected.setResult(true);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(
+        ContractpartnerTransportBuilder.NEXT_ID);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID,
+        contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME,
+        contractpartner.getName());
+    Assertions.assertNull(contractpartner.getStreet());
+    Assertions.assertNull(contractpartner.getPostcode());
+    Assertions.assertNull(contractpartner.getTown());
+    Assertions.assertNull(contractpartner.getCountry());
+    Assertions.assertNull(contractpartner.getMoneyflowComment());
+    Assertions.assertNull(contractpartner.getPostingAccount());
+  }
 
-	}
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-	@Test
-	public void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
-
-		this.testError(transport, ErrorCode.NAME_ALREADY_EXISTS);
-	}
-
-	@Test
-	public void test_emptyContractpartnername_Error() throws Exception {
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setName("");
-
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-	}
-
-	@Test
-	public void test_nullContractpartnername_Error() throws Exception {
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setName(null);
-
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-	}
-
-	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-
-		request.setContractpartnerTransport(transport);
-
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-		expected.setResult(true);
-
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-	}
-
-	@Test
-	public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setUserid(UserTransportBuilder.ADMIN_ID);
-		request.setContractpartnerTransport(transport);
-
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-		expected.setResult(true);
-
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-	}
-
-	@Test
-	public void test_checkDefaults_SuccessfullNoContent() throws Exception {
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setValidFrom(null);
-		transport.setValidTil(null);
-		request.setContractpartnerTransport(transport);
-
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-		expected.setResult(true);
-
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-		Assertions.assertEquals(LocalDate.now(), contractpartner.getValidFrom());
-		Assertions.assertEquals(LocalDate.parse("2999-12-31"), contractpartner.getValidTil());
-	}
-
-	@Test
-	public void test_optionalFields_SuccessfullNoContent() throws Exception {
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setStreet(null);
-		transport.setPostcode(null);
-		transport.setTown(null);
-		transport.setCountry(null);
-		transport.setMoneyflowComment(null);
-		transport.setPostingAccountId(null);
-		request.setContractpartnerTransport(transport);
-
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-		expected.setResult(true);
-
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(ContractpartnerTransportBuilder.NEXT_ID);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEXT_ID, contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-		Assertions.assertNull(contractpartner.getStreet());
-		Assertions.assertNull(contractpartner.getPostcode());
-		Assertions.assertNull(contractpartner.getTown());
-		Assertions.assertNull(contractpartner.getCountry());
-		Assertions.assertNull(contractpartner.getMoneyflowComment());
-		Assertions.assertNull(contractpartner.getPostingAccount());
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
-		final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
-
-		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forNewContractpartner()
-				.build();
-		transport.setStreet(null);
-		transport.setPostcode(null);
-		transport.setTown(null);
-		transport.setCountry(null);
-		transport.setMoneyflowComment(null);
-		transport.setPostingAccountId(null);
-		request.setContractpartnerTransport(transport);
-
-		final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
-		expected.setContractpartnerId(1l);
-		expected.setResult(true);
-
-		final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreateContractpartnerResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-
-		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);
-		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-				contractpartnerId);
-
-		Assertions.assertEquals(contractpartnerId.getId(), contractpartner.getId().getId());
-		Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME, contractpartner.getName());
-	}
-
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setStreet(null);
+    transport.setPostcode(null);
+    transport.setTown(null);
+    transport.setCountry(null);
+    transport.setMoneyflowComment(null);
+    transport.setPostingAccountId(null);
+    request.setContractpartnerTransport(transport);
+    final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
+    expected.setContractpartnerId(1l);
+    expected.setResult(true);
+    final CreateContractpartnerResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreateContractpartnerResponse.class);
+    Assertions.assertEquals(expected, actual);
+    final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);
+    final Contractpartner contractpartner = this.contractpartnerService
+        .getContractpartnerById(userId, contractpartnerId);
+    Assertions.assertEquals(contractpartnerId.getId(), contractpartner.getId().getId());
+    Assertions.assertEquals(ContractpartnerTransportBuilder.NEWCONTRACTPARTNER_NAME,
+        contractpartner.getName());
+  }
 }

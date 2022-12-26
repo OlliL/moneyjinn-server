@@ -24,12 +24,10 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.AbstractCreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowRequest;
@@ -78,226 +76,217 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/predefmoneyflow/")
 public class PreDefMoneyflowController extends AbstractController {
-	private static final String RESTRICTION_ALL = "all";
-	@Inject
-	private IAccessRelationService accessRelationService;
-	@Inject
-	private IPreDefMoneyflowService preDefMoneyflowService;
-	@Inject
-	private ICapitalsourceService capitalsourceService;
-	@Inject
-	private IContractpartnerService contractpartnerService;
-	@Inject
-	private IPostingAccountService postingAccountService;
-	@Inject
-	private ISettingService settingService;
+  private static final String RESTRICTION_ALL = "all";
+  @Inject
+  private IAccessRelationService accessRelationService;
+  @Inject
+  private IPreDefMoneyflowService preDefMoneyflowService;
+  @Inject
+  private ICapitalsourceService capitalsourceService;
+  @Inject
+  private IContractpartnerService contractpartnerService;
+  @Inject
+  private IPostingAccountService postingAccountService;
+  @Inject
+  private ISettingService settingService;
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new CapitalsourceTransportMapper());
-		this.registerBeanMapper(new ContractpartnerTransportMapper());
-		this.registerBeanMapper(new PostingAccountTransportMapper());
-		this.registerBeanMapper(new PreDefMoneyflowTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new CapitalsourceTransportMapper());
+    this.registerBeanMapper(new ContractpartnerTransportMapper());
+    this.registerBeanMapper(new PostingAccountTransportMapper());
+    this.registerBeanMapper(new PreDefMoneyflowTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@RequestMapping(value = "showPreDefMoneyflowList", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList() {
-		return this.showPreDefMoneyflowList(null);
-	}
+  @RequestMapping(value = "showPreDefMoneyflowList", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList() {
+    return this.showPreDefMoneyflowList(null);
+  }
 
-	@RequestMapping(value = "showPreDefMoneyflowList/{restriction}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(
-			@PathVariable(value = "restriction") final String restriction) {
-		final UserID userId = super.getUserId();
+  @RequestMapping(value = "showPreDefMoneyflowList/{restriction}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(
+      @PathVariable(value = "restriction") final String restriction) {
+    final UserID userId = super.getUserId();
+    List<PreDefMoneyflow> preDefMoneyflows = null;
+    if (restriction != null) {
+      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+        preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+      } else if (restriction.length() == 1) {
+        preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId,
+            restriction.toCharArray()[0]);
+      }
+    } else {
+      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+          .getClientMaxRowsSetting(userId);
+      final Integer count = this.preDefMoneyflowService.countAllPreDefMoneyflows(userId);
+      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+        preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+      }
+    }
+    final Set<Character> initials = this.preDefMoneyflowService
+        .getAllPreDefMoneyflowInitials(userId);
+    final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
+    if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
+      response.setPreDefMoneyflowTransports(
+          super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
+    }
+    if (initials != null && !initials.isEmpty()) {
+      response.setInitials(initials);
+    }
+    return response;
+  }
 
-		List<PreDefMoneyflow> preDefMoneyflows = null;
+  @RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
+      @RequestBody final CreatePreDefMoneyflowRequest request) {
+    final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
+        PreDefMoneyflow.class);
+    final UserID userId = super.getUserId();
+    preDefMoneyflow.setId(null);
+    preDefMoneyflow.setUser(new User(userId));
+    final ValidationResult validationResult = this.preDefMoneyflowService
+        .validatePreDefMoneyflow(preDefMoneyflow);
+    final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    } else {
+      final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
+          .createPreDefMoneyflow(preDefMoneyflow);
+      response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
+    }
+    return response;
+  }
 
-		if (restriction != null) {
-			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-			} else if (restriction.length() == 1) {
-				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflowsByInitial(userId,
-						restriction.toCharArray()[0]);
-			}
-		} else {
-			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-			final Integer count = this.preDefMoneyflowService.countAllPreDefMoneyflows(userId);
+  @RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  public ValidationResponse updatePreDefMoneyflow(
+      @RequestBody final UpdatePreDefMoneyflowRequest request) {
+    final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
+        PreDefMoneyflow.class);
+    final UserID userId = super.getUserId();
+    preDefMoneyflow.setUser(new User(userId));
+    final ValidationResult validationResult = this.preDefMoneyflowService
+        .validatePreDefMoneyflow(preDefMoneyflow);
+    if (validationResult.isValid()) {
+      this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+    } else {
+      final ValidationResponse response = new ValidationResponse();
+      response.setResult(validationResult.isValid());
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    return null;
+  }
 
-			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-				preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
-			}
-		}
+  @RequestMapping(value = "deletePreDefMoneyflow/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  public void deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
+    this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
+  }
 
-		final Set<Character> initials = this.preDefMoneyflowService.getAllPreDefMoneyflowInitials(userId);
+  @RequestMapping(value = "showCreatePreDefMoneyflow", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowCreatePreDefMoneyflowResponse showCreatePreDefMoneyflow() {
+    final UserID userId = super.getUserId();
+    final ShowCreatePreDefMoneyflowResponse response = new ShowCreatePreDefMoneyflowResponse();
+    this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, null);
+    return response;
+  }
 
-		final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
-		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
-		}
-		if (initials != null && !initials.isEmpty()) {
-			response.setInitials(initials);
-		}
+  @RequestMapping(value = "showEditPreDefMoneyflow/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowEditPreDefMoneyflowResponse showEditPreDefMoneyflow(
+      @PathVariable(value = "id") final Long preDefMoneyflowId) {
+    final UserID userId = super.getUserId();
+    final ShowEditPreDefMoneyflowResponse response = new ShowEditPreDefMoneyflowResponse();
+    final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService
+        .getPreDefMoneyflowById(userId, new PreDefMoneyflowID(preDefMoneyflowId));
+    if (preDefMoneyflow != null) {
+      response
+          .setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
+      this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
+    }
+    return response;
+  }
 
-		return response;
-	}
+  @RequestMapping(value = "showDeletePreDefMoneyflow/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowDeletePreDefMoneyflowResponse showDeletePreDefMoneyflow(
+      @PathVariable(value = "id") final Long preDefMoneyflowId) {
+    final UserID userId = super.getUserId();
+    final ShowDeletePreDefMoneyflowResponse response = new ShowDeletePreDefMoneyflowResponse();
+    final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService
+        .getPreDefMoneyflowById(userId, new PreDefMoneyflowID(preDefMoneyflowId));
+    response
+        .setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
+    return response;
+  }
 
-	@RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
-			@RequestBody final CreatePreDefMoneyflowRequest request) {
-		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
-		final UserID userId = super.getUserId();
-
-		preDefMoneyflow.setId(null);
-		preDefMoneyflow.setUser(new User(userId));
-
-		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
-
-		final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
-		response.setResult(validationResult.isValid());
-
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		} else {
-			final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
-					.createPreDefMoneyflow(preDefMoneyflow);
-			response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	public ValidationResponse updatePreDefMoneyflow(@RequestBody final UpdatePreDefMoneyflowRequest request) {
-		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
-		final UserID userId = super.getUserId();
-		preDefMoneyflow.setUser(new User(userId));
-
-		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
-
-		if (validationResult.isValid()) {
-			this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
-		} else {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-
-		return null;
-	}
-
-	@RequestMapping(value = "deletePreDefMoneyflow/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	public void deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
-		this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
-	}
-
-	@RequestMapping(value = "showCreatePreDefMoneyflow", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowCreatePreDefMoneyflowResponse showCreatePreDefMoneyflow() {
-		final UserID userId = super.getUserId();
-		final ShowCreatePreDefMoneyflowResponse response = new ShowCreatePreDefMoneyflowResponse();
-		this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, null);
-		return response;
-	}
-
-	@RequestMapping(value = "showEditPreDefMoneyflow/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowEditPreDefMoneyflowResponse showEditPreDefMoneyflow(
-			@PathVariable(value = "id") final Long preDefMoneyflowId) {
-		final UserID userId = super.getUserId();
-		final ShowEditPreDefMoneyflowResponse response = new ShowEditPreDefMoneyflowResponse();
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				new PreDefMoneyflowID(preDefMoneyflowId));
-		if (preDefMoneyflow != null) {
-			response.setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
-			this.fillAbstractCreatePreDefMoneyflowResponse(userId, response, preDefMoneyflow);
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "showDeletePreDefMoneyflow/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowDeletePreDefMoneyflowResponse showDeletePreDefMoneyflow(
-			@PathVariable(value = "id") final Long preDefMoneyflowId) {
-		final UserID userId = super.getUserId();
-		final ShowDeletePreDefMoneyflowResponse response = new ShowDeletePreDefMoneyflowResponse();
-		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
-				new PreDefMoneyflowID(preDefMoneyflowId));
-		response.setPreDefMoneyflowTransport(super.map(preDefMoneyflow, PreDefMoneyflowTransport.class));
-		return response;
-	}
-
-	private void fillAbstractCreatePreDefMoneyflowResponse(final UserID userId,
-			final AbstractCreatePreDefMoneyflowResponse response, final PreDefMoneyflow preDefMoneyflow) {
-		final LocalDate today = LocalDate.now();
-
-		final List<Capitalsource> capitalsources = this.capitalsourceService
-				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-		// if the Capitalsource is no longer valid, it was not returned by the service
-		// call above
-		// but must be in the list to make it selectable.
-		if (preDefMoneyflow != null) {
-			Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
-			if (capitalsource != null) {
-				if (preDefMoneyflow.getCapitalsource().getValidFrom() == null) {
-					// lazy initialized via update-request.
-					final GroupID groupId = this.accessRelationService.getAccessor(userId).getId();
-					capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
-							capitalsource.getId());
-				}
-
-				if (capitalsource != null && (today.isBefore(capitalsource.getValidFrom())
-						|| today.isAfter(capitalsource.getValidTil()))) {
-					capitalsources.add(capitalsource);
-				}
-			}
-		}
-		if (capitalsources != null && !capitalsources.isEmpty()) {
-			final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
-					CapitalsourceTransport.class);
-			response.setCapitalsourceTransports(capitalsourceTransports);
-		}
-
-		final List<Contractpartner> contractpartners = this.contractpartnerService
-				.getAllContractpartnersByDateRange(userId, today, today);
-		// if the Contractpartner is no longer valid, it was not returned by the service
-		// call above
-		// but must be in the list to make it selectable.
-		if (preDefMoneyflow != null) {
-			Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
-			if (contractpartner != null) {
-				if (preDefMoneyflow.getContractpartner().getValidFrom() == null) {
-					// lazy initialized via update-request.
-					contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-							contractpartner.getId());
-				}
-
-				if (contractpartner != null && (today.isBefore(contractpartner.getValidFrom())
-						|| today.isAfter(contractpartner.getValidTil()))) {
-					contractpartners.add(contractpartner);
-				}
-			}
-		}
-
-		if (contractpartners != null && !contractpartners.isEmpty()) {
-			final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(contractpartners,
-					ContractpartnerTransport.class);
-			response.setContractpartnerTransports(contractpartnerTransports);
-		}
-
-		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
-		}
-
-	}
+  private void fillAbstractCreatePreDefMoneyflowResponse(final UserID userId,
+      final AbstractCreatePreDefMoneyflowResponse response, final PreDefMoneyflow preDefMoneyflow) {
+    final LocalDate today = LocalDate.now();
+    final List<Capitalsource> capitalsources = this.capitalsourceService
+        .getGroupBookableCapitalsourcesByDateRange(userId, today, today);
+    // if the Capitalsource is no longer valid, it was not returned by the service
+    // call above
+    // but must be in the list to make it selectable.
+    if (preDefMoneyflow != null) {
+      Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
+      if (capitalsource != null) {
+        if (preDefMoneyflow.getCapitalsource().getValidFrom() == null) {
+          // lazy initialized via update-request.
+          final GroupID groupId = this.accessRelationService.getAccessor(userId).getId();
+          capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
+              capitalsource.getId());
+        }
+        if (capitalsource != null && (today.isBefore(capitalsource.getValidFrom())
+            || today.isAfter(capitalsource.getValidTil()))) {
+          capitalsources.add(capitalsource);
+        }
+      }
+    }
+    if (capitalsources != null && !capitalsources.isEmpty()) {
+      final List<CapitalsourceTransport> capitalsourceTransports = super.mapList(capitalsources,
+          CapitalsourceTransport.class);
+      response.setCapitalsourceTransports(capitalsourceTransports);
+    }
+    final List<Contractpartner> contractpartners = this.contractpartnerService
+        .getAllContractpartnersByDateRange(userId, today, today);
+    // if the Contractpartner is no longer valid, it was not returned by the service
+    // call above
+    // but must be in the list to make it selectable.
+    if (preDefMoneyflow != null) {
+      Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
+      if (contractpartner != null) {
+        if (preDefMoneyflow.getContractpartner().getValidFrom() == null) {
+          // lazy initialized via update-request.
+          contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+              contractpartner.getId());
+        }
+        if (contractpartner != null && (today.isBefore(contractpartner.getValidFrom())
+            || today.isAfter(contractpartner.getValidTil()))) {
+          contractpartners.add(contractpartner);
+        }
+      }
+    }
+    if (contractpartners != null && !contractpartners.isEmpty()) {
+      final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(
+          contractpartners, ContractpartnerTransport.class);
+      response.setContractpartnerTransports(contractpartnerTransports);
+    }
+    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+    if (postingAccounts != null && !postingAccounts.isEmpty()) {
+      response.setPostingAccountTransports(
+          super.mapList(postingAccounts, PostingAccountTransport.class));
+    }
+  }
 }

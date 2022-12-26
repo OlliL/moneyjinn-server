@@ -26,11 +26,12 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -50,177 +51,165 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 @Named
 @EnableCaching
 public class UserService extends AbstractService implements IUserService {
-	private static final Log LOG = LogFactory.getLog(UserService.class);
+  private static final Log LOG = LogFactory.getLog(UserService.class);
+  @Inject
+  private UserDao userDao;
 
-	@Inject
-	private UserDao userDao;
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new UserDataMapper());
+  }
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new UserDataMapper());
-	}
+  @Override
+  public ValidationResult validateUser(final User user) {
+    Assert.notNull(user, "user must not be null!");
+    final ValidationResult validationResult = new ValidationResult();
+    if (user.getName() == null || user.getName().trim().isEmpty()) {
+      validationResult.addValidationResultItem(
+          new ValidationResultItem(user.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+    } else {
+      final User checkUser = this.getUserByName(user.getName());
+      if (checkUser != null && (user.getId() == null || !checkUser.getId().equals(user.getId()))) {
+        // Update OR Create
+        validationResult.addValidationResultItem(
+            new ValidationResultItem(user.getId(), ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS));
+      }
+    }
+    return validationResult;
+  }
 
-	@Override
-	public ValidationResult validateUser(final User user) {
-		Assert.notNull(user, "user must not be null!");
-		final ValidationResult validationResult = new ValidationResult();
+  @Override
+  @Cacheable(CacheNames.USER_BY_ID)
+  public User getUserById(final UserID userId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    final UserData userData = this.userDao.getUserById(userId.getId());
+    return super.map(userData, User.class);
+  }
 
-		if (user.getName() == null || user.getName().trim().isEmpty()) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(user.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
-		} else {
-			final User checkUser = this.getUserByName(user.getName());
-			if (checkUser != null && (user.getId() == null || !checkUser.getId().equals(user.getId()))) {
-				// Update OR Create
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(user.getId(), ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS));
-			}
-		}
+  @Override
+  public Set<Character> getAllUserInitials() {
+    return this.userDao.getAllUserInitials();
+  }
 
-		return validationResult;
+  @Override
+  public Integer countAllUsers() {
+    return this.userDao.countAllUsers();
+  }
 
-	}
+  @Override
+  public List<User> getAllUsers() {
+    final List<UserData> userDataList = this.userDao.getAllUsers();
+    return super.mapList(userDataList, User.class);
+  }
 
-	@Override
-	@Cacheable(CacheNames.USER_BY_ID)
-	public User getUserById(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		final UserData userData = this.userDao.getUserById(userId.getId());
-		return super.map(userData, User.class);
-	}
+  @Override
+  public List<User> getAllUsersByInitial(final Character initial) {
+    Assert.notNull(initial, "initial must not be null!");
+    final List<UserData> userDataList = this.userDao.getAllUsersByInitial(initial);
+    return super.mapList(userDataList, User.class);
+  }
 
-	@Override
-	public Set<Character> getAllUserInitials() {
-		return this.userDao.getAllUserInitials();
-	}
+  @Override
+  @Cacheable(CacheNames.USER_BY_NAME)
+  public User getUserByName(final String name) {
+    Assert.notNull(name, "name must not be null!");
+    final UserData userData = this.userDao.getUserByName(name);
+    return super.map(userData, User.class);
+  }
 
-	@Override
-	public Integer countAllUsers() {
-		return this.userDao.countAllUsers();
-	}
+  @Override
+  public UserID createUser(final User user) {
+    Assert.notNull(user, "user must not be null!");
+    user.setId(null);
+    final ValidationResult validationResult = this.validateUser(user);
+    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
+          .get(0);
+      throw new BusinessException("User creation failed!", validationResultItem.getError());
+    }
+    final String cryptedPassword = this.cryptPassword(user.getPassword());
+    user.setPassword(cryptedPassword);
+    final UserData userData = super.map(user, UserData.class);
+    final Long userIdLong = this.userDao.createUser(userData);
+    return new UserID(userIdLong);
+  }
 
-	@Override
-	public List<User> getAllUsers() {
-		final List<UserData> userDataList = this.userDao.getAllUsers();
-		return super.mapList(userDataList, User.class);
-	}
+  @Override
+  public void updateUser(final User user) {
+    Assert.notNull(user, "user must not be null!");
+    final ValidationResult validationResult = this.validateUser(user);
+    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
+          .get(0);
+      throw new BusinessException("User update failed!", validationResultItem.getError());
+    }
+    final User oldUser = this.getUserById(user.getId());
+    this.evictUserCache(oldUser);
+    this.evictUserCache(user);
+    final UserData userData = super.map(user, UserData.class);
+    this.userDao.updateUser(userData);
+  }
 
-	@Override
-	public List<User> getAllUsersByInitial(final Character initial) {
-		Assert.notNull(initial, "initial must not be null!");
-		final List<UserData> userDataList = this.userDao.getAllUsersByInitial(initial);
-		return super.mapList(userDataList, User.class);
-	}
+  @Override
+  public void setPassword(final UserID userId, final String password) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(password, "password must not be null!");
+    final User user = this.getUserById(userId);
+    this.evictUserCache(user);
+    final String cryptedPassword = this.cryptPassword(password);
+    this.userDao.setPassword(userId.getId(), cryptedPassword);
+  }
 
-	@Override
-	@Cacheable(CacheNames.USER_BY_NAME)
-	public User getUserByName(final String name) {
-		Assert.notNull(name, "name must not be null!");
-		final UserData userData = this.userDao.getUserByName(name);
-		return super.map(userData, User.class);
-	}
+  @Override
+  public void resetPassword(final UserID userId, final String password) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(password, "password must not be null!");
+    final User user = this.getUserById(userId);
+    this.evictUserCache(user);
+    final String cryptedPassword = this.cryptPassword(password);
+    this.userDao.resetPassword(userId.getId(), cryptedPassword);
+  }
 
-	@Override
-	public UserID createUser(final User user) {
-		Assert.notNull(user, "user must not be null!");
-		user.setId(null);
-		final ValidationResult validationResult = this.validateUser(user);
+  @Override
+  public void deleteUser(final UserID userId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    try {
+      final User user = this.getUserById(userId);
+      this.evictUserCache(user);
+      this.userDao.deleteUser(userId.getId());
+    } catch (final Exception e) {
+      LOG.info(e);
+      throw new BusinessException(
+          "This user has already entered data and may therefore not be deleted!",
+          ErrorCode.USER_HAS_DATA);
+    }
+  }
 
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
-			throw new BusinessException("User creation failed!", validationResultItem.getError());
-		}
+  private String cryptPassword(final String password) {
+    if (password != null) {
+      try {
+        final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+        return BytesToHexConverter.convert(sha1Md.digest(password.getBytes()));
+      } catch (final NoSuchAlgorithmException e) {
+        LOG.error(e);
+      }
+    }
+    return null;
+  }
 
-		final String cryptedPassword = this.cryptPassword(user.getPassword());
-		user.setPassword(cryptedPassword);
-
-		final UserData userData = super.map(user, UserData.class);
-		final Long userIdLong = this.userDao.createUser(userData);
-		return new UserID(userIdLong);
-	}
-
-	@Override
-	public void updateUser(final User user) {
-		Assert.notNull(user, "user must not be null!");
-		final ValidationResult validationResult = this.validateUser(user);
-
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
-			throw new BusinessException("User update failed!", validationResultItem.getError());
-		}
-
-		final User oldUser = this.getUserById(user.getId());
-		this.evictUserCache(oldUser);
-		this.evictUserCache(user);
-
-		final UserData userData = super.map(user, UserData.class);
-		this.userDao.updateUser(userData);
-	}
-
-	@Override
-	public void setPassword(final UserID userId, final String password) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(password, "password must not be null!");
-		final User user = this.getUserById(userId);
-		this.evictUserCache(user);
-		final String cryptedPassword = this.cryptPassword(password);
-		this.userDao.setPassword(userId.getId(), cryptedPassword);
-	}
-
-	@Override
-	public void resetPassword(final UserID userId, final String password) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(password, "password must not be null!");
-		final User user = this.getUserById(userId);
-		this.evictUserCache(user);
-		final String cryptedPassword = this.cryptPassword(password);
-		this.userDao.resetPassword(userId.getId(), cryptedPassword);
-	}
-
-	@Override
-	public void deleteUser(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
-		try {
-			final User user = this.getUserById(userId);
-			this.evictUserCache(user);
-
-			this.userDao.deleteUser(userId.getId());
-		} catch (final Exception e) {
-			LOG.info(e);
-			throw new BusinessException("This user has already entered data and may therefore not be deleted!",
-					ErrorCode.USER_HAS_DATA);
-		}
-	}
-
-	private String cryptPassword(final String password) {
-		if (password != null) {
-			try {
-				final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-				return BytesToHexConverter.convert(sha1Md.digest(password.getBytes()));
-			} catch (final NoSuchAlgorithmException e) {
-				LOG.error(e);
-			}
-		}
-		return null;
-	}
-
-	private void evictUserCache(final User user) {
-		if (user != null) {
-			final Cache userByNameCache = super.getCache(CacheNames.USER_BY_NAME);
-			final Cache userByIdCache = super.getCache(CacheNames.USER_BY_ID);
-			if (userByNameCache != null) {
-				userByNameCache.evict(user.getName());
-			}
-			if (userByIdCache != null) {
-				userByIdCache.evict(user.getId());
-			}
-		}
-	}
-
+  private void evictUserCache(final User user) {
+    if (user != null) {
+      final Cache userByNameCache = super.getCache(CacheNames.USER_BY_NAME);
+      final Cache userByIdCache = super.getCache(CacheNames.USER_BY_ID);
+      if (userByNameCache != null) {
+        userByNameCache.evict(user.getName());
+      }
+      if (userByIdCache != null) {
+        userByIdCache.evict(user.getId());
+      }
+    }
+  }
 }

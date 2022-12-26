@@ -29,50 +29,49 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.math.BigDecimal;
 
 public class MoneyflowSplitEntryData {
-	private Long id;
-	private Long mmfMoneyflowId;
-	private BigDecimal amount;
-	private String comment;
-	private Long mpaPostingAccountId;
+  private Long id;
+  private Long mmfMoneyflowId;
+  private BigDecimal amount;
+  private String comment;
+  private Long mpaPostingAccountId;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getMmfMoneyflowId() {
-		return this.mmfMoneyflowId;
-	}
+  public final Long getMmfMoneyflowId() {
+    return this.mmfMoneyflowId;
+  }
 
-	public final void setMmfMoneyflowId(final Long mmfMoneyflowId) {
-		this.mmfMoneyflowId = mmfMoneyflowId;
-	}
+  public final void setMmfMoneyflowId(final Long mmfMoneyflowId) {
+    this.mmfMoneyflowId = mmfMoneyflowId;
+  }
 
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
+  public final BigDecimal getAmount() {
+    return this.amount;
+  }
 
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
-	}
+  public final void setAmount(final BigDecimal amount) {
+    this.amount = amount;
+  }
 
-	public final String getComment() {
-		return this.comment;
-	}
+  public final String getComment() {
+    return this.comment;
+  }
 
-	public final void setComment(final String comment) {
-		this.comment = comment;
-	}
+  public final void setComment(final String comment) {
+    this.comment = comment;
+  }
 
-	public final Long getMpaPostingAccountId() {
-		return this.mpaPostingAccountId;
-	}
+  public final Long getMpaPostingAccountId() {
+    return this.mpaPostingAccountId;
+  }
 
-	public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
-		this.mpaPostingAccountId = mpaPostingAccountId;
-	}
-
+  public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
+    this.mpaPostingAccountId = mpaPostingAccountId;
+  }
 }

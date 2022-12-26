@@ -36,9 +36,9 @@ import org.laladev.moneyjinn.service.dao.data.SettingData;
  *
  */
 public interface ISettingDaoMapper {
-	public SettingData getSetting(@Param("accessId") Long accessId, @Param("name") String name);
+  public SettingData getSetting(@Param("accessId") Long accessId, @Param("name") String name);
 
-	public void setSetting(SettingData settingData);
+  public void setSetting(SettingData settingData);
 
-	public void deleteSettings(Long id);
+  public void deleteSettings(Long id);
 }

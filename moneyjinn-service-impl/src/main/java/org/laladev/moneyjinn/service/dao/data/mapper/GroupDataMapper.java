@@ -32,20 +32,19 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 
 public class GroupDataMapper implements IMapper<Group, GroupData> {
+  @Override
+  public Group mapBToA(final GroupData groupData) {
+    return new Group(new GroupID(groupData.getId()), groupData.getName());
+  }
 
-	@Override
-	public Group mapBToA(final GroupData groupData) {
-		return new Group(new GroupID(groupData.getId()), groupData.getName());
-	}
-
-	@Override
-	public GroupData mapAToB(final Group group) {
-		final GroupData groupData = new GroupData();
-		// might be null for new users
-		if (group.getId() != null) {
-			groupData.setId(group.getId().getId());
-		}
-		groupData.setName(group.getName());
-		return groupData;
-	}
+  @Override
+  public GroupData mapAToB(final Group group) {
+    final GroupData groupData = new GroupData();
+    // might be null for new users
+    if (group.getId() != null) {
+      groupData.setId(group.getId().getId());
+    }
+    groupData.setName(group.getName());
+    return groupData;
+  }
 }

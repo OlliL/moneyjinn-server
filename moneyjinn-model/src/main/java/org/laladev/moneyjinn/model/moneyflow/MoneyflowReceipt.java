@@ -27,90 +27,89 @@
 package org.laladev.moneyjinn.model.moneyflow;
 
 import java.util.Arrays;
-
 import org.laladev.moneyjinn.model.AbstractEntity;
 
 public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
-	private static final long serialVersionUID = 1L;
-	private MoneyflowID moneyflowId;
-	private byte[] receipt;
-	private MoneyflowReceiptType moneyflowReceiptType;
+  private static final long serialVersionUID = 1L;
+  private MoneyflowID moneyflowId;
+  private byte[] receipt;
+  private MoneyflowReceiptType moneyflowReceiptType;
 
-	public final MoneyflowID getMoneyflowId() {
-		return this.moneyflowId;
-	}
+  public final MoneyflowID getMoneyflowId() {
+    return this.moneyflowId;
+  }
 
-	public final void setMoneyflowId(final MoneyflowID moneyflowId) {
-		this.moneyflowId = moneyflowId;
-	}
+  public final void setMoneyflowId(final MoneyflowID moneyflowId) {
+    this.moneyflowId = moneyflowId;
+  }
 
-	public final byte[] getReceipt() {
-		return this.receipt;
-	}
+  public final byte[] getReceipt() {
+    return this.receipt;
+  }
 
-	public final void setReceipt(final byte[] receipt) {
-		this.receipt = receipt;
-	}
+  public final void setReceipt(final byte[] receipt) {
+    this.receipt = receipt;
+  }
 
-	public final MoneyflowReceiptType getMoneyflowReceiptType() {
-		return this.moneyflowReceiptType;
-	}
+  public final MoneyflowReceiptType getMoneyflowReceiptType() {
+    return this.moneyflowReceiptType;
+  }
 
-	public final void setMoneyflowReceiptType(final MoneyflowReceiptType moneyflowReceiptType) {
-		this.moneyflowReceiptType = moneyflowReceiptType;
-	}
+  public final void setMoneyflowReceiptType(final MoneyflowReceiptType moneyflowReceiptType) {
+    this.moneyflowReceiptType = moneyflowReceiptType;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.moneyflowId == null) ? 0 : this.moneyflowId.hashCode());
-		result = prime * result + ((this.moneyflowReceiptType == null) ? 0 : this.moneyflowReceiptType.hashCode());
-		result = prime * result + Arrays.hashCode(this.receipt);
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.moneyflowId == null) ? 0 : this.moneyflowId.hashCode());
+    result = prime * result
+        + ((this.moneyflowReceiptType == null) ? 0 : this.moneyflowReceiptType.hashCode());
+    result = prime * result + Arrays.hashCode(this.receipt);
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final MoneyflowReceipt other = (MoneyflowReceipt) obj;
-		if (this.moneyflowId == null) {
-			if (other.moneyflowId != null) {
-				return false;
-			}
-		} else if (!this.moneyflowId.equals(other.moneyflowId)) {
-			return false;
-		}
-		if (this.moneyflowReceiptType != other.moneyflowReceiptType) {
-			return false;
-		}
-		if (!Arrays.equals(this.receipt, other.receipt)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final MoneyflowReceipt other = (MoneyflowReceipt) obj;
+    if (this.moneyflowId == null) {
+      if (other.moneyflowId != null) {
+        return false;
+      }
+    } else if (!this.moneyflowId.equals(other.moneyflowId)) {
+      return false;
+    }
+    if (this.moneyflowReceiptType != other.moneyflowReceiptType) {
+      return false;
+    }
+    if (!Arrays.equals(this.receipt, other.receipt)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("MoneyflowReceipt [moneyflowId=");
-		builder.append(this.moneyflowId);
-		builder.append(", receipt=");
-		builder.append(Arrays.toString(this.receipt));
-		builder.append(", moneyflowReceiptType=");
-		builder.append(this.moneyflowReceiptType);
-		builder.append(", getId()=");
-		builder.append(this.getId());
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("MoneyflowReceipt [moneyflowId=");
+    builder.append(this.moneyflowId);
+    builder.append(", receipt=");
+    builder.append(Arrays.toString(this.receipt));
+    builder.append(", moneyflowReceiptType=");
+    builder.append(this.moneyflowReceiptType);
+    builder.append(", getId()=");
+    builder.append(this.getId());
+    builder.append("]");
+    return builder.toString();
+  }
 }

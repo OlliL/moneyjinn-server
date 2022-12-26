@@ -26,69 +26,61 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-import java.util.Set;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
+import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper;
 
 @Named
 public class UserDao {
+  @Inject
+  private IUserDaoMapper mapper;
 
-	@Inject
-	IUserDaoMapper mapper;
+  public UserData getUserById(final Long id) {
+    return this.mapper.getUserById(id);
+  }
 
-	public UserData getUserById(final Long id) {
-		return this.mapper.getUserById(id);
-	}
+  public Set<Character> getAllUserInitials() {
+    return this.mapper.getAllUserInitials();
+  }
 
-	public Set<Character> getAllUserInitials() {
-		return this.mapper.getAllUserInitials();
-	}
+  public Integer countAllUsers() {
+    return this.mapper.countAllUsers();
+  }
 
-	public Integer countAllUsers() {
-		return this.mapper.countAllUsers();
-	}
+  public List<UserData> getAllUsers() {
+    return this.mapper.getAllUsers();
+  }
 
-	public List<UserData> getAllUsers() {
-		return this.mapper.getAllUsers();
-	}
+  public List<UserData> getAllUsersByInitial(final Character initial) {
+    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+    return this.mapper.getAllUsersByInitial(initialString);
+  }
 
-	public List<UserData> getAllUsersByInitial(final Character initial) {
-		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-		return this.mapper.getAllUsersByInitial(initialString);
-	}
+  public UserData getUserByName(final String name) {
+    return this.mapper.getUserByName(name);
+  }
 
-	public UserData getUserByName(final String name) {
-		return this.mapper.getUserByName(name);
-	}
+  public Long createUser(final UserData userData) {
+    this.mapper.createUser(userData);
+    return userData.getId();
+  }
 
-	public Long createUser(final UserData userData) {
-		this.mapper.createUser(userData);
-		return userData.getId();
-	}
+  public void updateUser(final UserData userData) {
+    this.mapper.updateUser(userData);
+  }
 
-	public void updateUser(final UserData userData) {
-		this.mapper.updateUser(userData);
+  public void setPassword(final Long userId, final String password) {
+    this.mapper.setPassword(userId, password);
+  }
 
-	}
+  public void resetPassword(final Long userId, final String password) {
+    this.mapper.resetPassword(userId, password);
+  }
 
-	public void setPassword(final Long userId, final String password) {
-		this.mapper.setPassword(userId, password);
-
-	}
-
-	public void resetPassword(final Long userId, final String password) {
-		this.mapper.resetPassword(userId, password);
-
-	}
-
-	public void deleteUser(final Long userId) {
-		this.mapper.deleteUser(userId);
-
-	}
-
+  public void deleteUser(final Long userId) {
+    this.mapper.deleteUser(userId);
+  }
 }

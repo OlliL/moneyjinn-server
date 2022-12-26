@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -25,7 +26,6 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
-
 import org.laladev.moneyjinn.model.PostingAccountID;
 
 /**
@@ -35,15 +35,14 @@ import org.laladev.moneyjinn.model.PostingAccountID;
  * @author olivleh1
  *
  */
-public class ClientReportingUnselectedPostingAccountIdsSetting extends AbstractSetting<List<PostingAccountID>> {
+public class ClientReportingUnselectedPostingAccountIdsSetting
+    extends AbstractSetting<List<PostingAccountID>> {
+  public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS;
+  }
 }

@@ -27,9 +27,9 @@
 package org.laladev.moneyjinn.model.capitalsource;
 
 public enum CapitalsourceType {
-	CURRENT_ASSET,
-	LONG_TERM_ASSET,
-	RESERVE_ASSET,
-	PROVISION_ASSET,
-	CREDIT;
+  CURRENT_ASSET,
+  LONG_TERM_ASSET,
+  RESERVE_ASSET,
+  PROVISION_ASSET,
+  CREDIT;
 }

@@ -30,19 +30,18 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
 
-public class CompareDataFormatTransportMapper implements IMapper<CompareDataFormat, CompareDataFormatTransport> {
+public class CompareDataFormatTransportMapper
+    implements IMapper<CompareDataFormat, CompareDataFormatTransport> {
+  @Override
+  public CompareDataFormat mapBToA(final CompareDataFormatTransport compareDataFormatTransport) {
+    throw new UnsupportedOperationException("Mapping not supported!");
+  }
 
-	@Override
-	public CompareDataFormat mapBToA(final CompareDataFormatTransport compareDataFormatTransport) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
-
-	@Override
-	public CompareDataFormatTransport mapAToB(final CompareDataFormat compareDataFormat) {
-		final CompareDataFormatTransport compareDataFormatTransport = new CompareDataFormatTransport();
-		compareDataFormatTransport.setFormatId(compareDataFormat.getId().getId());
-		compareDataFormatTransport.setName(compareDataFormat.getName());
-
-		return compareDataFormatTransport;
-	}
+  @Override
+  public CompareDataFormatTransport mapAToB(final CompareDataFormat compareDataFormat) {
+    final CompareDataFormatTransport compareDataFormatTransport = new CompareDataFormatTransport();
+    compareDataFormatTransport.setFormatId(compareDataFormat.getId().getId());
+    compareDataFormatTransport.setName(compareDataFormat.getName());
+    return compareDataFormatTransport;
+  }
 }

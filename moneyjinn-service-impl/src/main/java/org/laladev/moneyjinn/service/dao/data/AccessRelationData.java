@@ -29,41 +29,40 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.time.LocalDate;
 
 public class AccessRelationData {
-	private Long id;
-	private Long refId;
-	private LocalDate validFrom;
-	private LocalDate validTil;
+  private Long id;
+  private Long refId;
+  private LocalDate validFrom;
+  private LocalDate validTil;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getRefId() {
-		return this.refId;
-	}
+  public final Long getRefId() {
+    return this.refId;
+  }
 
-	public final void setRefId(final Long refId) {
-		this.refId = refId;
-	}
+  public final void setRefId(final Long refId) {
+    this.refId = refId;
+  }
 
-	public final LocalDate getValidFrom() {
-		return this.validFrom;
-	}
+  public final LocalDate getValidFrom() {
+    return this.validFrom;
+  }
 
-	public final void setValidFrom(final LocalDate validFrom) {
-		this.validFrom = validFrom;
-	}
+  public final void setValidFrom(final LocalDate validFrom) {
+    this.validFrom = validFrom;
+  }
 
-	public final LocalDate getValidTil() {
-		return this.validTil;
-	}
+  public final LocalDate getValidTil() {
+    return this.validTil;
+  }
 
-	public final void setValidTil(final LocalDate validTil) {
-		this.validTil = validTil;
-	}
-
+  public final void setValidTil(final LocalDate validTil) {
+    this.validTil = validTil;
+  }
 }

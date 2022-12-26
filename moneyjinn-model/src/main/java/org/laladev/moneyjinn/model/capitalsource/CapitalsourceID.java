@@ -1,7 +1,7 @@
+
 package org.laladev.moneyjinn.model.capitalsource;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
-
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -27,21 +27,20 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
 //SUCH DAMAGE.
 
 /**
- * The unique ID of {@link Capitalsource}
+ * The unique ID of {@link Capitalsource}.
  *
  * @author olivleh1
  *
  */
 public class CapitalsourceID extends AbstractEntityID<Long> {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+  public CapitalsourceID() {
+    // Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
+    // Mapper).
+  }
 
-	public CapitalsourceID() {
-		// Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
-		// Mapper).
-	}
-
-	public CapitalsourceID(final Long id) {
-		super(id);
-	}
+  public CapitalsourceID(final Long id) {
+    super(id);
+  }
 }

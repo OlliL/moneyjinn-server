@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
@@ -11,14 +12,12 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
  *
  */
 public class ClientCompareDataSelectedCapitalsource extends AbstractSetting<CapitalsourceID> {
+  public ClientCompareDataSelectedCapitalsource(final CapitalsourceID setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientCompareDataSelectedCapitalsource(final CapitalsourceID setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE;
+  }
 }

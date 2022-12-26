@@ -1,10 +1,9 @@
+
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
+import jakarta.inject.Inject;
 import java.time.Month;
 import java.util.List;
-
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,109 +18,91 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteMonthlySettlementTest extends AbstractControllerTest {
+  @Inject
+  private IMonthlySettlementService monthlySettlementService;
+  private final HttpMethod method = HttpMethod.DELETE;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IMonthlySettlementService monthlySettlementService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.DELETE;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  @Test
+  public void test_regularMonthlySettlement_SuccessfullNoContent() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+        .getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertEquals(3, monthlySettlements.size());
+    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+    monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
+        (short) 2008, Month.DECEMBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertEquals(1, monthlySettlements.size());
+    Assertions.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
+        monthlySettlements.iterator().next().getId().getId());
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_nonExistingMonthlySettlement_SuccessfullNoContent() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+        .getAllMonthlySettlementsByYearMonth(userId, (short) 1970, Month.OCTOBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertTrue(monthlySettlements.isEmpty());
+    super.callUsecaseWithoutContent("/1970/10", this.method, true, Object.class);
+    monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
+        (short) 1970, Month.OCTOBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertTrue(monthlySettlements.isEmpty());
+  }
 
-	@Test
-	public void test_regularMonthlySettlement_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+  @Test
+  public void test_MonthlySettlementFromDifferentGroup_notSuccessfull() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
+    List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+        .getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertTrue(monthlySettlements.isEmpty());
+    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+    monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
+        (short) 2008, Month.DECEMBER);
+    Assertions.assertNotNull(monthlySettlements);
+    Assertions.assertTrue(monthlySettlements.isEmpty());
+  }
 
-		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-				.getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertEquals(3, monthlySettlements.size());
-
-		super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
-
-		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 2008,
-				Month.DECEMBER);
-
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertEquals(1, monthlySettlements.size());
-		Assertions.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
-				monthlySettlements.iterator().next().getId().getId());
-	}
-
-	@Test
-	public void test_nonExistingMonthlySettlement_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-
-		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-				.getAllMonthlySettlementsByYearMonth(userId, (short) 1970, Month.OCTOBER);
-
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertTrue(monthlySettlements.isEmpty());
-
-		super.callUsecaseWithoutContent("/1970/10", this.method, true, Object.class);
-
-		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 1970,
-				Month.OCTOBER);
-
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertTrue(monthlySettlements.isEmpty());
-	}
-
-	@Test
-	public void test_MonthlySettlementFromDifferentGroup_notSuccessfull() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
-		List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-				.getAllMonthlySettlementsByYearMonth(userId, (short) 2008, Month.DECEMBER);
-
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertTrue(monthlySettlements.isEmpty());
-
-		super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
-
-		monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, (short) 2008,
-				Month.DECEMBER);
-
-		Assertions.assertNotNull(monthlySettlements);
-		Assertions.assertTrue(monthlySettlements.isEmpty());
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
-				ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
-		super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
-	}
-
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+  }
 }

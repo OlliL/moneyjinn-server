@@ -1,8 +1,9 @@
+
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,176 +25,153 @@ import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import jakarta.inject.Inject;
-
 public class CreateContractpartnerAccountTest extends AbstractControllerTest {
+  @Inject
+  private IContractpartnerAccountService contractpartnerAccountService;
+  private final HttpMethod method = HttpMethod.POST;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IContractpartnerAccountService contractpartnerAccountService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.POST;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  private void testError(final ContractpartnerAccountTransport transport, final ErrorCode errorCode)
+      throws Exception {
+    final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
+    request.setContractpartnerAccountTransport(transport);
+    final List<ValidationItemTransport> validationItems = new ArrayList<>();
+    validationItems.add(new ValidationItemTransportBuilder().withKey(null)
+        .withError(errorCode.getErrorCode()).build());
+    final CreateContractpartnerAccountResponse expected = new CreateContractpartnerAccountResponse();
+    expected.setValidationItemTransports(validationItems);
+    expected.setResult(Boolean.FALSE);
+    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
+        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_ToLongAccountnumber_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    transport.setAccountNumber("12345678901234567890123456789012345");
+    this.testError(transport, ErrorCode.ACCOUNT_NUMBER_TO_LONG);
+  }
 
-	private void testError(final ContractpartnerAccountTransport transport, final ErrorCode errorCode)
-			throws Exception {
-		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
+  @Test
+  public void test_ToLongBankcode_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    transport.setBankCode("123456789012");
+    this.testError(transport, ErrorCode.BANK_CODE_TO_LONG);
+  }
 
-		request.setContractpartnerAccountTransport(transport);
+  @Test
+  public void test_AccountnumberInvalidChar_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    transport.setAccountNumber("+");
+    this.testError(transport, ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS);
+  }
 
-		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems
-				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
+  @Test
+  public void test_BankcodeInvalidChar_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    transport.setBankCode("+");
+    this.testError(transport, ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS);
+  }
 
-		final CreateContractpartnerAccountResponse expected = new CreateContractpartnerAccountResponse();
-		expected.setValidationItemTransports(validationItems);
-		expected.setResult(Boolean.FALSE);
+  @Test
+  public void test_emptyContractpartner_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().withContractpartnerid(null).build();
+    this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+  }
 
-		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
-				false, CreateContractpartnerAccountResponse.class);
+  @Test
+  public void test_nonExistingContractpartner_Error() throws Exception {
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount()
+        .withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID).build();
+    this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+  }
 
-		Assertions.assertEquals(expected, actual);
+  @Test
+  public void test_standardRequest_SuccessfullNewIdReturned() throws Exception {
+    final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    request.setContractpartnerAccountTransport(transport);
+    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
+        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+        ContractpartnerAccountTransportBuilder.NEXT_ID);
+    final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+        .getContractpartnerAccountById(userId, contractpartnerAccountId);
+    Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
+        contractpartnerAccount.getId().getId());
+    Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
+        actual.getcontractpartnerAccountId());
+  }
 
-	}
+  @Test
+  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+    final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    transport.setBankCode("ABCDEFGH");
+    request.setContractpartnerAccountTransport(transport);
+    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
+        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+        ContractpartnerAccountTransportBuilder.NEXT_ID);
+    final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+        .getContractpartnerAccountById(userId, contractpartnerAccountId);
+    Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
+        contractpartnerAccount.getId().getId());
+    Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
+        actual.getcontractpartnerAccountId());
+    Assertions.assertEquals(transport.getBankCode() + "XXX",
+        contractpartnerAccount.getBankAccount().getBankCode());
+  }
 
-	@Test
-	public void test_ToLongAccountnumber_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-		transport.setAccountNumber("12345678901234567890123456789012345");
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-		this.testError(transport, ErrorCode.ACCOUNT_NUMBER_TO_LONG);
-	}
-
-	@Test
-	public void test_ToLongBankcode_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-		transport.setBankCode("123456789012");
-
-		this.testError(transport, ErrorCode.BANK_CODE_TO_LONG);
-	}
-
-	@Test
-	public void test_AccountnumberInvalidChar_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-		transport.setAccountNumber("+");
-
-		this.testError(transport, ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS);
-	}
-
-	@Test
-	public void test_BankcodeInvalidChar_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-		transport.setBankCode("+");
-
-		this.testError(transport, ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS);
-	}
-
-	@Test
-	public void test_emptyContractpartner_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().withContractpartnerid(null).build();
-
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
-	}
-
-	@Test
-	public void test_nonExistingContractpartner_Error() throws Exception {
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID)
-				.build();
-
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-	}
-
-	@Test
-	public void test_standardRequest_SuccessfullNewIdReturned() throws Exception {
-		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
-
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-
-		request.setContractpartnerAccountTransport(transport);
-
-		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
-				false, CreateContractpartnerAccountResponse.class);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-				ContractpartnerAccountTransportBuilder.NEXT_ID);
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-
-		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, contractpartnerAccount.getId().getId());
-		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, actual.getcontractpartnerAccountId());
-
-	}
-
-	@Test
-	public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
-		final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
-
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-
-		transport.setBankCode("ABCDEFGH");
-		request.setContractpartnerAccountTransport(transport);
-
-		final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("", this.method, request,
-				false, CreateContractpartnerAccountResponse.class);
-
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-				ContractpartnerAccountTransportBuilder.NEXT_ID);
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-
-		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, contractpartnerAccount.getId().getId());
-		Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID, actual.getcontractpartnerAccountId());
-		Assertions.assertEquals(transport.getBankCode() + "XXX", contractpartnerAccount.getBankAccount().getBankCode());
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
-				.forNewContractpartnerAccount().build();
-
-		this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-	}
-
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
+        .forNewContractpartnerAccount().build();
+    this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+  }
 }

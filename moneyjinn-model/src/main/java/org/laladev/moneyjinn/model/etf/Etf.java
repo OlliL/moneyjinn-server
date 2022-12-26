@@ -29,42 +29,41 @@ package org.laladev.moneyjinn.model.etf;
 import org.laladev.moneyjinn.model.AbstractEntity;
 
 public class Etf extends AbstractEntity<EtfIsin> {
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private String wkn;
-	private String ticker;
-	private String chartUrl;
+  private static final long serialVersionUID = 1L;
+  private String name;
+  private String wkn;
+  private String ticker;
+  private String chartUrl;
 
-	public final String getName() {
-		return this.name;
-	}
+  public final String getName() {
+    return this.name;
+  }
 
-	public final void setName(final String name) {
-		this.name = name;
-	}
+  public final void setName(final String name) {
+    this.name = name;
+  }
 
-	public final String getWkn() {
-		return this.wkn;
-	}
+  public final String getWkn() {
+    return this.wkn;
+  }
 
-	public final void setWkn(final String wkn) {
-		this.wkn = wkn;
-	}
+  public final void setWkn(final String wkn) {
+    this.wkn = wkn;
+  }
 
-	public final String getTicker() {
-		return this.ticker;
-	}
+  public final String getTicker() {
+    return this.ticker;
+  }
 
-	public final void setTicker(final String ticker) {
-		this.ticker = ticker;
-	}
+  public final void setTicker(final String ticker) {
+    this.ticker = ticker;
+  }
 
-	public final String getChartUrl() {
-		return this.chartUrl;
-	}
+  public final String getChartUrl() {
+    return this.chartUrl;
+  }
 
-	public final void setChartUrl(final String chartUrl) {
-		this.chartUrl = chartUrl;
-	}
-
+  public final void setChartUrl(final String chartUrl) {
+    this.chartUrl = chartUrl;
+  }
 }

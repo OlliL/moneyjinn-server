@@ -24,9 +24,9 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.group.AbstractGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
@@ -56,136 +56,124 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/group/")
 public class GroupController extends AbstractController {
-	private static final String RESTRICTION_ALL = "all";
-	@Inject
-	private IGroupService groupService;
-	@Inject
-	private ISettingService settingService;
+  private static final String RESTRICTION_ALL = "all";
+  @Inject
+  private IGroupService groupService;
+  @Inject
+  private ISettingService settingService;
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new GroupTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new GroupTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowGroupListResponse showGroupList() {
-		return this.showGroupList(null);
-	}
+  @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowGroupListResponse showGroupList() {
+    return this.showGroupList(null);
+  }
 
-	@RequestMapping(value = "showGroupList/{restriction}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowGroupListResponse showGroupList(@PathVariable(value = "restriction") final String restriction) {
-		final UserID userId = super.getUserId();
+  @RequestMapping(value = "showGroupList/{restriction}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowGroupListResponse showGroupList(
+      @PathVariable(value = "restriction") final String restriction) {
+    final UserID userId = super.getUserId();
+    List<Group> groups = null;
+    if (restriction != null) {
+      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+        groups = this.groupService.getAllGroups();
+      } else if (restriction.length() == 1) {
+        groups = this.groupService.getAllGroupsByInitial(restriction.toCharArray()[0]);
+      }
+    } else {
+      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+          .getClientMaxRowsSetting(userId);
+      final Integer count = this.groupService.countAllGroups();
+      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+        groups = this.groupService.getAllGroups();
+      }
+    }
+    final Set<Character> initials = this.groupService.getAllGroupInitials();
+    final ShowGroupListResponse response = new ShowGroupListResponse();
+    if (groups != null && !groups.isEmpty()) {
+      response.setGroupTransports(super.mapList(groups, GroupTransport.class));
+    }
+    response.setInitials(initials);
+    return response;
+  }
 
-		List<Group> groups = null;
+  @RequestMapping(value = "createGroup", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
+    final Group group = super.map(request.getGroupTransport(), Group.class);
+    group.setId(null);
+    final ValidationResult validationResult = this.groupService.validateGroup(group);
+    final CreateGroupResponse response = new CreateGroupResponse();
+    response.setResult(validationResult.isValid());
+    if (validationResult.isValid()) {
+      final GroupID groupId = this.groupService.createGroup(group);
+      response.setGroupId(groupId.getId());
+    } else {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    }
+    return response;
+  }
 
-		if (restriction != null) {
-			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-				groups = this.groupService.getAllGroups();
-			} else if (restriction.length() == 1) {
-				groups = this.groupService.getAllGroupsByInitial(restriction.toCharArray()[0]);
-			}
-		} else {
-			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-			final Integer count = this.groupService.countAllGroups();
+  @RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ValidationResponse updateGroup(@RequestBody final UpdateGroupRequest request) {
+    final Group group = super.map(request.getGroupTransport(), Group.class);
+    final ValidationResult validationResult = this.groupService.validateGroup(group);
+    final ValidationResponse response = new ValidationResponse();
+    response.setResult(validationResult.isValid());
+    if (validationResult.isValid()) {
+      this.groupService.updateGroup(group);
+    } else {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    }
+    return response;
+  }
 
-			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-				groups = this.groupService.getAllGroups();
-			}
-		}
+  @RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public void deleteGroupById(@PathVariable(value = "id") final Long id) {
+    final GroupID groupId = new GroupID(id);
+    this.groupService.deleteGroup(groupId);
+  }
 
-		final Set<Character> initials = this.groupService.getAllGroupInitials();
+  @RequestMapping(value = "showEditGroup/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowEditGroupResponse showEditGroup(@PathVariable(value = "id") final Long groupId) {
+    final ShowEditGroupResponse response = new ShowEditGroupResponse();
+    this.fillAbstractGroupResponse(groupId, response);
+    return response;
+  }
 
-		final ShowGroupListResponse response = new ShowGroupListResponse();
-		if (groups != null && !groups.isEmpty()) {
-			response.setGroupTransports(super.mapList(groups, GroupTransport.class));
-		}
-		response.setInitials(initials);
+  @RequestMapping(value = "showDeleteGroup/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowDeleteGroupResponse showDeleteGroup(@PathVariable(value = "id") final Long groupId) {
+    final ShowDeleteGroupResponse response = new ShowDeleteGroupResponse();
+    this.fillAbstractGroupResponse(groupId, response);
+    return response;
+  }
 
-		return response;
-	}
-
-	@RequestMapping(value = "createGroup", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
-		final Group group = super.map(request.getGroupTransport(), Group.class);
-		group.setId(null);
-
-		final ValidationResult validationResult = this.groupService.validateGroup(group);
-
-		final CreateGroupResponse response = new CreateGroupResponse();
-		response.setResult(validationResult.isValid());
-		if (validationResult.isValid()) {
-			final GroupID groupId = this.groupService.createGroup(group);
-			response.setGroupId(groupId.getId());
-		} else {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		}
-
-		return response;
-	}
-
-	@RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ValidationResponse updateGroup(@RequestBody final UpdateGroupRequest request) {
-		final Group group = super.map(request.getGroupTransport(), Group.class);
-
-		final ValidationResult validationResult = this.groupService.validateGroup(group);
-
-		final ValidationResponse response = new ValidationResponse();
-		response.setResult(validationResult.isValid());
-		if (validationResult.isValid()) {
-			this.groupService.updateGroup(group);
-		} else {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		}
-
-		return response;
-	}
-
-	@RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public void deleteGroupById(@PathVariable(value = "id") final Long id) {
-		final GroupID groupId = new GroupID(id);
-		this.groupService.deleteGroup(groupId);
-	}
-
-	@RequestMapping(value = "showEditGroup/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowEditGroupResponse showEditGroup(@PathVariable(value = "id") final Long groupId) {
-		final ShowEditGroupResponse response = new ShowEditGroupResponse();
-		this.fillAbstractGroupResponse(groupId, response);
-		return response;
-	}
-
-	@RequestMapping(value = "showDeleteGroup/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowDeleteGroupResponse showDeleteGroup(@PathVariable(value = "id") final Long groupId) {
-		final ShowDeleteGroupResponse response = new ShowDeleteGroupResponse();
-		this.fillAbstractGroupResponse(groupId, response);
-		return response;
-	}
-
-	private void fillAbstractGroupResponse(final Long id, final AbstractGroupResponse response) {
-		final GroupID groupId = new GroupID(id);
-		final Group group = this.groupService.getGroupById(groupId);
-		response.setGroupTransport(super.map(group, GroupTransport.class));
-	}
+  private void fillAbstractGroupResponse(final Long id, final AbstractGroupResponse response) {
+    final GroupID groupId = new GroupID(id);
+    final Group group = this.groupService.getGroupById(groupId);
+    response.setGroupTransport(super.map(group, GroupTransport.class));
+  }
 }

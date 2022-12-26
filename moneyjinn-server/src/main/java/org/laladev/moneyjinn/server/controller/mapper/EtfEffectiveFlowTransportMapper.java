@@ -28,50 +28,45 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 
-public class EtfEffectiveFlowTransportMapper implements IMapper<EtfFlow, EtfEffectiveFlowTransport> {
+public class EtfEffectiveFlowTransportMapper
+    implements IMapper<EtfFlow, EtfEffectiveFlowTransport> {
+  @Override
+  public EtfFlow mapBToA(final EtfEffectiveFlowTransport etfEffectiveFlowTransport) {
+    final EtfFlow etfFlow = new EtfFlow();
+    if (etfEffectiveFlowTransport.getEtfflowid() != null) {
+      etfFlow.setId(new EtfFlowID(etfEffectiveFlowTransport.getEtfflowid()));
+    }
+    etfFlow.setAmount(etfEffectiveFlowTransport.getAmount());
+    etfFlow.setIsin(new EtfIsin(etfEffectiveFlowTransport.getIsin()));
+    etfFlow.setPrice(etfEffectiveFlowTransport.getPrice());
+    if (etfEffectiveFlowTransport.getTimestamp() != null) {
+      final LocalDateTime time = etfEffectiveFlowTransport.getTimestamp().toLocalDateTime();
+      final int nanos = etfEffectiveFlowTransport.getNanoseconds() != null
+          ? etfEffectiveFlowTransport.getNanoseconds()
+          : 0;
+      etfFlow.setTime(time.withNano(nanos));
+    }
+    return etfFlow;
+  }
 
-	@Override
-	public EtfFlow mapBToA(final EtfEffectiveFlowTransport etfEffectiveFlowTransport) {
-		final EtfFlow etfFlow = new EtfFlow();
-		if (etfEffectiveFlowTransport.getEtfflowid() != null) {
-			etfFlow.setId(new EtfFlowID(etfEffectiveFlowTransport.getEtfflowid()));
-		}
-		etfFlow.setAmount(etfEffectiveFlowTransport.getAmount());
-		etfFlow.setIsin(new EtfIsin(etfEffectiveFlowTransport.getIsin()));
-		etfFlow.setPrice(etfEffectiveFlowTransport.getPrice());
-		if (etfEffectiveFlowTransport.getTimestamp() != null) {
-			final LocalDateTime time = etfEffectiveFlowTransport.getTimestamp().toLocalDateTime();
-			final int nanos = etfEffectiveFlowTransport.getNanoseconds() != null
-					? etfEffectiveFlowTransport.getNanoseconds()
-					: 0;
-			etfFlow.setTime(time.withNano(nanos));
-		}
-
-		return etfFlow;
-	}
-
-	@Override
-	public EtfEffectiveFlowTransport mapAToB(final EtfFlow etfFlow) {
-		final EtfEffectiveFlowTransport transport = new EtfEffectiveFlowTransport();
-
-		transport.setEtfflowid(etfFlow.getId().getId());
-		transport.setIsin(etfFlow.getIsin().getId());
-		if (etfFlow.getTime() != null) {
-			final Timestamp time = Timestamp.valueOf(etfFlow.getTime());
-			transport.setTimestamp(time);
-			transport.setNanoseconds(etfFlow.getTime().getNano());
-		}
-
-		transport.setAmount(etfFlow.getAmount());
-		transport.setPrice(etfFlow.getPrice());
-
-		return transport;
-	}
+  @Override
+  public EtfEffectiveFlowTransport mapAToB(final EtfFlow etfFlow) {
+    final EtfEffectiveFlowTransport transport = new EtfEffectiveFlowTransport();
+    transport.setEtfflowid(etfFlow.getId().getId());
+    transport.setIsin(etfFlow.getIsin().getId());
+    if (etfFlow.getTime() != null) {
+      final Timestamp time = Timestamp.valueOf(etfFlow.getTime());
+      transport.setTimestamp(time);
+      transport.setNanoseconds(etfFlow.getTime().getNano());
+    }
+    transport.setAmount(etfFlow.getAmount());
+    transport.setPrice(etfFlow.getPrice());
+    return transport;
+  }
 }

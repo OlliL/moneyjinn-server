@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.LocalDate;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -35,51 +34,46 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 
 public class MoneyflowSearchParamsTransportMapper
-		implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
+    implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
+  private static final Short TRUE = (short) 1;
 
-	private static final Short TRUE = (short) 1;
+  @Override
+  public MoneyflowSearchParams mapBToA(
+      final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
+    final MoneyflowSearchParams moneyflowSearchParams = new MoneyflowSearchParams();
+    if (moneyflowSearchParamsTransport.getStartDate() != null) {
+      final LocalDate startDate = moneyflowSearchParamsTransport.getStartDate().toLocalDate();
+      moneyflowSearchParams.setStartDate(startDate);
+    }
+    if (moneyflowSearchParamsTransport.getEndDate() != null) {
+      final LocalDate endDate = moneyflowSearchParamsTransport.getEndDate().toLocalDate();
+      moneyflowSearchParams.setEndDate(endDate);
+    }
+    moneyflowSearchParams.setFeatureEqual(
+        TRUE.equals(moneyflowSearchParamsTransport.getFeatureEqual()) ? true : false);
+    moneyflowSearchParams.setFeatureCaseSensitive(
+        TRUE.equals(moneyflowSearchParamsTransport.getFeatureCaseSensitive()) ? true : false);
+    moneyflowSearchParams.setFeatureOnlyMinusAmounts(
+        TRUE.equals(moneyflowSearchParamsTransport.getFeatureOnlyMinusAmounts()) ? true : false);
+    moneyflowSearchParams.setFeatureRegexp(
+        TRUE.equals(moneyflowSearchParamsTransport.getFeatureRegexp()) ? true : false);
+    if (moneyflowSearchParamsTransport.getSearchString() != null
+        && !moneyflowSearchParamsTransport.getSearchString().isEmpty()) {
+      moneyflowSearchParams.setSearchString(moneyflowSearchParamsTransport.getSearchString());
+    }
+    if (moneyflowSearchParamsTransport.getContractpartnerId() != null) {
+      moneyflowSearchParams.setContractpartnerId(
+          new ContractpartnerID(moneyflowSearchParamsTransport.getContractpartnerId()));
+    }
+    if (moneyflowSearchParamsTransport.getPostingAccountId() != null) {
+      moneyflowSearchParams.setPostingAccountId(
+          new PostingAccountID(moneyflowSearchParamsTransport.getPostingAccountId()));
+    }
+    return moneyflowSearchParams;
+  }
 
-	@Override
-	public MoneyflowSearchParams mapBToA(final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
-		final MoneyflowSearchParams moneyflowSearchParams = new MoneyflowSearchParams();
-
-		if (moneyflowSearchParamsTransport.getStartDate() != null) {
-			final LocalDate startDate = moneyflowSearchParamsTransport.getStartDate().toLocalDate();
-			moneyflowSearchParams.setStartDate(startDate);
-		}
-		if (moneyflowSearchParamsTransport.getEndDate() != null) {
-			final LocalDate endDate = moneyflowSearchParamsTransport.getEndDate().toLocalDate();
-			moneyflowSearchParams.setEndDate(endDate);
-		}
-
-		moneyflowSearchParams
-				.setFeatureEqual(TRUE.equals(moneyflowSearchParamsTransport.getFeatureEqual()) ? true : false);
-		moneyflowSearchParams.setFeatureCaseSensitive(
-				TRUE.equals(moneyflowSearchParamsTransport.getFeatureCaseSensitive()) ? true : false);
-		moneyflowSearchParams.setFeatureOnlyMinusAmounts(
-				TRUE.equals(moneyflowSearchParamsTransport.getFeatureOnlyMinusAmounts()) ? true : false);
-		moneyflowSearchParams
-				.setFeatureRegexp(TRUE.equals(moneyflowSearchParamsTransport.getFeatureRegexp()) ? true : false);
-
-		if (moneyflowSearchParamsTransport.getSearchString() != null
-				&& !moneyflowSearchParamsTransport.getSearchString().isEmpty()) {
-			moneyflowSearchParams.setSearchString(moneyflowSearchParamsTransport.getSearchString());
-		}
-
-		if (moneyflowSearchParamsTransport.getContractpartnerId() != null) {
-			moneyflowSearchParams
-					.setContractpartnerId(new ContractpartnerID(moneyflowSearchParamsTransport.getContractpartnerId()));
-		}
-		if (moneyflowSearchParamsTransport.getPostingAccountId() != null) {
-			moneyflowSearchParams
-					.setPostingAccountId(new PostingAccountID(moneyflowSearchParamsTransport.getPostingAccountId()));
-		}
-
-		return moneyflowSearchParams;
-	}
-
-	@Override
-	public MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
+  @Override
+  public MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
+    throw new UnsupportedOperationException("Mapping not supported!");
+  }
 }

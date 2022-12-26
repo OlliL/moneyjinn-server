@@ -33,17 +33,17 @@ package org.laladev.moneyjinn.model.access;
  *
  */
 public class Group extends AbstractAccess<GroupID> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public Group() {
-		// Default Constructor because ID can be empty for newly created Groups.
-	}
+  public Group() {
+    // Default Constructor because ID can be empty for newly created Groups.
+  }
 
-	public Group(final GroupID id) {
-		super(id);
-	}
+  public Group(final GroupID id) {
+    super(id);
+  }
 
-	public Group(final GroupID id, final String name) {
-		super(id, name);
-	}
+  public Group(final GroupID id, final String name) {
+    super(id, name);
+  }
 }

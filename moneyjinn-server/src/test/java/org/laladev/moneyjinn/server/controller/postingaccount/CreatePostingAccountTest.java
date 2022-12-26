@@ -1,8 +1,9 @@
+
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,141 +22,124 @@ import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-import jakarta.inject.Inject;
-
 public class CreatePostingAccountTest extends AbstractControllerTest {
+  @Inject
+  private IPostingAccountService postingAccountService;
+  private final HttpMethod method = HttpMethod.POST;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IPostingAccountService postingAccountService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.POST;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  private void testError(final PostingAccountTransport transport, final ErrorCode errorCode)
+      throws Exception {
+    final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
+    request.setPostingAccountTransport(transport);
+    final List<ValidationItemTransport> validationItems = new ArrayList<>();
+    validationItems.add(new ValidationItemTransportBuilder().withKey(null)
+        .withError(errorCode.getErrorCode()).build());
+    final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+    expected.setValidationItemTransports(validationItems);
+    expected.setResult(Boolean.FALSE);
+    final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreatePostingAccountResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
+    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
+        .forNewPostingAccount().build();
+    transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
+    this.testError(transport, ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS);
+  }
 
-	private void testError(final PostingAccountTransport transport, final ErrorCode errorCode) throws Exception {
-		final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
+  @Test
+  public void test_emptyPostingAccountname_Error() throws Exception {
+    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
+        .forNewPostingAccount().build();
+    transport.setName("");
+    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
 
-		request.setPostingAccountTransport(transport);
+  @Test
+  public void test_nullPostingAccountname_Error() throws Exception {
+    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
+        .forNewPostingAccount().build();
+    transport.setName(null);
+    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
 
-		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems
-				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
+  @Test
+  public void test_standardRequest_SuccessfullNoContent() throws Exception {
+    final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
+    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
+        .forNewPostingAccount().build();
+    request.setPostingAccountTransport(transport);
+    final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+    expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
+    super.callUsecaseWithContent("", this.method, request, false,
+        CreatePostingAccountResponse.class);
+    final PostingAccount postingAccount = this.postingAccountService
+        .getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);
+    Assertions.assertEquals(PostingAccountTransportBuilder.NEXT_ID, postingAccount.getId().getId());
+    Assertions.assertEquals(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME,
+        postingAccount.getName());
+  }
 
-		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
-		expected.setValidationItemTransports(validationItems);
-		expected.setResult(Boolean.FALSE);
+  @Test
+  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+    final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
+    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
+        actual.getCode());
+  }
 
-		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreatePostingAccountResponse.class);
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-		Assertions.assertEquals(expected, actual);
-
-	}
-
-	@Test
-	public void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
-
-		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
-		transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
-
-		this.testError(transport, ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS);
-	}
-
-	@Test
-	public void test_emptyPostingAccountname_Error() throws Exception {
-		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
-		transport.setName("");
-
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-	}
-
-	@Test
-	public void test_nullPostingAccountname_Error() throws Exception {
-		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
-		transport.setName(null);
-
-		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-	}
-
-	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
-		final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
-
-		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
-
-		request.setPostingAccountTransport(transport);
-
-		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
-		expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
-
-		super.callUsecaseWithContent("", this.method, request, false, CreatePostingAccountResponse.class);
-
-		final PostingAccount postingAccount = this.postingAccountService
-				.getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);
-
-		Assertions.assertEquals(PostingAccountTransportBuilder.NEXT_ID, postingAccount.getId().getId());
-		Assertions.assertEquals(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME, postingAccount.getName());
-	}
-
-	@Test
-	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
-		final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
-		final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false, ErrorResponse.class);
-
-		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
-
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
-		final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
-
-		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forNewPostingAccount().build();
-		request.setPostingAccountTransport(transport);
-
-		final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
-		expected.setPostingAccountId(1L);
-		expected.setResult(true);
-
-		final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				CreatePostingAccountResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-	}
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
+    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
+        .forNewPostingAccount().build();
+    request.setPostingAccountTransport(transport);
+    final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+    expected.setPostingAccountId(1L);
+    expected.setResult(true);
+    final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method,
+        request, false, CreatePostingAccountResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 }

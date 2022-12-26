@@ -2,233 +2,233 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper">
 
-    	<sql id="capitalsourceColumns">
-		 mac_id_creator		AS macIdCreator
-		,mac_id_accessor	AS macIdAccessor
-		,capitalsourceid        AS id
-		,type
-		,state
-		,accountnumber		AS accountNumber
-		,bankcode		AS bankCode
-		,comment
-		,validtil		AS validTil
-		,validfrom		AS validFrom
-		,att_group_use		AS attGroupUse
-		,import_allowed		AS importAllowed
-	</sql>
+            <sql id="capitalsourceColumns">
+                 mac_id_creator                AS macIdCreator
+                ,mac_id_accessor        AS macIdAccessor
+                ,capitalsourceid        AS id
+                ,type
+                ,state
+                ,accountnumber                AS accountNumber
+                ,bankcode                AS bankCode
+                ,comment
+                ,validtil                AS validTil
+                ,validfrom                AS validFrom
+                ,att_group_use                AS attGroupUse
+                ,import_allowed                AS importAllowed
+        </sql>
     
-    	<select id="getCapitalsourceById"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE capitalsourceid = #{id}
-		   AND maf_id          = #{userId}
-		   AND mac_id_accessor = #{accessorId}
-		 LIMIT 1
-	</select>
+            <select id="getCapitalsourceById"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE capitalsourceid = #{id}
+                   AND maf_id          = #{userId}
+                   AND mac_id_accessor = #{accessorId}
+                 LIMIT 1
+        </select>
 
-	<select id="getCapitalsourceByComment"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        <select id="getCapitalsourceByComment"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
 
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE mac_id_creator  = #{userId}
-		   AND comment         = #{comment}
-		   AND #{date}   BETWEEN validfrom AND validtil
-		 LIMIT 1
-	</select>
-    	
-	<select id="getAllCapitalsourceInitials" resultType="java.lang.Character">
-		SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-		 ORDER BY letters
-	</select>
-	
-	<select id="getAllCapitalsourceInitialsByDateRange" resultType="java.lang.Character">
-		SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-		   AND validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-		 ORDER BY letters
-	</select>
-			
-	<select id="countAllCapitalsources" resultType="java.lang.Integer">
-		SELECT COUNT(*)
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-	</select>
-	
-	<select id="countAllCapitalsourcesByDateRange" resultType="java.lang.Integer">
-		SELECT COUNT(*)
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-		   AND validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-	</select>
-	
-	<select id="getAllCapitalsources"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
-	
-	<select id="getAllCapitalsourcesByDateRange"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-		   AND validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
-		
-	<select id="getAllCapitalsourcesByInitial"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE mac_id_creator  = #{userId}
+                   AND comment         = #{comment}
+                   AND #{date}   BETWEEN validfrom AND validtil
+                 LIMIT 1
+        </select>
+            
+        <select id="getAllCapitalsourceInitials" resultType="java.lang.Character">
+                SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                 ORDER BY letters
+        </select>
+        
+        <select id="getAllCapitalsourceInitialsByDateRange" resultType="java.lang.Character">
+                SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+                   AND validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
+                 ORDER BY letters
+        </select>
+                        
+        <select id="countAllCapitalsources" resultType="java.lang.Integer">
+                SELECT COUNT(*)
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        </select>
+        
+        <select id="countAllCapitalsourcesByDateRange" resultType="java.lang.Integer">
+                SELECT COUNT(*)
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+                   AND validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
+        </select>
+        
+        <select id="getAllCapitalsources"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
+        
+        <select id="getAllCapitalsourcesByDateRange"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+                   AND validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
+                
+        <select id="getAllCapitalsourcesByInitial"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
 
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE UPPER(comment) LIKE CONCAT(UPPER(#{initial}),'%')
-		   AND maf_id = #{userId}
-		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
-	
-	<select id="getAllCapitalsourcesByInitialAndDateRange"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE UPPER(comment) LIKE CONCAT(UPPER(#{initial}),'%')
+                   AND maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
+        
+        <select id="getAllCapitalsourcesByInitialAndDateRange"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
 
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE UPPER(comment) LIKE CONCAT(UPPER(#{initial}),'%')
-		   AND maf_id = #{userId}
-		   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-		   AND validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
-		
-	<insert id="createCapitalsource"
-		parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData"
-		useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
-		INSERT
-		  INTO capitalsources
-		      (mac_id_creator
-		      ,mac_id_accessor
-		      ,type
-		      ,state
-		      ,accountnumber
-		      ,bankcode
-		      ,comment
-		      ,validtil
-		      ,validfrom
-		      ,att_group_use
-		      ,import_allowed
-		      )
-		VALUES
-		      (#{macIdCreator}
-		      ,#{macIdAccessor}
-		      ,#{type}
-		      ,#{state}
-		      ,#{accountNumber}
-		      ,#{bankCode}
-		      ,#{comment}
-		      ,#{validTil}
-		      ,#{validFrom}
-		      ,#{attGroupUse}
-		      ,#{importAllowed}
-		      )
-	</insert>
-	
-	<update id="updateCapitalsource" parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		UPDATE capitalsources
-		   SET type           =	#{type}
-		      ,state          =	#{state}
-		      ,accountnumber  =	#{accountNumber}
-		      ,bankcode       =	#{bankCode}
-		      ,comment        =	#{comment}
-		      ,validtil       =	#{validTil}
-		      ,validfrom      =	#{validFrom}
-		      ,att_group_use  =	#{attGroupUse}
-		      ,import_allowed =	#{importAllowed}
-		 WHERE capitalsourceid = #{id}
-		   AND mac_id_creator  = #{macIdCreator}
-		   AND mac_id_accessor = #{macIdAccessor}
-		 LIMIT 1
-	</update>
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE UPPER(comment) LIKE CONCAT(UPPER(#{initial}),'%')
+                   AND maf_id = #{userId}
+                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+                   AND validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
+                
+        <insert id="createCapitalsource"
+                parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData"
+                useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
+                INSERT
+                  INTO capitalsources
+                      (mac_id_creator
+                      ,mac_id_accessor
+                      ,type
+                      ,state
+                      ,accountnumber
+                      ,bankcode
+                      ,comment
+                      ,validtil
+                      ,validfrom
+                      ,att_group_use
+                      ,import_allowed
+                      )
+                VALUES
+                      (#{macIdCreator}
+                      ,#{macIdAccessor}
+                      ,#{type}
+                      ,#{state}
+                      ,#{accountNumber}
+                      ,#{bankCode}
+                      ,#{comment}
+                      ,#{validTil}
+                      ,#{validFrom}
+                      ,#{attGroupUse}
+                      ,#{importAllowed}
+                      )
+        </insert>
+        
+        <update id="updateCapitalsource" parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                UPDATE capitalsources
+                   SET type           =        #{type}
+                      ,state          =        #{state}
+                      ,accountnumber  =        #{accountNumber}
+                      ,bankcode       =        #{bankCode}
+                      ,comment        =        #{comment}
+                      ,validtil       =        #{validTil}
+                      ,validfrom      =        #{validFrom}
+                      ,att_group_use  =        #{attGroupUse}
+                      ,import_allowed =        #{importAllowed}
+                 WHERE capitalsourceid = #{id}
+                   AND mac_id_creator  = #{macIdCreator}
+                   AND mac_id_accessor = #{macIdAccessor}
+                 LIMIT 1
+        </update>
 
-	<delete id="deleteCapitalsource">
-		DELETE
-		  FROM capitalsources
-		 WHERE mac_id_creator  = #{userId}
-		   AND mac_id_accessor = #{accessorId}
-		   AND capitalsourceid = #{id}
-		 LIMIT 1
-	</delete>
-	
-	<select id="checkCapitalsourceInUseOutOfDate" resultType="java.lang.Boolean">
-		SELECT 1
-		  FROM moneyflows
-		 WHERE mcs_capitalsourceid = #{id}
-		   AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
-		 LIMIT 1	
-	</select>
-	
-	<select id="getGroupCapitalsources"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-		   AND ( mac_id_creator = #{userId}
-		         OR
-		         att_group_use = 1
-		       )
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
+        <delete id="deleteCapitalsource">
+                DELETE
+                  FROM capitalsources
+                 WHERE mac_id_creator  = #{userId}
+                   AND mac_id_accessor = #{accessorId}
+                   AND capitalsourceid = #{id}
+                 LIMIT 1
+        </delete>
+        
+        <select id="checkCapitalsourceInUseOutOfDate" resultType="java.lang.Boolean">
+                SELECT 1
+                  FROM moneyflows
+                 WHERE mcs_capitalsourceid = #{id}
+                   AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
+                 LIMIT 1        
+        </select>
+        
+        <select id="getGroupCapitalsources"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                   AND ( mac_id_creator = #{userId}
+                         OR
+                         att_group_use = 1
+                       )
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
 
-	<select id="getGroupCapitalsourcesByDateRange"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM vw_capitalsources
-		 WHERE maf_id = #{userId}
-		   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-		   AND ( mac_id_creator = #{userId}
-		         OR
-		         att_group_use = 1
-		       )
-		   AND validfrom <![CDATA[ <= ]]> #{validTil}
-		   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-		 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
-		      ,capitalsourceid
-	</select>
+        <select id="getGroupCapitalsourcesByDateRange"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM vw_capitalsources
+                 WHERE maf_id = #{userId}
+                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+                   AND ( mac_id_creator = #{userId}
+                         OR
+                         att_group_use = 1
+                       )
+                   AND validfrom <![CDATA[ <= ]]> #{validTil}
+                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
+                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                      ,capitalsourceid
+        </select>
 
-	<select id="getCapitalsourceByAccount"
-		resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-		SELECT <include refid="capitalsourceColumns" />
-		  FROM capitalsources
-		 WHERE accountnumber = #{accountNumber}
-		   AND bankcode      = #{bankCode}
-		   AND #{date}       BETWEEN validfrom AND validtil
-		 LIMIT 1
-	</select>
+        <select id="getCapitalsourceByAccount"
+                resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+                SELECT <include refid="capitalsourceColumns" />
+                  FROM capitalsources
+                 WHERE accountnumber = #{accountNumber}
+                   AND bankcode      = #{bankCode}
+                   AND #{date}       BETWEEN validfrom AND validtil
+                 LIMIT 1
+        </select>
 </mapper>
  

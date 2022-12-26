@@ -1,7 +1,7 @@
+
 package org.laladev.moneyjinn.config;
 
 import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.server.main.BufferFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,14 +11,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
 public class MockConfiguration {
+  @Inject
+  private WebApplicationContext applicationContext;
 
-	@Inject
-	private WebApplicationContext applicationContext;
-
-	@Bean
-	public MockMvc mockMvc() {
-		return MockMvcBuilders.webAppContextSetup(this.applicationContext).addFilter(new BufferFilter(), "/moneyflow/*")
-				.build();
-	}
-
+  @Bean
+  public MockMvc mockMvc() {
+    return MockMvcBuilders.webAppContextSetup(this.applicationContext)
+        .addFilter(new BufferFilter(), "/moneyflow/*").build();
+  }
 }

@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.service.dao;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper;
 
@@ -40,20 +39,18 @@ import org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper;
  */
 @Named
 public class SettingDao {
+  @Inject
+  private ISettingDaoMapper mapper;
 
-	@Inject
-	ISettingDaoMapper mapper;
+  public SettingData getSetting(final Long accessId, final String name) {
+    return this.mapper.getSetting(accessId, name);
+  }
 
-	public SettingData getSetting(final Long accessId, final String name) {
-		return this.mapper.getSetting(accessId, name);
-	}
+  public void setSetting(final SettingData settingData) {
+    this.mapper.setSetting(settingData);
+  }
 
-	public void setSetting(final SettingData settingData) {
-		this.mapper.setSetting(settingData);
-	}
-
-	public void deleteSettings(final Long id) {
-		this.mapper.deleteSettings(id);
-	}
-
+  public void deleteSettings(final Long id) {
+    this.mapper.deleteSettings(id);
+  }
 }

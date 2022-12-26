@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
@@ -36,40 +35,37 @@ import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 
 public class EtfFlowTransportMapper implements IMapper<EtfFlow, EtfFlowTransport> {
+  @Override
+  public EtfFlow mapBToA(final EtfFlowTransport etfFlowTransport) {
+    final EtfFlow etfFlow = new EtfFlow();
+    if (etfFlowTransport.getEtfflowid() != null) {
+      etfFlow.setId(new EtfFlowID(etfFlowTransport.getEtfflowid()));
+    }
+    etfFlow.setAmount(etfFlowTransport.getAmount());
+    etfFlow.setIsin(new EtfIsin(etfFlowTransport.getIsin()));
+    etfFlow.setPrice(etfFlowTransport.getPrice());
+    if (etfFlowTransport.getTimestamp() != null) {
+      final LocalDateTime time = etfFlowTransport.getTimestamp().toLocalDateTime();
+      final int nanos = etfFlowTransport.getNanoseconds() != null
+          ? etfFlowTransport.getNanoseconds()
+          : 0;
+      etfFlow.setTime(time.withNano(nanos));
+    }
+    return etfFlow;
+  }
 
-	@Override
-	public EtfFlow mapBToA(final EtfFlowTransport etfFlowTransport) {
-		final EtfFlow etfFlow = new EtfFlow();
-		if (etfFlowTransport.getEtfflowid() != null) {
-			etfFlow.setId(new EtfFlowID(etfFlowTransport.getEtfflowid()));
-		}
-		etfFlow.setAmount(etfFlowTransport.getAmount());
-		etfFlow.setIsin(new EtfIsin(etfFlowTransport.getIsin()));
-		etfFlow.setPrice(etfFlowTransport.getPrice());
-		if (etfFlowTransport.getTimestamp() != null) {
-			final LocalDateTime time = etfFlowTransport.getTimestamp().toLocalDateTime();
-			final int nanos = etfFlowTransport.getNanoseconds() != null ? etfFlowTransport.getNanoseconds() : 0;
-			etfFlow.setTime(time.withNano(nanos));
-		}
-
-		return etfFlow;
-	}
-
-	@Override
-	public EtfFlowTransport mapAToB(final EtfFlow etfFlow) {
-		final EtfFlowTransport transport = new EtfFlowTransport();
-
-		transport.setEtfflowid(etfFlow.getId().getId());
-		transport.setIsin(etfFlow.getIsin().getId());
-		if (etfFlow.getTime() != null) {
-			final Timestamp time = Timestamp.valueOf(etfFlow.getTime());
-			transport.setTimestamp(time);
-			transport.setNanoseconds(etfFlow.getTime().getNano());
-		}
-
-		transport.setAmount(etfFlow.getAmount());
-		transport.setPrice(etfFlow.getPrice());
-
-		return transport;
-	}
+  @Override
+  public EtfFlowTransport mapAToB(final EtfFlow etfFlow) {
+    final EtfFlowTransport transport = new EtfFlowTransport();
+    transport.setEtfflowid(etfFlow.getId().getId());
+    transport.setIsin(etfFlow.getIsin().getId());
+    if (etfFlow.getTime() != null) {
+      final Timestamp time = Timestamp.valueOf(etfFlow.getTime());
+      transport.setTimestamp(time);
+      transport.setNanoseconds(etfFlow.getTime().getNano());
+    }
+    transport.setAmount(etfFlow.getAmount());
+    transport.setPrice(etfFlow.getPrice());
+    return transport;
+  }
 }

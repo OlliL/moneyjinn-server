@@ -30,32 +30,31 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ImportedBalanceData {
-	private Long mcsCapitalsourceId;
-	private LocalDateTime changedate;
-	private BigDecimal balance;
+  private Long mcsCapitalsourceId;
+  private LocalDateTime changedate;
+  private BigDecimal balance;
 
-	public final Long getMcsCapitalsourceId() {
-		return this.mcsCapitalsourceId;
-	}
+  public final Long getMcsCapitalsourceId() {
+    return this.mcsCapitalsourceId;
+  }
 
-	public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
-		this.mcsCapitalsourceId = mcsCapitalsourceId;
-	}
+  public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
+    this.mcsCapitalsourceId = mcsCapitalsourceId;
+  }
 
-	public final LocalDateTime getChangedate() {
-		return this.changedate;
-	}
+  public final LocalDateTime getChangedate() {
+    return this.changedate;
+  }
 
-	public final void setChangedate(final LocalDateTime changedate) {
-		this.changedate = changedate;
-	}
+  public final void setChangedate(final LocalDateTime changedate) {
+    this.changedate = changedate;
+  }
 
-	public final BigDecimal getBalance() {
-		return this.balance;
-	}
+  public final BigDecimal getBalance() {
+    return this.balance;
+  }
 
-	public final void setBalance(final BigDecimal balance) {
-		this.balance = balance;
-	}
-
+  public final void setBalance(final BigDecimal balance) {
+    this.balance = balance;
+  }
 }

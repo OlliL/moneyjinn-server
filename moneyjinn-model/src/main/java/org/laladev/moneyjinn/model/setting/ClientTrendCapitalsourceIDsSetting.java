@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -25,7 +26,6 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
-
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
 /**
@@ -36,14 +36,12 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
  *
  */
 public class ClientTrendCapitalsourceIDsSetting extends AbstractSetting<List<CapitalsourceID>> {
+  public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_TREND_CAPITALSOURCEIDS;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_TREND_CAPITALSOURCEIDS;
+  }
 }

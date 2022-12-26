@@ -1,7 +1,7 @@
+
 package org.laladev.moneyjinn.server.jwt;
 
 import jakarta.inject.Inject;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,23 +15,23 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
-	@Inject
-	JwtTokenProvider jwtTokenProvider;
+  @Inject
+  JwtTokenProvider jwtTokenProvider;
 
-	@Bean
-	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+  @Bean
+  public AuthenticationManager authenticationManager(
+      final AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 
-	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+  @Bean
+  public PasswordEncoder getPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
-		//@formatter:off
+  @Bean
+  public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+    //@formatter:off
         http
             .httpBasic().disable()
             .csrf().disable()
@@ -54,6 +54,6 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             );
         //@formatter:on
-		return http.build();
-	}
+    return http.build();
+  }
 }

@@ -32,28 +32,25 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 
 public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessRelationData> {
+  @Override
+  public AccessRelation mapBToA(final AccessRelationData accessRelationData) {
+    // Only one level is supported right now, and the second level is always "0"
+    final AccessRelation parentAccessRelation = new AccessRelation(
+        new AccessID(accessRelationData.getRefId()));
+    parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
+    return new AccessRelation(new AccessID(accessRelationData.getId()), parentAccessRelation,
+        accessRelationData.getValidFrom(), accessRelationData.getValidTil());
+  }
 
-	@Override
-	public AccessRelation mapBToA(final AccessRelationData accessRelationData) {
-
-		// Only one level is supported right now, and the second level is always "0"
-		final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(accessRelationData.getRefId()));
-		parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
-
-		return new AccessRelation(new AccessID(accessRelationData.getId()), parentAccessRelation,
-				accessRelationData.getValidFrom(), accessRelationData.getValidTil());
-	}
-
-	@Override
-	public AccessRelationData mapAToB(final AccessRelation accessRelation) {
-
-		final AccessRelationData accessRelationData = new AccessRelationData();
-		accessRelationData.setId(accessRelation.getId().getId());
-		accessRelationData.setValidFrom(accessRelation.getValidFrom());
-		accessRelationData.setValidTil(accessRelation.getValidTil());
-		if (accessRelation.getParentAccessRelation() != null) {
-			accessRelationData.setRefId(accessRelation.getParentAccessRelation().getId().getId());
-		}
-		return accessRelationData;
-	}
+  @Override
+  public AccessRelationData mapAToB(final AccessRelation accessRelation) {
+    final AccessRelationData accessRelationData = new AccessRelationData();
+    accessRelationData.setId(accessRelation.getId().getId());
+    accessRelationData.setValidFrom(accessRelation.getValidFrom());
+    accessRelationData.setValidTil(accessRelation.getValidTil());
+    if (accessRelation.getParentAccessRelation() != null) {
+      accessRelationData.setRefId(accessRelation.getParentAccessRelation().getId().getId());
+    }
+    return accessRelationData;
+  }
 }

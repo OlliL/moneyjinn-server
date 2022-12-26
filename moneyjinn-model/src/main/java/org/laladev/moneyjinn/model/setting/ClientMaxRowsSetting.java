@@ -1,6 +1,8 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
 /**
  * <p>
@@ -17,14 +19,12 @@ import org.laladev.moneyjinn.model.access.User;
  *
  */
 public class ClientMaxRowsSetting extends AbstractSetting<Integer> {
+  public ClientMaxRowsSetting(final Integer setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientMaxRowsSetting(final Integer setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_MAX_ROWS;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_MAX_ROWS;
+  }
 }

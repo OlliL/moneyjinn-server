@@ -36,5 +36,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 @EnableAutoConfiguration
 public class MoneyjinnConfiguration {
-
 }

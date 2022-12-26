@@ -29,34 +29,33 @@ package org.laladev.moneyjinn.service.dao.mapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 
 public interface IAccessRelationDaoMapper {
+  public AccessRelationData getAccessRelationById(@Param("id") Long id,
+      @Param("date") LocalDate date);
 
-	public AccessRelationData getAccessRelationById(@Param("id") Long id, @Param("date") LocalDate date);
+  public List<AccessRelationData> getAllAccessRelationsById(Long id);
 
-	public List<AccessRelationData> getAllAccessRelationsById(Long id);
+  public List<AccessRelationData> getAllAccessRelationsByIdDate(@Param("id") Long id,
+      @Param("date") LocalDate date);
 
-	public List<AccessRelationData> getAllAccessRelationsByIdDate(@Param("id") Long id, @Param("date") LocalDate date);
+  public void deleteAllAccessRelation(Long id);
 
-	public void deleteAllAccessRelation(Long id);
+  public void deleteAccessRelationByDate(@Param("id") Long id, @Param("date") LocalDate date);
 
-	public void deleteAccessRelationByDate(@Param("id") Long id, @Param("date") LocalDate date);
+  public void updateAccessRelation(@Param("id") Long id, @Param("date") LocalDate date,
+      @Param("accessRelationData") AccessRelationData accessRelationData);
 
-	public void updateAccessRelation(@Param("id") Long id, @Param("date") LocalDate date,
-			@Param("accessRelationData") AccessRelationData accessRelationData);
+  public void createAccessRelation(AccessRelationData accessRelationData);
 
-	public void createAccessRelation(AccessRelationData accessRelationData);
+  public void deleteAllAccessFlattened(Long id);
 
-	public void deleteAllAccessFlattened(Long id);
+  public void deleteAccessFlattenedAfter(@Param("id") Long id, @Param("date") LocalDate date);
 
-	public void deleteAccessFlattenedAfter(@Param("id") Long id, @Param("date") LocalDate date);
+  public void createAccessFlattened(AccessFlattenedData accessFlattenedData);
 
-	public void createAccessFlattened(AccessFlattenedData accessFlattenedData);
-
-	public Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
-
+  public Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
 }

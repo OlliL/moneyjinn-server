@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.server.controller.group;
 
 import org.junit.jupiter.api.Assertions;
@@ -12,70 +13,65 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 
 public class ShowDeleteGroupTest extends AbstractControllerTest {
+  private final HttpMethod method = HttpMethod.GET;
+  private String userName;
+  private String userPassword;
 
-	private final HttpMethod method = HttpMethod.GET;
-	private String userName;
-	private String userPassword;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-	}
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_unknownGroup_emptyResponseObject() throws Exception {
+    final ShowDeleteGroupResponse expected = new ShowDeleteGroupResponse();
+    final ShowDeleteGroupResponse actual = super.callUsecaseWithoutContent(
+        "/" + GroupTransportBuilder.NON_EXISTING_ID, this.method, false,
+        ShowDeleteGroupResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-	@Test
-	public void test_unknownGroup_emptyResponseObject() throws Exception {
-		final ShowDeleteGroupResponse expected = new ShowDeleteGroupResponse();
-		final ShowDeleteGroupResponse actual = super.callUsecaseWithoutContent(
-				"/" + GroupTransportBuilder.NON_EXISTING_ID, this.method, false, ShowDeleteGroupResponse.class);
+  @Test
+  public void test_Group1_completeResponseObject() throws Exception {
+    final ShowDeleteGroupResponse expected = new ShowDeleteGroupResponse();
+    expected.setGroupTransport(new GroupTransportBuilder().forGroup1().build());
+    final ShowDeleteGroupResponse actual = super.callUsecaseWithoutContent(
+        "/" + GroupTransportBuilder.GROUP1_ID, this.method, false, ShowDeleteGroupResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
 
-		Assertions.assertEquals(expected, actual);
-	}
+  @Test
+  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+    final ErrorResponse actual = super.callUsecaseWithoutContent(
+        "/" + GroupTransportBuilder.GROUP2_ID, this.method, false, ErrorResponse.class);
+    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
+        actual.getCode());
+  }
 
-	@Test
-	public void test_Group1_completeResponseObject() throws Exception {
-		final ShowDeleteGroupResponse expected = new ShowDeleteGroupResponse();
-		expected.setGroupTransport(new GroupTransportBuilder().forGroup1().build());
-
-		final ShowDeleteGroupResponse actual = super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP1_ID,
-				this.method, false, ShowDeleteGroupResponse.class);
-
-		Assertions.assertEquals(expected, actual);
-	}
-
-	@Test
-	public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP2_ID, this.method,
-				false, ErrorResponse.class);
-
-		Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()), actual.getCode());
-
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 }

@@ -32,18 +32,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanProducer {
+  @Bean
+  public RESTAuthorization restAuthorization() {
+    return new RESTAuthorization();
+  }
 
-	@Bean
-	public RESTAuthorization restAuthorization() {
-		return new RESTAuthorization();
-	}
-
-	@Bean
-	public FilterRegistrationBean<BufferFilter> filterRegistrationBean() {
-		final FilterRegistrationBean<BufferFilter> registrationBean = new FilterRegistrationBean<>();
-		registrationBean.setFilter(new BufferFilter());
-		registrationBean.addUrlPatterns("/moneyflow/*");
-		registrationBean.setOrder(1);
-		return registrationBean;
-	}
+  @Bean
+  public FilterRegistrationBean<BufferFilter> filterRegistrationBean() {
+    final FilterRegistrationBean<BufferFilter> registrationBean = new FilterRegistrationBean<>();
+    registrationBean.setFilter(new BufferFilter());
+    registrationBean.addUrlPatterns("/moneyflow/*");
+    registrationBean.setOrder(1);
+    return registrationBean;
+  }
 }

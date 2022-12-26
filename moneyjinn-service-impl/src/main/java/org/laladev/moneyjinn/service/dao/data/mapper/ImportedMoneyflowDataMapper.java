@@ -34,59 +34,54 @@ import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 
-public class ImportedMoneyflowDataMapper implements IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+public class ImportedMoneyflowDataMapper
+    implements IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+  @Override
+  public ImportedMoneyflow mapBToA(final ImportedMoneyflowData importedMoneyflowData) {
+    final ImportedMoneyflow importedMoneyflow = new ImportedMoneyflow();
+    importedMoneyflow.setId(new ImportedMoneyflowID(importedMoneyflowData.getId()));
+    importedMoneyflow.setAmount(importedMoneyflowData.getAmount());
+    importedMoneyflow.setBookingDate(importedMoneyflowData.getBookingdate());
+    importedMoneyflow.setInvoiceDate(importedMoneyflowData.getInvoicedate());
+    importedMoneyflow.setCapitalsource(
+        new Capitalsource(new CapitalsourceID(importedMoneyflowData.getMcsCapitalsourceId())));
+    if (importedMoneyflowData.getAccountNumber() != null) {
+      importedMoneyflow.setBankAccount(new BankAccount(importedMoneyflowData.getAccountNumber(),
+          importedMoneyflowData.getBankCode()));
+    }
+    importedMoneyflow.setExternalId(importedMoneyflowData.getExternalId());
+    importedMoneyflow.setUsage(importedMoneyflowData.getComment());
+    importedMoneyflow.setName(importedMoneyflowData.getName());
+    importedMoneyflow
+        .setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflowData.getStatus()));
+    return importedMoneyflow;
+  }
 
-	@Override
-	public ImportedMoneyflow mapBToA(final ImportedMoneyflowData importedMoneyflowData) {
-		final ImportedMoneyflow importedMoneyflow = new ImportedMoneyflow();
-		importedMoneyflow.setId(new ImportedMoneyflowID(importedMoneyflowData.getId()));
-		importedMoneyflow.setAmount(importedMoneyflowData.getAmount());
-
-		importedMoneyflow.setBookingDate(importedMoneyflowData.getBookingdate());
-		importedMoneyflow.setInvoiceDate(importedMoneyflowData.getInvoicedate());
-		importedMoneyflow.setCapitalsource(
-				new Capitalsource(new CapitalsourceID(importedMoneyflowData.getMcsCapitalsourceId())));
-
-		if (importedMoneyflowData.getAccountNumber() != null) {
-			importedMoneyflow.setBankAccount(
-					new BankAccount(importedMoneyflowData.getAccountNumber(), importedMoneyflowData.getBankCode()));
-		}
-		importedMoneyflow.setExternalId(importedMoneyflowData.getExternalId());
-		importedMoneyflow.setUsage(importedMoneyflowData.getComment());
-		importedMoneyflow.setName(importedMoneyflowData.getName());
-		importedMoneyflow.setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflowData.getStatus()));
-
-		return importedMoneyflow;
-
-	}
-
-	@Override
-	public ImportedMoneyflowData mapAToB(final ImportedMoneyflow importedMoneyflow) {
-		final ImportedMoneyflowData importedMoneyflowData = new ImportedMoneyflowData();
-		// might be null for new ImportedMoneyflows
-		if (importedMoneyflow.getId() != null) {
-			importedMoneyflowData.setId(importedMoneyflow.getId().getId());
-		}
-		importedMoneyflowData.setAmount(importedMoneyflow.getAmount());
-
-		importedMoneyflowData.setBookingdate(importedMoneyflow.getBookingDate());
-		importedMoneyflowData.setInvoicedate(importedMoneyflow.getInvoiceDate());
-		importedMoneyflowData.setMcsCapitalsourceId(importedMoneyflow.getCapitalsource().getId().getId());
-
-		final BankAccount bankAccount = importedMoneyflow.getBankAccount();
-		if (bankAccount != null) {
-			importedMoneyflowData.setAccountNumber(bankAccount.getAccountNumber());
-			importedMoneyflowData.setBankCode(bankAccount.getBankCode());
-		} else {
-			importedMoneyflowData.setAccountNumber("");
-			importedMoneyflowData.setBankCode("");
-		}
-
-		importedMoneyflowData.setExternalId(importedMoneyflow.getExternalId());
-		importedMoneyflowData.setComment(importedMoneyflow.getUsage());
-		importedMoneyflowData.setName(importedMoneyflow.getName());
-		importedMoneyflowData.setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflow.getStatus()));
-
-		return importedMoneyflowData;
-	}
+  @Override
+  public ImportedMoneyflowData mapAToB(final ImportedMoneyflow importedMoneyflow) {
+    final ImportedMoneyflowData importedMoneyflowData = new ImportedMoneyflowData();
+    // might be null for new ImportedMoneyflows
+    if (importedMoneyflow.getId() != null) {
+      importedMoneyflowData.setId(importedMoneyflow.getId().getId());
+    }
+    importedMoneyflowData.setAmount(importedMoneyflow.getAmount());
+    importedMoneyflowData.setBookingdate(importedMoneyflow.getBookingDate());
+    importedMoneyflowData.setInvoicedate(importedMoneyflow.getInvoiceDate());
+    importedMoneyflowData
+        .setMcsCapitalsourceId(importedMoneyflow.getCapitalsource().getId().getId());
+    final BankAccount bankAccount = importedMoneyflow.getBankAccount();
+    if (bankAccount != null) {
+      importedMoneyflowData.setAccountNumber(bankAccount.getAccountNumber());
+      importedMoneyflowData.setBankCode(bankAccount.getBankCode());
+    } else {
+      importedMoneyflowData.setAccountNumber("");
+      importedMoneyflowData.setBankCode("");
+    }
+    importedMoneyflowData.setExternalId(importedMoneyflow.getExternalId());
+    importedMoneyflowData.setComment(importedMoneyflow.getUsage());
+    importedMoneyflowData.setName(importedMoneyflow.getName());
+    importedMoneyflowData
+        .setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflow.getStatus()));
+    return importedMoneyflowData;
+  }
 }

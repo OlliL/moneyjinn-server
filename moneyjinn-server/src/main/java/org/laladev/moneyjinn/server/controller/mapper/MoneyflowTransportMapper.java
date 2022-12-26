@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.sql.Date;
 import java.time.LocalDate;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -42,76 +41,74 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 
 public class MoneyflowTransportMapper implements IMapper<Moneyflow, MoneyflowTransport> {
-	private static final Short IS_PRIVATE_SHORT = Short.valueOf((short) 1);
+  private static final Short IS_PRIVATE_SHORT = Short.valueOf((short) 1);
 
-	@Override
-	public Moneyflow mapBToA(final MoneyflowTransport moneyflowTransport) {
-		final Moneyflow moneyflow = new Moneyflow();
-		if (moneyflowTransport.getId() != null) {
-			moneyflow.setId(new MoneyflowID(moneyflowTransport.getId()));
-		}
-		moneyflow.setAmount(moneyflowTransport.getAmount());
+  @Override
+  public Moneyflow mapBToA(final MoneyflowTransport moneyflowTransport) {
+    final Moneyflow moneyflow = new Moneyflow();
+    if (moneyflowTransport.getId() != null) {
+      moneyflow.setId(new MoneyflowID(moneyflowTransport.getId()));
+    }
+    moneyflow.setAmount(moneyflowTransport.getAmount());
+    if (moneyflowTransport.getBookingdate() != null) {
+      final LocalDate bookingDate = moneyflowTransport.getBookingdate().toLocalDate();
+      moneyflow.setBookingDate(bookingDate);
+    }
+    if (moneyflowTransport.getInvoicedate() != null) {
+      final LocalDate invoiceDate = moneyflowTransport.getInvoicedate().toLocalDate();
+      moneyflow.setInvoiceDate(invoiceDate);
+    }
+    if (moneyflowTransport.getCapitalsourceid() != null) {
+      final Capitalsource capitalsource = new Capitalsource(
+          new CapitalsourceID(moneyflowTransport.getCapitalsourceid()));
+      moneyflow.setCapitalsource(capitalsource);
+    }
+    if (moneyflowTransport.getContractpartnerid() != null) {
+      final Contractpartner contractpartner = new Contractpartner(
+          new ContractpartnerID(moneyflowTransport.getContractpartnerid()));
+      moneyflow.setContractpartner(contractpartner);
+    }
+    moneyflow.setComment(moneyflowTransport.getComment());
+    if (moneyflowTransport.getPrivat() != null
+        && IS_PRIVATE_SHORT.equals(moneyflowTransport.getPrivat())) {
+      moneyflow.setPrivat(true);
+    }
+    if (moneyflowTransport.getPostingaccountid() != null) {
+      final PostingAccount postingAccount = new PostingAccount(
+          new PostingAccountID(moneyflowTransport.getPostingaccountid()));
+      moneyflow.setPostingAccount(postingAccount);
+    }
+    return moneyflow;
+  }
 
-		if (moneyflowTransport.getBookingdate() != null) {
-			final LocalDate bookingDate = moneyflowTransport.getBookingdate().toLocalDate();
-			moneyflow.setBookingDate(bookingDate);
-		}
-		if (moneyflowTransport.getInvoicedate() != null) {
-			final LocalDate invoiceDate = moneyflowTransport.getInvoicedate().toLocalDate();
-			moneyflow.setInvoiceDate(invoiceDate);
-		}
-		if (moneyflowTransport.getCapitalsourceid() != null) {
-			final Capitalsource capitalsource = new Capitalsource(
-					new CapitalsourceID(moneyflowTransport.getCapitalsourceid()));
-			moneyflow.setCapitalsource(capitalsource);
-		}
-		if (moneyflowTransport.getContractpartnerid() != null) {
-			final Contractpartner contractpartner = new Contractpartner(
-					new ContractpartnerID(moneyflowTransport.getContractpartnerid()));
-			moneyflow.setContractpartner(contractpartner);
-		}
-		moneyflow.setComment(moneyflowTransport.getComment());
-		if (moneyflowTransport.getPrivat() != null && IS_PRIVATE_SHORT.equals(moneyflowTransport.getPrivat())) {
-			moneyflow.setPrivat(true);
-		}
-		if (moneyflowTransport.getPostingaccountid() != null) {
-			final PostingAccount postingAccount = new PostingAccount(
-					new PostingAccountID(moneyflowTransport.getPostingaccountid()));
-			moneyflow.setPostingAccount(postingAccount);
-		}
-
-		return moneyflow;
-	}
-
-	@Override
-	public MoneyflowTransport mapAToB(final Moneyflow moneyflow) {
-		final MoneyflowTransport moneyflowTransport = new MoneyflowTransport();
-		moneyflowTransport.setId(moneyflow.getId().getId());
-		moneyflowTransport.setAmount(moneyflow.getAmount());
-		if (moneyflow.getBookingDate() != null) {
-			final Date bookingDate = Date.valueOf(moneyflow.getBookingDate());
-			moneyflowTransport.setBookingdate(bookingDate);
-		}
-		if (moneyflow.getInvoiceDate() != null) {
-			final Date invoiceDate = Date.valueOf(moneyflow.getInvoiceDate());
-			moneyflowTransport.setInvoicedate(invoiceDate);
-		}
-		final Capitalsource capitalsource = moneyflow.getCapitalsource();
-		moneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
-		moneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
-		final Contractpartner contractpartner = moneyflow.getContractpartner();
-		moneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
-		moneyflowTransport.setContractpartnername(contractpartner.getName());
-		moneyflowTransport.setComment(moneyflow.getComment());
-		if (moneyflow.isPrivat()) {
-			moneyflowTransport.setPrivat(IS_PRIVATE_SHORT);
-		}
-		final User user = moneyflow.getUser();
-		moneyflowTransport.setUserid(user.getId().getId());
-		final PostingAccount postingAccount = moneyflow.getPostingAccount();
-		moneyflowTransport.setPostingaccountid(postingAccount.getId().getId());
-		moneyflowTransport.setPostingaccountname(postingAccount.getName());
-
-		return moneyflowTransport;
-	}
+  @Override
+  public MoneyflowTransport mapAToB(final Moneyflow moneyflow) {
+    final MoneyflowTransport moneyflowTransport = new MoneyflowTransport();
+    moneyflowTransport.setId(moneyflow.getId().getId());
+    moneyflowTransport.setAmount(moneyflow.getAmount());
+    if (moneyflow.getBookingDate() != null) {
+      final Date bookingDate = Date.valueOf(moneyflow.getBookingDate());
+      moneyflowTransport.setBookingdate(bookingDate);
+    }
+    if (moneyflow.getInvoiceDate() != null) {
+      final Date invoiceDate = Date.valueOf(moneyflow.getInvoiceDate());
+      moneyflowTransport.setInvoicedate(invoiceDate);
+    }
+    final Capitalsource capitalsource = moneyflow.getCapitalsource();
+    moneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
+    moneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
+    final Contractpartner contractpartner = moneyflow.getContractpartner();
+    moneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
+    moneyflowTransport.setContractpartnername(contractpartner.getName());
+    moneyflowTransport.setComment(moneyflow.getComment());
+    if (moneyflow.isPrivat()) {
+      moneyflowTransport.setPrivat(IS_PRIVATE_SHORT);
+    }
+    final User user = moneyflow.getUser();
+    moneyflowTransport.setUserid(user.getId().getId());
+    final PostingAccount postingAccount = moneyflow.getPostingAccount();
+    moneyflowTransport.setPostingaccountid(postingAccount.getId().getId());
+    moneyflowTransport.setPostingaccountname(postingAccount.getName());
+    return moneyflowTransport;
+  }
 }

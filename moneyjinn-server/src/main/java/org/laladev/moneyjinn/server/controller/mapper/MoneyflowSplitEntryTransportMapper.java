@@ -34,39 +34,37 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 
-public class MoneyflowSplitEntryTransportMapper implements IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
+public class MoneyflowSplitEntryTransportMapper
+    implements IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
+  @Override
+  public MoneyflowSplitEntry mapBToA(
+      final MoneyflowSplitEntryTransport moneyflowSplitEntryTransport) {
+    final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
+    if (moneyflowSplitEntryTransport.getId() != null) {
+      moneyflowSplitEntry.setId(new MoneyflowSplitEntryID(moneyflowSplitEntryTransport.getId()));
+    }
+    moneyflowSplitEntry
+        .setMoneyflowId(new MoneyflowID(moneyflowSplitEntryTransport.getMoneyflowid()));
+    moneyflowSplitEntry.setAmount(moneyflowSplitEntryTransport.getAmount());
+    moneyflowSplitEntry.setComment(moneyflowSplitEntryTransport.getComment());
+    if (moneyflowSplitEntryTransport.getPostingaccountid() != null) {
+      final PostingAccount postingAccount = new PostingAccount(
+          new PostingAccountID(moneyflowSplitEntryTransport.getPostingaccountid()));
+      moneyflowSplitEntry.setPostingAccount(postingAccount);
+    }
+    return moneyflowSplitEntry;
+  }
 
-	@Override
-	public MoneyflowSplitEntry mapBToA(final MoneyflowSplitEntryTransport moneyflowSplitEntryTransport) {
-		final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
-		if (moneyflowSplitEntryTransport.getId() != null) {
-			moneyflowSplitEntry.setId(new MoneyflowSplitEntryID(moneyflowSplitEntryTransport.getId()));
-		}
-		moneyflowSplitEntry.setMoneyflowId(new MoneyflowID(moneyflowSplitEntryTransport.getMoneyflowid()));
-		moneyflowSplitEntry.setAmount(moneyflowSplitEntryTransport.getAmount());
-		moneyflowSplitEntry.setComment(moneyflowSplitEntryTransport.getComment());
-
-		if (moneyflowSplitEntryTransport.getPostingaccountid() != null) {
-			final PostingAccount postingAccount = new PostingAccount(new PostingAccountID(moneyflowSplitEntryTransport.getPostingaccountid()));
-			moneyflowSplitEntry.setPostingAccount(postingAccount);
-		}
-
-		return moneyflowSplitEntry;
-	}
-
-	@Override
-	public MoneyflowSplitEntryTransport mapAToB(final MoneyflowSplitEntry moneyflowSplitEntry) {
-		final MoneyflowSplitEntryTransport moneyflowSplitEntryTransport = new MoneyflowSplitEntryTransport();
-		moneyflowSplitEntryTransport.setId(moneyflowSplitEntry.getId().getId());
-
-		moneyflowSplitEntryTransport.setMoneyflowid(moneyflowSplitEntry.getMoneyflowId().getId());
-		moneyflowSplitEntryTransport.setAmount(moneyflowSplitEntry.getAmount());
-		moneyflowSplitEntryTransport.setComment(moneyflowSplitEntry.getComment());
-
-		final PostingAccount postingAccount = moneyflowSplitEntry.getPostingAccount();
-		moneyflowSplitEntryTransport.setPostingaccountid(postingAccount.getId().getId());
-		moneyflowSplitEntryTransport.setPostingaccountname(postingAccount.getName());
-
-		return moneyflowSplitEntryTransport;
-	}
+  @Override
+  public MoneyflowSplitEntryTransport mapAToB(final MoneyflowSplitEntry moneyflowSplitEntry) {
+    final MoneyflowSplitEntryTransport moneyflowSplitEntryTransport = new MoneyflowSplitEntryTransport();
+    moneyflowSplitEntryTransport.setId(moneyflowSplitEntry.getId().getId());
+    moneyflowSplitEntryTransport.setMoneyflowid(moneyflowSplitEntry.getMoneyflowId().getId());
+    moneyflowSplitEntryTransport.setAmount(moneyflowSplitEntry.getAmount());
+    moneyflowSplitEntryTransport.setComment(moneyflowSplitEntry.getComment());
+    final PostingAccount postingAccount = moneyflowSplitEntry.getPostingAccount();
+    moneyflowSplitEntryTransport.setPostingaccountid(postingAccount.getId().getId());
+    moneyflowSplitEntryTransport.setPostingaccountname(postingAccount.getName());
+    return moneyflowSplitEntryTransport;
+  }
 }

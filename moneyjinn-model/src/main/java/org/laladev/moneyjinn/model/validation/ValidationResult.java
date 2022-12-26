@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.validation;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -28,32 +29,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationResult {
-	private boolean result;
-	private final List<ValidationResultItem> validationResultItems;
+  private boolean result;
+  private final List<ValidationResultItem> validationResultItems;
 
-	public ValidationResult() {
-		this.result = true;
-		this.validationResultItems = new ArrayList<ValidationResultItem>();
-	}
+  public ValidationResult() {
+    this.result = true;
+    this.validationResultItems = new ArrayList<ValidationResultItem>();
+  }
 
-	public boolean isValid() {
-		return this.result;
-	}
+  public boolean isValid() {
+    return this.result;
+  }
 
-	public void addValidationResultItem(final ValidationResultItem validationResultItem) {
-		this.result = false;
-		this.validationResultItems.add(validationResultItem);
-	}
+  public void addValidationResultItem(final ValidationResultItem validationResultItem) {
+    this.result = false;
+    this.validationResultItems.add(validationResultItem);
+  }
 
-	public List<ValidationResultItem> getValidationResultItems() {
-		return this.validationResultItems;
-	}
+  public List<ValidationResultItem> getValidationResultItems() {
+    return this.validationResultItems;
+  }
 
-	public void mergeValidationResult(final ValidationResult validationResult) {
-		if (!validationResult.isValid()) {
-			this.result = false;
-			this.validationResultItems.addAll(validationResult.getValidationResultItems());
-		}
-	}
-
+  public void mergeValidationResult(final ValidationResult validationResult) {
+    if (!validationResult.isValid()) {
+      this.result = false;
+      this.validationResultItems.addAll(validationResult.getValidationResultItems());
+    }
+  }
 }

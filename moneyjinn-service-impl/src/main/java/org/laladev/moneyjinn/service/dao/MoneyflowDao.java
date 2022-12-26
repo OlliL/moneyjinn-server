@@ -26,13 +26,11 @@
 
 package org.laladev.moneyjinn.service.dao;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
@@ -40,108 +38,112 @@ import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper;
 
 @Named
 public class MoneyflowDao {
+  @Inject
+  private IMoneyflowDaoMapper mapper;
 
-	@Inject
-	IMoneyflowDaoMapper mapper;
+  public Long createMoneyflow(final MoneyflowData moneyflowData) {
+    this.mapper.createMoneyflow(moneyflowData);
+    return moneyflowData.getId();
+  }
 
-	public Long createMoneyflow(final MoneyflowData moneyflowData) {
-		this.mapper.createMoneyflow(moneyflowData);
-		return moneyflowData.getId();
-	}
+  public MoneyflowData getMoneyflowById(final Long userId, final Long id) {
+    return this.mapper.getMoneyflowById(userId, id);
+  }
 
-	public MoneyflowData getMoneyflowById(final Long userId, final Long id) {
-		return this.mapper.getMoneyflowById(userId, id);
-	}
+  public void updateMoneyflow(final MoneyflowData moneyflowData) {
+    this.mapper.updateMoneyflow(moneyflowData);
+  }
 
-	public void updateMoneyflow(final MoneyflowData moneyflowData) {
-		this.mapper.updateMoneyflow(moneyflowData);
-	}
+  public void deleteMoneyflow(final Long groupId, final Long id) {
+    this.mapper.deleteMoneyflow(groupId, id);
+  }
 
-	public void deleteMoneyflow(final Long groupId, final Long id) {
-		this.mapper.deleteMoneyflow(groupId, id);
-	}
+  public List<Short> getAllYears(final Long userId) {
+    return this.mapper.getAllYears(userId);
+  }
 
-	public List<Short> getAllYears(final Long userId) {
-		return this.mapper.getAllYears(userId);
-	}
+  public List<Short> getAllMonth(final Long userId, final LocalDate beginOfYear,
+      final LocalDate endOfYear) {
+    return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
+  }
 
-	public List<Short> getAllMonth(final Long userId, final LocalDate beginOfYear, final LocalDate endOfYear) {
-		return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
-	}
+  public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId,
+      final LocalDate validFrom, final LocalDate validTil, final List<Long> capitalsourceIds) {
+    return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil,
+        capitalsourceIds);
+  }
 
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final LocalDate validFrom,
-			final LocalDate validTil, final List<Long> capitalsourceIds) {
-		return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil, capitalsourceIds);
-	}
+  public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId,
+      final LocalDate dateFrom, final LocalDate dateTil) {
+    return this.mapper.getAllMoneyflowsByDateRange(userId, dateFrom, dateTil);
+  }
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId, final LocalDate dateFrom,
-			final LocalDate dateTil) {
-		return this.mapper.getAllMoneyflowsByDateRange(userId, dateFrom, dateTil);
-	}
+  public List<MoneyflowData> getAllMoneyflowsByDateRangeIncludingPrivate(final Long userId,
+      final LocalDate dateFrom, final LocalDate dateTil) {
+    return this.mapper.getAllMoneyflowsByDateRangeIncludingPrivate(userId, dateFrom, dateTil);
+  }
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRangeIncludingPrivate(final Long userId, final LocalDate dateFrom,
-			final LocalDate dateTil) {
-		return this.mapper.getAllMoneyflowsByDateRangeIncludingPrivate(userId, dateFrom, dateTil);
-	}
+  public boolean monthHasMoneyflows(final Long userId, final LocalDate dateFrom,
+      final LocalDate dateTil) {
+    final Boolean result = this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil);
+    if (result == null) {
+      return false;
+    }
+    return result;
+  }
 
-	public boolean monthHasMoneyflows(final Long userId, final LocalDate dateFrom, final LocalDate dateTil) {
-		final Boolean result = this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil);
-		if (result == null) {
-			return false;
-		}
-		return result;
-	}
+  public LocalDate getMaxMoneyflowDate(final Long userId) {
+    return this.mapper.getMaxMoneyflowDate(userId);
+  }
 
-	public LocalDate getMaxMoneyflowDate(final Long userId) {
-		return this.mapper.getMaxMoneyflowDate(userId);
-	}
+  public LocalDate getPreviousMoneyflowDate(final Long userId, final LocalDate date) {
+    return this.mapper.getPreviousMoneyflowDate(userId, date);
+  }
 
-	public LocalDate getPreviousMoneyflowDate(final Long userId, final LocalDate date) {
-		return this.mapper.getPreviousMoneyflowDate(userId, date);
-	}
+  public LocalDate getNextMoneyflowDate(final Long userId, final LocalDate date) {
+    return this.mapper.getNextMoneyflowDate(userId, date);
+  }
 
-	public LocalDate getNextMoneyflowDate(final Long userId, final LocalDate date) {
-		return this.mapper.getNextMoneyflowDate(userId, date);
-	}
+  public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
+      final Long userId, final List<Long> postingAccountIdLongs, final LocalDate dateFrom,
+      final LocalDate dateTil) {
+    return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId,
+        postingAccountIdLongs, dateFrom, dateTil);
+  }
 
-	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final Long userId,
-			final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
-		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdLongs,
-				dateFrom, dateTil);
-	}
+  public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
+      final Long userId, final List<Long> postingAccountIdLongs, final LocalDate dateFrom,
+      final LocalDate dateTil) {
+    return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId,
+        postingAccountIdLongs, dateFrom, dateTil);
+  }
 
-	public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final Long userId,
-			final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
-		return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdLongs,
-				dateFrom, dateTil);
-	}
+  public List<MoneyflowData> searchMoneyflowsByAmountDate(final Long userId,
+      final LocalDate dateFrom, final LocalDate dateTil, final BigDecimal amount) {
+    return this.mapper.searchMoneyflowsByAmountDate(userId, dateFrom, dateTil, amount);
+  }
 
-	public List<MoneyflowData> searchMoneyflowsByAmountDate(final Long userId, final LocalDate dateFrom,
-			final LocalDate dateTil, final BigDecimal amount) {
-		return this.mapper.searchMoneyflowsByAmountDate(userId, dateFrom, dateTil, amount);
-	}
+  public List<MoneyflowData> searchMoneyflowsByAbsoluteAmountDate(final Long userId,
+      final LocalDate dateFrom, final LocalDate dateTil, final BigDecimal amount) {
+    return this.mapper.searchMoneyflowsByAbsoluteAmountDate(userId, dateFrom, dateTil, amount);
+  }
 
-	public List<MoneyflowData> searchMoneyflowsByAbsoluteAmountDate(final Long userId, final LocalDate dateFrom,
-			final LocalDate dateTil, final BigDecimal amount) {
-		return this.mapper.searchMoneyflowsByAbsoluteAmountDate(userId, dateFrom, dateTil, amount);
-	}
+  public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId,
+      final LocalDate dateFrom, final LocalDate dateTil, final Long capitalsourceId) {
+    return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil,
+        capitalsourceId);
+  }
 
-	public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId, final LocalDate dateFrom,
-			final LocalDate dateTil, final Long capitalsourceId) {
-		return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil, capitalsourceId);
-	}
-
-	public List<MoneyflowData> searchMoneyflows(final Long userId,
-			final MoneyflowSearchParamsData moneyflowSearchParamsData) {
-
-		if (moneyflowSearchParamsData.getSearchString() != null && !moneyflowSearchParamsData.isFeatureEqual()
-				&& !moneyflowSearchParamsData.isFeatureRegexp()) {
-			// LIKE-mode
-			moneyflowSearchParamsData.setSearchString('%' + moneyflowSearchParamsData.getSearchString() + '%');
-		}
-		moneyflowSearchParamsData.setUserId(userId);
-
-		return this.mapper.searchMoneyflows(moneyflowSearchParamsData);
-	}
-
+  public List<MoneyflowData> searchMoneyflows(final Long userId,
+      final MoneyflowSearchParamsData moneyflowSearchParamsData) {
+    if (moneyflowSearchParamsData.getSearchString() != null
+        && !moneyflowSearchParamsData.isFeatureEqual()
+        && !moneyflowSearchParamsData.isFeatureRegexp()) {
+      // LIKE-mode
+      moneyflowSearchParamsData
+          .setSearchString('%' + moneyflowSearchParamsData.getSearchString() + '%');
+    }
+    moneyflowSearchParamsData.setUserId(userId);
+    return this.mapper.searchMoneyflows(moneyflowSearchParamsData);
+  }
 }

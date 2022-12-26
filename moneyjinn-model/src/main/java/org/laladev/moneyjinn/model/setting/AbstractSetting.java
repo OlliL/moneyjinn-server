@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -23,27 +24,24 @@ package org.laladev.moneyjinn.model.setting;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
 public abstract class AbstractSetting<T> {
+  private T setting;
 
-	private T setting;
+  public abstract SettingType getType();
 
-	public abstract SettingType getType();
+  public final T getSetting() {
+    return this.setting;
+  }
 
-	public final T getSetting() {
-		return this.setting;
-	}
+  public final void setSetting(final T setting) {
+    this.setting = setting;
+  }
 
-	public final void setSetting(final T setting) {
-		this.setting = setting;
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("AbstractSetting [setting=").append(this.setting).append(", getType()=").append(this.getType())
-				.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("AbstractSetting [setting=").append(this.setting).append(", getType()=")
+        .append(this.getType()).append("]");
+    return builder.toString();
+  }
 }

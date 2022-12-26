@@ -33,7 +33,7 @@ package org.laladev.moneyjinn.model.access;
  *
  */
 public enum UserPermission {
-	NONE,
-	LOGIN,
-	ADMIN;
+  NONE,
+  LOGIN,
+  ADMIN;
 }

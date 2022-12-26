@@ -31,22 +31,19 @@ import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import org.laladev.moneyjinn.model.etf.Etf;
 
 public class EtfTransportMapper implements IMapper<Etf, EtfTransport> {
+  @Override
+  public Etf mapBToA(final EtfTransport etfTransport) {
+    return null;
+  }
 
-	@Override
-	public Etf mapBToA(final EtfTransport etfTransport) {
-		return null;
-	}
-
-	@Override
-	public EtfTransport mapAToB(final Etf etf) {
-		final EtfTransport transport = new EtfTransport();
-
-		transport.setIsin(etf.getId().getId());
-		transport.setWkn(etf.getWkn());
-		transport.setTicker(etf.getTicker());
-		transport.setName(etf.getName());
-		transport.setChartUrl(etf.getChartUrl());
-
-		return transport;
-	}
+  @Override
+  public EtfTransport mapAToB(final Etf etf) {
+    final EtfTransport transport = new EtfTransport();
+    transport.setIsin(etf.getId().getId());
+    transport.setWkn(etf.getWkn());
+    transport.setTicker(etf.getTicker());
+    transport.setName(etf.getName());
+    transport.setChartUrl(etf.getChartUrl());
+    return transport;
+  }
 }

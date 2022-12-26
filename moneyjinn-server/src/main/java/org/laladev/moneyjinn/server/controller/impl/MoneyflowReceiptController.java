@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.Base64;
-
 import jakarta.inject.Inject;
-
+import java.util.Base64;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -48,44 +46,43 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/moneyflowreceipt/")
 public class MoneyflowReceiptController extends AbstractController {
-	@Inject
-	private IMoneyflowService moneyflowService;
-	@Inject
-	private IMoneyflowReceiptService moneyflowReceiptService;
+  @Inject
+  private IMoneyflowService moneyflowService;
+  @Inject
+  private IMoneyflowReceiptService moneyflowReceiptService;
 
-	@Override
-	protected void addBeanMapper() {
-	}
+  @Override
+  protected void addBeanMapper() {
+  }
 
-	@RequestMapping(value = "showMoneyflowReceipt/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowMoneyflowReceiptResponse showMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final MoneyflowID moneyflowId = new MoneyflowID(id);
-		final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
+  @RequestMapping(value = "showMoneyflowReceipt/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowMoneyflowReceiptResponse showMoneyflowReceipt(
+      @PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final MoneyflowID moneyflowId = new MoneyflowID(id);
+    final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
+    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+    if (moneyflow != null) {
+      final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService
+          .getMoneyflowReceipt(userId, moneyflowId);
+      if (moneyflowReceipt != null) {
+        response.setReceipt(Base64.getEncoder().encodeToString(moneyflowReceipt.getReceipt()));
+        response.setReceiptType(
+            MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
+      }
+    }
+    return response;
+  }
 
-		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-		if (moneyflow != null) {
-			final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId,
-					moneyflowId);
-			if (moneyflowReceipt != null) {
-				response.setReceipt(Base64.getEncoder().encodeToString(moneyflowReceipt.getReceipt()));
-				response.setReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
-			}
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "deleteMoneyflowReceipt/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	public void deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final MoneyflowID moneyflowId = new MoneyflowID(id);
-
-		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-		if (moneyflow != null) {
-			this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
-		}
-	}
-
+  @RequestMapping(value = "deleteMoneyflowReceipt/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  public void deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final MoneyflowID moneyflowId = new MoneyflowID(id);
+    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+    if (moneyflow != null) {
+      this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
+    }
+  }
 }

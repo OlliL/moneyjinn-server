@@ -27,131 +27,130 @@
 package org.laladev.moneyjinn.model.moneyflow;
 
 import java.util.Arrays;
-
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 
 public class ImportedMoneyflowReceipt extends AbstractEntity<ImportedMoneyflowReceiptID> {
-	private static final long serialVersionUID = 1L;
-	private User user;
-	private Group access;
-	private byte[] receipt;
-	private String filename;
-	private String mediaType;
+  private static final long serialVersionUID = 1L;
+  private User user;
+  private Group access;
+  private byte[] receipt;
+  private String filename;
+  private String mediaType;
 
-	public final User getUser() {
-		return this.user;
-	}
+  public final User getUser() {
+    return this.user;
+  }
 
-	public final void setUser(final User user) {
-		this.user = user;
-	}
+  public final void setUser(final User user) {
+    this.user = user;
+  }
 
-	public final Group getAccess() {
-		return this.access;
-	}
+  public final Group getAccess() {
+    return this.access;
+  }
 
-	public final void setAccess(final Group access) {
-		this.access = access;
-	}
+  public final void setAccess(final Group access) {
+    this.access = access;
+  }
 
-	public final byte[] getReceipt() {
-		return this.receipt;
-	}
+  public final byte[] getReceipt() {
+    return this.receipt;
+  }
 
-	public final void setReceipt(final byte[] receipt) {
-		this.receipt = receipt;
-	}
+  public final void setReceipt(final byte[] receipt) {
+    this.receipt = receipt;
+  }
 
-	public final String getFilename() {
-		return this.filename;
-	}
+  public final String getFilename() {
+    return this.filename;
+  }
 
-	public final void setFilename(final String filename) {
-		this.filename = filename;
-	}
+  public final void setFilename(final String filename) {
+    this.filename = filename;
+  }
 
-	public final String getMediaType() {
-		return this.mediaType;
-	}
+  public final String getMediaType() {
+    return this.mediaType;
+  }
 
-	public final void setMediaType(final String mediaType) {
-		this.mediaType = mediaType;
-	}
+  public final void setMediaType(final String mediaType) {
+    this.mediaType = mediaType;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.access == null) ? 0 : this.access.hashCode());
-		result = prime * result + ((this.filename == null) ? 0 : this.filename.hashCode());
-		result = prime * result + ((this.mediaType == null) ? 0 : this.mediaType.hashCode());
-		result = prime * result + Arrays.hashCode(this.receipt);
-		result = prime * result + ((this.user == null) ? 0 : this.user.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.access == null) ? 0 : this.access.hashCode());
+    result = prime * result + ((this.filename == null) ? 0 : this.filename.hashCode());
+    result = prime * result + ((this.mediaType == null) ? 0 : this.mediaType.hashCode());
+    result = prime * result + Arrays.hashCode(this.receipt);
+    result = prime * result + ((this.user == null) ? 0 : this.user.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ImportedMoneyflowReceipt other = (ImportedMoneyflowReceipt) obj;
-		if (this.access == null) {
-			if (other.access != null) {
-				return false;
-			}
-		} else if (!this.access.equals(other.access)) {
-			return false;
-		}
-		if (this.filename == null) {
-			if (other.filename != null) {
-				return false;
-			}
-		} else if (!this.filename.equals(other.filename)) {
-			return false;
-		}
-		if (this.mediaType == null) {
-			if (other.mediaType != null) {
-				return false;
-			}
-		} else if (!this.mediaType.equals(other.mediaType)) {
-			return false;
-		}
-		if (!Arrays.equals(this.receipt, other.receipt)) {
-			return false;
-		}
-		if (this.user == null) {
-			if (other.user != null) {
-				return false;
-			}
-		} else if (!this.user.equals(other.user)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ImportedMoneyflowReceipt other = (ImportedMoneyflowReceipt) obj;
+    if (this.access == null) {
+      if (other.access != null) {
+        return false;
+      }
+    } else if (!this.access.equals(other.access)) {
+      return false;
+    }
+    if (this.filename == null) {
+      if (other.filename != null) {
+        return false;
+      }
+    } else if (!this.filename.equals(other.filename)) {
+      return false;
+    }
+    if (this.mediaType == null) {
+      if (other.mediaType != null) {
+        return false;
+      }
+    } else if (!this.mediaType.equals(other.mediaType)) {
+      return false;
+    }
+    if (!Arrays.equals(this.receipt, other.receipt)) {
+      return false;
+    }
+    if (this.user == null) {
+      if (other.user != null) {
+        return false;
+      }
+    } else if (!this.user.equals(other.user)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ImportedMoneyflowReceipt [user=");
-		builder.append(this.user);
-		builder.append(", access=");
-		builder.append(this.access);
-		builder.append(", receipt=");
-		builder.append(Arrays.toString(this.receipt));
-		builder.append(", filename=");
-		builder.append(this.filename);
-		builder.append(", mediaType=");
-		builder.append(this.mediaType);
-		builder.append("]");
-		return builder.toString();
-	}
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ImportedMoneyflowReceipt [user=");
+    builder.append(this.user);
+    builder.append(", access=");
+    builder.append(this.access);
+    builder.append(", receipt=");
+    builder.append(Arrays.toString(this.receipt));
+    builder.append(", filename=");
+    builder.append(this.filename);
+    builder.append(", mediaType=");
+    builder.append(this.mediaType);
+    builder.append("]");
+    return builder.toString();
+  }
 }

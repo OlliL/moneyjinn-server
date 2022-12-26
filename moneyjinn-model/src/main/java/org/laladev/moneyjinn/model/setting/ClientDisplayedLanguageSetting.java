@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
@@ -23,7 +24,6 @@ package org.laladev.moneyjinn.model.setting;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
 /**
  * <p>
  * This Setting describes the client language the user has choosen.
@@ -33,14 +33,12 @@ package org.laladev.moneyjinn.model.setting;
  *
  */
 public class ClientDisplayedLanguageSetting extends AbstractSetting<Integer> {
+  public ClientDisplayedLanguageSetting(final Integer setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientDisplayedLanguageSetting(final Integer setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_DISPLAYED_LANGUAGE;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_DISPLAYED_LANGUAGE;
+  }
 }

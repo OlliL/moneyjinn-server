@@ -27,54 +27,54 @@
 package org.laladev.moneyjinn.model.comparedata;
 
 public class CompareDataNotInDatabase {
-	private final CompareDataDataset compareDataDataset;
+  private final CompareDataDataset compareDataDataset;
 
-	public CompareDataNotInDatabase(final CompareDataDataset compareDataDataset) {
-		super();
-		this.compareDataDataset = compareDataDataset;
-	}
+  public CompareDataNotInDatabase(final CompareDataDataset compareDataDataset) {
+    super();
+    this.compareDataDataset = compareDataDataset;
+  }
 
-	public final CompareDataDataset getCompareDataDataset() {
-		return this.compareDataDataset;
-	}
+  public final CompareDataDataset getCompareDataDataset() {
+    return this.compareDataDataset;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.compareDataDataset == null) ? 0 : this.compareDataDataset.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result
+        + ((this.compareDataDataset == null) ? 0 : this.compareDataDataset.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CompareDataNotInDatabase other = (CompareDataNotInDatabase) obj;
-		if (this.compareDataDataset == null) {
-			if (other.compareDataDataset != null) {
-				return false;
-			}
-		} else if (!this.compareDataDataset.equals(other.compareDataDataset)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CompareDataNotInDatabase other = (CompareDataNotInDatabase) obj;
+    if (this.compareDataDataset == null) {
+      if (other.compareDataDataset != null) {
+        return false;
+      }
+    } else if (!this.compareDataDataset.equals(other.compareDataDataset)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CompareDataNotInDatabase [compareDataDataset=");
-		builder.append(this.compareDataDataset);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CompareDataNotInDatabase [compareDataDataset=");
+    builder.append(this.compareDataDataset);
+    builder.append("]");
+    return builder.toString();
+  }
 }

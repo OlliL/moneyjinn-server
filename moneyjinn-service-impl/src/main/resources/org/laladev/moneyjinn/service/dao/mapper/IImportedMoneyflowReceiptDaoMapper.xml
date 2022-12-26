@@ -2,64 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowReceiptDaoMapper">
 
-	<resultMap id="importedMoneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData">
-		<result property="id"             javaType="java.lang.Long"   column="id"             />
-		<result property="macIdCreator"   javaType="java.lang.Long"   column="macIdCreator"   />
-		<result property="macIdAccessor"  javaType="java.lang.Long"   column="macIdAccessor"  />
-		<result property="receipt"        javaType="_byte[]"          column="blob_Data"      jdbcType="BLOB"/>
-		<result property="filename"       javaType="java.lang.String" column="filename"       />
-		<result property="mediaType"      javaType="java.lang.String" column="mediatype"      />
-	</resultMap>
-	
-	<sql id="importedMoneyflowReceiptColumns">
-		 impmoneyflowreceiptid AS id
-		,mac_id_creator        AS macIdCreator
-		,mac_id_accessor       AS macIdAccessor
-		,receipt               AS blob_Data
-		,filename              AS filename
-		,mediatype             AS mediaType
-	</sql>
-		
-    	<insert id="createImportedMoneyflowReceipt"
-		parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData"
-		useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
-		INSERT INTO impmoneyflowreceipts
-		      (mac_id_creator
-		      ,mac_id_accessor
-		      ,receipt
-		      ,filename
-		      ,mediatype
-		      )
-		        VALUES
-		      (#{macIdCreator}
-		      ,#{macIdAccessor}
-		      ,#{receipt}
-		      ,#{filename}
-		      ,#{mediaType}
-		      )
-	</insert>
+        <resultMap id="importedMoneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData">
+                <result property="id"             javaType="java.lang.Long"   column="id"             />
+                <result property="macIdCreator"   javaType="java.lang.Long"   column="macIdCreator"   />
+                <result property="macIdAccessor"  javaType="java.lang.Long"   column="macIdAccessor"  />
+                <result property="receipt"        javaType="_byte[]"          column="blob_Data"      jdbcType="BLOB"/>
+                <result property="filename"       javaType="java.lang.String" column="filename"       />
+                <result property="mediaType"      javaType="java.lang.String" column="mediatype"      />
+        </resultMap>
+        
+        <sql id="importedMoneyflowReceiptColumns">
+                 impmoneyflowreceiptid AS id
+                ,mac_id_creator        AS macIdCreator
+                ,mac_id_accessor       AS macIdAccessor
+                ,receipt               AS blob_Data
+                ,filename              AS filename
+                ,mediatype             AS mediaType
+        </sql>
+                
+            <insert id="createImportedMoneyflowReceipt"
+                parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData"
+                useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
+                INSERT INTO impmoneyflowreceipts
+                      (mac_id_creator
+                      ,mac_id_accessor
+                      ,receipt
+                      ,filename
+                      ,mediatype
+                      )
+                        VALUES
+                      (#{macIdCreator}
+                      ,#{macIdAccessor}
+                      ,#{receipt}
+                      ,#{filename}
+                      ,#{mediaType}
+                      )
+        </insert>
 
-    	<delete id="deleteImportedMoneyflowReceiptById">
-		DELETE
-		  FROM impmoneyflowreceipts
-		 WHERE impmoneyflowreceiptid = #{id}
+            <delete id="deleteImportedMoneyflowReceiptById">
+                DELETE
+                  FROM impmoneyflowreceipts
+                 WHERE impmoneyflowreceiptid = #{id}
                    AND mac_id_accessor       = #{groupId}
-	</delete>
-	
-    	<select id="getAllImportedMoneyflowReceipts" 
-		resultMap="importedMoneyflowReceiptMap">
-    	        SELECT <include refid="importedMoneyflowReceiptColumns" />
-    	          FROM impmoneyflowreceipts
-    	         WHERE mac_id_accessor = #{groupId}
-    	</select>
+        </delete>
+        
+            <select id="getAllImportedMoneyflowReceipts" 
+                resultMap="importedMoneyflowReceiptMap">
+                    SELECT <include refid="importedMoneyflowReceiptColumns" />
+                      FROM impmoneyflowreceipts
+                     WHERE mac_id_accessor = #{groupId}
+            </select>
 
-    	<select id="getImportedMoneyflowReceiptById" 
-		resultMap="importedMoneyflowReceiptMap">
-    	        SELECT <include refid="importedMoneyflowReceiptColumns" />
-    	          FROM impmoneyflowreceipts
-    	         WHERE mac_id_accessor = #{groupId}
-    	           AND impmoneyflowreceiptid = #{id}
-    	         LIMIT 1
-    	</select>
-    	
+            <select id="getImportedMoneyflowReceiptById" 
+                resultMap="importedMoneyflowReceiptMap">
+                    SELECT <include refid="importedMoneyflowReceiptColumns" />
+                      FROM impmoneyflowreceipts
+                     WHERE mac_id_accessor = #{groupId}
+                       AND impmoneyflowreceiptid = #{id}
+                     LIMIT 1
+            </select>
+            
 </mapper>

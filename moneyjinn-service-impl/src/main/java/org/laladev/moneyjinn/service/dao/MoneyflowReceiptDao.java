@@ -26,34 +26,30 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowReceiptDaoMapper;
 
 @Named
 public class MoneyflowReceiptDao {
+  @Inject
+  private IMoneyflowReceiptDaoMapper mapper;
 
-	@Inject
-	IMoneyflowReceiptDaoMapper mapper;
+  public MoneyflowReceiptData getMoneyflowReceipt(final Long moneyflowId) {
+    return this.mapper.getMoneyflowReceipt(moneyflowId);
+  }
 
-	public MoneyflowReceiptData getMoneyflowReceipt(final Long moneyflowId) {
-		return this.mapper.getMoneyflowReceipt(moneyflowId);
-	}
+  public List<Long> getMoneyflowIdsWithReceipt(final List<Long> moneyflowIds) {
+    return this.mapper.getMoneyflowIdsWithReceipt(moneyflowIds);
+  }
 
-	public List<Long> getMoneyflowIdsWithReceipt(final List<Long> moneyflowIds) {
-		return this.mapper.getMoneyflowIdsWithReceipt(moneyflowIds);
-	}
+  public void deleteMoneyflowReceipt(final Long moneyflowId) {
+    this.mapper.deleteMoneyflowReceipt(moneyflowId);
+  }
 
-	public void deleteMoneyflowReceipt(final Long moneyflowId) {
-		this.mapper.deleteMoneyflowReceipt(moneyflowId);
-	}
-
-	public void createMoneyflowReceipt(final MoneyflowReceiptData moneyflowReceiptData) {
-		this.mapper.createMoneyflowReceipt(moneyflowReceiptData);
-
-	}
+  public void createMoneyflowReceipt(final MoneyflowReceiptData moneyflowReceiptData) {
+    this.mapper.createMoneyflowReceipt(moneyflowReceiptData);
+  }
 }

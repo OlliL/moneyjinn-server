@@ -26,42 +26,39 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.Collections;
-import java.util.List;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.Collections;
+import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowSplitEntryDaoMapper;
 
 @Named
 public class MoneyflowSplitEntryDao {
+  @Inject
+  private IMoneyflowSplitEntryDaoMapper mapper;
 
-	@Inject
-	IMoneyflowSplitEntryDaoMapper mapper;
+  public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(final List<Long> moneyflowIds) {
+    if (moneyflowIds.isEmpty()) {
+      return Collections.emptyList();
+    }
+    return this.mapper.getMoneyflowSplitEntries(moneyflowIds);
+  }
 
-	public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(final List<Long> moneyflowIds) {
-		if (moneyflowIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-		return this.mapper.getMoneyflowSplitEntries(moneyflowIds);
-	}
+  public Long createMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
+    this.mapper.createMoneyflowSplitEntry(moneyflowSplitEntryData);
+    return moneyflowSplitEntryData.getId();
+  }
 
-	public Long createMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-		this.mapper.createMoneyflowSplitEntry(moneyflowSplitEntryData);
-		return moneyflowSplitEntryData.getId();
-	}
+  public void updateMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
+    this.mapper.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
+  }
 
-	public void updateMoneyflowSplitEntry(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-		this.mapper.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
-	}
+  public void deleteMoneyflowSplitEntry(final Long moneyflowId, final Long moneyflowSplitEntryId) {
+    this.mapper.deleteMoneyflowSplitEntry(moneyflowId, moneyflowSplitEntryId);
+  }
 
-	public void deleteMoneyflowSplitEntry(final Long moneyflowId, final Long moneyflowSplitEntryId) {
-		this.mapper.deleteMoneyflowSplitEntry(moneyflowId, moneyflowSplitEntryId);
-	}
-
-	public void deleteMoneyflowSplitEntries(final Long moneyflowId) {
-		this.mapper.deleteMoneyflowSplitEntries(moneyflowId);
-	}
+  public void deleteMoneyflowSplitEntries(final Long moneyflowId) {
+    this.mapper.deleteMoneyflowSplitEntries(moneyflowId);
+  }
 }

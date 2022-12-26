@@ -40,50 +40,46 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 
 public class MoneyflowDataMapper implements IMapper<Moneyflow, MoneyflowData> {
+  @Override
+  public Moneyflow mapBToA(final MoneyflowData moneyflowData) {
+    final Moneyflow moneyflow = new Moneyflow();
+    moneyflow.setId(new MoneyflowID(moneyflowData.getId()));
+    moneyflow.setAmount(moneyflowData.getAmount());
+    moneyflow.setBookingDate(moneyflowData.getBookingdate());
+    moneyflow.setInvoiceDate(moneyflowData.getInvoicedate());
+    moneyflow.setCapitalsource(
+        new Capitalsource(new CapitalsourceID(moneyflowData.getMcsCapitalsourceId())));
+    moneyflow.setContractpartner(
+        new Contractpartner(new ContractpartnerID(moneyflowData.getMcpContractpartnerId())));
+    moneyflow.setComment(moneyflowData.getComment());
+    moneyflow.setUser(new User(new UserID(moneyflowData.getMacIdCreator())));
+    moneyflow.setPrivat(moneyflowData.isPrivat());
+    moneyflow.setPostingAccount(
+        new PostingAccount(new PostingAccountID(moneyflowData.getMpaPostingAccountId())));
+    return moneyflow;
+  }
 
-	@Override
-	public Moneyflow mapBToA(final MoneyflowData moneyflowData) {
-		final Moneyflow moneyflow = new Moneyflow();
-		moneyflow.setId(new MoneyflowID(moneyflowData.getId()));
-		moneyflow.setAmount(moneyflowData.getAmount());
-
-		moneyflow.setBookingDate(moneyflowData.getBookingdate());
-		moneyflow.setInvoiceDate(moneyflowData.getInvoicedate());
-		moneyflow.setCapitalsource(new Capitalsource(new CapitalsourceID(moneyflowData.getMcsCapitalsourceId())));
-		moneyflow.setContractpartner(
-				new Contractpartner(new ContractpartnerID(moneyflowData.getMcpContractpartnerId())));
-		moneyflow.setComment(moneyflowData.getComment());
-		moneyflow.setUser(new User(new UserID(moneyflowData.getMacIdCreator())));
-		moneyflow.setPrivat(moneyflowData.isPrivat());
-		moneyflow.setPostingAccount(new PostingAccount(new PostingAccountID(moneyflowData.getMpaPostingAccountId())));
-
-		return moneyflow;
-	}
-
-	@Override
-	public MoneyflowData mapAToB(final Moneyflow moneyflow) {
-		final MoneyflowData moneyflowData = new MoneyflowData();
-		// might be null for new Moneyflows
-		if (moneyflow.getId() != null) {
-			moneyflowData.setId(moneyflow.getId().getId());
-		}
-		moneyflowData.setAmount(moneyflow.getAmount());
-
-		moneyflowData.setBookingdate(moneyflow.getBookingDate());
-		moneyflowData.setInvoicedate(moneyflow.getInvoiceDate());
-
-		moneyflowData.setMcsCapitalsourceId(moneyflow.getCapitalsource().getId().getId());
-		moneyflowData.setMcpContractpartnerId(moneyflow.getContractpartner().getId().getId());
-		moneyflowData.setComment(moneyflow.getComment());
-		if (moneyflow.getUser() != null) {
-			moneyflowData.setMacIdCreator(moneyflow.getUser().getId().getId());
-		}
-		if (moneyflow.getGroup() != null) {
-			moneyflowData.setMacIdAccessor(moneyflow.getGroup().getId().getId());
-		}
-		moneyflowData.setPrivat(moneyflow.isPrivat());
-		moneyflowData.setMpaPostingAccountId(moneyflow.getPostingAccount().getId().getId());
-
-		return moneyflowData;
-	}
+  @Override
+  public MoneyflowData mapAToB(final Moneyflow moneyflow) {
+    final MoneyflowData moneyflowData = new MoneyflowData();
+    // might be null for new Moneyflows
+    if (moneyflow.getId() != null) {
+      moneyflowData.setId(moneyflow.getId().getId());
+    }
+    moneyflowData.setAmount(moneyflow.getAmount());
+    moneyflowData.setBookingdate(moneyflow.getBookingDate());
+    moneyflowData.setInvoicedate(moneyflow.getInvoiceDate());
+    moneyflowData.setMcsCapitalsourceId(moneyflow.getCapitalsource().getId().getId());
+    moneyflowData.setMcpContractpartnerId(moneyflow.getContractpartner().getId().getId());
+    moneyflowData.setComment(moneyflow.getComment());
+    if (moneyflow.getUser() != null) {
+      moneyflowData.setMacIdCreator(moneyflow.getUser().getId().getId());
+    }
+    if (moneyflow.getGroup() != null) {
+      moneyflowData.setMacIdAccessor(moneyflow.getGroup().getId().getId());
+    }
+    moneyflowData.setPrivat(moneyflow.isPrivat());
+    moneyflowData.setMpaPostingAccountId(moneyflow.getPostingAccount().getId().getId());
+    return moneyflowData;
+  }
 }

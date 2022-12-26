@@ -37,60 +37,52 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 
 public class CapitalsourceDataMapper implements IMapper<Capitalsource, CapitalsourceData> {
+  @Override
+  public Capitalsource mapBToA(final CapitalsourceData capitalsourceData) {
+    final Capitalsource capitalsource = new Capitalsource(
+        new CapitalsourceID(capitalsourceData.getId()));
+    if (capitalsourceData.getAccountNumber() != null) {
+      capitalsource.setBankAccount(
+          new BankAccount(capitalsourceData.getAccountNumber(), capitalsourceData.getBankCode()));
+    }
+    capitalsource.setComment(capitalsourceData.getComment());
+    capitalsource.setGroupUse(capitalsourceData.isAttGroupUse());
+    capitalsource
+        .setImportAllowed(CapitalsourceImportMapper.map(capitalsourceData.getImportAllowed()));
+    capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceData.getState()));
+    capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceData.getType()));
+    capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
+    capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
+    capitalsource.setValidFrom(capitalsourceData.getValidFrom());
+    capitalsource.setValidTil(capitalsourceData.getValidTil());
+    return capitalsource;
+  }
 
-	@Override
-	public Capitalsource mapBToA(final CapitalsourceData capitalsourceData) {
-		final Capitalsource capitalsource = new Capitalsource(new CapitalsourceID(capitalsourceData.getId()));
-		if (capitalsourceData.getAccountNumber() != null) {
-			capitalsource.setBankAccount(
-					new BankAccount(capitalsourceData.getAccountNumber(), capitalsourceData.getBankCode()));
-		}
-		capitalsource.setComment(capitalsourceData.getComment());
-		capitalsource.setGroupUse(capitalsourceData.isAttGroupUse());
-		capitalsource.setImportAllowed(CapitalsourceImportMapper.map(capitalsourceData.getImportAllowed()));
-
-		capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceData.getState()));
-		capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceData.getType()));
-
-		capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
-		capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
-
-		capitalsource.setValidFrom(capitalsourceData.getValidFrom());
-		capitalsource.setValidTil(capitalsourceData.getValidTil());
-
-		return capitalsource;
-	}
-
-	@Override
-	public CapitalsourceData mapAToB(final Capitalsource capitalsource) {
-		final CapitalsourceData capitalsourceData = new CapitalsourceData();
-
-		if (capitalsource.getId() != null) {
-			capitalsourceData.setId(capitalsource.getId().getId());
-		}
-
-		final BankAccount bankAccount = capitalsource.getBankAccount();
-		if (bankAccount != null) {
-			capitalsourceData.setAccountNumber(bankAccount.getAccountNumber());
-			capitalsourceData.setBankCode(bankAccount.getBankCode());
-		}
-		capitalsourceData.setComment(capitalsource.getComment());
-		capitalsourceData.setAttGroupUse(capitalsource.isGroupUse());
-
-		capitalsourceData.setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
-		capitalsourceData.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
-		capitalsourceData.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
-
-		if (capitalsource.getUser() != null) {
-			capitalsourceData.setMacIdCreator(capitalsource.getUser().getId().getId());
-		}
-		if (capitalsource.getAccess() != null) {
-			capitalsourceData.setMacIdAccessor(capitalsource.getAccess().getId().getId());
-		}
-
-		capitalsourceData.setValidFrom(capitalsource.getValidFrom());
-		capitalsourceData.setValidTil(capitalsource.getValidTil());
-
-		return capitalsourceData;
-	}
+  @Override
+  public CapitalsourceData mapAToB(final Capitalsource capitalsource) {
+    final CapitalsourceData capitalsourceData = new CapitalsourceData();
+    if (capitalsource.getId() != null) {
+      capitalsourceData.setId(capitalsource.getId().getId());
+    }
+    final BankAccount bankAccount = capitalsource.getBankAccount();
+    if (bankAccount != null) {
+      capitalsourceData.setAccountNumber(bankAccount.getAccountNumber());
+      capitalsourceData.setBankCode(bankAccount.getBankCode());
+    }
+    capitalsourceData.setComment(capitalsource.getComment());
+    capitalsourceData.setAttGroupUse(capitalsource.isGroupUse());
+    capitalsourceData
+        .setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
+    capitalsourceData.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
+    capitalsourceData.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
+    if (capitalsource.getUser() != null) {
+      capitalsourceData.setMacIdCreator(capitalsource.getUser().getId().getId());
+    }
+    if (capitalsource.getAccess() != null) {
+      capitalsourceData.setMacIdAccessor(capitalsource.getAccess().getId().getId());
+    }
+    capitalsourceData.setValidFrom(capitalsource.getValidFrom());
+    capitalsourceData.setValidTil(capitalsource.getValidTil());
+    return capitalsourceData;
+  }
 }

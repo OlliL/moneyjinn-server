@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
-
+import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
@@ -61,136 +59,126 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartneraccount/")
 public class ContractpartnerAccountController extends AbstractController {
-	@Inject
-	private IContractpartnerService contractpartnerService;
-	@Inject
-	private IContractpartnerAccountService contractpartnerAccountService;
+  @Inject
+  private IContractpartnerService contractpartnerService;
+  @Inject
+  private IContractpartnerAccountService contractpartnerAccountService;
 
-	@Override
-	protected void addBeanMapper() {
-		super.registerBeanMapper(new ContractpartnerAccountTransportMapper());
-		super.registerBeanMapper(new ValidationItemTransportMapper());
-	}
+  @Override
+  protected void addBeanMapper() {
+    super.registerBeanMapper(new ContractpartnerAccountTransportMapper());
+    super.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	@RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowContractpartnerAccountListResponse showContractpartnerAccountList(
-			@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
+  @RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowContractpartnerAccountListResponse showContractpartnerAccountList(
+      @PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
+    final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+        .getContractpartnerAccounts(userId, contractpartnerId);
+    final ShowContractpartnerAccountListResponse response = new ShowContractpartnerAccountListResponse();
+    String contractpartnerName = null;
+    if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
+      final List<ContractpartnerAccountTransport> contractpartnerAccountTransports = super.mapList(
+          contractpartnerAccounts, ContractpartnerAccountTransport.class);
+      response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
+      contractpartnerName = contractpartnerAccounts.iterator().next().getContractpartner()
+          .getName();
+    } else {
+      final Contractpartner contractpartner = this.contractpartnerService
+          .getContractpartnerById(userId, contractpartnerId);
+      if (contractpartner != null) {
+        contractpartnerName = contractpartner.getName();
+      }
+    }
+    response.setContractpartnerName(contractpartnerName);
+    return response;
+  }
 
-		final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-				.getContractpartnerAccounts(userId, contractpartnerId);
+  @RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  public CreateContractpartnerAccountResponse createContractpartnerAccount(
+      @RequestBody final CreateContractpartnerAccountRequest request) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerAccount contractpartnerAccount = super.map(
+        request.getContractpartnerAccountTransport(), ContractpartnerAccount.class);
+    contractpartnerAccount.setId(null);
+    final ValidationResult validationResult = this.contractpartnerAccountService
+        .validateContractpartnerAccount(userId, contractpartnerAccount);
+    final CreateContractpartnerAccountResponse response = new CreateContractpartnerAccountResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
+        .createContractpartnerAccount(userId, contractpartnerAccount);
+    response.setcontractpartnerAccountId(contractpartnerAccountID.getId());
+    return response;
+  }
 
-		final ShowContractpartnerAccountListResponse response = new ShowContractpartnerAccountListResponse();
+  @RequestMapping(value = "updateContractpartnerAccount", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  public ValidationResponse updateContractpartnerAccount(
+      @RequestBody final UpdateContractpartnerAccountRequest request) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerAccount contractpartnerAccount = super.map(
+        request.getContractpartnerAccountTransport(), ContractpartnerAccount.class);
+    final ValidationResult validationResult = this.contractpartnerAccountService
+        .validateContractpartnerAccount(userId, contractpartnerAccount);
+    final ValidationResponse response = new ValidationResponse();
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    } else {
+      this.contractpartnerAccountService.updateContractpartnerAccount(userId,
+          contractpartnerAccount);
+    }
+    return response;
+  }
 
-		String contractpartnerName = null;
-		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
-			final List<ContractpartnerAccountTransport> contractpartnerAccountTransports = super.mapList(
-					contractpartnerAccounts, ContractpartnerAccountTransport.class);
-			response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
+  @RequestMapping(value = "deleteContractpartnerAccount/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  public void deleteContractpartnerAccount(@PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
+    this.contractpartnerAccountService.deleteContractpartnerAccountById(userId,
+        contractpartnerAccountId);
+  }
 
-			contractpartnerName = contractpartnerAccounts.iterator().next().getContractpartner().getName();
-		} else {
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-					contractpartnerId);
-			if (contractpartner != null) {
-				contractpartnerName = contractpartner.getName();
-			}
-		}
+  @RequestMapping(value = "showEditContractpartnerAccount/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowEditContractpartnerAccountResponse showEditContractpartnerAccount(
+      @PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
+    final ShowEditContractpartnerAccountResponse response = new ShowEditContractpartnerAccountResponse();
+    this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
+    return response;
+  }
 
-		response.setContractpartnerName(contractpartnerName);
+  @RequestMapping(value = "showDeleteContractpartnerAccount/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public ShowDeleteContractpartnerAccountResponse showDeleteContractpartnerAccount(
+      @PathVariable(value = "id") final Long id) {
+    final UserID userId = super.getUserId();
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
+    final ShowDeleteContractpartnerAccountResponse response = new ShowDeleteContractpartnerAccountResponse();
+    this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
+    return response;
+  }
 
-		return response;
-
-	}
-
-	@RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	public CreateContractpartnerAccountResponse createContractpartnerAccount(
-			@RequestBody final CreateContractpartnerAccountRequest request) {
-		final UserID userId = super.getUserId();
-
-		final ContractpartnerAccount contractpartnerAccount = super.map(request.getContractpartnerAccountTransport(),
-				ContractpartnerAccount.class);
-		contractpartnerAccount.setId(null);
-
-		final ValidationResult validationResult = this.contractpartnerAccountService
-				.validateContractpartnerAccount(userId, contractpartnerAccount);
-
-		final CreateContractpartnerAccountResponse response = new CreateContractpartnerAccountResponse();
-		response.setResult(validationResult.isValid());
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-		final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
-				.createContractpartnerAccount(userId, contractpartnerAccount);
-		response.setcontractpartnerAccountId(contractpartnerAccountID.getId());
-		return response;
-	}
-
-	@RequestMapping(value = "updateContractpartnerAccount", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	public ValidationResponse updateContractpartnerAccount(
-			@RequestBody final UpdateContractpartnerAccountRequest request) {
-		final UserID userId = super.getUserId();
-
-		final ContractpartnerAccount contractpartnerAccount = super.map(request.getContractpartnerAccountTransport(),
-				ContractpartnerAccount.class);
-
-		final ValidationResult validationResult = this.contractpartnerAccountService
-				.validateContractpartnerAccount(userId, contractpartnerAccount);
-
-		final ValidationResponse response = new ValidationResponse();
-		response.setResult(validationResult.isValid());
-		if (!validationResult.isValid()) {
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-		} else {
-			this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
-		}
-		return response;
-	}
-
-	@RequestMapping(value = "deleteContractpartnerAccount/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	public void deleteContractpartnerAccount(@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
-		this.contractpartnerAccountService.deleteContractpartnerAccountById(userId, contractpartnerAccountId);
-	}
-
-	@RequestMapping(value = "showEditContractpartnerAccount/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowEditContractpartnerAccountResponse showEditContractpartnerAccount(
-			@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
-		final ShowEditContractpartnerAccountResponse response = new ShowEditContractpartnerAccountResponse();
-		this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
-		return response;
-	}
-
-	@RequestMapping(value = "showDeleteContractpartnerAccount/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public ShowDeleteContractpartnerAccountResponse showDeleteContractpartnerAccount(
-			@PathVariable(value = "id") final Long id) {
-		final UserID userId = super.getUserId();
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
-		final ShowDeleteContractpartnerAccountResponse response = new ShowDeleteContractpartnerAccountResponse();
-		this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
-		return response;
-	}
-
-	private void fillAbstractContractpartnerAccountResponse(final AbstractContractpartnerAccountResponse response,
-			final UserID userId, final ContractpartnerAccountID contractpartnerAccountId) {
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(userId, contractpartnerAccountId);
-		final ContractpartnerAccountTransport contractpartnerAccountTransport = super.map(contractpartnerAccount,
-				ContractpartnerAccountTransport.class);
-		response.setContractpartnerAccountTransport(contractpartnerAccountTransport);
-	}
-
+  private void fillAbstractContractpartnerAccountResponse(
+      final AbstractContractpartnerAccountResponse response, final UserID userId,
+      final ContractpartnerAccountID contractpartnerAccountId) {
+    final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+        .getContractpartnerAccountById(userId, contractpartnerAccountId);
+    final ContractpartnerAccountTransport contractpartnerAccountTransport = super.map(
+        contractpartnerAccount, ContractpartnerAccountTransport.class);
+    response.setContractpartnerAccountTransport(contractpartnerAccountTransport);
+  }
 }

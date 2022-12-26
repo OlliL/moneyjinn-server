@@ -31,39 +31,37 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
 public class MoneyflowReceiptTypeMapper {
-	private static final Short JPEG = Short.valueOf((short) 1);
-	private static final Short PDF = Short.valueOf((short) 2);
+  private static final Short JPEG = Short.valueOf((short) 1);
+  private static final Short PDF = Short.valueOf((short) 2);
 
-	private MoneyflowReceiptTypeMapper() {
+  private MoneyflowReceiptTypeMapper() {
+  }
 
-	}
+  public static MoneyflowReceiptType map(final Short type) {
+    if (type != null) {
+      switch (type) {
+        case 1:
+          return MoneyflowReceiptType.JPEG;
+        case 2:
+          return MoneyflowReceiptType.PDF;
+        default:
+          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 
-	public static MoneyflowReceiptType map(final Short type) {
-		if (type != null) {
-			switch (type) {
-			case 1:
-				return MoneyflowReceiptType.JPEG;
-			case 2:
-				return MoneyflowReceiptType.PDF;
-			default:
-				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
-
-	public static Short map(final MoneyflowReceiptType type) {
-		if (type != null) {
-			switch (type) {
-			case JPEG:
-				return JPEG;
-			case PDF:
-				return PDF;
-			default:
-				throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
-
+  public static Short map(final MoneyflowReceiptType type) {
+    if (type != null) {
+      switch (type) {
+        case JPEG:
+          return JPEG;
+        case PDF:
+          return PDF;
+        default:
+          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 }

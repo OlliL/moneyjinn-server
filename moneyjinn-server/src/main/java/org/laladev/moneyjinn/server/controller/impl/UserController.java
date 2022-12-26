@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -88,324 +88,301 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/user/")
 public class UserController extends AbstractController {
-	private static final String RESTRICTION_ALL = "all";
-	@Inject
-	private IUserService userService;
-	@Inject
-	private IAccessRelationService accessRelationService;
-	@Inject
-	private IGroupService groupService;
-	@Inject
-	private ISettingService settingService;
-	@Inject
-	AuthenticationManager authenticationManager;
-	@Inject
-	JwtTokenProvider jwtTokenProvider;
+  private static final String RESTRICTION_ALL = "all";
+  @Inject
+  private IUserService userService;
+  @Inject
+  private IAccessRelationService accessRelationService;
+  @Inject
+  private IGroupService groupService;
+  @Inject
+  private ISettingService settingService;
+  @Inject
+  AuthenticationManager authenticationManager;
+  @Inject
+  JwtTokenProvider jwtTokenProvider;
 
-	@Override
-	protected void addBeanMapper() {
-		this.registerBeanMapper(new UserTransportMapper());
-		this.registerBeanMapper(new GroupTransportMapper());
-		this.registerBeanMapper(new AccessRelationTransportMapper());
-		this.registerBeanMapper(new ValidationItemTransportMapper());
+  @Override
+  protected void addBeanMapper() {
+    this.registerBeanMapper(new UserTransportMapper());
+    this.registerBeanMapper(new GroupTransportMapper());
+    this.registerBeanMapper(new AccessRelationTransportMapper());
+    this.registerBeanMapper(new ValidationItemTransportMapper());
+  }
 
-	}
+  @RequestMapping(value = "login", method = { RequestMethod.POST })
+  public LoginResponse login(@RequestBody final LoginRequest request)
+      throws NoSuchAlgorithmException {
+    final String username = request.getUserName();
+    final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+    final String password = BytesToHexConverter
+        .convert(sha1Md.digest(request.getUserPassword().getBytes()));
+    final LoginResponse response = new LoginResponse();
+    this.authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    final User user = this.userService.getUserByName(username);
+    return this.generateLoginResponse(response, user);
+  }
 
-	@RequestMapping(value = "login", method = { RequestMethod.POST })
-	public LoginResponse login(@RequestBody final LoginRequest request) throws NoSuchAlgorithmException {
-		final String username = request.getUserName();
+  @RequestMapping(value = "refreshToken", method = { RequestMethod.GET })
+  public LoginResponse refreshToken() throws NoSuchAlgorithmException {
+    final LoginResponse response = new LoginResponse();
+    final User user = this.userService.getUserById(super.getUserId());
+    return this.generateLoginResponse(response, user);
+  }
 
-		final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-		final String password = BytesToHexConverter.convert(sha1Md.digest(request.getUserPassword().getBytes()));
+  private LoginResponse generateLoginResponse(final LoginResponse response, final User user) {
+    if (user != null) {
+      if (!user.getPermissions().contains(UserPermission.LOGIN)) {
+        throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
+      }
+      final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
+          .collect(Collectors.toCollection(ArrayList::new));
+      final String token = this.jwtTokenProvider.createToken(user.getName(), permissions);
+      final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(),
+          Arrays.asList(RefreshOnlyGrantedAuthority.ROLE));
+      final UserTransport userTransport = super.map(user, UserTransport.class);
+      response.setUserTransport(userTransport);
+      response.setToken(token);
+      response.setRefreshToken(refreshToken);
+      return response;
+    }
+    throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
+  }
 
-		final LoginResponse response = new LoginResponse();
+  @RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
+    final ShowEditUserResponse response = new ShowEditUserResponse();
+    this.fillAbstractShowUserResponse(new UserID(userId), response);
+    return response;
+  }
 
-		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		final User user = this.userService.getUserByName(username);
-		return this.generateLoginResponse(response, user);
-	}
+  @RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
+    final User user = super.map(request.getUserTransport(), User.class);
+    final ValidationResult validationResultUser = this.userService.validateUser(user);
+    final ValidationResult validationResult = new ValidationResult();
+    validationResult.mergeValidationResult(validationResultUser);
+    final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(),
+        AccessRelation.class);
+    if (accessRelation != null) {
+      final ValidationResult validationResultAccess = this.accessRelationService
+          .validateAccessRelation(accessRelation);
+      validationResult.mergeValidationResult(validationResultAccess);
+    }
+    if (validationResult.isValid()) {
+      this.userService.updateUser(user);
+      if (user.getPassword() != null) {
+        this.userService.resetPassword(user.getId(), user.getPassword());
+      }
+      if (accessRelation != null) {
+        validationResult.mergeValidationResult(
+            this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
+      }
+    }
+    if (!validationResult.isValid()) {
+      // TODO Rollback
+      final UpdateUserResponse response = new UpdateUserResponse();
+      this.fillAbstractUpdateUserResponse(user.getId(), response);
+      response.setResult(validationResult.isValid());
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    return null;
+  }
 
-	@RequestMapping(value = "refreshToken", method = { RequestMethod.GET })
-	public LoginResponse refreshToken() throws NoSuchAlgorithmException {
-		final LoginResponse response = new LoginResponse();
+  @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowUserListResponse showUserList() {
+    return this.showUserList(null);
+  }
 
-		final User user = this.userService.getUserById(super.getUserId());
-		return this.generateLoginResponse(response, user);
-	}
+  @RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowUserListResponse showUserList(
+      @PathVariable(value = "restriction") final String restriction) {
+    final UserID userId = super.getUserId();
+    List<User> users = null;
+    if (restriction != null) {
+      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
+        users = this.userService.getAllUsers();
+      } else if (restriction.length() == 1) {
+        users = this.userService.getAllUsersByInitial(restriction.toCharArray()[0]);
+      }
+    } else {
+      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
+          .getClientMaxRowsSetting(userId);
+      final Integer count = this.userService.countAllUsers();
+      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
+        users = this.userService.getAllUsers();
+      }
+    }
+    final ShowUserListResponse response = new ShowUserListResponse();
+    final Set<Group> groupSet = new HashSet<>();
+    final List<AccessRelation> accessRelationList = new ArrayList<>();
+    if (users != null && !users.isEmpty()) {
+      for (final User user : users) {
+        final AccessRelation accessRelation = this.accessRelationService
+            .getAccessRelationById(user.getId());
+        if (accessRelation != null) {
+          accessRelationList.add(accessRelation);
+          if (accessRelation.getParentAccessRelation() != null) {
+            final Group group = this.groupService.getGroupById(
+                new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+            groupSet.add(group);
+          }
+        }
+      }
+      response.setUserTransports(super.mapList(users, UserTransport.class));
+      response.setAccessRelationTransports(
+          super.mapList(accessRelationList, AccessRelationTransport.class));
+      response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
+    }
+    final Set<Character> initials = this.userService.getAllUserInitials();
+    response.setInitials(initials);
+    return response;
+  }
 
-	private LoginResponse generateLoginResponse(final LoginResponse response, final User user) {
-		if (user != null) {
-			if (!user.getPermissions().contains(UserPermission.LOGIN)) {
-				throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
-			}
-			final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
-					.collect(Collectors.toCollection(ArrayList::new));
-			final String token = this.jwtTokenProvider.createToken(user.getName(), permissions);
-			final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(),
-					Arrays.asList(RefreshOnlyGrantedAuthority.ROLE));
+  @RequestMapping(value = "showCreateUser", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowCreateUserResponse showCreateUser() {
+    final ShowCreateUserResponse response = new ShowCreateUserResponse();
+    this.fillAbstractCreateUserResponse(response);
+    return response;
+  }
 
-			final UserTransport userTransport = super.map(user, UserTransport.class);
+  @RequestMapping(value = "createUser", method = { RequestMethod.POST })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
+    final User user = super.map(request.getUserTransport(), User.class);
+    user.setId(null);
+    final ValidationResult validationResultUser = this.userService.validateUser(user);
+    final ValidationResult validationResult = new ValidationResult();
+    validationResult.mergeValidationResult(validationResultUser);
+    final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(),
+        AccessRelation.class);
+    if (accessRelation != null) {
+      accessRelation.setId(null);
+      final ValidationResult validationResultAccess = this.accessRelationService
+          .validateAccessRelation(accessRelation);
+      validationResult.mergeValidationResult(validationResultAccess);
+    }
+    if (!validationResult.isValid()) {
+      final CreateUserResponse response = new CreateUserResponse();
+      this.fillAbstractCreateUserResponse(response);
+      response.setResult(validationResult.isValid());
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
+    }
+    final UserID newUserId = this.userService.createUser(user);
+    if (newUserId != null) {
+      this.settingService.initSettings(newUserId);
+      if (accessRelation != null) {
+        accessRelation.setId(newUserId);
+        this.accessRelationService.setAccessRelationForNewUser(accessRelation);
+      }
+    }
+    return null;
+  }
 
-			response.setUserTransport(userTransport);
-			response.setToken(token);
-			response.setRefreshToken(refreshToken);
+  @RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public void deleteUserById(@PathVariable(value = "id") final Long id) {
+    final UserID userId = new UserID(id);
+    this.accessRelationService.deleteAllAccessRelation(userId);
+    this.settingService.deleteSettings(userId);
+    this.userService.deleteUser(userId);
+  }
 
-			return response;
-		}
+  @RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  public GetUserSettingsForStartupResponse getUserSettingsForStartup(
+      @PathVariable(value = "name") final String name) {
+    final User user = this.userService.getUserByName(name);
+    final GetUserSettingsForStartupResponse response = new GetUserSettingsForStartupResponse();
+    if (user != null) {
+      final UserID userId = user.getId();
+      response.setUserId(userId.getId());
+      final ClientDateFormatSetting clientDateFormatSetting = this.settingService
+          .getClientDateFormatSetting(userId);
+      final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
+          .getClientDisplayedLanguageSetting(userId);
+      response.setSettingDateFormat(clientDateFormatSetting.getSetting());
+      response.setSettingDisplayedLanguage(clientDisplayedLanguageSetting.getSetting());
+      response.setAttributeNew(user.getAttributes().contains(UserAttribute.IS_NEW));
+      response.setPermissionAdmin(user.getPermissions().contains(UserPermission.ADMIN));
+    }
+    return response;
+  }
 
-		throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
-	}
+  @RequestMapping(value = "showDeleteUser/{id}", method = { RequestMethod.GET })
+  @RequiresAuthorization
+  @RequiresPermissionAdmin
+  public ShowDeleteUserResponse showDeleteUser(@PathVariable(value = "id") final Long userId) {
+    final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
+    this.fillAbstractShowUserResponse(new UserID(userId), response);
+    return response;
+  }
 
-	@RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
-		final ShowEditUserResponse response = new ShowEditUserResponse();
-		this.fillAbstractShowUserResponse(new UserID(userId), response);
-		return response;
-	}
+  @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
+  @RequiresAuthorization
+  public void changePassword(@RequestBody final ChangePasswordRequest request)
+      throws NoSuchAlgorithmException {
+    final UserID userId = super.getUserId();
+    final User user = this.userService.getUserById(userId);
+    final String password = request.getPassword();
+    final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+    final String oldPassword = BytesToHexConverter
+        .convert(sha1Md.digest(request.getOldPassword().getBytes()));
+    if (!user.getPassword().equals(oldPassword)) {
+      throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
+    }
+    if (password != null && !password.trim().isEmpty()) {
+      this.userService.setPassword(userId, password);
+    } else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
+      throw new BusinessException("You have to change your password!",
+          ErrorCode.PASSWORD_MUST_BE_CHANGED);
+    }
+  }
 
-	@RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
-		final User user = super.map(request.getUserTransport(), User.class);
+  private void fillAbstractCreateUserResponse(final AbstractCreateUserResponse response) {
+    final List<Group> groups = this.groupService.getAllGroups();
+    final List<GroupTransport> groupTransports = super.mapList(groups, GroupTransport.class);
+    response.setGroupTransports(groupTransports);
+  }
 
-		final ValidationResult validationResultUser = this.userService.validateUser(user);
-		final ValidationResult validationResult = new ValidationResult();
-		validationResult.mergeValidationResult(validationResultUser);
+  private void fillAbstractUpdateUserResponse(final UserID userId,
+      final AbstractUpdateUserResponse response) {
+    final List<AccessRelation> accessRelations = this.accessRelationService
+        .getAllAccessRelationsById(userId);
+    final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
+        AccessRelationTransport.class);
+    response.setAccessRelationTransports(accessRelationTransports);
+    this.fillAbstractCreateUserResponse(response);
+  }
 
-		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
-		if (accessRelation != null) {
-			final ValidationResult validationResultAccess = this.accessRelationService
-					.validateAccessRelation(accessRelation);
-			validationResult.mergeValidationResult(validationResultAccess);
-		}
-
-		if (validationResult.isValid()) {
-			this.userService.updateUser(user);
-			if (user.getPassword() != null) {
-				this.userService.resetPassword(user.getId(), user.getPassword());
-			}
-			if (accessRelation != null) {
-				validationResult.mergeValidationResult(
-						this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
-			}
-		}
-
-		if (!validationResult.isValid()) {
-			// TODO Rollback
-			final UpdateUserResponse response = new UpdateUserResponse();
-			this.fillAbstractUpdateUserResponse(user.getId(), response);
-			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-
-		return null;
-	}
-
-	@RequestMapping(value = "showUserList", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowUserListResponse showUserList() {
-		return this.showUserList(null);
-	}
-
-	@RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowUserListResponse showUserList(@PathVariable(value = "restriction") final String restriction) {
-		final UserID userId = super.getUserId();
-
-		List<User> users = null;
-		if (restriction != null) {
-			if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-				users = this.userService.getAllUsers();
-			} else if (restriction.length() == 1) {
-				users = this.userService.getAllUsersByInitial(restriction.toCharArray()[0]);
-			}
-		} else {
-			final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService.getClientMaxRowsSetting(userId);
-			final Integer count = this.userService.countAllUsers();
-
-			if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-				users = this.userService.getAllUsers();
-			}
-		}
-
-		final ShowUserListResponse response = new ShowUserListResponse();
-		final Set<Group> groupSet = new HashSet<>();
-
-		final List<AccessRelation> accessRelationList = new ArrayList<>();
-		if (users != null && !users.isEmpty()) {
-			for (final User user : users) {
-				final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(user.getId());
-				if (accessRelation != null) {
-					accessRelationList.add(accessRelation);
-					if (accessRelation.getParentAccessRelation() != null) {
-						final Group group = this.groupService
-								.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
-						groupSet.add(group);
-					}
-				}
-			}
-
-			response.setUserTransports(super.mapList(users, UserTransport.class));
-			response.setAccessRelationTransports(super.mapList(accessRelationList, AccessRelationTransport.class));
-			response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
-		}
-
-		final Set<Character> initials = this.userService.getAllUserInitials();
-		response.setInitials(initials);
-
-		return response;
-	}
-
-	@RequestMapping(value = "showCreateUser", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowCreateUserResponse showCreateUser() {
-		final ShowCreateUserResponse response = new ShowCreateUserResponse();
-		this.fillAbstractCreateUserResponse(response);
-		return response;
-	}
-
-	@RequestMapping(value = "createUser", method = { RequestMethod.POST })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
-		final User user = super.map(request.getUserTransport(), User.class);
-		user.setId(null);
-
-		final ValidationResult validationResultUser = this.userService.validateUser(user);
-		final ValidationResult validationResult = new ValidationResult();
-		validationResult.mergeValidationResult(validationResultUser);
-
-		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
-		if (accessRelation != null) {
-			accessRelation.setId(null);
-
-			final ValidationResult validationResultAccess = this.accessRelationService
-					.validateAccessRelation(accessRelation);
-			validationResult.mergeValidationResult(validationResultAccess);
-		}
-
-		if (!validationResult.isValid()) {
-			final CreateUserResponse response = new CreateUserResponse();
-			this.fillAbstractCreateUserResponse(response);
-			response.setResult(validationResult.isValid());
-			response.setValidationItemTransports(
-					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
-		}
-
-		final UserID newUserId = this.userService.createUser(user);
-		if (newUserId != null) {
-			this.settingService.initSettings(newUserId);
-			if (accessRelation != null) {
-				accessRelation.setId(newUserId);
-				this.accessRelationService.setAccessRelationForNewUser(accessRelation);
-			}
-		}
-		return null;
-	}
-
-	@RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public void deleteUserById(@PathVariable(value = "id") final Long id) {
-		final UserID userId = new UserID(id);
-		this.accessRelationService.deleteAllAccessRelation(userId);
-		this.settingService.deleteSettings(userId);
-		this.userService.deleteUser(userId);
-	}
-
-	@RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	public GetUserSettingsForStartupResponse getUserSettingsForStartup(
-			@PathVariable(value = "name") final String name) {
-		final User user = this.userService.getUserByName(name);
-		final GetUserSettingsForStartupResponse response = new GetUserSettingsForStartupResponse();
-
-		if (user != null) {
-			final UserID userId = user.getId();
-
-			response.setUserId(userId.getId());
-
-			final ClientDateFormatSetting clientDateFormatSetting = this.settingService
-					.getClientDateFormatSetting(userId);
-			final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
-					.getClientDisplayedLanguageSetting(userId);
-			response.setSettingDateFormat(clientDateFormatSetting.getSetting());
-			response.setSettingDisplayedLanguage(clientDisplayedLanguageSetting.getSetting());
-			response.setAttributeNew(user.getAttributes().contains(UserAttribute.IS_NEW));
-			response.setPermissionAdmin(user.getPermissions().contains(UserPermission.ADMIN));
-		}
-
-		return response;
-	}
-
-	@RequestMapping(value = "showDeleteUser/{id}", method = { RequestMethod.GET })
-	@RequiresAuthorization
-	@RequiresPermissionAdmin
-	public ShowDeleteUserResponse showDeleteUser(@PathVariable(value = "id") final Long userId) {
-		final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
-		this.fillAbstractShowUserResponse(new UserID(userId), response);
-		return response;
-	}
-
-	@RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
-	@RequiresAuthorization
-	public void changePassword(@RequestBody final ChangePasswordRequest request) throws NoSuchAlgorithmException {
-		final UserID userId = super.getUserId();
-		final User user = this.userService.getUserById(userId);
-		final String password = request.getPassword();
-		final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-		final String oldPassword = BytesToHexConverter.convert(sha1Md.digest(request.getOldPassword().getBytes()));
-
-		if (!user.getPassword().equals(oldPassword)) {
-			throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
-		}
-
-		if (password != null && !password.trim().isEmpty()) {
-			this.userService.setPassword(userId, password);
-		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);
-		}
-	}
-
-	private void fillAbstractCreateUserResponse(final AbstractCreateUserResponse response) {
-		final List<Group> groups = this.groupService.getAllGroups();
-		final List<GroupTransport> groupTransports = super.mapList(groups, GroupTransport.class);
-
-		response.setGroupTransports(groupTransports);
-	}
-
-	private void fillAbstractUpdateUserResponse(final UserID userId, final AbstractUpdateUserResponse response) {
-		final List<AccessRelation> accessRelations = this.accessRelationService.getAllAccessRelationsById(userId);
-		final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
-				AccessRelationTransport.class);
-
-		response.setAccessRelationTransports(accessRelationTransports);
-		this.fillAbstractCreateUserResponse(response);
-	}
-
-	private void fillAbstractShowUserResponse(final UserID userId, final AbstractShowUserResponse response) {
-		final User user = this.userService.getUserById(userId);
-		if (user != null) {
-			final UserTransport userTransport = super.map(user, UserTransport.class);
-			response.setUserTransport(userTransport);
-
-			this.fillAbstractUpdateUserResponse(user.getId(), response);
-		}
-	}
-
+  private void fillAbstractShowUserResponse(final UserID userId,
+      final AbstractShowUserResponse response) {
+    final User user = this.userService.getUserById(userId);
+    if (user != null) {
+      final UserTransport userTransport = super.map(user, UserTransport.class);
+      response.setUserTransport(userTransport);
+      this.fillAbstractUpdateUserResponse(user.getId(), response);
+    }
+  }
 }

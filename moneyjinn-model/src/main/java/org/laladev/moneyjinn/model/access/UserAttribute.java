@@ -33,6 +33,6 @@ package org.laladev.moneyjinn.model.access;
  *
  */
 public enum UserAttribute {
-	NONE,
-	IS_NEW;
+  NONE,
+  IS_NEW;
 }

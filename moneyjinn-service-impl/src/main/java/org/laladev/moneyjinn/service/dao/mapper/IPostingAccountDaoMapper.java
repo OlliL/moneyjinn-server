@@ -28,26 +28,24 @@ package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.util.LinkedHashSet;
 import java.util.List;
-
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 
 public interface IPostingAccountDaoMapper {
-	public List<PostingAccountData> getAllPostingAccounts();
+  public List<PostingAccountData> getAllPostingAccounts();
 
-	public PostingAccountData getPostingAccountById(Long id);
+  public PostingAccountData getPostingAccountById(Long id);
 
-	public Integer countAllPostingAccounts();
+  public Integer countAllPostingAccounts();
 
-	public LinkedHashSet<Character> getAllPostingAccountInitials();
+  public LinkedHashSet<Character> getAllPostingAccountInitials();
 
-	public List<PostingAccountData> getAllPostingAccountsByInitial(String initial);
+  public List<PostingAccountData> getAllPostingAccountsByInitial(String initial);
 
-	public PostingAccountData getPostingAccountByName(String name);
+  public PostingAccountData getPostingAccountByName(String name);
 
-	public void createPostingAccount(PostingAccountData postingAccountData);
+  public void createPostingAccount(PostingAccountData postingAccountData);
 
-	public void updatePostingAccount(PostingAccountData postingAccountData);
+  public void updatePostingAccount(PostingAccountData postingAccountData);
 
-	public void deletePostingAccount(Long id);
-
+  public void deletePostingAccount(Long id);
 }

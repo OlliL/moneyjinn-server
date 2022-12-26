@@ -1,5 +1,14 @@
+
 package org.laladev.moneyjinn.server.main;
 
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -23,55 +32,43 @@ package org.laladev.moneyjinn.server.main;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
 import java.io.IOException;
-
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 /**
- * This filter buffers the Body of the request to access it in the
- * {@see AuthenticationInterceptor} where it would be normally not be possible.
- * Unfortunately the Interceptor is needed because raised Exceptions here are
- * NOT handled by {@see ErrorResponseExceptionHandler}
+ * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}
+ * where it would be normally not be possible. Unfortunately the Interceptor is needed because
+ * raised Exceptions here are NOT handled by {@see ErrorResponseExceptionHandler}
  *
  * @author olivleh1
  *
  */
-//@Component
-//@Order(Ordered.HIGHEST_PRECEDENCE)
+// @Component
+// @Order(Ordered.HIGHEST_PRECEDENCE)
 public class BufferFilter implements Filter {
-	@Override
-	public void init(final FilterConfig filterConfig) throws ServletException {
-		// noop
-	}
+  @Override
+  public void init(final FilterConfig filterConfig) throws ServletException {
+    // noop
+  }
 
-	@Override
-	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-			throws IOException, ServletException {
-		final ServletRequest req = new MoneyJinnRequestWrapper((HttpServletRequest) request);
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-		((HttpServletResponse) response).setHeader("Access-Control-Max-Age", "3600");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Headers",
-				"Content-Type," + RESTAuthorization.DATE_HEADER_NAME + ", " + RESTAuthorization.AUTH_HEADER_NAME + ", "
-						+ "Authorization");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials", "true");
-		((HttpServletResponse) response).setHeader("Access-Control-Allow-Private-Network", "true");
-		chain.doFilter(req, response);
-	}
+  @Override
+  public void doFilter(final ServletRequest request, final ServletResponse response,
+      final FilterChain chain) throws IOException, ServletException {
+    final ServletRequest req = new MoneyJinnRequestWrapper((HttpServletRequest) request);
+    ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
+    ((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods",
+        "POST, PUT, GET, OPTIONS, DELETE");
+    ((HttpServletResponse) response).setHeader("Access-Control-Max-Age", "3600");
+    ((HttpServletResponse) response).setHeader("Access-Control-Allow-Headers",
+        "Content-Type," + RESTAuthorization.DATE_HEADER_NAME + ", "
+            + RESTAuthorization.AUTH_HEADER_NAME + ", " + "Authorization");
+    ((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials", "true");
+    ((HttpServletResponse) response).setHeader("Access-Control-Allow-Private-Network", "true");
+    chain.doFilter(req, response);
+  }
 
-	@Override
-	public void destroy() {
-		// noop
-	}
-
+  @Override
+  public void destroy() {
+    // noop
+  }
 }

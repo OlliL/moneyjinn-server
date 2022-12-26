@@ -27,16 +27,15 @@ package org.laladev.moneyjinn.model.monthlysettlement;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
 /**
- * The unique ID of a {@link ImportedMonthlySettlement}
+ * The unique ID of a {@link ImportedMonthlySettlement}.
  *
  * @author olivleh1
  *
  */
 public class ImportedMonthlySettlementID extends AbstractEntityID<Long> {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public ImportedMonthlySettlementID(final Long id) {
-		super(id);
-	}
+  public ImportedMonthlySettlementID(final Long id) {
+    super(id);
+  }
 }

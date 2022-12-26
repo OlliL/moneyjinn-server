@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.model.setting;
 
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -12,14 +13,12 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
  *
  */
 public class ClientCurrentlyValidCapitalsourcesSetting extends AbstractSetting<Boolean> {
+  public ClientCurrentlyValidCapitalsourcesSetting(final Boolean setting) {
+    super.setSetting(setting);
+  }
 
-	public ClientCurrentlyValidCapitalsourcesSetting(final Boolean setting) {
-		super.setSetting(setting);
-	}
-
-	@Override
-	public SettingType getType() {
-		return SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES;
-	}
-
+  @Override
+  public SettingType getType() {
+    return SettingType.CLIENT_CURRENTLY_VALID_CAPITALSOURCES;
+  }
 }

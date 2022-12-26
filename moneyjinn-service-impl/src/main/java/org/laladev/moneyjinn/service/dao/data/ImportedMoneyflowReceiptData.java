@@ -29,144 +29,143 @@ package org.laladev.moneyjinn.service.dao.data;
 import java.util.Arrays;
 
 public class ImportedMoneyflowReceiptData {
-	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
-	private byte[] receipt;
-	private String filename;
-	private String mediaType;
+  private Long id;
+  private Long macIdCreator;
+  private Long macIdAccessor;
+  private byte[] receipt;
+  private String filename;
+  private String mediaType;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getMacIdCreator() {
-		return this.macIdCreator;
-	}
+  public final Long getMacIdCreator() {
+    return this.macIdCreator;
+  }
 
-	public final void setMacIdCreator(final Long macIdCreator) {
-		this.macIdCreator = macIdCreator;
-	}
+  public final void setMacIdCreator(final Long macIdCreator) {
+    this.macIdCreator = macIdCreator;
+  }
 
-	public final Long getMacIdAccessor() {
-		return this.macIdAccessor;
-	}
+  public final Long getMacIdAccessor() {
+    return this.macIdAccessor;
+  }
 
-	public final void setMacIdAccessor(final Long macIdAccessor) {
-		this.macIdAccessor = macIdAccessor;
-	}
+  public final void setMacIdAccessor(final Long macIdAccessor) {
+    this.macIdAccessor = macIdAccessor;
+  }
 
-	public final byte[] getReceipt() {
-		return this.receipt;
-	}
+  public final byte[] getReceipt() {
+    return this.receipt;
+  }
 
-	public final void setReceipt(final byte[] receipt) {
-		this.receipt = receipt;
-	}
+  public final void setReceipt(final byte[] receipt) {
+    this.receipt = receipt;
+  }
 
-	public final String getFilename() {
-		return this.filename;
-	}
+  public final String getFilename() {
+    return this.filename;
+  }
 
-	public final void setFilename(final String filename) {
-		this.filename = filename;
-	}
+  public final void setFilename(final String filename) {
+    this.filename = filename;
+  }
 
-	public final String getMediaType() {
-		return this.mediaType;
-	}
+  public final String getMediaType() {
+    return this.mediaType;
+  }
 
-	public final void setMediaType(final String mediaType) {
-		this.mediaType = mediaType;
-	}
+  public final void setMediaType(final String mediaType) {
+    this.mediaType = mediaType;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.filename == null) ? 0 : this.filename.hashCode());
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-		result = prime * result + ((this.macIdAccessor == null) ? 0 : this.macIdAccessor.hashCode());
-		result = prime * result + ((this.macIdCreator == null) ? 0 : this.macIdCreator.hashCode());
-		result = prime * result + ((this.mediaType == null) ? 0 : this.mediaType.hashCode());
-		result = prime * result + Arrays.hashCode(this.receipt);
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.filename == null) ? 0 : this.filename.hashCode());
+    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+    result = prime * result + ((this.macIdAccessor == null) ? 0 : this.macIdAccessor.hashCode());
+    result = prime * result + ((this.macIdCreator == null) ? 0 : this.macIdCreator.hashCode());
+    result = prime * result + ((this.mediaType == null) ? 0 : this.mediaType.hashCode());
+    result = prime * result + Arrays.hashCode(this.receipt);
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ImportedMoneyflowReceiptData other = (ImportedMoneyflowReceiptData) obj;
-		if (this.filename == null) {
-			if (other.filename != null) {
-				return false;
-			}
-		} else if (!this.filename.equals(other.filename)) {
-			return false;
-		}
-		if (this.id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!this.id.equals(other.id)) {
-			return false;
-		}
-		if (this.macIdAccessor == null) {
-			if (other.macIdAccessor != null) {
-				return false;
-			}
-		} else if (!this.macIdAccessor.equals(other.macIdAccessor)) {
-			return false;
-		}
-		if (this.macIdCreator == null) {
-			if (other.macIdCreator != null) {
-				return false;
-			}
-		} else if (!this.macIdCreator.equals(other.macIdCreator)) {
-			return false;
-		}
-		if (this.mediaType == null) {
-			if (other.mediaType != null) {
-				return false;
-			}
-		} else if (!this.mediaType.equals(other.mediaType)) {
-			return false;
-		}
-		if (!Arrays.equals(this.receipt, other.receipt)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ImportedMoneyflowReceiptData other = (ImportedMoneyflowReceiptData) obj;
+    if (this.filename == null) {
+      if (other.filename != null) {
+        return false;
+      }
+    } else if (!this.filename.equals(other.filename)) {
+      return false;
+    }
+    if (this.id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!this.id.equals(other.id)) {
+      return false;
+    }
+    if (this.macIdAccessor == null) {
+      if (other.macIdAccessor != null) {
+        return false;
+      }
+    } else if (!this.macIdAccessor.equals(other.macIdAccessor)) {
+      return false;
+    }
+    if (this.macIdCreator == null) {
+      if (other.macIdCreator != null) {
+        return false;
+      }
+    } else if (!this.macIdCreator.equals(other.macIdCreator)) {
+      return false;
+    }
+    if (this.mediaType == null) {
+      if (other.mediaType != null) {
+        return false;
+      }
+    } else if (!this.mediaType.equals(other.mediaType)) {
+      return false;
+    }
+    if (!Arrays.equals(this.receipt, other.receipt)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ImportedMoneyflowReceiptData [id=");
-		builder.append(this.id);
-		builder.append(", macIdCreator=");
-		builder.append(this.macIdCreator);
-		builder.append(", macIdAccessor=");
-		builder.append(this.macIdAccessor);
-		builder.append(", receipt=");
-		builder.append(Arrays.toString(this.receipt));
-		builder.append(", filename=");
-		builder.append(this.filename);
-		builder.append(", mediaType=");
-		builder.append(this.mediaType);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ImportedMoneyflowReceiptData [id=");
+    builder.append(this.id);
+    builder.append(", macIdCreator=");
+    builder.append(this.macIdCreator);
+    builder.append(", macIdAccessor=");
+    builder.append(this.macIdAccessor);
+    builder.append(", receipt=");
+    builder.append(Arrays.toString(this.receipt));
+    builder.append(", filename=");
+    builder.append(this.filename);
+    builder.append(", mediaType=");
+    builder.append(this.mediaType);
+    builder.append("]");
+    return builder.toString();
+  }
 }

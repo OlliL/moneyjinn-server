@@ -30,95 +30,94 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class PreDefMoneyflowData {
-	private Long id;
-	private Long macId;
-	private BigDecimal amount;
-	private Long mcsCapitalsourceId;
-	private Long mcpContractpartnerId;
-	private String comment;
-	private LocalDate createdate;
-	private boolean onceAMonth;
-	private LocalDate lastUsed;
-	private Long mpaPostingAccountId;
+  private Long id;
+  private Long macId;
+  private BigDecimal amount;
+  private Long mcsCapitalsourceId;
+  private Long mcpContractpartnerId;
+  private String comment;
+  private LocalDate createdate;
+  private boolean onceAMonth;
+  private LocalDate lastUsed;
+  private Long mpaPostingAccountId;
 
-	public final Long getId() {
-		return this.id;
-	}
+  public final Long getId() {
+    return this.id;
+  }
 
-	public final void setId(final Long id) {
-		this.id = id;
-	}
+  public final void setId(final Long id) {
+    this.id = id;
+  }
 
-	public final Long getMacId() {
-		return this.macId;
-	}
+  public final Long getMacId() {
+    return this.macId;
+  }
 
-	public final void setMacId(final Long macId) {
-		this.macId = macId;
-	}
+  public final void setMacId(final Long macId) {
+    this.macId = macId;
+  }
 
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
+  public final BigDecimal getAmount() {
+    return this.amount;
+  }
 
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
-	}
+  public final void setAmount(final BigDecimal amount) {
+    this.amount = amount;
+  }
 
-	public final Long getMcsCapitalsourceId() {
-		return this.mcsCapitalsourceId;
-	}
+  public final Long getMcsCapitalsourceId() {
+    return this.mcsCapitalsourceId;
+  }
 
-	public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
-		this.mcsCapitalsourceId = mcsCapitalsourceId;
-	}
+  public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
+    this.mcsCapitalsourceId = mcsCapitalsourceId;
+  }
 
-	public final Long getMcpContractpartnerId() {
-		return this.mcpContractpartnerId;
-	}
+  public final Long getMcpContractpartnerId() {
+    return this.mcpContractpartnerId;
+  }
 
-	public final void setMcpContractpartnerId(final Long mcpContractpartnerId) {
-		this.mcpContractpartnerId = mcpContractpartnerId;
-	}
+  public final void setMcpContractpartnerId(final Long mcpContractpartnerId) {
+    this.mcpContractpartnerId = mcpContractpartnerId;
+  }
 
-	public final String getComment() {
-		return this.comment;
-	}
+  public final String getComment() {
+    return this.comment;
+  }
 
-	public final void setComment(final String comment) {
-		this.comment = comment;
-	}
+  public final void setComment(final String comment) {
+    this.comment = comment;
+  }
 
-	public final LocalDate getCreatedate() {
-		return this.createdate;
-	}
+  public final LocalDate getCreatedate() {
+    return this.createdate;
+  }
 
-	public final void setCreatedate(final LocalDate createdate) {
-		this.createdate = createdate;
-	}
+  public final void setCreatedate(final LocalDate createdate) {
+    this.createdate = createdate;
+  }
 
-	public final boolean isOnceAMonth() {
-		return this.onceAMonth;
-	}
+  public final boolean isOnceAMonth() {
+    return this.onceAMonth;
+  }
 
-	public final void setOnceAMonth(final boolean onceAMonth) {
-		this.onceAMonth = onceAMonth;
-	}
+  public final void setOnceAMonth(final boolean onceAMonth) {
+    this.onceAMonth = onceAMonth;
+  }
 
-	public final LocalDate getLastUsed() {
-		return this.lastUsed;
-	}
+  public final LocalDate getLastUsed() {
+    return this.lastUsed;
+  }
 
-	public final void setLastUsed(final LocalDate lastUsed) {
-		this.lastUsed = lastUsed;
-	}
+  public final void setLastUsed(final LocalDate lastUsed) {
+    this.lastUsed = lastUsed;
+  }
 
-	public final Long getMpaPostingAccountId() {
-		return this.mpaPostingAccountId;
-	}
+  public final Long getMpaPostingAccountId() {
+    return this.mpaPostingAccountId;
+  }
 
-	public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
-		this.mpaPostingAccountId = mpaPostingAccountId;
-	}
-
+  public final void setMpaPostingAccountId(final Long mpaPostingAccountId) {
+    this.mpaPostingAccountId = mpaPostingAccountId;
+  }
 }

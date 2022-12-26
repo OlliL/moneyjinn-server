@@ -1,7 +1,7 @@
+
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
 import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,105 +17,90 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
+  @Inject
+  private IPreDefMoneyflowService preDefMoneyflowService;
+  private final HttpMethod method = HttpMethod.DELETE;
+  private String userName;
+  private String userPassword;
 
-	@Inject
-	private IPreDefMoneyflowService preDefMoneyflowService;
+  @BeforeEach
+  public void setUp() {
+    this.userName = UserTransportBuilder.USER1_NAME;
+    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+  }
 
-	private final HttpMethod method = HttpMethod.DELETE;
-	private String userName;
-	private String userPassword;
+  @Override
+  protected String getUsername() {
+    return this.userName;
+  }
 
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
+  @Override
+  protected String getPassword() {
+    return this.userPassword;
+  }
 
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
+  @Override
+  protected String getUsecase() {
+    return super.getUsecaseFromTestClassName(this.getClass());
+  }
 
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+  @Test
+  public void test_regularPreDefMoneyflow_SuccessfullNoContent() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
+    PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
+        preDefMoneyflowId);
+    Assertions.assertNotNull(preDefMoneyflow);
+    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID,
+        this.method, true, Object.class);
+    preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+    Assertions.assertNull(preDefMoneyflow);
+  }
 
-	@Override
-	protected String getUsecase() {
-		return super.getUsecaseFromTestClassName(this.getClass());
-	}
+  @Test
+  public void test_nonExistingPreDefMoneyflow_SuccessfullNoContent() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+    final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
+        PreDefMoneyflowTransportBuilder.NON_EXISTING_ID);
+    PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
+        preDefMoneyflowId);
+    Assertions.assertNull(preDefMoneyflow);
+    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID,
+        this.method, true, Object.class);
+    preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+    Assertions.assertNull(preDefMoneyflow);
+  }
 
-	@Test
-	public void test_regularPreDefMoneyflow_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
-				PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
+  @Test
+  public void test_PreDefMoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
+    final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+    final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
+    PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
+        preDefMoneyflowId);
+    Assertions.assertNotNull(preDefMoneyflow);
+    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
+        this.method, true, Object.class);
+    preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+    Assertions.assertNotNull(preDefMoneyflow);
+  }
 
-		PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
+  @Test
+  public void test_AuthorizationRequired_Error() throws Exception {
+    this.userName = null;
+    this.userPassword = null;
+    final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false,
+        ErrorResponse.class);
+    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+  }
 
-		Assertions.assertNotNull(preDefMoneyflow);
-
-		super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID, this.method, true,
-				Object.class);
-
-		preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-
-		Assertions.assertNull(preDefMoneyflow);
-	}
-
-	@Test
-	public void test_nonExistingPreDefMoneyflow_SuccessfullNoContent() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
-				PreDefMoneyflowTransportBuilder.NON_EXISTING_ID);
-
-		PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-
-		Assertions.assertNull(preDefMoneyflow);
-
-		super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID, this.method, true,
-				Object.class);
-
-		preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-
-		Assertions.assertNull(preDefMoneyflow);
-	}
-
-	@Test
-	public void test_PreDefMoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
-		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
-				PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
-
-		PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-
-		Assertions.assertNotNull(preDefMoneyflow);
-
-		super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID, this.method, true,
-				Object.class);
-
-		preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
-
-		Assertions.assertNotNull(preDefMoneyflow);
-	}
-
-	@Test
-	public void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-		final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false, ErrorResponse.class);
-		Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	public void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
-		super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID, this.method, true,
-				Object.class);
-	}
-
+  @Test
+  @Sql("classpath:h2defaults.sql")
+  public void test_emptyDatabase_noException() throws Exception {
+    this.userName = UserTransportBuilder.ADMIN_NAME;
+    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
+        this.method, true, Object.class);
+  }
 }

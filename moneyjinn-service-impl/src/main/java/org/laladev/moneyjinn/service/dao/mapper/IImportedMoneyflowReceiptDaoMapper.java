@@ -27,18 +27,17 @@
 package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 
 public interface IImportedMoneyflowReceiptDaoMapper {
+  void createImportedMoneyflowReceipt(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
 
-	void createImportedMoneyflowReceipt(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
+  void deleteImportedMoneyflowReceiptById(@Param("groupId") Long groupId, @Param("id") Long id);
 
-	void deleteImportedMoneyflowReceiptById(@Param("groupId") Long groupId, @Param("id") Long id);
+  List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(
+      @Param("groupId") Long groupId);
 
-	List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(@Param("groupId") Long groupId);
-
-	ImportedMoneyflowReceiptData getImportedMoneyflowReceiptById(@Param("groupId") Long groupId, @Param("id") Long id);
-
+  ImportedMoneyflowReceiptData getImportedMoneyflowReceiptById(@Param("groupId") Long groupId,
+      @Param("id") Long id);
 }

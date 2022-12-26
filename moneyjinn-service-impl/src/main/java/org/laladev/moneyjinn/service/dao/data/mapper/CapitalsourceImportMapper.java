@@ -31,43 +31,44 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceImportMapper {
-	private static final short NOT_ALLOWED_SHORT = (short) 0;
-	private static final short ALL_ALLOWED_SHORT = (short) 1;
-	private static final short BALANCE_ALLOWED_SHORT = (short) 2;
+  private static final short NOT_ALLOWED_SHORT = (short) 0;
+  private static final short ALL_ALLOWED_SHORT = (short) 1;
+  private static final short BALANCE_ALLOWED_SHORT = (short) 2;
 
-	private CapitalsourceImportMapper() {
+  private CapitalsourceImportMapper() {
+  }
 
-	}
+  public static CapitalsourceImport map(final Short capitalsourceImport) {
+    if (capitalsourceImport != null) {
+      switch (capitalsourceImport) {
+        case NOT_ALLOWED_SHORT:
+          return CapitalsourceImport.NOT_ALLOWED;
+        case ALL_ALLOWED_SHORT:
+          return CapitalsourceImport.ALL_ALLOWED;
+        case BALANCE_ALLOWED_SHORT:
+          return CapitalsourceImport.BALANCE_ALLOWED;
+        default:
+          throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
+              ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 
-	public static CapitalsourceImport map(final Short capitalsourceImport) {
-		if (capitalsourceImport != null) {
-			switch (capitalsourceImport) {
-			case NOT_ALLOWED_SHORT:
-				return CapitalsourceImport.NOT_ALLOWED;
-			case ALL_ALLOWED_SHORT:
-				return CapitalsourceImport.ALL_ALLOWED;
-			case BALANCE_ALLOWED_SHORT:
-				return CapitalsourceImport.BALANCE_ALLOWED;
-			default:
-				throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
-
-	public static Short map(final CapitalsourceImport capitalsourceImport) {
-		if (capitalsourceImport != null) {
-			switch (capitalsourceImport) {
-			case NOT_ALLOWED:
-				return NOT_ALLOWED_SHORT;
-			case ALL_ALLOWED:
-				return ALL_ALLOWED_SHORT;
-			case BALANCE_ALLOWED:
-				return BALANCE_ALLOWED_SHORT;
-			default:
-				throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
-			}
-		}
-		return null;
-	}
+  public static Short map(final CapitalsourceImport capitalsourceImport) {
+    if (capitalsourceImport != null) {
+      switch (capitalsourceImport) {
+        case NOT_ALLOWED:
+          return NOT_ALLOWED_SHORT;
+        case ALL_ALLOWED:
+          return ALL_ALLOWED_SHORT;
+        case BALANCE_ALLOWED:
+          return BALANCE_ALLOWED_SHORT;
+        default:
+          throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
+              ErrorCode.UNKNOWN);
+      }
+    }
+    return null;
+  }
 }

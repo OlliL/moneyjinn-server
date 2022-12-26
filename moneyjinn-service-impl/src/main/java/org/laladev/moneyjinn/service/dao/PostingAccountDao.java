@@ -26,57 +26,53 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-import java.util.Set;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
+import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.mapper.IPostingAccountDaoMapper;
 
 @Named
 public class PostingAccountDao {
+  @Inject
+  private IPostingAccountDaoMapper mapper;
 
-	@Inject
-	IPostingAccountDaoMapper mapper;
+  public List<PostingAccountData> getAllPostingAccounts() {
+    return this.mapper.getAllPostingAccounts();
+  }
 
-	public List<PostingAccountData> getAllPostingAccounts() {
-		return this.mapper.getAllPostingAccounts();
-	}
+  public PostingAccountData getPostingAccountById(final Long id) {
+    return this.mapper.getPostingAccountById(id);
+  }
 
-	public PostingAccountData getPostingAccountById(final Long id) {
-		return this.mapper.getPostingAccountById(id);
-	}
+  public Integer countAllPostingAccounts() {
+    return this.mapper.countAllPostingAccounts();
+  }
 
-	public Integer countAllPostingAccounts() {
-		return this.mapper.countAllPostingAccounts();
-	}
+  public Set<Character> getAllPostingAccountInitials() {
+    return this.mapper.getAllPostingAccountInitials();
+  }
 
-	public Set<Character> getAllPostingAccountInitials() {
-		return this.mapper.getAllPostingAccountInitials();
-	}
+  public List<PostingAccountData> getAllPostingAccountsByInitial(final Character initial) {
+    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+    return this.mapper.getAllPostingAccountsByInitial(initialString);
+  }
 
-	public List<PostingAccountData> getAllPostingAccountsByInitial(final Character initial) {
-		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-		return this.mapper.getAllPostingAccountsByInitial(initialString);
-	}
+  public PostingAccountData getPostingAccountByName(final String name) {
+    return this.mapper.getPostingAccountByName(name);
+  }
 
-	public PostingAccountData getPostingAccountByName(final String name) {
-		return this.mapper.getPostingAccountByName(name);
-	}
+  public Long createPostingAccount(final PostingAccountData postingAccountData) {
+    this.mapper.createPostingAccount(postingAccountData);
+    return postingAccountData.getId();
+  }
 
-	public Long createPostingAccount(final PostingAccountData postingAccountData) {
-		this.mapper.createPostingAccount(postingAccountData);
-		return postingAccountData.getId();
-	}
+  public void updatePostingAccount(final PostingAccountData postingAccountData) {
+    this.mapper.updatePostingAccount(postingAccountData);
+  }
 
-	public void updatePostingAccount(final PostingAccountData postingAccountData) {
-		this.mapper.updatePostingAccount(postingAccountData);
-	}
-
-	public void deletePostingAccount(final Long id) {
-		this.mapper.deletePostingAccount(id);
-	}
-
+  public void deletePostingAccount(final Long id) {
+    this.mapper.deletePostingAccount(id);
+  }
 }

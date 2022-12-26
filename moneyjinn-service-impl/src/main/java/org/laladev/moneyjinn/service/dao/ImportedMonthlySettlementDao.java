@@ -26,26 +26,24 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedMonthlySettlementDaoMapper;
 
 @Named
 public class ImportedMonthlySettlementDao {
-	@Inject
-	IImportedMonthlySettlementDaoMapper mapper;
+  @Inject
+  private IImportedMonthlySettlementDaoMapper mapper;
 
-	public List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(final Short year,
-			final Short month) {
-		return this.mapper.getImportedMonthlySettlementsByMonth(year, month);
-	}
+  public List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(final Short year,
+      final Short month) {
+    return this.mapper.getImportedMonthlySettlementsByMonth(year, month);
+  }
 
-	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlementData importedMonthlySettlementData) {
-		this.mapper.upsertImportedMonthlySettlement(importedMonthlySettlementData);
-	}
-
+  public void upsertImportedMonthlySettlement(
+      final ImportedMonthlySettlementData importedMonthlySettlementData) {
+    this.mapper.upsertImportedMonthlySettlement(importedMonthlySettlementData);
+  }
 }

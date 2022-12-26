@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.Month;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.model.access.User;
@@ -37,49 +36,45 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlementID;
 
 public class ImportedMonthlySettlementTransportMapper
-		implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
+    implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
+  @Override
+  public ImportedMonthlySettlement mapBToA(
+      final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
+    final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
+    if (importedMonthlySettlementTransport.getId() != null) {
+      importedMonthlySettlement
+          .setId(new ImportedMonthlySettlementID(importedMonthlySettlementTransport.getId()));
+    }
+    importedMonthlySettlement.setAmount(importedMonthlySettlementTransport.getAmount());
+    importedMonthlySettlement.setYear(importedMonthlySettlementTransport.getYear());
+    final Short month = importedMonthlySettlementTransport.getMonth();
+    if (importedMonthlySettlementTransport.getMonth() != null) {
+      importedMonthlySettlement.setMonth(Month.of(month));
+    }
+    if (importedMonthlySettlementTransport.getCapitalsourceid() != null) {
+      final Capitalsource capitalsource = new Capitalsource(
+          new CapitalsourceID(importedMonthlySettlementTransport.getCapitalsourceid()));
+      importedMonthlySettlement.setCapitalsource(capitalsource);
+    }
+    importedMonthlySettlement.setExternalId(importedMonthlySettlementTransport.getExternalid());
+    return importedMonthlySettlement;
+  }
 
-	@Override
-	public ImportedMonthlySettlement mapBToA(
-			final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
-		final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
-		if (importedMonthlySettlementTransport.getId() != null) {
-			importedMonthlySettlement
-					.setId(new ImportedMonthlySettlementID(importedMonthlySettlementTransport.getId()));
-		}
-		importedMonthlySettlement.setAmount(importedMonthlySettlementTransport.getAmount());
-		importedMonthlySettlement.setYear(importedMonthlySettlementTransport.getYear());
-		final Short month = importedMonthlySettlementTransport.getMonth();
-		if (importedMonthlySettlementTransport.getMonth() != null) {
-			importedMonthlySettlement.setMonth(Month.of(month));
-		}
-
-		if (importedMonthlySettlementTransport.getCapitalsourceid() != null) {
-			final Capitalsource capitalsource = new Capitalsource(
-					new CapitalsourceID(importedMonthlySettlementTransport.getCapitalsourceid()));
-			importedMonthlySettlement.setCapitalsource(capitalsource);
-		}
-
-		importedMonthlySettlement.setExternalId(importedMonthlySettlementTransport.getExternalid());
-
-		return importedMonthlySettlement;
-	}
-
-	@Override
-	public ImportedMonthlySettlementTransport mapAToB(final ImportedMonthlySettlement importedMonthlySettlement) {
-		final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = new ImportedMonthlySettlementTransport();
-		importedMonthlySettlementTransport.setId(importedMonthlySettlement.getId().getId());
-		importedMonthlySettlementTransport.setAmount(importedMonthlySettlement.getAmount());
-		importedMonthlySettlementTransport.setYear(importedMonthlySettlement.getYear());
-		importedMonthlySettlementTransport.setMonth((short) importedMonthlySettlement.getMonth().getValue());
-		final Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
-		importedMonthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
-		importedMonthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
-		final User user = importedMonthlySettlement.getUser();
-		importedMonthlySettlementTransport.setUserid(user.getId().getId());
-
-		importedMonthlySettlementTransport.setExternalid(importedMonthlySettlement.getExternalId());
-
-		return importedMonthlySettlementTransport;
-	}
+  @Override
+  public ImportedMonthlySettlementTransport mapAToB(
+      final ImportedMonthlySettlement importedMonthlySettlement) {
+    final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = new ImportedMonthlySettlementTransport();
+    importedMonthlySettlementTransport.setId(importedMonthlySettlement.getId().getId());
+    importedMonthlySettlementTransport.setAmount(importedMonthlySettlement.getAmount());
+    importedMonthlySettlementTransport.setYear(importedMonthlySettlement.getYear());
+    importedMonthlySettlementTransport
+        .setMonth((short) importedMonthlySettlement.getMonth().getValue());
+    final Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
+    importedMonthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
+    importedMonthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
+    final User user = importedMonthlySettlement.getUser();
+    importedMonthlySettlementTransport.setUserid(user.getId().getId());
+    importedMonthlySettlementTransport.setExternalid(importedMonthlySettlement.getExternalId());
+    return importedMonthlySettlementTransport;
+  }
 }

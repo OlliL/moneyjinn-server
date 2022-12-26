@@ -30,33 +30,33 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 
-public class MoneyflowSearchParamsDataMapper implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {
+public class MoneyflowSearchParamsDataMapper
+    implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {
+  @Override
+  public MoneyflowSearchParams mapBToA(final MoneyflowSearchParamsData moneyflowSearchParamsData) {
+    throw new UnsupportedOperationException("Mapping not supported!");
+  }
 
-	@Override
-	public MoneyflowSearchParams mapBToA(final MoneyflowSearchParamsData moneyflowSearchParamsData) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
-
-	@Override
-	public MoneyflowSearchParamsData mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
-		final MoneyflowSearchParamsData moneyflowSearchParamsData = new MoneyflowSearchParamsData();
-		moneyflowSearchParamsData.setSearchString(moneyflowSearchParams.getSearchString());
-
-		moneyflowSearchParamsData.setStartDate(moneyflowSearchParams.getStartDate());
-		moneyflowSearchParamsData.setEndDate(moneyflowSearchParams.getEndDate());
-
-		moneyflowSearchParamsData.setFeatureCaseSensitive(moneyflowSearchParams.isFeatureCaseSensitive());
-		moneyflowSearchParamsData.setFeatureEqual(moneyflowSearchParams.isFeatureEqual());
-		moneyflowSearchParamsData.setFeatureOnlyMinusAmounts(moneyflowSearchParams.isFeatureOnlyMinusAmounts());
-		moneyflowSearchParamsData.setFeatureRegexp(moneyflowSearchParams.isFeatureRegexp());
-
-		if (moneyflowSearchParams.getContractpartnerId() != null) {
-			moneyflowSearchParamsData.setContractpartnerId(moneyflowSearchParams.getContractpartnerId().getId());
-		}
-		if (moneyflowSearchParams.getPostingAccountId() != null) {
-			moneyflowSearchParamsData.setPostingAccountId(moneyflowSearchParams.getPostingAccountId().getId());
-		}
-
-		return moneyflowSearchParamsData;
-	}
+  @Override
+  public MoneyflowSearchParamsData mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
+    final MoneyflowSearchParamsData moneyflowSearchParamsData = new MoneyflowSearchParamsData();
+    moneyflowSearchParamsData.setSearchString(moneyflowSearchParams.getSearchString());
+    moneyflowSearchParamsData.setStartDate(moneyflowSearchParams.getStartDate());
+    moneyflowSearchParamsData.setEndDate(moneyflowSearchParams.getEndDate());
+    moneyflowSearchParamsData
+        .setFeatureCaseSensitive(moneyflowSearchParams.isFeatureCaseSensitive());
+    moneyflowSearchParamsData.setFeatureEqual(moneyflowSearchParams.isFeatureEqual());
+    moneyflowSearchParamsData
+        .setFeatureOnlyMinusAmounts(moneyflowSearchParams.isFeatureOnlyMinusAmounts());
+    moneyflowSearchParamsData.setFeatureRegexp(moneyflowSearchParams.isFeatureRegexp());
+    if (moneyflowSearchParams.getContractpartnerId() != null) {
+      moneyflowSearchParamsData
+          .setContractpartnerId(moneyflowSearchParams.getContractpartnerId().getId());
+    }
+    if (moneyflowSearchParams.getPostingAccountId() != null) {
+      moneyflowSearchParamsData
+          .setPostingAccountId(moneyflowSearchParams.getPostingAccountId().getId());
+    }
+    return moneyflowSearchParamsData;
+  }
 }

@@ -35,39 +35,37 @@ import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 
 public class ContractpartnerAccountTransportMapper
-		implements IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
+    implements IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
+  @Override
+  public ContractpartnerAccount mapBToA(
+      final ContractpartnerAccountTransport contractpartnerAccountTransport) {
+    BankAccount bankAccount = null;
+    if (contractpartnerAccountTransport.getAccountNumber() != null
+        && contractpartnerAccountTransport.getBankCode() != null) {
+      bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
+          contractpartnerAccountTransport.getBankCode());
+    }
+    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
+        contractpartnerAccountTransport.getId());
+    Contractpartner contractpartner = null;
+    if (contractpartnerAccountTransport.getContractpartnerid() != null) {
+      contractpartner = new Contractpartner(
+          new ContractpartnerID(contractpartnerAccountTransport.getContractpartnerid()));
+    }
+    return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
+  }
 
-	@Override
-	public ContractpartnerAccount mapBToA(final ContractpartnerAccountTransport contractpartnerAccountTransport) {
-
-		BankAccount bankAccount = null;
-		if (contractpartnerAccountTransport.getAccountNumber() != null
-				&& contractpartnerAccountTransport.getBankCode() != null) {
-			bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
-					contractpartnerAccountTransport.getBankCode());
-		}
-
-		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-				contractpartnerAccountTransport.getId());
-
-		Contractpartner contractpartner = null;
-		if (contractpartnerAccountTransport.getContractpartnerid() != null) {
-			contractpartner = new Contractpartner(
-					new ContractpartnerID(contractpartnerAccountTransport.getContractpartnerid()));
-		}
-
-		return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
-	}
-
-	@Override
-	public ContractpartnerAccountTransport mapAToB(final ContractpartnerAccount contractpartnerAccount) {
-		final ContractpartnerAccountTransport contractpartnerAccountTransport = new ContractpartnerAccountTransport();
-		contractpartnerAccountTransport.setId(contractpartnerAccount.getId().getId());
-		contractpartnerAccountTransport.setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
-		contractpartnerAccountTransport.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
-		contractpartnerAccountTransport
-				.setContractpartnerid(contractpartnerAccount.getContractpartner().getId().getId());
-
-		return contractpartnerAccountTransport;
-	}
+  @Override
+  public ContractpartnerAccountTransport mapAToB(
+      final ContractpartnerAccount contractpartnerAccount) {
+    final ContractpartnerAccountTransport contractpartnerAccountTransport = new ContractpartnerAccountTransport();
+    contractpartnerAccountTransport.setId(contractpartnerAccount.getId().getId());
+    contractpartnerAccountTransport
+        .setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
+    contractpartnerAccountTransport
+        .setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
+    contractpartnerAccountTransport
+        .setContractpartnerid(contractpartnerAccount.getContractpartner().getId().getId());
+    return contractpartnerAccountTransport;
+  }
 }

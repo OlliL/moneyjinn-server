@@ -32,20 +32,20 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 
 public class PostingAccountDataMapper implements IMapper<PostingAccount, PostingAccountData> {
+  @Override
+  public PostingAccount mapBToA(final PostingAccountData postingAccountData) {
+    return new PostingAccount(new PostingAccountID(postingAccountData.getId()),
+        postingAccountData.getName());
+  }
 
-	@Override
-	public PostingAccount mapBToA(final PostingAccountData postingAccountData) {
-		return new PostingAccount(new PostingAccountID(postingAccountData.getId()), postingAccountData.getName());
-	}
-
-	@Override
-	public PostingAccountData mapAToB(final PostingAccount postingAccount) {
-		final PostingAccountData postingAccountData = new PostingAccountData();
-		// might be null for new PostingAccounts
-		if (postingAccount.getId() != null) {
-			postingAccountData.setId(postingAccount.getId().getId());
-		}
-		postingAccountData.setName(postingAccount.getName());
-		return postingAccountData;
-	}
+  @Override
+  public PostingAccountData mapAToB(final PostingAccount postingAccount) {
+    final PostingAccountData postingAccountData = new PostingAccountData();
+    // might be null for new PostingAccounts
+    if (postingAccount.getId() != null) {
+      postingAccountData.setId(postingAccount.getId().getId());
+    }
+    postingAccountData.setName(postingAccount.getName());
+    return postingAccountData;
+  }
 }

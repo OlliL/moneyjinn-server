@@ -36,38 +36,42 @@ import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceiptID;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 
 public class ImportedMoneyflowReceiptDataMapper
-		implements IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
+    implements IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
+  @Override
+  public ImportedMoneyflowReceipt mapBToA(
+      final ImportedMoneyflowReceiptData importedMoneyflowReceiptData) {
+    final ImportedMoneyflowReceipt importedMoneyflowReceipt = new ImportedMoneyflowReceipt();
+    importedMoneyflowReceipt
+        .setId(new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId()));
+    importedMoneyflowReceipt
+        .setUser(new User(new UserID(importedMoneyflowReceiptData.getMacIdCreator())));
+    importedMoneyflowReceipt
+        .setAccess(new Group(new GroupID(importedMoneyflowReceiptData.getMacIdAccessor())));
+    importedMoneyflowReceipt.setReceipt(importedMoneyflowReceiptData.getReceipt());
+    importedMoneyflowReceipt.setFilename(importedMoneyflowReceiptData.getFilename());
+    importedMoneyflowReceipt.setMediaType(importedMoneyflowReceiptData.getMediaType());
+    return importedMoneyflowReceipt;
+  }
 
-	@Override
-	public ImportedMoneyflowReceipt mapBToA(final ImportedMoneyflowReceiptData importedMoneyflowReceiptData) {
-		final ImportedMoneyflowReceipt importedMoneyflowReceipt = new ImportedMoneyflowReceipt();
-		importedMoneyflowReceipt.setId(new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId()));
-		importedMoneyflowReceipt.setUser(new User(new UserID(importedMoneyflowReceiptData.getMacIdCreator())));
-		importedMoneyflowReceipt.setAccess(new Group(new GroupID(importedMoneyflowReceiptData.getMacIdAccessor())));
-		importedMoneyflowReceipt.setReceipt(importedMoneyflowReceiptData.getReceipt());
-		importedMoneyflowReceipt.setFilename(importedMoneyflowReceiptData.getFilename());
-		importedMoneyflowReceipt.setMediaType(importedMoneyflowReceiptData.getMediaType());
-		return importedMoneyflowReceipt;
-	}
-
-	@Override
-	public ImportedMoneyflowReceiptData mapAToB(final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-		final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = new ImportedMoneyflowReceiptData();
-		// might be null for new ImportedMoneyflowReceipts
-		if (importedMoneyflowReceipt.getId() != null) {
-			importedMoneyflowReceiptData.setId(importedMoneyflowReceipt.getId().getId());
-		}
-		if (importedMoneyflowReceipt.getUser() != null) {
-			importedMoneyflowReceiptData.setMacIdCreator(importedMoneyflowReceipt.getUser().getId().getId());
-		}
-		if (importedMoneyflowReceipt.getAccess() != null) {
-			importedMoneyflowReceiptData.setMacIdAccessor(importedMoneyflowReceipt.getAccess().getId().getId());
-		}
-
-		importedMoneyflowReceiptData.setReceipt(importedMoneyflowReceipt.getReceipt());
-		importedMoneyflowReceiptData.setFilename(importedMoneyflowReceipt.getFilename());
-		importedMoneyflowReceiptData.setMediaType(importedMoneyflowReceipt.getMediaType());
-
-		return importedMoneyflowReceiptData;
-	}
+  @Override
+  public ImportedMoneyflowReceiptData mapAToB(
+      final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
+    final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = new ImportedMoneyflowReceiptData();
+    // might be null for new ImportedMoneyflowReceipts
+    if (importedMoneyflowReceipt.getId() != null) {
+      importedMoneyflowReceiptData.setId(importedMoneyflowReceipt.getId().getId());
+    }
+    if (importedMoneyflowReceipt.getUser() != null) {
+      importedMoneyflowReceiptData
+          .setMacIdCreator(importedMoneyflowReceipt.getUser().getId().getId());
+    }
+    if (importedMoneyflowReceipt.getAccess() != null) {
+      importedMoneyflowReceiptData
+          .setMacIdAccessor(importedMoneyflowReceipt.getAccess().getId().getId());
+    }
+    importedMoneyflowReceiptData.setReceipt(importedMoneyflowReceipt.getReceipt());
+    importedMoneyflowReceiptData.setFilename(importedMoneyflowReceipt.getFilename());
+    importedMoneyflowReceiptData.setMediaType(importedMoneyflowReceipt.getMediaType());
+    return importedMoneyflowReceiptData;
+  }
 }

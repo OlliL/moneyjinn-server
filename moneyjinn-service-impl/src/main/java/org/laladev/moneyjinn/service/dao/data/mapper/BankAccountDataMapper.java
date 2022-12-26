@@ -31,19 +31,16 @@ import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 
 public class BankAccountDataMapper implements IMapper<BankAccount, BankAccountData> {
+  @Override
+  public BankAccount mapBToA(final BankAccountData bankAccountData) {
+    return new BankAccount(bankAccountData.getAccountNumber(), bankAccountData.getBankCode());
+  }
 
-	@Override
-	public BankAccount mapBToA(final BankAccountData bankAccountData) {
-		return new BankAccount(bankAccountData.getAccountNumber(), bankAccountData.getBankCode());
-	}
-
-	@Override
-	public BankAccountData mapAToB(final BankAccount bankAccount) {
-		final BankAccountData bankAccountData = new BankAccountData();
-
-		bankAccountData.setAccountNumber(bankAccount.getAccountNumber());
-		bankAccountData.setBankCode(bankAccount.getBankCode());
-
-		return bankAccountData;
-	}
+  @Override
+  public BankAccountData mapAToB(final BankAccount bankAccount) {
+    final BankAccountData bankAccountData = new BankAccountData();
+    bankAccountData.setAccountNumber(bankAccount.getAccountNumber());
+    bankAccountData.setBankCode(bankAccount.getBankCode());
+    return bankAccountData;
+  }
 }

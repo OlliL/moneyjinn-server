@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
-
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
@@ -53,16 +52,17 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface IImportedMoneyflowReceiptService {
+  List<ImportedMoneyflowReceipt> getAllImportedMoneyflowReceipts(UserID userId, GroupID groupId);
 
-	List<ImportedMoneyflowReceipt> getAllImportedMoneyflowReceipts(UserID userId, GroupID groupId);
+  ImportedMoneyflowReceipt getImportedMoneyflowReceiptById(UserID userId, GroupID groupId,
+      ImportedMoneyflowReceiptID importedMoneyflowReceiptId);
 
-	ImportedMoneyflowReceipt getImportedMoneyflowReceiptById(UserID userId, GroupID groupId,
-			ImportedMoneyflowReceiptID importedMoneyflowReceiptId);
+  ImportedMoneyflowReceiptID createImportedMoneyflowReceipt(
+      ImportedMoneyflowReceipt importedMoneyflowReceipt);
 
-	ImportedMoneyflowReceiptID createImportedMoneyflowReceipt(ImportedMoneyflowReceipt importedMoneyflowReceipt);
+  void deleteImportedMoneyflowReceipt(UserID userId, GroupID groupId,
+      ImportedMoneyflowReceiptID importedMoneyflowReceiptId);
 
-	void deleteImportedMoneyflowReceipt(UserID userId, GroupID groupId,
-			ImportedMoneyflowReceiptID importedMoneyflowReceiptId);
-
-	ValidationResult validateImportedMoneyflowReceipt(ImportedMoneyflowReceipt importedMoneyflowReceipt);
+  ValidationResult validateImportedMoneyflowReceipt(
+      ImportedMoneyflowReceipt importedMoneyflowReceipt);
 }

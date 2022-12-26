@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.Month;
-
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 import org.laladev.moneyjinn.model.access.User;
@@ -36,47 +35,46 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlementID;
 
-public class MonthlySettlementTransportMapper implements IMapper<MonthlySettlement, MonthlySettlementTransport> {
+public class MonthlySettlementTransportMapper
+    implements IMapper<MonthlySettlement, MonthlySettlementTransport> {
+  @Override
+  public MonthlySettlement mapBToA(final MonthlySettlementTransport monthlySettlementTransport) {
+    final MonthlySettlement monthlySettlement = new MonthlySettlement();
+    if (monthlySettlementTransport.getId() != null) {
+      monthlySettlement.setId(new MonthlySettlementID(monthlySettlementTransport.getId()));
+    }
+    monthlySettlement.setAmount(monthlySettlementTransport.getAmount());
+    monthlySettlement.setYear(monthlySettlementTransport.getYear());
+    final Short month = monthlySettlementTransport.getMonth();
+    if (monthlySettlementTransport.getMonth() != null) {
+      monthlySettlement.setMonth(Month.of(month));
+    }
+    if (monthlySettlementTransport.getCapitalsourceid() != null) {
+      final Capitalsource capitalsource = new Capitalsource(
+          new CapitalsourceID(monthlySettlementTransport.getCapitalsourceid()));
+      monthlySettlement.setCapitalsource(capitalsource);
+    }
+    return monthlySettlement;
+  }
 
-	@Override
-	public MonthlySettlement mapBToA(final MonthlySettlementTransport monthlySettlementTransport) {
-		final MonthlySettlement monthlySettlement = new MonthlySettlement();
-		if (monthlySettlementTransport.getId() != null) {
-			monthlySettlement.setId(new MonthlySettlementID(monthlySettlementTransport.getId()));
-		}
-		monthlySettlement.setAmount(monthlySettlementTransport.getAmount());
-		monthlySettlement.setYear(monthlySettlementTransport.getYear());
-		final Short month = monthlySettlementTransport.getMonth();
-		if (monthlySettlementTransport.getMonth() != null) {
-			monthlySettlement.setMonth(Month.of(month));
-		}
-
-		if (monthlySettlementTransport.getCapitalsourceid() != null) {
-			final Capitalsource capitalsource = new Capitalsource(
-					new CapitalsourceID(monthlySettlementTransport.getCapitalsourceid()));
-			monthlySettlement.setCapitalsource(capitalsource);
-		}
-
-		return monthlySettlement;
-	}
-
-	@Override
-	public MonthlySettlementTransport mapAToB(final MonthlySettlement monthlySettlement) {
-		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransport();
-		if (monthlySettlement.getId() != null) {
-			monthlySettlementTransport.setId(monthlySettlement.getId().getId());
-		}
-		monthlySettlementTransport.setAmount(monthlySettlement.getAmount());
-		monthlySettlementTransport.setYear(monthlySettlement.getYear());
-		monthlySettlementTransport.setMonth((short) monthlySettlement.getMonth().getValue());
-		final Capitalsource capitalsource = monthlySettlement.getCapitalsource();
-		monthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
-		monthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
-		monthlySettlementTransport.setCapitalsourcetype(CapitalsourceTypeMapper.map(capitalsource.getType()));
-		monthlySettlementTransport.setCapitalsourcegroupuse(capitalsource.isGroupUse() ? (short) 1 : null);
-		final User user = monthlySettlement.getUser();
-		monthlySettlementTransport.setUserid(user.getId().getId());
-
-		return monthlySettlementTransport;
-	}
+  @Override
+  public MonthlySettlementTransport mapAToB(final MonthlySettlement monthlySettlement) {
+    final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransport();
+    if (monthlySettlement.getId() != null) {
+      monthlySettlementTransport.setId(monthlySettlement.getId().getId());
+    }
+    monthlySettlementTransport.setAmount(monthlySettlement.getAmount());
+    monthlySettlementTransport.setYear(monthlySettlement.getYear());
+    monthlySettlementTransport.setMonth((short) monthlySettlement.getMonth().getValue());
+    final Capitalsource capitalsource = monthlySettlement.getCapitalsource();
+    monthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
+    monthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
+    monthlySettlementTransport
+        .setCapitalsourcetype(CapitalsourceTypeMapper.map(capitalsource.getType()));
+    monthlySettlementTransport
+        .setCapitalsourcegroupuse(capitalsource.isGroupUse() ? (short) 1 : null);
+    final User user = monthlySettlement.getUser();
+    monthlySettlementTransport.setUserid(user.getId().getId());
+    return monthlySettlementTransport;
+  }
 }

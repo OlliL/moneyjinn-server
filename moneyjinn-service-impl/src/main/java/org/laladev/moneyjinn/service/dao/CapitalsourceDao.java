@@ -26,102 +26,103 @@
 
 package org.laladev.moneyjinn.service.dao;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper;
 
 @Named
 public class CapitalsourceDao {
+  @Inject
+  private ICapitalsourceDaoMapper mapper;
 
-	@Inject
-	ICapitalsourceDaoMapper mapper;
+  public List<CapitalsourceData> getAllCapitalsources(final Long userId) {
+    return this.mapper.getAllCapitalsources(userId);
+  }
 
-	public List<CapitalsourceData> getAllCapitalsources(final Long userId) {
-		return this.mapper.getAllCapitalsources(userId);
-	}
+  public List<CapitalsourceData> getAllCapitalsourcesByDateRange(final Long userId,
+      final LocalDate validFrom, final LocalDate validTil) {
+    return this.mapper.getAllCapitalsourcesByDateRange(userId, validFrom, validTil);
+  }
 
-	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		return this.mapper.getAllCapitalsourcesByDateRange(userId, validFrom, validTil);
-	}
+  public CapitalsourceData getCapitalsourceById(final Long userId, final Long accessorId,
+      final Long id) {
+    return this.mapper.getCapitalsourceById(userId, accessorId, id);
+  }
 
-	public CapitalsourceData getCapitalsourceById(final Long userId, final Long accessorId, final Long id) {
-		return this.mapper.getCapitalsourceById(userId, accessorId, id);
-	}
+  public Integer countAllCapitalsources(final Long userId) {
+    return this.mapper.countAllCapitalsources(userId);
+  }
 
-	public Integer countAllCapitalsources(final Long userId) {
-		return this.mapper.countAllCapitalsources(userId);
-	}
+  public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
+      final LocalDate validTil) {
+    return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
+  }
 
-	public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
-	}
+  public Set<Character> getAllCapitalsourceInitials(final Long userId) {
+    return this.mapper.getAllCapitalsourceInitials(userId);
+  }
 
-	public Set<Character> getAllCapitalsourceInitials(final Long userId) {
-		return this.mapper.getAllCapitalsourceInitials(userId);
-	}
+  public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId,
+      final LocalDate validFrom, final LocalDate validTil) {
+    return this.mapper.getAllCapitalsourceInitialsByDateRange(userId, validFrom, validTil);
+  }
 
-	public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		return this.mapper.getAllCapitalsourceInitialsByDateRange(userId, validFrom, validTil);
-	}
+  public List<CapitalsourceData> getAllCapitalsourcesByInitial(final Long userId,
+      final Character initial) {
+    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+    return this.mapper.getAllCapitalsourcesByInitial(userId, initialString);
+  }
 
-	public List<CapitalsourceData> getAllCapitalsourcesByInitial(final Long userId, final Character initial) {
-		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-		return this.mapper.getAllCapitalsourcesByInitial(userId, initialString);
-	}
+  public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(final Long userId,
+      final Character initial, final LocalDate validFrom, final LocalDate validTil) {
+    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
+    return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initialString, validFrom,
+        validTil);
+  }
 
-	public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(final Long userId, final Character initial,
-			final LocalDate validFrom, final LocalDate validTil) {
-		final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-		return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initialString, validFrom, validTil);
-	}
+  public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment,
+      final LocalDate date) {
+    return this.mapper.getCapitalsourceByComment(userId, comment, date);
+  }
 
-	public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment, final LocalDate date) {
-		return this.mapper.getCapitalsourceByComment(userId, comment, date);
-	}
+  public Long createCapitalsource(final CapitalsourceData capitalsourceData) {
+    this.mapper.createCapitalsource(capitalsourceData);
+    return capitalsourceData.getId();
+  }
 
-	public Long createCapitalsource(final CapitalsourceData capitalsourceData) {
-		this.mapper.createCapitalsource(capitalsourceData);
-		return capitalsourceData.getId();
-	}
+  public void updateCapitalsource(final CapitalsourceData capitalsourceData) {
+    this.mapper.updateCapitalsource(capitalsourceData);
+  }
 
-	public void updateCapitalsource(final CapitalsourceData capitalsourceData) {
-		this.mapper.updateCapitalsource(capitalsourceData);
-	}
+  public void deleteCapitalsource(final Long userId, final Long accessorId, final Long id) {
+    this.mapper.deleteCapitalsource(userId, accessorId, id);
+  }
 
-	public void deleteCapitalsource(final Long userId, final Long accessorId, final Long id) {
-		this.mapper.deleteCapitalsource(userId, accessorId, id);
-	}
+  public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id,
+      final LocalDate validFrom, final LocalDate validTil) {
+    final Boolean result = this.mapper.checkCapitalsourceInUseOutOfDate(userId, id, validFrom,
+        validTil);
+    if (result == null) {
+      return false;
+    }
+    return result;
+  }
 
-	public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
-			final LocalDate validTil) {
-		final Boolean result = this.mapper.checkCapitalsourceInUseOutOfDate(userId, id, validFrom, validTil);
-		if (result == null) {
-			return false;
-		}
-		return result;
-	}
+  public List<CapitalsourceData> getGroupCapitalsources(final Long userId) {
+    return this.mapper.getGroupCapitalsources(userId);
+  }
 
-	public List<CapitalsourceData> getGroupCapitalsources(final Long userId) {
-		return this.mapper.getGroupCapitalsources(userId);
-	}
+  public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId,
+      final LocalDate validFrom, final LocalDate validTil) {
+    return this.mapper.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
+  }
 
-	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		return this.mapper.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
-	}
-
-	public CapitalsourceData getCapitalsourceByAccount(final String bankCode, final String accountNumber,
-			final LocalDate date) {
-		return this.mapper.getCapitalsourceByAccount(bankCode, accountNumber, date);
-	}
-
+  public CapitalsourceData getCapitalsourceByAccount(final String bankCode,
+      final String accountNumber, final LocalDate date) {
+    return this.mapper.getCapitalsourceByAccount(bankCode, accountNumber, date);
+  }
 }

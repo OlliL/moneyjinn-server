@@ -36,21 +36,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class InterceptorConfiguration implements WebMvcConfigurer {
+  @Bean
+  public MoneyJinnHandlerInterceptor moneyjinnHandlerInterceptor() {
+    return new MoneyJinnHandlerInterceptor();
+  }
 
-	@Bean
-	public MoneyJinnHandlerInterceptor moneyjinnHandlerInterceptor() {
-		return new MoneyJinnHandlerInterceptor();
-	}
+  @Bean
+  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+  public SessionEnvironment sessionEnvironment() {
+    return new SessionEnvironment();
+  }
 
-	@Bean
-	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public SessionEnvironment sessionEnvironment() {
-		return new SessionEnvironment();
-	}
-
-	@Override
-	public void addInterceptors(final InterceptorRegistry registry) {
-		registry.addInterceptor(this.moneyjinnHandlerInterceptor());
-	}
-
+  @Override
+  public void addInterceptors(final InterceptorRegistry registry) {
+    registry.addInterceptor(this.moneyjinnHandlerInterceptor());
+  }
 }

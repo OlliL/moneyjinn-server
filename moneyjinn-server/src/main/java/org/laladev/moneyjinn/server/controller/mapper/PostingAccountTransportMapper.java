@@ -31,24 +31,23 @@ import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 
-public class PostingAccountTransportMapper implements IMapper<PostingAccount, PostingAccountTransport> {
+public class PostingAccountTransportMapper
+    implements IMapper<PostingAccount, PostingAccountTransport> {
+  @Override
+  public PostingAccount mapBToA(final PostingAccountTransport postingAccountTransport) {
+    final PostingAccount postingAccount = new PostingAccount();
+    if (postingAccountTransport.getId() != null) {
+      postingAccount.setId(new PostingAccountID(postingAccountTransport.getId()));
+    }
+    postingAccount.setName(postingAccountTransport.getName());
+    return postingAccount;
+  }
 
-	@Override
-	public PostingAccount mapBToA(final PostingAccountTransport postingAccountTransport) {
-		final PostingAccount postingAccount = new PostingAccount();
-		if (postingAccountTransport.getId() != null) {
-			postingAccount.setId(new PostingAccountID(postingAccountTransport.getId()));
-		}
-		postingAccount.setName(postingAccountTransport.getName());
-		return postingAccount;
-	}
-
-	@Override
-	public PostingAccountTransport mapAToB(final PostingAccount postingAccount) {
-		final PostingAccountTransport postingAccountTransport = new PostingAccountTransport();
-		postingAccountTransport.setId(postingAccount.getId().getId());
-		postingAccountTransport.setName(postingAccount.getName());
-
-		return postingAccountTransport;
-	}
+  @Override
+  public PostingAccountTransport mapAToB(final PostingAccount postingAccount) {
+    final PostingAccountTransport postingAccountTransport = new PostingAccountTransport();
+    postingAccountTransport.setId(postingAccount.getId().getId());
+    postingAccountTransport.setName(postingAccount.getName());
+    return postingAccountTransport;
+  }
 }
