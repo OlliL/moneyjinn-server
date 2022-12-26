@@ -24,7 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.inject.Inject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -87,6 +86,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -188,16 +188,15 @@ public class UserController extends AbstractController {
             this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
       }
     }
+    final UpdateUserResponse response = new UpdateUserResponse();
+    response.setResult(validationResult.isValid());
     if (!validationResult.isValid()) {
       // TODO Rollback
-      final UpdateUserResponse response = new UpdateUserResponse();
       this.fillAbstractUpdateUserResponse(user.getId(), response);
-      response.setResult(validationResult.isValid());
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
     }
-    return null;
+    return response;
   }
 
   @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
@@ -280,23 +279,24 @@ public class UserController extends AbstractController {
           .validateAccessRelation(accessRelation);
       validationResult.mergeValidationResult(validationResultAccess);
     }
+    final CreateUserResponse response = new CreateUserResponse();
+    response.setResult(validationResult.isValid());
     if (!validationResult.isValid()) {
-      final CreateUserResponse response = new CreateUserResponse();
       this.fillAbstractCreateUserResponse(response);
-      response.setResult(validationResult.isValid());
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
-    }
-    final UserID newUserId = this.userService.createUser(user);
-    if (newUserId != null) {
-      this.settingService.initSettings(newUserId);
-      if (accessRelation != null) {
-        accessRelation.setId(newUserId);
-        this.accessRelationService.setAccessRelationForNewUser(accessRelation);
+    } else {
+      final UserID newUserId = this.userService.createUser(user);
+      if (newUserId != null) {
+        response.setUserId(newUserId.getId());
+        this.settingService.initSettings(newUserId);
+        if (accessRelation != null) {
+          accessRelation.setId(newUserId);
+          this.accessRelationService.setAccessRelationForNewUser(accessRelation);
+        }
       }
     }
-    return null;
+    return response;
   }
 
   @RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
