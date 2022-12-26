@@ -27,11 +27,10 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.group.AbstractGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
+import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowDeleteGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowEditGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowGroupListResponse;
@@ -56,6 +55,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -117,21 +118,23 @@ public class GroupController extends AbstractController {
 	@RequestMapping(value = "createGroup", method = { RequestMethod.POST })
 	@RequiresAuthorization
 	@RequiresPermissionAdmin
-	public ValidationResponse createGroup(@RequestBody final CreateGroupRequest request) {
+	public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
 		final Group group = super.map(request.getGroupTransport(), Group.class);
 		group.setId(null);
 
 		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
-		if (!validationResult.isValid()) {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
+		final CreateGroupResponse response = new CreateGroupResponse();
+		response.setResult(validationResult.isValid());
+		if (validationResult.isValid()) {
+			final GroupID groupId = this.groupService.createGroup(group);
+			response.setGroupId(groupId.getId());
+		} else {
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
-		this.groupService.createGroup(group);
-		return null;
+
+		return response;
 	}
 
 	@RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
@@ -142,17 +145,16 @@ public class GroupController extends AbstractController {
 
 		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
 		if (validationResult.isValid()) {
 			this.groupService.updateGroup(group);
 		} else {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
 
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })

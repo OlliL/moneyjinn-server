@@ -8,8 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
+import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
@@ -61,12 +61,12 @@ public class CreateGroupTest extends AbstractControllerTest {
 		validationItems
 				.add(new ValidationItemTransportBuilder().withKey(null).withError(errorCode.getErrorCode()).build());
 
-		final ValidationResponse expected = new ValidationResponse();
+		final CreateGroupResponse expected = new CreateGroupResponse();
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 
-		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-				ValidationResponse.class);
+		final CreateGroupResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateGroupResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 
@@ -98,14 +98,16 @@ public class CreateGroupTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final CreateGroupRequest request = new CreateGroupRequest();
 
 		final GroupTransport transport = new GroupTransportBuilder().forNewGroup().build();
 
 		request.setGroupTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final CreateGroupResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				CreateGroupResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final Group group = this.groupService.getGroupByName(GroupTransportBuilder.NEWGROUP_NAME);
 

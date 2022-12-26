@@ -40,9 +40,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  * </p>
  *
  * <p>
- * GroupService is the Domain Service handling operations around an {@link Group} like getting,
- * creating, updating, deleting. Before a {@link Group} is created or updated, the {@link Group} is
- * validated for correctness.
+ * GroupService is the Domain Service handling operations around an
+ * {@link Group} like getting, creating, updating, deleting. Before a
+ * {@link Group} is created or updated, the {@link Group} is validated for
+ * correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>access</code>.
@@ -56,8 +57,7 @@ public interface IGroupService {
 	/**
 	 * Checks the validity of the given {@link Group}
 	 *
-	 * @param user
-	 *            the {@link Group}
+	 * @param user the {@link Group}
 	 * @return {@link ValidationResult}
 	 */
 	ValidationResult validateGroup(Group group);
@@ -65,14 +65,14 @@ public interface IGroupService {
 	/**
 	 * Returns the {@link Group} for the given {@link GroupID}.
 	 *
-	 * @param groupId
-	 *            the {@link GroupID}
+	 * @param groupId the {@link GroupID}
 	 * @return
 	 */
 	Group getGroupById(GroupID groupId);
 
 	/**
-	 * This Service returns the distinct initials of all groupnames in the database in uppercase.
+	 * This Service returns the distinct initials of all groupnames in the database
+	 * in uppercase.
 	 *
 	 * @return all uppercased initials
 	 */
@@ -93,11 +93,10 @@ public interface IGroupService {
 	List<Group> getAllGroups();
 
 	/**
-	 * This Service returns all existing {@link Group}s which name start with the specified initial
-	 * case-insensitive
+	 * This Service returns all existing {@link Group}s which name start with the
+	 * specified initial case-insensitive
 	 *
-	 * @param initial
-	 *            the first letter of the {@link Group}s name
+	 * @param initial the first letter of the {@link Group}s name
 	 * @return a list of {@link Group}s
 	 */
 	List<Group> getAllGroupsByInitial(Character initial);
@@ -105,42 +104,38 @@ public interface IGroupService {
 	/**
 	 * This Service returns the {@link Group} for the specified name
 	 *
-	 * @param name
-	 *            the Group-Name
+	 * @param name the Group-Name
 	 * @return {@link Group}
 	 */
 	Group getGroupByName(String name);
 
 	/**
-	 * This service creates a {@link Group}. Before the {@link Group} is created it is validated for
-	 * correctness.
+	 * This service creates a {@link Group}. Before the {@link Group} is created it
+	 * is validated for correctness.
 	 *
-	 * @param group
-	 *            the {@link Group} to be created
-	 * @throws BusinessException
-	 *             If the validation of the given {@link Group} failed.
+	 * @param group the {@link Group} to be created
+	 * @throws BusinessException If the validation of the given {@link Group}
+	 *                           failed.
 	 */
-	void createGroup(Group group);
+	GroupID createGroup(Group group);
 
 	/**
-	 * This service changes a {@link Group}. Before the {@link Group} is changed, the new values are
-	 * validated for correctness.
+	 * This service changes a {@link Group}. Before the {@link Group} is changed,
+	 * the new values are validated for correctness.
 	 *
-	 * @param user
-	 *            the new {@link Group} attributes
-	 * @throws BusinessException
-	 *             If the validation of the given {@link Group} failed.
+	 * @param user the new {@link Group} attributes
+	 * @throws BusinessException If the validation of the given {@link Group}
+	 *                           failed.
 	 */
 	void updateGroup(Group group);
 
 	/**
 	 * This service deletes a {@link Group} from the system
 	 *
-	 * @param groupId
-	 *            The {@link GroupID} of the to-be-deleted {@link Group}
-	 * @throws BusinessException
-	 *             If the deletion fails an error is throws. It is always assumed that it fails
-	 *             because of a Foreign Key Constraint Violation on the DB level
+	 * @param groupId The {@link GroupID} of the to-be-deleted {@link Group}
+	 * @throws BusinessException If the deletion fails an error is throws. It is
+	 *                           always assumed that it fails because of a Foreign
+	 *                           Key Constraint Violation on the DB level
 	 */
 	void deleteGroup(GroupID groupId);
 

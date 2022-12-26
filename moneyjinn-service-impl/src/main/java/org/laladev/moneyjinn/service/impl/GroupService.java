@@ -29,9 +29,6 @@ package org.laladev.moneyjinn.service.impl;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -49,6 +46,9 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @EnableCaching
@@ -141,7 +141,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	public void createGroup(final Group group) {
+	public GroupID createGroup(final Group group) {
 		Assert.notNull(group, "group must not be null!");
 		group.setId(null);
 		final ValidationResult validationResult = this.validateGroup(group);
@@ -154,6 +154,7 @@ public class GroupService extends AbstractService implements IGroupService {
 		final GroupData groupData = super.map(group, GroupData.class);
 		final Long groupId = this.groupDao.createGroup(groupData);
 		this.evictGroupCache(new GroupID(groupId));
+		return new GroupID(groupId);
 	}
 
 	@Override

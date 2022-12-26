@@ -3,8 +3,6 @@ package org.laladev.moneyjinn.server.controller.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +20,8 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
+
+import jakarta.inject.Inject;
 
 public class UpdateGroupTest extends AbstractControllerTest {
 
@@ -91,14 +91,16 @@ public class UpdateGroupTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final UpdateGroupRequest request = new UpdateGroupRequest();
 
 		final GroupTransport transport = new GroupTransportBuilder().forGroup1().build();
 		transport.setName("hugo");
 		request.setGroupTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
 
