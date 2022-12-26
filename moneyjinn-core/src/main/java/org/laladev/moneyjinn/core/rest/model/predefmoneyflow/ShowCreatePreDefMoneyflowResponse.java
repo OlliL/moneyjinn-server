@@ -1,7 +1,7 @@
+
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
-
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -30,5 +30,4 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showCreatePreDefMoneyflowResponse")
 public class ShowCreatePreDefMoneyflowResponse extends AbstractCreatePreDefMoneyflowResponse {
-
 }

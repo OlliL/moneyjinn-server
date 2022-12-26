@@ -27,86 +27,85 @@
 package org.laladev.moneyjinn.core.rest.model.report;
 
 import java.util.List;
-
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showTrendsGraphResponse")
 public class ShowTrendsGraphResponse extends AbstractResponse {
-	@XmlElement(name = "trendsSettledTransport")
-	private List<TrendsSettledTransport> trendsSettledTransports;
-	@XmlElement(name = "trendsCalculatedTransport")
-	private List<TrendsCalculatedTransport> trendsCalculatedTransports;
+  @XmlElement(name = "trendsSettledTransport")
+  private List<TrendsSettledTransport> trendsSettledTransports;
+  @XmlElement(name = "trendsCalculatedTransport")
+  private List<TrendsCalculatedTransport> trendsCalculatedTransports;
 
-	public final List<TrendsSettledTransport> getTrendsSettledTransports() {
-		return this.trendsSettledTransports;
-	}
+  public final List<TrendsSettledTransport> getTrendsSettledTransports() {
+    return this.trendsSettledTransports;
+  }
 
-	public final void setTrendsSettledTransports(final List<TrendsSettledTransport> trendsSettledTransports) {
-		this.trendsSettledTransports = trendsSettledTransports;
-	}
+  public final void setTrendsSettledTransports(
+      final List<TrendsSettledTransport> trendsSettledTransports) {
+    this.trendsSettledTransports = trendsSettledTransports;
+  }
 
-	public final List<TrendsCalculatedTransport> getTrendsCalculatedTransports() {
-		return this.trendsCalculatedTransports;
-	}
+  public final List<TrendsCalculatedTransport> getTrendsCalculatedTransports() {
+    return this.trendsCalculatedTransports;
+  }
 
-	public final void setTrendsCalculatedTransports(final List<TrendsCalculatedTransport> trendsCalculatedTransports) {
-		this.trendsCalculatedTransports = trendsCalculatedTransports;
-	}
+  public final void setTrendsCalculatedTransports(
+      final List<TrendsCalculatedTransport> trendsCalculatedTransports) {
+    this.trendsCalculatedTransports = trendsCalculatedTransports;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.trendsCalculatedTransports == null) ? 0 : this.trendsCalculatedTransports.hashCode());
-		result = prime * result
-				+ ((this.trendsSettledTransports == null) ? 0 : this.trendsSettledTransports.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.trendsCalculatedTransports == null) ? 0
+        : this.trendsCalculatedTransports.hashCode());
+    result = prime * result
+        + ((this.trendsSettledTransports == null) ? 0 : this.trendsSettledTransports.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ShowTrendsGraphResponse other = (ShowTrendsGraphResponse) obj;
-		if (this.trendsCalculatedTransports == null) {
-			if (other.trendsCalculatedTransports != null) {
-				return false;
-			}
-		} else if (!this.trendsCalculatedTransports.equals(other.trendsCalculatedTransports)) {
-			return false;
-		}
-		if (this.trendsSettledTransports == null) {
-			if (other.trendsSettledTransports != null) {
-				return false;
-			}
-		} else if (!this.trendsSettledTransports.equals(other.trendsSettledTransports)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowTrendsGraphResponse other = (ShowTrendsGraphResponse) obj;
+    if (this.trendsCalculatedTransports == null) {
+      if (other.trendsCalculatedTransports != null) {
+        return false;
+      }
+    } else if (!this.trendsCalculatedTransports.equals(other.trendsCalculatedTransports)) {
+      return false;
+    }
+    if (this.trendsSettledTransports == null) {
+      if (other.trendsSettledTransports != null) {
+        return false;
+      }
+    } else if (!this.trendsSettledTransports.equals(other.trendsSettledTransports)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowTrendsGraphResponse [trendsSettledTransports=");
-		builder.append(this.trendsSettledTransports);
-		builder.append(", trendsCalculatedTransports=");
-		builder.append(this.trendsCalculatedTransports);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ShowTrendsGraphResponse [trendsSettledTransports=");
+    builder.append(this.trendsSettledTransports);
+    builder.append(", trendsCalculatedTransports=");
+    builder.append(this.trendsCalculatedTransports);
+    builder.append("]");
+    return builder.toString();
+  }
 }

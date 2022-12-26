@@ -1,8 +1,8 @@
+
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -30,54 +30,54 @@ import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 //
 
 public abstract class AbstractPreDefMoneyflowRequest extends AbstractRequest {
-	private PreDefMoneyflowTransport preDefMoneyflowTransport;
+  private PreDefMoneyflowTransport preDefMoneyflowTransport;
 
-	public final PreDefMoneyflowTransport getPreDefMoneyflowTransport() {
-		return this.preDefMoneyflowTransport;
-	}
+  public final PreDefMoneyflowTransport getPreDefMoneyflowTransport() {
+    return this.preDefMoneyflowTransport;
+  }
 
-	public final void setPreDefMoneyflowTransport(final PreDefMoneyflowTransport preDefMoneyflowTransport) {
-		this.preDefMoneyflowTransport = preDefMoneyflowTransport;
-	}
+  public final void setPreDefMoneyflowTransport(
+      final PreDefMoneyflowTransport preDefMoneyflowTransport) {
+    this.preDefMoneyflowTransport = preDefMoneyflowTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.preDefMoneyflowTransport == null) ? 0 : this.preDefMoneyflowTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result
+        + ((this.preDefMoneyflowTransport == null) ? 0 : this.preDefMoneyflowTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final AbstractPreDefMoneyflowRequest other = (AbstractPreDefMoneyflowRequest) obj;
-		if (this.preDefMoneyflowTransport == null) {
-			if (other.preDefMoneyflowTransport != null) {
-				return false;
-			}
-		} else if (!this.preDefMoneyflowTransport.equals(other.preDefMoneyflowTransport)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final AbstractPreDefMoneyflowRequest other = (AbstractPreDefMoneyflowRequest) obj;
+    if (this.preDefMoneyflowTransport == null) {
+      if (other.preDefMoneyflowTransport != null) {
+        return false;
+      }
+    } else if (!this.preDefMoneyflowTransport.equals(other.preDefMoneyflowTransport)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("AbstractPreDefMoneyflowRequest [preDefMoneyflowTransport=");
-		builder.append(this.preDefMoneyflowTransport);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("AbstractPreDefMoneyflowRequest [preDefMoneyflowTransport=");
+    builder.append(this.preDefMoneyflowTransport);
+    builder.append("]");
+    return builder.toString();
+  }
 }

@@ -25,54 +25,54 @@
 //
 // $Id: CreateImportedBalanceRequest.java,v 1.1 2015/08/15 18:25:50 olivleh1 Exp $
 //
+
 package org.laladev.moneyjinn.core.rest.model.importedbalance;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createImportedBalanceRequest")
 public class CreateImportedBalanceRequest extends AbstractRequest {
-	private ImportedBalanceTransport importedBalanceTransport;
+  private ImportedBalanceTransport importedBalanceTransport;
 
-	public final ImportedBalanceTransport getImportedBalanceTransport() {
-		return this.importedBalanceTransport;
-	}
+  public final ImportedBalanceTransport getImportedBalanceTransport() {
+    return this.importedBalanceTransport;
+  }
 
-	public final void setImportedBalanceTransport(final ImportedBalanceTransport importedBalanceTransport) {
-		this.importedBalanceTransport = importedBalanceTransport;
-	}
+  public final void setImportedBalanceTransport(
+      final ImportedBalanceTransport importedBalanceTransport) {
+    this.importedBalanceTransport = importedBalanceTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.importedBalanceTransport == null) ? 0 : this.importedBalanceTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result
+        + ((this.importedBalanceTransport == null) ? 0 : this.importedBalanceTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreateImportedBalanceRequest other = (CreateImportedBalanceRequest) obj;
-		if (this.importedBalanceTransport == null) {
-			if (other.importedBalanceTransport != null) {
-				return false;
-			}
-		} else if (!this.importedBalanceTransport.equals(other.importedBalanceTransport)) {
-			return false;
-		}
-		return true;
-	}
-
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreateImportedBalanceRequest other = (CreateImportedBalanceRequest) obj;
+    if (this.importedBalanceTransport == null) {
+      if (other.importedBalanceTransport != null) {
+        return false;
+      }
+    } else if (!this.importedBalanceTransport.equals(other.importedBalanceTransport)) {
+      return false;
+    }
+    return true;
+  }
 }

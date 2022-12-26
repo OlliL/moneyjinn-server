@@ -29,91 +29,90 @@ package org.laladev.moneyjinn.core.rest.model.report.transport;
 import java.math.BigDecimal;
 
 public class AbstractTrendsTransport {
-	private Short year;
-	private Short month;
-	private BigDecimal amount;
+  private Short year;
+  private Short month;
+  private BigDecimal amount;
 
-	public final Short getYear() {
-		return this.year;
-	}
+  public final Short getYear() {
+    return this.year;
+  }
 
-	public final void setYear(final Short year) {
-		this.year = year;
-	}
+  public final void setYear(final Short year) {
+    this.year = year;
+  }
 
-	public final Short getMonth() {
-		return this.month;
-	}
+  public final Short getMonth() {
+    return this.month;
+  }
 
-	public final void setMonth(final Short month) {
-		this.month = month;
-	}
+  public final void setMonth(final Short month) {
+    this.month = month;
+  }
 
-	public final BigDecimal getAmount() {
-		return this.amount;
-	}
+  public final BigDecimal getAmount() {
+    return this.amount;
+  }
 
-	public final void setAmount(final BigDecimal amount) {
-		this.amount = amount;
-	}
+  public final void setAmount(final BigDecimal amount) {
+    this.amount = amount;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-		result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
-		result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+    result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
+    result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final AbstractTrendsTransport other = (AbstractTrendsTransport) obj;
-		if (this.amount == null) {
-			if (other.amount != null) {
-				return false;
-			}
-		} else if (!this.amount.equals(other.amount)) {
-			return false;
-		}
-		if (this.month == null) {
-			if (other.month != null) {
-				return false;
-			}
-		} else if (!this.month.equals(other.month)) {
-			return false;
-		}
-		if (this.year == null) {
-			if (other.year != null) {
-				return false;
-			}
-		} else if (!this.year.equals(other.year)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final AbstractTrendsTransport other = (AbstractTrendsTransport) obj;
+    if (this.amount == null) {
+      if (other.amount != null) {
+        return false;
+      }
+    } else if (!this.amount.equals(other.amount)) {
+      return false;
+    }
+    if (this.month == null) {
+      if (other.month != null) {
+        return false;
+      }
+    } else if (!this.month.equals(other.month)) {
+      return false;
+    }
+    if (this.year == null) {
+      if (other.year != null) {
+        return false;
+      }
+    } else if (!this.year.equals(other.year)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("AbstractTrendsTransport [year=");
-		builder.append(this.year);
-		builder.append(", month=");
-		builder.append(this.month);
-		builder.append(", amount=");
-		builder.append(this.amount);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("AbstractTrendsTransport [year=");
+    builder.append(this.year);
+    builder.append(", month=");
+    builder.append(this.month);
+    builder.append(", amount=");
+    builder.append(this.amount);
+    builder.append("]");
+    return builder.toString();
+  }
 }

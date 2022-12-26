@@ -27,23 +27,21 @@
 package org.laladev.moneyjinn.core.rest.model.etf;
 
 import java.util.List;
-
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
-
 @XmlRootElement(name = "listEtfOverviewResponse")
 public class ListEtfOverviewResponse extends AbstractResponse {
-	@XmlElement(name = "etfSummaryTransport")
-	private List<EtfSummaryTransport> etfSummaryTransports;
+  @XmlElement(name = "etfSummaryTransport")
+  private List<EtfSummaryTransport> etfSummaryTransports;
 
-	public final List<EtfSummaryTransport> getEtfSummaryTransports() {
-		return this.etfSummaryTransports;
-	}
+  public final List<EtfSummaryTransport> getEtfSummaryTransports() {
+    return this.etfSummaryTransports;
+  }
 
-	public final void setEtfSummaryTransports(final List<EtfSummaryTransport> etfSummaryTransports) {
-		this.etfSummaryTransports = etfSummaryTransports;
-	}
+  public final void setEtfSummaryTransports(final List<EtfSummaryTransport> etfSummaryTransports) {
+    this.etfSummaryTransports = etfSummaryTransports;
+  }
 }

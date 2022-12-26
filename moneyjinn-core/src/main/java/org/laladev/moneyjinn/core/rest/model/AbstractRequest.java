@@ -25,8 +25,8 @@
 //
 // $Id: AbstractRequest.java,v 1.2 2015/02/13 00:04:05 olivleh1 Exp $
 //
+
 package org.laladev.moneyjinn.core.rest.model;
 
 public class AbstractRequest {
-
 }

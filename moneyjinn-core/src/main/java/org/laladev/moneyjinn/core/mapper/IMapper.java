@@ -1,7 +1,8 @@
+
 package org.laladev.moneyjinn.core.mapper;
 
 public interface IMapper<A, B> {
-	A mapBToA(B b);
+  A mapBToA(B b);
 
-	B mapAToB(A a);
+  B mapAToB(A a);
 }

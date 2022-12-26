@@ -27,5 +27,4 @@
 package org.laladev.moneyjinn.core.rest.model.report.transport;
 
 public class TrendsSettledTransport extends AbstractTrendsTransport {
-
 }

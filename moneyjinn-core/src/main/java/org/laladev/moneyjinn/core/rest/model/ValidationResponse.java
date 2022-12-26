@@ -1,10 +1,7 @@
+
 package org.laladev.moneyjinn.core.rest.model;
 
 import java.util.List;
-
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-
 //
 // Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -30,78 +27,80 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "validationResponse")
 public class ValidationResponse extends AbstractResponse {
-	private Boolean result;
-	@XmlElement(name = "validationItemTransport")
-	private List<ValidationItemTransport> validationItemTransports;
+  private Boolean result;
+  @XmlElement(name = "validationItemTransport")
+  private List<ValidationItemTransport> validationItemTransports;
 
-	public final Boolean getResult() {
-		return this.result;
-	}
+  public final Boolean getResult() {
+    return this.result;
+  }
 
-	public final void setResult(final Boolean result) {
-		this.result = result;
-	}
+  public final void setResult(final Boolean result) {
+    this.result = result;
+  }
 
-	public final List<ValidationItemTransport> getValidationItemTransports() {
-		return this.validationItemTransports;
-	}
+  public final List<ValidationItemTransport> getValidationItemTransports() {
+    return this.validationItemTransports;
+  }
 
-	public final void setValidationItemTransports(final List<ValidationItemTransport> validationItemTransports) {
-		this.validationItemTransports = validationItemTransports;
-	}
+  public final void setValidationItemTransports(
+      final List<ValidationItemTransport> validationItemTransports) {
+    this.validationItemTransports = validationItemTransports;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int res = super.hashCode();
-		res = prime * res + ((this.result == null) ? 0 : this.result.hashCode());
-		res = prime * res + ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
-		return res;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int res = super.hashCode();
+    res = prime * res + ((this.result == null) ? 0 : this.result.hashCode());
+    res = prime * res
+        + ((this.validationItemTransports == null) ? 0 : this.validationItemTransports.hashCode());
+    return res;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ValidationResponse other = (ValidationResponse) obj;
-		if (this.result == null) {
-			if (other.result != null) {
-				return false;
-			}
-		} else if (!this.result.equals(other.result)) {
-			return false;
-		}
-		if (this.validationItemTransports == null) {
-			if (other.validationItemTransports != null) {
-				return false;
-			}
-		} else if (!this.validationItemTransports.equals(other.validationItemTransports)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ValidationResponse other = (ValidationResponse) obj;
+    if (this.result == null) {
+      if (other.result != null) {
+        return false;
+      }
+    } else if (!this.result.equals(other.result)) {
+      return false;
+    }
+    if (this.validationItemTransports == null) {
+      if (other.validationItemTransports != null) {
+        return false;
+      }
+    } else if (!this.validationItemTransports.equals(other.validationItemTransports)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ValidationResponse [result=");
-		builder.append(this.result);
-		builder.append(", validationItemTransports=");
-		builder.append(this.validationItemTransports);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ValidationResponse [result=");
+    builder.append(this.result);
+    builder.append(", validationItemTransports=");
+    builder.append(this.validationItemTransports);
+    builder.append("]");
+    return builder.toString();
+  }
 }

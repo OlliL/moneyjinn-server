@@ -23,59 +23,60 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
+
 package org.laladev.moneyjinn.core.rest.model.etf;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 
 public abstract class AbstractEtfFlowRequest extends AbstractRequest {
-	private EtfFlowTransport etfFlowTransport;
+  private EtfFlowTransport etfFlowTransport;
 
-	public final EtfFlowTransport getEtfFlowTransport() {
-		return this.etfFlowTransport;
-	}
+  public final EtfFlowTransport getEtfFlowTransport() {
+    return this.etfFlowTransport;
+  }
 
-	public final void setEtfFlowTransport(final EtfFlowTransport etfFlowTransport) {
-		this.etfFlowTransport = etfFlowTransport;
-	}
+  public final void setEtfFlowTransport(final EtfFlowTransport etfFlowTransport) {
+    this.etfFlowTransport = etfFlowTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.etfFlowTransport == null) ? 0 : this.etfFlowTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result
+        + ((this.etfFlowTransport == null) ? 0 : this.etfFlowTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final AbstractEtfFlowRequest other = (AbstractEtfFlowRequest) obj;
-		if (this.etfFlowTransport == null) {
-			if (other.etfFlowTransport != null) {
-				return false;
-			}
-		} else if (!this.etfFlowTransport.equals(other.etfFlowTransport)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final AbstractEtfFlowRequest other = (AbstractEtfFlowRequest) obj;
+    if (this.etfFlowTransport == null) {
+      if (other.etfFlowTransport != null) {
+        return false;
+      }
+    } else if (!this.etfFlowTransport.equals(other.etfFlowTransport)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("AbstractEtfFlowRequest [etfFlowTransport=");
-		builder.append(this.etfFlowTransport);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("AbstractEtfFlowRequest [etfFlowTransport=");
+    builder.append(this.etfFlowTransport);
+    builder.append("]");
+    return builder.toString();
+  }
 }

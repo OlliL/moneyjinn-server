@@ -1,5 +1,7 @@
+
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -25,61 +27,57 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-
 import jakarta.xml.bind.annotation.XmlRootElement;
-
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
 @XmlRootElement(name = "createContractpartnerAccountResponse")
 public class CreateContractpartnerAccountResponse extends ValidationResponse {
-	private Long contractpartnerAccountId;
+  private Long contractpartnerAccountId;
 
-	public final Long getcontractpartnerAccountId() {
-		return this.contractpartnerAccountId;
-	}
+  public final Long getcontractpartnerAccountId() {
+    return this.contractpartnerAccountId;
+  }
 
-	public final void setcontractpartnerAccountId(final Long contractpartnerAccountId) {
-		this.contractpartnerAccountId = contractpartnerAccountId;
-	}
+  public final void setcontractpartnerAccountId(final Long contractpartnerAccountId) {
+    this.contractpartnerAccountId = contractpartnerAccountId;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((this.contractpartnerAccountId == null) ? 0 : this.contractpartnerAccountId.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((this.contractpartnerAccountId == null) ? 0 : this.contractpartnerAccountId.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreateContractpartnerAccountResponse other = (CreateContractpartnerAccountResponse) obj;
-		if (this.contractpartnerAccountId == null) {
-			if (other.contractpartnerAccountId != null) {
-				return false;
-			}
-		} else if (!this.contractpartnerAccountId.equals(other.contractpartnerAccountId)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreateContractpartnerAccountResponse other = (CreateContractpartnerAccountResponse) obj;
+    if (this.contractpartnerAccountId == null) {
+      if (other.contractpartnerAccountId != null) {
+        return false;
+      }
+    } else if (!this.contractpartnerAccountId.equals(other.contractpartnerAccountId)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CreateContractpartnerAccountResponse [contractpartnerAccountId=");
-		builder.append(this.contractpartnerAccountId);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CreateContractpartnerAccountResponse [contractpartnerAccountId=");
+    builder.append(this.contractpartnerAccountId);
+    builder.append("]");
+    return builder.toString();
+  }
 }

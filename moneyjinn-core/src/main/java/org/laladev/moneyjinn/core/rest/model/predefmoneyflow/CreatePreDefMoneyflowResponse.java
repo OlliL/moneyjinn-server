@@ -1,11 +1,9 @@
+
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import java.util.Objects;
-
-import jakarta.xml.bind.annotation.XmlRootElement;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-
+import jakarta.xml.bind.annotation.XmlRootElement;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -34,42 +32,41 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
 @XmlRootElement(name = "createPreDefMoneyflowResponse")
 public class CreatePreDefMoneyflowResponse extends ValidationResponse {
-	private Long preDefMoneyflowId;
+  private Long preDefMoneyflowId;
 
-	public Long getPreDefMoneyflowId() {
-		return this.preDefMoneyflowId;
-	}
+  public Long getPreDefMoneyflowId() {
+    return this.preDefMoneyflowId;
+  }
 
-	public void setPreDefMoneyflowId(final Long preDefMoneyflowId) {
-		this.preDefMoneyflowId = preDefMoneyflowId;
-	}
+  public void setPreDefMoneyflowId(final Long preDefMoneyflowId) {
+    this.preDefMoneyflowId = preDefMoneyflowId;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(this.preDefMoneyflowId);
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + Objects.hash(this.preDefMoneyflowId);
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreatePreDefMoneyflowResponse other = (CreatePreDefMoneyflowResponse) obj;
-		return Objects.equals(this.preDefMoneyflowId, other.preDefMoneyflowId);
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreatePreDefMoneyflowResponse other = (CreatePreDefMoneyflowResponse) obj;
+    return Objects.equals(this.preDefMoneyflowId, other.preDefMoneyflowId);
+  }
 
-	@Override
-	public String toString() {
-		return "CreatePreDefMoneyflowResponse [preDefMoneyflowId=" + this.preDefMoneyflowId + "]";
-	}
-
+  @Override
+  public String toString() {
+    return "CreatePreDefMoneyflowResponse [preDefMoneyflowId=" + this.preDefMoneyflowId + "]";
+  }
 }

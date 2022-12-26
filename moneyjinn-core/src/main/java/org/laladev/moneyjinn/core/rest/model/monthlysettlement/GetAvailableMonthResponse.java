@@ -28,73 +28,72 @@ package org.laladev.moneyjinn.core.rest.model.monthlysettlement;
 
 import java.util.List;
 import java.util.Objects;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "getAvailableMonthResponse")
 public class GetAvailableMonthResponse {
-	private Short year;
-	private Short month;
-	private List<Short> allYears;
-	private List<Short> allMonth;
+  private Short year;
+  private Short month;
+  private List<Short> allYears;
+  private List<Short> allMonth;
 
-	public Short getYear() {
-		return this.year;
-	}
+  public Short getYear() {
+    return this.year;
+  }
 
-	public void setYear(final Short year) {
-		this.year = year;
-	}
+  public void setYear(final Short year) {
+    this.year = year;
+  }
 
-	public Short getMonth() {
-		return this.month;
-	}
+  public Short getMonth() {
+    return this.month;
+  }
 
-	public void setMonth(final Short month) {
-		this.month = month;
-	}
+  public void setMonth(final Short month) {
+    this.month = month;
+  }
 
-	public List<Short> getAllYears() {
-		return this.allYears;
-	}
+  public List<Short> getAllYears() {
+    return this.allYears;
+  }
 
-	public void setAllYears(final List<Short> allYears) {
-		this.allYears = allYears;
-	}
+  public void setAllYears(final List<Short> allYears) {
+    this.allYears = allYears;
+  }
 
-	public List<Short> getAllMonth() {
-		return this.allMonth;
-	}
+  public List<Short> getAllMonth() {
+    return this.allMonth;
+  }
 
-	public void setAllMonth(final List<Short> allMonth) {
-		this.allMonth = allMonth;
-	}
+  public void setAllMonth(final List<Short> allMonth) {
+    this.allMonth = allMonth;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.allMonth, this.allYears, this.month, this.year);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.allMonth, this.allYears, this.month, this.year);
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final GetAvailableMonthResponse other = (GetAvailableMonthResponse) obj;
-		return Objects.equals(this.allMonth, other.allMonth) && Objects.equals(this.allYears, other.allYears)
-				&& Objects.equals(this.month, other.month) && Objects.equals(this.year, other.year);
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final GetAvailableMonthResponse other = (GetAvailableMonthResponse) obj;
+    return Objects.equals(this.allMonth, other.allMonth)
+        && Objects.equals(this.allYears, other.allYears) && Objects.equals(this.month, other.month)
+        && Objects.equals(this.year, other.year);
+  }
 
-	@Override
-	public String toString() {
-		return "GetAvailableMonthResponse [year=" + this.year + ", month=" + this.month + ", allYears=" + this.allYears
-				+ ", allMonth=" + this.allMonth + "]";
-	}
-
+  @Override
+  public String toString() {
+    return "GetAvailableMonthResponse [year=" + this.year + ", month=" + this.month + ", allYears="
+        + this.allYears + ", allMonth=" + this.allMonth + "]";
+  }
 }

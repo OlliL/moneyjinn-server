@@ -27,63 +27,60 @@
 package org.laladev.moneyjinn.core.rest.model.etf;
 
 import java.util.List;
-
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
-
 @XmlRootElement(name = "showCreateEtfFlowResponse")
 public class ShowCreateEtfFlowResponse extends AbstractResponse {
-	@XmlElement(name = "etfTransport")
-	private List<EtfTransport> etfTransports;
+  @XmlElement(name = "etfTransport")
+  private List<EtfTransport> etfTransports;
 
-	public final List<EtfTransport> getEtfTransports() {
-		return this.etfTransports;
-	}
+  public final List<EtfTransport> getEtfTransports() {
+    return this.etfTransports;
+  }
 
-	public final void setEtfTransports(final List<EtfTransport> etfTransports) {
-		this.etfTransports = etfTransports;
-	}
+  public final void setEtfTransports(final List<EtfTransport> etfTransports) {
+    this.etfTransports = etfTransports;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.etfTransports == null) ? 0 : this.etfTransports.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.etfTransports == null) ? 0 : this.etfTransports.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ShowCreateEtfFlowResponse other = (ShowCreateEtfFlowResponse) obj;
-		if (this.etfTransports == null) {
-			if (other.etfTransports != null) {
-				return false;
-			}
-		} else if (!this.etfTransports.equals(other.etfTransports)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowCreateEtfFlowResponse other = (ShowCreateEtfFlowResponse) obj;
+    if (this.etfTransports == null) {
+      if (other.etfTransports != null) {
+        return false;
+      }
+    } else if (!this.etfTransports.equals(other.etfTransports)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowCreateEtfFlowResponse [etfTransports=");
-		builder.append(this.etfTransports);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ShowCreateEtfFlowResponse [etfTransports=");
+    builder.append(this.etfTransports);
+    builder.append("]");
+    return builder.toString();
+  }
 }

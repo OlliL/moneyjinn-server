@@ -26,96 +26,98 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import jakarta.xml.bind.annotation.XmlElement;
+import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-
-import java.util.List;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractEditMoneyflowResponse extends ValidationResponse {
-	@XmlElement(name = "capitalsourceTransport")
-	private List<CapitalsourceTransport> capitalsourceTransports;
-	@XmlElement(name = "contractpartnerTransport")
-	private List<ContractpartnerTransport> contractpartnerTransports;
-	@XmlElement(name = "postingAccountTransport")
-	private List<PostingAccountTransport> postingAccountTransports;
+  @XmlElement(name = "capitalsourceTransport")
+  private List<CapitalsourceTransport> capitalsourceTransports;
+  @XmlElement(name = "contractpartnerTransport")
+  private List<ContractpartnerTransport> contractpartnerTransports;
+  @XmlElement(name = "postingAccountTransport")
+  private List<PostingAccountTransport> postingAccountTransports;
 
+  public final List<CapitalsourceTransport> getCapitalsourceTransports() {
+    return this.capitalsourceTransports;
+  }
 
+  public final void setCapitalsourceTransports(
+      final List<CapitalsourceTransport> capitalsourceTransports) {
+    this.capitalsourceTransports = capitalsourceTransports;
+  }
 
-	public final List<CapitalsourceTransport> getCapitalsourceTransports() {
-		return this.capitalsourceTransports;
-	}
+  public final List<ContractpartnerTransport> getContractpartnerTransports() {
+    return this.contractpartnerTransports;
+  }
 
-	public final void setCapitalsourceTransports(final List<CapitalsourceTransport> capitalsourceTransports) {
-		this.capitalsourceTransports = capitalsourceTransports;
-	}
+  public final void setContractpartnerTransports(
+      final List<ContractpartnerTransport> contractpartnerTransports) {
+    this.contractpartnerTransports = contractpartnerTransports;
+  }
 
-	public final List<ContractpartnerTransport> getContractpartnerTransports() {
-		return this.contractpartnerTransports;
-	}
+  public final List<PostingAccountTransport> getPostingAccountTransports() {
+    return this.postingAccountTransports;
+  }
 
-	public final void setContractpartnerTransports(final List<ContractpartnerTransport> contractpartnerTransports) {
-		this.contractpartnerTransports = contractpartnerTransports;
-	}
+  public final void setPostingAccountTransports(
+      final List<PostingAccountTransport> postingAccountTransports) {
+    this.postingAccountTransports = postingAccountTransports;
+  }
 
-	public final List<PostingAccountTransport> getPostingAccountTransports() {
-		return this.postingAccountTransports;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
+    result = prime * result
+        + ((contractpartnerTransports == null) ? 0 : contractpartnerTransports.hashCode());
+    result = prime * result
+        + ((postingAccountTransports == null) ? 0 : postingAccountTransports.hashCode());
+    return result;
+  }
 
-	public final void setPostingAccountTransports(final List<PostingAccountTransport> postingAccountTransports) {
-		this.postingAccountTransports = postingAccountTransports;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AbstractEditMoneyflowResponse other = (AbstractEditMoneyflowResponse) obj;
+    if (capitalsourceTransports == null) {
+      if (other.capitalsourceTransports != null)
+        return false;
+    } else if (!capitalsourceTransports.equals(other.capitalsourceTransports))
+      return false;
+    if (contractpartnerTransports == null) {
+      if (other.contractpartnerTransports != null)
+        return false;
+    } else if (!contractpartnerTransports.equals(other.contractpartnerTransports))
+      return false;
+    if (postingAccountTransports == null) {
+      if (other.postingAccountTransports != null)
+        return false;
+    } else if (!postingAccountTransports.equals(other.postingAccountTransports))
+      return false;
+    return true;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
-		result = prime * result + ((contractpartnerTransports == null) ? 0 : contractpartnerTransports.hashCode());
-		result = prime * result + ((postingAccountTransports == null) ? 0 : postingAccountTransports.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AbstractEditMoneyflowResponse other = (AbstractEditMoneyflowResponse) obj;
-		if (capitalsourceTransports == null) {
-			if (other.capitalsourceTransports != null)
-				return false;
-		} else if (!capitalsourceTransports.equals(other.capitalsourceTransports))
-			return false;
-		if (contractpartnerTransports == null) {
-			if (other.contractpartnerTransports != null)
-				return false;
-		} else if (!contractpartnerTransports.equals(other.contractpartnerTransports))
-			return false;
-		if (postingAccountTransports == null) {
-			if (other.postingAccountTransports != null)
-				return false;
-		} else if (!postingAccountTransports.equals(other.postingAccountTransports))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("AbstractEditMoneyflowResponse [capitalsourceTransports=");
-		builder.append(capitalsourceTransports);
-		builder.append(", contractpartnerTransports=");
-		builder.append(contractpartnerTransports);
-		builder.append(", postingAccountTransports=");
-		builder.append(postingAccountTransports);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("AbstractEditMoneyflowResponse [capitalsourceTransports=");
+    builder.append(capitalsourceTransports);
+    builder.append(", contractpartnerTransports=");
+    builder.append(contractpartnerTransports);
+    builder.append(", postingAccountTransports=");
+    builder.append(postingAccountTransports);
+    builder.append("]");
+    return builder.toString();
+  }
 }

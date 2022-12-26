@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
 //
@@ -29,5 +30,6 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showDeleteContractpartnerAccountResponse")
-public class ShowDeleteContractpartnerAccountResponse extends AbstractContractpartnerAccountResponse {
+public class ShowDeleteContractpartnerAccountResponse
+    extends AbstractContractpartnerAccountResponse {
 }

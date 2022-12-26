@@ -30,5 +30,4 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "updateEtfFlowRequest")
 public class UpdateEtfFlowRequest extends AbstractEtfFlowRequest {
-
 }

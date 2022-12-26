@@ -28,154 +28,154 @@ package org.laladev.moneyjinn.core.rest.model.comparedata;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInDatabaseTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInFileTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "compareDataResponse")
 public class CompareDataResponse extends AbstractResponse {
-	@XmlElement(name = "compareDataMatchingTransport")
-	private final List<CompareDataMatchingTransport> compareDataMatchingTransports = new ArrayList<CompareDataMatchingTransport>();
-	@XmlElement(name = "compareDataWrongCapitalsourceTransport")
-	private final List<CompareDataWrongCapitalsourceTransport> compareDataWrongCapitalsourceTransports = new ArrayList<CompareDataWrongCapitalsourceTransport>();
-	@XmlElement(name = "compareDataNotInFileTransport")
-	private final List<CompareDataNotInFileTransport> compareDataNotInFileTransports = new ArrayList<CompareDataNotInFileTransport>();
-	@XmlElement(name = "compareDataNotInDatabaseTransport")
-	private final List<CompareDataNotInDatabaseTransport> compareDataNotInDatabaseTransports = new ArrayList<CompareDataNotInDatabaseTransport>();
-	private CapitalsourceTransport capitalsourceTransport;
+  @XmlElement(name = "compareDataMatchingTransport")
+  private final List<CompareDataMatchingTransport> compareDataMatchingTransports = new ArrayList<CompareDataMatchingTransport>();
+  @XmlElement(name = "compareDataWrongCapitalsourceTransport")
+  private final List<CompareDataWrongCapitalsourceTransport> compareDataWrongCapitalsourceTransports = new ArrayList<CompareDataWrongCapitalsourceTransport>();
+  @XmlElement(name = "compareDataNotInFileTransport")
+  private final List<CompareDataNotInFileTransport> compareDataNotInFileTransports = new ArrayList<CompareDataNotInFileTransport>();
+  @XmlElement(name = "compareDataNotInDatabaseTransport")
+  private final List<CompareDataNotInDatabaseTransport> compareDataNotInDatabaseTransports = new ArrayList<CompareDataNotInDatabaseTransport>();
+  private CapitalsourceTransport capitalsourceTransport;
 
-	public final List<CompareDataMatchingTransport> getCompareDataMatchingTransports() {
-		return this.compareDataMatchingTransports;
-	}
+  public final List<CompareDataMatchingTransport> getCompareDataMatchingTransports() {
+    return this.compareDataMatchingTransports;
+  }
 
-	public final void addCompareDataMatchingTransport(final CompareDataMatchingTransport compareDataMatchingTransport) {
-		this.compareDataMatchingTransports.add(compareDataMatchingTransport);
-	}
+  public final void addCompareDataMatchingTransport(
+      final CompareDataMatchingTransport compareDataMatchingTransport) {
+    this.compareDataMatchingTransports.add(compareDataMatchingTransport);
+  }
 
-	public final List<CompareDataWrongCapitalsourceTransport> getCompareDataWrongCapitalsourceTransports() {
-		return this.compareDataWrongCapitalsourceTransports;
-	}
+  public final List<CompareDataWrongCapitalsourceTransport> getCompareDataWrongCapitalsourceTransports() {
+    return this.compareDataWrongCapitalsourceTransports;
+  }
 
-	public final void addCompareDataWrongCapitalsourceTransport(
-			final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport) {
-		this.compareDataWrongCapitalsourceTransports.add(compareDataWrongCapitalsourceTransport);
-	}
+  public final void addCompareDataWrongCapitalsourceTransport(
+      final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport) {
+    this.compareDataWrongCapitalsourceTransports.add(compareDataWrongCapitalsourceTransport);
+  }
 
-	public final List<CompareDataNotInFileTransport> getCompareDataNotInFileTransports() {
-		return this.compareDataNotInFileTransports;
-	}
+  public final List<CompareDataNotInFileTransport> getCompareDataNotInFileTransports() {
+    return this.compareDataNotInFileTransports;
+  }
 
-	public final void addCompareDataNotInFileTransport(
-			final CompareDataNotInFileTransport compareDataNotInFileTransport) {
-		this.compareDataNotInFileTransports.add(compareDataNotInFileTransport);
-	}
+  public final void addCompareDataNotInFileTransport(
+      final CompareDataNotInFileTransport compareDataNotInFileTransport) {
+    this.compareDataNotInFileTransports.add(compareDataNotInFileTransport);
+  }
 
-	public final List<CompareDataNotInDatabaseTransport> getCompareDataNotInDatabaseTransports() {
-		return this.compareDataNotInDatabaseTransports;
-	}
+  public final List<CompareDataNotInDatabaseTransport> getCompareDataNotInDatabaseTransports() {
+    return this.compareDataNotInDatabaseTransports;
+  }
 
-	public final void addCompareDataNotInDatabaseTransport(
-			final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport) {
-		this.compareDataNotInDatabaseTransports.add(compareDataNotInDatabaseTransport);
-	}
+  public final void addCompareDataNotInDatabaseTransport(
+      final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport) {
+    this.compareDataNotInDatabaseTransports.add(compareDataNotInDatabaseTransport);
+  }
 
-	public final CapitalsourceTransport getCapitalsourceTransport() {
-		return this.capitalsourceTransport;
-	}
+  public final CapitalsourceTransport getCapitalsourceTransport() {
+    return this.capitalsourceTransport;
+  }
 
-	public final void setCapitalsourceTransport(final CapitalsourceTransport capitalsourceTransport) {
-		this.capitalsourceTransport = capitalsourceTransport;
-	}
+  public final void setCapitalsourceTransport(final CapitalsourceTransport capitalsourceTransport) {
+    this.capitalsourceTransport = capitalsourceTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.capitalsourceTransport == null) ? 0 : this.capitalsourceTransport.hashCode());
-		result = prime * result
-				+ ((this.compareDataMatchingTransports == null) ? 0 : this.compareDataMatchingTransports.hashCode());
-		result = prime * result + ((this.compareDataNotInDatabaseTransports == null) ? 0
-				: this.compareDataNotInDatabaseTransports.hashCode());
-		result = prime * result
-				+ ((this.compareDataNotInFileTransports == null) ? 0 : this.compareDataNotInFileTransports.hashCode());
-		result = prime * result + ((this.compareDataWrongCapitalsourceTransports == null) ? 0
-				: this.compareDataWrongCapitalsourceTransports.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((this.capitalsourceTransport == null) ? 0 : this.capitalsourceTransport.hashCode());
+    result = prime * result + ((this.compareDataMatchingTransports == null) ? 0
+        : this.compareDataMatchingTransports.hashCode());
+    result = prime * result + ((this.compareDataNotInDatabaseTransports == null) ? 0
+        : this.compareDataNotInDatabaseTransports.hashCode());
+    result = prime * result + ((this.compareDataNotInFileTransports == null) ? 0
+        : this.compareDataNotInFileTransports.hashCode());
+    result = prime * result + ((this.compareDataWrongCapitalsourceTransports == null) ? 0
+        : this.compareDataWrongCapitalsourceTransports.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CompareDataResponse other = (CompareDataResponse) obj;
-		if (this.capitalsourceTransport == null) {
-			if (other.capitalsourceTransport != null) {
-				return false;
-			}
-		} else if (!this.capitalsourceTransport.equals(other.capitalsourceTransport)) {
-			return false;
-		}
-		if (this.compareDataMatchingTransports == null) {
-			if (other.compareDataMatchingTransports != null) {
-				return false;
-			}
-		} else if (!this.compareDataMatchingTransports.equals(other.compareDataMatchingTransports)) {
-			return false;
-		}
-		if (this.compareDataNotInDatabaseTransports == null) {
-			if (other.compareDataNotInDatabaseTransports != null) {
-				return false;
-			}
-		} else if (!this.compareDataNotInDatabaseTransports.equals(other.compareDataNotInDatabaseTransports)) {
-			return false;
-		}
-		if (this.compareDataNotInFileTransports == null) {
-			if (other.compareDataNotInFileTransports != null) {
-				return false;
-			}
-		} else if (!this.compareDataNotInFileTransports.equals(other.compareDataNotInFileTransports)) {
-			return false;
-		}
-		if (this.compareDataWrongCapitalsourceTransports == null) {
-			if (other.compareDataWrongCapitalsourceTransports != null) {
-				return false;
-			}
-		} else if (!this.compareDataWrongCapitalsourceTransports
-				.equals(other.compareDataWrongCapitalsourceTransports)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CompareDataResponse other = (CompareDataResponse) obj;
+    if (this.capitalsourceTransport == null) {
+      if (other.capitalsourceTransport != null) {
+        return false;
+      }
+    } else if (!this.capitalsourceTransport.equals(other.capitalsourceTransport)) {
+      return false;
+    }
+    if (this.compareDataMatchingTransports == null) {
+      if (other.compareDataMatchingTransports != null) {
+        return false;
+      }
+    } else if (!this.compareDataMatchingTransports.equals(other.compareDataMatchingTransports)) {
+      return false;
+    }
+    if (this.compareDataNotInDatabaseTransports == null) {
+      if (other.compareDataNotInDatabaseTransports != null) {
+        return false;
+      }
+    } else if (!this.compareDataNotInDatabaseTransports
+        .equals(other.compareDataNotInDatabaseTransports)) {
+      return false;
+    }
+    if (this.compareDataNotInFileTransports == null) {
+      if (other.compareDataNotInFileTransports != null) {
+        return false;
+      }
+    } else if (!this.compareDataNotInFileTransports.equals(other.compareDataNotInFileTransports)) {
+      return false;
+    }
+    if (this.compareDataWrongCapitalsourceTransports == null) {
+      if (other.compareDataWrongCapitalsourceTransports != null) {
+        return false;
+      }
+    } else if (!this.compareDataWrongCapitalsourceTransports
+        .equals(other.compareDataWrongCapitalsourceTransports)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CompareDataResponse [compareDataMatchingTransports=");
-		builder.append(this.compareDataMatchingTransports);
-		builder.append(", compareDataWrongCapitalsourceTransports=");
-		builder.append(this.compareDataWrongCapitalsourceTransports);
-		builder.append(", compareDataNotInFileTransports=");
-		builder.append(this.compareDataNotInFileTransports);
-		builder.append(", compareDataNotInDatabaseTransports=");
-		builder.append(this.compareDataNotInDatabaseTransports);
-		builder.append(", capitalsourceTransport=");
-		builder.append(this.capitalsourceTransport);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CompareDataResponse [compareDataMatchingTransports=");
+    builder.append(this.compareDataMatchingTransports);
+    builder.append(", compareDataWrongCapitalsourceTransports=");
+    builder.append(this.compareDataWrongCapitalsourceTransports);
+    builder.append(", compareDataNotInFileTransports=");
+    builder.append(this.compareDataNotInFileTransports);
+    builder.append(", compareDataNotInDatabaseTransports=");
+    builder.append(this.compareDataNotInDatabaseTransports);
+    builder.append(", capitalsourceTransport=");
+    builder.append(this.capitalsourceTransport);
+    builder.append("]");
+    return builder.toString();
+  }
 }

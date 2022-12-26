@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
 //

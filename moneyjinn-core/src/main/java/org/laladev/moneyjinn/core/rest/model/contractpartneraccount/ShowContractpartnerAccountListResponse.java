@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
 //
@@ -27,84 +28,83 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 //
 
 import java.util.List;
-
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {
-	@XmlElement(name = "contractpartnerAccountTransport")
-	private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
-	private String contractpartnerName;
+  @XmlElement(name = "contractpartnerAccountTransport")
+  private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
+  private String contractpartnerName;
 
-	public final List<ContractpartnerAccountTransport> getContractpartnerAccountTransports() {
-		return this.contractpartnerAccountTransports;
-	}
+  public final List<ContractpartnerAccountTransport> getContractpartnerAccountTransports() {
+    return this.contractpartnerAccountTransports;
+  }
 
-	public final void setContractpartnerAccountTransports(
-			final List<ContractpartnerAccountTransport> contractpartnerAccountTransports) {
-		this.contractpartnerAccountTransports = contractpartnerAccountTransports;
-	}
+  public final void setContractpartnerAccountTransports(
+      final List<ContractpartnerAccountTransport> contractpartnerAccountTransports) {
+    this.contractpartnerAccountTransports = contractpartnerAccountTransports;
+  }
 
-	public final String getContractpartnerName() {
-		return this.contractpartnerName;
-	}
+  public final String getContractpartnerName() {
+    return this.contractpartnerName;
+  }
 
-	public final void setContractpartnerName(final String contractpartnerName) {
-		this.contractpartnerName = contractpartnerName;
-	}
+  public final void setContractpartnerName(final String contractpartnerName) {
+    this.contractpartnerName = contractpartnerName;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.contractpartnerAccountTransports == null) ? 0
-				: this.contractpartnerAccountTransports.hashCode());
-		result = prime * result + ((this.contractpartnerName == null) ? 0 : this.contractpartnerName.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.contractpartnerAccountTransports == null) ? 0
+        : this.contractpartnerAccountTransports.hashCode());
+    result = prime * result
+        + ((this.contractpartnerName == null) ? 0 : this.contractpartnerName.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ShowContractpartnerAccountListResponse other = (ShowContractpartnerAccountListResponse) obj;
-		if (this.contractpartnerAccountTransports == null) {
-			if (other.contractpartnerAccountTransports != null) {
-				return false;
-			}
-		} else if (!this.contractpartnerAccountTransports.equals(other.contractpartnerAccountTransports)) {
-			return false;
-		}
-		if (this.contractpartnerName == null) {
-			if (other.contractpartnerName != null) {
-				return false;
-			}
-		} else if (!this.contractpartnerName.equals(other.contractpartnerName)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowContractpartnerAccountListResponse other = (ShowContractpartnerAccountListResponse) obj;
+    if (this.contractpartnerAccountTransports == null) {
+      if (other.contractpartnerAccountTransports != null) {
+        return false;
+      }
+    } else if (!this.contractpartnerAccountTransports
+        .equals(other.contractpartnerAccountTransports)) {
+      return false;
+    }
+    if (this.contractpartnerName == null) {
+      if (other.contractpartnerName != null) {
+        return false;
+      }
+    } else if (!this.contractpartnerName.equals(other.contractpartnerName)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowContractpartnerAccountListResponse [contractpartnerAccountTransports=");
-		builder.append(this.contractpartnerAccountTransports);
-		builder.append(", contractpartnerName=");
-		builder.append(this.contractpartnerName);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ShowContractpartnerAccountListResponse [contractpartnerAccountTransports=");
+    builder.append(this.contractpartnerAccountTransports);
+    builder.append(", contractpartnerName=");
+    builder.append(this.contractpartnerName);
+    builder.append("]");
+    return builder.toString();
+  }
 }

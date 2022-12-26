@@ -27,57 +27,57 @@
 package org.laladev.moneyjinn.core.rest.model.postingaccount;
 
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createPostingAccountResponse")
 public class CreatePostingAccountResponse extends ValidationResponse {
-	private Long postingAccountId;
+  private Long postingAccountId;
 
-	public final Long getPostingAccountId() {
-		return this.postingAccountId;
-	}
+  public final Long getPostingAccountId() {
+    return this.postingAccountId;
+  }
 
-	public final void setPostingAccountId(final Long postingAccountId) {
-		this.postingAccountId = postingAccountId;
-	}
+  public final void setPostingAccountId(final Long postingAccountId) {
+    this.postingAccountId = postingAccountId;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.postingAccountId == null) ? 0 : this.postingAccountId.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((this.postingAccountId == null) ? 0 : this.postingAccountId.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreatePostingAccountResponse other = (CreatePostingAccountResponse) obj;
-		if (this.postingAccountId == null) {
-			if (other.postingAccountId != null) {
-				return false;
-			}
-		} else if (!this.postingAccountId.equals(other.postingAccountId)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreatePostingAccountResponse other = (CreatePostingAccountResponse) obj;
+    if (this.postingAccountId == null) {
+      if (other.postingAccountId != null) {
+        return false;
+      }
+    } else if (!this.postingAccountId.equals(other.postingAccountId)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CreatePostingAccountResponse [postingAccountId=");
-		builder.append(this.postingAccountId);
-		builder.append("]");
-		return builder.toString();
-	}
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CreatePostingAccountResponse [postingAccountId=");
+    builder.append(this.postingAccountId);
+    builder.append("]");
+    return builder.toString();
+  }
 }

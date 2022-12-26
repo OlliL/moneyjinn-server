@@ -25,55 +25,55 @@
 //
 // $Id: CreateImportedMonthlySettlementRequest.java,v 1.1 2015/04/05 18:52:38 olivleh1 Exp $
 //
+
 package org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "createImportedMonthlySettlementRequest")
 public class CreateImportedMonthlySettlementRequest extends AbstractRequest {
-	private ImportedMonthlySettlementTransport importedMonthlySettlementTransport;
+  private ImportedMonthlySettlementTransport importedMonthlySettlementTransport;
 
-	public final ImportedMonthlySettlementTransport getImportedMonthlySettlementTransport() {
-		return this.importedMonthlySettlementTransport;
-	}
+  public final ImportedMonthlySettlementTransport getImportedMonthlySettlementTransport() {
+    return this.importedMonthlySettlementTransport;
+  }
 
-	public final void setImportedMonthlySettlementTransport(
-			final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
-		this.importedMonthlySettlementTransport = importedMonthlySettlementTransport;
-	}
+  public final void setImportedMonthlySettlementTransport(
+      final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
+    this.importedMonthlySettlementTransport = importedMonthlySettlementTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.importedMonthlySettlementTransport == null) ? 0
-				: this.importedMonthlySettlementTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.importedMonthlySettlementTransport == null) ? 0
+        : this.importedMonthlySettlementTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreateImportedMonthlySettlementRequest other = (CreateImportedMonthlySettlementRequest) obj;
-		if (this.importedMonthlySettlementTransport == null) {
-			if (other.importedMonthlySettlementTransport != null) {
-				return false;
-			}
-		} else if (!this.importedMonthlySettlementTransport.equals(other.importedMonthlySettlementTransport)) {
-			return false;
-		}
-		return true;
-	}
-
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreateImportedMonthlySettlementRequest other = (CreateImportedMonthlySettlementRequest) obj;
+    if (this.importedMonthlySettlementTransport == null) {
+      if (other.importedMonthlySettlementTransport != null) {
+        return false;
+      }
+    } else if (!this.importedMonthlySettlementTransport
+        .equals(other.importedMonthlySettlementTransport)) {
+      return false;
+    }
+    return true;
+  }
 }

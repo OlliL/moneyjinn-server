@@ -1,5 +1,7 @@
+
 package org.laladev.moneyjinn.core.rest.model.etf;
 
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -25,60 +27,56 @@ package org.laladev.moneyjinn.core.rest.model.etf;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
-
 import jakarta.xml.bind.annotation.XmlRootElement;
-
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
 @XmlRootElement(name = "createEtfFlowResponse")
 public class CreateEtfFlowResponse extends ValidationResponse {
-	private Long etfFlowId;
+  private Long etfFlowId;
 
-	public final Long getEtfFlowId() {
-		return this.etfFlowId;
-	}
+  public final Long getEtfFlowId() {
+    return this.etfFlowId;
+  }
 
-	public final void setEtfFlowId(final Long etfFlowId) {
-		this.etfFlowId = etfFlowId;
-	}
+  public final void setEtfFlowId(final Long etfFlowId) {
+    this.etfFlowId = etfFlowId;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.etfFlowId == null) ? 0 : this.etfFlowId.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.etfFlowId == null) ? 0 : this.etfFlowId.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final CreateEtfFlowResponse other = (CreateEtfFlowResponse) obj;
-		if (this.etfFlowId == null) {
-			if (other.etfFlowId != null) {
-				return false;
-			}
-		} else if (!this.etfFlowId.equals(other.etfFlowId)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CreateEtfFlowResponse other = (CreateEtfFlowResponse) obj;
+    if (this.etfFlowId == null) {
+      if (other.etfFlowId != null) {
+        return false;
+      }
+    } else if (!this.etfFlowId.equals(other.etfFlowId)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CreateEtfFlowResponse [etfFlowId=");
-		builder.append(this.etfFlowId);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("CreateEtfFlowResponse [etfFlowId=");
+    builder.append(this.etfFlowId);
+    builder.append("]");
+    return builder.toString();
+  }
 }

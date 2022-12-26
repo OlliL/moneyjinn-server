@@ -1,3 +1,4 @@
+
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 //
@@ -28,83 +29,81 @@ package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import java.util.List;
 import java.util.Set;
-
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showPreDefMoneyflowListResponse")
 public class ShowPreDefMoneyflowListResponse extends AbstractResponse {
-	private Set<Character> initials;
-	@XmlElement(name = "preDefMoneyflowTransport")
-	private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
+  private Set<Character> initials;
+  @XmlElement(name = "preDefMoneyflowTransport")
+  private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
 
-	public final Set<Character> getInitials() {
-		return this.initials;
-	}
+  public final Set<Character> getInitials() {
+    return this.initials;
+  }
 
-	public final void setInitials(final Set<Character> initials) {
-		this.initials = initials;
-	}
+  public final void setInitials(final Set<Character> initials) {
+    this.initials = initials;
+  }
 
-	public final List<PreDefMoneyflowTransport> getPreDefMoneyflowTransports() {
-		return this.preDefMoneyflowTransports;
-	}
+  public final List<PreDefMoneyflowTransport> getPreDefMoneyflowTransports() {
+    return this.preDefMoneyflowTransports;
+  }
 
-	public final void setPreDefMoneyflowTransports(final List<PreDefMoneyflowTransport> preDefMoneyflowTransports) {
-		this.preDefMoneyflowTransports = preDefMoneyflowTransports;
-	}
+  public final void setPreDefMoneyflowTransports(
+      final List<PreDefMoneyflowTransport> preDefMoneyflowTransports) {
+    this.preDefMoneyflowTransports = preDefMoneyflowTransports;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((this.initials == null) ? 0 : this.initials.hashCode());
-		result = prime * result
-				+ ((this.preDefMoneyflowTransports == null) ? 0 : this.preDefMoneyflowTransports.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.initials == null) ? 0 : this.initials.hashCode());
+    result = prime * result + ((this.preDefMoneyflowTransports == null) ? 0
+        : this.preDefMoneyflowTransports.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ShowPreDefMoneyflowListResponse other = (ShowPreDefMoneyflowListResponse) obj;
-		if (this.initials == null) {
-			if (other.initials != null) {
-				return false;
-			}
-		} else if (!this.initials.equals(other.initials)) {
-			return false;
-		}
-		if (this.preDefMoneyflowTransports == null) {
-			if (other.preDefMoneyflowTransports != null) {
-				return false;
-			}
-		} else if (!this.preDefMoneyflowTransports.equals(other.preDefMoneyflowTransports)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowPreDefMoneyflowListResponse other = (ShowPreDefMoneyflowListResponse) obj;
+    if (this.initials == null) {
+      if (other.initials != null) {
+        return false;
+      }
+    } else if (!this.initials.equals(other.initials)) {
+      return false;
+    }
+    if (this.preDefMoneyflowTransports == null) {
+      if (other.preDefMoneyflowTransports != null) {
+        return false;
+      }
+    } else if (!this.preDefMoneyflowTransports.equals(other.preDefMoneyflowTransports)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowPreDefMoneyflowListResponse [initials=");
-		builder.append(this.initials);
-		builder.append(", preDefMoneyflowTransports=");
-		builder.append(this.preDefMoneyflowTransports);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ShowPreDefMoneyflowListResponse [initials=");
+    builder.append(this.initials);
+    builder.append(", preDefMoneyflowTransports=");
+    builder.append(this.preDefMoneyflowTransports);
+    builder.append("]");
+    return builder.toString();
+  }
 }

@@ -25,47 +25,47 @@
 //
 // $Id: AbstractResponse.java,v 1.2 2015/02/13 00:04:05 olivleh1 Exp $
 //
+
 package org.laladev.moneyjinn.core.rest.model;
 
 public class AbstractResponse {
-	private ErrorResponse errorResponse;
+  private ErrorResponse errorResponse;
 
-	public final ErrorResponse getErrorResponse() {
-		return this.errorResponse;
-	}
+  public final ErrorResponse getErrorResponse() {
+    return this.errorResponse;
+  }
 
-	public final void setErrorResponse(final ErrorResponse errorResponse) {
-		this.errorResponse = errorResponse;
-	}
+  public final void setErrorResponse(final ErrorResponse errorResponse) {
+    this.errorResponse = errorResponse;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.errorResponse == null) ? 0 : this.errorResponse.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.errorResponse == null) ? 0 : this.errorResponse.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final AbstractResponse other = (AbstractResponse) obj;
-		if (this.errorResponse == null) {
-			if (other.errorResponse != null) {
-				return false;
-			}
-		} else if (!this.errorResponse.equals(other.errorResponse)) {
-			return false;
-		}
-		return true;
-	}
-
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final AbstractResponse other = (AbstractResponse) obj;
+    if (this.errorResponse == null) {
+      if (other.errorResponse != null) {
+        return false;
+      }
+    } else if (!this.errorResponse.equals(other.errorResponse)) {
+      return false;
+    }
+    return true;
+  }
 }

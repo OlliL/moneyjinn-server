@@ -30,5 +30,4 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showYearlyReportGraphRequest")
 public class ShowYearlyReportGraphRequest extends AbstractShowReportGraphRequest {
-
 }

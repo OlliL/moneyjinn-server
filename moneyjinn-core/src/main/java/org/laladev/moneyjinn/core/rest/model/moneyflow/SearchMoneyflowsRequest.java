@@ -28,64 +28,62 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "searchMoneyflowsRequest")
 public class SearchMoneyflowsRequest extends AbstractRequest {
-	private MoneyflowSearchParamsTransport moneyflowSearchParamsTransport;
+  private MoneyflowSearchParamsTransport moneyflowSearchParamsTransport;
 
-	public SearchMoneyflowsRequest() {
-		super();
-	}
+  public SearchMoneyflowsRequest() {
+    super();
+  }
 
-	public final MoneyflowSearchParamsTransport getMoneyflowSearchParamsTransport() {
-		return this.moneyflowSearchParamsTransport;
-	}
+  public final MoneyflowSearchParamsTransport getMoneyflowSearchParamsTransport() {
+    return this.moneyflowSearchParamsTransport;
+  }
 
-	public final void setMoneyflowSearchParamsTransport(
-			final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
-		this.moneyflowSearchParamsTransport = moneyflowSearchParamsTransport;
-	}
+  public final void setMoneyflowSearchParamsTransport(
+      final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
+    this.moneyflowSearchParamsTransport = moneyflowSearchParamsTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.moneyflowSearchParamsTransport == null) ? 0 : this.moneyflowSearchParamsTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.moneyflowSearchParamsTransport == null) ? 0
+        : this.moneyflowSearchParamsTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final SearchMoneyflowsRequest other = (SearchMoneyflowsRequest) obj;
-		if (this.moneyflowSearchParamsTransport == null) {
-			if (other.moneyflowSearchParamsTransport != null) {
-				return false;
-			}
-		} else if (!this.moneyflowSearchParamsTransport.equals(other.moneyflowSearchParamsTransport)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final SearchMoneyflowsRequest other = (SearchMoneyflowsRequest) obj;
+    if (this.moneyflowSearchParamsTransport == null) {
+      if (other.moneyflowSearchParamsTransport != null) {
+        return false;
+      }
+    } else if (!this.moneyflowSearchParamsTransport.equals(other.moneyflowSearchParamsTransport)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("SearchMoneyflowRequest [moneyflowSearchParamsTransport=");
-		builder.append(this.moneyflowSearchParamsTransport);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("SearchMoneyflowRequest [moneyflowSearchParamsTransport=");
+    builder.append(this.moneyflowSearchParamsTransport);
+    builder.append("]");
+    return builder.toString();
+  }
 }

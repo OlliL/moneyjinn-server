@@ -1,10 +1,9 @@
+
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
-
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -33,54 +32,54 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showDeletePreDefMoneyflowResponse")
 public class ShowDeletePreDefMoneyflowResponse extends AbstractResponse {
-	private PreDefMoneyflowTransport preDefMoneyflowTransport;
+  private PreDefMoneyflowTransport preDefMoneyflowTransport;
 
-	public final PreDefMoneyflowTransport getPreDefMoneyflowTransport() {
-		return this.preDefMoneyflowTransport;
-	}
+  public final PreDefMoneyflowTransport getPreDefMoneyflowTransport() {
+    return this.preDefMoneyflowTransport;
+  }
 
-	public final void setPreDefMoneyflowTransport(final PreDefMoneyflowTransport preDefMoneyflowTransport) {
-		this.preDefMoneyflowTransport = preDefMoneyflowTransport;
-	}
+  public final void setPreDefMoneyflowTransport(
+      final PreDefMoneyflowTransport preDefMoneyflowTransport) {
+    this.preDefMoneyflowTransport = preDefMoneyflowTransport;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((this.preDefMoneyflowTransport == null) ? 0 : this.preDefMoneyflowTransport.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((this.preDefMoneyflowTransport == null) ? 0 : this.preDefMoneyflowTransport.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final ShowDeletePreDefMoneyflowResponse other = (ShowDeletePreDefMoneyflowResponse) obj;
-		if (this.preDefMoneyflowTransport == null) {
-			if (other.preDefMoneyflowTransport != null) {
-				return false;
-			}
-		} else if (!this.preDefMoneyflowTransport.equals(other.preDefMoneyflowTransport)) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowDeletePreDefMoneyflowResponse other = (ShowDeletePreDefMoneyflowResponse) obj;
+    if (this.preDefMoneyflowTransport == null) {
+      if (other.preDefMoneyflowTransport != null) {
+        return false;
+      }
+    } else if (!this.preDefMoneyflowTransport.equals(other.preDefMoneyflowTransport)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ShowDeletePreDefMoneyflowResponse [preDefMoneyflowTransport=");
-		builder.append(this.preDefMoneyflowTransport);
-		builder.append("]");
-		return builder.toString();
-	}
-
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append("ShowDeletePreDefMoneyflowResponse [preDefMoneyflowTransport=");
+    builder.append(this.preDefMoneyflowTransport);
+    builder.append("]");
+    return builder.toString();
+  }
 }
