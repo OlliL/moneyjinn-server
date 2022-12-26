@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +54,8 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @EnableCaching
@@ -115,7 +115,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
   }
 
   @Override
-  @Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID)
+  @Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#p0.getId()")
   public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
     Assert.notNull(accessId, "AccessId must not be null!");
     final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
@@ -383,6 +383,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   private void evictAccessRelationCache(final AccessID accessId) {
     final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-    cache.evict(accessId);
+    cache.evict(accessId.getId());
   }
 }
