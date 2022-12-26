@@ -27,8 +27,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.AbstractPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
@@ -57,6 +55,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -146,17 +146,17 @@ public class PostingAccountController extends AbstractController {
 
 		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
+		final ValidationResponse response = new ValidationResponse();
+		response.setResult(validationResult.isValid());
+
 		if (validationResult.isValid()) {
 			this.postingAccountService.updatePostingAccount(postingAccount);
 		} else {
-			final ValidationResponse response = new ValidationResponse();
-			response.setResult(validationResult.isValid());
 			response.setValidationItemTransports(
 					super.mapList(validationResult.getValidationResultItems(), ValidationItemTransport.class));
-			return response;
 		}
 
-		return null;
+		return response;
 	}
 
 	@RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
