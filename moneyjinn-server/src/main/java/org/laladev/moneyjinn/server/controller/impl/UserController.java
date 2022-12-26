@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.inject.Inject;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -42,6 +40,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.core.rest.model.user.AbstractCreateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.AbstractShowUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
+import org.laladev.moneyjinn.core.rest.model.user.ChangePasswordRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
@@ -88,6 +87,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -209,11 +210,6 @@ public class UserController extends AbstractController {
 		}
 
 		return null;
-	}
-
-	@RequestMapping(value = "test", method = { RequestMethod.GET })
-	public ShowUserListResponse test() {
-		return this.showUserList(null);
 	}
 
 	@RequestMapping(value = "showUserList", method = { RequestMethod.GET })
@@ -364,6 +360,26 @@ public class UserController extends AbstractController {
 		final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
 		this.fillAbstractShowUserResponse(new UserID(userId), response);
 		return response;
+	}
+
+	@RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
+	@RequiresAuthorization
+	public void changePassword(@RequestBody final ChangePasswordRequest request) throws NoSuchAlgorithmException {
+		final UserID userId = super.getUserId();
+		final User user = this.userService.getUserById(userId);
+		final String password = request.getPassword();
+		final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
+		final String oldPassword = BytesToHexConverter.convert(sha1Md.digest(request.getOldPassword().getBytes()));
+
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
+		}
+
+		if (password != null && !password.trim().isEmpty()) {
+			this.userService.setPassword(userId, password);
+		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
+			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);
+		}
 	}
 
 	private void fillAbstractCreateUserResponse(final AbstractCreateUserResponse response) {
