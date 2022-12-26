@@ -27,14 +27,6 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-typehandlers-jsr310</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-		</dependency>
 		<!-- only used for the SettingService (store 2 settings as JSON in MySQL) -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
