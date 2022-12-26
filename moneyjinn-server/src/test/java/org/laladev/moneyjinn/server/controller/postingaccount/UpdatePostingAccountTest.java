@@ -3,8 +3,6 @@ package org.laladev.moneyjinn.server.controller.postingaccount;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.inject.Inject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +21,8 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+
+import jakarta.inject.Inject;
 
 public class UpdatePostingAccountTest extends AbstractControllerTest {
 
@@ -92,14 +92,16 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
 
 		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount1().build();
 		transport.setName("hugo");
 		request.setPostingAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+		Assertions.assertTrue(actual.getResult());
 
 		final PostingAccount postingAccount = this.postingAccountService
 				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
@@ -139,7 +141,10 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount1().build();
 		request.setPostingAccountTransport(transport);
 
-		super.callUsecaseWithContent("", this.method, request, true, Object.class);
+		final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+				ValidationResponse.class);
+
+		Assertions.assertTrue(actual.getResult());
 	}
 
 }

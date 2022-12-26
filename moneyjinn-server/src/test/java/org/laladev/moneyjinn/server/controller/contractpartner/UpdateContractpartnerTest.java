@@ -111,7 +111,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void test_standardRequest_SuccessfullNoContent() throws Exception {
+	public void test_standardRequest_Successfull() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(
 				ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
