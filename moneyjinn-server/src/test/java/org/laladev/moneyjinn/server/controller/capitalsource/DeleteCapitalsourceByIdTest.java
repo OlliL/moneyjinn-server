@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   @Inject
@@ -123,9 +123,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
+    super.callUsecaseExpect403("/1", this.method);
   }
 
   @Test

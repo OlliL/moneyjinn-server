@@ -1,4 +1,4 @@
-//Copyright (c) 2015-2018 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2016 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,22 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import java.security.SecureRandom;
-import org.laladev.moneyjinn.server.main.CorsFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.laladev.moneyjinn.server.main.MoneyJinnServer;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 
+@SpringBootConfiguration
 @Configuration
-public class BeanProducer {
-  @Bean
-  public FilterRegistrationBean<CorsFilter> filterRegistrationBean() {
-    final FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
-    registrationBean.setFilter(new CorsFilter());
-    registrationBean.addUrlPatterns("/moneyflow/*");
-    registrationBean.setOrder(1);
-    return registrationBean;
-  }
-
-  @Bean
-  public PasswordEncoder getPasswordEncoder() {
-    return new BCryptPasswordEncoder(10, new SecureRandom());
-  }
+@ComponentScan(value = { "org.laladev.moneyjinn.service",
+    "org.laladev.moneyjinn.server" }, excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = BeanProducer.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyJinnServer.class) })
+@EnableAspectJAutoProxy
+@EnableAutoConfiguration
+public class MoneyjinnTestConfiguration {
 }

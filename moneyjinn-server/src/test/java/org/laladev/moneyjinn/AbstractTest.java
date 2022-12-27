@@ -1,11 +1,10 @@
 
 package org.laladev.moneyjinn;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.config.MockConfiguration;
 import org.laladev.moneyjinn.config.TestDatabaseConfiguration;
-import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
+import org.laladev.moneyjinn.server.config.MoneyjinnTestConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -14,9 +13,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.web.WebAppConfiguration;
+import jakarta.inject.Inject;
 
 @SpringBootTest
-@ContextConfiguration(classes = { MoneyjinnConfiguration.class, MockConfiguration.class,
+@ContextConfiguration(classes = { MoneyjinnTestConfiguration.class, MockConfiguration.class,
     TestDatabaseConfiguration.class })
 @WebAppConfiguration
 @SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = {

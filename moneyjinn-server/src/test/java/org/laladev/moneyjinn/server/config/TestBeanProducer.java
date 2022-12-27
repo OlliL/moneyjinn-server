@@ -24,16 +24,15 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import java.security.SecureRandom;
 import org.laladev.moneyjinn.server.main.CorsFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class BeanProducer {
+public class TestBeanProducer {
   @Bean
   public FilterRegistrationBean<CorsFilter> filterRegistrationBean() {
     final FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
@@ -45,6 +44,6 @@ public class BeanProducer {
 
   @Bean
   public PasswordEncoder getPasswordEncoder() {
-    return new BCryptPasswordEncoder(10, new SecureRandom());
+    return NoOpPasswordEncoder.getInstance();
   }
 }

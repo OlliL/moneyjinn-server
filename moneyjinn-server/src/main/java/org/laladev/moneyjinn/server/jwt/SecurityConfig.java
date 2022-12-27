@@ -35,15 +35,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS,"/moneyflow/server/**").permitAll()
                 .requestMatchers("/moneyflow/server/user/login").permitAll()
-                .requestMatchers("/moneyflow/server/user/test").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-                .requestMatchers("/moneyflow/server/report/getAvailableMonth").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/report/getAvailableMonth/*").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/report/getAvailableMonth/*/*").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/report/listReportsV2").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/report/listReportsV2/*").hasAuthority("LOGIN")
-                .requestMatchers("/moneyflow/server/report/listReportsV2/*/*").hasAuthority("LOGIN")
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/moneyflow/server/importedbalance/createImportedBalance").permitAll()
+                .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
+                .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
+                .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
+                .requestMatchers("/**").denyAll()
                 .anyRequest().authenticated()
             );
         //@formatter:on

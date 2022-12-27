@@ -69,21 +69,6 @@
 			<groupId>jakarta.inject</groupId>
 			<artifactId>jakarta.inject-api</artifactId>
 		</dependency>
-		<!-- TEST SCOPE -->
-		<dependency>
-			<groupId>com.github.albfernandez</groupId>
-			<artifactId>juniversalchardet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -101,6 +86,26 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<!-- TEST SCOPE -->
+		<dependency>
+			<groupId>com.github.albfernandez</groupId>
+			<artifactId>juniversalchardet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

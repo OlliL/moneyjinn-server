@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -24,6 +23,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   @Inject
@@ -99,9 +99,8 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ErrorResponse actual = super.callUsecaseWithoutContent("111", this.method, false,
         ErrorResponse.class);
-    Assertions.assertEquals(super.accessDeniedErrorResponse(), actual);
   }
 
   @Test

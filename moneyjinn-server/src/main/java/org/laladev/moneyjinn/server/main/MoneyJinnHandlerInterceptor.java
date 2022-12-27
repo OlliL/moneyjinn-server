@@ -1,10 +1,6 @@
 
 package org.laladev.moneyjinn.server.main;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 //Copyright (c) 2015, 2018 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -29,12 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 import java.lang.annotation.Annotation;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -48,6 +39,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * {@link MoneyJinnHandlerInterceptor} takes care of the authentication of the client and also sets
@@ -58,15 +53,10 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Named
 public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
-  private static final long MAX_MINUTES_CLOCK_OFF = 15L;
   @Inject
   private IUserService userService;
   @Inject
-  private RESTAuthorization restAuthorization;
-  @Inject
   private SessionEnvironment sessionEnvironment;
-  private final DateTimeFormatter formatter = DateTimeFormatter
-      .ofPattern(RESTAuthorization.DATE_HEADER_FORMAT, Locale.US);
 
   @Override
   public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
@@ -106,61 +96,8 @@ public class MoneyJinnHandlerInterceptor implements HandlerInterceptor {
         }
       }
       if (requiresAuthorization || requiresAdmin) {
-        final String dateHeaderString = ((HttpServletRequest) request)
-            .getHeader(RESTAuthorization.DATE_HEADER_NAME);
-        final String clientAuthorization = ((HttpServletRequest) request)
-            .getHeader(RESTAuthorization.AUTH_HEADER_NAME);
-        String userName = null;
-        String hmacHash = null;
-        if (clientAuthorization != null && clientAuthorization.length() > 3
-            && clientAuthorization.substring(0, 3).equals(RESTAuthorization.AUTH_HEADER_PREFIX)) {
-          final String[] authorizationArray = clientAuthorization.substring(3)
-              .split(RESTAuthorization.AUTH_HEADER_SEPERATOR);
-          if (authorizationArray.length == 2) {
-            userName = authorizationArray[0];
-            hmacHash = authorizationArray[1];
-          }
-        }
-        if (userName == null || userName.length() == 0 || hmacHash == null || hmacHash.length() == 0
-            || dateHeaderString == null) {
-          response.setStatus(403);
-          throw new BusinessException("Access Denied! You are not logged on!",
-              ErrorCode.LOGGED_OUT);
-        }
-        final ZonedDateTime dateHeaderLocalDateTime = ZonedDateTime.parse(dateHeaderString,
-            this.formatter);
-        final long minutes = ChronoUnit.MINUTES.between(ZonedDateTime.now(),
-            dateHeaderLocalDateTime);
-        if (Math.abs(minutes) > MAX_MINUTES_CLOCK_OFF) {
-          throw new BusinessException("Your clock is more than 15 minutes off",
-              ErrorCode.CLIENT_CLOCK_OFF);
-        }
-        final User user = this.userService.getUserByName(userName);
-        if (user == null) {
-          throw new BusinessException("Wrong username or password!",
-              ErrorCode.USERNAME_PASSWORD_WRONG);
-        }
-        final String contentType = request.getContentType();
-        final byte[] body = ((MoneyJinnRequestWrapper) request).getBody().getBytes();
-        final String method = ((MoneyJinnRequestWrapper) request).getMethod().toString();
-        final String requestUrl = ((MoneyJinnRequestWrapper) request).getRequestURI();
-        final String serverAuthorization = this.restAuthorization.getRESTAuthorization(
-            user.getPassword().getBytes(), method, contentType, requestUrl, dateHeaderString, body,
-            userName);
-        if (serverAuthorization.equals(clientAuthorization)) {
-          if (!user.getPermissions().contains(UserPermission.LOGIN)) {
-            throw new BusinessException("Your account has been locked!",
-                ErrorCode.ACCOUNT_IS_LOCKED);
-          }
-          if (requiresAdmin && !user.getPermissions().contains(UserPermission.ADMIN)) {
-            throw new BusinessException("You must be an admin to access this functionality!",
-                ErrorCode.USER_IS_NO_ADMIN);
-          }
-          this.sessionEnvironment.setUserId(user.getId());
-        } else {
-          throw new BusinessException("Wrong username or password!",
-              ErrorCode.USERNAME_PASSWORD_WRONG);
-        }
+        response.setStatus(403);
+        throw new BusinessException("Access Denied! You are not logged on!", ErrorCode.LOGGED_OUT);
       }
       return true;
     }
