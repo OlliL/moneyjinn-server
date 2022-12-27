@@ -7,15 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
-import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
@@ -77,27 +71,6 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
     moneyflowSplitEntryTransports
         .add(new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build());
     expected.setMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
-    final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner1().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner2().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner3().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner4().build());
-    expected.setContractpartnerTransports(contractpartnerTransports);
-    final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource3().build());
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource4().build());
-    expected.setCapitalsourceTransports(capitalsourceTransports);
     expected.setHasReceipt(true);
     final ShowEditMoneyflowResponse actual = super.callUsecaseWithoutContent(
         "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,

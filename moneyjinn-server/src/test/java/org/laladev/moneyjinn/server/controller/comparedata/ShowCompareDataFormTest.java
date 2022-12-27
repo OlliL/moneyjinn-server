@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.comparedata.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
@@ -54,9 +53,6 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 
   private ShowCompareDataFormResponse getDefaultResponse() {
     final ShowCompareDataFormResponse expected = new ShowCompareDataFormResponse();
-    final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
-    expected.setCapitalsourceTransports(capitalsourceTransports);
     final List<CompareDataFormatTransport> compareDataFormatTransports = new ArrayList<>();
     compareDataFormatTransports
         .add(new CompareDataFormatTransportBuilder().forCompareDataFormat2().build());

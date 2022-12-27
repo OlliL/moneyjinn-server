@@ -74,8 +74,6 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource1().build());
     final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
     compareDataWrongCapitalsourceTransport
         .setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow19().build());
@@ -104,8 +102,6 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource1().build());
     final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
     compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
@@ -127,8 +123,6 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
     final CompareDataResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -146,8 +140,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
     compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
@@ -167,8 +160,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
     compareDataNotInFileTransport
         .setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow16().build());
@@ -188,8 +180,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
     compareDataMatchingTransport
         .setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow15().build());
@@ -211,8 +202,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
     compareDataNotInFileTransport
         .setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow14().build());
@@ -255,8 +245,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.spardaBankResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // No Contractpartner information in this CSV, so the bookingdate equality wins
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
     compareDataMatchingTransport
@@ -287,8 +276,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // there is a booking with the same amount on the same date as in the file, but the 100%
     // matching Contractpartner overrules this so the other moneyflow is picked.
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
@@ -320,8 +308,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.sparkasseResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // there is a booking with the same amount on the same date as in the file, but the 100%
     // matching Contractpartner overrules this so the other moneyflow is picked.
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
@@ -353,8 +340,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.volksbankResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // there is a booking with the same amount on the same date as in the file, but the Soundex
     // matching Contractpartner overrules this so the other moneyflow is picked.
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
@@ -387,8 +373,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.camtResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // there is a booking with the same amount on the same date as in the file, but the 100%
     // matching Contractpartner overrules this so the other moneyflow is picked.
     final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
@@ -418,8 +403,7 @@ public class CompareDataTest extends AbstractControllerTest {
     request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
     request.setUseImportedData((short) 1);
     final CompareDataResponse expected = new CompareDataResponse();
-    expected
-        .setCapitalsourceTransport(new CapitalsourceTransportBuilder().forCapitalsource2().build());
+
     // there is a booking with the same amount on the same date as in the file, but the 100%
     // matching Contractpartner overrules this so the other moneyflow is picked.
     CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();

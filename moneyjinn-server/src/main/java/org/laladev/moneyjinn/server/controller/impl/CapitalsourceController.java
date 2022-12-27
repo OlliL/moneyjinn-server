@@ -25,16 +25,11 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.AbstractCapitalsourceResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowCapitalsourceListResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowDeleteCapitalsourceResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowEditCapitalsourceResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -43,8 +38,6 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidCapitalsourcesSetting;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -80,105 +73,16 @@ public class CapitalsourceController extends AbstractController {
     this.registerBeanMapper(new ValidationItemTransportMapper());
   }
 
-  @RequestMapping(value = "showCapitalsourceList/currentlyValid", method = { RequestMethod.GET })
+  @RequestMapping(value = "showCapitalsourceList", method = { RequestMethod.GET })
   public ShowCapitalsourceListResponse showCapitalsourceList() {
     final UserID userId = super.getUserId();
-    final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
-        .getClientCurrentlyValidCapitalsourcesSetting(userId);
-    return this.doShowCapitalsourceList(userId, null, setting.getSetting());
-  }
-
-  @RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid", method = {
-      RequestMethod.GET })
-  public ShowCapitalsourceListResponse showCapitalsourceList(
-      @PathVariable(value = "restriction") final String restriction) {
-    final UserID userId = super.getUserId();
-    final ClientCurrentlyValidCapitalsourcesSetting setting = this.settingService
-        .getClientCurrentlyValidCapitalsourcesSetting(userId);
-    return this.doShowCapitalsourceList(userId, restriction, setting.getSetting());
-  }
-
-  @RequestMapping(value = "showCapitalsourceList/currentlyValid/{currentlyValid}", method = {
-      RequestMethod.GET })
-  public ShowCapitalsourceListResponse showCapitalsourceList(
-      @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
-    final UserID userId = super.getUserId();
-    final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, null,
-        currentlyValid);
-    final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(
-        currentlyValid);
-    this.settingService.setClientCurrentlyValidCapitalsourcesSetting(userId, setting);
-    return response;
-  }
-
-  @RequestMapping(value = "showCapitalsourceList/{restriction}/currentlyValid/{currentlyValid}", method = {
-      RequestMethod.GET })
-  public ShowCapitalsourceListResponse showCapitalsourceList(
-      @PathVariable(value = "restriction") final String restriction,
-      @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
-    final UserID userId = super.getUserId();
-    final ShowCapitalsourceListResponse response = this.doShowCapitalsourceList(userId, restriction,
-        currentlyValid);
-    final ClientCurrentlyValidCapitalsourcesSetting setting = new ClientCurrentlyValidCapitalsourcesSetting(
-        currentlyValid);
-    this.settingService.setClientCurrentlyValidCapitalsourcesSetting(userId, setting);
-    return response;
-  }
-
-  private ShowCapitalsourceListResponse doShowCapitalsourceList(final UserID userId,
-      final String restriction, final boolean currentlyValid) {
-    final LocalDate now = LocalDate.now();
-    Set<Character> initials;
-    if (currentlyValid) {
-      initials = this.capitalsourceService.getAllCapitalsourceInitialsByDateRange(userId, now, now);
-    } else {
-      initials = this.capitalsourceService.getAllCapitalsourceInitials(userId);
-    }
-    List<Capitalsource> capitalsources = null;
-    if (restriction != null) {
-      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-        if (currentlyValid) {
-          capitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, now,
-              now);
-        } else {
-          capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
-        }
-      } else if (restriction.length() == 1) {
-        if (currentlyValid) {
-          capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitialAndDateRange(
-              userId, restriction.toCharArray()[0], now, now);
-        } else {
-          capitalsources = this.capitalsourceService.getAllCapitalsourcesByInitial(userId,
-              restriction.toCharArray()[0]);
-        }
-      }
-    } else {
-      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
-          .getClientMaxRowsSetting(userId);
-      Integer count;
-      if (currentlyValid) {
-        count = this.capitalsourceService.countAllCapitalsourcesByDateRange(userId, now, now);
-      } else {
-        count = this.capitalsourceService.countAllCapitalsources(userId);
-      }
-      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-        if (currentlyValid) {
-          capitalsources = this.capitalsourceService.getAllCapitalsourcesByDateRange(userId, now,
-              now);
-        } else {
-          capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
-        }
-      }
-    }
+    final List<Capitalsource> capitalsources = this.capitalsourceService
+        .getAllCapitalsources(userId);
     final ShowCapitalsourceListResponse response = new ShowCapitalsourceListResponse();
     if (capitalsources != null && !capitalsources.isEmpty()) {
       response
           .setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
     }
-    if (initials != null && !initials.isEmpty()) {
-      response.setInitials(initials);
-    }
-    response.setCurrentlyValid(currentlyValid);
     return response;
   }
 
@@ -237,34 +141,5 @@ public class CapitalsourceController extends AbstractController {
     final Group accessor = this.accessRelationService.getAccessor(userId);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
     this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);
-  }
-
-  @RequestMapping(value = "showEditCapitalsource/{id}", method = { RequestMethod.GET })
-  public ShowEditCapitalsourceResponse showEditCapitalsource(
-      @PathVariable(value = "id") final Long capitalsourceId) {
-    final ShowEditCapitalsourceResponse response = new ShowEditCapitalsourceResponse();
-    this.fillAbstractCapitalsourceResponse(capitalsourceId, response);
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteCapitalsource/{id}", method = { RequestMethod.GET })
-  public ShowDeleteCapitalsourceResponse showDeleteCapitalsource(
-      @PathVariable(value = "id") final Long capitalsourceId) {
-    final ShowDeleteCapitalsourceResponse response = new ShowDeleteCapitalsourceResponse();
-    this.fillAbstractCapitalsourceResponse(capitalsourceId, response);
-    return response;
-  }
-
-  private void fillAbstractCapitalsourceResponse(final Long id,
-      final AbstractCapitalsourceResponse response) {
-    final UserID userId = super.getUserId();
-    final Group accessor = this.accessRelationService.getAccessor(userId);
-    final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
-    final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-        accessor.getId(), capitalsourceId);
-    if (capitalsource != null && capitalsource.getUser().getId().equals(userId)) {
-      // only the creator of a Capitalsource may edit or delete it
-      response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
-    }
   }
 }

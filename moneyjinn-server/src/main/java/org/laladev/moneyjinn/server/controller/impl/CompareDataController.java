@@ -29,7 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
-import java.util.function.Predicate;
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataRequest;
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.ShowCompareDataFormResponse;
@@ -39,14 +38,9 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataMa
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInDatabaseTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInFileTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataMatching;
@@ -114,20 +108,11 @@ public class CompareDataController extends AbstractController {
       if (selectedSourceIsFile != null && selectedSourceIsFile.getSetting().equals(Boolean.TRUE)) {
         response.setSelectedSourceIsFile((short) 1);
       }
-      final List<Capitalsource> capitalsources = this.capitalsourceService
-          .getGroupCapitalsourcesByDateRange(userId, today, today);
-      if (capitalsources != null && !capitalsources.isEmpty()) {
-        final Predicate<Capitalsource> capitalsourcePredicate = c -> c
-            .getType() != CapitalsourceType.CURRENT_ASSET
-            || c.getState() != CapitalsourceState.NON_CACHE;
-        capitalsources.removeIf(capitalsourcePredicate);
-        response.setCapitalsourceTransports(
-            super.mapList(capitalsources, CapitalsourceTransport.class));
-        final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
-            .getClientCompareDataSelectedCapitalsource(userId);
-        if (selectedCapitalsource != null) {
-          response.setSelectedCapitalsourceId(selectedCapitalsource.getSetting().getId());
-        }
+
+      final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
+          .getClientCompareDataSelectedCapitalsource(userId);
+      if (selectedCapitalsource != null) {
+        response.setSelectedCapitalsourceId(selectedCapitalsource.getSetting().getId());
       }
     }
     return response;
@@ -213,10 +198,6 @@ public class CompareDataController extends AbstractController {
           }
         }
       }
-      final Group accessor = this.accessRelationService.getAccessor(userId);
-      final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-          accessor.getId(), capitalsourceId);
-      response.setCapitalsourceTransport(super.map(capitalsource, CapitalsourceTransport.class));
       final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
           capitalsourceId);
       this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);

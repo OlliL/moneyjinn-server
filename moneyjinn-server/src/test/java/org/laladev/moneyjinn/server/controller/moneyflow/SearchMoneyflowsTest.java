@@ -14,9 +14,7 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.DateUtil;
@@ -57,21 +55,6 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 
   private SearchMoneyflowsResponse getDefaultResponse() {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
-    final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner1().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner2().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner3().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner4().build());
-    expected.setContractpartnerTransports(contractpartnerTransports);
     expected.setResult(true);
     return expected;
   }
@@ -438,15 +421,6 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
-    final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner5().build());
-    expected.setContractpartnerTransports(contractpartnerTransports);
     final ValidationItemTransport validationItemTransport1 = new ValidationItemTransport();
     validationItemTransport1.setError(ErrorCode.NO_SEARCH_CRITERIA_ENTERED.getErrorCode());
     final List<ValidationItemTransport> validationItemTransports = Arrays

@@ -40,21 +40,13 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsByAmountResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowAddMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowDeleteMoneyflowResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowSearchMoneyflowFormResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
@@ -62,6 +54,7 @@ import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
@@ -132,46 +125,103 @@ public class MoneyflowController extends AbstractController {
     super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
   }
 
-  private boolean isOnceAMonthAndAlreadyUsed(final LocalDate today,
-      final PreDefMoneyflow preDefMoneyflow) {
-    final LocalDate lastUsedDate = preDefMoneyflow.getLastUsedDate();
-    return preDefMoneyflow.isOnceAMonth() //
-        && lastUsedDate != null && lastUsedDate.getMonth().equals(today.getMonth()) //
-        && lastUsedDate.getYear() == today.getYear();
+  /**
+   * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity is
+   * modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries where
+   * provided with data from the first MoneyflowSplitEntry.
+   *
+   * @param moneyflow
+   *                                Moneyflow
+   * @param moneyflowSplitEntries
+   *                                MoneyflowSplitEntries
+   */
+  private void prepareForValidityCheck(final Moneyflow moneyflow,
+      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+    final LocalDate bookingDate = moneyflow.getBookingDate();
+    final UserID userId = moneyflow.getUser().getId();
+    final Group group = moneyflow.getGroup();
+    if (bookingDate != null) {
+      final AccessRelation accessRelation = this.accessRelationService
+          .getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+      // Only modify Capitalsources or Contractpartner if the Bookingdate is within
+      // the
+      // current group assignment validity period
+      if (!bookingDate.isBefore(accessRelation.getValidFrom())
+          && !bookingDate.isAfter(accessRelation.getValidTil())) {
+        // Check if used Capitalsource is valid at bookingDate - if not, change its
+        // validity so it fits.
+        if (moneyflow.getCapitalsource() != null) {
+          final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+              group.getId(), moneyflow.getCapitalsource().getId());
+          if (capitalsource != null) {
+            final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
+                .equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
+            if (userMayUseCapitalsource) {
+              final boolean bookingDateIsBeforeValidity = bookingDate
+                  .isBefore(capitalsource.getValidFrom());
+              final boolean bookingDateIsAfterValidity = bookingDate
+                  .isAfter(capitalsource.getValidTil());
+              if (bookingDateIsBeforeValidity) {
+                capitalsource.setValidFrom(bookingDate);
+              }
+              if (bookingDateIsAfterValidity) {
+                capitalsource.setValidTil(bookingDate);
+              }
+              if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+                this.capitalsourceService.updateCapitalsource(capitalsource);
+              }
+            }
+          }
+        }
+        // Check if used Contractpartner is valid at bookingDate - if not, change its
+        // validity so it fits.
+        if (moneyflow.getContractpartner() != null) {
+          final Contractpartner contractpartner = this.contractpartnerService
+              .getContractpartnerById(userId, moneyflow.getContractpartner().getId());
+          if (contractpartner != null) {
+            final boolean bookingDateIsBeforeValidity = bookingDate
+                .isBefore(contractpartner.getValidFrom());
+            final boolean bookingDateIsAfterValidity = bookingDate
+                .isAfter(contractpartner.getValidTil());
+            if (bookingDateIsBeforeValidity) {
+              contractpartner.setValidFrom(bookingDate);
+            }
+            if (bookingDateIsAfterValidity) {
+              contractpartner.setValidTil(bookingDate);
+            }
+            if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+              this.contractpartnerService.updateContractpartner(contractpartner);
+            }
+          }
+        }
+      }
+    }
+    // use the comment and postingaccount of the 1st split booking for the main
+    // booking if
+    // nothing is specified
+    if (!moneyflowSplitEntries.isEmpty()) {
+      final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
+      if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
+        moneyflow.setComment(moneyflowSplitEntry.getComment());
+      }
+      if (moneyflow.getPostingAccount() == null) {
+        moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
+      }
+    }
   }
 
-  @RequestMapping(value = "showAddMoneyflows", method = { RequestMethod.GET })
-  public ShowAddMoneyflowsResponse showAddMoneyflows() {
-    final UserID userId = super.getUserId();
-    final ShowAddMoneyflowsResponse response = new ShowAddMoneyflowsResponse();
-    final LocalDate today = LocalDate.now();
-    final List<Capitalsource> capitalsources = this.capitalsourceService
-        .getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-    if (capitalsources != null && !capitalsources.isEmpty()) {
-      response
-          .setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
+  private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,
+      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+    final ValidationResult validationResult = new ValidationResult();
+    if (!moneyflowSplitEntries.isEmpty()) {
+      final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+          .map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+      if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+        validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
+            ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+      }
     }
-    final List<Contractpartner> contractpartner = this.contractpartnerService
-        .getAllContractpartnersByDateRange(userId, today, today);
-    if (contractpartner != null && !contractpartner.isEmpty()) {
-      response.setContractpartnerTransports(
-          super.mapList(contractpartner, ContractpartnerTransport.class));
-    }
-    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-    if (postingAccounts != null && !postingAccounts.isEmpty()) {
-      response.setPostingAccountTransports(
-          super.mapList(postingAccounts, PostingAccountTransport.class));
-    }
-    List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService
-        .getAllPreDefMoneyflows(userId);
-    if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-      preDefMoneyflows = preDefMoneyflows.stream()
-          .filter(pdm -> !this.isOnceAMonthAndAlreadyUsed(today, pdm))
-          .collect(Collectors.toCollection(ArrayList::new));
-      response.setPreDefMoneyflowTransports(
-          super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
-    }
-    return response;
+    return validationResult;
   }
 
   @RequestMapping(value = "showEditMoneyflow/{id}", method = { RequestMethod.GET })
@@ -187,54 +237,9 @@ public class MoneyflowController extends AbstractController {
         response.setMoneyflowSplitEntryTransports(
             super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
       }
-      final List<Capitalsource> capitalsources = this.capitalsourceService
-          .getGroupBookableCapitalsources(userId);
-      response
-          .setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
-      final List<Contractpartner> contractpartner = this.contractpartnerService
-          .getAllContractpartners(userId);
-      response.setContractpartnerTransports(
-          super.mapList(contractpartner, ContractpartnerTransport.class));
-      final List<PostingAccount> postingAccounts = this.postingAccountService
-          .getAllPostingAccounts();
-      response.setPostingAccountTransports(
-          super.mapList(postingAccounts, PostingAccountTransport.class));
       final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
           .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
       response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
-    }
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteMoneyflow/{id}", method = { RequestMethod.GET })
-  public ShowDeleteMoneyflowResponse showDeleteMoneyflow(
-      @PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final MoneyflowID moneyflowId = new MoneyflowID(id);
-    final ShowDeleteMoneyflowResponse response = new ShowDeleteMoneyflowResponse();
-    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-    if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
-      response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
-    }
-    return response;
-  }
-
-  @RequestMapping(value = "showSearchMoneyflowForm", method = { RequestMethod.GET })
-  public ShowSearchMoneyflowFormResponse showSearchMoneyflowForm() {
-    final UserID userId = super.getUserId();
-    final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
-    final List<Contractpartner> contractpartner = this.contractpartnerService
-        .getAllContractpartners(userId);
-    if (contractpartner != null && !contractpartner.isEmpty()) {
-      final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(
-          contractpartner, ContractpartnerTransport.class);
-      response.setContractpartnerTransports(contractpartnerTransports);
-    }
-    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-    if (postingAccounts != null && !postingAccounts.isEmpty()) {
-      final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
-          PostingAccountTransport.class);
-      response.setPostingAccountTransports(postingAccountTransports);
     }
     return response;
   }
@@ -269,19 +274,6 @@ public class MoneyflowController extends AbstractController {
         response.setMoneyflowTransports(moneyflowTransports);
       }
     }
-    final List<Contractpartner> contractpartner = this.contractpartnerService
-        .getAllContractpartners(userId);
-    if (contractpartner != null && !contractpartner.isEmpty()) {
-      final List<ContractpartnerTransport> contractpartnerTransports = super.mapList(
-          contractpartner, ContractpartnerTransport.class);
-      response.setContractpartnerTransports(contractpartnerTransports);
-    }
-    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-    if (postingAccounts != null && !postingAccounts.isEmpty()) {
-      final List<PostingAccountTransport> postingAccountTransports = super.mapList(postingAccounts,
-          PostingAccountTransport.class);
-      response.setPostingAccountTransports(postingAccountTransports);
-    }
     return response;
   }
 
@@ -289,7 +281,7 @@ public class MoneyflowController extends AbstractController {
    * Creates a new moneyflow together with split entries if they where given.
    *
    * @param request
-   *          The request which contains the moneyflow
+   *                  The request which contains the moneyflow
    * @return ValidationResponse
    */
   @RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
@@ -369,138 +361,16 @@ public class MoneyflowController extends AbstractController {
   }
 
   /**
-   * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity is
-   * modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries where
-   * provided with data from the first MoneyflowSplitEntry.
-   *
-   * @param moneyflow
-   *          Moneyflow
-   * @param moneyflowSplitEntries
-   *          MoneyflowSplitEntries
-   */
-  private void prepareForValidityCheck(final Moneyflow moneyflow,
-      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-    final LocalDate bookingDate = moneyflow.getBookingDate();
-    final UserID userId = moneyflow.getUser().getId();
-    final Group group = moneyflow.getGroup();
-    if (bookingDate != null) {
-      final AccessRelation accessRelation = this.accessRelationService
-          .getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
-      // Only modify Capitalsources or Contractpartner if the Bookingdate is within
-      // the
-      // current group assignment validity period
-      if (!bookingDate.isBefore(accessRelation.getValidFrom())
-          && !bookingDate.isAfter(accessRelation.getValidTil())) {
-        // Check if used Capitalsource is valid at bookingDate - if not, change its
-        // validity so it fits.
-        if (moneyflow.getCapitalsource() != null) {
-          final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-              group.getId(), moneyflow.getCapitalsource().getId());
-          if (capitalsource != null) {
-            final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
-                .equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
-            if (userMayUseCapitalsource) {
-              final boolean bookingDateIsBeforeValidity = bookingDate
-                  .isBefore(capitalsource.getValidFrom());
-              final boolean bookingDateIsAfterValidity = bookingDate
-                  .isAfter(capitalsource.getValidTil());
-              if (bookingDateIsBeforeValidity) {
-                capitalsource.setValidFrom(bookingDate);
-              }
-              if (bookingDateIsAfterValidity) {
-                capitalsource.setValidTil(bookingDate);
-              }
-              if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-                this.capitalsourceService.updateCapitalsource(capitalsource);
-              }
-            }
-          }
-        }
-        // Check if used Contractpartner is valid at bookingDate - if not, change its
-        // validity so it fits.
-        if (moneyflow.getContractpartner() != null) {
-          final Contractpartner contractpartner = this.contractpartnerService
-              .getContractpartnerById(userId, moneyflow.getContractpartner().getId());
-          if (contractpartner != null) {
-            final boolean bookingDateIsBeforeValidity = bookingDate
-                .isBefore(contractpartner.getValidFrom());
-            final boolean bookingDateIsAfterValidity = bookingDate
-                .isAfter(contractpartner.getValidTil());
-            if (bookingDateIsBeforeValidity) {
-              contractpartner.setValidFrom(bookingDate);
-            }
-            if (bookingDateIsAfterValidity) {
-              contractpartner.setValidTil(bookingDate);
-            }
-            if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-              this.contractpartnerService.updateContractpartner(contractpartner);
-            }
-          }
-        }
-      }
-    }
-    // use the comment and postingaccount of the 1st split booking for the main
-    // booking if
-    // nothing is specified
-    if (!moneyflowSplitEntries.isEmpty()) {
-      final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
-      if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
-        moneyflow.setComment(moneyflowSplitEntry.getComment());
-      }
-      if (moneyflow.getPostingAccount() == null) {
-        moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
-      }
-    }
-  }
-
-  /**
-   * Updates the given Moneyflow
+   * Updates the given Moneyflow.
    *
    * @param request
-   *          The Request object which contains the Moneyflow.
+   *                  The Request object which contains the Moneyflow.
    * @return Validation Response
    */
   @RequestMapping(value = "updateMoneyflowV2", method = { RequestMethod.PUT })
   public UpdateMoneyflowResponse updateMoneyflowV2(
       @RequestBody final UpdateMoneyflowRequest request) {
     final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
-    final ValidationResponse valResponse = this.updateMoneyflow(request);
-    if (valResponse == null) {
-      response.setResult(true);
-    } else {
-      response.setResult(valResponse.getResult());
-      response.setValidationItemTransports(valResponse.getValidationItemTransports());
-    }
-    if (!response.getResult()) {
-      return response;
-    }
-    final UserID userId = super.getUserId();
-    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
-        new MoneyflowID(request.getMoneyflowTransport().getId()));
-    if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
-      response.setMoneyflowTransport(super.map(moneyflow, MoneyflowTransport.class));
-      final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
-          .getMoneyflowSplitEntries(userId, moneyflow.getId());
-      if (!moneyflowSplitEntries.isEmpty()) {
-        response.setMoneyflowSplitEntryTransports(
-            super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
-      }
-      final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
-          .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
-      response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
-    }
-    return response;
-  }
-
-  /**
-   * Updates the given Moneyflow
-   *
-   * @param request
-   *          The Request object which contains the Moneyflow.
-   * @return Validation Response
-   */
-  @RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
-  public ValidationResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
     final Group group = this.accessRelationService.getAccessor(userId);
@@ -539,63 +409,67 @@ public class MoneyflowController extends AbstractController {
     final MoneyflowID moneyflowId = moneyflow.getId();
     final Moneyflow moneyflowById = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     // only the creator of a moneyflow may edit it!
-    if (moneyflowById != null && moneyflowById.getUser().equals(user)) {
-      final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+    if (moneyflowById == null || !moneyflowById.getUser().equals(user)) {
+      throw new BusinessException("Moneyflow not found!", ErrorCode.MONEYFLOW_DOES_NOT_EXISTS);
+    }
+    final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+    if (validationResult.isValid()) {
+      updateMoneyflowSplitEntries.forEach(mse -> {
+        mse.setMoneyflowId(moneyflowId);
+        validationResult.mergeValidationResult(
+            this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
+      });
+      insertMoneyflowSplitEntries.forEach(mse -> {
+        mse.setMoneyflowId(moneyflowId);
+        validationResult.mergeValidationResult(
+            this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
+      });
       if (validationResult.isValid()) {
-        updateMoneyflowSplitEntries.forEach(mse -> {
-          mse.setMoneyflowId(moneyflowId);
-          validationResult.mergeValidationResult(
-              this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
-        });
-        insertMoneyflowSplitEntries.forEach(mse -> {
-          mse.setMoneyflowId(moneyflowId);
-          validationResult.mergeValidationResult(
-              this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
-        });
+        validationResult
+            .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
         if (validationResult.isValid()) {
-          validationResult
-              .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
-          if (validationResult.isValid()) {
-            if (deleteMoneyflowSplitEntryIds != null) {
-              deleteMoneyflowSplitEntryIds.forEach(mseId -> this.moneyflowSplitEntryService
-                  .deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
-            }
-            updateMoneyflowSplitEntries.forEach(
-                mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
-            if (!insertMoneyflowSplitEntries.isEmpty()) {
-              this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId,
-                  insertMoneyflowSplitEntries);
-            }
-            this.moneyflowService.updateMoneyflow(moneyflow);
+          if (deleteMoneyflowSplitEntryIds != null) {
+            deleteMoneyflowSplitEntryIds.forEach(mseId -> this.moneyflowSplitEntryService
+                .deleteMoneyflowSplitEntry(userId, moneyflowId, mseId));
           }
+          updateMoneyflowSplitEntries.forEach(
+              mse -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(userId, mse));
+          if (!insertMoneyflowSplitEntries.isEmpty()) {
+            this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId,
+                insertMoneyflowSplitEntries);
+          }
+          this.moneyflowService.updateMoneyflow(moneyflow);
         }
       }
-      if (!validationResult.isValid()) {
-        return super.returnValidationResponse(validationResult);
-      }
     }
-    return null;
-  }
-
-  private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,
-      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-    final ValidationResult validationResult = new ValidationResult();
-    if (!moneyflowSplitEntries.isEmpty()) {
-      final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
-          .map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-      if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-        validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
-            ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
-      }
+    response.setResult(validationResult.isValid());
+    if (!validationResult.isValid()) {
+      response.setValidationItemTransports(super.mapList(
+          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+      return response;
     }
-    return validationResult;
+    final Moneyflow moneyflowNew = this.moneyflowService.getMoneyflowById(userId,
+        new MoneyflowID(request.getMoneyflowTransport().getId()));
+    if (moneyflowNew != null && moneyflowNew.getUser().getId().equals(userId)) {
+      response.setMoneyflowTransport(super.map(moneyflowNew, MoneyflowTransport.class));
+      final List<MoneyflowSplitEntry> moneyflowSplitEntriesNew = this.moneyflowSplitEntryService
+          .getMoneyflowSplitEntries(userId, moneyflowNew.getId());
+      if (!moneyflowSplitEntriesNew.isEmpty()) {
+        response.setMoneyflowSplitEntryTransports(
+            super.mapList(moneyflowSplitEntriesNew, MoneyflowSplitEntryTransport.class));
+      }
+      final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
+          .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflowNew.getId()));
+      response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
+    }
+    return response;
   }
 
   /**
    * Deletes the specified Moneyflow.
    *
    * @param id
-   *          The ID of the Moneyflow to delete
+   *             The ID of the Moneyflow to delete
    */
   @RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
   public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
@@ -610,11 +484,11 @@ public class MoneyflowController extends AbstractController {
    * Searches for Moneyflows given by an absolut amount and a date range.
    *
    * @param amount
-   *          ABS amount
+   *                      ABS amount
    * @param dateFromStr
-   *          date to start searching (format: YYYYMMDD)
+   *                      date to start searching (format: YYYYMMDD)
    * @param dateTilStr
-   *          date to end searching (format: YYYYMMDD)
+   *                      date to end searching (format: YYYYMMDD)
    * @return matching Moneyflows
    */
   @RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
