@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.config;
 
+import java.security.SecureRandom;
 import org.laladev.moneyjinn.core.rest.util.RESTAuthorization;
 import org.laladev.moneyjinn.server.main.BufferFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -50,6 +51,6 @@ public class BeanProducer {
 
   @Bean
   public PasswordEncoder getPasswordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder(10, new SecureRandom());
   }
 }

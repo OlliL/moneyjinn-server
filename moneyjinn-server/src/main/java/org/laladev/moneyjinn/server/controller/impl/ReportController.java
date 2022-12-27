@@ -31,7 +31,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -579,6 +578,11 @@ public class ReportController extends AbstractController {
                   monthlySettlement);
             }
           }
+          final List<CapitalsourceID> capitalsourceIds = validCapitalsources.stream()
+              .filter((mcs) -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
+              .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
+          final List<ImportedBalance> importedBalances = this.importedBalanceService
+              .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
           // this will hold all capitalsources which will be removed later if they where
           // processed it will then only contain new capitalsources which have no
           // settlement in the previous nor in this month yet
@@ -610,7 +614,7 @@ public class ReportController extends AbstractController {
             } else if (today.compareTo(beginOfMonth) >= 0 && today.compareTo(endOfMonth) <= 0) {
               // show imported balances only for the current month
               this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
-                  lastSettlement.getAmount(), turnoverCapitalsource, moneyflows);
+                  lastSettlement.getAmount(), turnoverCapitalsource, moneyflows, importedBalances);
             }
             final BigDecimal movementCalculated = this.getMovementForCapitalsourceAndDateRange(
                 moneyflows, capitalsourceId, beginOfMonth, endOfMonth);
@@ -657,7 +661,7 @@ public class ReportController extends AbstractController {
                       beginOfMonth, endOfMonth));
               if (!nextMonthHasMoneyflows) {
                 this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
-                    turnoverCapitalsource, moneyflows);
+                    turnoverCapitalsource, moneyflows, importedBalances);
               }
               turnoverCapitalsources.add(turnoverCapitalsource);
             }
@@ -800,6 +804,11 @@ public class ReportController extends AbstractController {
                   monthlySettlement);
             }
           }
+          final List<CapitalsourceID> capitalsourceIds = validCapitalsources.stream()
+              .filter((mcs) -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
+              .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
+          final List<ImportedBalance> importedBalances = this.importedBalanceService
+              .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
           // this will hold all capitalsources which will be removed later if they where
           // processed it will then only contain new capitalsources which have no
           // settlement in the previous nor in this month yet
@@ -832,7 +841,7 @@ public class ReportController extends AbstractController {
             } else if (today.compareTo(beginOfMonth) >= 0 && today.compareTo(endOfMonth) <= 0) {
               // show imported balances only for the current month
               this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
-                  lastSettlement.getAmount(), turnoverCapitalsource, moneyflows);
+                  lastSettlement.getAmount(), turnoverCapitalsource, moneyflows, importedBalances);
             }
             final BigDecimal movementCalculated = this.getMovementForCapitalsourceAndDateRange(
                 moneyflows, capitalsourceId, beginOfMonth, endOfMonth);
@@ -881,7 +890,7 @@ public class ReportController extends AbstractController {
                       beginOfMonth, endOfMonth));
               if (!nextMonthHasMoneyflows) {
                 this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
-                    turnoverCapitalsource, moneyflows);
+                    turnoverCapitalsource, moneyflows, importedBalances);
               }
               turnoverCapitalsources.add(turnoverCapitalsource);
             }
@@ -954,7 +963,8 @@ public class ReportController extends AbstractController {
 
   private BigDecimal getMovementForCapitalsourceAndDateRange(final List<Moneyflow> moneyflows,
       final CapitalsourceID capitalsourceId, final LocalDate dateFrom, final LocalDate dateTil) {
-    return moneyflows.stream().filter(mf -> mf.getCapitalsource().getId().equals(capitalsourceId))
+    return moneyflows.parallelStream()
+        .filter(mf -> mf.getCapitalsource().getId().equals(capitalsourceId))
         .filter(mf -> mf.getBookingDate().compareTo(dateFrom) >= 0)
         .filter(mf -> mf.getBookingDate().compareTo(dateTil) <= 0).map(Moneyflow::getAmount)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -965,7 +975,7 @@ public class ReportController extends AbstractController {
     final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, year, month);
     if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
-      return monthlySettlements.stream()
+      return monthlySettlements.parallelStream()
           .filter(ms -> yearlyAssetCapitalsourceIds.contains(ms.getCapitalsource().getId()))
           .map(MonthlySettlement::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -981,16 +991,18 @@ public class ReportController extends AbstractController {
   private void addCurrentAmount(final UserID userId, final Capitalsource capitalsource,
       final LocalDate startOfMonth, final BigDecimal startAmount,
       final ReportTurnoverCapitalsourceTransport turnoverCapitalsource,
-      final List<Moneyflow> moneyflows) {
+      final List<Moneyflow> moneyflows, final List<ImportedBalance> importedBalances) {
     final LocalDate today = LocalDate.now();
     final CapitalsourceID capitalsourceId = capitalsource.getId();
-    List<ImportedBalance> importedBalances = null;
+    ImportedBalance importedBalance = null;
     if (capitalsource.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED) {
-      importedBalances = this.importedBalanceService.getAllImportedBalancesByCapitalsourceIds(
-          userId, Collections.singletonList(capitalsourceId));
+      for (final ImportedBalance impBalance : importedBalances) {
+        if (impBalance.getCapitalsource().getId().equals(capitalsource.getId())) {
+          importedBalance = impBalance;
+        }
+      }
     }
-    if (importedBalances != null && !importedBalances.isEmpty()) {
-      final ImportedBalance importedBalance = importedBalances.get(0);
+    if (importedBalance != null) {
       turnoverCapitalsource.setAmountCurrent(importedBalance.getBalance());
       turnoverCapitalsource.setAmountCurrentState(Timestamp.valueOf(importedBalance.getDate()));
     } else {
