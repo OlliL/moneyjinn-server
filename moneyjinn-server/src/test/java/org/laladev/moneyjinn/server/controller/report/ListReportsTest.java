@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
-import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -15,7 +14,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
@@ -38,6 +36,7 @@ import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class ListReportsTest extends AbstractControllerTest {
   @Inject

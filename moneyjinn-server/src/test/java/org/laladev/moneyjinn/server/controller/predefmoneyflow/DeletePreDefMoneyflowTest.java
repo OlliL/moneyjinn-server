@@ -1,11 +1,9 @@
 
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -15,6 +13,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
   @Inject

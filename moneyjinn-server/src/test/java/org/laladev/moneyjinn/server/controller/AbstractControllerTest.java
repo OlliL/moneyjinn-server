@@ -6,8 +6,6 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
 import org.laladev.moneyjinn.core.rest.model.user.LoginResponse;
 import org.laladev.moneyjinn.server.config.JwtCache;
@@ -123,8 +121,6 @@ public abstract class AbstractControllerTest extends AbstractTest {
       final String body, final boolean noResult, final Class<T> clazz, final HttpStatus status)
       throws Exception {
     MockHttpServletRequestBuilder builder = null;
-    // final URI uri = new URI("/moneyflow/server/" + this.getUsecase() +
-    // uriParameters);
     final String uri = "/moneyflow/server/" + this.getUsecase() + uriParameters;
     switch (httpMethod.name()) {
       case "GET":
@@ -159,13 +155,6 @@ public abstract class AbstractControllerTest extends AbstractTest {
     }
     Assertions.assertTrue(content.length() == 0);
     return null;
-  }
-
-  protected ErrorResponse accessDeniedErrorResponse() {
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.LOGGED_OUT.getErrorCode());
-    expected.setMessage("Access Denied! You are not logged on!");
-    return expected;
   }
 
   /**

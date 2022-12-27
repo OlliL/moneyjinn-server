@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +18,7 @@ import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class DeleteContractpartnerTest extends AbstractControllerTest {
   @Inject

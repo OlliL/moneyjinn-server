@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;

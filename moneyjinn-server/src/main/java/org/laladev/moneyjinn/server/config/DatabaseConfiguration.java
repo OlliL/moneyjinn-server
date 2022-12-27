@@ -24,7 +24,6 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -34,6 +33,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import jakarta.inject.Inject;
 
 @Configuration
 @MapperScan("org.laladev.moneyjinn.service.dao.mapper")

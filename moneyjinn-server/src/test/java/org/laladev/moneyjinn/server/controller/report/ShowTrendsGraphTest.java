@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
-import jakarta.inject.Inject;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
@@ -11,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
@@ -28,6 +26,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class ShowTrendsGraphTest extends AbstractControllerTest {
   @Inject

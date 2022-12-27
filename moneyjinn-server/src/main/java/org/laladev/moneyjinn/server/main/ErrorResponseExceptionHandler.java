@@ -23,9 +23,6 @@ public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandle
     errorResponse.setMessage(ex.getErrorMessage());
     HttpStatus httpStatus;
     switch (ex.getErrorCode()) {
-      case LOGGED_OUT:
-      case USER_IS_NO_ADMIN:
-      case CLIENT_CLOCK_OFF:
       case USERNAME_PASSWORD_WRONG:
       case ACCOUNT_IS_LOCKED:
         httpStatus = HttpStatus.FORBIDDEN;

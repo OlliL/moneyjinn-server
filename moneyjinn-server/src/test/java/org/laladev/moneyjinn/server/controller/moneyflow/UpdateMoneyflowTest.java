@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
@@ -42,6 +40,7 @@ import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class UpdateMoneyflowTest extends AbstractControllerTest {
   @Inject

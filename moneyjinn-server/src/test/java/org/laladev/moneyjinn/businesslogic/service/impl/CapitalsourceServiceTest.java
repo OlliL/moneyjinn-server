@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import jakarta.inject.Inject;
 
 public class CapitalsourceServiceTest extends AbstractTest {
   @Inject

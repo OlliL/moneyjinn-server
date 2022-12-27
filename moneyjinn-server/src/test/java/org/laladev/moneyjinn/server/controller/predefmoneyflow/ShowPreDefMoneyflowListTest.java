@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.model.access.AccessID;
@@ -20,6 +18,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
   @Inject

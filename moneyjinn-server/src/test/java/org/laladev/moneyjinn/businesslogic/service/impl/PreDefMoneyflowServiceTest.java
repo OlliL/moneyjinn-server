@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
@@ -10,6 +9,7 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
+import jakarta.inject.Inject;
 
 public class PreDefMoneyflowServiceTest extends AbstractTest {
   @Inject

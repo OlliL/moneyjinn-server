@@ -25,12 +25,8 @@
 package org.laladev.moneyjinn.server.config;
 
 import org.laladev.moneyjinn.server.main.MoneyJinnHandlerInterceptor;
-import org.laladev.moneyjinn.server.main.SessionEnvironment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,12 +35,6 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
   @Bean
   public MoneyJinnHandlerInterceptor moneyjinnHandlerInterceptor() {
     return new MoneyJinnHandlerInterceptor();
-  }
-
-  @Bean
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-  public SessionEnvironment sessionEnvironment() {
-    return new SessionEnvironment();
   }
 
   @Override
