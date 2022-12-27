@@ -1,32 +1,23 @@
 
 package org.laladev.moneyjinn.core.rest.model.group;
 
-import java.util.List;
-import java.util.Set;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 
 @XmlRootElement(name = "showGroupListResponse")
 public class ShowGroupListResponse extends AbstractResponse {
-  private Set<Character> initials;
   @XmlElement(name = "groupTransport")
   private List<GroupTransport> groupTransports;
 
-  public final Set<Character> getInitials() {
-    return this.initials;
-  }
-
-  public final void setInitials(final Set<Character> initials) {
-    this.initials = initials;
-  }
-
-  public final List<GroupTransport> getGroupTransports() {
+  public List<GroupTransport> getGroupTransports() {
     return this.groupTransports;
   }
 
-  public final void setGroupTransports(final List<GroupTransport> groupTransports) {
+  public void setGroupTransports(final List<GroupTransport> groupTransports) {
     this.groupTransports = groupTransports;
   }
 
@@ -34,9 +25,7 @@ public class ShowGroupListResponse extends AbstractResponse {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result
-        + ((this.groupTransports == null) ? 0 : this.groupTransports.hashCode());
-    result = prime * result + ((this.initials == null) ? 0 : this.initials.hashCode());
+    result = prime * result + Objects.hash(this.groupTransports);
     return result;
   }
 
@@ -52,31 +41,12 @@ public class ShowGroupListResponse extends AbstractResponse {
       return false;
     }
     final ShowGroupListResponse other = (ShowGroupListResponse) obj;
-    if (this.groupTransports == null) {
-      if (other.groupTransports != null) {
-        return false;
-      }
-    } else if (!this.groupTransports.equals(other.groupTransports)) {
-      return false;
-    }
-    if (this.initials == null) {
-      if (other.initials != null) {
-        return false;
-      }
-    } else if (!this.initials.equals(other.initials)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.groupTransports, other.groupTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowGroupListResponse [initials=");
-    builder.append(this.initials);
-    builder.append(", groupTransports=");
-    builder.append(this.groupTransports);
-    builder.append("]");
-    return builder.toString();
+    return "ShowGroupListResponse [groupTransports=" + this.groupTransports + "]";
   }
+
 }

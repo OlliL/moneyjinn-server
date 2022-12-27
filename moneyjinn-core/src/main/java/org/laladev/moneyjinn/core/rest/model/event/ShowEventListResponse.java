@@ -26,55 +26,46 @@
 
 package org.laladev.moneyjinn.core.rest.model.event;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
 @XmlRootElement(name = "showEventListResponse")
 public class ShowEventListResponse extends AbstractResponse {
   private boolean monthlySettlementMissing;
   private Short monthlySettlementMonth;
   private Short monthlySettlementYear;
-  private Integer monthlySettlementNumberOfAddableSettlements;
   private Integer numberOfImportedMoneyflows;
 
-  public final boolean getMonthlySettlementMissing() {
+  public boolean isMonthlySettlementMissing() {
     return this.monthlySettlementMissing;
   }
 
-  public final void setMonthlySettlementMissing(final boolean monthlySettlementMissing) {
+  public void setMonthlySettlementMissing(final boolean monthlySettlementMissing) {
     this.monthlySettlementMissing = monthlySettlementMissing;
   }
 
-  public final Short getMonthlySettlementMonth() {
+  public Short getMonthlySettlementMonth() {
     return this.monthlySettlementMonth;
   }
 
-  public final void setMonthlySettlementMonth(final Short monthlySettlementMonth) {
+  public void setMonthlySettlementMonth(final Short monthlySettlementMonth) {
     this.monthlySettlementMonth = monthlySettlementMonth;
   }
 
-  public final Short getMonthlySettlementYear() {
+  public Short getMonthlySettlementYear() {
     return this.monthlySettlementYear;
   }
 
-  public final void setMonthlySettlementYear(final Short monthlySettlementYear) {
+  public void setMonthlySettlementYear(final Short monthlySettlementYear) {
     this.monthlySettlementYear = monthlySettlementYear;
   }
 
-  public final Integer getMonthlySettlementNumberOfAddableSettlements() {
-    return this.monthlySettlementNumberOfAddableSettlements;
-  }
-
-  public final void setMonthlySettlementNumberOfAddableSettlements(
-      final Integer monthlySettlementNumberOfAddableSettlements) {
-    this.monthlySettlementNumberOfAddableSettlements = monthlySettlementNumberOfAddableSettlements;
-  }
-
-  public final Integer getNumberOfImportedMoneyflows() {
+  public Integer getNumberOfImportedMoneyflows() {
     return this.numberOfImportedMoneyflows;
   }
 
-  public final void setNumberOfImportedMoneyflows(final Integer numberOfImportedMoneyflows) {
+  public void setNumberOfImportedMoneyflows(final Integer numberOfImportedMoneyflows) {
     this.numberOfImportedMoneyflows = numberOfImportedMoneyflows;
   }
 
@@ -82,15 +73,8 @@ public class ShowEventListResponse extends AbstractResponse {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + (this.monthlySettlementMissing ? 1231 : 1237);
-    result = prime * result
-        + ((this.monthlySettlementMonth == null) ? 0 : this.monthlySettlementMonth.hashCode());
-    result = prime * result + ((this.monthlySettlementNumberOfAddableSettlements == null) ? 0
-        : this.monthlySettlementNumberOfAddableSettlements.hashCode());
-    result = prime * result
-        + ((this.monthlySettlementYear == null) ? 0 : this.monthlySettlementYear.hashCode());
-    result = prime * result + ((this.numberOfImportedMoneyflows == null) ? 0
-        : this.numberOfImportedMoneyflows.hashCode());
+    result = prime * result + Objects.hash(this.monthlySettlementMissing,
+        this.monthlySettlementMonth, this.monthlySettlementYear, this.numberOfImportedMoneyflows);
     return result;
   }
 
@@ -106,55 +90,17 @@ public class ShowEventListResponse extends AbstractResponse {
       return false;
     }
     final ShowEventListResponse other = (ShowEventListResponse) obj;
-    if (this.monthlySettlementMissing != other.monthlySettlementMissing) {
-      return false;
-    }
-    if (this.monthlySettlementMonth == null) {
-      if (other.monthlySettlementMonth != null) {
-        return false;
-      }
-    } else if (!this.monthlySettlementMonth.equals(other.monthlySettlementMonth)) {
-      return false;
-    }
-    if (this.monthlySettlementNumberOfAddableSettlements == null) {
-      if (other.monthlySettlementNumberOfAddableSettlements != null) {
-        return false;
-      }
-    } else if (!this.monthlySettlementNumberOfAddableSettlements
-        .equals(other.monthlySettlementNumberOfAddableSettlements)) {
-      return false;
-    }
-    if (this.monthlySettlementYear == null) {
-      if (other.monthlySettlementYear != null) {
-        return false;
-      }
-    } else if (!this.monthlySettlementYear.equals(other.monthlySettlementYear)) {
-      return false;
-    }
-    if (this.numberOfImportedMoneyflows == null) {
-      if (other.numberOfImportedMoneyflows != null) {
-        return false;
-      }
-    } else if (!this.numberOfImportedMoneyflows.equals(other.numberOfImportedMoneyflows)) {
-      return false;
-    }
-    return true;
+    return this.monthlySettlementMissing == other.monthlySettlementMissing
+        && Objects.equals(this.monthlySettlementMonth, other.monthlySettlementMonth)
+        && Objects.equals(this.monthlySettlementYear, other.monthlySettlementYear)
+        && Objects.equals(this.numberOfImportedMoneyflows, other.numberOfImportedMoneyflows);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowEventListResponse [monthlySettlementMissing=");
-    builder.append(this.monthlySettlementMissing);
-    builder.append(", monthlySettlementMonth=");
-    builder.append(this.monthlySettlementMonth);
-    builder.append(", monthlySettlementYear=");
-    builder.append(this.monthlySettlementYear);
-    builder.append(", monthlySettlementNumberOfAddableSettlements=");
-    builder.append(this.monthlySettlementNumberOfAddableSettlements);
-    builder.append(", numberOfImportedMoneyflows=");
-    builder.append(this.numberOfImportedMoneyflows);
-    builder.append("]");
-    return builder.toString();
+    return "ShowEventListResponse [monthlySettlementMissing=" + this.monthlySettlementMissing
+        + ", monthlySettlementMonth=" + this.monthlySettlementMonth + ", monthlySettlementYear="
+        + this.monthlySettlementYear + ", numberOfImportedMoneyflows="
+        + this.numberOfImportedMoneyflows + "]";
   }
 }

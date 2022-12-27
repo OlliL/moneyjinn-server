@@ -1,12 +1,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 //
@@ -34,66 +28,30 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 
 @XmlRootElement(name = "showAddImportedMoneyflowsResponse")
 public class ShowAddImportedMoneyflowsResponse extends ValidationResponse {
   @XmlElement(name = "importedMoneyflowTransport")
   private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
-  @XmlElement(name = "capitalsourceTransport")
-  private List<CapitalsourceTransport> capitalsourceTransports;
-  @XmlElement(name = "contractpartnerTransport")
-  private List<ContractpartnerTransport> contractpartnerTransports;
-  @XmlElement(name = "postingAccountTransport")
-  private List<PostingAccountTransport> postingAccountTransports;
 
-  public final List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {
+  public List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {
     return this.importedMoneyflowTransports;
   }
 
-  public final void setImportedMoneyflowTransports(
+  public void setImportedMoneyflowTransports(
       final List<ImportedMoneyflowTransport> importedMoneyflowTransports) {
     this.importedMoneyflowTransports = importedMoneyflowTransports;
-  }
-
-  public final List<CapitalsourceTransport> getCapitalsourceTransports() {
-    return this.capitalsourceTransports;
-  }
-
-  public final void setCapitalsourceTransports(
-      final List<CapitalsourceTransport> capitalsourceTransports) {
-    this.capitalsourceTransports = capitalsourceTransports;
-  }
-
-  public final List<ContractpartnerTransport> getContractpartnerTransports() {
-    return this.contractpartnerTransports;
-  }
-
-  public final void setContractpartnerTransports(
-      final List<ContractpartnerTransport> contractpartnerTransports) {
-    this.contractpartnerTransports = contractpartnerTransports;
-  }
-
-  public final List<PostingAccountTransport> getPostingAccountTransports() {
-    return this.postingAccountTransports;
-  }
-
-  public final void setPostingAccountTransports(
-      final List<PostingAccountTransport> postingAccountTransports) {
-    this.postingAccountTransports = postingAccountTransports;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result
-        + ((this.capitalsourceTransports == null) ? 0 : this.capitalsourceTransports.hashCode());
-    result = prime * result + ((this.contractpartnerTransports == null) ? 0
-        : this.contractpartnerTransports.hashCode());
-    result = prime * result + ((this.importedMoneyflowTransports == null) ? 0
-        : this.importedMoneyflowTransports.hashCode());
-    result = prime * result
-        + ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
+    result = prime * result + Objects.hash(this.importedMoneyflowTransports);
     return result;
   }
 
@@ -109,49 +67,13 @@ public class ShowAddImportedMoneyflowsResponse extends ValidationResponse {
       return false;
     }
     final ShowAddImportedMoneyflowsResponse other = (ShowAddImportedMoneyflowsResponse) obj;
-    if (this.capitalsourceTransports == null) {
-      if (other.capitalsourceTransports != null) {
-        return false;
-      }
-    } else if (!this.capitalsourceTransports.equals(other.capitalsourceTransports)) {
-      return false;
-    }
-    if (this.contractpartnerTransports == null) {
-      if (other.contractpartnerTransports != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
-      return false;
-    }
-    if (this.importedMoneyflowTransports == null) {
-      if (other.importedMoneyflowTransports != null) {
-        return false;
-      }
-    } else if (!this.importedMoneyflowTransports.equals(other.importedMoneyflowTransports)) {
-      return false;
-    }
-    if (this.postingAccountTransports == null) {
-      if (other.postingAccountTransports != null) {
-        return false;
-      }
-    } else if (!this.postingAccountTransports.equals(other.postingAccountTransports)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.importedMoneyflowTransports, other.importedMoneyflowTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowAddImportedMoneyflowsResponse [importedMoneyflowTransports=");
-    builder.append(this.importedMoneyflowTransports);
-    builder.append(", capitalsourceTransports=");
-    builder.append(this.capitalsourceTransports);
-    builder.append(", contractpartnerTransports=");
-    builder.append(this.contractpartnerTransports);
-    builder.append(", postingAccountTransports=");
-    builder.append(this.postingAccountTransports);
-    builder.append("]");
-    return builder.toString();
+    return "ShowAddImportedMoneyflowsResponse [importedMoneyflowTransports="
+        + this.importedMoneyflowTransports + "]";
   }
+
 }

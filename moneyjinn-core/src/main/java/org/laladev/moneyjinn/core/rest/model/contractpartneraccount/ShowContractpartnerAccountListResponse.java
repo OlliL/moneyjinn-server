@@ -1,6 +1,9 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,42 +31,29 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 //
 
 import java.util.List;
+import java.util.Objects;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {
   @XmlElement(name = "contractpartnerAccountTransport")
   private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
-  private String contractpartnerName;
 
-  public final List<ContractpartnerAccountTransport> getContractpartnerAccountTransports() {
+  public List<ContractpartnerAccountTransport> getContractpartnerAccountTransports() {
     return this.contractpartnerAccountTransports;
   }
 
-  public final void setContractpartnerAccountTransports(
+  public void setContractpartnerAccountTransports(
       final List<ContractpartnerAccountTransport> contractpartnerAccountTransports) {
     this.contractpartnerAccountTransports = contractpartnerAccountTransports;
-  }
-
-  public final String getContractpartnerName() {
-    return this.contractpartnerName;
-  }
-
-  public final void setContractpartnerName(final String contractpartnerName) {
-    this.contractpartnerName = contractpartnerName;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + ((this.contractpartnerAccountTransports == null) ? 0
-        : this.contractpartnerAccountTransports.hashCode());
-    result = prime * result
-        + ((this.contractpartnerName == null) ? 0 : this.contractpartnerName.hashCode());
+    result = prime * result + Objects.hash(this.contractpartnerAccountTransports);
     return result;
   }
 
@@ -79,32 +69,14 @@ public class ShowContractpartnerAccountListResponse extends AbstractResponse {
       return false;
     }
     final ShowContractpartnerAccountListResponse other = (ShowContractpartnerAccountListResponse) obj;
-    if (this.contractpartnerAccountTransports == null) {
-      if (other.contractpartnerAccountTransports != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerAccountTransports
-        .equals(other.contractpartnerAccountTransports)) {
-      return false;
-    }
-    if (this.contractpartnerName == null) {
-      if (other.contractpartnerName != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerName.equals(other.contractpartnerName)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.contractpartnerAccountTransports,
+        other.contractpartnerAccountTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowContractpartnerAccountListResponse [contractpartnerAccountTransports=");
-    builder.append(this.contractpartnerAccountTransports);
-    builder.append(", contractpartnerName=");
-    builder.append(this.contractpartnerName);
-    builder.append("]");
-    return builder.toString();
+    return "ShowContractpartnerAccountListResponse [contractpartnerAccountTransports="
+        + this.contractpartnerAccountTransports + "]";
   }
+
 }
