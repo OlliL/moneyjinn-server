@@ -27,16 +27,12 @@ package org.laladev.moneyjinn.server.controller.impl;
 import jakarta.inject.Inject;
 import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowContractpartnerAccountListResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowDeleteContractpartnerAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowEditContractpartnerAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.UpdateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -77,21 +73,13 @@ public class ContractpartnerAccountController extends AbstractController {
     final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
         .getContractpartnerAccounts(userId, contractpartnerId);
     final ShowContractpartnerAccountListResponse response = new ShowContractpartnerAccountListResponse();
-    String contractpartnerName = null;
+
     if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
       final List<ContractpartnerAccountTransport> contractpartnerAccountTransports = super.mapList(
           contractpartnerAccounts, ContractpartnerAccountTransport.class);
       response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
-      contractpartnerName = contractpartnerAccounts.iterator().next().getContractpartner()
-          .getName();
-    } else {
-      final Contractpartner contractpartner = this.contractpartnerService
-          .getContractpartnerById(userId, contractpartnerId);
-      if (contractpartner != null) {
-        contractpartnerName = contractpartner.getName();
-      }
     }
-    response.setContractpartnerName(contractpartnerName);
+
     return response;
   }
 
@@ -145,33 +133,4 @@ public class ContractpartnerAccountController extends AbstractController {
         contractpartnerAccountId);
   }
 
-  @RequestMapping(value = "showEditContractpartnerAccount/{id}", method = { RequestMethod.GET })
-  public ShowEditContractpartnerAccountResponse showEditContractpartnerAccount(
-      @PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
-    final ShowEditContractpartnerAccountResponse response = new ShowEditContractpartnerAccountResponse();
-    this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteContractpartnerAccount/{id}", method = { RequestMethod.GET })
-  public ShowDeleteContractpartnerAccountResponse showDeleteContractpartnerAccount(
-      @PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
-    final ShowDeleteContractpartnerAccountResponse response = new ShowDeleteContractpartnerAccountResponse();
-    this.fillAbstractContractpartnerAccountResponse(response, userId, contractpartnerAccountId);
-    return response;
-  }
-
-  private void fillAbstractContractpartnerAccountResponse(
-      final AbstractContractpartnerAccountResponse response, final UserID userId,
-      final ContractpartnerAccountID contractpartnerAccountId) {
-    final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-        .getContractpartnerAccountById(userId, contractpartnerAccountId);
-    final ContractpartnerAccountTransport contractpartnerAccountTransport = super.map(
-        contractpartnerAccount, ContractpartnerAccountTransport.class);
-    response.setContractpartnerAccountTransport(contractpartnerAccountTransport);
-  }
 }

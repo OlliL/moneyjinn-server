@@ -39,15 +39,11 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
@@ -147,20 +143,7 @@ public class ImportedMoneyflowController extends AbstractController {
           .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
               ImportedMoneyflowStatus.CREATED);
       if (importedMoneyflows != null && !importedMoneyflows.isEmpty()) {
-        response.setCapitalsourceTransports(
-            super.mapList(capitalsources, CapitalsourceTransport.class));
-        final List<Contractpartner> contractpartners = this.contractpartnerService
-            .getAllContractpartnersByDateRange(userId, today, today);
-        if (contractpartners != null && !contractpartners.isEmpty()) {
-          response.setContractpartnerTransports(
-              super.mapList(contractpartners, ContractpartnerTransport.class));
-        }
-        final List<PostingAccount> postingAccounts = this.postingAccountService
-            .getAllPostingAccounts();
-        if (postingAccounts != null && !postingAccounts.isEmpty()) {
-          response.setPostingAccountTransports(
-              super.mapList(postingAccounts, PostingAccountTransport.class));
-        }
+
         final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
             .map(ImportedMoneyflow::getBankAccount)
             .collect(Collectors.toCollection(ArrayList::new));
@@ -247,9 +230,9 @@ public class ImportedMoneyflowController extends AbstractController {
    * provided with data from the first MoneyflowSplitEntry.
    *
    * @param moneyflow
-   *          Moneyflow
+   *                                Moneyflow
    * @param moneyflowSplitEntries
-   *          MoneyflowSplitEntries
+   *                                MoneyflowSplitEntries
    */
   private void prepareForValidityCheck(final Moneyflow moneyflow,
       final List<MoneyflowSplitEntry> moneyflowSplitEntries) {

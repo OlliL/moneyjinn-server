@@ -26,13 +26,9 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.group.AbstractGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
-import org.laladev.moneyjinn.core.rest.model.group.ShowDeleteGroupResponse;
-import org.laladev.moneyjinn.core.rest.model.group.ShowEditGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowGroupListResponse;
 import org.laladev.moneyjinn.core.rest.model.group.UpdateGroupRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
@@ -40,7 +36,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -72,34 +67,12 @@ public class GroupController extends AbstractController {
 
   @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
   public ShowGroupListResponse showGroupList() {
-    return this.showGroupList(null);
-  }
-
-  @RequestMapping(value = "showGroupList/{restriction}", method = { RequestMethod.GET })
-  public ShowGroupListResponse showGroupList(
-      @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
-    List<Group> groups = null;
-    if (restriction != null) {
-      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-        groups = this.groupService.getAllGroups();
-      } else if (restriction.length() == 1) {
-        groups = this.groupService.getAllGroupsByInitial(restriction.toCharArray()[0]);
-      }
-    } else {
-      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
-          .getClientMaxRowsSetting(userId);
-      final Integer count = this.groupService.countAllGroups();
-      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-        groups = this.groupService.getAllGroups();
-      }
-    }
-    final Set<Character> initials = this.groupService.getAllGroupInitials();
+    final List<Group> groups = this.groupService.getAllGroups();
     final ShowGroupListResponse response = new ShowGroupListResponse();
     if (groups != null && !groups.isEmpty()) {
       response.setGroupTransports(super.mapList(groups, GroupTransport.class));
     }
-    response.setInitials(initials);
     return response;
   }
 
@@ -141,23 +114,4 @@ public class GroupController extends AbstractController {
     this.groupService.deleteGroup(groupId);
   }
 
-  @RequestMapping(value = "showEditGroup/{id}", method = { RequestMethod.GET })
-  public ShowEditGroupResponse showEditGroup(@PathVariable(value = "id") final Long groupId) {
-    final ShowEditGroupResponse response = new ShowEditGroupResponse();
-    this.fillAbstractGroupResponse(groupId, response);
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteGroup/{id}", method = { RequestMethod.GET })
-  public ShowDeleteGroupResponse showDeleteGroup(@PathVariable(value = "id") final Long groupId) {
-    final ShowDeleteGroupResponse response = new ShowDeleteGroupResponse();
-    this.fillAbstractGroupResponse(groupId, response);
-    return response;
-  }
-
-  private void fillAbstractGroupResponse(final Long id, final AbstractGroupResponse response) {
-    final GroupID groupId = new GroupID(id);
-    final Group group = this.groupService.getGroupById(groupId);
-    response.setGroupTransport(super.map(group, GroupTransport.class));
-  }
 }

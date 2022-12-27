@@ -35,6 +35,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
         .requestMatchers(HttpMethod.OPTIONS, "/moneyflow/server/**").permitAll()
         .requestMatchers("/moneyflow/server/user/login").permitAll()
+        .requestMatchers("/moneyflow/server/user/refreshToken").permitAll()
         .requestMatchers("/moneyflow/server/importedbalance/createImportedBalance").permitAll()
         .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
         .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
@@ -45,7 +46,7 @@ public class SecurityConfig {
         .requestMatchers("/moneyflow/server/group/deleteGroupById/**").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/group/showDeleteGroup/**").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/group/showEditGroup/**").hasAuthority("ADMIN")
-        .requestMatchers("/moneyflow/server/group/showGroupList/**").hasAuthority("ADMIN")
+        .requestMatchers("/moneyflow/server/group/showGroupList").hasAuthority("ADMIN")
         // POSTINGACCOUNT
         .requestMatchers("/moneyflow/server/postingaccount/createPostingAccount").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/postingaccount/updatePostingAccount").hasAuthority("ADMIN")

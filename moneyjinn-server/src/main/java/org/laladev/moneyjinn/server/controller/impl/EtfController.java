@@ -43,9 +43,6 @@ import org.laladev.moneyjinn.core.rest.model.etf.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.CreateEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.ShowCreateEtfFlowResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.ShowDeleteEtfFlowResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.ShowEditEtfFlowResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.UpdateEtfFlowRequest;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
@@ -221,34 +218,6 @@ public class EtfController extends AbstractController {
       response.setRebuyLosses(rebuyLosses);
       response.setOverallCosts(overallCosts);
     }
-    return response;
-  }
-
-  @RequestMapping(value = "showCreateEtfFlow", method = { RequestMethod.GET })
-  public ShowCreateEtfFlowResponse showCreateEtfFlow() {
-    final ShowCreateEtfFlowResponse response = new ShowCreateEtfFlowResponse();
-    final List<Etf> etfs = this.etfService.getAllEtf();
-    response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-    return response;
-  }
-
-  @RequestMapping(value = "showEditEtfFlow/{id}", method = { RequestMethod.GET })
-  public ShowEditEtfFlowResponse showEditEtfFlow(@PathVariable(value = "id") final Long id) {
-    final ShowEditEtfFlowResponse response = new ShowEditEtfFlowResponse();
-    final List<Etf> etfs = this.etfService.getAllEtf();
-    response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-    final EtfFlow etfFlow = this.etfService.getEtfFlowById(new EtfFlowID(id));
-    response.setEtfFlowTransport(super.map(etfFlow, EtfFlowTransport.class));
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteEtfFlow/{id}", method = { RequestMethod.GET })
-  public ShowDeleteEtfFlowResponse showDeleteEtfFlow(@PathVariable(value = "id") final Long id) {
-    final ShowDeleteEtfFlowResponse response = new ShowDeleteEtfFlowResponse();
-    final List<Etf> etfs = this.etfService.getAllEtf();
-    response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-    final EtfFlow etfFlow = this.etfService.getEtfFlowById(new EtfFlowID(id));
-    response.setEtfFlowTransport(super.map(etfFlow, EtfFlowTransport.class));
     return response;
   }
 

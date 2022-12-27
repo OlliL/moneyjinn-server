@@ -55,21 +55,6 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   @Test
   public void test_standardRequest_Successfull() throws Exception {
     final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
-    final List<ContractpartnerTransport> contractpartnerTransports = new ArrayList<>();
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner1().build());
-    contractpartnerTransports
-        .add(new ContractpartnerTransportBuilder().forContractpartner2().build());
-    expected.setContractpartnerTransports(contractpartnerTransports);
-    final List<CapitalsourceTransport> capitalsourceTransports = new ArrayList<>();
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource1().build());
-    capitalsourceTransports.add(new CapitalsourceTransportBuilder().forCapitalsource2().build());
-    expected.setCapitalsourceTransports(capitalsourceTransports);
     final List<ImportedMoneyflowTransport> importedMoneyflowTransports = new ArrayList<>();
     importedMoneyflowTransports
         .add(new ImportedMoneyflowTransportBuilder().forImportedMoneyflow1().build());

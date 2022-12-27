@@ -27,7 +27,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,18 +65,15 @@ public class EventController extends AbstractController {
     final UserID userId = super.getUserId();
     final ShowEventListResponse response = new ShowEventListResponse();
     // missing monthly settlements from last month?
-    final LocalDate beginOfMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
-    final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-    final Month month = beginOfMonth.getMonth();
-    final Short year = (short) beginOfMonth.getYear();
+    final LocalDate beginOfPreviousMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
+    final Month month = beginOfPreviousMonth.getMonth();
+    final Short year = (short) beginOfPreviousMonth.getYear();
     final boolean monthlySettlementExists = this.monthlySettlementService
         .checkMonthlySettlementsExists(userId, year, month);
-    List<Capitalsource> capitalsources = this.capitalsourceService
-        .getGroupCapitalsourcesByDateRange(userId, beginOfMonth, endOfMonth);
-    final Integer numberOfAddableSettlements = capitalsources != null ? capitalsources.size() : 0;
+
     final LocalDate today = LocalDate.now();
-    capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId, today,
-        today);
+    final List<Capitalsource> capitalsources = this.capitalsourceService
+        .getGroupCapitalsourcesByDateRange(userId, today, today);
     if (capitalsources != null && !capitalsources.isEmpty()) {
       final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
           .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
@@ -88,7 +84,6 @@ public class EventController extends AbstractController {
     response.setMonthlySettlementMissing(!monthlySettlementExists);
     response.setMonthlySettlementMonth((short) month.getValue());
     response.setMonthlySettlementYear(year);
-    response.setMonthlySettlementNumberOfAddableSettlements(numberOfAddableSettlements);
     return response;
   }
 }

@@ -49,7 +49,6 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
     contractpartnerAccountTransports
         .add(new ContractpartnerAccountTransportBuilder().forContractpartnerAccount2().build());
     expected.setContractpartnerAccountTransports(contractpartnerAccountTransports);
-    expected.setContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
     return expected;
   }
 
@@ -63,9 +62,8 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_contractpartnerWithNoAccounts_responseWithNoAccountsButName() throws Exception {
+  public void test_contractpartnerWithNoAccounts_responseWithNoAccounts() throws Exception {
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
-    expected.setContractpartnerName(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME);
     final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
         "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID, this.method, false,
         ShowContractpartnerAccountListResponse.class);
