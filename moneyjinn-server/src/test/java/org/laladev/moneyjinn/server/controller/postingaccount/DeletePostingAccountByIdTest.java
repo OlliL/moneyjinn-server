@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   @Inject
@@ -90,20 +90,15 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    final ErrorResponse actual = super.callUsecaseWithoutContent(
-        "/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
+        this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/1", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/1", this.method);
   }
 
   @Test

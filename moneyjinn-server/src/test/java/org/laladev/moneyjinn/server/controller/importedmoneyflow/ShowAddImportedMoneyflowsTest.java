@@ -99,8 +99,7 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("111", this.method, false,
-        ErrorResponse.class);
+    super.callUsecaseExpect403("111", this.method);
   }
 
   @Test

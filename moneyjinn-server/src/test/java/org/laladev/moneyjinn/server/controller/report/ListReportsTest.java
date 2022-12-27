@@ -565,27 +565,21 @@ public class ListReportsTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_01_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_02_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/2010", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/2010", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_03_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/2010/1", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/2010/1", this.method);
   }
 
   @Test

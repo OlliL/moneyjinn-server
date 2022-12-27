@@ -31,6 +31,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
+import org.springframework.security.web.firewall.RequestRejectedHandler;
 
 @Configuration
 public class BeanProducer {
@@ -46,5 +48,15 @@ public class BeanProducer {
   @Bean
   public PasswordEncoder getPasswordEncoder() {
     return new BCryptPasswordEncoder(10, new SecureRandom());
+  }
+
+  /**
+   * Send HTTP Status Code 400 in case of a Rejected URL.
+   *
+   * @return
+   */
+  @Bean
+  public RequestRejectedHandler requestRejectedHandler() {
+    return new HttpStatusRequestRejectedHandler();
   }
 }

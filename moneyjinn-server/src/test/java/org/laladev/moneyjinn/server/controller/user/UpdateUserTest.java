@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
@@ -385,18 +384,13 @@ public class UpdateUserTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
     final UpdateUserRequest request = new UpdateUserRequest();
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("", this.method, request);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 }

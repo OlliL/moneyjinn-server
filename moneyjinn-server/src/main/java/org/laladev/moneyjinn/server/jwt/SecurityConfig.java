@@ -38,6 +38,32 @@ public class SecurityConfig {
                 .requestMatchers("/moneyflow/server/importedbalance/createImportedBalance").permitAll()
                 .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
                 .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
+                .requestMatchers("/moneyflow/server/postingaccount/showEditPostingAccount/**").hasAuthority("ADMIN")
+                // GROUP
+                .requestMatchers("/moneyflow/server/group/createGroup").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/group/updateGroup").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/group/deleteGroupById/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/group/showDeleteGroup/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/group/showEditGroup/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/group/showGroupList/**").hasAuthority("ADMIN")
+                // POSTINGACCOUNT
+                .requestMatchers("/moneyflow/server/postingaccount/createPostingAccount").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/postingaccount/updatePostingAccount").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/postingaccount/deletePostingAccountById/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/postingaccount/showDeletePostingAccount/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/postingaccount/showEditPostingAccount/**").hasAuthority("ADMIN")
+                // USER
+                .requestMatchers("/moneyflow/server/user/createUser").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/updateUser").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/deleteUserById/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/showCreateUser").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/showDeleteUser/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/showEditUser/**").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/user/showUserList/**").hasAuthority("ADMIN")
+                // SETTINGS
+                .requestMatchers("/moneyflow/server/setting/showDefaultSettings").hasAuthority("ADMIN")
+                .requestMatchers("/moneyflow/server/setting/updateDefaultSettings").hasAuthority("ADMIN")
+                // every other non-ADMIN request
                 .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
                 .requestMatchers("/**").denyAll()
                 .anyRequest().authenticated()

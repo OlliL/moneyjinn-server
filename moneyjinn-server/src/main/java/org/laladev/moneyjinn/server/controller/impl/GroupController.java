@@ -24,7 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -55,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -110,8 +110,8 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "createGroup", method = { RequestMethod.POST })
-  @RequiresAuthorization
   @RequiresPermissionAdmin
+  @RequiresAuthorization
   public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     group.setId(null);

@@ -125,27 +125,21 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_1_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_2_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/2008", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/2008", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/2008/12", this.method);
   }
 
   @Test

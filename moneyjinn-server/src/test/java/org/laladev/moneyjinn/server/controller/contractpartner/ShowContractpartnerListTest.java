@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -220,53 +219,35 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
   @Test
   public void test_initialPercent_HttpStatus400NoContent() throws Exception {
-    // make sure that requesting data starting with % only returns matching data and % is not
-    // interpreted as LIKE SQL special char
-    final Contractpartner contractpartner = new Contractpartner();
-    contractpartner.setUser(new User(new UserID(UserTransportBuilder.USER1_ID)));
-    contractpartner.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
-    contractpartner.setName("%1");
-    contractpartner.setValidFrom(LocalDate.now());
-    contractpartner.setValidTil(LocalDate.now());
-    this.contractpartnerService.createContractpartner(contractpartner);
-    super.callUsecaseWithoutContent("/%/currentlyValid/0", this.method, true,
-        ShowContractpartnerListResponse.class);
+    super.callUsecaseExpect400("/%", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired1_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/currentlyValid", this.method,
-        false, ErrorResponse.class);
-
+    super.callUsecaseExpect403("/currentlyValid", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired2_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid", this.method,
-        false, ErrorResponse.class);
-
+    super.callUsecaseExpect403("/all/currentlyValid", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/currentlyValid/0", this.method,
-        false, ErrorResponse.class);
-
+    super.callUsecaseExpect403("/currentlyValid/0", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired4_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/all/currentlyValid/0",
-        this.method, false, ErrorResponse.class);
-
+    super.callUsecaseExpect403("/all/currentlyValid/0", this.method);
   }
 
   @Test

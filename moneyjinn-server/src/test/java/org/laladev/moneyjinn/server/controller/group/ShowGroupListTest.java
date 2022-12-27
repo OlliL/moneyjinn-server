@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.group.ShowGroupListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.model.access.AccessID;
@@ -130,49 +128,34 @@ public class ShowGroupListTest extends AbstractControllerTest {
 
   @Test
   public void test_initialPercent_HttpStatus400NoContent() throws Exception {
-    // make sure that requesting data starting with % only returns matching data and % is not
-    // interpreted as LIKE SQL special char
-    final Group group = new Group();
-    group.setName("%1");
-    this.groupService.createGroup(group);
-    super.callUsecaseWithoutContent("/%", this.method, true, ShowGroupListResponse.class);
+    super.callUsecaseExpect400("/%", this.method);
   }
 
   @Test
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test
   public void test_OnlyAdminAllowed_filtered_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/A", this.method, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("/A", this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_filtered_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("/A", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/A", this.method);
   }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowContractpartnerAccountListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
@@ -86,10 +85,8 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID,
+        this.method);
   }
 
   @Test

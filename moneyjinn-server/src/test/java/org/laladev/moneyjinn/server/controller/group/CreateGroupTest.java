@@ -1,14 +1,12 @@
 
 package org.laladev.moneyjinn.server.controller.group;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
@@ -20,6 +18,7 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
+import jakarta.inject.Inject;
 
 public class CreateGroupTest extends AbstractControllerTest {
   @Inject
@@ -103,18 +102,13 @@ public class CreateGroupTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
     final CreateGroupRequest request = new CreateGroupRequest();
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("", this.method, request);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 }

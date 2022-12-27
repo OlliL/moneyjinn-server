@@ -1,12 +1,9 @@
 
 package org.laladev.moneyjinn.server.controller.setting;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.UpdateDefaultSettingsRequest;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
@@ -16,6 +13,7 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
+import jakarta.inject.Inject;
 
 public class UpdateDefaultSettingsTest extends AbstractControllerTest {
   @Inject
@@ -69,18 +67,13 @@ public class UpdateDefaultSettingsTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
     final UpdateDefaultSettingsRequest request = new UpdateDefaultSettingsRequest();
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ErrorResponse.class);
-    Assertions.assertEquals(Integer.valueOf(ErrorCode.USER_IS_NO_ADMIN.getErrorCode()),
-        actual.getCode());
+    super.callUsecaseExpect403("", this.method, request);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    final ErrorResponse actual = super.callUsecaseWithoutContent("", this.method, false,
-        ErrorResponse.class);
-
+    super.callUsecaseExpect403("", this.method);
   }
 }
