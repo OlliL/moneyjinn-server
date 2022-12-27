@@ -26,54 +26,49 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 @XmlRootElement(name = "showEditMoneyflowResponse")
-public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
+public class ShowEditMoneyflowResponse {
   @XmlElement(name = "moneyflowSplitEntryTransport")
   private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
   private MoneyflowTransport moneyflowTransport;
   private boolean hasReceipt;
 
-  public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
+  public List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
     return this.moneyflowSplitEntryTransports;
   }
 
-  public final void setMoneyflowSplitEntryTransports(
+  public void setMoneyflowSplitEntryTransports(
       final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
     this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
   }
 
-  public final MoneyflowTransport getMoneyflowTransport() {
+  public MoneyflowTransport getMoneyflowTransport() {
     return this.moneyflowTransport;
   }
 
-  public final void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
+  public void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
     this.moneyflowTransport = moneyflowTransport;
   }
 
-  public final boolean isHasReceipt() {
+  public boolean isHasReceipt() {
     return this.hasReceipt;
   }
 
-  public final void setHasReceipt(final boolean hasReceipt) {
+  public void setHasReceipt(final boolean hasReceipt) {
     this.hasReceipt = hasReceipt;
   }
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + (this.hasReceipt ? 1231 : 1237);
-    result = prime * result + ((this.moneyflowSplitEntryTransports == null) ? 0
-        : this.moneyflowSplitEntryTransports.hashCode());
-    result = prime * result
-        + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
-    return result;
+    return Objects.hash(this.hasReceipt, this.moneyflowSplitEntryTransports,
+        this.moneyflowTransport);
   }
 
   @Override
@@ -81,43 +76,23 @@ public class ShowEditMoneyflowResponse extends AbstractEditMoneyflowResponse {
     if (this == obj) {
       return true;
     }
-    if (!super.equals(obj)) {
+    if (obj == null) {
       return false;
     }
     if (this.getClass() != obj.getClass()) {
       return false;
     }
     final ShowEditMoneyflowResponse other = (ShowEditMoneyflowResponse) obj;
-    if (this.hasReceipt != other.hasReceipt) {
-      return false;
-    }
-    if (this.moneyflowSplitEntryTransports == null) {
-      if (other.moneyflowSplitEntryTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports)) {
-      return false;
-    }
-    if (this.moneyflowTransport == null) {
-      if (other.moneyflowTransport != null) {
-        return false;
-      }
-    } else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
-      return false;
-    }
-    return true;
+    return this.hasReceipt == other.hasReceipt
+        && Objects.equals(this.moneyflowSplitEntryTransports, other.moneyflowSplitEntryTransports)
+        && Objects.equals(this.moneyflowTransport, other.moneyflowTransport);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowEditMoneyflowResponse [moneyflowSplitEntryTransports=");
-    builder.append(this.moneyflowSplitEntryTransports);
-    builder.append(", moneyflowTransport=");
-    builder.append(this.moneyflowTransport);
-    builder.append(", hasReceipt=");
-    builder.append(this.hasReceipt);
-    builder.append("]");
-    return builder.toString();
+    return "ShowEditMoneyflowResponse [moneyflowSplitEntryTransports="
+        + this.moneyflowSplitEntryTransports + ", moneyflowTransport=" + this.moneyflowTransport
+        + ", hasReceipt=" + this.hasReceipt + "]";
   }
+
 }

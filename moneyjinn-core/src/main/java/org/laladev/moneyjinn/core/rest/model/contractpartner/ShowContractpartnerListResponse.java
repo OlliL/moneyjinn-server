@@ -1,6 +1,9 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartner;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,52 +31,29 @@ package org.laladev.moneyjinn.core.rest.model.contractpartner;
 //
 
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "showContractpartnerListResponse")
 public class ShowContractpartnerListResponse extends AbstractResponse {
-  private Set<Character> initials;
   @XmlElement(name = "contractpartnerTransport")
   private List<ContractpartnerTransport> contractpartnerTransports;
-  private boolean currentlyValid;
 
-  public final Set<Character> getInitials() {
-    return this.initials;
-  }
-
-  public final void setInitials(final Set<Character> initials) {
-    this.initials = initials;
-  }
-
-  public final List<ContractpartnerTransport> getContractpartnerTransports() {
+  public List<ContractpartnerTransport> getContractpartnerTransports() {
     return this.contractpartnerTransports;
   }
 
-  public final void setContractpartnerTransports(
+  public void setContractpartnerTransports(
       final List<ContractpartnerTransport> contractpartnerTransports) {
     this.contractpartnerTransports = contractpartnerTransports;
-  }
-
-  public final boolean isCurrentlyValid() {
-    return this.currentlyValid;
-  }
-
-  public final void setCurrentlyValid(final boolean currentlyValid) {
-    this.currentlyValid = currentlyValid;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + ((this.contractpartnerTransports == null) ? 0
-        : this.contractpartnerTransports.hashCode());
-    result = prime * result + (this.currentlyValid ? 1231 : 1237);
-    result = prime * result + ((this.initials == null) ? 0 : this.initials.hashCode());
+    result = prime * result + Objects.hash(this.contractpartnerTransports);
     return result;
   }
 
@@ -89,36 +69,13 @@ public class ShowContractpartnerListResponse extends AbstractResponse {
       return false;
     }
     final ShowContractpartnerListResponse other = (ShowContractpartnerListResponse) obj;
-    if (this.contractpartnerTransports == null) {
-      if (other.contractpartnerTransports != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
-      return false;
-    }
-    if (this.currentlyValid != other.currentlyValid) {
-      return false;
-    }
-    if (this.initials == null) {
-      if (other.initials != null) {
-        return false;
-      }
-    } else if (!this.initials.equals(other.initials)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.contractpartnerTransports, other.contractpartnerTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowContractpartnerListResponse [initials=");
-    builder.append(this.initials);
-    builder.append(", contractpartnerTransports=");
-    builder.append(this.contractpartnerTransports);
-    builder.append(", currentlyValid=");
-    builder.append(this.currentlyValid);
-    builder.append("]");
-    return builder.toString();
+    return "ShowContractpartnerListResponse [contractpartnerTransports="
+        + this.contractpartnerTransports + "]";
   }
+
 }

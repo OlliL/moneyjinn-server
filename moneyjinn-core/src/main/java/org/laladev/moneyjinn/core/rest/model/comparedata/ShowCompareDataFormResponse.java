@@ -26,62 +26,51 @@
 
 package org.laladev.moneyjinn.core.rest.model.comparedata;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
 
 @XmlRootElement(name = "showCompareDataFormResponse")
 public class ShowCompareDataFormResponse extends AbstractResponse {
   @XmlElement(name = "compareDataFormatTransport")
   private List<CompareDataFormatTransport> compareDataFormatTransports;
-  @XmlElement(name = "capitalsourceTransport")
-  private List<CapitalsourceTransport> capitalsourceTransports;
   private Long selectedCapitalsourceId;
   private Long selectedDataFormat;
   private Short selectedSourceIsFile;
 
-  public final List<CompareDataFormatTransport> getCompareDataFormatTransports() {
+  public List<CompareDataFormatTransport> getCompareDataFormatTransports() {
     return this.compareDataFormatTransports;
   }
 
-  public final void setCompareDataFormatTransports(
+  public void setCompareDataFormatTransports(
       final List<CompareDataFormatTransport> compareDataFormatTransports) {
     this.compareDataFormatTransports = compareDataFormatTransports;
   }
 
-  public final List<CapitalsourceTransport> getCapitalsourceTransports() {
-    return this.capitalsourceTransports;
-  }
-
-  public final void setCapitalsourceTransports(
-      final List<CapitalsourceTransport> capitalsourceTransports) {
-    this.capitalsourceTransports = capitalsourceTransports;
-  }
-
-  public final Long getSelectedCapitalsourceId() {
+  public Long getSelectedCapitalsourceId() {
     return this.selectedCapitalsourceId;
   }
 
-  public final void setSelectedCapitalsourceId(final Long selectedCapitalsourceId) {
+  public void setSelectedCapitalsourceId(final Long selectedCapitalsourceId) {
     this.selectedCapitalsourceId = selectedCapitalsourceId;
   }
 
-  public final Long getSelectedDataFormat() {
+  public Long getSelectedDataFormat() {
     return this.selectedDataFormat;
   }
 
-  public final void setSelectedDataFormat(final Long selectedDataFormat) {
+  public void setSelectedDataFormat(final Long selectedDataFormat) {
     this.selectedDataFormat = selectedDataFormat;
   }
 
   public Short getSelectedSourceIsFile() {
-    return selectedSourceIsFile;
+    return this.selectedSourceIsFile;
   }
 
-  public void setSelectedSourceIsFile(Short selectedSourceIsFile) {
+  public void setSelectedSourceIsFile(final Short selectedSourceIsFile) {
     this.selectedSourceIsFile = selectedSourceIsFile;
   }
 
@@ -89,82 +78,34 @@ public class ShowCompareDataFormResponse extends AbstractResponse {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result
-        + ((capitalsourceTransports == null) ? 0 : capitalsourceTransports.hashCode());
-    result = prime * result
-        + ((compareDataFormatTransports == null) ? 0 : compareDataFormatTransports.hashCode());
-    result = prime * result
-        + ((selectedCapitalsourceId == null) ? 0 : selectedCapitalsourceId.hashCode());
-    result = prime * result + ((selectedDataFormat == null) ? 0 : selectedDataFormat.hashCode());
-    result = prime * result
-        + ((selectedSourceIsFile == null) ? 0 : selectedSourceIsFile.hashCode());
+    result = prime * result + Objects.hash(this.compareDataFormatTransports,
+        this.selectedCapitalsourceId, this.selectedDataFormat, this.selectedSourceIsFile);
     return result;
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
     if (!super.equals(obj)) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (this.getClass() != obj.getClass()) {
       return false;
     }
-    ShowCompareDataFormResponse other = (ShowCompareDataFormResponse) obj;
-    if (capitalsourceTransports == null) {
-      if (other.capitalsourceTransports != null) {
-        return false;
-      }
-    } else if (!capitalsourceTransports.equals(other.capitalsourceTransports)) {
-      return false;
-    }
-    if (compareDataFormatTransports == null) {
-      if (other.compareDataFormatTransports != null) {
-        return false;
-      }
-    } else if (!compareDataFormatTransports.equals(other.compareDataFormatTransports)) {
-      return false;
-    }
-    if (selectedCapitalsourceId == null) {
-      if (other.selectedCapitalsourceId != null) {
-        return false;
-      }
-    } else if (!selectedCapitalsourceId.equals(other.selectedCapitalsourceId)) {
-      return false;
-    }
-    if (selectedDataFormat == null) {
-      if (other.selectedDataFormat != null) {
-        return false;
-      }
-    } else if (!selectedDataFormat.equals(other.selectedDataFormat)) {
-      return false;
-    }
-    if (selectedSourceIsFile == null) {
-      if (other.selectedSourceIsFile != null) {
-        return false;
-      }
-    } else if (!selectedSourceIsFile.equals(other.selectedSourceIsFile)) {
-      return false;
-    }
-    return true;
+    final ShowCompareDataFormResponse other = (ShowCompareDataFormResponse) obj;
+    return Objects.equals(this.compareDataFormatTransports, other.compareDataFormatTransports)
+        && Objects.equals(this.selectedCapitalsourceId, other.selectedCapitalsourceId)
+        && Objects.equals(this.selectedDataFormat, other.selectedDataFormat)
+        && Objects.equals(this.selectedSourceIsFile, other.selectedSourceIsFile);
   }
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("ShowCompareDataFormResponse [compareDataFormatTransports=");
-    builder.append(compareDataFormatTransports);
-    builder.append(", capitalsourceTransports=");
-    builder.append(capitalsourceTransports);
-    builder.append(", selectedCapitalsourceId=");
-    builder.append(selectedCapitalsourceId);
-    builder.append(", selectedDataFormat=");
-    builder.append(selectedDataFormat);
-    builder.append(", selectedSourceIsFile=");
-    builder.append(selectedSourceIsFile);
-    builder.append("]");
-    return builder.toString();
+    return "ShowCompareDataFormResponse [compareDataFormatTransports="
+        + this.compareDataFormatTransports + ", selectedCapitalsourceId="
+        + this.selectedCapitalsourceId + ", selectedDataFormat=" + this.selectedDataFormat
+        + ", selectedSourceIsFile=" + this.selectedSourceIsFile + "]";
   }
 }

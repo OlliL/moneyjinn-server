@@ -26,59 +26,31 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 @XmlRootElement(name = "searchMoneyflowsResponse")
 public class SearchMoneyflowsResponse extends ValidationResponse {
   @XmlElement(name = "moneyflowTransport")
   private List<MoneyflowTransport> moneyflowTransports;
-  @XmlElement(name = "contractpartnerTransport")
-  private List<ContractpartnerTransport> contractpartnerTransports;
-  @XmlElement(name = "postingAccountTransport")
-  private List<PostingAccountTransport> postingAccountTransports;
 
-  public final List<MoneyflowTransport> getMoneyflowTransports() {
+  public List<MoneyflowTransport> getMoneyflowTransports() {
     return this.moneyflowTransports;
   }
 
-  public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
+  public void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
     this.moneyflowTransports = moneyflowTransports;
-  }
-
-  public final List<ContractpartnerTransport> getContractpartnerTransports() {
-    return this.contractpartnerTransports;
-  }
-
-  public final void setContractpartnerTransports(
-      final List<ContractpartnerTransport> contractpartnerTransports) {
-    this.contractpartnerTransports = contractpartnerTransports;
-  }
-
-  public final List<PostingAccountTransport> getPostingAccountTransports() {
-    return this.postingAccountTransports;
-  }
-
-  public final void setPostingAccountTransports(
-      final List<PostingAccountTransport> postingAccountTransports) {
-    this.postingAccountTransports = postingAccountTransports;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + ((this.contractpartnerTransports == null) ? 0
-        : this.contractpartnerTransports.hashCode());
-    result = prime * result
-        + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
-    result = prime * result
-        + ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
+    result = prime * result + Objects.hash(this.moneyflowTransports);
     return result;
   }
 
@@ -94,40 +66,12 @@ public class SearchMoneyflowsResponse extends ValidationResponse {
       return false;
     }
     final SearchMoneyflowsResponse other = (SearchMoneyflowsResponse) obj;
-    if (this.contractpartnerTransports == null) {
-      if (other.contractpartnerTransports != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerTransports.equals(other.contractpartnerTransports)) {
-      return false;
-    }
-    if (this.moneyflowTransports == null) {
-      if (other.moneyflowTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
-      return false;
-    }
-    if (this.postingAccountTransports == null) {
-      if (other.postingAccountTransports != null) {
-        return false;
-      }
-    } else if (!this.postingAccountTransports.equals(other.postingAccountTransports)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.moneyflowTransports, other.moneyflowTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("SearchMoneyflowsResponse [moneyflowTransports=");
-    builder.append(this.moneyflowTransports);
-    builder.append(", contractpartnerTransports=");
-    builder.append(this.contractpartnerTransports);
-    builder.append(", postingAccountTransports=");
-    builder.append(this.postingAccountTransports);
-    builder.append("]");
-    return builder.toString();
+    return "SearchMoneyflowsResponse [moneyflowTransports=" + this.moneyflowTransports + "]";
   }
+
 }
