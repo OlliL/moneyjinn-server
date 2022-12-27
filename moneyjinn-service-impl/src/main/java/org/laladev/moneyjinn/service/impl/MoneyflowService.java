@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -78,6 +76,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @EnableCaching
@@ -417,6 +417,12 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
         .collect(Collectors.toCollection(ArrayList::new));
     return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom,
         dateTil, capitalsourceIdLongs);
+  }
+
+  @Override
+  public LocalDate getMinMoneyflowDate(final UserID userId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    return this.moneyflowDao.getMinMoneyflowDate(userId.getId());
   }
 
   @Override

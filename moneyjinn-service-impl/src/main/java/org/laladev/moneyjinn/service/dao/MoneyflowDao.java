@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +33,8 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 public class MoneyflowDao {
@@ -90,6 +90,10 @@ public class MoneyflowDao {
       return false;
     }
     return result;
+  }
+
+  public LocalDate getMinMoneyflowDate(final Long userId) {
+    return this.mapper.getMinMoneyflowDate(userId);
   }
 
   public LocalDate getMaxMoneyflowDate(final Long userId) {

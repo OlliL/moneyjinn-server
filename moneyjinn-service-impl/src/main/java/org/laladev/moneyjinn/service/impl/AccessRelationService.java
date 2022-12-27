@@ -51,7 +51,6 @@ import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessFlattenedDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 import jakarta.inject.Inject;
@@ -101,26 +100,31 @@ public class AccessRelationService extends AbstractService implements IAccessRel
   public Group getAccessor(final AccessID accessId, final LocalDate date) {
     Assert.notNull(accessId, "AccessId must not be null!");
     Assert.notNull(date, "Date must not be null!");
-    final Cache cache = super.getCache(CacheNames.ACCESS_RELATION_BY_USER_ID_AND_DATE,
-        accessId.getId().toString());
-    Group group = cache.get(date, Group.class);
-    if (group == null) {
-      final List<Group> groups = this.getAllUserGroupsByUserIdDate(accessId, date);
-      if (!groups.isEmpty()) {
-        group = groups.get(0);
-        cache.put(date, group);
+    final List<AccessRelation> accessRelations = this.getAllAccessRelationsById(accessId);
+    for (final AccessRelation accessRelation : accessRelations) {
+      if (!(date.isBefore(accessRelation.getValidFrom())
+          || date.isAfter(accessRelation.getValidTil()))) {
+        final Group groupById = this.groupService
+            .getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+        return groupById;
       }
     }
-    return group;
+    return null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  @Cacheable(value = CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, key = "#p0.getId()")
   public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
     Assert.notNull(accessId, "AccessId must not be null!");
-    final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-        .getAllAccessRelationsById(accessId.getId());
-    return super.mapList(accessRelationDataList, AccessRelation.class);
+    final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
+    List<AccessRelation> result = cache.get(accessId.getId(), List.class);
+    if (result == null) {
+      final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
+          .getAllAccessRelationsById(accessId.getId());
+      result = super.mapList(accessRelationDataList, AccessRelation.class);
+      cache.put(accessId.getId(), result);
+    }
+    return result;
   }
 
   @Override
@@ -176,25 +180,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
     Assert.notNull(userId, "UserId must not be null!");
     final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
     return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
-  }
-
-  private List<Group> getAllUserGroupsByUserIdDate(final AccessID accessId, final LocalDate date) {
-    final List<Group> groupList = new ArrayList<>();
-    AccessRelationData accessRelationData = this.accessRelationDao
-        .getAccessRelationById(accessId.getId(), date);
-    AccessRelation accessRelation = super.map(accessRelationData, AccessRelation.class);
-    while (accessRelation.getParentAccessRelation() != null
-        && accessRelation.getParentAccessRelation().getId().getId().compareTo(ROOT_ID) != 0) {
-      accessRelationData = this.accessRelationDao
-          .getAccessRelationById(accessRelation.getParentAccessRelation().getId().getId(), date);
-      accessRelation = super.map(accessRelationData, AccessRelation.class);
-      final Group groupById = this.groupService
-          .getGroupById(new GroupID(accessRelation.getId().getId()));
-      if (groupById != null) {
-        groupList.add(groupById);
-      }
-    }
-    return groupList;
   }
 
   private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId,

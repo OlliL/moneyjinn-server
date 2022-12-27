@@ -24,7 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -96,6 +95,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -136,13 +136,12 @@ public class ReportController extends AbstractController {
     final ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
         .getClientReportingUnselectedPostingAccountIdsSetting(userId);
     final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
-    final LocalDate minMonthlysettlementwDate = this.monthlySettlementService
-        .getMinSettlementDate(userId);
+    final LocalDate minMoneyflowDate = this.moneyflowService.getMinMoneyflowDate(userId);
     if (maxMoneyflowDate != null) {
       response.setMaxDate(Date.valueOf(maxMoneyflowDate));
     }
-    if (minMonthlysettlementwDate != null) {
-      response.setMinDate(Date.valueOf(minMonthlysettlementwDate));
+    if (minMoneyflowDate != null) {
+      response.setMinDate(Date.valueOf(minMoneyflowDate));
     }
     response
         .setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
@@ -234,6 +233,7 @@ public class ReportController extends AbstractController {
         .getMinSettlementDate(userId);
     if (maxMoneyflowDate != null) {
       response.setMaxDate(Date.valueOf(maxMoneyflowDate));
+      response.setMinDate(Date.valueOf(maxMoneyflowDate));
     }
     if (minMonthlysettlementwDate != null) {
       response.setMinDate(Date.valueOf(minMonthlysettlementwDate));

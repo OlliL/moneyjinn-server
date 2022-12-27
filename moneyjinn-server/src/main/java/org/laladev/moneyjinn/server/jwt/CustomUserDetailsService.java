@@ -11,19 +11,21 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
   @Autowired
   private IUserService userService;
+  @Autowired
+  private PasswordEncoder encoder;
 
   @Override
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
     final User user = this.userService.getUserByName(username);
     if (user != null) {
-      final String password = new BCryptPasswordEncoder().encode(user.getPassword());
+      final String password = this.encoder.encode(user.getPassword());
       final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
       user.getPermissions().stream()
           .forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p.name())));

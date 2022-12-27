@@ -62,6 +62,8 @@ public interface IMoneyflowDaoMapper {
   public Boolean monthHasMoneyflows(@Param("userId") Long userId,
       @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
+  public LocalDate getMinMoneyflowDate(Long userId);
+
   public LocalDate getMaxMoneyflowDate(Long userId);
 
   public LocalDate getPreviousMoneyflowDate(@Param("userId") Long userId,

@@ -195,6 +195,14 @@ public interface IMoneyflowService {
       LocalDate dateTil, List<CapitalsourceID> capitalsourceIds);
 
   /**
+   * Retrives the earliest date of all recored {@link Moneyflow}s.
+   *
+   * @param userId
+   * @return
+   */
+  LocalDate getMinMoneyflowDate(UserID userId);
+
+  /**
    * Retrives the highest date of all recored {@link Moneyflow}s.
    *
    * @param userId

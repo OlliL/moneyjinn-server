@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
+import jakarta.inject.Inject;
 
 public class ShowReportingFormTest extends AbstractControllerTest {
   @Inject
@@ -57,7 +57,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
     postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
     postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
     expected.setPostingAccountTransports(postingAccountTransports);
-    expected.setMinDate(DateUtil.getGmtDate("2008-11-01"));
+    expected.setMinDate(DateUtil.getGmtDate("2008-12-01"));
     expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
     return expected;
   }

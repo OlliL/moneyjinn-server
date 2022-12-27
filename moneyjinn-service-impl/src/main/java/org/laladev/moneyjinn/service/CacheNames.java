@@ -30,7 +30,6 @@ public class CacheNames {
   public static final String USER_BY_ID = "userById";
   public static final String USER_BY_NAME = "userByName";
   public static final String ALL_ACCESS_RELATIONS_BY_USER_ID = "allAccessRelationsByUserId";
-  public static final String ACCESS_RELATION_BY_USER_ID_AND_DATE = "accessRelationsByUserIdDate";
   public static final String ALL_GROUPS = "allGroups";
   public static final String GROUP_BY_ID = "groupById";
   public static final String ALL_POSTINGACCOUNTS = "allPostingAccounts";

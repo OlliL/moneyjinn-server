@@ -29,6 +29,8 @@ import org.laladev.moneyjinn.server.main.BufferFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class BeanProducer {
@@ -44,5 +46,10 @@ public class BeanProducer {
     registrationBean.addUrlPatterns("/moneyflow/*");
     registrationBean.setOrder(1);
     return registrationBean;
+  }
+
+  @Bean
+  public PasswordEncoder getPasswordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

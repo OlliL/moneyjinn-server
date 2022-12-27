@@ -165,6 +165,17 @@
                        )
          </select>           
 
+         <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
+                SELECT MIN(bookingdate)
+                  FROM vw_moneyflows
+                 WHERE maf_id              = #{userId}
+                   AND (
+                        private            = 0
+                          OR
+                        mac_id_creator     = #{userId}
+                       )
+         </select>           
+
         <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows

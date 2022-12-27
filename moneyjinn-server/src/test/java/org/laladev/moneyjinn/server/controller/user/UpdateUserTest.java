@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
-import jakarta.inject.Inject;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -34,6 +33,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
+import jakarta.inject.Inject;
 
 public class UpdateUserTest extends AbstractControllerTest {
   @Inject
@@ -130,22 +130,21 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccessRelationAndPasswordEmpty_SuccessfullNoContentPasswordNotChanged()
-      throws Exception {
+  public void test_AccessRelationAndPasswordEmpty_SuccessfullPasswordNotChanged() throws Exception {
     final UpdateUserRequest request = new UpdateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserIsNew(Short.valueOf((short) 0));
     request.setUserTransport(transport);
-    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         UpdateUserResponse.class);
-    Assertions.assertNull(actual);
+    Assertions.assertTrue(actual.getResult());
     final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
     Assertions.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
     Assertions.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
   }
 
   @Test
-  public void test_AccessRelationEmpty_SuccessfullNoContent() throws Exception {
+  public void test_AccessRelationEmpty_Successfull() throws Exception {
     final UpdateUserRequest request = new UpdateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserPassword("123");
@@ -158,9 +157,9 @@ public class UpdateUserTest extends AbstractControllerTest {
      */
     transport.setUserIsNew(Short.valueOf((short) 0));
     request.setUserTransport(transport);
-    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         UpdateUserResponse.class);
-    Assertions.assertNull(actual);
+    Assertions.assertTrue(actual.getResult());
     final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
     // sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
@@ -204,9 +203,9 @@ public class UpdateUserTest extends AbstractControllerTest {
     final UpdateUserRequest request = new UpdateUserRequest();
     request.setUserTransport(transport);
     request.setAccessRelationTransport(accessRelationTransport);
-    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, true,
+    final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         UpdateUserResponse.class);
-    Assertions.assertNull(actual);
+    Assertions.assertTrue(actual.getResult());
     final List<AccessRelation> accessRelations = this.accessRelationService
         .getAllAccessRelationsById(new UserID(transport.getId()));
     Assertions.assertEquals(expectedAccessRelations, accessRelations);
