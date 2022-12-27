@@ -35,12 +35,10 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IGroupService;
-import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,11 +51,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/group/")
 public class GroupController extends AbstractController {
-  private static final String RESTRICTION_ALL = "all";
   @Inject
   private IGroupService groupService;
-  @Inject
-  private ISettingService settingService;
 
   @Override
   protected void addBeanMapper() {
@@ -67,7 +62,6 @@ public class GroupController extends AbstractController {
 
   @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
   public ShowGroupListResponse showGroupList() {
-    final UserID userId = super.getUserId();
     final List<Group> groups = this.groupService.getAllGroups();
     final ShowGroupListResponse response = new ShowGroupListResponse();
     if (groups != null && !groups.isEmpty()) {

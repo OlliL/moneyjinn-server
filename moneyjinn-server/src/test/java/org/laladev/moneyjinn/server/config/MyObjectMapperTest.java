@@ -54,11 +54,10 @@ public class MyObjectMapperTest {
     final RestObject restObject = new RestObject();
     final String date = "2015-01-01";
     final Timestamp timestampJava = Timestamp.valueOf("2015-01-01 01:02:03.004");
-    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",
+    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
         Locale.GERMANY);
-    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    // Should be changed back to X in the Formatter instead of hardcoding +00:00 with Jackson 3
-    // see https://github.com/FasterXML/jackson-databind/issues/2643
+    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    // manually add +00:00 because XXX makes it 'Z' as per Java Spec. But Jackson always adds +00:00
     final String timestampJson = dateFormat.format(timestampJava) + "+00:00";
     restObject.setAttribute3(Date.valueOf(date));
     restObject.setAttribute4(timestampJava);

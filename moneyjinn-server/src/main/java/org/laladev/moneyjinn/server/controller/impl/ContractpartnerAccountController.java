@@ -41,7 +41,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,8 +53,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartneraccount/")
 public class ContractpartnerAccountController extends AbstractController {
-  @Inject
-  private IContractpartnerService contractpartnerService;
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
 

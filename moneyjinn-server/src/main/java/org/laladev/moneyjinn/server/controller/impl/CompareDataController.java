@@ -56,7 +56,6 @@ import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTranspor
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
@@ -76,8 +75,6 @@ public class CompareDataController extends AbstractController {
   private ISettingService settingService;
   @Inject
   private ICompareDataService compareDataService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
 
   @Override
   protected void addBeanMapper() {
@@ -90,7 +87,6 @@ public class CompareDataController extends AbstractController {
   @RequestMapping(value = "showCompareDataForm", method = { RequestMethod.GET })
   public ShowCompareDataFormResponse showCompareDataForm() {
     final UserID userId = super.getUserId();
-    final LocalDate today = LocalDate.now();
     final ShowCompareDataFormResponse response = new ShowCompareDataFormResponse();
     final List<CompareDataFormat> compareDataFormats = this.compareDataService
         .getAllCompareDataFormats();

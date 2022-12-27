@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapp
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,13 +56,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/capitalsource/")
 public class CapitalsourceController extends AbstractController {
-  private static final String RESTRICTION_ALL = "all";
   @Inject
   private IAccessRelationService accessRelationService;
   @Inject
   private ICapitalsourceService capitalsourceService;
-  @Inject
-  private ISettingService settingService;
   @Inject
   private IUserService userService;
 
