@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.group;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,6 @@ import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
-import jakarta.inject.Inject;
 
 public class UpdateGroupTest extends AbstractControllerTest {
   @Inject

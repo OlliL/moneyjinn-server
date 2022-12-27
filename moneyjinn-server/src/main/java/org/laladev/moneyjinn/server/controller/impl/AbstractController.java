@@ -1,18 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.TechnicalException;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 //Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -36,8 +24,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-
 import jakarta.inject.Inject;
+import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AbstractController extends AbstractMapperSupport {
   @Inject

@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.jwt;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -22,7 +23,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenProvider {

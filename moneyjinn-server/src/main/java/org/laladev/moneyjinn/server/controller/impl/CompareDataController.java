@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Base64;
@@ -56,7 +57,6 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
@@ -71,7 +71,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -95,7 +94,6 @@ public class CompareDataController extends AbstractController {
   }
 
   @RequestMapping(value = "showCompareDataForm", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowCompareDataFormResponse showCompareDataForm() {
     final UserID userId = super.getUserId();
     final LocalDate today = LocalDate.now();
@@ -136,7 +134,6 @@ public class CompareDataController extends AbstractController {
   }
 
   @RequestMapping(value = "compareData", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public CompareDataResponse compareData(@RequestBody final CompareDataRequest request) {
     final UserID userId = super.getUserId();
     final CompareDataResponse response = new CompareDataResponse();

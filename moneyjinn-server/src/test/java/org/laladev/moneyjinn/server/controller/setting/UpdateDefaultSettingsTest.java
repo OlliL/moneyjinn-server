@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.setting;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
-import jakarta.inject.Inject;
 
 public class UpdateDefaultSettingsTest extends AbstractControllerTest {
   @Inject

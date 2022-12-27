@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -65,8 +66,6 @@ import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
@@ -86,7 +85,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -155,8 +153,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
     final ShowEditUserResponse response = new ShowEditUserResponse();
     this.fillAbstractShowUserResponse(new UserID(userId), response);
@@ -164,8 +160,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
     final ValidationResult validationResultUser = this.userService.validateUser(user);
@@ -200,15 +194,11 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowUserListResponse showUserList() {
     return this.showUserList(null);
   }
 
   @RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowUserListResponse showUserList(
       @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
@@ -254,8 +244,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "showCreateUser", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowCreateUserResponse showCreateUser() {
     final ShowCreateUserResponse response = new ShowCreateUserResponse();
     this.fillAbstractCreateUserResponse(response);
@@ -263,8 +251,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "createUser", method = { RequestMethod.POST })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
     user.setId(null);
@@ -300,8 +286,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public void deleteUserById(@PathVariable(value = "id") final Long id) {
     final UserID userId = new UserID(id);
     this.accessRelationService.deleteAllAccessRelation(userId);
@@ -310,7 +294,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public GetUserSettingsForStartupResponse getUserSettingsForStartup(
       @PathVariable(value = "name") final String name) {
     final User user = this.userService.getUserByName(name);
@@ -331,8 +314,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteUser/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowDeleteUserResponse showDeleteUser(@PathVariable(value = "id") final Long userId) {
     final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
     this.fillAbstractShowUserResponse(new UserID(userId), response);
@@ -340,7 +321,6 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public void changePassword(@RequestBody final ChangePasswordRequest request)
       throws NoSuchAlgorithmException {
     final UserID userId = super.getUserId();

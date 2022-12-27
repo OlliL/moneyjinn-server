@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,7 +65,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransportMapper;
@@ -87,7 +87,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -190,7 +189,6 @@ public class ImportedMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showAddImportedMoneyflows", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowAddImportedMoneyflowsResponse showAddImportedMoneyflows() {
     final UserID userId = super.getUserId();
     final ShowAddImportedMoneyflowsResponse response = new ShowAddImportedMoneyflowsResponse();
@@ -236,7 +234,6 @@ public class ImportedMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteImportedMoneyflowById/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
@@ -328,7 +325,6 @@ public class ImportedMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "importImportedMoneyflows", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public ValidationResponse importImportedMoneyflows(
       @RequestBody final ImportImportedMoneyflowRequest request) {
     final UserID userId = super.getUserId();

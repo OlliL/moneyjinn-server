@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
@@ -70,7 +70,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -100,13 +99,11 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showPreDefMoneyflowList", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList() {
     return this.showPreDefMoneyflowList(null);
   }
 
   @RequestMapping(value = "showPreDefMoneyflowList/{restriction}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList(
       @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
@@ -140,7 +137,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
       @RequestBody final CreatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
@@ -164,7 +160,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ValidationResponse updatePreDefMoneyflow(
       @RequestBody final UpdatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
@@ -186,7 +181,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "deletePreDefMoneyflow/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
@@ -194,7 +188,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showCreatePreDefMoneyflow", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowCreatePreDefMoneyflowResponse showCreatePreDefMoneyflow() {
     final UserID userId = super.getUserId();
     final ShowCreatePreDefMoneyflowResponse response = new ShowCreatePreDefMoneyflowResponse();
@@ -203,7 +196,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditPreDefMoneyflow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEditPreDefMoneyflowResponse showEditPreDefMoneyflow(
       @PathVariable(value = "id") final Long preDefMoneyflowId) {
     final UserID userId = super.getUserId();
@@ -219,7 +211,6 @@ public class PreDefMoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeletePreDefMoneyflow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowDeletePreDefMoneyflowResponse showDeletePreDefMoneyflow(
       @PathVariable(value = "id") final Long preDefMoneyflowId) {
     final UserID userId = super.getUserId();

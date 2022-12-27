@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +46,6 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   @Inject

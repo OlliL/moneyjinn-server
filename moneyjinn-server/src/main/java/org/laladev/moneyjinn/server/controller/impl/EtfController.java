@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -63,7 +64,6 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
@@ -77,7 +77,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -94,7 +93,6 @@ public class EtfController extends AbstractController {
   private ISettingService settingService;
 
   @RequestMapping(value = "listEtfOverview/{year}/{month}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ListEtfOverviewResponse listEtfOverview(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -139,7 +137,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "listEtfFlows", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ListEtfFlowsResponse listEtfFlows() {
     final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
     final List<Etf> etfs = this.etfService.getAllEtf();
@@ -170,7 +167,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "calcEtfSale", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public CalcEtfSaleResponse calcEtfSale(@RequestBody final CalcEtfSaleRequest request) {
     final CalcEtfSaleResponse response = new CalcEtfSaleResponse();
     this.settingService.setClientCalcEtfSaleAskPrice(this.getUserId(),
@@ -229,7 +225,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "showCreateEtfFlow", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowCreateEtfFlowResponse showCreateEtfFlow() {
     final ShowCreateEtfFlowResponse response = new ShowCreateEtfFlowResponse();
     final List<Etf> etfs = this.etfService.getAllEtf();
@@ -238,7 +233,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditEtfFlow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEditEtfFlowResponse showEditEtfFlow(@PathVariable(value = "id") final Long id) {
     final ShowEditEtfFlowResponse response = new ShowEditEtfFlowResponse();
     final List<Etf> etfs = this.etfService.getAllEtf();
@@ -249,7 +243,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteEtfFlow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowDeleteEtfFlowResponse showDeleteEtfFlow(@PathVariable(value = "id") final Long id) {
     final ShowDeleteEtfFlowResponse response = new ShowDeleteEtfFlowResponse();
     final List<Etf> etfs = this.etfService.getAllEtf();
@@ -260,7 +253,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "createEtfFlow", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public CreateEtfFlowResponse createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
     final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
     etfFlow.setId(null);
@@ -278,7 +270,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "updateEtfFlow", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ValidationResponse updateEtfFlow(@RequestBody final UpdateEtfFlowRequest request) {
     final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
     final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
@@ -294,7 +285,6 @@ public class EtfController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteEtfFlow/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteEtfFlow(@PathVariable(value = "id") final Long id) {
     this.etfService.deleteEtfFlow(new EtfFlowID(id));
   }

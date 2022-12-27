@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   @Inject

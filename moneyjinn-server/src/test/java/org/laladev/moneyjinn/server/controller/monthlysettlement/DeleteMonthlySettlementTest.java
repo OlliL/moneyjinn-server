@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
+import jakarta.inject.Inject;
 import java.time.Month;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +15,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   @Inject

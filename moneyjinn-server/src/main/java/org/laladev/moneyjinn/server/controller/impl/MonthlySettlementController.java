@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -48,7 +49,6 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -65,7 +65,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -92,20 +91,17 @@ public class MonthlySettlementController extends AbstractController {
   }
 
   @RequestMapping(value = "getAvailableMonth", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public GetAvailableMonthResponse getAvailableMonth() {
     return this.getAvailableMonth(null, null);
   }
 
   @RequestMapping(value = "getAvailableMonth/{year}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public GetAvailableMonthResponse getAvailableMonth(
       @PathVariable(value = "year") final Short year) {
     return this.getAvailableMonth(year, null);
   }
 
   @RequestMapping(value = "getAvailableMonth/{year}/{month}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public GetAvailableMonthResponse getAvailableMonth(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -139,7 +135,6 @@ public class MonthlySettlementController extends AbstractController {
 
   @RequestMapping(value = "showMonthlySettlementListV2/{year}/{month}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementListResponse showMonthlySettlementListV2(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -160,13 +155,11 @@ public class MonthlySettlementController extends AbstractController {
   }
 
   @RequestMapping(value = "showMonthlySettlementList", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementListResponse showMonthlySettlementList() {
     return this.showMonthlySettlementList(null, null);
   }
 
   @RequestMapping(value = "showMonthlySettlementList/{year}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementListResponse showMonthlySettlementList(
       @PathVariable(value = "year") final Short year) {
     return this.showMonthlySettlementList(year, null);
@@ -174,7 +167,6 @@ public class MonthlySettlementController extends AbstractController {
 
   @RequestMapping(value = "showMonthlySettlementList/{year}/{month}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementListResponse showMonthlySettlementList(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -234,13 +226,11 @@ public class MonthlySettlementController extends AbstractController {
   }
 
   @RequestMapping(value = "showMonthlySettlementCreate", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate() {
     return this.showMonthlySettlementCreate(null, null);
   }
 
   @RequestMapping(value = "showMonthlySettlementCreate/{year}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate(
       @PathVariable(value = "year") final Short requestYear) {
     return this.showMonthlySettlementCreate(requestYear, null);
@@ -248,7 +238,6 @@ public class MonthlySettlementController extends AbstractController {
 
   @RequestMapping(value = "showMonthlySettlementCreate/{year}/{month}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementCreateResponse showMonthlySettlementCreate(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -422,7 +411,6 @@ public class MonthlySettlementController extends AbstractController {
 
   @RequestMapping(value = "showMonthlySettlementDelete/{year}/{month}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMonthlySettlementDeleteResponse showMonthlySettlementDelete(
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
@@ -439,7 +427,6 @@ public class MonthlySettlementController extends AbstractController {
   }
 
   @RequestMapping(value = "upsertMonthlySettlement", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public ValidationResponse upsertMonthlySettlement(
       @RequestBody final UpsertMonthlySettlementRequest request) {
     final UserID userId = super.getUserId();
@@ -464,7 +451,6 @@ public class MonthlySettlementController extends AbstractController {
 
   @RequestMapping(value = "deleteMonthlySettlement/{year}/{month}", method = {
       RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteMonthlySettlement(@PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
     final UserID userId = super.getUserId();

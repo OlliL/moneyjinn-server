@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractShowSettingsResponse;
 import org.laladev.moneyjinn.core.rest.model.setting.AbstractUpdateSettingsRequest;
@@ -39,8 +40,6 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
 import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,7 +48,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -67,8 +65,6 @@ public class SettingController extends AbstractController {
   }
 
   @RequestMapping(value = "showDefaultSettings", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowDefaultSettingsResponse showDefaultSettings() {
     final ShowDefaultSettingsResponse response = new ShowDefaultSettingsResponse();
     this.getStandardSettings(ROOT_ACCESS_ID, response);
@@ -76,14 +72,11 @@ public class SettingController extends AbstractController {
   }
 
   @RequestMapping(value = "updateDefaultSettings", method = { RequestMethod.PUT })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public void updateDefaultSettings(@RequestBody final UpdateDefaultSettingsRequest request) {
     this.updateStandardSettings(request, ROOT_ACCESS_ID);
   }
 
   @RequestMapping(value = "showPersonalSettings", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowPersonalSettingsResponse showPersonalSettings() {
     final UserID userId = super.getUserId();
     final ShowPersonalSettingsResponse response = new ShowPersonalSettingsResponse();
@@ -92,7 +85,6 @@ public class SettingController extends AbstractController {
   }
 
   @RequestMapping(value = "updatePersonalSettings", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public void updatePersonalSettings(@RequestBody final UpdatePersonalSettingsRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);

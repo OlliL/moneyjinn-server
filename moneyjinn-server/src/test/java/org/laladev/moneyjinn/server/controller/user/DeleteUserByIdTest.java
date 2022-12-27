@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
-import jakarta.inject.Inject;
 
 public class DeleteUserByIdTest extends AbstractControllerTest {
   @Inject

@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -41,8 +42,6 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IGroupService;
@@ -54,7 +53,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -73,15 +71,11 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowGroupListResponse showGroupList() {
     return this.showGroupList(null);
   }
 
   @RequestMapping(value = "showGroupList/{restriction}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowGroupListResponse showGroupList(
       @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
@@ -110,8 +104,6 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "createGroup", method = { RequestMethod.POST })
-  @RequiresPermissionAdmin
-  @RequiresAuthorization
   public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     group.setId(null);
@@ -129,8 +121,6 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ValidationResponse updateGroup(@RequestBody final UpdateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     final ValidationResult validationResult = this.groupService.validateGroup(group);
@@ -146,16 +136,12 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public void deleteGroupById(@PathVariable(value = "id") final Long id) {
     final GroupID groupId = new GroupID(id);
     this.groupService.deleteGroup(groupId);
   }
 
   @RequestMapping(value = "showEditGroup/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowEditGroupResponse showEditGroup(@PathVariable(value = "id") final Long groupId) {
     final ShowEditGroupResponse response = new ShowEditGroupResponse();
     this.fillAbstractGroupResponse(groupId, response);
@@ -163,8 +149,6 @@ public class GroupController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteGroup/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowDeleteGroupResponse showDeleteGroup(@PathVariable(value = "id") final Long groupId) {
     final ShowDeleteGroupResponse response = new ShowDeleteGroupResponse();
     this.fillAbstractGroupResponse(groupId, response);

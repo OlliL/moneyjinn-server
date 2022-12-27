@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -21,7 +22,6 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import jakarta.inject.Inject;
 
 public class MoneyflowServiceTest extends AbstractTest {
   @Inject

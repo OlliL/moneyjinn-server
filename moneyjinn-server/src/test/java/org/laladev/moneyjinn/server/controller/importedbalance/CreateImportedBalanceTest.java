@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.importedbalance;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -25,7 +26,6 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class CreateImportedBalanceTest extends AbstractControllerTest {
   @Inject

@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -42,7 +43,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowReceiptTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
@@ -57,7 +57,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -83,7 +82,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
   }
 
   @RequestMapping(value = "createImportedMoneyflowReceipts", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public ValidationResponse createImportedMoneyflowReceipts(
       @RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
     final UserID userId = super.getUserId();
@@ -112,7 +110,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
   }
 
   @RequestMapping(value = "showImportImportedMoneyflowReceipts", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowImportImportedMoneyflowReceiptsResponse showImportImportedMoneyflowReceipts() {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
@@ -127,7 +124,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
 
   @RequestMapping(value = "deleteImportedMoneyflowReceiptById/{id}", method = {
       RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
@@ -139,7 +135,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
 
   @RequestMapping(value = "importImportedMoneyflowReceipt/{id}/{moneyflowid}", method = {
       RequestMethod.POST })
-  @RequiresAuthorization
   public void importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
       @PathVariable(value = "moneyflowid") final Long moneyflowid) {
     final UserID userId = super.getUserId();

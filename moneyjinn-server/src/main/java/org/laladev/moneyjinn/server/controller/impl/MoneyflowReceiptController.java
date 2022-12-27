@@ -24,13 +24,13 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.Base64;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowReceiptTypeMapper;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -40,7 +40,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -56,7 +55,6 @@ public class MoneyflowReceiptController extends AbstractController {
   }
 
   @RequestMapping(value = "showMoneyflowReceipt/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowMoneyflowReceiptResponse showMoneyflowReceipt(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
@@ -76,7 +74,6 @@ public class MoneyflowReceiptController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteMoneyflowReceipt/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);

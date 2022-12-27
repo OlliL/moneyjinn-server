@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ShowReportingFormTest extends AbstractControllerTest {
   @Inject

@@ -1,13 +1,13 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import jakarta.inject.Inject;
 
 public class PostingAccountServiceTest extends AbstractTest {
   @Inject

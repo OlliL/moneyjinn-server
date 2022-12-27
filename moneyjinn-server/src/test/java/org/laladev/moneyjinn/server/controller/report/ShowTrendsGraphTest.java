@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
+import jakarta.inject.Inject;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
@@ -26,7 +27,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ShowTrendsGraphTest extends AbstractControllerTest {
   @Inject

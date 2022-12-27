@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuild
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import jakarta.inject.Inject;
 
 public class ContractpartnerAccountServiceTest extends AbstractTest {
   @Inject

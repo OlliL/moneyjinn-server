@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +34,6 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ShowCapitalsourceListTest extends AbstractControllerTest {
   @Inject

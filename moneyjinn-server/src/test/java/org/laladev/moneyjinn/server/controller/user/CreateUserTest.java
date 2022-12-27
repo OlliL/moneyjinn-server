@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import jakarta.inject.Inject;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,6 @@ import org.laladev.moneyjinn.service.api.IAccessRelationService;
 //import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
-import jakarta.inject.Inject;
 
 public class CreateUserTest extends AbstractControllerTest {
   @Inject

@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.importedmonthlysettlement;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
   @Inject

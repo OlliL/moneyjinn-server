@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -71,7 +72,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
@@ -94,7 +94,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -127,7 +126,6 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "showReportingForm", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowReportingFormResponse showReportingForm() {
     final UserID userId = super.getUserId();
     final ShowReportingFormResponse response = new ShowReportingFormResponse();
@@ -153,7 +151,6 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "showMonthlyReportGraph", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ShowMonthlyReportGraphResponse showMonthlyReportGraph(
       @RequestBody final ShowMonthlyReportGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -188,7 +185,6 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "showYearlyReportGraph", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ShowYearlyReportGraphResponse showYearlyReportGraph(
       @RequestBody final ShowYearlyReportGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -223,7 +219,6 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "showTrendsForm", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowTrendsFormResponse showTrendsForm() {
     final UserID userId = super.getUserId();
     final ShowTrendsFormResponse response = new ShowTrendsFormResponse();
@@ -254,7 +249,6 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "showTrendsGraph", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ShowTrendsGraphResponse showTrendsGraph(
       @RequestBody final ShowTrendsGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -473,19 +467,16 @@ public class ReportController extends AbstractController {
   }
 
   @RequestMapping(value = "listReports", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ListReportsResponse listReports() {
     return this.listReports(null, null);
   }
 
   @RequestMapping(value = "listReports/{year}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ListReportsResponse listReports(@PathVariable(value = "year") final Short requestYear) {
     return this.listReports(requestYear, null);
   }
 
   @RequestMapping(value = "listReports/{year}/{month}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ListReportsResponse listReports(@PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
     final UserID userId = super.getUserId();

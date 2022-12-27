@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
+import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -36,7 +37,6 @@ import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ListReportsTest extends AbstractControllerTest {
   @Inject

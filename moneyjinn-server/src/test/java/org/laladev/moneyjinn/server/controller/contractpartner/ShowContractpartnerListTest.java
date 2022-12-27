@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,6 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class ShowContractpartnerListTest extends AbstractControllerTest {
   @Inject

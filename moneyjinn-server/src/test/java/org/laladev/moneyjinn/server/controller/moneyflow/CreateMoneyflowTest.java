@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,7 +45,6 @@ import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class CreateMoneyflowTest extends AbstractControllerTest {
   @Inject

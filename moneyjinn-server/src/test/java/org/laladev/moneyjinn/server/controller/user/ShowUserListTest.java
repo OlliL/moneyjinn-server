@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,7 +23,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
-import jakarta.inject.Inject;
 
 public class ShowUserListTest extends AbstractControllerTest {
   @Inject

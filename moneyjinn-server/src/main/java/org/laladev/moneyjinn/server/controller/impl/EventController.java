@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -35,7 +36,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -63,7 +62,6 @@ public class EventController extends AbstractController {
   }
 
   @RequestMapping(value = "showEventList", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEventListResponse showEventList() {
     final UserID userId = super.getUserId();
     final ShowEventListResponse response = new ShowEventListResponse();

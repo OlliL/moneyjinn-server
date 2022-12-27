@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.config.MockConfiguration;
 import org.laladev.moneyjinn.config.TestDatabaseConfiguration;
@@ -13,7 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.web.WebAppConfiguration;
-import jakarta.inject.Inject;
 
 @SpringBootTest
 @ContextConfiguration(classes = { MoneyjinnTestConfiguration.class, MockConfiguration.class,

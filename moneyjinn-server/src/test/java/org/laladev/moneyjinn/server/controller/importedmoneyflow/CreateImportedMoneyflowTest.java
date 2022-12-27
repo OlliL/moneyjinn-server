@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
+import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +21,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   @Inject

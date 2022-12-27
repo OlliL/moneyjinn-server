@@ -24,7 +24,7 @@ package org.laladev.moneyjinn.server.main;
 //LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
-import java.io.IOException;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -32,6 +32,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * This filter buffers the Body of the request to access it in the {@see AuthenticationInterceptor}

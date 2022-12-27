@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
@@ -41,8 +42,6 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
-import org.laladev.moneyjinn.server.annotation.RequiresPermissionAdmin;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
@@ -54,7 +53,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -73,13 +71,11 @@ public class PostingAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowPostingAccountListResponse showPostingAccountList() {
     return this.showPostingAccountList(null);
   }
 
   @RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowPostingAccountListResponse showPostingAccountList(
       @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
@@ -112,8 +108,6 @@ public class PostingAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public CreatePostingAccountResponse createPostingAccount(
       @RequestBody final CreatePostingAccountRequest request) {
     final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
@@ -135,8 +129,6 @@ public class PostingAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ValidationResponse updatePostingAccount(
       @RequestBody final UpdatePostingAccountRequest request) {
     final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
@@ -155,16 +147,12 @@ public class PostingAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);
     this.postingAccountService.deletePostingAccount(postingAccountId);
   }
 
   @RequestMapping(value = "showEditPostingAccount/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowEditPostingAccountResponse showEditPostingAccount(
       @PathVariable(value = "id") final Long postingAccountId) {
     final ShowEditPostingAccountResponse response = new ShowEditPostingAccountResponse();
@@ -173,8 +161,6 @@ public class PostingAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeletePostingAccount/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
-  @RequiresPermissionAdmin
   public ShowDeletePostingAccountResponse showDeletePostingAccount(
       @PathVariable(value = "id") final Long postingAccountId) {
     final ShowDeletePostingAccountResponse response = new ShowDeletePostingAccountResponse();

@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.util.List;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.AbstractContractpartnerAccountResponse;
@@ -41,7 +42,6 @@ import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -53,7 +53,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -71,7 +70,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowContractpartnerAccountListResponse showContractpartnerAccountList(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
@@ -98,7 +96,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public CreateContractpartnerAccountResponse createContractpartnerAccount(
       @RequestBody final CreateContractpartnerAccountRequest request) {
     final UserID userId = super.getUserId();
@@ -121,7 +118,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "updateContractpartnerAccount", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ValidationResponse updateContractpartnerAccount(
       @RequestBody final UpdateContractpartnerAccountRequest request) {
     final UserID userId = super.getUserId();
@@ -142,7 +138,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteContractpartnerAccount/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteContractpartnerAccount(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
@@ -151,7 +146,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditContractpartnerAccount/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEditContractpartnerAccountResponse showEditContractpartnerAccount(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
@@ -162,7 +156,6 @@ public class ContractpartnerAccountController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteContractpartnerAccount/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowDeleteContractpartnerAccountResponse showDeleteContractpartnerAccount(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();

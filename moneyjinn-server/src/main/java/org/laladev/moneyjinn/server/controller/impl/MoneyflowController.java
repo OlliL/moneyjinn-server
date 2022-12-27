@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -68,7 +69,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
@@ -93,7 +93,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -142,7 +141,6 @@ public class MoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showAddMoneyflows", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowAddMoneyflowsResponse showAddMoneyflows() {
     final UserID userId = super.getUserId();
     final ShowAddMoneyflowsResponse response = new ShowAddMoneyflowsResponse();
@@ -177,7 +175,6 @@ public class MoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditMoneyflow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEditMoneyflowResponse showEditMoneyflow(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ShowEditMoneyflowResponse response = new ShowEditMoneyflowResponse();
@@ -210,7 +207,6 @@ public class MoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteMoneyflow/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowDeleteMoneyflowResponse showDeleteMoneyflow(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
@@ -224,7 +220,6 @@ public class MoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "showSearchMoneyflowForm", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowSearchMoneyflowFormResponse showSearchMoneyflowForm() {
     final UserID userId = super.getUserId();
     final ShowSearchMoneyflowFormResponse response = new ShowSearchMoneyflowFormResponse();
@@ -245,7 +240,6 @@ public class MoneyflowController extends AbstractController {
   }
 
   @RequestMapping(value = "searchMoneyflows", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public SearchMoneyflowsResponse searchMoneyflows(
       @RequestBody final SearchMoneyflowsRequest request) {
     final UserID userId = super.getUserId();
@@ -299,7 +293,6 @@ public class MoneyflowController extends AbstractController {
    * @return ValidationResponse
    */
   @RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public ValidationResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
@@ -468,7 +461,6 @@ public class MoneyflowController extends AbstractController {
    * @return Validation Response
    */
   @RequestMapping(value = "updateMoneyflowV2", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public UpdateMoneyflowResponse updateMoneyflowV2(
       @RequestBody final UpdateMoneyflowRequest request) {
     final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
@@ -508,7 +500,6 @@ public class MoneyflowController extends AbstractController {
    * @return Validation Response
    */
   @RequestMapping(value = "updateMoneyflow", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ValidationResponse updateMoneyflow(@RequestBody final UpdateMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
@@ -607,7 +598,6 @@ public class MoneyflowController extends AbstractController {
    *          The ID of the Moneyflow to delete
    */
   @RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
@@ -629,7 +619,6 @@ public class MoneyflowController extends AbstractController {
    */
   @RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public SearchMoneyflowsByAmountResponse searchMoneyflowsByAmount(
       @PathVariable(value = "amount") final BigDecimal amount,
       @PathVariable(value = "dateFromStr") final String dateFromStr,

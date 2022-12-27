@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +49,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientCurrentlyValidContractpartnerSetting;
 import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.annotation.RequiresAuthorization;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -65,7 +65,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.inject.Inject;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -93,7 +92,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "showContractpartnerList/currentlyValid", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowContractpartnerListResponse showContractpartnerList() {
     final UserID userId = super.getUserId();
     final ClientCurrentlyValidContractpartnerSetting setting = this.settingService
@@ -103,7 +101,6 @@ public class ContractpartnerController extends AbstractController {
 
   @RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowContractpartnerListResponse showContractpartnerList(
       @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
@@ -114,7 +111,6 @@ public class ContractpartnerController extends AbstractController {
 
   @RequestMapping(value = "showContractpartnerList/currentlyValid/{currentlyValid}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowContractpartnerListResponse showContractpartnerList(
       @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
     final UserID userId = super.getUserId();
@@ -128,7 +124,6 @@ public class ContractpartnerController extends AbstractController {
 
   @RequestMapping(value = "showContractpartnerList/{restriction}/currentlyValid/{currentlyValid}", method = {
       RequestMethod.GET })
-  @RequiresAuthorization
   public ShowContractpartnerListResponse showContractpartnerList(
       @PathVariable(value = "restriction") final String restriction,
       @PathVariable(value = "currentlyValid") final boolean currentlyValid) {
@@ -201,7 +196,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
-  @RequiresAuthorization
   public CreateContractpartnerResponse createContractpartner(
       @RequestBody final CreateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
@@ -228,7 +222,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
-  @RequiresAuthorization
   public ValidationResponse updateContractpartner(
       @RequestBody final UpdateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
@@ -252,7 +245,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
-  @RequiresAuthorization
   public void deleteContractpartner(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group accessor = this.accessRelationService.getAccessor(userId);
@@ -262,7 +254,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "showCreateContractpartner", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowCreateContractpartnerResponse showCreateContractpartner() {
     final ShowCreateContractpartnerResponse response = new ShowCreateContractpartnerResponse();
     final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
@@ -274,7 +265,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "showEditContractpartner/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowEditContractpartnerResponse showEditContractpartner(
       @PathVariable(value = "id") final Long contractpartnerId) {
     final ShowEditContractpartnerResponse response = new ShowEditContractpartnerResponse();
@@ -289,7 +279,6 @@ public class ContractpartnerController extends AbstractController {
   }
 
   @RequestMapping(value = "showDeleteContractpartner/{id}", method = { RequestMethod.GET })
-  @RequiresAuthorization
   public ShowDeleteContractpartnerResponse showDeleteContractpartner(
       @PathVariable(value = "id") final Long contractpartnerId) {
     final ShowDeleteContractpartnerResponse response = new ShowDeleteContractpartnerResponse();

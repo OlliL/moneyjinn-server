@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
-import jakarta.inject.Inject;
 
 public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
   @Inject
