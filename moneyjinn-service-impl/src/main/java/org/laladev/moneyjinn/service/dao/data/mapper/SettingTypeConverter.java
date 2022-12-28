@@ -34,18 +34,8 @@ public class SettingTypeConverter {
 
   public static String getSettingNameByType(final SettingType type) {
     switch (type) {
-      case CLIENT_MAX_ROWS:
-        return "max_rows";
       case CLIENT_TREND_CAPITALSOURCEIDS:
         return "trend_capitalsourceid";
-      case CLIENT_DATE_FORMAT:
-        return "date_format";
-      case CLIENT_DISPLAYED_LANGUAGE:
-        return "displayed_language";
-      case CLIENT_CURRENTLY_VALID_CAPITALSOURCES:
-        return "currently_valid_capitalsources";
-      case CLIENT_CURRENTLY_VALID_CONTRACTPARTNER:
-        return "currently_valid_contractpartner";
       case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
         return "reporting_postingaccountids";
       case CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE:

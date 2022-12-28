@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.impl;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -90,28 +89,10 @@ public class PostingAccountService extends AbstractService implements IPostingAc
   }
 
   @Override
-  public Set<Character> getAllPostingAccountInitials() {
-    return this.postingAccountDao.getAllPostingAccountInitials();
-  }
-
-  @Override
-  public Integer countAllPostingAccounts() {
-    return this.postingAccountDao.countAllPostingAccounts();
-  }
-
-  @Override
   @Cacheable(CacheNames.ALL_POSTINGACCOUNTS)
   public List<PostingAccount> getAllPostingAccounts() {
     final List<PostingAccountData> postingAccountDataList = this.postingAccountDao
         .getAllPostingAccounts();
-    return super.mapList(postingAccountDataList, PostingAccount.class);
-  }
-
-  @Override
-  public List<PostingAccount> getAllPostingAccountsByInitial(final Character initial) {
-    Assert.notNull(initial, "initial must not be null!");
-    final List<PostingAccountData> postingAccountDataList = this.postingAccountDao
-        .getAllPostingAccountsByInitial(initial);
     return super.mapList(postingAccountDataList, PostingAccount.class);
   }
 

@@ -31,7 +31,6 @@ import jakarta.inject.Named;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -90,25 +89,8 @@ public class UserService extends AbstractService implements IUserService {
   }
 
   @Override
-  public Set<Character> getAllUserInitials() {
-    return this.userDao.getAllUserInitials();
-  }
-
-  @Override
-  public Integer countAllUsers() {
-    return this.userDao.countAllUsers();
-  }
-
-  @Override
   public List<User> getAllUsers() {
     final List<UserData> userDataList = this.userDao.getAllUsers();
-    return super.mapList(userDataList, User.class);
-  }
-
-  @Override
-  public List<User> getAllUsersByInitial(final Character initial) {
-    Assert.notNull(initial, "initial must not be null!");
-    final List<UserData> userDataList = this.userDao.getAllUsersByInitial(initial);
     return super.mapList(userDataList, User.class);
   }
 

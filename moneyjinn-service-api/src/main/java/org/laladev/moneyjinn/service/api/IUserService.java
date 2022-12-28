@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -56,7 +55,7 @@ public interface IUserService {
    * Checks the validity of the given {@link User}
    *
    * @param user
-   *          the {@link User}
+   *               the {@link User}
    * @return {@link ValidationResult}
    */
   ValidationResult validateUser(final User user);
@@ -65,24 +64,10 @@ public interface IUserService {
    * This Service returns the {@link User} for the given {@link UserID}.
    *
    * @param id
-   *          the {@link UserID}
+   *             the {@link UserID}
    * @return User
    */
   User getUserById(final UserID userId);
-
-  /**
-   * This Service returns the distinct initials of all usernames in the database in uppercase.
-   *
-   * @return all uppercased initials
-   */
-  Set<Character> getAllUserInitials();
-
-  /**
-   * This Service returns the number of all existing users
-   *
-   * @return number of {@link User}s
-   */
-  Integer countAllUsers();
 
   /**
    * This Service returns all existing {@link User}s
@@ -92,20 +77,10 @@ public interface IUserService {
   List<User> getAllUsers();
 
   /**
-   * This Service returns all existing {@link User}s which name start with the specified initial
-   * case-insensitive
-   *
-   * @param initial
-   *          the first letter of the {@link User}s name
-   * @return a list of {@link User}s
-   */
-  List<User> getAllUsersByInitial(final Character initial);
-
-  /**
    * This Service returns the {@link User} for the specified name
    *
    * @param name
-   *          the User-Name
+   *               the User-Name
    * @return {@link User}
    */
   User getUserByName(final String name);
@@ -115,9 +90,9 @@ public interface IUserService {
    * correctness.
    *
    * @param user
-   *          the {@link User} to be created
+   *               the {@link User} to be created
    * @throws BusinessException
-   *           If the validation of the given {@link User} failed.
+   *                             If the validation of the given {@link User} failed.
    * @return {@link UserID} of the created {@link User}
    */
   UserID createUser(final User user);
@@ -128,9 +103,9 @@ public interface IUserService {
    * this Service.
    *
    * @param user
-   *          the new {@link User} attributes
+   *               the new {@link User} attributes
    * @throws BusinessException
-   *           If the validation of the given {@link User} failed.
+   *                             If the validation of the given {@link User} failed.
    */
   void updateUser(final User user);
 
@@ -140,9 +115,9 @@ public interface IUserService {
    * password as it also disables the "user has to change his password flag"
    *
    * @param userId
-   *          The {@link UserID} for which the password has to be set
+   *                   The {@link UserID} for which the password has to be set
    * @param password
-   *          The new User-Password
+   *                   The new User-Password
    */
   void setPassword(final UserID userId, final String password);
 
@@ -152,9 +127,9 @@ public interface IUserService {
    * it also sets the "user has to change his password flag"
    *
    * @param userId
-   *          The {@link UserID} for which the password has to be set
+   *                   The {@link UserID} for which the password has to be set
    * @param password
-   *          The new User-Password
+   *                   The new User-Password
    */
   void resetPassword(final UserID userId, final String password);
 
@@ -162,10 +137,11 @@ public interface IUserService {
    * This service deletes a {@link User} from the system
    *
    * @param userId
-   *          The {@link UserID} of the to-be-deleted {@link User}
+   *                 The {@link UserID} of the to-be-deleted {@link User}
    * @throws BusinessException
-   *           If the deletion fails an error is throws. It is always assumed that it fails because
-   *           of a Foreign Key Constraint Violation on the DB level
+   *                             If the deletion fails an error is throws. It is always assumed that
+   *                             it fails because of a Foreign Key Constraint Violation on the DB
+   *                             level
    */
   void deleteUser(final UserID userId);
 }

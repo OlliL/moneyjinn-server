@@ -24,30 +24,11 @@
                  LIMIT 1
         </select>
             
-        <select id="getAllPostingAccountInitials" resultType="java.lang.Character">
-                SELECT DISTINCT UPPER(SUBSTR(postingaccountname,1,1)) letters
-                  FROM postingaccounts
-                 ORDER BY letters
-        </select>
-        
-        <select id="countAllPostingAccounts" resultType="java.lang.Integer">
-                SELECT COUNT(*)
-                  FROM postingaccounts
-        </select>
-
         <select id="getAllPostingAccounts"
                 resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
                 SELECT <include refid="postingAccountColumns" />
                   FROM postingaccounts
                  ORDER BY postingaccountname
-        </select>
-        
-        <select id="getAllPostingAccountsByInitial" parameterType="java.lang.String" 
-                resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
-
-                SELECT <include refid="postingAccountColumns" />
-                  FROM postingaccounts
-                 WHERE UPPER(postingaccountname) LIKE CONCAT(UPPER(#{initial}),'%')
         </select>
         
         <insert id="createPostingAccount"

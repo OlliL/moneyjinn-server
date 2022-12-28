@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
@@ -35,29 +34,8 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 public interface IContractpartnerDaoMapper {
   public List<ContractpartnerData> getAllContractpartners(@Param("userId") Long userId);
 
-  public List<ContractpartnerData> getAllContractpartnersByDateRange(@Param("userId") Long userId,
-      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
-
   public ContractpartnerData getContractpartnerById(@Param("userId") Long userId,
       @Param("id") Long id);
-
-  public Integer countAllContractpartners(@Param("userId") Long userId);
-
-  public Integer countAllContractpartnersByDateRange(@Param("userId") Long userId,
-      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
-
-  public LinkedHashSet<Character> getAllContractpartnerInitials(@Param("userId") Long userId);
-
-  public LinkedHashSet<Character> getAllContractpartnerInitialsByDateRange(
-      @Param("userId") Long userId, @Param("validFrom") LocalDate validFrom,
-      @Param("validTil") LocalDate validTil);
-
-  public List<ContractpartnerData> getAllContractpartnersByInitial(@Param("userId") Long userId,
-      @Param("initial") String initial);
-
-  public List<ContractpartnerData> getAllContractpartnersByInitialAndDateRange(
-      @Param("userId") Long userId, @Param("initial") String initial,
-      @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
   public ContractpartnerData getContractpartnerByName(@Param("userId") Long userId,
       @Param("name") String name);

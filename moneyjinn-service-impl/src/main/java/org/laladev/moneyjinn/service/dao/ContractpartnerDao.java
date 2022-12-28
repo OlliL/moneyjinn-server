@@ -30,7 +30,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper;
 
@@ -43,44 +42,8 @@ public class ContractpartnerDao {
     return this.mapper.getAllContractpartners(userId);
   }
 
-  public List<ContractpartnerData> getAllContractpartnersByDateRange(final Long userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    return this.mapper.getAllContractpartnersByDateRange(userId, validFrom, validTil);
-  }
-
   public ContractpartnerData getContractpartnerById(final Long userId, final Long id) {
     return this.mapper.getContractpartnerById(userId, id);
-  }
-
-  public Integer countAllContractpartners(final Long userId) {
-    return this.mapper.countAllContractpartners(userId);
-  }
-
-  public Integer countAllContractpartnersByDateRange(final Long userId, final LocalDate validFrom,
-      final LocalDate validTil) {
-    return this.mapper.countAllContractpartnersByDateRange(userId, validFrom, validTil);
-  }
-
-  public Set<Character> getAllContractpartnerInitials(final Long userId) {
-    return this.mapper.getAllContractpartnerInitials(userId);
-  }
-
-  public Set<Character> getAllContractpartnerInitialsByDateRange(final Long userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    return this.mapper.getAllContractpartnerInitialsByDateRange(userId, validFrom, validTil);
-  }
-
-  public List<ContractpartnerData> getAllContractpartnersByInitial(final Long userId,
-      final Character initial) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllContractpartnersByInitial(userId, initialString);
-  }
-
-  public List<ContractpartnerData> getAllContractpartnersByInitialAndDateRange(final Long userId,
-      final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllContractpartnersByInitialAndDateRange(userId, initialString, validFrom,
-        validTil);
   }
 
   public ContractpartnerData getContractpartnerByName(final Long userId, final String name) {

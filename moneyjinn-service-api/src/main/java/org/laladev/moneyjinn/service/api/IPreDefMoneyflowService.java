@@ -27,8 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
-import java.util.Set;
-import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -58,7 +56,7 @@ public interface IPreDefMoneyflowService {
    * Checks the validity of the given {@link PreDefMoneyflow}
    *
    * @param user
-   *          the {@link PreDefMoneyflow}
+   *               the {@link PreDefMoneyflow}
    * @return {@link ValidationResult}
    */
   ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
@@ -67,61 +65,32 @@ public interface IPreDefMoneyflowService {
    * Returns the {@link PreDefMoneyflow} for the given {@link PreDefMoneyflowID}.
    *
    * @param userId
-   *          {@link UserID}
+   *                            {@link UserID}
    * @param preDefMoneyflowId
-   *          the {@link PreDefMoneyflowID}
+   *                            the {@link PreDefMoneyflowID}
    * @return
    */
   PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
-  /**
-   * This Service returns the distinct initials of all {@link Contractpartner} names from all owned
-   * {@link PreDefMoneyflow}s in the database in uppercase.
-   *
-   * @param userId
-   *          {@link UserID}
-   * @return all uppercased initials
-   */
-  Set<Character> getAllPreDefMoneyflowInitials(UserID userId);
-
-  /**
-   * This Service returns the number of all existing preDefMoneyflows
-   *
-   * @param userId
-   *          {@link UserID}
-   * @return number of {@link PreDefMoneyflow}s
-   */
-  Integer countAllPreDefMoneyflows(UserID userId);
+  ;
 
   /**
    * This Service returns all existing {@link PreDefMoneyflow}s
    *
    * @param userId
-   *          {@link UserID}
+   *                 {@link UserID}
    * @return list of all {@link PreDefMoneyflow}s
    */
   List<PreDefMoneyflow> getAllPreDefMoneyflows(UserID userId);
-
-  /**
-   * This Service returns all existing {@link PreDefMoneyflow}s which contractpartner name start
-   * with the specified initial case-insensitive
-   *
-   * @param userId
-   *          {@link UserID}
-   * @param initial
-   *          the first letter of the {@link PreDefMoneyflow}s {@link Contractpartner} name
-   * @return a list of {@link PreDefMoneyflow}s
-   */
-  List<PreDefMoneyflow> getAllPreDefMoneyflowsByInitial(UserID userId, Character initial);
 
   /**
    * This service creates a {@link PreDefMoneyflow}. Before the {@link PreDefMoneyflow} is created
    * it is validated for correctness.
    *
    * @param preDefMoneyflow
-   *          the {@link PreDefMoneyflow} to be created
+   *                          the {@link PreDefMoneyflow} to be created
    * @throws BusinessException
-   *           If the validation of the given {@link PreDefMoneyflow} failed.
+   *                             If the validation of the given {@link PreDefMoneyflow} failed.
    */
   PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
@@ -130,9 +99,9 @@ public interface IPreDefMoneyflowService {
    * the new values are validated for correctness.
    *
    * @param user
-   *          the new {@link PreDefMoneyflow} attributes
+   *               the new {@link PreDefMoneyflow} attributes
    * @throws BusinessException
-   *           If the validation of the given {@link PreDefMoneyflow} failed.
+   *                             If the validation of the given {@link PreDefMoneyflow} failed.
    */
   void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
@@ -140,9 +109,10 @@ public interface IPreDefMoneyflowService {
    * This service deletes a {@link PreDefMoneyflow} from the system
    *
    * @param userId
-   *          {@link UserID}
+   *                            {@link UserID}
    * @param preDefMoneyflowId
-   *          The {@link PreDefMoneyflowID} of the to-be-deleted {@link PreDefMoneyflow}
+   *                            The {@link PreDefMoneyflowID} of the to-be-deleted
+   *                            {@link PreDefMoneyflow}
    */
   void deletePreDefMoneyflow(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
@@ -151,7 +121,7 @@ public interface IPreDefMoneyflowService {
    * whenever a moneyflow gets created based on a {@link PreDefMoneyflow}.
    *
    * @param userId
-   *          {@link UserID}
+   *                            {@link UserID}
    * @param preDefMoneyflowId
    */
   void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);

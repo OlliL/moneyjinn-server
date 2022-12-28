@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.mapper.IPostingAccountDaoMapper;
 
@@ -44,19 +43,6 @@ public class PostingAccountDao {
 
   public PostingAccountData getPostingAccountById(final Long id) {
     return this.mapper.getPostingAccountById(id);
-  }
-
-  public Integer countAllPostingAccounts() {
-    return this.mapper.countAllPostingAccounts();
-  }
-
-  public Set<Character> getAllPostingAccountInitials() {
-    return this.mapper.getAllPostingAccountInitials();
-  }
-
-  public List<PostingAccountData> getAllPostingAccountsByInitial(final Character initial) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllPostingAccountsByInitial(initialString);
   }
 
   public PostingAccountData getPostingAccountByName(final String name) {

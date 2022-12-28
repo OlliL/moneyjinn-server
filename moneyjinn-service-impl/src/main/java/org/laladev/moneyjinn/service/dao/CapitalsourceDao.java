@@ -30,7 +30,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper;
 
@@ -51,37 +50,6 @@ public class CapitalsourceDao {
   public CapitalsourceData getCapitalsourceById(final Long userId, final Long accessorId,
       final Long id) {
     return this.mapper.getCapitalsourceById(userId, accessorId, id);
-  }
-
-  public Integer countAllCapitalsources(final Long userId) {
-    return this.mapper.countAllCapitalsources(userId);
-  }
-
-  public Integer countAllCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,
-      final LocalDate validTil) {
-    return this.mapper.countAllCapitalsourcesByDateRange(userId, validFrom, validTil);
-  }
-
-  public Set<Character> getAllCapitalsourceInitials(final Long userId) {
-    return this.mapper.getAllCapitalsourceInitials(userId);
-  }
-
-  public Set<Character> getAllCapitalsourceInitialsByDateRange(final Long userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    return this.mapper.getAllCapitalsourceInitialsByDateRange(userId, validFrom, validTil);
-  }
-
-  public List<CapitalsourceData> getAllCapitalsourcesByInitial(final Long userId,
-      final Character initial) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllCapitalsourcesByInitial(userId, initialString);
-  }
-
-  public List<CapitalsourceData> getAllCapitalsourcesByInitialAndDateRange(final Long userId,
-      final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllCapitalsourcesByInitialAndDateRange(userId, initialString, validFrom,
-        validTil);
   }
 
   public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment,
@@ -110,10 +78,6 @@ public class CapitalsourceDao {
       return false;
     }
     return result;
-  }
-
-  public List<CapitalsourceData> getGroupCapitalsources(final Long userId) {
-    return this.mapper.getGroupCapitalsources(userId);
   }
 
   public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId,

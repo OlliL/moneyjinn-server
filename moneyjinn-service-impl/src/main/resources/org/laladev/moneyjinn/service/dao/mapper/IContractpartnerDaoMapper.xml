@@ -17,7 +17,17 @@
                 ,mpa_postingaccountid        AS mpaPostingAccountId
         </sql>
     
-            <select id="getContractpartnerById"
+   
+        <select id="getAllContractpartners"
+                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
+                SELECT <include refid="contractpartnerColumns" />
+                  FROM vw_contractpartners
+                 WHERE maf_id = #{userId}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                 ORDER BY name
+        </select>
+    
+        <select id="getContractpartnerById"
                 resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
@@ -36,89 +46,7 @@
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
         </select>
-            
-        <select id="getAllContractpartnerInitials" resultType="java.lang.Character">
-                SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-                  FROM vw_contractpartners
-                 WHERE maf_id = #{userId}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY letters
-        </select>
-        
-        <select id="getAllContractpartnerInitialsByDateRange" resultType="java.lang.Character">
-                SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-                  FROM vw_contractpartners
-                 WHERE maf_id                       = #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND validfrom     <![CDATA[ <= ]]> #{validTil}
-                   AND validtil      <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY letters
-        </select>
-                        
-        <select id="countAllContractpartners" resultType="java.lang.Integer">
-                SELECT COUNT(*)
-                  FROM vw_contractpartners
-                 WHERE maf_id = #{userId}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-        </select>
-        
-        <select id="countAllContractpartnersByDateRange" resultType="java.lang.Integer">
-                SELECT COUNT(*)
-                  FROM vw_contractpartners
-                 WHERE maf_id                       = #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND validfrom     <![CDATA[ <= ]]> #{validTil}
-                   AND validtil      <![CDATA[ >= ]]> #{validFrom}
-        </select>
-        
-        <select id="getAllContractpartners"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE maf_id = #{userId}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY name
-        </select>
-        
-        <select id="getAllContractpartnersByDateRange"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE maf_id =                       #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND validfrom     <![CDATA[ <= ]]> #{validTil}
-                   AND validtil      <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY name
-        </select>
-                
-        <select id="getAllContractpartnersByInitial"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
 
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE UPPER(name) LIKE CONCAT(UPPER(#{initial}),'%')
-                   AND maf_id = #{userId}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY name
-        </select>
-        
-        <select id="getAllContractpartnersByInitialAndDateRange"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE UPPER(name) LIKE CONCAT(UPPER(#{initial}),'%')
-                   AND maf_id = #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY name
-        </select>
-                
         <insert id="createContractpartner"
                 parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData"
                 useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">

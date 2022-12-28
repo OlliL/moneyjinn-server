@@ -112,7 +112,7 @@ public class ContractpartnerService extends AbstractService implements IContract
    * if they are NULL to default values.
    *
    * @param contractpartner
-   *          {@link Contractpartner}
+   *                          {@link Contractpartner}
    */
   private void prepareContractpartner(final Contractpartner contractpartner) {
     if (contractpartner.getValidFrom() == null) {
@@ -173,86 +173,11 @@ public class ContractpartnerService extends AbstractService implements IContract
   }
 
   @Override
-  public Set<Character> getAllContractpartnerInitials(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    return this.contractpartnerDao.getAllContractpartnerInitials(userId.getId());
-  }
-
-  @Override
-  public Set<Character> getAllContractpartnerInitialsByDateRange(final UserID userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "validFrom must not be null!");
-    Assert.notNull(validTil, "validTil must not be null!");
-    return this.contractpartnerDao.getAllContractpartnerInitialsByDateRange(userId.getId(),
-        validFrom, validTil);
-  }
-
-  @Override
-  public Integer countAllContractpartners(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    return this.contractpartnerDao.countAllContractpartners(userId.getId());
-  }
-
-  @Override
-  public Integer countAllContractpartnersByDateRange(final UserID userId, final LocalDate validFrom,
-      final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "validFrom must not be null!");
-    Assert.notNull(validTil, "validTil must not be null!");
-    return this.contractpartnerDao.countAllContractpartnersByDateRange(userId.getId(), validFrom,
-        validTil);
-  }
-
-  @Override
   @Cacheable(CacheNames.ALL_CONTRACTPARTNER)
   public List<Contractpartner> getAllContractpartners(final UserID userId) {
     Assert.notNull(userId, "UserId must not be null!");
     final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
         .getAllContractpartners(userId.getId());
-    return this.mapContractpartnerDataList(contractpartnerDataList);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public List<Contractpartner> getAllContractpartnersByDateRange(final UserID userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "validFrom must not be null!");
-    Assert.notNull(validTil, "validTil must not be null!");
-    final Cache cache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
-        userId.getId().toString());
-    List<Contractpartner> contractpartners;
-    final SimpleKey key = new SimpleKey(validFrom, validTil);
-    contractpartners = cache.get(key, List.class);
-    if (contractpartners == null) {
-      final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-          .getAllContractpartnersByDateRange(userId.getId(), validFrom, validTil);
-      contractpartners = this.mapContractpartnerDataList(contractpartnerDataList);
-      cache.put(key, contractpartners);
-    }
-    return contractpartners;
-  }
-
-  @Override
-  public List<Contractpartner> getAllContractpartnersByInitial(final UserID userId,
-      final Character initial) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(initial, "initial must not be null!");
-    final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-        .getAllContractpartnersByInitial(userId.getId(), initial);
-    return this.mapContractpartnerDataList(contractpartnerDataList);
-  }
-
-  @Override
-  public List<Contractpartner> getAllContractpartnersByInitialAndDateRange(final UserID userId,
-      final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "validFrom must not be null!");
-    Assert.notNull(validTil, "validTil must not be null!");
-    Assert.notNull(initial, "initial must not be null!");
-    final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-        .getAllContractpartnersByInitialAndDateRange(userId.getId(), initial, validFrom, validTil);
     return this.mapContractpartnerDataList(contractpartnerDataList);
   }
 

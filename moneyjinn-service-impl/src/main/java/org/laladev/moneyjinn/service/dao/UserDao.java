@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper;
 
@@ -42,21 +41,8 @@ public class UserDao {
     return this.mapper.getUserById(id);
   }
 
-  public Set<Character> getAllUserInitials() {
-    return this.mapper.getAllUserInitials();
-  }
-
-  public Integer countAllUsers() {
-    return this.mapper.countAllUsers();
-  }
-
   public List<UserData> getAllUsers() {
     return this.mapper.getAllUsers();
-  }
-
-  public List<UserData> getAllUsersByInitial(final Character initial) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllUsersByInitial(initialString);
   }
 
   public UserData getUserByName(final String name) {

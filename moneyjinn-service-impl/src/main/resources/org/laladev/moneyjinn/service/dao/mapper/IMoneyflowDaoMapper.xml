@@ -120,19 +120,6 @@
                  ORDER BY 1 ASC
         </select>
 
-        <select id="getAllMoneyflowsByDateRange"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND maf_id              = #{userId}
-                   AND (
-                        private            = 0
-                          OR
-                        mac_id_creator     = #{userId}
-                       )
-        </select>
-        
         <select id="getAllMoneyflowsByDateRangeIncludingPrivate"
                 resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />

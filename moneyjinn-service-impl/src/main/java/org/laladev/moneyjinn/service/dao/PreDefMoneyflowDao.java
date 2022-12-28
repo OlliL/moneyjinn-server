@@ -45,10 +45,6 @@ public class PreDefMoneyflowDao {
     return this.mapper.getPreDefMoneyflowById(userId, id);
   }
 
-  public Integer countAllPreDefMoneyflows(final Long userId) {
-    return this.mapper.countAllPreDefMoneyflows(userId);
-  }
-
   public Long createPreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
     this.mapper.createPreDefMoneyflow(preDefMoneyflowData);
     return preDefMoneyflowData.getId();
@@ -60,10 +56,6 @@ public class PreDefMoneyflowDao {
 
   public void deletePreDefMoneyflow(final Long userId, final Long id) {
     this.mapper.deletePreDefMoneyflow(userId, id);
-  }
-
-  public List<Long> getAllContractpartnerIds(final Long userId) {
-    return this.mapper.getAllContractpartnerIds(userId);
   }
 
   public void setLastUsed(final Long userId, final Long id) {

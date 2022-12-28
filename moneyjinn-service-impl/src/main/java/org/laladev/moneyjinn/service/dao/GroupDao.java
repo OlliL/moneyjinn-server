@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper;
 
@@ -44,19 +43,6 @@ public class GroupDao {
 
   public GroupData getGroupById(final Long id) {
     return this.mapper.getGroupById(id);
-  }
-
-  public Integer countAllGroups() {
-    return this.mapper.countAllGroups();
-  }
-
-  public Set<Character> getAllGroupInitials() {
-    return this.mapper.getAllGroupInitials();
-  }
-
-  public List<GroupData> getAllGroupsByInitial(final Character initial) {
-    final String initialString = String.valueOf(initial).replaceAll("([_%])", "\\\\$1");
-    return this.mapper.getAllGroupsByInitial(initialString);
   }
 
   public GroupData getGroupByName(final String name) {

@@ -31,9 +31,7 @@ import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -237,49 +235,12 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
   }
 
   @Override
-  public Set<Character> getAllPreDefMoneyflowInitials(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    final List<Long> contractpartnerIds = this.preDefMoneyflowDao
-        .getAllContractpartnerIds(userId.getId());
-    if (contractpartnerIds != null && !contractpartnerIds.isEmpty()) {
-      final List<Contractpartner> contractpartners = contractpartnerIds.stream()
-          .map(cpi -> this.contractpartnerService.getContractpartnerById(userId,
-              new ContractpartnerID(cpi)))
-          .collect(Collectors.toCollection(ArrayList::new));
-      return contractpartners.stream().map(cp -> cp.getName().toUpperCase().charAt(0))
-          .collect(Collectors.toCollection(HashSet::new));
-    }
-    return new HashSet<>();
-  }
-
-  @Override
-  public Integer countAllPreDefMoneyflows(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    return this.preDefMoneyflowDao.countAllPreDefMoneyflows(userId.getId());
-  }
-
-  @Override
   @Cacheable(CacheNames.ALL_PRE_DEF_MONEYFLOWS)
   public List<PreDefMoneyflow> getAllPreDefMoneyflows(final UserID userId) {
     Assert.notNull(userId, "UserId must not be null!");
     final List<PreDefMoneyflowData> preDefMoneyflowDataList = this.preDefMoneyflowDao
         .getAllPreDefMoneyflows(userId.getId());
     return this.mapPreDefMoneyflowDataList(preDefMoneyflowDataList);
-  }
-
-  @Override
-  public List<PreDefMoneyflow> getAllPreDefMoneyflowsByInitial(final UserID userId,
-      final Character initial) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(initial, "initial must not be null!");
-    final List<PreDefMoneyflow> preDefMoneyflows = this.getAllPreDefMoneyflows(userId);
-    if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-      return preDefMoneyflows.stream()
-          .filter(pdm -> pdm.getContractpartner().getName().toUpperCase()
-              .startsWith(initial.toString().toUpperCase()))
-          .collect(Collectors.toCollection(ArrayList::new));
-    }
-    return new ArrayList<>();
   }
 
   @Override

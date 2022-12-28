@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.UserData;
@@ -35,12 +34,6 @@ public interface IUserDaoMapper {
   public List<UserData> getAllUsers();
 
   public UserData getUserById(Long id);
-
-  public Integer countAllUsers();
-
-  public LinkedHashSet<Character> getAllUserInitials();
-
-  public List<UserData> getAllUsersByInitial(String initial);
 
   public UserData getUserByName(String name);
 

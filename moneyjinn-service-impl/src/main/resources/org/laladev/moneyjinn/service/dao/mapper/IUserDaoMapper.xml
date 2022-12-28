@@ -31,19 +31,6 @@
                  LIMIT 1
         </select>
         
-        <select id="getAllUserInitials" resultType="java.lang.Character">
-                SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-                  FROM access
-                 WHERE att_user = 1
-                 ORDER BY letters
-        </select>
-        
-        <select id="countAllUsers" resultType="java.lang.Integer">
-                SELECT COUNT(*)
-                  FROM access
-                 WHERE att_user = 1
-        </select>
-
         <select id="getAllUsers" 
                 resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
@@ -52,15 +39,6 @@
                  WHERE att_user = 1
         </select>
 
-        <select id="getAllUsersByInitial" parameterType="java.lang.String" 
-                resultType="org.laladev.moneyjinn.service.dao.data.UserData">
-
-                SELECT <include refid="userColumns" />
-                  FROM access
-                 WHERE att_user = 1
-                   AND UPPER(name) LIKE CONCAT(UPPER(#{initial}),'%')
-        </select>
-        
         <insert id="createUser"
                 parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
                 useGeneratedKeys="true" keyProperty="id" keyColumn="id">

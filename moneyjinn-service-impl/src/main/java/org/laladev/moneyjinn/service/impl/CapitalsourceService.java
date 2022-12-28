@@ -104,7 +104,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
    * they are NULL to default values as well as type and state.
    *
    * @param capitalsource
-   *          {@link Capitalsource}
+   *                        {@link Capitalsource}
    */
   private void prepareCapitalsource(final Capitalsource capitalsource) {
     if (capitalsource.getValidFrom() == null) {
@@ -180,38 +180,6 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
   }
 
   @Override
-  public Set<Character> getAllCapitalsourceInitials(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    return this.capitalsourceDao.getAllCapitalsourceInitials(userId.getId());
-  }
-
-  @Override
-  public Set<Character> getAllCapitalsourceInitialsByDateRange(final UserID userId,
-      final LocalDate validFrom, final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "ValidFrom must not be null!");
-    Assert.notNull(validTil, "ValidTil must not be null!");
-    return this.capitalsourceDao.getAllCapitalsourceInitialsByDateRange(userId.getId(), validFrom,
-        validTil);
-  }
-
-  @Override
-  public Integer countAllCapitalsources(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    return this.capitalsourceDao.countAllCapitalsources(userId.getId());
-  }
-
-  @Override
-  public Integer countAllCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
-      final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "ValidFrom must not be null!");
-    Assert.notNull(validTil, "ValidTil must not be null!");
-    return this.capitalsourceDao.countAllCapitalsourcesByDateRange(userId.getId(), validFrom,
-        validTil);
-  }
-
-  @Override
   @Cacheable(CacheNames.ALL_CAPITALSOURCES)
   public List<Capitalsource> getAllCapitalsources(final UserID userId) {
     Assert.notNull(userId, "UserId must not be null!");
@@ -228,28 +196,6 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
     Assert.notNull(validTil, "ValidTil must not be null!");
     final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
         .getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
-    return this.mapCapitalsourceDataList(capitalsourceDataList);
-  }
-
-  @Override
-  public List<Capitalsource> getAllCapitalsourcesByInitial(final UserID userId,
-      final Character initial) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(initial, "Initial must not be null!");
-    final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-        .getAllCapitalsourcesByInitial(userId.getId(), initial);
-    return this.mapCapitalsourceDataList(capitalsourceDataList);
-  }
-
-  @Override
-  public List<Capitalsource> getAllCapitalsourcesByInitialAndDateRange(final UserID userId,
-      final Character initial, final LocalDate validFrom, final LocalDate validTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(validFrom, "ValidFrom must not be null!");
-    Assert.notNull(validTil, "ValidTil must not be null!");
-    Assert.notNull(initial, "Initial must not be null!");
-    final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-        .getAllCapitalsourcesByInitialAndDateRange(userId.getId(), initial, validFrom, validTil);
     return this.mapCapitalsourceDataList(capitalsourceDataList);
   }
 
@@ -313,16 +259,6 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
           "You may not delete a source of capital while it is referenced by a flow of money!",
           ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
     }
-  }
-
-  @Override
-  public List<Capitalsource> getGroupBookableCapitalsources(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-        .getGroupCapitalsources(userId.getId());
-    return this.mapCapitalsourceDataList(capitalsourceDataList).stream()
-        .filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT))
-        .collect(Collectors.toCollection(ArrayList::new));
   }
 
   @Override

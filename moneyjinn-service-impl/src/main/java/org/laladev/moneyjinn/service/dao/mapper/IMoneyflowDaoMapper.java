@@ -52,9 +52,6 @@ public interface IMoneyflowDaoMapper {
   public List<Short> getAllMonth(@Param("userId") Long userId,
       @Param("beginOfYear") LocalDate beginOfYear, @Param("endOfYear") LocalDate endOfYear);
 
-  public List<MoneyflowData> getAllMoneyflowsByDateRange(@Param("userId") Long userId,
-      @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
-
   public List<MoneyflowData> getAllMoneyflowsByDateRangeIncludingPrivate(
       @Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom,
       @Param("dateTil") LocalDate dateTil);

@@ -27,21 +27,6 @@
                    AND id      != 0
                  LIMIT 1
         </select>
-            
-        <select id="getAllGroupInitials" resultType="java.lang.Character">
-                SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-                  FROM access
-                 WHERE att_user = 0
-                   AND id      != 0
-                 ORDER BY letters
-        </select>
-        
-        <select id="countAllGroups" resultType="java.lang.Integer">
-                SELECT COUNT(*)
-                  FROM access
-                 WHERE att_user = 0
-                   AND id      != 0
-        </select>
 
         <select id="getAllGroups"
                 resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
@@ -50,16 +35,6 @@
                  WHERE att_user = 0
                    AND id      != 0
                  ORDER BY name
-        </select>
-        
-        <select id="getAllGroupsByInitial" parameterType="java.lang.String" 
-                resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
-
-                SELECT <include refid="groupColumns" />
-                  FROM access
-                 WHERE att_user = 0
-                   AND id      != 0
-                   AND UPPER(name) LIKE CONCAT(UPPER(#{initial}),'%')
         </select>
         
         <insert id="createGroup"

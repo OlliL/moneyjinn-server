@@ -246,7 +246,6 @@ public class UserController extends AbstractController {
       final UserID newUserId = this.userService.createUser(user);
       if (newUserId != null) {
         response.setUserId(newUserId.getId());
-        this.settingService.initSettings(newUserId);
         if (accessRelation != null) {
           accessRelation.setId(newUserId);
           this.accessRelationService.setAccessRelationForNewUser(accessRelation);

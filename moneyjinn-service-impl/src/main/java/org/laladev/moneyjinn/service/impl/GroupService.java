@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.service.impl;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -88,26 +87,9 @@ public class GroupService extends AbstractService implements IGroupService {
   }
 
   @Override
-  public Set<Character> getAllGroupInitials() {
-    return this.groupDao.getAllGroupInitials();
-  }
-
-  @Override
-  public Integer countAllGroups() {
-    return this.groupDao.countAllGroups();
-  }
-
-  @Override
   @Cacheable(CacheNames.ALL_GROUPS)
   public List<Group> getAllGroups() {
     final List<GroupData> groupDataList = this.groupDao.getAllGroups();
-    return super.mapList(groupDataList, Group.class);
-  }
-
-  @Override
-  public List<Group> getAllGroupsByInitial(final Character initial) {
-    Assert.notNull(initial, "initial must not be null!");
-    final List<GroupData> groupDataList = this.groupDao.getAllGroupsByInitial(initial);
     return super.mapList(groupDataList, Group.class);
   }
 

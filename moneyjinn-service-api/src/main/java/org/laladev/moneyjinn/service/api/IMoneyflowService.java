@@ -64,27 +64,16 @@ public interface IMoneyflowService {
    * Checks the validity of the given {@link Moneyflow}
    *
    * @param moneyflow
-   *          the {@link Moneyflow}
+   *                    the {@link Moneyflow}
    * @return {@link ValidationResult}
    */
   ValidationResult validateMoneyflow(Moneyflow moneyflow);
 
   /**
-   * This method persists (creates) the given {@link Moneyflow}s.
-   *
-   * @param moneyflows
-   *          {@link Moneyflow}s
-   * @deprecated use createMoneyflow
-   *
-   */
-  @Deprecated
-  void createMoneyflows(List<Moneyflow> moneyflows);
-
-  /**
    * This method persists (creates) the given {@link Moneyflow}.
    *
    * @param moneyflow
-   *          {@link Moneyflow}
+   *                    {@link Moneyflow}
    *
    */
   MoneyflowID createMoneyflow(Moneyflow moneyflows);
@@ -93,9 +82,9 @@ public interface IMoneyflowService {
    * This method returns the {@link Moneyflow} specified by its Id
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          {@link MoneyflowID}
+   *                      {@link MoneyflowID}
    * @return {@link Moneyflow}
    */
   Moneyflow getMoneyflowById(UserID userId, MoneyflowID moneyflowId);
@@ -105,7 +94,7 @@ public interface IMoneyflowService {
    * values are validated for correctness.
    *
    * @param moneyflow
-   *          the new {@link Moneyflow} attributes
+   *                    the new {@link Moneyflow} attributes
    */
   void updateMoneyflow(Moneyflow moneyflow);
 
@@ -113,9 +102,9 @@ public interface IMoneyflowService {
    * This service deletes a {@link Moneyflow} from the system
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          The {@link MoneyflowID} of the to-be-deleted {@link Moneyflow}
+   *                      The {@link MoneyflowID} of the to-be-deleted {@link Moneyflow}
    */
   void deleteMoneyflow(UserID userId, MoneyflowID moneyflowId);
 
@@ -148,16 +137,6 @@ public interface IMoneyflowService {
    * @return
    */
   List<Month> getAllMonth(UserID userId, Short year);
-
-  /**
-   * Returns all {@link Moneyflow}s which Bookingdate is in the defined Daterange.
-   *
-   * @param userId
-   * @param dateFrom
-   * @param dateTil
-   * @return
-   */
-  List<Moneyflow> getAllMoneyflowsByDateRange(UserID userId, LocalDate dateFrom, LocalDate dateTil);
 
   /**
    * Returns all {@link Moneyflow}s which Bookingdate is in the defined Daterange. Including also

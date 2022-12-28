@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -76,8 +78,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 @Named
 @EnableCaching
@@ -262,23 +262,6 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   }
 
   @Override
-  public void createMoneyflows(final List<Moneyflow> moneyflows) {
-    Assert.notNull(moneyflows, "moneyflows must not be null!");
-    final ValidationResult validationResult = new ValidationResult();
-    moneyflows.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflow(mf)));
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
-    }
-    for (final Moneyflow moneyflow : moneyflows) {
-      final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
-      final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);
-      this.evictMoneyflowCache(moneyflow.getUser().getId(), new MoneyflowID(moneyflowId));
-    }
-  }
-
-  @Override
   public MoneyflowID createMoneyflow(final Moneyflow moneyflow) {
     final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -371,17 +354,6 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     }
     cache.put(year, months);
     return months;
-  }
-
-  @Override
-  public List<Moneyflow> getAllMoneyflowsByDateRange(final UserID userId, final LocalDate dateFrom,
-      final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(dateFrom, "dateFrom must not be null!");
-    Assert.notNull(dateTil, "dateTil must not be null!");
-    final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
-        .getAllMoneyflowsByDateRange(userId.getId(), dateFrom, dateTil);
-    return this.mapMoneyflowDataList(moneyflowDatas);
   }
 
   @Override

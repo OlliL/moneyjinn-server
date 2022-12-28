@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.dao;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,8 +35,6 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 @Named
 public class MoneyflowDao {
@@ -71,11 +71,6 @@ public class MoneyflowDao {
       final LocalDate validFrom, final LocalDate validTil, final List<Long> capitalsourceIds) {
     return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil,
         capitalsourceIds);
-  }
-
-  public List<MoneyflowData> getAllMoneyflowsByDateRange(final Long userId,
-      final LocalDate dateFrom, final LocalDate dateTil) {
-    return this.mapper.getAllMoneyflowsByDateRange(userId, dateFrom, dateTil);
   }
 
   public List<MoneyflowData> getAllMoneyflowsByDateRangeIncludingPrivate(final Long userId,

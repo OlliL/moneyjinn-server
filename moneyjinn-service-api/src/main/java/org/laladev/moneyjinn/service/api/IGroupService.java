@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -56,7 +55,7 @@ public interface IGroupService {
    * Checks the validity of the given {@link Group}
    *
    * @param user
-   *          the {@link Group}
+   *               the {@link Group}
    * @return {@link ValidationResult}
    */
   ValidationResult validateGroup(Group group);
@@ -65,24 +64,10 @@ public interface IGroupService {
    * Returns the {@link Group} for the given {@link GroupID}.
    *
    * @param groupId
-   *          the {@link GroupID}
+   *                  the {@link GroupID}
    * @return
    */
   Group getGroupById(GroupID groupId);
-
-  /**
-   * This Service returns the distinct initials of all groupnames in the database in uppercase.
-   *
-   * @return all uppercased initials
-   */
-  Set<Character> getAllGroupInitials();
-
-  /**
-   * This Service returns the number of all existing groups
-   *
-   * @return number of {@link Group}s
-   */
-  Integer countAllGroups();
 
   /**
    * This Service returns all existing {@link Group}s
@@ -92,20 +77,10 @@ public interface IGroupService {
   List<Group> getAllGroups();
 
   /**
-   * This Service returns all existing {@link Group}s which name start with the specified initial
-   * case-insensitive
-   *
-   * @param initial
-   *          the first letter of the {@link Group}s name
-   * @return a list of {@link Group}s
-   */
-  List<Group> getAllGroupsByInitial(Character initial);
-
-  /**
    * This Service returns the {@link Group} for the specified name
    *
    * @param name
-   *          the Group-Name
+   *               the Group-Name
    * @return {@link Group}
    */
   Group getGroupByName(String name);
@@ -115,9 +90,9 @@ public interface IGroupService {
    * correctness.
    *
    * @param group
-   *          the {@link Group} to be created
+   *                the {@link Group} to be created
    * @throws BusinessException
-   *           If the validation of the given {@link Group} failed.
+   *                             If the validation of the given {@link Group} failed.
    */
   GroupID createGroup(Group group);
 
@@ -126,9 +101,9 @@ public interface IGroupService {
    * validated for correctness.
    *
    * @param user
-   *          the new {@link Group} attributes
+   *               the new {@link Group} attributes
    * @throws BusinessException
-   *           If the validation of the given {@link Group} failed.
+   *                             If the validation of the given {@link Group} failed.
    */
   void updateGroup(Group group);
 
@@ -136,10 +111,11 @@ public interface IGroupService {
    * This service deletes a {@link Group} from the system
    *
    * @param groupId
-   *          The {@link GroupID} of the to-be-deleted {@link Group}
+   *                  The {@link GroupID} of the to-be-deleted {@link Group}
    * @throws BusinessException
-   *           If the deletion fails an error is throws. It is always assumed that it fails because
-   *           of a Foreign Key Constraint Violation on the DB level
+   *                             If the deletion fails an error is throws. It is always assumed that
+   *                             it fails because of a Foreign Key Constraint Violation on the DB
+   *                             level
    */
   void deleteGroup(GroupID groupId);
 }

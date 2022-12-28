@@ -36,15 +36,11 @@ public interface IPreDefMoneyflowDaoMapper {
   public PreDefMoneyflowData getPreDefMoneyflowById(@Param("userId") Long userId,
       @Param("id") Long id);
 
-  public Integer countAllPreDefMoneyflows(Long userId);
-
   public void createPreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
 
   public void updatePreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
 
   public void deletePreDefMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
-
-  public List<Long> getAllContractpartnerIds(Long userId);
 
   public void setLastUsed(@Param("userId") Long userId, @Param("id") Long id);
 }

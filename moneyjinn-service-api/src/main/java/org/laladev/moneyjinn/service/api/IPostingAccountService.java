@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -56,7 +55,7 @@ public interface IPostingAccountService {
    * Checks the validity of the given {@link PostingAccount}
    *
    * @param postingAccount
-   *          the {@link PostingAccount}
+   *                         the {@link PostingAccount}
    * @return {@link ValidationResult}
    */
   ValidationResult validatePostingAccount(PostingAccount postingAccount);
@@ -65,25 +64,10 @@ public interface IPostingAccountService {
    * Returns the {@link PostingAccount} for the given {@link PostingAccountID}.
    *
    * @param postingAccountId
-   *          the {@link PostingAccountID}
+   *                           the {@link PostingAccountID}
    * @return
    */
   PostingAccount getPostingAccountById(PostingAccountID postingAccountId);
-
-  /**
-   * This Service returns the distinct initials of all postingAccountnames in the database in
-   * uppercase.
-   *
-   * @return all uppercased initials
-   */
-  Set<Character> getAllPostingAccountInitials();
-
-  /**
-   * This Service returns the number of all existing postingAccounts
-   *
-   * @return number of {@link PostingAccount}s
-   */
-  Integer countAllPostingAccounts();
 
   /**
    * This Service returns all existing {@link PostingAccount}s
@@ -93,20 +77,10 @@ public interface IPostingAccountService {
   List<PostingAccount> getAllPostingAccounts();
 
   /**
-   * This Service returns all existing {@link PostingAccount}s which name start with the specified
-   * initial case-insensitive
-   *
-   * @param initial
-   *          the first letter of the {@link PostingAccount}s name
-   * @return a list of {@link PostingAccount}s
-   */
-  List<PostingAccount> getAllPostingAccountsByInitial(Character initial);
-
-  /**
    * This Service returns the {@link PostingAccount} for the specified name
    *
    * @param name
-   *          the PostingAccount-Name
+   *               the PostingAccount-Name
    * @return {@link PostingAccount}
    */
   PostingAccount getPostingAccountByName(String name);
@@ -116,9 +90,9 @@ public interface IPostingAccountService {
    * is validated for correctness.
    *
    * @param postingAccount
-   *          the {@link PostingAccount} to be created
+   *                         the {@link PostingAccount} to be created
    * @throws BusinessException
-   *           If the validation of the given {@link PostingAccount} failed.
+   *                             If the validation of the given {@link PostingAccount} failed.
    */
   PostingAccountID createPostingAccount(PostingAccount postingAccount);
 
@@ -127,9 +101,9 @@ public interface IPostingAccountService {
    * the new values are validated for correctness.
    *
    * @param postingAccount
-   *          the new {@link PostingAccount} attributes
+   *                         the new {@link PostingAccount} attributes
    * @throws BusinessException
-   *           If the validation of the given {@link PostingAccount} failed.
+   *                             If the validation of the given {@link PostingAccount} failed.
    */
   void updatePostingAccount(PostingAccount postingAccount);
 
@@ -137,10 +111,12 @@ public interface IPostingAccountService {
    * This service deletes a {@link PostingAccount} from the system
    *
    * @param postingAccountId
-   *          The {@link PostingAccountID} of the to-be-deleted {@link PostingAccount}
+   *                           The {@link PostingAccountID} of the to-be-deleted
+   *                           {@link PostingAccount}
    * @throws BusinessException
-   *           If the deletion fails an error is throws. It is always assumed that it fails because
-   *           of a Foreign Key Constraint Violation on the DB level
+   *                             If the deletion fails an error is throws. It is always assumed that
+   *                             it fails because of a Foreign Key Constraint Violation on the DB
+   *                             level
    */
   void deletePostingAccount(PostingAccountID postingAccountId);
 }
