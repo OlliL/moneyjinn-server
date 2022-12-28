@@ -41,11 +41,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,14 +59,6 @@ public class PreDefMoneyflowController extends AbstractController {
   private IAccessRelationService accessRelationService;
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private ISettingService settingService;
 
   @Override
   protected void addBeanMapper() {

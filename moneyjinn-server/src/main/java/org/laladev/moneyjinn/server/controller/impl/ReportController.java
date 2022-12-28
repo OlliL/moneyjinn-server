@@ -70,19 +70,16 @@ import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,16 +106,12 @@ public class ReportController extends AbstractController {
   @Inject
   private IImportedBalanceService importedBalanceService;
   @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
   private ISettingService settingService;
 
   @Override
   protected void addBeanMapper() {
     super.registerBeanMapper(new MoneyflowTransportMapper());
     super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
-    super.registerBeanMapper(new CapitalsourceTransportMapper());
-    super.registerBeanMapper(new PostingAccountTransportMapper());
     super.registerBeanMapper(new PostingAccountAmountTransportMapper());
   }
 

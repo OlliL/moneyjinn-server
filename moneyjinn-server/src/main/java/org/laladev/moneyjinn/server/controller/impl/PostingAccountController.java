@@ -39,7 +39,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,8 +54,6 @@ public class PostingAccountController extends AbstractController {
   private static final String RESTRICTION_ALL = "all";
   @Inject
   private IPostingAccountService postingAccountService;
-  @Inject
-  private ISettingService settingService;
 
   @Override
   protected void addBeanMapper() {
