@@ -71,7 +71,7 @@ public interface IContractpartnerService {
   ValidationResult validateContractpartner(Contractpartner contractpartner);
 
   /**
-   * This method returns the {@link Contractpartner} specified by its Id
+   * This service returns the {@link Contractpartner} specified by its Id.
    *
    * @param userId
    *                            {@link UserID}
@@ -82,7 +82,7 @@ public interface IContractpartnerService {
   Contractpartner getContractpartnerById(UserID userId, ContractpartnerID contractpartnerId);
 
   /**
-   * This method returns all {@link Contractpartner}s where the given user has reading permissions.
+   * This service returns all {@link Contractpartner}s where the given user has reading permissions.
    *
    * @param userId
    *                 {@link UserID}
@@ -91,7 +91,7 @@ public interface IContractpartnerService {
   List<Contractpartner> getAllContractpartners(UserID userId);
 
   /**
-   * This method look the {@link Contractpartner} up which is valid on the given date and has the
+   * This service looks the {@link Contractpartner} up which is valid on the given date and has the
    * specified comment.
    *
    * @param userId

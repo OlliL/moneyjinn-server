@@ -75,7 +75,7 @@ public interface ICapitalsourceService {
   ValidationResult validateCapitalsource(Capitalsource capitalsource);
 
   /**
-   * This method returns the {@link Capitalsource} specified by its Id
+   * This service returns the {@link Capitalsource} specified by its Id.
    *
    * @param userId
    *                          {@link UserID}
@@ -89,7 +89,7 @@ public interface ICapitalsourceService {
       CapitalsourceID capitalsourceId);
 
   /**
-   * This method returns all {@link Capitalsource}s where the given user has reading permissions.
+   * This service returns all {@link Capitalsource}s where the given user has reading permissions.
    *
    * @param userId
    *                 {@link UserID}
@@ -98,7 +98,7 @@ public interface ICapitalsourceService {
   List<Capitalsource> getAllCapitalsources(UserID userId);
 
   /**
-   * This method returns all {@link Capitalsource}s where the given user has reading permissions
+   * This service returns all {@link Capitalsource}s where the given user has reading permissions
    * valid between the given Dates.
    *
    * @param userId
@@ -156,7 +156,7 @@ public interface ICapitalsourceService {
   void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
 
   /**
-   * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
+   * This service returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
    * like creating a {@link Moneyflow} and which valid between the given Dates.
    *
    * @param userId
@@ -171,7 +171,7 @@ public interface ICapitalsourceService {
       LocalDate validTil);
 
   /**
-   * Determines the {@link Capitalsource} by the given {@link BankAccount}
+   * Determines the {@link Capitalsource} by the given {@link BankAccount}.
    *
    * @param bankAccount
    *                      The {@link BankAccount}
@@ -182,7 +182,7 @@ public interface ICapitalsourceService {
   Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
 
   /**
-   * This method returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
+   * This service returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
    * for creating a {@link Moneyflow} and which valid between the given Dates.
    * {@link Capitalsource}s for which no {@link Moneyflow} must be created, are filtered out.
    *

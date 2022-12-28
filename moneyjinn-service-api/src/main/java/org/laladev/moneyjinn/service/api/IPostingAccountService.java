@@ -52,7 +52,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IPostingAccountService {
   /**
-   * Checks the validity of the given {@link PostingAccount}
+   * Checks the validity of the given {@link PostingAccount}.
    *
    * @param postingAccount
    *                         the {@link PostingAccount}
@@ -70,14 +70,14 @@ public interface IPostingAccountService {
   PostingAccount getPostingAccountById(PostingAccountID postingAccountId);
 
   /**
-   * This Service returns all existing {@link PostingAccount}s
+   * This Service returns all existing {@link PostingAccount}s.
    *
    * @return list of all {@link PostingAccount}s
    */
   List<PostingAccount> getAllPostingAccounts();
 
   /**
-   * This Service returns the {@link PostingAccount} for the specified name
+   * This Service returns the {@link PostingAccount} for the specified name.
    *
    * @param name
    *               the PostingAccount-Name
@@ -108,7 +108,7 @@ public interface IPostingAccountService {
   void updatePostingAccount(PostingAccount postingAccount);
 
   /**
-   * This service deletes a {@link PostingAccount} from the system
+   * This service deletes a {@link PostingAccount} from the system.
    *
    * @param postingAccountId
    *                           The {@link PostingAccountID} of the to-be-deleted

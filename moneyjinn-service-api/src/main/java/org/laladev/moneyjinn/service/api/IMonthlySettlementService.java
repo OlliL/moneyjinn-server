@@ -59,7 +59,7 @@ public interface IMonthlySettlementService {
    * Returns a list of years in which {@link MonthlySettlement}s where created.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @return list of years
    */
   List<Short> getAllYears(UserID userId);
@@ -69,7 +69,7 @@ public interface IMonthlySettlementService {
    * given year.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @param year
    * @return list of {@link Month}s
    */
@@ -79,10 +79,10 @@ public interface IMonthlySettlementService {
    * Returns a list of {@link MonthlySettlement}s for the given year and {@link Month}.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @param year
    * @param month
-   *          The {@link Month}
+   *                 The {@link Month}
    * @return list of {@link MonthlySettlement}s
    */
   List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(UserID userId, Short year,
@@ -124,7 +124,7 @@ public interface IMonthlySettlementService {
   ValidationResult upsertMonthlySettlements(List<MonthlySettlement> monthlySettlements);
 
   /**
-   * This method deletes the {@link MonthlySettlement}s for the given year and {@link Month}
+   * This method deletes the {@link MonthlySettlement}s for the given year and {@link Month}.
    *
    * @param userId
    * @param year

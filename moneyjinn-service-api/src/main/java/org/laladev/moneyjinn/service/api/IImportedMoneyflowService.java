@@ -145,7 +145,7 @@ public interface IImportedMoneyflowService {
 
   /**
    * checks if the externalId of a {@link ImportedMoneyflow} is already in the database.
-   * 
+   *
    * @param externalId
    *          An ID from an external system referencing our {@link ImportedMoneyflow}
    * @return true if externalid is already in the system, otherwise false

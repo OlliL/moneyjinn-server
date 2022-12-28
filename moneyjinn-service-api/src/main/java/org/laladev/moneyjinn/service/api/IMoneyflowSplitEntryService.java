@@ -57,10 +57,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IMoneyflowSplitEntryService {
   /**
-   * Checks the validity of the given {@link MoneyflowSplitEntry}
+   * Checks the validity of the given {@link MoneyflowSplitEntry}.
    *
    * @param moneyflowSplitEntry
-   *          the {@link MoneyflowSplitEntry}
+   *                              the {@link MoneyflowSplitEntry}
    * @return {@link ValidationResult}
    */
   ValidationResult validateMoneyflowSplitEntry(MoneyflowSplitEntry moneyflowSplitEntry);
@@ -68,8 +68,8 @@ public interface IMoneyflowSplitEntryService {
   /**
    * This method persists (creates) the given {@link MoneyflowSplitEntry}s.
    *
-   * @param moneyflowSplitEntrys
-   *          {@link MoneyflowSplitEntry}s
+   * @param moneyflowSplitEntries
+   *                                {@link MoneyflowSplitEntry}s
    * @throws BusinessException
    */
   void createMoneyflowSplitEntries(UserID userId, List<MoneyflowSplitEntry> moneyflowSplitEntries);
@@ -79,55 +79,57 @@ public interface IMoneyflowSplitEntryService {
    * changed, the new values are validated for correctness.
    *
    * @param moneyflowSplitEntry
-   *          the new {@link MoneyflowSplitEntry} attributes
+   *                              the new {@link MoneyflowSplitEntry} attributes
    */
   void updateMoneyflowSplitEntry(UserID userId, MoneyflowSplitEntry moneyflowSplitEntry);
 
   /**
    * This service retrieves all {@link MoneyflowSplitEntry}s for a given {@link MoneyflowID} from
-   * the system
+   * the system.
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          The {@link MoneyflowID} of the {@link MoneyflowSplitEntry}s
+   *                      The {@link MoneyflowID} of the {@link MoneyflowSplitEntry}s
    */
   List<MoneyflowSplitEntry> getMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 
   /**
    * This service retrieves all {@link MoneyflowSplitEntry}s for all given {@link MoneyflowID}s from
-   * the system
+   * the system.
    *
    * @param userId
-   *          {@link UserID}
+   *                       {@link UserID}
    * @param moneyflowIds
-   *          The {@link MoneyflowID}s of the {@link MoneyflowSplitEntry}s
+   *                       The {@link MoneyflowID}s of the {@link MoneyflowSplitEntry}s
    */
   Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(UserID userId,
       List<MoneyflowID> moneyflowIds);
 
   /**
    * This service deletes the {@link MoneyflowSplitEntry} for a given {@link MoneyflowSplitEntryID}
-   * from the system
+   * from the system.
    *
    * @param userId
-   *          {@link UserID}
+   *                                {@link UserID}
    * @param moneyflowId
-   *          The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
+   *                                The {@link MoneyflowID} of the to-be-deleted
+   *                                {@link MoneyflowSplitEntry}s
    * @param moneyflowSplitEntryId
-   *          The {@link MoneyflowSplitEntryID} of the to-be-deleted {@link MoneyflowSplitEntry}s
+   *                                The {@link MoneyflowSplitEntryID} of the to-be-deleted
+   *                                {@link MoneyflowSplitEntry}s
    */
   void deleteMoneyflowSplitEntry(UserID userId, MoneyflowID moneyflowId,
       MoneyflowSplitEntryID moneyflowSplitEntryId);
 
   /**
    * This service deletes the {@link MoneyflowSplitEntry}s for a given {@link MoneyflowyID} from the
-   * system
+   * system.
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
+   *                      The {@link MoneyflowID} of the to-be-deleted {@link MoneyflowSplitEntry}s
    */
   void deleteMoneyflowSplitEntries(UserID userId, MoneyflowID moneyflowId);
 }

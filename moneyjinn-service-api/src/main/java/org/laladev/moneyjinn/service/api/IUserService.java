@@ -52,7 +52,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IUserService {
   /**
-   * Checks the validity of the given {@link User}
+   * Checks the validity of the given {@link User}.
    *
    * @param user
    *               the {@link User}
@@ -63,21 +63,21 @@ public interface IUserService {
   /**
    * This Service returns the {@link User} for the given {@link UserID}.
    *
-   * @param id
-   *             the {@link UserID}
+   * @param userId
+   *                 the {@link UserID}
    * @return User
    */
   User getUserById(final UserID userId);
 
   /**
-   * This Service returns all existing {@link User}s
+   * This Service returns all existing {@link User}s.
    *
    * @return list of all {@link User}s
    */
   List<User> getAllUsers();
 
   /**
-   * This Service returns the {@link User} for the specified name
+   * This Service returns the {@link User} for the specified name.
    *
    * @param name
    *               the User-Name
@@ -91,9 +91,9 @@ public interface IUserService {
    *
    * @param user
    *               the {@link User} to be created
+   * @return {@link UserID} of the created {@link User}
    * @throws BusinessException
    *                             If the validation of the given {@link User} failed.
-   * @return {@link UserID} of the created {@link User}
    */
   UserID createUser(final User user);
 
@@ -134,7 +134,7 @@ public interface IUserService {
   void resetPassword(final UserID userId, final String password);
 
   /**
-   * This service deletes a {@link User} from the system
+   * This service deletes a {@link User} from the system.
    *
    * @param userId
    *                 The {@link UserID} of the to-be-deleted {@link User}

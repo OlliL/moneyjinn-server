@@ -61,10 +61,10 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 public interface ISettingService {
   /**
    * This Service returns the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the
-   * given {@link UserID}
+   * given {@link UserID}.
    *
-   * @param userID
-   *                 or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
    */
   ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
@@ -72,39 +72,39 @@ public interface ISettingService {
 
   /**
    * This Service sets the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                  or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @param setting
-   *                  the {@link ClientReportingUnselectedPostingAccountIdsSetting}
+   *                   the {@link ClientReportingUnselectedPostingAccountIdsSetting}
    */
   void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId,
       ClientReportingUnselectedPostingAccountIdsSetting setting);
 
   /**
    * This Service returns the {@link ClientTrendCapitalsourceIDsSetting} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                 or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @return {@link ClientTrendCapitalsourceIDsSetting}
    */
   ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
 
   /**
-   * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}
+   * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}.
    *
-   * @param userID
-   *                  or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @param setting
-   *                  the {@link ClientTrendCapitalsourceIDsSetting}
+   *                   the {@link ClientTrendCapitalsourceIDsSetting}
    */
   void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
       final ClientTrendCapitalsourceIDsSetting setting);
 
   /**
-   * Deletes all settings for the given {@link UserID}
+   * Deletes all settings for the given {@link UserID}.
    *
    * @param userId
    */
@@ -112,65 +112,65 @@ public interface ISettingService {
 
   /**
    * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                  or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @param setting
-   *                  the {@link ClientCompareDataSelectedCapitalsource}
+   *                   the {@link ClientCompareDataSelectedCapitalsource}
    */
   void setClientCompareDataSelectedCapitalsource(AccessID accessId,
       ClientCompareDataSelectedCapitalsource setting);
 
   /**
    * This Service returns the {@link ClientCompareDataSelectedCapitalsource} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                 or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedCapitalsource}
    */
   ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(
       AccessID accessId);
 
   /**
-   * This Service sets the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
+   * This Service sets the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}.
    *
-   * @param userID
-   *                  or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @param setting
-   *                  the {@link ClientCompareDataSelectedFormat}
+   *                   the {@link ClientCompareDataSelectedFormat}
    */
   void setClientCompareDataSelectedFormat(AccessID accessId,
       ClientCompareDataSelectedFormat setting);
 
   /**
-   * This Service returns the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}
+   * This Service returns the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}.
    *
-   * @param userID
-   *                 or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedFormat}
    */
   ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(AccessID accessId);
 
   /**
    * This Service sets the {@link ClientCompareDataSelectedSourceIsFile} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                  or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @param setting
-   *                  the {@link ClientCompareDataSelectedSourceIsFile}
+   *                   the {@link ClientCompareDataSelectedSourceIsFile}
    */
   void setClientCompareDataSelectedSourceIsFile(AccessID accessId,
       ClientCompareDataSelectedSourceIsFile setting);
 
   /**
    * This Service returns the {@link ClientCompareDataSelectedSourceIsFile} for the given
-   * {@link UserID}
+   * {@link UserID}.
    *
-   * @param userID
-   *                 or groupID {@link AccessID}
+   * @param accessId
+   *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedSourceIsFile}
    */
   ClientCompareDataSelectedSourceIsFile getClientCompareDataSelectedSourceIsFile(AccessID accessId);

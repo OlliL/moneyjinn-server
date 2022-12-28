@@ -56,49 +56,49 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IContractpartnerAccountService {
   /**
-   * This method validates a given {@link ContractpartnerAccount} for correctness.
+   * This service validates a given {@link ContractpartnerAccount} for correctness.
    *
    * @param userId
-   *          {@link UserID}
+   *                                 {@link UserID}
    * @param contractpartnerAccount
-   *          {@link ContractpartnerAccount}
+   *                                 {@link ContractpartnerAccount}
    * @return {@link ValidationResult}
    */
   ValidationResult validateContractpartnerAccount(UserID userId,
       ContractpartnerAccount contractpartnerAccount);
 
   /**
-   * This method returns the {@link ContractpartnerAccount} specified by its Id
+   * This service returns the {@link ContractpartnerAccount} specified by its Id.
    *
    * @param userId
-   *          {@link UserID}
+   *                                   {@link UserID}
    * @param contractpartnerAccountId
-   *          {@link ContractpartnerAccountID}
+   *                                   {@link ContractpartnerAccountID}
    * @return {@link ContractpartnerAccount}
    */
   ContractpartnerAccount getContractpartnerAccountById(UserID userId,
       ContractpartnerAccountID contractpartnerAccountId);
 
   /**
-   * This method returns the {@link ContractpartnerAccount}s assigned to a given
-   * {@link ContractpartnerID}
+   * This service returns the {@link ContractpartnerAccount}s assigned to a given
+   * {@link ContractpartnerID}.
    *
    * @param userId
-   *          {@link UserID}
+   *                            {@link UserID}
    * @param contractpartnerId
-   *          {@link ContractpartnerID}
+   *                            {@link ContractpartnerID}
    * @return list of {@link ContractpartnerAccount}s
    */
   List<ContractpartnerAccount> getContractpartnerAccounts(UserID userId,
       ContractpartnerID contractpartnerId);
 
   /**
-   * This method persists (creates) the given {@link ContractpartnerAccount}.
+   * This service persists (creates) the given {@link ContractpartnerAccount}.
    *
    * @param userId
-   *          {@link UserID}
+   *                                 {@link UserID}
    * @param contractpartnerAccount
-   *          {@link ContractpartnerAccount}
+   *                                 {@link ContractpartnerAccount}
    */
   ContractpartnerAccountID createContractpartnerAccount(UserID userId,
       ContractpartnerAccount contractpartnerAccount);
@@ -107,9 +107,9 @@ public interface IContractpartnerAccountService {
    * This method persists (updates) the given {@link ContractpartnerAccount}.
    *
    * @param userId
-   *          {@link UserID}
+   *                                 {@link UserID}
    * @param contractpartnerAccount
-   *          {@link ContractpartnerAccount}
+   *                                 {@link ContractpartnerAccount}
    */
   void updateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
@@ -117,9 +117,9 @@ public interface IContractpartnerAccountService {
    * This method deletes the given {@link ContractpartnerAccountID}.
    *
    * @param userId
-   *          {@link UserID}
+   *                                   {@link UserID}
    * @param contractpartnerAccountId
-   *          {@link ContractpartnerAccountID}
+   *                                   {@link ContractpartnerAccountID}
    */
   void deleteContractpartnerAccountById(UserID userId,
       ContractpartnerAccountID contractpartnerAccountId);
@@ -129,19 +129,19 @@ public interface IContractpartnerAccountService {
    * {@link ContractpartnerID}.
    *
    * @param userId
-   *          {@link UserID}
+   *                            {@link UserID}
    * @param contractpartnerId
-   *          {@link ContractpartnerID}
+   *                            {@link ContractpartnerID}
    */
   void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
   /**
-   * This method selects all {@link ContractpartnerAccount}s for the given {@link BankAccount}s
+   * This method selects all {@link ContractpartnerAccount}s for the given {@link BankAccount}s.
    *
    * @param userId
-   *          {@link UserID}
+   *                       {@link UserID}
    * @param bankAccounts
-   *          List of {@link BankAccount}
+   *                       List of {@link BankAccount}
    * @return List of all found {@link ContractpartnerAccount}
    */
   List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId,

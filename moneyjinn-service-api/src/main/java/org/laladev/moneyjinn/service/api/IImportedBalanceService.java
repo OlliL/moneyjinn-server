@@ -56,7 +56,7 @@ public interface IImportedBalanceService {
    * Validates the given {@link ImportedBalance} for correctness.
    *
    * @param importedBalance
-   *          The {@link ImportedBalance}
+   *                          The {@link ImportedBalance}
    * @return The {@link ValidationResult}
    */
   ValidationResult validateImportedBalance(ImportedBalance importedBalance);
@@ -65,17 +65,17 @@ public interface IImportedBalanceService {
    * Persists the given {@link ImportedBalance}.
    *
    * @param importedBalance
-   *          The {@link ImportedBalance}
+   *                          The {@link ImportedBalance}
    */
   void upsertImportedBalance(ImportedBalance importedBalance);
 
   /**
-   * Retrives all {@link ImportedBalance}s for the given {@link CapitalsourceID}s
+   * Retrives all {@link ImportedBalance}s for the given {@link CapitalsourceID}s.
    *
    * @param userId
-   *          The {@link UserID}
+   *                           The {@link UserID}
    * @param capitalsourceIds
-   *          The {@link ImportedBalance}
+   *                           The {@link ImportedBalance}
    * @return List of all matching {@link ImportedBalance}
    */
   List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(UserID userId,

@@ -61,7 +61,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IMoneyflowService {
   /**
-   * Checks the validity of the given {@link Moneyflow}
+   * Checks the validity of the given {@link Moneyflow}.
    *
    * @param moneyflow
    *                    the {@link Moneyflow}
@@ -76,10 +76,10 @@ public interface IMoneyflowService {
    *                    {@link Moneyflow}
    *
    */
-  MoneyflowID createMoneyflow(Moneyflow moneyflows);
+  MoneyflowID createMoneyflow(Moneyflow moneyflow);
 
   /**
-   * This method returns the {@link Moneyflow} specified by its Id
+   * This service returns the {@link Moneyflow} specified by its Id.
    *
    * @param userId
    *                      {@link UserID}
@@ -99,7 +99,7 @@ public interface IMoneyflowService {
   void updateMoneyflow(Moneyflow moneyflow);
 
   /**
-   * This service deletes a {@link Moneyflow} from the system
+   * This service deletes a {@link Moneyflow} from the system.
    *
    * @param userId
    *                      {@link UserID}
@@ -213,8 +213,8 @@ public interface IMoneyflowService {
    *
    * @param userId
    * @param postingAccountIds
-   * @param startDate
-   * @param endDate
+   * @param dateFrom
+   * @param dateTil
    * @return
    */
   List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
@@ -227,8 +227,8 @@ public interface IMoneyflowService {
    *
    * @param userId
    * @param postingAccountIds
-   * @param startDate
-   * @param endDate
+   * @param dateFrom
+   * @param dateTil
    * @return
    */
   List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId,
@@ -236,7 +236,7 @@ public interface IMoneyflowService {
 
   /**
    * Searches for {@link Moneyflow}s with the given amount and the given bookingDate +/- the given
-   * search period in days
+   * search period in days.
    *
    * @param userId
    * @param bookingDate
@@ -252,8 +252,8 @@ public interface IMoneyflowService {
    * {@link CapitalsourceID}.
    *
    * @param userId
-   * @param startDate
-   * @param endDate
+   * @param dateFrom
+   * @param dateTil
    * @param capitalsourceId
    * @return
    */

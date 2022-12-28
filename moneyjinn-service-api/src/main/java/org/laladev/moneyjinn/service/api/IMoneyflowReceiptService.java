@@ -52,31 +52,31 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 public interface IMoneyflowReceiptService {
   /**
    * This service retrieve a {@link MoneyflowReceipt} for a given {@link MoneyflowID} from the
-   * system
+   * system.
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          The {@link MoneyflowID} of the {@link MoneyflowReceipt}
+   *                      The {@link MoneyflowID} of the {@link MoneyflowReceipt}
    */
   MoneyflowReceipt getMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
 
   /**
-   * Returns a list of {@link MoneyflowID}s which have a Receipt in the DB
+   * Returns a list of {@link MoneyflowID}s which have a Receipt in the DB.
    *
    * @param userId
-   *          {@link UserID}
+   *                 {@link UserID}
    * @return
    */
   List<MoneyflowID> getMoneyflowIdsWithReceipt(UserID userId, List<MoneyflowID> moneyflowIds);
 
   /**
-   * Deletes the {@link MoneyflowReceipt}
+   * Deletes the {@link MoneyflowReceipt}.
    *
    * @param userId
-   *          {@link UserID}
+   *                      {@link UserID}
    * @param moneyflowId
-   *          {@link MoneyflowReceipt}
+   *                      {@link MoneyflowReceipt}
    * @return
    */
   void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);

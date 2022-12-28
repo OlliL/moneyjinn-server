@@ -82,7 +82,6 @@ import org.springframework.util.Assert;
 // TODO - copy and paste hell, use Optional!
 @Named
 public class SettingService extends AbstractService implements ISettingService {
-  private static final AccessID ROOT_ACCESS_ID = new AccessID(0L);
   @Inject
   private SettingDao settingDao;
   @Inject

@@ -53,10 +53,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IPreDefMoneyflowService {
   /**
-   * Checks the validity of the given {@link PreDefMoneyflow}
+   * Checks the validity of the given {@link PreDefMoneyflow}.
    *
-   * @param user
-   *               the {@link PreDefMoneyflow}
+   * @param preDefMoneyflow
+   *                          the {@link PreDefMoneyflow}
    * @return {@link ValidationResult}
    */
   ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
@@ -72,10 +72,8 @@ public interface IPreDefMoneyflowService {
    */
   PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
-  ;
-
   /**
-   * This Service returns all existing {@link PreDefMoneyflow}s
+   * This Service returns all existing {@link PreDefMoneyflow}s.
    *
    * @param userId
    *                 {@link UserID}
@@ -98,15 +96,15 @@ public interface IPreDefMoneyflowService {
    * This service changes a {@link PreDefMoneyflow}. Before the {@link PreDefMoneyflow} is changed,
    * the new values are validated for correctness.
    *
-   * @param user
-   *               the new {@link PreDefMoneyflow} attributes
+   * @param preDefMoneyflow
+   *                          the new {@link PreDefMoneyflow} attributes
    * @throws BusinessException
    *                             If the validation of the given {@link PreDefMoneyflow} failed.
    */
   void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
   /**
-   * This service deletes a {@link PreDefMoneyflow} from the system
+   * This service deletes a {@link PreDefMoneyflow} from the system.
    *
    * @param userId
    *                            {@link UserID}

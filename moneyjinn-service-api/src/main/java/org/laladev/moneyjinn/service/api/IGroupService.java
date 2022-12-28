@@ -52,10 +52,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IGroupService {
   /**
-   * Checks the validity of the given {@link Group}
+   * Checks the validity of the given {@link Group}.
    *
-   * @param user
-   *               the {@link Group}
+   * @param group
+   *                the {@link Group}
    * @return {@link ValidationResult}
    */
   ValidationResult validateGroup(Group group);
@@ -70,14 +70,14 @@ public interface IGroupService {
   Group getGroupById(GroupID groupId);
 
   /**
-   * This Service returns all existing {@link Group}s
+   * This Service returns all existing {@link Group}s.
    *
    * @return list of all {@link Group}s
    */
   List<Group> getAllGroups();
 
   /**
-   * This Service returns the {@link Group} for the specified name
+   * This Service returns the {@link Group} for the specified name.
    *
    * @param name
    *               the Group-Name
@@ -100,15 +100,15 @@ public interface IGroupService {
    * This service changes a {@link Group}. Before the {@link Group} is changed, the new values are
    * validated for correctness.
    *
-   * @param user
-   *               the new {@link Group} attributes
+   * @param group
+   *                the new {@link Group} attributes
    * @throws BusinessException
    *                             If the validation of the given {@link Group} failed.
    */
   void updateGroup(Group group);
 
   /**
-   * This service deletes a {@link Group} from the system
+   * This service deletes a {@link Group} from the system.
    *
    * @param groupId
    *                  The {@link GroupID} of the to-be-deleted {@link Group}

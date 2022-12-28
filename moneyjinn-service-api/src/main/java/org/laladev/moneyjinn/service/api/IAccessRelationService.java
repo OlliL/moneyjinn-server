@@ -57,10 +57,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  */
 public interface IAccessRelationService {
   /**
-   * Checks the validity of the given {@link AccessRelation}
+   * Checks the validity of the given {@link AccessRelation}.
    *
    * @param accessRelation
-   *          the {@link AccessRelation}
+   *                         the {@link AccessRelation}
    * @return {@link ValidationResult}
    */
   ValidationResult validateAccessRelation(final AccessRelation accessRelation);
@@ -69,7 +69,7 @@ public interface IAccessRelationService {
    * Returns all {@link AccessRelation}s for the given user.
    *
    * @param userId
-   *          the {@link UserID}
+   *                 the {@link UserID}
    * @return The found {@link AccessRelation}
    */
   List<AccessRelation> getAllAccessRelationsById(AccessID userId);
@@ -78,7 +78,7 @@ public interface IAccessRelationService {
    * Persists the given {@link AccessRelation} for an existing User.
    *
    * @param accessRelation
-   *          the {@link AccessRelation}.
+   *                         the {@link AccessRelation}.
    * @return {@link ValidationResult} if the given Object was not valid
    */
   ValidationResult setAccessRelationForExistingUser(AccessRelation accessRelation);
@@ -87,7 +87,7 @@ public interface IAccessRelationService {
    * Persists the given {@link AccessRelation} for a new User.
    *
    * @param accessRelation
-   *          the {@link AccessRelation}.
+   *                         the {@link AccessRelation}.
    * @return {@link ValidationResult} if the given Object was not valid
    */
   ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
@@ -97,7 +97,7 @@ public interface IAccessRelationService {
    * {@link GroupID}.
    *
    * @param accessRelationID
-   *          The {@link AccessID}
+   *                           The {@link AccessID}
    * @return The found {@link AccessRelation}
    */
   AccessRelation getAccessRelationById(final AccessID accessRelationID);
@@ -107,18 +107,18 @@ public interface IAccessRelationService {
    * {@link LocalDate}.
    *
    * @param accessRelationID
-   *          The {@link AccessID}
+   *                           The {@link AccessID}
    * @param date
-   *          The date when the Relation must have been valid
+   *                           The date when the Relation must have been valid
    * @return The found {@link AccessRelation}
    */
   AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
 
   /**
-   * Delets all relations to the given AccessID
+   * Delets all relations to the given AccessID.
    *
    * @param accessRelationID
-   *          The {@link AccessID}
+   *                           The {@link AccessID}
    */
   void deleteAllAccessRelation(AccessID accessRelationID);
 
@@ -126,9 +126,9 @@ public interface IAccessRelationService {
    * Gives the Group the {@link AccessID} is attached to.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @param date
-   *          The date of the {@link Group} assignment
+   *                 The date of the {@link Group} assignment
    * @return The found {@link Group}
    */
   Group getAccessor(AccessID userId, LocalDate date);
@@ -137,7 +137,7 @@ public interface IAccessRelationService {
    * Gives the Group the {@link AccessID} is attached to.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @return The found {@link Group}
    */
   Group getAccessor(AccessID userId);
@@ -146,7 +146,7 @@ public interface IAccessRelationService {
    * Gives all {@link UserID}s who are or where in the same group the given user is or was.
    *
    * @param userID
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @return The found List of {@link UserID}
    */
   Set<UserID> getAllUserWithSameGroup(AccessID userID);
