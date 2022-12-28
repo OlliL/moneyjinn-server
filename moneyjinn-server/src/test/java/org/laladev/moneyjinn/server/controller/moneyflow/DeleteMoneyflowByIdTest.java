@@ -75,12 +75,10 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
   public void test_nonExistingMoneyflow_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NON_EXISTING_ID);
-    Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNull(moneyflow);
     super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method,
         true, Object.class);
-    moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-    Assertions.assertNull(moneyflow);
   }
 
   @Test
