@@ -26,21 +26,15 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
-import java.util.Set;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.AbstractPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowDeletePostingAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowEditPostingAccountResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.UpdatePostingAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
@@ -72,37 +66,11 @@ public class PostingAccountController extends AbstractController {
 
   @RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
   public ShowPostingAccountListResponse showPostingAccountList() {
-    return this.showPostingAccountList(null);
-  }
-
-  @RequestMapping(value = "showPostingAccountList/{restriction}", method = { RequestMethod.GET })
-  public ShowPostingAccountListResponse showPostingAccountList(
-      @PathVariable(value = "restriction") final String restriction) {
-    final UserID userId = super.getUserId();
-    List<PostingAccount> postingAccounts = null;
-    if (restriction != null) {
-      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-        postingAccounts = this.postingAccountService.getAllPostingAccounts();
-      } else if (restriction.length() == 1) {
-        postingAccounts = this.postingAccountService
-            .getAllPostingAccountsByInitial(restriction.toCharArray()[0]);
-      }
-    } else {
-      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
-          .getClientMaxRowsSetting(userId);
-      final Integer count = this.postingAccountService.countAllPostingAccounts();
-      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-        postingAccounts = this.postingAccountService.getAllPostingAccounts();
-      }
-    }
-    final Set<Character> initials = this.postingAccountService.getAllPostingAccountInitials();
+    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
     final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
     if (postingAccounts != null && !postingAccounts.isEmpty()) {
       response.setPostingAccountTransports(
           super.mapList(postingAccounts, PostingAccountTransport.class));
-    }
-    if (initials != null && !initials.isEmpty()) {
-      response.setInitials(initials);
     }
     return response;
   }
@@ -150,28 +118,5 @@ public class PostingAccountController extends AbstractController {
   public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);
     this.postingAccountService.deletePostingAccount(postingAccountId);
-  }
-
-  @RequestMapping(value = "showEditPostingAccount/{id}", method = { RequestMethod.GET })
-  public ShowEditPostingAccountResponse showEditPostingAccount(
-      @PathVariable(value = "id") final Long postingAccountId) {
-    final ShowEditPostingAccountResponse response = new ShowEditPostingAccountResponse();
-    this.fillAbstractPostingAccountResponse(postingAccountId, response);
-    return response;
-  }
-
-  @RequestMapping(value = "showDeletePostingAccount/{id}", method = { RequestMethod.GET })
-  public ShowDeletePostingAccountResponse showDeletePostingAccount(
-      @PathVariable(value = "id") final Long postingAccountId) {
-    final ShowDeletePostingAccountResponse response = new ShowDeletePostingAccountResponse();
-    this.fillAbstractPostingAccountResponse(postingAccountId, response);
-    return response;
-  }
-
-  private void fillAbstractPostingAccountResponse(final Long postingAccountId,
-      final AbstractPostingAccountResponse response) {
-    final PostingAccount postingAccount = this.postingAccountService
-        .getPostingAccountById(new PostingAccountID(postingAccountId));
-    response.setPostingAccountTransport(super.map(postingAccount, PostingAccountTransport.class));
   }
 }

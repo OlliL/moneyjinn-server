@@ -13,12 +13,9 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IGroupService;
-import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 
 public class ShowGroupListTest extends AbstractControllerTest {
-  @Inject
-  private SettingService settingService;
   @Inject
   private IGroupService groupService;
   private final HttpMethod method = HttpMethod.GET;

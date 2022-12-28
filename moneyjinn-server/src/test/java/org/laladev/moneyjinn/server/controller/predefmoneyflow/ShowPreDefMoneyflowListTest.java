@@ -1,28 +1,20 @@
 
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
-  @Inject
-  private SettingService settingService;
   private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;
@@ -50,7 +42,6 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
   private ShowPreDefMoneyflowListResponse getCompleteResponse() {
     final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
     final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
     preDefMoneyflowTransports
         .add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
@@ -62,57 +53,9 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
 
   @Test
   public void test_default_FullResponseObject() throws Exception {
-    final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(10);
-    this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID),
-        setting);
     final ShowPreDefMoneyflowListResponse expected = this.getCompleteResponse();
     final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method,
         false, ShowPreDefMoneyflowListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_MaxRowSettingReached_OnlyInitials() throws Exception {
-    final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
-    final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
-    this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID),
-        setting);
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowPreDefMoneyflowListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_explicitAll_FullResponseObject() throws Exception {
-    final ShowPreDefMoneyflowListResponse expected = this.getCompleteResponse();
-    final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(1);
-    this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID),
-        setting);
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/all",
-        this.method, false, ShowPreDefMoneyflowListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_initialP_responseObjectcontainingP() throws Exception {
-    final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
-    final List<PreDefMoneyflowTransport> preDefMoneyflowTransports = new ArrayList<>();
-    preDefMoneyflowTransports
-        .add(new PreDefMoneyflowTransportBuilder().forPreDefMoneyflow1().build());
-    expected.setPreDefMoneyflowTransports(preDefMoneyflowTransports);
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/P",
-        this.method, false, ShowPreDefMoneyflowListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_initialX_responseObjectContainingNoPreDefMoneyflow() throws Exception {
-    final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    expected.setInitials(new HashSet<>(Arrays.asList('P', 'Q')));
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/X",
-        this.method, false, ShowPreDefMoneyflowListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -124,31 +67,14 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired2_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
-    super.callUsecaseExpect403("/all", this.method);
-  }
-
-  @Test
   @Sql("classpath:h2defaults.sql")
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/all",
-        this.method, false, ShowPreDefMoneyflowListResponse.class);
+    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method,
+        false, ShowPreDefMoneyflowListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabaseExplicitLetter_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("/A",
-        this.method, false, ShowPreDefMoneyflowListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
 }

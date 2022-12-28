@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlySettlementListTest extends AbstractControllerTest {
+public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;
@@ -41,58 +40,26 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
     return super.getUsecaseFromTestClassName(this.getClass());
   }
 
-  private ShowMonthlySettlementListResponse getDefaultResponse() {
+  @Test
+  public void test_withYearAndInvalidMonth_EmptyResponseObject() throws Exception {
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
-    expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4));
-    expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
-    expected.setYear((short) 2010);
-    expected.setNumberOfAddableSettlements(2);
-    return expected;
-  }
-
-  @Test
-  public void test_default_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
-    final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowMonthlySettlementListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_withYear_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
-    final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010",
-        this.method, false, ShowMonthlySettlementListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_withInvalidYear_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
-    final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1972",
-        this.method, false, ShowMonthlySettlementListResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_withYearAndInvalidMonth_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
+    expected.setMonthlySettlementTransports(new ArrayList<>());
     final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2010/10",
         this.method, false, ShowMonthlySettlementListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth13_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
+  public void test_withInvalidYearAndInvalidMonth13_EmptyResponseObject() throws Exception {
+    final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1/13",
         this.method, false, ShowMonthlySettlementListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth0_FullResponseObject() throws Exception {
-    final ShowMonthlySettlementListResponse expected = this.getDefaultResponse();
+  public void test_withInvalidYearAndInvalidMonth0_EmptyResponseObject() throws Exception {
+    final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/1/0",
         this.method, false, ShowMonthlySettlementListResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -108,30 +75,10 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
     monthlySettlementTransports
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement3().build());
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
-    expected.setAllMonth(Arrays.asList((short) 11, (short) 12));
-    expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
-    expected.setYear((short) 2008);
-    expected.setMonth((short) 12);
-    expected.setNumberOfAddableSettlements(2);
-    expected.setNumberOfEditableSettlements(2);
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
     final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2008/12",
         this.method, false, ShowMonthlySettlementListResponse.class);
     Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void test_AuthorizationRequired_1_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
-  }
-
-  @Test
-  public void test_AuthorizationRequired_2_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
-    super.callUsecaseExpect403("/2008", this.method);
   }
 
   @Test
@@ -147,7 +94,8 @@ public class ShowMonthlySettlementListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
-    final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("",
+    expected.setMonthlySettlementTransports(new ArrayList<>());
+    final ShowMonthlySettlementListResponse actual = super.callUsecaseWithoutContent("/2020/10",
         this.method, false, ShowMonthlySettlementListResponse.class);
     Assertions.assertEquals(expected, actual);
   }

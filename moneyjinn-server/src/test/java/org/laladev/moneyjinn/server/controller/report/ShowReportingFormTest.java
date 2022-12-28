@@ -2,14 +2,11 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.report.ShowReportingFormResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
@@ -51,11 +48,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
 
   private ShowReportingFormResponse getDefaultResponse() {
     final ShowReportingFormResponse expected = new ShowReportingFormResponse();
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
+
     expected.setMinDate(DateUtil.getGmtDate("2008-12-01"));
     expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
     return expected;

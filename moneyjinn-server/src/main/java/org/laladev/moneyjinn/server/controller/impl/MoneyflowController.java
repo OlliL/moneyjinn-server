@@ -62,13 +62,9 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
@@ -76,7 +72,6 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
@@ -103,8 +98,6 @@ public class MoneyflowController extends AbstractController {
   @Inject
   private IContractpartnerService contractpartnerService;
   @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
   private IMoneyflowService moneyflowService;
   @Inject
   private IMoneyflowSplitEntryService moneyflowSplitEntryService;
@@ -115,10 +108,6 @@ public class MoneyflowController extends AbstractController {
 
   @Override
   protected void addBeanMapper() {
-    super.registerBeanMapper(new CapitalsourceTransportMapper());
-    super.registerBeanMapper(new ContractpartnerTransportMapper());
-    super.registerBeanMapper(new PostingAccountTransportMapper());
-    super.registerBeanMapper(new PreDefMoneyflowTransportMapper());
     super.registerBeanMapper(new MoneyflowTransportMapper());
     super.registerBeanMapper(new ValidationItemTransportMapper());
     super.registerBeanMapper(new MoneyflowSearchParamsTransportMapper());

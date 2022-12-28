@@ -9,19 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.impl.SettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowContractpartnerListTest extends AbstractControllerTest {
-  @Inject
-  private SettingService settingService;
   @Inject
   private IContractpartnerService contractpartnerService;
   private final HttpMethod method = HttpMethod.GET;
@@ -66,9 +61,6 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
 
   @Test
   public void test_default_FullResponseObject() throws Exception {
-    final ClientMaxRowsSetting setting = new ClientMaxRowsSetting(10);
-    this.settingService.setClientMaxRowsSetting(new AccessID(UserTransportBuilder.USER1_ID),
-        setting);
     final ShowContractpartnerListResponse expected = this.getCompleteResponse();
     final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("", this.method,
         false, ShowContractpartnerListResponse.class);

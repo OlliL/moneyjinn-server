@@ -38,16 +38,12 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.core.rest.model.user.AbstractCreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractShowUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ChangePasswordRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.GetUserSettingsForStartupResponse;
 import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
 import org.laladev.moneyjinn.core.rest.model.user.LoginResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowCreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowDeleteUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
@@ -62,9 +58,6 @@ import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.laladev.moneyjinn.model.setting.ClientDateFormatSetting;
-import org.laladev.moneyjinn.model.setting.ClientDisplayedLanguageSetting;
-import org.laladev.moneyjinn.model.setting.ClientMaxRowsSetting;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
@@ -155,7 +148,13 @@ public class UserController extends AbstractController {
   @RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
   public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
     final ShowEditUserResponse response = new ShowEditUserResponse();
-    this.fillAbstractShowUserResponse(new UserID(userId), response);
+    final User user = this.userService.getUserById(new UserID(userId));
+    if (user != null) {
+      final UserTransport userTransport = super.map(user, UserTransport.class);
+      response.setUserTransport(userTransport);
+      this.fillAbstractUpdateUserResponse(user.getId(), response);
+    }
+
     return response;
   }
 
@@ -195,28 +194,9 @@ public class UserController extends AbstractController {
 
   @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
   public ShowUserListResponse showUserList() {
-    return this.showUserList(null);
-  }
-
-  @RequestMapping(value = "showUserList/{restriction}", method = { RequestMethod.GET })
-  public ShowUserListResponse showUserList(
-      @PathVariable(value = "restriction") final String restriction) {
     final UserID userId = super.getUserId();
-    List<User> users = null;
-    if (restriction != null) {
-      if (restriction.equals(String.valueOf(RESTRICTION_ALL))) {
-        users = this.userService.getAllUsers();
-      } else if (restriction.length() == 1) {
-        users = this.userService.getAllUsersByInitial(restriction.toCharArray()[0]);
-      }
-    } else {
-      final ClientMaxRowsSetting clientMaxRowsSetting = this.settingService
-          .getClientMaxRowsSetting(userId);
-      final Integer count = this.userService.countAllUsers();
-      if (clientMaxRowsSetting.getSetting().compareTo(count) >= 0) {
-        users = this.userService.getAllUsers();
-      }
-    }
+    final List<User> users = this.userService.getAllUsers();
+
     final ShowUserListResponse response = new ShowUserListResponse();
     final Set<Group> groupSet = new HashSet<>();
     final List<AccessRelation> accessRelationList = new ArrayList<>();
@@ -238,15 +218,6 @@ public class UserController extends AbstractController {
           super.mapList(accessRelationList, AccessRelationTransport.class));
       response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
     }
-    final Set<Character> initials = this.userService.getAllUserInitials();
-    response.setInitials(initials);
-    return response;
-  }
-
-  @RequestMapping(value = "showCreateUser", method = { RequestMethod.GET })
-  public ShowCreateUserResponse showCreateUser() {
-    final ShowCreateUserResponse response = new ShowCreateUserResponse();
-    this.fillAbstractCreateUserResponse(response);
     return response;
   }
 
@@ -293,33 +264,6 @@ public class UserController extends AbstractController {
     this.userService.deleteUser(userId);
   }
 
-  @RequestMapping(value = "getUserSettingsForStartup/{name}", method = { RequestMethod.GET })
-  public GetUserSettingsForStartupResponse getUserSettingsForStartup(
-      @PathVariable(value = "name") final String name) {
-    final User user = this.userService.getUserByName(name);
-    final GetUserSettingsForStartupResponse response = new GetUserSettingsForStartupResponse();
-    if (user != null) {
-      final UserID userId = user.getId();
-      response.setUserId(userId.getId());
-      final ClientDateFormatSetting clientDateFormatSetting = this.settingService
-          .getClientDateFormatSetting(userId);
-      final ClientDisplayedLanguageSetting clientDisplayedLanguageSetting = this.settingService
-          .getClientDisplayedLanguageSetting(userId);
-      response.setSettingDateFormat(clientDateFormatSetting.getSetting());
-      response.setSettingDisplayedLanguage(clientDisplayedLanguageSetting.getSetting());
-      response.setAttributeNew(user.getAttributes().contains(UserAttribute.IS_NEW));
-      response.setPermissionAdmin(user.getPermissions().contains(UserPermission.ADMIN));
-    }
-    return response;
-  }
-
-  @RequestMapping(value = "showDeleteUser/{id}", method = { RequestMethod.GET })
-  public ShowDeleteUserResponse showDeleteUser(@PathVariable(value = "id") final Long userId) {
-    final ShowDeleteUserResponse response = new ShowDeleteUserResponse();
-    this.fillAbstractShowUserResponse(new UserID(userId), response);
-    return response;
-  }
-
   @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
   public void changePassword(@RequestBody final ChangePasswordRequest request)
       throws NoSuchAlgorithmException {
@@ -356,13 +300,4 @@ public class UserController extends AbstractController {
     this.fillAbstractCreateUserResponse(response);
   }
 
-  private void fillAbstractShowUserResponse(final UserID userId,
-      final AbstractShowUserResponse response) {
-    final User user = this.userService.getUserById(userId);
-    if (user != null) {
-      final UserTransport userTransport = super.map(user, UserTransport.class);
-      response.setUserTransport(userTransport);
-      this.fillAbstractUpdateUserResponse(user.getId(), response);
-    }
-  }
 }

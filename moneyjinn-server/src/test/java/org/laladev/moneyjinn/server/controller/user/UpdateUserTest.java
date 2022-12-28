@@ -384,7 +384,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
     final UpdateUserRequest request = new UpdateUserRequest();
-    super.callUsecaseExpect403("", this.method, request);
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test

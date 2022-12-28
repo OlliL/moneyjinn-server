@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
-import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementDeleteResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementListResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.UpsertMonthlySettlementRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
@@ -150,77 +149,6 @@ public class MonthlySettlementController extends AbstractController {
       monthlySettlementTransports = super.mapList(monthlySettlements,
           MonthlySettlementTransport.class);
       response.setMonthlySettlementTransports(monthlySettlementTransports);
-    }
-    return response;
-  }
-
-  @RequestMapping(value = "showMonthlySettlementList", method = { RequestMethod.GET })
-  public ShowMonthlySettlementListResponse showMonthlySettlementList() {
-    return this.showMonthlySettlementList(null, null);
-  }
-
-  @RequestMapping(value = "showMonthlySettlementList/{year}", method = { RequestMethod.GET })
-  public ShowMonthlySettlementListResponse showMonthlySettlementList(
-      @PathVariable(value = "year") final Short year) {
-    return this.showMonthlySettlementList(year, null);
-  }
-
-  @RequestMapping(value = "showMonthlySettlementList/{year}/{month}", method = {
-      RequestMethod.GET })
-  public ShowMonthlySettlementListResponse showMonthlySettlementList(
-      @PathVariable(value = "year") final Short requestYear,
-      @PathVariable(value = "month") final Short requestMonth) {
-    final UserID userId = super.getUserId();
-    final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
-    final List<Short> allYears = this.monthlySettlementService.getAllYears(userId);
-    List<Month> allMonth = null;
-    Short year = requestYear;
-    Month month = this.getMonth(requestMonth);
-    List<MonthlySettlementTransport> monthlySettlementTransports = null;
-    int numberOfEditableSettlements = 0;
-    // only continue if settlements where made at all
-    if (allYears != null && !allYears.isEmpty()) {
-      // validate if settlements are recorded for the given year, if not fall back to
-      // the
-      // last recorded one
-      if (year == null || !allYears.contains(year)) {
-        year = allYears.get(allYears.size() - 1);
-        month = null;
-      }
-      allMonth = this.monthlySettlementService.getAllMonth(userId, year);
-      if (month != null && allMonth != null && allMonth.contains(month)) {
-        final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-            .getAllMonthlySettlementsByYearMonth(userId, year, month);
-        for (final MonthlySettlement monthlySettlement : monthlySettlements) {
-          if (userId.equals(monthlySettlement.getUser().getId())) {
-            numberOfEditableSettlements++;
-          }
-        }
-        monthlySettlementTransports = super.mapList(monthlySettlements,
-            MonthlySettlementTransport.class);
-        response.setMonth((short) month.getValue());
-      }
-      response.setYear(year);
-    }
-    final LocalDate today = LocalDate.now();
-    final List<Capitalsource> capitalSources = this.capitalsourceService
-        .getGroupCapitalsourcesByDateRange(userId, today, today);
-    if (capitalSources != null && !capitalSources.isEmpty()) {
-      response.setNumberOfAddableSettlements(Long
-          .valueOf(
-              capitalSources.stream().filter(cs -> cs.getUser().getId().equals(userId)).count())
-          .intValue());
-    }
-    if (allYears != null && !allYears.isEmpty()) {
-      response.setAllYears(allYears);
-    }
-    if (allMonth != null && !allMonth.isEmpty()) {
-      response.setAllMonth(allMonth.stream().map(m -> (short) m.getValue())
-          .collect(Collectors.toCollection(ArrayList::new)));
-    }
-    if (monthlySettlementTransports != null && !monthlySettlementTransports.isEmpty()) {
-      response.setMonthlySettlementTransports(monthlySettlementTransports);
-      response.setNumberOfEditableSettlements(numberOfEditableSettlements);
     }
     return response;
   }
@@ -405,23 +333,6 @@ public class MonthlySettlementController extends AbstractController {
     if (importedMonthlySettlementTransports != null
         && !importedMonthlySettlementTransports.isEmpty()) {
       response.setImportedMonthlySettlementTransports(importedMonthlySettlementTransports);
-    }
-    return response;
-  }
-
-  @RequestMapping(value = "showMonthlySettlementDelete/{year}/{month}", method = {
-      RequestMethod.GET })
-  public ShowMonthlySettlementDeleteResponse showMonthlySettlementDelete(
-      @PathVariable(value = "year") final Short requestYear,
-      @PathVariable(value = "month") final Short requestMonth) {
-    final UserID userId = super.getUserId();
-    final ShowMonthlySettlementDeleteResponse response = new ShowMonthlySettlementDeleteResponse();
-    final Month month = this.getMonth(requestMonth);
-    final List<MonthlySettlement> monthlySettlements = this.getMyEditableMonthlySettlements(userId,
-        requestYear, month);
-    if (!monthlySettlements.isEmpty()) {
-      response.setMonthlySettlementTransports(
-          super.mapList(monthlySettlements, MonthlySettlementTransport.class));
     }
     return response;
   }

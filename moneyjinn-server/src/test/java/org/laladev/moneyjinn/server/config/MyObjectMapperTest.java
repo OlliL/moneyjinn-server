@@ -54,7 +54,7 @@ public class MyObjectMapperTest {
     final RestObject restObject = new RestObject();
     final String date = "2015-01-01";
     final Timestamp timestampJava = Timestamp.valueOf("2015-01-01 01:02:03.004");
-    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",
         Locale.GERMANY);
     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     // manually add +00:00 because XXX makes it 'Z' as per Java Spec. But Jackson always adds +00:00

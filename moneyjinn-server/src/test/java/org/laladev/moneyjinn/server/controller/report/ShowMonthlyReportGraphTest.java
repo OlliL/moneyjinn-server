@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.server.builder.PostingAccountAmountTransportBuilder;
@@ -102,11 +101,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder()
         .forPostingAccount2().withDate("2010-05-01").withAmount("-10.00").build());
     expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
+
     final ShowMonthlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, ShowMonthlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -174,11 +169,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     postingAccountAmountTransports.add(new PostingAccountAmountTransportBuilder()
         .forPostingAccount2().withDate("2010-05-01").withAmount("-5.00").build());
     expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
-    final List<PostingAccountTransport> postingAccountTransports = new ArrayList<>();
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount1().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount2().build());
-    postingAccountTransports.add(new PostingAccountTransportBuilder().forPostingAccount3().build());
-    expected.setPostingAccountTransports(postingAccountTransports);
+
     final ShowMonthlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, ShowMonthlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);

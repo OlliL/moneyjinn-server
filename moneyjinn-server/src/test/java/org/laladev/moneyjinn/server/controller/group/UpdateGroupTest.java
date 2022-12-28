@@ -97,8 +97,7 @@ public class UpdateGroupTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    final UpdateGroupRequest request = new UpdateGroupRequest();
-    super.callUsecaseExpect403("", this.method, request);
+    super.callUsecaseExpect403("", this.method);
   }
 
   @Test

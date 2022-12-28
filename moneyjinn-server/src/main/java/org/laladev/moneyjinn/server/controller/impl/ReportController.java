@@ -54,12 +54,9 @@ import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmou
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
-import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -129,7 +126,6 @@ public class ReportController extends AbstractController {
   public ShowReportingFormResponse showReportingForm() {
     final UserID userId = super.getUserId();
     final ShowReportingFormResponse response = new ShowReportingFormResponse();
-    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
     final ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
         .getClientReportingUnselectedPostingAccountIdsSetting(userId);
     final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
@@ -140,8 +136,6 @@ public class ReportController extends AbstractController {
     if (minMoneyflowDate != null) {
       response.setMinDate(Date.valueOf(minMoneyflowDate));
     }
-    response
-        .setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
     if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
       final List<Long> postingAccountIds = setting.getSetting().stream()
           .map(PostingAccountID::getId).collect(Collectors.toCollection(ArrayList::new));
@@ -172,14 +166,9 @@ public class ReportController extends AbstractController {
       final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
           .getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdsYes,
               startDate, endDate);
-      final List<PostingAccount> postingAccounts = this.postingAccountService
-          .getAllPostingAccounts();
       final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
           postingAccountAmounts, PostingAccountAmountTransport.class);
-      final List<PostingAccountTransport> responsePostingAccounts = super.mapList(postingAccounts,
-          PostingAccountTransport.class);
       response.setPostingAccountAmountTransports(responsePostingAccountAmount);
-      response.setPostingAccountTransports(responsePostingAccounts);
     }
     return response;
   }
@@ -206,14 +195,9 @@ public class ReportController extends AbstractController {
       final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
           .getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdsYes,
               startDate, endDate);
-      final List<PostingAccount> postingAccounts = this.postingAccountService
-          .getAllPostingAccounts();
       final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
           postingAccountAmounts, PostingAccountAmountTransport.class);
-      final List<PostingAccountTransport> responsePostingAccounts = super.mapList(postingAccounts,
-          PostingAccountTransport.class);
       response.setPostingAccountAmountTransports(responsePostingAccountAmount);
-      response.setPostingAccountTransports(responsePostingAccounts);
     }
     return response;
   }
@@ -232,10 +216,6 @@ public class ReportController extends AbstractController {
     if (minMonthlysettlementwDate != null) {
       response.setMinDate(Date.valueOf(minMonthlysettlementwDate));
     }
-    final List<Capitalsource> capitalsources = this.capitalsourceService
-        .getAllCapitalsources(userId);
-    response
-        .setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
     final ClientTrendCapitalsourceIDsSetting clientTrendCapitalsourceIDsSetting = this.settingService
         .getClientTrendCapitalsourceIDsSetting(userId);
     if (clientTrendCapitalsourceIDsSetting != null
@@ -449,286 +429,6 @@ public class ReportController extends AbstractController {
       response.setAllMonth(allMonth.stream().map(m -> (short) m.getValue())
           .collect(Collectors.toCollection(ArrayList::new)));
     }
-    if (nextMonthHasMoneyflows) {
-      response.setNextMonthHasMoneyflows((short) 1);
-    }
-    if (previousMonthHasMoneyflows) {
-      response.setPreviousMonthHasMoneyflows((short) 1);
-    }
-    if (prevMonth != null) {
-      response.setPreviousMonth((short) prevMonth.getValue());
-    }
-    response.setPreviousYear(prevYear);
-    if (nextMonth != null) {
-      response.setNextMonth((short) nextMonth.getValue());
-    }
-    response.setNextYear(nextYear);
-    return response;
-  }
-
-  @RequestMapping(value = "listReports", method = { RequestMethod.GET })
-  public ListReportsResponse listReports() {
-    return this.listReports(null, null);
-  }
-
-  @RequestMapping(value = "listReports/{year}", method = { RequestMethod.GET })
-  public ListReportsResponse listReports(@PathVariable(value = "year") final Short requestYear) {
-    return this.listReports(requestYear, null);
-  }
-
-  @RequestMapping(value = "listReports/{year}/{month}", method = { RequestMethod.GET })
-  public ListReportsResponse listReports(@PathVariable(value = "year") final Short requestYear,
-      @PathVariable(value = "month") final Short requestMonth) {
-    final UserID userId = super.getUserId();
-    final ListReportsResponse response = new ListReportsResponse();
-    final List<Short> allYears = this.moneyflowService.getAllYears(userId);
-    final LocalDate today = LocalDate.now();
-    final List<ReportTurnoverCapitalsourceTransport> turnoverCapitalsources = new ArrayList<>();
-    List<Moneyflow> moneyflows = null;
-    BigDecimal turnoverEndOfYearCalculated = null;
-    BigDecimal amountBeginOfYear = null;
-    boolean nextMonthHasMoneyflows = false;
-    boolean previousMonthHasMoneyflows = false;
-    Month prevMonth = null;
-    Short prevYear = null;
-    Month nextMonth = null;
-    Short nextYear = null;
-    final Map<CapitalsourceID, MonthlySettlement> newCapitalsourcesSettled = new HashMap<>();
-    Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = new HashMap<>();
-    List<MoneyflowID> moneyflowIdsWithReceipts = new ArrayList<>();
-    List<Month> allMonth = null;
-    Short year = requestYear;
-    Month month = this.getMonth(requestMonth);
-    // only continue if settlements where made at all
-    if (allYears != null && !allYears.isEmpty()) {
-      // validate if settlements are recorded for the given year, if not fall back to the
-      // last recorded one
-      if (year == null || !allYears.contains(year)) {
-        year = allYears.get(allYears.size() - 1);
-        month = null;
-      }
-      allMonth = this.moneyflowService.getAllMonth(userId, year);
-      if (month != null && allMonth != null && allMonth.contains(month)) {
-        final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
-        final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-        final LocalDate beginOfPrevMonth = beginOfMonth.minusMonths(1L);
-        // TODO: Do not hardcode "previous" month for determine the last recorded
-        // settlement.
-        final Month prevMonthSettlement = beginOfPrevMonth.getMonth();
-        final Short prevYearSettlement = (short) beginOfPrevMonth.getYear();
-        moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId,
-            beginOfMonth, endOfMonth);
-        final List<MoneyflowID> relevantMoneyflowIds = moneyflows.stream()
-            .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-            .map(Moneyflow::getId).collect(Collectors.toCollection(ArrayList::new));
-        moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId,
-            relevantMoneyflowIds);
-        moneyflowIdsWithReceipts = this.moneyflowReceiptService.getMoneyflowIdsWithReceipt(userId,
-            relevantMoneyflowIds);
-        final List<MonthlySettlement> settlementsPrevMonth = this.monthlySettlementService
-            .getAllMonthlySettlementsByYearMonth(userId, prevYearSettlement, prevMonthSettlement);
-        final List<MonthlySettlement> settlementsThisMonth = this.monthlySettlementService
-            .getAllMonthlySettlementsByYearMonth(userId, year, month);
-        final int indexInAllMonthList = allMonth.indexOf(month);
-        LocalDate previousDate = null;
-        LocalDate nextDate = null;
-        if (month != Month.JANUARY) {
-          if (indexInAllMonthList > 0) {
-            previousDate = LocalDate.of(year, allMonth.get(indexInAllMonthList - 1), 1);
-          }
-        } else {
-          previousDate = this.moneyflowService.getPreviousMoneyflowDate(userId, beginOfMonth);
-        }
-        if (month != Month.DECEMBER) {
-          if (indexInAllMonthList < allMonth.size() - 1) {
-            nextDate = LocalDate.of(year, allMonth.get(indexInAllMonthList + 1), 1);
-          }
-        } else {
-          nextDate = this.moneyflowService.getNextMoneyflowDate(userId, endOfMonth);
-        }
-        if (previousDate != null) {
-          previousMonthHasMoneyflows = true;
-          prevMonth = previousDate.getMonth();
-          prevYear = (short) previousDate.getYear();
-        }
-        if (nextDate != null) {
-          nextMonthHasMoneyflows = true;
-          nextMonth = nextDate.getMonth();
-          nextYear = (short) nextDate.getYear();
-        }
-        final List<Capitalsource> validCapitalsources = this.capitalsourceService
-            .getAllCapitalsourcesByDateRange(userId, beginOfMonth, endOfMonth);
-        // statistics are only generated, if for the previous month a settlement was
-        // accomplished
-        if (settlementsPrevMonth != null && !settlementsPrevMonth.isEmpty()) {
-          // rearange the settlements of the selected month to access them later by their
-          // capitalsourceId directly
-          if (settlementsThisMonth != null && !settlementsThisMonth.isEmpty()) {
-            for (final MonthlySettlement monthlySettlement : settlementsThisMonth) {
-              newCapitalsourcesSettled.put(monthlySettlement.getCapitalsource().getId(),
-                  monthlySettlement);
-            }
-          }
-          final List<CapitalsourceID> capitalsourceIds = validCapitalsources.stream()
-              .filter((mcs) -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
-              .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
-          final List<ImportedBalance> importedBalances = this.importedBalanceService
-              .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
-          // this will hold all capitalsources which will be removed later if they where
-          // processed it will then only contain new capitalsources which have no
-          // settlement in the previous nor in this month yet
-          final List<Capitalsource> newCapitalsourcesUnsettled = new ArrayList<>();
-          newCapitalsourcesUnsettled.addAll(validCapitalsources);
-          for (final MonthlySettlement lastSettlement : settlementsPrevMonth) {
-            final Capitalsource lastSettlementCapitalsource = lastSettlement.getCapitalsource();
-            // Capitalsource has a settlement for the previous month, but is no longer
-            // valid this month -> ignore it
-            if (beginOfMonth.isAfter(lastSettlementCapitalsource.getValidTil())) {
-              continue;
-            }
-            final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
-            turnoverCapitalsource.setCapitalsourceComment(lastSettlementCapitalsource.getComment());
-            turnoverCapitalsource.setCapitalsourceType(
-                CapitalsourceTypeMapper.map(lastSettlementCapitalsource.getType()));
-            turnoverCapitalsource.setCapitalsourceState(
-                CapitalsourceStateMapper.map(lastSettlementCapitalsource.getState()));
-            turnoverCapitalsource.setAmountBeginOfMonthFixed(lastSettlement.getAmount());
-            final CapitalsourceID capitalsourceId = lastSettlementCapitalsource.getId();
-            // if a settlement for the selected month was already done, use its data,
-            // otherwise calculate the movement on the fly
-            if (settlementsThisMonth != null && !settlementsThisMonth.isEmpty()) {
-              if (newCapitalsourcesSettled.containsKey(capitalsourceId)) {
-                turnoverCapitalsource.setAmountEndOfMonthFixed(
-                    newCapitalsourcesSettled.get(capitalsourceId).getAmount());
-                newCapitalsourcesSettled.remove(capitalsourceId);
-              }
-            } else if (today.compareTo(beginOfMonth) >= 0 && today.compareTo(endOfMonth) <= 0) {
-              // show imported balances only for the current month
-              this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
-                  lastSettlement.getAmount(), turnoverCapitalsource, moneyflows, importedBalances);
-            }
-            final BigDecimal movementCalculated = this.getMovementForCapitalsourceAndDateRange(
-                moneyflows, capitalsourceId, beginOfMonth, endOfMonth);
-            turnoverCapitalsource
-                .setAmountEndOfMonthCalculated(movementCalculated.add(lastSettlement.getAmount()));
-            turnoverCapitalsources.add(turnoverCapitalsource);
-            newCapitalsourcesUnsettled.remove(lastSettlementCapitalsource);
-          }
-          if (newCapitalsourcesSettled != null && !newCapitalsourcesSettled.isEmpty()) {
-            // new capitalsource with no settlement in the previous month - assume a 0
-            // settlement
-            for (final MonthlySettlement monthlySettlement : newCapitalsourcesSettled.values()) {
-              final Capitalsource settlementsThisMonthCapitalsource = monthlySettlement
-                  .getCapitalsource();
-              final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
-              turnoverCapitalsource
-                  .setCapitalsourceComment(settlementsThisMonthCapitalsource.getComment());
-              turnoverCapitalsource.setCapitalsourceType(
-                  CapitalsourceTypeMapper.map(settlementsThisMonthCapitalsource.getType()));
-              turnoverCapitalsource.setCapitalsourceState(
-                  CapitalsourceStateMapper.map(settlementsThisMonthCapitalsource.getState()));
-              turnoverCapitalsource.setAmountBeginOfMonthFixed(BigDecimal.ZERO);
-              turnoverCapitalsource.setAmountEndOfMonthFixed(monthlySettlement.getAmount());
-              turnoverCapitalsource.setAmountEndOfMonthCalculated(
-                  this.getMovementForCapitalsourceAndDateRange(moneyflows,
-                      settlementsThisMonthCapitalsource.getId(), beginOfMonth, endOfMonth));
-              turnoverCapitalsources.add(turnoverCapitalsource);
-              newCapitalsourcesUnsettled.remove(settlementsThisMonthCapitalsource);
-            }
-          }
-          if (newCapitalsourcesUnsettled != null && !newCapitalsourcesUnsettled.isEmpty()) {
-            // new capitalsource with neither a settlement in the current, nor in the
-            // previous month - assume a 0 settlement last month
-            for (final Capitalsource capitalsource : newCapitalsourcesUnsettled) {
-              final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
-              turnoverCapitalsource.setCapitalsourceComment(capitalsource.getComment());
-              turnoverCapitalsource
-                  .setCapitalsourceType(CapitalsourceTypeMapper.map(capitalsource.getType()));
-              turnoverCapitalsource
-                  .setCapitalsourceState(CapitalsourceStateMapper.map(capitalsource.getState()));
-              turnoverCapitalsource.setAmountBeginOfMonthFixed(BigDecimal.ZERO);
-              turnoverCapitalsource.setAmountEndOfMonthCalculated(
-                  this.getMovementForCapitalsourceAndDateRange(moneyflows, capitalsource.getId(),
-                      beginOfMonth, endOfMonth));
-              if (!nextMonthHasMoneyflows) {
-                this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
-                    turnoverCapitalsource, moneyflows, importedBalances);
-              }
-              turnoverCapitalsources.add(turnoverCapitalsource);
-            }
-          }
-          // Sort turnover Capitalsources in the same way all valid Capitalsources where
-          // sorted.
-          final List<String> validCapitalsourceComments = validCapitalsources.stream()
-              .map(Capitalsource::getComment).collect(Collectors.toCollection(ArrayList::new));
-          final Comparator<String> orderingComparator = Comparator
-              .comparingInt(validCapitalsourceComments::indexOf);
-          turnoverCapitalsources.sort((final ReportTurnoverCapitalsourceTransport left,
-              final ReportTurnoverCapitalsourceTransport right) -> orderingComparator
-                  .compare(left.getCapitalsourceComment(), right.getCapitalsourceComment()));
-          final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
-          final List<Capitalsource> yearlyValidCapitalsources = this.capitalsourceService
-              .getAllCapitalsourcesByDateRange(userId, beginOfYear, endOfMonth);
-          final List<CapitalsourceID> yearlyAssetCapitalsourceIds = yearlyValidCapitalsources
-              .stream().filter(Capitalsource::isAsset).map(Capitalsource::getId)
-              .collect(Collectors.toCollection(ArrayList::new));
-          if (!yearlyAssetCapitalsourceIds.isEmpty()) {
-            turnoverEndOfYearCalculated = this.moneyflowService
-                .getSumAmountByDateRangeForCapitalsourceIds(userId, beginOfYear, endOfMonth,
-                    yearlyAssetCapitalsourceIds);
-            amountBeginOfYear = this.getAssetAmountFromMonthlySettlements(userId,
-                (short) (year.intValue() - 1), Month.DECEMBER, yearlyAssetCapitalsourceIds);
-            // Special case: The very first year of moneyflows in the system will most
-            // likely have no final settlement of the last year (December settlement).
-            // In this case, use the the earliest settlement of the current year for the
-            // annual turnover.
-            if (amountBeginOfYear == null) {
-              final List<Month> allSettledMonth = this.monthlySettlementService.getAllMonth(userId,
-                  year);
-              amountBeginOfYear = this.getAssetAmountFromMonthlySettlements(userId, year,
-                  allSettledMonth.get(0), yearlyAssetCapitalsourceIds);
-            }
-          }
-        }
-      } else {
-        month = null;
-      }
-    }
-    response.setYear(year);
-    if (month != null) {
-      response.setMonth((short) month.getValue());
-    }
-    if (allYears != null && !allYears.isEmpty()) {
-      response.setAllYears(allYears);
-    }
-    if (allMonth != null && !allMonth.isEmpty()) {
-      response.setAllMonth(allMonth.stream().map(m -> (short) m.getValue())
-          .collect(Collectors.toCollection(ArrayList::new)));
-    }
-    if (turnoverCapitalsources != null && !turnoverCapitalsources.isEmpty()) {
-      response.setReportTurnoverCapitalsourceTransports(turnoverCapitalsources);
-    }
-    if (moneyflows != null && !moneyflows.isEmpty()) {
-      final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
-          .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-          .map(mf -> super.map(mf, MoneyflowTransport.class))
-          .collect(Collectors.toCollection(ArrayList::new));
-      response.setMoneyflowTransports(moneyflowTransports);
-      if (!moneyflowSplitEntries.isEmpty()) {
-        final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries
-            .values().stream().flatMap(List::stream)
-            .collect(Collectors.toCollection(ArrayList::new));
-        response.setMoneyflowSplitEntryTransports(
-            super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
-      }
-      if (!moneyflowIdsWithReceipts.isEmpty()) {
-        final List<Long> moneyflowIdLongs = moneyflowIdsWithReceipts.stream()
-            .map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
-        response.setMoneyflowsWithReceipt(moneyflowIdLongs);
-      }
-    }
-    response.setTurnoverEndOfYearCalculated(turnoverEndOfYearCalculated);
-    response.setAmountBeginOfYear(amountBeginOfYear);
     if (nextMonthHasMoneyflows) {
       response.setNextMonthHasMoneyflows((short) 1);
     }
