@@ -1,32 +1,23 @@
 
 package org.laladev.moneyjinn.core.rest.model.postingaccount;
 
-import java.util.List;
-import java.util.Set;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 @XmlRootElement(name = "showPostingAccountListResponse")
 public class ShowPostingAccountListResponse extends AbstractResponse {
-  private Set<Character> initials;
   @XmlElement(name = "postingAccountTransport")
   private List<PostingAccountTransport> postingAccountTransports;
 
-  public final Set<Character> getInitials() {
-    return this.initials;
-  }
-
-  public final void setInitials(final Set<Character> initials) {
-    this.initials = initials;
-  }
-
-  public final List<PostingAccountTransport> getPostingAccountTransports() {
+  public List<PostingAccountTransport> getPostingAccountTransports() {
     return this.postingAccountTransports;
   }
 
-  public final void setPostingAccountTransports(
+  public void setPostingAccountTransports(
       final List<PostingAccountTransport> postingAccountTransports) {
     this.postingAccountTransports = postingAccountTransports;
   }
@@ -35,9 +26,7 @@ public class ShowPostingAccountListResponse extends AbstractResponse {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result
-        + ((this.postingAccountTransports == null) ? 0 : this.postingAccountTransports.hashCode());
-    result = prime * result + ((this.initials == null) ? 0 : this.initials.hashCode());
+    result = prime * result + Objects.hash(this.postingAccountTransports);
     return result;
   }
 
@@ -53,31 +42,13 @@ public class ShowPostingAccountListResponse extends AbstractResponse {
       return false;
     }
     final ShowPostingAccountListResponse other = (ShowPostingAccountListResponse) obj;
-    if (this.postingAccountTransports == null) {
-      if (other.postingAccountTransports != null) {
-        return false;
-      }
-    } else if (!this.postingAccountTransports.equals(other.postingAccountTransports)) {
-      return false;
-    }
-    if (this.initials == null) {
-      if (other.initials != null) {
-        return false;
-      }
-    } else if (!this.initials.equals(other.initials)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.postingAccountTransports, other.postingAccountTransports);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowPostingAccountListResponse [initials=");
-    builder.append(this.initials);
-    builder.append(", postingAccountTransports=");
-    builder.append(this.postingAccountTransports);
-    builder.append("]");
-    return builder.toString();
+    return "ShowPostingAccountListResponse [postingAccountTransports="
+        + this.postingAccountTransports + "]";
   }
+
 }
