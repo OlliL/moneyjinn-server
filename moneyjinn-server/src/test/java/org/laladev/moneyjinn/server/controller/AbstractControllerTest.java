@@ -30,12 +30,17 @@ public abstract class AbstractControllerTest extends AbstractTest {
   private CacheManager cacheManager;
   @Inject
   private JwtCache jwtCache;
+  private String overrideJwtToken;
 
   protected abstract String getUsername();
 
   protected abstract String getPassword();
 
   protected abstract String getUsecase();
+
+  public void setOverrideJwtToken(final String overrideJwtToken) {
+    this.overrideJwtToken = overrideJwtToken;
+  }
 
   /**
    * Returns the Usecase URL for the given class. Input "ShowEditUserTest.class" and get
@@ -52,16 +57,22 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return module + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
   }
 
-  private HttpHeaders getAuthorizationHeader() throws Exception {
+  protected HttpHeaders getAuthorizationHeader() throws Exception {
+    final HttpHeaders httpHeaders = new HttpHeaders();
+
+    if (this.overrideJwtToken != null) {
+      httpHeaders.add("Authorization", "Bearer " + this.overrideJwtToken);
+      return httpHeaders;
+    }
+
     final String username = this.getUsername();
     final String password = this.getPassword();
-    final HttpHeaders httpHeaders = new HttpHeaders();
     if (username == null || password == null) {
       return httpHeaders;
     }
     final LoginRequest loginRequest = new LoginRequest();
-    loginRequest.setUserName(this.getUsername());
-    loginRequest.setUserPassword(this.getPassword());
+    loginRequest.setUserName(username);
+    loginRequest.setUserPassword(password);
     String jwtToken = this.jwtCache.getJwt(loginRequest);
     if (jwtToken == null) {
       final String uri = "/moneyflow/server/user/login";
@@ -85,6 +96,12 @@ public abstract class AbstractControllerTest extends AbstractTest {
   protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod)
       throws Exception {
     this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.FORBIDDEN);
+  }
+
+  protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod,
+      final Object body) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    this.callUsecase(uriParameters, httpMethod, bodyStr, true, null, HttpStatus.FORBIDDEN);
   }
 
   protected <T> T callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod,
@@ -144,7 +161,8 @@ public abstract class AbstractControllerTest extends AbstractTest {
     Assertions.assertNotNull(content);
     Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
     if (!noResult) {
-      Assertions.assertTrue(content.length() > 0);
+      Assertions.assertTrue(content.length() > 0,
+          "Response is empty, but 'noResult' was not specified!");
       final T actual = this.objectMapper.readValue(content, clazz);
       return actual;
     }

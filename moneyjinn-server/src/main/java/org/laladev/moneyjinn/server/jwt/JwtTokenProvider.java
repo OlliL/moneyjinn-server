@@ -79,7 +79,7 @@ public class JwtTokenProvider {
         .getBody().getSubject();
   }
 
-  private boolean isRefreshToken(final String token) {
+  public boolean isRefreshToken(final String token) {
     final Collection<?> roles = Jwts.parserBuilder().setSigningKey(this.secretKey).build()
         .parseClaimsJws(token).getBody().get("roles", Collection.class);
     if (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE)) {

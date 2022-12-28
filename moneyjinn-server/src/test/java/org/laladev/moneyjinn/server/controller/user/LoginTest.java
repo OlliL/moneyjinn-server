@@ -58,8 +58,12 @@ public class LoginTest extends AbstractControllerTest {
 
     Assertions.assertEquals(new UserTransportBuilder().forUser1().build(),
         response.getUserTransport());
+
     Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getToken()));
+    Assertions.assertFalse(this.jwtTokenProvider.isRefreshToken(response.getToken()));
+
     Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getRefreshToken()));
+    Assertions.assertTrue(this.jwtTokenProvider.isRefreshToken(response.getRefreshToken()));
   }
 
   @Test
@@ -75,6 +79,19 @@ public class LoginTest extends AbstractControllerTest {
         ErrorResponse.class);
 
     Assertions.assertEquals(response.getCode(), ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode());
+  }
+
+  @Test
+  public void test_WrongPassword_ErrorResponse() throws Exception {
+    final String username = UserTransportBuilder.USER2_NAME;
+    final String password = "wrong password";
+
+    final LoginRequest request = new LoginRequest();
+    request.setUserName(username);
+    request.setUserPassword(password);
+
+    super.callUsecaseExpect403("", this.method, request);
+
   }
 
   @Test
