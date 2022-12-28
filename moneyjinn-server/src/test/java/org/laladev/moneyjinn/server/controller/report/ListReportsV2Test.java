@@ -45,8 +45,6 @@ public class ListReportsV2Test extends AbstractControllerTest {
   private ICapitalsourceService capitalsourceService;
   @Inject
   private IMoneyflowService moneyflowService;
-  private static final List<Short> ALL_YEARS = Arrays.asList((short) 2008, (short) 2009,
-      (short) 2010);
   private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;

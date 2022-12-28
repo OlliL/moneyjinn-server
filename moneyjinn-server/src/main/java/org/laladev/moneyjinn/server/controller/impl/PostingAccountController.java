@@ -51,7 +51,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/postingaccount/")
 public class PostingAccountController extends AbstractController {
-  private static final String RESTRICTION_ALL = "all";
   @Inject
   private IPostingAccountService postingAccountService;
 

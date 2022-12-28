@@ -83,7 +83,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/user/")
 public class UserController extends AbstractController {
-  private static final String RESTRICTION_ALL = "all";
   @Inject
   private IUserService userService;
   @Inject
@@ -194,7 +193,6 @@ public class UserController extends AbstractController {
 
   @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
   public ShowUserListResponse showUserList() {
-    final UserID userId = super.getUserId();
     final List<User> users = this.userService.getAllUsers();
 
     final ShowUserListResponse response = new ShowUserListResponse();

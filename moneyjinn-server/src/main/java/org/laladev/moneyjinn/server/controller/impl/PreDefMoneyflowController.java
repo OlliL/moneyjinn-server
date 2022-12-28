@@ -54,7 +54,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/predefmoneyflow/")
 public class PreDefMoneyflowController extends AbstractController {
-  private static final String RESTRICTION_ALL = "all";
   @Inject
   private IAccessRelationService accessRelationService;
   @Inject
