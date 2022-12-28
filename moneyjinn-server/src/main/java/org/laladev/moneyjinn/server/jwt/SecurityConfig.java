@@ -53,7 +53,7 @@ public class SecurityConfig {
         .requestMatchers("/moneyflow/server/postingaccount/deletePostingAccountById/**").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/postingaccount/showDeletePostingAccount/**").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/postingaccount/showEditPostingAccount/**").hasAuthority("ADMIN")
-         // USER
+        // USER
         .requestMatchers("/moneyflow/server/user/createUser").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/user/updateUser").hasAuthority("ADMIN")
         .requestMatchers("/moneyflow/server/user/deleteUserById/**").hasAuthority("ADMIN")

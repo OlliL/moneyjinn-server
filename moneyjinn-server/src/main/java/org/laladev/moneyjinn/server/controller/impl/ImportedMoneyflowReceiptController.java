@@ -90,12 +90,12 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
     final ValidationResult validationResult = new ValidationResult();
     final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = super.mapList(
         request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
-    importedMoneyflowReceipts.stream().forEach(iMR -> {
-      iMR.setUser(user);
-      iMR.setAccess(group);
-      iMR.setId(null);
+    importedMoneyflowReceipts.stream().forEach(imr -> {
+      imr.setUser(user);
+      imr.setAccess(group);
+      imr.setId(null);
       validationResult.mergeValidationResult(
-          this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(iMR));
+          this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(imr));
     });
     if (!validationResult.isValid()) {
       final ValidationResponse response = new ValidationResponse();
@@ -105,7 +105,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
       return response;
     }
     importedMoneyflowReceipts.stream()
-        .forEach(iMR -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(iMR));
+        .forEach(imr -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(imr));
     return null;
   }
 
