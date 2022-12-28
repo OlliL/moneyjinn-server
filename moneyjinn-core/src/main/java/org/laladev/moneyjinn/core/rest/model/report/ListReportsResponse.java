@@ -26,13 +26,14 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "listReportsResponse")
 public class ListReportsResponse {
@@ -42,179 +43,83 @@ public class ListReportsResponse {
   private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
   private Short year;
   private Short month;
-  private List<Short> allYears;
-  private List<Short> allMonth;
   @XmlElement(name = "reportTurnoverCapitalsourceTransport")
   private List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports;
   private BigDecimal turnoverEndOfYearCalculated;
   private BigDecimal amountBeginOfYear;
-  private Short nextMonthHasMoneyflows;
-  private Short previousMonthHasMoneyflows;
-  private Short previousMonth;
-  private Short previousYear;
-  private Short nextMonth;
-  private Short nextYear;
   private List<Long> moneyflowsWithReceipt;
 
-  public final List<MoneyflowTransport> getMoneyflowTransports() {
+  public List<MoneyflowTransport> getMoneyflowTransports() {
     return this.moneyflowTransports;
   }
 
-  public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
+  public void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
     this.moneyflowTransports = moneyflowTransports;
   }
 
-  public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
+  public List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
     return this.moneyflowSplitEntryTransports;
   }
 
-  public final void setMoneyflowSplitEntryTransports(
+  public void setMoneyflowSplitEntryTransports(
       final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
     this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
   }
 
-  public final Short getYear() {
+  public Short getYear() {
     return this.year;
   }
 
-  public final void setYear(final Short year) {
+  public void setYear(final Short year) {
     this.year = year;
   }
 
-  public final Short getMonth() {
+  public Short getMonth() {
     return this.month;
   }
 
-  public final void setMonth(final Short month) {
+  public void setMonth(final Short month) {
     this.month = month;
   }
 
-  public final List<Short> getAllYears() {
-    return this.allYears;
-  }
-
-  public final void setAllYears(final List<Short> allYears) {
-    this.allYears = allYears;
-  }
-
-  public final List<Short> getAllMonth() {
-    return this.allMonth;
-  }
-
-  public final void setAllMonth(final List<Short> allMonth) {
-    this.allMonth = allMonth;
-  }
-
-  public final List<ReportTurnoverCapitalsourceTransport> getReportTurnoverCapitalsourceTransports() {
+  public List<ReportTurnoverCapitalsourceTransport> getReportTurnoverCapitalsourceTransports() {
     return this.reportTurnoverCapitalsourceTransports;
   }
 
-  public final void setReportTurnoverCapitalsourceTransports(
+  public void setReportTurnoverCapitalsourceTransports(
       final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports) {
     this.reportTurnoverCapitalsourceTransports = reportTurnoverCapitalsourceTransports;
   }
 
-  public final BigDecimal getTurnoverEndOfYearCalculated() {
+  public BigDecimal getTurnoverEndOfYearCalculated() {
     return this.turnoverEndOfYearCalculated;
   }
 
-  public final void setTurnoverEndOfYearCalculated(final BigDecimal turnoverEndOfYearCalculated) {
+  public void setTurnoverEndOfYearCalculated(final BigDecimal turnoverEndOfYearCalculated) {
     this.turnoverEndOfYearCalculated = turnoverEndOfYearCalculated;
   }
 
-  public final BigDecimal getAmountBeginOfYear() {
+  public BigDecimal getAmountBeginOfYear() {
     return this.amountBeginOfYear;
   }
 
-  public final void setAmountBeginOfYear(final BigDecimal amountBeginOfYear) {
+  public void setAmountBeginOfYear(final BigDecimal amountBeginOfYear) {
     this.amountBeginOfYear = amountBeginOfYear;
   }
 
-  public final Short getNextMonthHasMoneyflows() {
-    return this.nextMonthHasMoneyflows;
-  }
-
-  public final void setNextMonthHasMoneyflows(final Short nextMonthHasMoneyflows) {
-    this.nextMonthHasMoneyflows = nextMonthHasMoneyflows;
-  }
-
-  public final Short getPreviousMonthHasMoneyflows() {
-    return this.previousMonthHasMoneyflows;
-  }
-
-  public final void setPreviousMonthHasMoneyflows(final Short previousMonthHasMoneyflows) {
-    this.previousMonthHasMoneyflows = previousMonthHasMoneyflows;
-  }
-
-  public final Short getPreviousMonth() {
-    return this.previousMonth;
-  }
-
-  public final void setPreviousMonth(final Short previousMonth) {
-    this.previousMonth = previousMonth;
-  }
-
-  public final Short getPreviousYear() {
-    return this.previousYear;
-  }
-
-  public final void setPreviousYear(final Short previousYear) {
-    this.previousYear = previousYear;
-  }
-
-  public final Short getNextMonth() {
-    return this.nextMonth;
-  }
-
-  public final void setNextMonth(final Short nextMonth) {
-    this.nextMonth = nextMonth;
-  }
-
-  public final Short getNextYear() {
-    return this.nextYear;
-  }
-
-  public final void setNextYear(final Short nextYear) {
-    this.nextYear = nextYear;
-  }
-
-  public final List<Long> getMoneyflowsWithReceipt() {
+  public List<Long> getMoneyflowsWithReceipt() {
     return this.moneyflowsWithReceipt;
   }
 
-  public final void setMoneyflowsWithReceipt(final List<Long> moneyflowsWithReceipt) {
+  public void setMoneyflowsWithReceipt(final List<Long> moneyflowsWithReceipt) {
     this.moneyflowsWithReceipt = moneyflowsWithReceipt;
   }
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.allMonth == null) ? 0 : this.allMonth.hashCode());
-    result = prime * result + ((this.allYears == null) ? 0 : this.allYears.hashCode());
-    result = prime * result
-        + ((this.amountBeginOfYear == null) ? 0 : this.amountBeginOfYear.hashCode());
-    result = prime * result + ((this.moneyflowSplitEntryTransports == null) ? 0
-        : this.moneyflowSplitEntryTransports.hashCode());
-    result = prime * result
-        + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
-    result = prime * result
-        + ((this.moneyflowsWithReceipt == null) ? 0 : this.moneyflowsWithReceipt.hashCode());
-    result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
-    result = prime * result + ((this.nextMonth == null) ? 0 : this.nextMonth.hashCode());
-    result = prime * result
-        + ((this.nextMonthHasMoneyflows == null) ? 0 : this.nextMonthHasMoneyflows.hashCode());
-    result = prime * result + ((this.nextYear == null) ? 0 : this.nextYear.hashCode());
-    result = prime * result + ((this.previousMonth == null) ? 0 : this.previousMonth.hashCode());
-    result = prime * result + ((this.previousMonthHasMoneyflows == null) ? 0
-        : this.previousMonthHasMoneyflows.hashCode());
-    result = prime * result + ((this.previousYear == null) ? 0 : this.previousYear.hashCode());
-    result = prime * result + ((this.reportTurnoverCapitalsourceTransports == null) ? 0
-        : this.reportTurnoverCapitalsourceTransports.hashCode());
-    result = prime * result + ((this.turnoverEndOfYearCalculated == null) ? 0
-        : this.turnoverEndOfYearCalculated.hashCode());
-    result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
-    return result;
+    return Objects.hash(this.amountBeginOfYear, this.moneyflowSplitEntryTransports,
+        this.moneyflowTransports, this.moneyflowsWithReceipt, this.month,
+        this.reportTurnoverCapitalsourceTransports, this.turnoverEndOfYearCalculated, this.year);
   }
 
   @Override
@@ -229,158 +134,25 @@ public class ListReportsResponse {
       return false;
     }
     final ListReportsResponse other = (ListReportsResponse) obj;
-    if (this.allMonth == null) {
-      if (other.allMonth != null) {
-        return false;
-      }
-    } else if (!this.allMonth.equals(other.allMonth)) {
-      return false;
-    }
-    if (this.allYears == null) {
-      if (other.allYears != null) {
-        return false;
-      }
-    } else if (!this.allYears.equals(other.allYears)) {
-      return false;
-    }
-    if (this.amountBeginOfYear == null) {
-      if (other.amountBeginOfYear != null) {
-        return false;
-      }
-    } else if (!this.amountBeginOfYear.equals(other.amountBeginOfYear)) {
-      return false;
-    }
-    if (this.moneyflowSplitEntryTransports == null) {
-      if (other.moneyflowSplitEntryTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports)) {
-      return false;
-    }
-    if (this.moneyflowTransports == null) {
-      if (other.moneyflowTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
-      return false;
-    }
-    if (this.moneyflowsWithReceipt == null) {
-      if (other.moneyflowsWithReceipt != null) {
-        return false;
-      }
-    } else if (!this.moneyflowsWithReceipt.equals(other.moneyflowsWithReceipt)) {
-      return false;
-    }
-    if (this.month == null) {
-      if (other.month != null) {
-        return false;
-      }
-    } else if (!this.month.equals(other.month)) {
-      return false;
-    }
-    if (this.nextMonth == null) {
-      if (other.nextMonth != null) {
-        return false;
-      }
-    } else if (!this.nextMonth.equals(other.nextMonth)) {
-      return false;
-    }
-    if (this.nextMonthHasMoneyflows == null) {
-      if (other.nextMonthHasMoneyflows != null) {
-        return false;
-      }
-    } else if (!this.nextMonthHasMoneyflows.equals(other.nextMonthHasMoneyflows)) {
-      return false;
-    }
-    if (this.nextYear == null) {
-      if (other.nextYear != null) {
-        return false;
-      }
-    } else if (!this.nextYear.equals(other.nextYear)) {
-      return false;
-    }
-    if (this.previousMonth == null) {
-      if (other.previousMonth != null) {
-        return false;
-      }
-    } else if (!this.previousMonth.equals(other.previousMonth)) {
-      return false;
-    }
-    if (this.previousMonthHasMoneyflows == null) {
-      if (other.previousMonthHasMoneyflows != null) {
-        return false;
-      }
-    } else if (!this.previousMonthHasMoneyflows.equals(other.previousMonthHasMoneyflows)) {
-      return false;
-    }
-    if (this.previousYear == null) {
-      if (other.previousYear != null) {
-        return false;
-      }
-    } else if (!this.previousYear.equals(other.previousYear)) {
-      return false;
-    }
-    if (this.reportTurnoverCapitalsourceTransports == null) {
-      if (other.reportTurnoverCapitalsourceTransports != null) {
-        return false;
-      }
-    } else if (!this.reportTurnoverCapitalsourceTransports
-        .equals(other.reportTurnoverCapitalsourceTransports)) {
-      return false;
-    }
-    if (this.turnoverEndOfYearCalculated == null) {
-      if (other.turnoverEndOfYearCalculated != null) {
-        return false;
-      }
-    } else if (!this.turnoverEndOfYearCalculated.equals(other.turnoverEndOfYearCalculated)) {
-      return false;
-    }
-    if (this.year == null) {
-      if (other.year != null) {
-        return false;
-      }
-    } else if (!this.year.equals(other.year)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.amountBeginOfYear, other.amountBeginOfYear)
+        && Objects.equals(this.moneyflowSplitEntryTransports, other.moneyflowSplitEntryTransports)
+        && Objects.equals(this.moneyflowTransports, other.moneyflowTransports)
+        && Objects.equals(this.moneyflowsWithReceipt, other.moneyflowsWithReceipt)
+        && Objects.equals(this.month, other.month)
+        && Objects.equals(this.reportTurnoverCapitalsourceTransports,
+            other.reportTurnoverCapitalsourceTransports)
+        && Objects.equals(this.turnoverEndOfYearCalculated, other.turnoverEndOfYearCalculated)
+        && Objects.equals(this.year, other.year);
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ListReportsResponse [moneyflowTransports=");
-    builder.append(this.moneyflowTransports);
-    builder.append(", moneyflowSplitEntryTransports=");
-    builder.append(this.moneyflowSplitEntryTransports);
-    builder.append(", year=");
-    builder.append(this.year);
-    builder.append(", month=");
-    builder.append(this.month);
-    builder.append(", allYears=");
-    builder.append(this.allYears);
-    builder.append(", allMonth=");
-    builder.append(this.allMonth);
-    builder.append(", reportTurnoverCapitalsourceTransports=");
-    builder.append(this.reportTurnoverCapitalsourceTransports);
-    builder.append(", turnoverEndOfYearCalculated=");
-    builder.append(this.turnoverEndOfYearCalculated);
-    builder.append(", amountBeginOfYear=");
-    builder.append(this.amountBeginOfYear);
-    builder.append(", nextMonthHasMoneyflows=");
-    builder.append(this.nextMonthHasMoneyflows);
-    builder.append(", previousMonthHasMoneyflows=");
-    builder.append(this.previousMonthHasMoneyflows);
-    builder.append(", previousMonth=");
-    builder.append(this.previousMonth);
-    builder.append(", previousYear=");
-    builder.append(this.previousYear);
-    builder.append(", nextMonth=");
-    builder.append(this.nextMonth);
-    builder.append(", nextYear=");
-    builder.append(this.nextYear);
-    builder.append(", moneyflowsWithReceipt=");
-    builder.append(this.moneyflowsWithReceipt);
-    builder.append("]");
-    return builder.toString();
+    return "ListReportsResponse [moneyflowTransports=" + this.moneyflowTransports
+        + ", moneyflowSplitEntryTransports=" + this.moneyflowSplitEntryTransports + ", year="
+        + this.year + ", month=" + this.month + ", reportTurnoverCapitalsourceTransports="
+        + this.reportTurnoverCapitalsourceTransports + ", turnoverEndOfYearCalculated="
+        + this.turnoverEndOfYearCalculated + ", amountBeginOfYear=" + this.amountBeginOfYear
+        + ", moneyflowsWithReceipt=" + this.moneyflowsWithReceipt + "]";
   }
+
 }

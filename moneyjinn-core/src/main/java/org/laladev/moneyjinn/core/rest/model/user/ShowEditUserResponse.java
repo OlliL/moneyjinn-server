@@ -2,23 +2,51 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 
 @XmlRootElement(name = "showEditUserResponse")
-public class ShowEditUserResponse extends AbstractShowUserResponse {
+public class ShowEditUserResponse extends AbstractUpdateUserResponse {
+  private UserTransport userTransport;
+
+  public UserTransport getUserTransport() {
+    return this.userTransport;
+  }
+
+  public void setUserTransport(final UserTransport userTransport) {
+    this.userTransport = userTransport;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + Objects.hash(this.userTransport);
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final ShowEditUserResponse other = (ShowEditUserResponse) obj;
+    return Objects.equals(this.userTransport, other.userTransport);
+  }
+
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowEditUserResponse [getUserTransport()=");
-    builder.append(this.getUserTransport());
-    builder.append(", getAccessRelationTransports()=");
-    builder.append(this.getAccessRelationTransports());
-    builder.append(", getGroupTransports()=");
-    builder.append(this.getGroupTransports());
-    builder.append(", getResult()=");
-    builder.append(this.getResult());
-    builder.append(", getValidationItemTransports()=");
-    builder.append(this.getValidationItemTransports());
-    builder.append("]");
-    return builder.toString();
+    return "ShowEditUserResponse [userTransport=" + this.userTransport
+        + ", getAccessRelationTransports()=" + this.getAccessRelationTransports() + ", getUserId()="
+        + this.getUserId() + ", getGroupTransports()=" + this.getGroupTransports()
+        + ", getResult()=" + this.getResult() + ", getValidationItemTransports()="
+        + this.getValidationItemTransports() + "]";
   }
+
 }
