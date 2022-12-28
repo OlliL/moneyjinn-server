@@ -42,7 +42,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
    * "user/showEditUser" back.
    *
    * @param clazz
-   *          The Usecase-Class
+   *                The Usecase-Class
    * @return Usecase-URL
    */
   protected String getUsecaseFromTestClassName(final Class<?> clazz) {

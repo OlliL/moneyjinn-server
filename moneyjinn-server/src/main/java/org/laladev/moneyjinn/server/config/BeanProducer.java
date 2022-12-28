@@ -53,7 +53,7 @@ public class BeanProducer {
   /**
    * Send HTTP Status Code 400 in case of a Rejected URL.
    *
-   * @return
+   * @return RequestRejectedHandler
    */
   @Bean
   public RequestRejectedHandler requestRejectedHandler() {

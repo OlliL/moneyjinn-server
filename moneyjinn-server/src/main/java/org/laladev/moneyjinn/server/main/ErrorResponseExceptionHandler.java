@@ -35,8 +35,8 @@ public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandle
 
   @Override
   public Object postProcessBeforeInitialization(final Object bean, final String beanName) {
-    if (bean instanceof DispatcherServlet) { // otherwise we get a 404 before our exception
-                                             // handler kicks in
+    if (bean instanceof DispatcherServlet) { // otherwise we get a 404 before our exception handler
+                                             // kicks in
       ((DispatcherServlet) bean).setThrowExceptionIfNoHandlerFound(true);
     }
     return bean;

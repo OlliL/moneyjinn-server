@@ -60,7 +60,6 @@ import jakarta.inject.Named;
 @EnableCaching
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
   private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
-  private static final Long ROOT_ID = 0L;
   @Inject
   private AccessRelationDao accessRelationDao;
   @Inject
