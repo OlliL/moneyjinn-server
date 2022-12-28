@@ -25,7 +25,6 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +48,6 @@ import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
-import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -105,12 +103,9 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "login", method = { RequestMethod.POST })
-  public LoginResponse login(@RequestBody final LoginRequest request)
-      throws NoSuchAlgorithmException {
+  public LoginResponse login(@RequestBody final LoginRequest request) {
     final String username = request.getUserName();
-    final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-    final String password = BytesToHexConverter
-        .convert(sha1Md.digest(request.getUserPassword().getBytes()));
+    final String password = this.userService.cryptPassword(request.getUserPassword());
     final LoginResponse response = new LoginResponse();
     this.authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -262,14 +257,11 @@ public class UserController extends AbstractController {
   }
 
   @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
-  public void changePassword(@RequestBody final ChangePasswordRequest request)
-      throws NoSuchAlgorithmException {
+  public void changePassword(@RequestBody final ChangePasswordRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
     final String password = request.getPassword();
-    final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-    final String oldPassword = BytesToHexConverter
-        .convert(sha1Md.digest(request.getOldPassword().getBytes()));
+    final String oldPassword = this.userService.cryptPassword(request.getOldPassword());
     if (!user.getPassword().equals(oldPassword)) {
       throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
     }

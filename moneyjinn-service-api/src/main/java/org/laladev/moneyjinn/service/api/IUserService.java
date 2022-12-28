@@ -144,4 +144,6 @@ public interface IUserService {
    *                             level
    */
   void deleteUser(final UserID userId);
+
+  String cryptPassword(final String password);
 }

@@ -34,7 +34,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.util.BytesToHexConverter;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -170,16 +169,30 @@ public class UserService extends AbstractService implements IUserService {
     }
   }
 
-  private String cryptPassword(final String password) {
+  @Override
+  public String cryptPassword(final String password) {
     if (password != null) {
       try {
         final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-        return BytesToHexConverter.convert(sha1Md.digest(password.getBytes()));
+        return convert(sha1Md.digest(password.getBytes()));
       } catch (final NoSuchAlgorithmException e) {
         LOG.error(e);
       }
     }
     return null;
+  }
+
+  private static final char[] HEY_ARRAY = "0123456789abcdef".toCharArray();
+
+  private static String convert(final byte[] bytes) {
+    final int l = bytes.length;
+    final char[] out = new char[l << 1];
+    for (int i = 0, j = 0; i < l; i++) {
+      final byte byteToWorkOn = bytes[i];
+      out[j++] = HEY_ARRAY[(0xF0 & byteToWorkOn) >>> 4];
+      out[j++] = HEY_ARRAY[0x0F & byteToWorkOn];
+    }
+    return new String(out);
   }
 
   private void evictUserCache(final User user) {
