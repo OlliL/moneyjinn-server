@@ -24,8 +24,6 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import org.laladev.moneyjinn.server.main.CorsFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -35,14 +33,6 @@ import org.springframework.security.web.firewall.RequestRejectedHandler;
 
 @Configuration
 public class TestBeanProducer {
-  @Bean
-  public FilterRegistrationBean<CorsFilter> filterRegistrationBean() {
-    final FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
-    registrationBean.setFilter(new CorsFilter());
-    registrationBean.addUrlPatterns("/moneyflow/*");
-    registrationBean.setOrder(1);
-    return registrationBean;
-  }
 
   @Bean
   public PasswordEncoder getPasswordEncoder() {
