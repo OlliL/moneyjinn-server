@@ -17,9 +17,9 @@ public abstract class AbstractMapperSupport {
   private static final Logger LOG = Logger.getLogger(AbstractMapperSupport.class.getName());
   private static final String MAPPER_UNDEFINED = "Mapper undefined!";
   // -----returnTyp---------parameter- Method of Object to execute
-  private Map<Class<?>, Map<Class<?>, Method>> mapperMethods = new HashMap<Class<?>, Map<Class<?>, Method>>();
+  private final Map<Class<?>, Map<Class<?>, Method>> mapperMethods = new HashMap<>();
   // -----returnTyp---------parameter- Object to execute
-  private Map<Class<?>, Map<Class<?>, IMapper<?, ?>>> mapperClasses = new HashMap<Class<?>, Map<Class<?>, IMapper<?, ?>>>();
+  private final Map<Class<?>, Map<Class<?>, IMapper<?, ?>>> mapperClasses = new HashMap<>();
 
   protected AbstractMapperSupport() {
     this.addBeanMapper();
@@ -50,7 +50,7 @@ public abstract class AbstractMapperSupport {
       final Class<?> parameter) {
     Map<Class<?>, IMapper<?, ?>> classMap = this.mapperClasses.get(returnType);
     if (classMap == null) {
-      classMap = new HashMap<Class<?>, IMapper<?, ?>>();
+      classMap = new HashMap<>();
     }
     classMap.put(parameter, mapper);
     this.mapperClasses.put(returnType, classMap);
@@ -60,7 +60,7 @@ public abstract class AbstractMapperSupport {
       final Class<?> parameter) {
     Map<Class<?>, Method> methodMap = this.mapperMethods.get(returnType);
     if (methodMap == null) {
-      methodMap = new HashMap<Class<?>, Method>();
+      methodMap = new HashMap<>();
     }
     methodMap.put(parameter, m);
     this.mapperMethods.put(returnType, methodMap);
@@ -96,6 +96,9 @@ public abstract class AbstractMapperSupport {
       } catch (final InvocationTargetException e) {
         e.printStackTrace();
         LOG.log(Level.SEVERE, e.toString());
+        if (e.getTargetException() instanceof MoneyjinnException) {
+          throw (MoneyjinnException) e.getCause();
+        }
         throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
       }
     }
@@ -103,7 +106,7 @@ public abstract class AbstractMapperSupport {
   }
 
   protected <T> List<T> mapList(final List<?> args, final Class<T> clazz) {
-    final List<T> resultList = new ArrayList<T>();
+    final List<T> resultList = new ArrayList<>();
     if (args != null) {
       for (final Object object : args) {
         resultList.add(this.map(object, clazz));
