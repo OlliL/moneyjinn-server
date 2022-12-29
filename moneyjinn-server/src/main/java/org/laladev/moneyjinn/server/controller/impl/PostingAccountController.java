@@ -39,6 +39,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +72,7 @@ public class PostingAccountController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
   public CreatePostingAccountResponse createPostingAccount(
       @RequestBody final CreatePostingAccountRequest request) {
@@ -92,6 +94,7 @@ public class PostingAccountController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })
   public ValidationResponse updatePostingAccount(
       @RequestBody final UpdatePostingAccountRequest request) {
@@ -110,6 +113,7 @@ public class PostingAccountController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
   public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);

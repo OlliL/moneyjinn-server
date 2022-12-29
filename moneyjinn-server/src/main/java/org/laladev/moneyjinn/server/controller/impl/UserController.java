@@ -67,6 +67,7 @@ import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Propagation;
@@ -139,6 +140,24 @@ public class UserController extends AbstractController {
     throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
   }
 
+  @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
+  public void changePassword(@RequestBody final ChangePasswordRequest request) {
+    final UserID userId = super.getUserId();
+    final User user = this.userService.getUserById(userId);
+    final String password = request.getPassword();
+    final String oldPassword = this.userService.cryptPassword(request.getOldPassword());
+    if (!user.getPassword().equals(oldPassword)) {
+      throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
+    }
+    if (password != null && !password.trim().isEmpty()) {
+      this.userService.setPassword(userId, password);
+    } else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
+      throw new BusinessException("You have to change your password!",
+          ErrorCode.PASSWORD_MUST_BE_CHANGED);
+    }
+  }
+
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
   public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
     final ShowEditUserResponse response = new ShowEditUserResponse();
@@ -152,6 +171,7 @@ public class UserController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
   public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
@@ -186,6 +206,7 @@ public class UserController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
   public ShowUserListResponse showUserList() {
     final List<User> users = this.userService.getAllUsers();
@@ -214,6 +235,7 @@ public class UserController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "createUser", method = { RequestMethod.POST })
   public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
@@ -248,29 +270,13 @@ public class UserController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
   public void deleteUserById(@PathVariable(value = "id") final Long id) {
     final UserID userId = new UserID(id);
     this.accessRelationService.deleteAllAccessRelation(userId);
     this.settingService.deleteSettings(userId);
     this.userService.deleteUser(userId);
-  }
-
-  @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
-  public void changePassword(@RequestBody final ChangePasswordRequest request) {
-    final UserID userId = super.getUserId();
-    final User user = this.userService.getUserById(userId);
-    final String password = request.getPassword();
-    final String oldPassword = this.userService.cryptPassword(request.getOldPassword());
-    if (!user.getPassword().equals(oldPassword)) {
-      throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
-    }
-    if (password != null && !password.trim().isEmpty()) {
-      this.userService.setPassword(userId, password);
-    } else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-      throw new BusinessException("You have to change your password!",
-          ErrorCode.PASSWORD_MUST_BE_CHANGED);
-    }
   }
 
   private void fillAbstractCreateUserResponse(final AbstractCreateUserResponse response) {

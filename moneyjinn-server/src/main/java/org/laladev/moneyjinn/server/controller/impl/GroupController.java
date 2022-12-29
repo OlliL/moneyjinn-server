@@ -39,6 +39,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IGroupService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,7 @@ public class GroupController extends AbstractController {
     this.registerBeanMapper(new ValidationItemTransportMapper());
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
   public ShowGroupListResponse showGroupList() {
     final List<Group> groups = this.groupService.getAllGroups();
@@ -70,6 +72,7 @@ public class GroupController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "createGroup", method = { RequestMethod.POST })
   public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
@@ -87,6 +90,7 @@ public class GroupController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
   public ValidationResponse updateGroup(@RequestBody final UpdateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
@@ -102,6 +106,7 @@ public class GroupController extends AbstractController {
     return response;
   }
 
+  @PreAuthorize(HAS_AUTHORITY_ADMIN)
   @RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })
   public void deleteGroupById(@PathVariable(value = "id") final Long id) {
     final GroupID groupId = new GroupID(id);

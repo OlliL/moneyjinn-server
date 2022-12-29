@@ -35,6 +35,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AbstractController extends AbstractMapperSupport {
+  protected static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
+
   @Inject
   private IUserService userService;
 
