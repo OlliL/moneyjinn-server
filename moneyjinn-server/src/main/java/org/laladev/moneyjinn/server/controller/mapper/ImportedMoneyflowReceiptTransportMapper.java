@@ -27,8 +27,10 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.Base64;
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
+import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceiptID;
 
@@ -44,8 +46,12 @@ public class ImportedMoneyflowReceiptTransportMapper
     }
     importedMoneyflowReceipt.setFilename(importedMoneyflowReceiptTransport.getFilename());
     importedMoneyflowReceipt.setMediaType(importedMoneyflowReceiptTransport.getMediaType());
-    importedMoneyflowReceipt
-        .setReceipt(Base64.getDecoder().decode(importedMoneyflowReceiptTransport.getReceipt()));
+    try {
+      importedMoneyflowReceipt
+          .setReceipt(Base64.getDecoder().decode(importedMoneyflowReceiptTransport.getReceipt()));
+    } catch (final IllegalArgumentException e) {
+      throw new BusinessException("Unsupported file format!", ErrorCode.WRONG_FILE_FORMAT);
+    }
     return importedMoneyflowReceipt;
   }
 
