@@ -1,25 +1,22 @@
 
-package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
+package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceiptID;
-import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
+import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowID;
+import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
+import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTest {
+public class DeleteEtfFlowTest extends AbstractControllerTest {
   @Inject
-  IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
+  IEtfService etfService;
 
   private final HttpMethod method = HttpMethod.DELETE;
   private String userName;
@@ -48,26 +45,21 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
 
   @Test
   public void test_standardRequest_emptyResponse() throws Exception {
-    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-    final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
-    final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(
-        ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
+    final EtfFlowID etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID);
 
-    ImportedMoneyflowReceipt receipt = this.importedMoneyflowReceiptService
-        .getImportedMoneyflowReceiptById(userId, groupId, receiptId);
-    Assertions.assertNotNull(receipt);
+    EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+    Assertions.assertNotNull(etfFlow);
 
-    super.callUsecaseWithoutContent("/" + receiptId.getId(), this.method, true, Object.class);
+    super.callUsecaseWithoutContent("/" + etfFlowId.getId(), this.method, true, Object.class);
 
-    receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId,
-        receiptId);
-    Assertions.assertNull(receipt);
+    etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+    Assertions.assertNull(etfFlow);
   }
 
   @Test
   public void test_DeleteNotExistingId_emptyResponse() throws Exception {
-    super.callUsecaseWithoutContent("/" + ImportedMoneyflowReceiptTransportBuilder.NEXT_ID,
-        this.method, true, Object.class);
+    super.callUsecaseWithoutContent("/" + EtfFlowTransportBuilder.NEXT_ID, this.method, true,
+        Object.class);
   }
 
   @Test
