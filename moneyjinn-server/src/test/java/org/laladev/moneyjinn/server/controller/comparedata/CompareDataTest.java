@@ -427,6 +427,35 @@ public class CompareDataTest extends AbstractControllerTest {
     Assertions.assertEquals(expected, actual);
   }
 
+  @Test
+  public void test_accessesImportedMoneyflowsBeforeGroupAssignemnts_dataNotShown()
+      throws Exception {
+    final CompareDataRequest request = new CompareDataRequest();
+    request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+    request.setStartDate(DateUtil.getGmtDate("1999-01-01"));
+    request.setEndDate(DateUtil.getGmtDate("1999-01-10"));
+    request.setUseImportedData((short) 1);
+    final CompareDataResponse expected = new CompareDataResponse();
+
+    final CompareDataResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        CompareDataResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test_accessesImportedMoneyflowsAfterGroupAssignemnts_dataNotShown() throws Exception {
+    final CompareDataRequest request = new CompareDataRequest();
+    request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+    request.setStartDate(DateUtil.getGmtDate("2600-01-01"));
+    request.setEndDate(DateUtil.getGmtDate("2600-01-10"));
+    request.setUseImportedData((short) 1);
+    final CompareDataResponse expected = new CompareDataResponse();
+
+    final CompareDataResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+        CompareDataResponse.class);
+    Assertions.assertEquals(expected, actual);
+  }
+
   private String getFileContents(final Resource resource) throws IOException {
     final byte[] rawFileContents = FileCopyUtils.copyToByteArray(resource.getInputStream());
     final UniversalDetector detector = new UniversalDetector(null);

@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -124,11 +125,31 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
       final LocalDate dateFrom, final LocalDate dateTil) {
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
+
+    final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(userId);
+
+    LocalDate firewalledDateFrom;
+    LocalDate firewalledDateTil;
+    if (dateFrom == null) {
+      firewalledDateFrom = accessRelation.getValidFrom();
+    } else {
+      firewalledDateFrom = accessRelation.getValidFrom().isAfter(dateFrom)
+          ? accessRelation.getValidFrom()
+          : dateFrom;
+    }
+    if (dateTil == null) {
+      firewalledDateTil = accessRelation.getValidTil();
+    } else {
+      firewalledDateTil = dateTil.isAfter(accessRelation.getValidTil())
+          ? accessRelation.getValidTil()
+          : dateTil;
+    }
+
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
     final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
         .getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs,
-            ImportedMoneyflowStatusMapper.map(status), dateFrom, dateTil);
+            ImportedMoneyflowStatusMapper.map(status), firewalledDateFrom, firewalledDateTil);
     return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
   }
 
