@@ -41,7 +41,7 @@
         
             <insert id="createMoneyflowReceipt"
                 parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
+                useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowreceiptid">
                 INSERT INTO moneyflowreceipts
                       (mmf_moneyflowid
                       ,receipt

@@ -5,7 +5,8 @@ import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.
 
 public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowReceiptTransport {
   public static final Long RECEIPT_1ID = 1L;
-  public static final Long NEXT_ID = 2L;
+  public static final Long RECEIPT_2ID = 2L;
+  public static final Long NEXT_ID = 3L;
   private static final String JPEG_FILE = "/9j/4AAQSkZJRgABAQEBLAEsAAD//gATQ3JlYXRlZCB3aXRoIEdJ"
       + "TVD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB"
       + "YUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU"
@@ -38,6 +39,14 @@ public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowR
     super.setFilename("1000.jpg");
     super.setMediaType("image/jpeg");
     super.setReceipt(JPEG_FILE);
+    return this;
+  }
+
+  public ImportedMoneyflowReceiptTransportBuilder forReceipt2() {
+    super.setId(RECEIPT_2ID);
+    super.setFilename("2000.jpg");
+    super.setMediaType("application/pdf");
+    super.setReceipt(PDF_FILE);
     return this;
   }
 

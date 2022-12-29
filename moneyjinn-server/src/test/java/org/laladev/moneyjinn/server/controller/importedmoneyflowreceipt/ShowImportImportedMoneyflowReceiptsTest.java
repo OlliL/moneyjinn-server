@@ -1,11 +1,13 @@
 
 package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.ShowImportImportedMoneyflowReceiptsResponse;
+import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -41,8 +43,10 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
   @Test
   public void test_standardRequest_emptyResponse() throws Exception {
     final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
-    expected.setImportedMoneyflowReceiptTransports(Collections
-        .singletonList(new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build()));
+    final ArrayList<ImportedMoneyflowReceiptTransport> transporter = new ArrayList<>();
+    transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build());
+    transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt2().build());
+    expected.setImportedMoneyflowReceiptTransports(transporter);
 
     final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseWithoutContent("",
         this.method, false, ShowImportImportedMoneyflowReceiptsResponse.class);
