@@ -59,15 +59,12 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     final CreateImportedMoneyflowReceiptsRequest request = new CreateImportedMoneyflowReceiptsRequest();
     request.setImportedMoneyflowReceiptTransports(Collections.singletonList(transport));
 
-    final ValidationResponse response = super.callUsecaseWithContent("", this.method, request, true,
-        ValidationResponse.class);
-
-    Assertions.assertNull(response);
+    super.callUsecaseWithContent("", this.method, request, true, ValidationResponse.class);
 
     final UserID userId = new UserID(userIdLong);
     final GroupID groupId = new GroupID(groupIdLong);
     final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(
-        ImportedMoneyflowReceiptTransportBuilder.NEXT_ID);
+        transport.getId());
     final ImportedMoneyflowReceipt receipt = this.importedMoneyflowReceiptService
         .getImportedMoneyflowReceiptById(userId, groupId, importedMoneyflowReceiptId);
 
@@ -102,7 +99,6 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     final ValidationResponse response = super.callUsecaseWithContent("", this.method, request,
         false, ValidationResponse.class);
 
-    Assertions.assertNotNull(response);
     Assertions.assertEquals(ErrorCode.UNSUPPORTED_MEDIA_TYPE.getErrorCode(),
         response.getValidationItemTransports().get(0).getError());
   }
@@ -118,7 +114,6 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     final ErrorResponse response = super.callUsecaseWithContent("", this.method, request, false,
         ErrorResponse.class);
 
-    Assertions.assertNotNull(response);
     Assertions.assertEquals(ErrorCode.WRONG_FILE_FORMAT.getErrorCode(), response.getCode());
   }
 
@@ -136,7 +131,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
     this.test_supportedFile_CreatedAndEmptyResponse(
-        new ImportedMoneyflowReceiptTransportBuilder().forJpegReceipt().build(),
+        new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build(),
         UserTransportBuilder.ADMIN_ID, GroupTransportBuilder.ADMINGROUP_ID);
   }
 }

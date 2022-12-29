@@ -4,7 +4,8 @@ package org.laladev.moneyjinn.server.builder;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 
 public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowReceiptTransport {
-  public static final Long NEXT_ID = 1l;
+  public static final Long RECEIPT_1ID = 1L;
+  public static final Long NEXT_ID = 2L;
   private static final String JPEG_FILE = "/9j/4AAQSkZJRgABAQEBLAEsAAD//gATQ3JlYXRlZCB3aXRoIEdJ"
       + "TVD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB"
       + "YUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU"
@@ -32,7 +33,16 @@ public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowR
       + "XMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5gwcFzcNJCk+ZQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0l"
       + "NUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=";
 
+  public ImportedMoneyflowReceiptTransportBuilder forReceipt1() {
+    super.setId(RECEIPT_1ID);
+    super.setFilename("1000.jpg");
+    super.setMediaType("image/jpeg");
+    super.setReceipt(JPEG_FILE);
+    return this;
+  }
+
   public ImportedMoneyflowReceiptTransportBuilder forJpegReceipt() {
+    super.setId(NEXT_ID);
     super.setFilename("testfile.jpg");
     super.setMediaType("image/jpeg");
     super.setReceipt(JPEG_FILE);
@@ -40,6 +50,7 @@ public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowR
   }
 
   public ImportedMoneyflowReceiptTransportBuilder forPngReceipt() {
+    super.setId(NEXT_ID);
     super.setFilename("testfile.png");
     super.setMediaType("image/png");
     super.setReceipt(PNG_FILE);
@@ -47,6 +58,7 @@ public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowR
   }
 
   public ImportedMoneyflowReceiptTransportBuilder forPdfReceipt() {
+    super.setId(NEXT_ID);
     super.setFilename("testfile.pdf");
     super.setMediaType("application/pdf");
     super.setReceipt(PDF_FILE);
@@ -55,6 +67,7 @@ public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowR
 
   public ImportedMoneyflowReceiptTransport build() {
     final ImportedMoneyflowReceiptTransport transport = new ImportedMoneyflowReceiptTransport();
+    transport.setId(super.getId());
     transport.setFilename(super.getFilename());
     transport.setMediaType(super.getMediaType());
     transport.setReceipt(super.getReceipt());
