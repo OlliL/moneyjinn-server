@@ -31,6 +31,7 @@ import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
@@ -51,8 +52,9 @@ public class EtfDao {
   }
 
   public EtfValueData getEtfValueForMonth(final String isin, final Short year, final Month month) {
-    final LocalDate date = LocalDate.of(year.intValue(), month, 1);
-    return this.mapper.getEtfValueForMonth(isin, date);
+    final LocalDate startDate = LocalDate.of(year.intValue(), month, 1);
+    final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+    return this.mapper.getEtfValueForMonth(isin, startDate, endDate);
   }
 
   public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDateTime timeUntil) {

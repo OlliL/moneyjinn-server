@@ -94,11 +94,12 @@ public class EtfController extends AbstractController {
       @PathVariable(value = "year") final Short requestYear,
       @PathVariable(value = "month") final Short requestMonth) {
     final Month month = Month.of(requestMonth.intValue());
-    final LocalDateTime beginOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59,
-        59, 999999999);
-    final LocalDateTime endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+    final LocalDateTime endOfMonth = LocalDateTime
+        .of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999)
+        .with(TemporalAdjusters.lastDayOfMonth());
     final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
     final List<EtfSummaryTransport> transports = new ArrayList<>();
+
     final List<Etf> etfs = this.etfService.getAllEtf();
     for (final Etf etf : etfs) {
       final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear,

@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.model.etf;
 
+import java.util.Objects;
 import org.laladev.moneyjinn.model.AbstractEntity;
 
 public class Etf extends AbstractEntity<EtfIsin> {
@@ -66,4 +67,35 @@ public class Etf extends AbstractEntity<EtfIsin> {
   public final void setChartUrl(final String chartUrl) {
     this.chartUrl = chartUrl;
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + Objects.hash(this.chartUrl, this.name, this.ticker, this.wkn);
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final Etf other = (Etf) obj;
+    return Objects.equals(this.chartUrl, other.chartUrl) && Objects.equals(this.name, other.name)
+        && Objects.equals(this.ticker, other.ticker) && Objects.equals(this.wkn, other.wkn);
+  }
+
+  @Override
+  public String toString() {
+    return "Etf [name=" + this.name + ", wkn=" + this.wkn + ", ticker=" + this.ticker
+        + ", chartUrl=" + this.chartUrl + "]";
+  }
+
 }

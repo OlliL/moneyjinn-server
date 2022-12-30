@@ -43,7 +43,7 @@ public interface IEtfDaoMapper {
       @Param("dateUntil") LocalDateTime timeUntil);
 
   public EtfValueData getEtfValueForMonth(@Param("isin") String isin,
-      @Param("date") LocalDate date);
+      @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
   public EtfFlowData getEtfFlowById(@Param("id") Long id);
 

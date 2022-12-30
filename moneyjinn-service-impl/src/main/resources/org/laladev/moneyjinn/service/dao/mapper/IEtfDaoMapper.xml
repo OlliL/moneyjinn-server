@@ -53,7 +53,7 @@
                 SELECT <include refid="etfValuesColumns" />
                   FROM etfvalues
                  WHERE isin = #{isin}
-                   AND date BETWEEN #{date} AND LAST_DAY(#{date})
+                   AND date BETWEEN #{startDate} AND #{endDate}
                  ORDER BY date DESC
                  LIMIT 1
         </select>
