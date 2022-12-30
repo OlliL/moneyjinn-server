@@ -64,7 +64,8 @@ public class EtfDao {
   }
 
   public Long createEtfFlow(final EtfFlowData etfFlowData) {
-    return this.mapper.createEtfFlow(etfFlowData);
+    this.mapper.createEtfFlow(etfFlowData);
+    return etfFlowData.getEtfflowid();
   }
 
   public void updateEtfFlow(final EtfFlowData etfFlowData) {

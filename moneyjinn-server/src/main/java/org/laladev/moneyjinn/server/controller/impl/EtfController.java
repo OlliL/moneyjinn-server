@@ -223,33 +223,41 @@ public class EtfController extends AbstractController {
 
   @RequestMapping(value = "createEtfFlow", method = { RequestMethod.POST })
   public CreateEtfFlowResponse createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
-    final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
-    etfFlow.setId(null);
-    final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
     final CreateEtfFlowResponse response = new CreateEtfFlowResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+    final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
+
+    if (etfFlow != null) {
+      etfFlow.setId(null);
+      final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+      response.setResult(validationResult.isValid());
+      if (!validationResult.isValid()) {
+        response.setValidationItemTransports(super.mapList(
+            validationResult.getValidationResultItems(), ValidationItemTransport.class));
+        return response;
+      }
+      final EtfFlowID etfFlowId = this.etfService.createEtfFlow(etfFlow);
+      response.setEtfFlowId(etfFlowId.getId());
     }
-    final EtfFlowID etfFlowId = this.etfService.createEtfFlow(etfFlow);
-    response.setEtfFlowId(etfFlowId.getId());
+
     return response;
   }
 
   @RequestMapping(value = "updateEtfFlow", method = { RequestMethod.PUT })
   public ValidationResponse updateEtfFlow(@RequestBody final UpdateEtfFlowRequest request) {
-    final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
-    final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
     final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+    final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
+
+    if (etfFlow != null) {
+      final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+      response.setResult(validationResult.isValid());
+      if (!validationResult.isValid()) {
+        response.setValidationItemTransports(super.mapList(
+            validationResult.getValidationResultItems(), ValidationItemTransport.class));
+        return response;
+      }
+      this.etfService.updateEtfFlow(etfFlow);
     }
-    this.etfService.updateEtfFlow(etfFlow);
+
     return response;
   }
 

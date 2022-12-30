@@ -42,7 +42,9 @@ public class EtfFlowTransportMapper implements IMapper<EtfFlow, EtfFlowTransport
       etfFlow.setId(new EtfFlowID(etfFlowTransport.getEtfflowid()));
     }
     etfFlow.setAmount(etfFlowTransport.getAmount());
-    etfFlow.setIsin(new EtfIsin(etfFlowTransport.getIsin()));
+    if (etfFlowTransport.getIsin() != null) {
+      etfFlow.setIsin(new EtfIsin(etfFlowTransport.getIsin()));
+    }
     etfFlow.setPrice(etfFlowTransport.getPrice());
     if (etfFlowTransport.getTimestamp() != null) {
       final LocalDateTime time = etfFlowTransport.getTimestamp().toLocalDateTime();
