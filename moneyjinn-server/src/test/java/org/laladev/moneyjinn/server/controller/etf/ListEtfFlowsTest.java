@@ -35,11 +35,11 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
-  private final static BigDecimal SETTING_SALE_ASK_PRICE = BigDecimal.TEN;
-  private final static BigDecimal SETTING_SALE_BID_PRICE = BigDecimal.TEN;
+  private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("800.000");
+  private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("879.500");
   private final static String SETTING_ISIN = EtfTransportBuilder.ISIN;
   private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
-  private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("5.99");
+  private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
 
   @BeforeEach
   public void setUp() {

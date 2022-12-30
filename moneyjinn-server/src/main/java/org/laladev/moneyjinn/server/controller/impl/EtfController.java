@@ -167,57 +167,69 @@ public class EtfController extends AbstractController {
   @RequestMapping(value = "calcEtfSale", method = { RequestMethod.PUT })
   public CalcEtfSaleResponse calcEtfSale(@RequestBody final CalcEtfSaleRequest request) {
     final CalcEtfSaleResponse response = new CalcEtfSaleResponse();
+
+    if (request.getAskPrice() == null || request.getBidPrice() == null || request.getIsin() == null
+        || request.getPieces() == null || request.getTransactionCosts() == null) {
+      return response;
+    }
+
+    final BigDecimal pieces = request.getPieces().abs();
+    final BigDecimal askPrice = request.getAskPrice().abs();
+    final BigDecimal bidPrice = request.getBidPrice().abs();
     this.settingService.setClientCalcEtfSaleAskPrice(this.getUserId(),
-        new ClientCalcEtfSaleAskPrice(request.getAskPrice()));
+        new ClientCalcEtfSaleAskPrice(askPrice));
     this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(),
-        new ClientCalcEtfSaleBidPrice(request.getBidPrice()));
+        new ClientCalcEtfSaleBidPrice(bidPrice));
     this.settingService.setClientCalcEtfSaleIsin(this.getUserId(),
         new ClientCalcEtfSaleIsin(request.getIsin()));
     this.settingService.setClientCalcEtfSalePieces(this.getUserId(),
-        new ClientCalcEtfSalePieces(request.getPieces()));
+        new ClientCalcEtfSalePieces(pieces));
     this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
         new ClientCalcEtfSaleTransactionCosts(request.getTransactionCosts()));
     final EtfIsin etfIsin = new EtfIsin(request.getIsin());
-    final BigDecimal pieces = request.getPieces();
     BigDecimal openPieces = pieces;
     BigDecimal originalBuyPrice = BigDecimal.ZERO;
+
     final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfIsin,
         LocalDateTime.now());
     final List<EtfFlow> effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(etfFlows);
-    for (final EtfFlow etfFlow : effectiveEtfFlows) {
-      BigDecimal useablePieces = etfFlow.getAmount();
-      if (useablePieces.compareTo(openPieces) == 1) {
-        useablePieces = openPieces;
+
+    if (effectiveEtfFlows != null && !effectiveEtfFlows.isEmpty()) {
+      for (final EtfFlow etfFlow : effectiveEtfFlows) {
+        BigDecimal useablePieces = etfFlow.getAmount();
+        if (useablePieces.compareTo(openPieces) == 1) {
+          useablePieces = openPieces;
+        }
+        openPieces = openPieces.subtract(useablePieces);
+        originalBuyPrice = originalBuyPrice.add(useablePieces.multiply(etfFlow.getPrice()));
       }
-      openPieces = openPieces.subtract(useablePieces);
-      originalBuyPrice = originalBuyPrice.add(useablePieces.multiply(etfFlow.getPrice()));
-    }
-    if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
-      final ValidationItemTransport valItem = new ValidationItemTransport();
-      valItem.setError(ErrorCode.AMOUNT_TO_HIGH.getErrorCode());
-      response.setResult(Boolean.FALSE);
-      response.setValidationItemTransports(Arrays.asList(valItem));
-    } else {
-      final BigDecimal newBuyPrice = request.getAskPrice().multiply(pieces);
-      final BigDecimal sellPrice = request.getBidPrice().multiply(pieces);
-      final BigDecimal transactionCosts = request.getTransactionCosts()
-          .multiply(BigDecimal.valueOf(2));
-      final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
-      final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2,
-          RoundingMode.UP);
-      final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
-      final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
-      response.setResult(Boolean.TRUE);
-      response.setNewBuyPrice(newBuyPrice);
-      response.setSellPrice(sellPrice);
-      response.setTransactionCosts(transactionCosts);
-      response.setIsin(etfIsin.getId());
-      response.setPieces(pieces);
-      response.setOriginalBuyPrice(originalBuyPrice);
-      response.setProfit(profit);
-      response.setChargeable(chargeable);
-      response.setRebuyLosses(rebuyLosses);
-      response.setOverallCosts(overallCosts);
+      if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
+        final ValidationItemTransport valItem = new ValidationItemTransport();
+        valItem.setError(ErrorCode.AMOUNT_TO_HIGH.getErrorCode());
+        response.setResult(Boolean.FALSE);
+        response.setValidationItemTransports(Arrays.asList(valItem));
+      } else {
+        response.setResult(Boolean.TRUE);
+        final BigDecimal newBuyPrice = askPrice.multiply(pieces);
+        final BigDecimal sellPrice = bidPrice.multiply(pieces);
+        final BigDecimal transactionCosts = request.getTransactionCosts()
+            .multiply(BigDecimal.valueOf(2));
+        final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
+        final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2,
+            RoundingMode.UP);
+        final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
+        final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
+        response.setNewBuyPrice(newBuyPrice);
+        response.setSellPrice(sellPrice);
+        response.setTransactionCosts(transactionCosts);
+        response.setIsin(etfIsin.getId());
+        response.setPieces(pieces);
+        response.setOriginalBuyPrice(originalBuyPrice);
+        response.setProfit(profit);
+        response.setChargeable(chargeable);
+        response.setRebuyLosses(rebuyLosses);
+        response.setOverallCosts(overallCosts);
+      }
     }
     return response;
   }
