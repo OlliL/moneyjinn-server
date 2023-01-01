@@ -90,6 +90,10 @@ public class JwtTokenProvider {
 
   public String resolveToken(final HttpServletRequest req) {
     final String bearerToken = req.getHeader("Authorization");
+    if (bearerToken == null) {
+      final String token = req.getParameter("token");
+      return token;
+    }
     if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
       return bearerToken.substring(7, bearerToken.length());
     }

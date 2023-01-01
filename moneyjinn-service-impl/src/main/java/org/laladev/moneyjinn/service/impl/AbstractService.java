@@ -31,14 +31,23 @@ import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 public abstract class AbstractService extends AbstractMapperSupport {
   @Inject
   private CacheManager cacheManager;
+  @Inject
+  private ApplicationEventPublisher applicationEventPublisher;
+
   static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
 
   protected Cache getCache(final String... cacheNameParts) {
     final String cacheName = String.join("#", cacheNameParts);
     return this.cacheManager.getCache(cacheName);
+  }
+
+  protected void publishEvent(final ApplicationEvent event) {
+    this.applicationEventPublisher.publishEvent(event);
   }
 }

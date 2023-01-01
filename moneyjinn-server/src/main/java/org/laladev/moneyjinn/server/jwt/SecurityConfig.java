@@ -62,6 +62,7 @@ public class SecurityConfig {
             .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
             .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
             .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
+            .requestMatchers("/websocket").hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
             .anyRequest().authenticated()

@@ -56,6 +56,8 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ContractpartnerDao;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
+import org.laladev.moneyjinn.service.event.ContractpartnerChangedEvent;
+import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -204,6 +206,9 @@ public class ContractpartnerService extends AbstractService implements IContract
         ContractpartnerData.class);
     this.contractpartnerDao.updateContractpartner(contractpartnerData);
     this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartner.getId());
+    final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
+        EventType.UPDATE, contractpartner);
+    super.publishEvent(event);
   }
 
   @Override
@@ -219,11 +224,19 @@ public class ContractpartnerService extends AbstractService implements IContract
     }
     final ContractpartnerData contractpartnerData = super.map(contractpartner,
         ContractpartnerData.class);
-    final Long contractpartnerId = this.contractpartnerDao
+
+    final Long contractpartnerIdLong = this.contractpartnerDao
         .createContractpartner(contractpartnerData);
-    this.evictContractpartnerCache(contractpartner.getUser().getId(),
-        new ContractpartnerID(contractpartnerId));
-    return new ContractpartnerID(contractpartnerId);
+    final ContractpartnerID contractpartnerId = new ContractpartnerID(contractpartnerIdLong);
+    contractpartner.setId(contractpartnerId);
+
+    this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartnerId);
+
+    final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
+        EventType.CREATE, contractpartner);
+    super.publishEvent(event);
+
+    return contractpartnerId;
   }
 
   @Override
@@ -232,9 +245,13 @@ public class ContractpartnerService extends AbstractService implements IContract
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(groupId, "groupId must not be null!");
     Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
+    final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
     try {
       this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
       this.evictContractpartnerCache(userId, contractpartnerId);
+      final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
+          EventType.DELETE, contractpartner);
+      super.publishEvent(event);
     } catch (final Exception e) {
       LOG.info(e);
       throw new BusinessException(
