@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "calcEtfSaleResponse")
 public class CalcEtfSaleResponse extends ValidationResponse {
@@ -229,28 +229,12 @@ public class CalcEtfSaleResponse extends ValidationResponse {
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CalcEtfSaleResponse [isin=");
-    builder.append(this.isin);
-    builder.append(", originalBuyPrice=");
-    builder.append(this.originalBuyPrice);
-    builder.append(", sellPrice=");
-    builder.append(this.sellPrice);
-    builder.append(", newBuyPrice=");
-    builder.append(this.newBuyPrice);
-    builder.append(", profit=");
-    builder.append(this.profit);
-    builder.append(", chargeable=");
-    builder.append(this.chargeable);
-    builder.append(", transactionCosts=");
-    builder.append(this.transactionCosts);
-    builder.append(", rebuyLosses=");
-    builder.append(this.rebuyLosses);
-    builder.append(", overallCosts=");
-    builder.append(this.overallCosts);
-    builder.append(", pieces=");
-    builder.append(this.pieces);
-    builder.append("]");
-    return builder.toString();
+    return "CalcEtfSaleResponse [isin=" + this.isin + ", originalBuyPrice=" + this.originalBuyPrice
+        + ", sellPrice=" + this.sellPrice + ", newBuyPrice=" + this.newBuyPrice + ", profit="
+        + this.profit + ", chargeable=" + this.chargeable + ", transactionCosts="
+        + this.transactionCosts + ", rebuyLosses=" + this.rebuyLosses + ", overallCosts="
+        + this.overallCosts + ", pieces=" + this.pieces + ", getResult()=" + this.getResult()
+        + ", getValidationItemTransports()=" + this.getValidationItemTransports() + "]";
   }
+
 }
