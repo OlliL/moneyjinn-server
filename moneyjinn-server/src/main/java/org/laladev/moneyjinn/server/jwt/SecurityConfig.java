@@ -11,8 +11,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,7 +38,7 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(this.allowedOrigins);
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
     configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-csrf-token"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/moneyflow/server/**", configuration);
     return source;
@@ -50,19 +50,22 @@ public class SecurityConfig {
     http
         .httpBasic().disable()
         .cors().and()
-        .csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+        .csrf(configurer -> {
+           // FIX for https://github.com/spring-projects/spring-security/issues/12378
+           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
+           configurer.ignoringRequestMatchers("/moneyflow/server/user/login");
+        })
         .apply(new JwtConfigurer(this.jwtTokenProvider))
         .and()
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/websocket").permitAll()
+            .requestMatchers("/moneyflow/server/csrf/csrf").permitAll()
             .requestMatchers("/moneyflow/server/user/login").permitAll()
             .requestMatchers("/moneyflow/server/user/refreshToken").permitAll()
             .requestMatchers("/moneyflow/server/importedbalance/createImportedBalance").permitAll()
             .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
             .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
             .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
-            .requestMatchers("/websocket").hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
             .anyRequest().authenticated()
