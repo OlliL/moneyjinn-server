@@ -246,17 +246,19 @@ public class ContractpartnerService extends AbstractService implements IContract
     Assert.notNull(groupId, "groupId must not be null!");
     Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
     final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
-    try {
-      this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
-      this.evictContractpartnerCache(userId, contractpartnerId);
-      final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
-          EventType.DELETE, contractpartner);
-      super.publishEvent(event);
-    } catch (final Exception e) {
-      LOG.info(e);
-      throw new BusinessException(
-          "You may not delete a contractual partner who is still referenced by a flow of money!",
-          ErrorCode.CONTRACTPARTNER_IN_USE);
+    if (contractpartner != null) {
+      try {
+        this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
+        this.evictContractpartnerCache(userId, contractpartnerId);
+        final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
+            EventType.DELETE, contractpartner);
+        super.publishEvent(event);
+      } catch (final Exception e) {
+        LOG.info(e);
+        throw new BusinessException(
+            "You may not delete a contractual partner who is still referenced by a flow of money!",
+            ErrorCode.CONTRACTPARTNER_IN_USE);
+      }
     }
   }
 
