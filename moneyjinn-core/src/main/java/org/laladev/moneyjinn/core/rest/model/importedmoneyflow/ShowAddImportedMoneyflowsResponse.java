@@ -1,8 +1,3 @@
-
-package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
-
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,52 +23,23 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 //
+
+package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
+
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showAddImportedMoneyflowsResponse")
 public class ShowAddImportedMoneyflowsResponse extends ValidationResponse {
   @XmlElement(name = "importedMoneyflowTransport")
   private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
-
-  public List<ImportedMoneyflowTransport> getImportedMoneyflowTransports() {
-    return this.importedMoneyflowTransports;
-  }
-
-  public void setImportedMoneyflowTransports(
-      final List<ImportedMoneyflowTransport> importedMoneyflowTransports) {
-    this.importedMoneyflowTransports = importedMoneyflowTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.importedMoneyflowTransports);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowAddImportedMoneyflowsResponse other = (ShowAddImportedMoneyflowsResponse) obj;
-    return Objects.equals(this.importedMoneyflowTransports, other.importedMoneyflowTransports);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowAddImportedMoneyflowsResponse [importedMoneyflowTransports="
-        + this.importedMoneyflowTransports + "]";
-  }
-
 }

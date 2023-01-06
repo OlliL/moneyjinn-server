@@ -29,49 +29,17 @@ package org.laladev.moneyjinn.core.rest.model.etf;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "listEtfOverviewResponse")
 public class ListEtfOverviewResponse extends AbstractResponse {
   @XmlElement(name = "etfSummaryTransport")
   private List<EtfSummaryTransport> etfSummaryTransports;
-
-  public final List<EtfSummaryTransport> getEtfSummaryTransports() {
-    return this.etfSummaryTransports;
-  }
-
-  public final void setEtfSummaryTransports(final List<EtfSummaryTransport> etfSummaryTransports) {
-    this.etfSummaryTransports = etfSummaryTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.etfSummaryTransports);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ListEtfOverviewResponse other = (ListEtfOverviewResponse) obj;
-    return Objects.equals(this.etfSummaryTransports, other.etfSummaryTransports);
-  }
-
-  @Override
-  public String toString() {
-    return "ListEtfOverviewResponse [etfSummaryTransports=" + this.etfSummaryTransports + "]";
-  }
-
 }

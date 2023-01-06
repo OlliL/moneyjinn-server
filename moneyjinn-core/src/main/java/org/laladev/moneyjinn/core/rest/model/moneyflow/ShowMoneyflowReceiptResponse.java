@@ -26,76 +26,17 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showMoneyflowReceiptResponse")
 public class ShowMoneyflowReceiptResponse extends AbstractResponse {
   private String receipt;
   private Short receiptType;
-
-  public final String getReceipt() {
-    return this.receipt;
-  }
-
-  public final void setReceipt(final String receipt) {
-    this.receipt = receipt;
-  }
-
-  public final Short getReceiptType() {
-    return this.receiptType;
-  }
-
-  public final void setReceiptType(final Short receiptType) {
-    this.receiptType = receiptType;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.receipt == null) ? 0 : this.receipt.hashCode());
-    result = prime * result + ((this.receiptType == null) ? 0 : this.receiptType.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowMoneyflowReceiptResponse other = (ShowMoneyflowReceiptResponse) obj;
-    if (this.receipt == null) {
-      if (other.receipt != null) {
-        return false;
-      }
-    } else if (!this.receipt.equals(other.receipt)) {
-      return false;
-    }
-    if (this.receiptType == null) {
-      if (other.receiptType != null) {
-        return false;
-      }
-    } else if (!this.receiptType.equals(other.receiptType)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowMoneyflowReceiptResponse [receipt=");
-    builder.append(this.receipt);
-    builder.append(", receiptType=");
-    builder.append(this.receiptType);
-    builder.append("]");
-    return builder.toString();
-  }
 }

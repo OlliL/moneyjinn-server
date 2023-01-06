@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,55 +27,15 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //SUCH DAMAGE.
 //
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createEtfFlowResponse")
 public class CreateEtfFlowResponse extends ValidationResponse {
   private Long etfFlowId;
-
-  public final Long getEtfFlowId() {
-    return this.etfFlowId;
-  }
-
-  public final void setEtfFlowId(final Long etfFlowId) {
-    this.etfFlowId = etfFlowId;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.etfFlowId == null) ? 0 : this.etfFlowId.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CreateEtfFlowResponse other = (CreateEtfFlowResponse) obj;
-    if (this.etfFlowId == null) {
-      if (other.etfFlowId != null) {
-        return false;
-      }
-    } else if (!this.etfFlowId.equals(other.etfFlowId)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CreateEtfFlowResponse [etfFlowId=");
-    builder.append(this.etfFlowId);
-    builder.append("]");
-    return builder.toString();
-  }
 }

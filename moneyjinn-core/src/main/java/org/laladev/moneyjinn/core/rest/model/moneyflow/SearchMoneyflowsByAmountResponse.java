@@ -26,84 +26,23 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "searchMoneyflowsByAmountResponse")
-public class SearchMoneyflowsByAmountResponse {
+public class SearchMoneyflowsByAmountResponse extends AbstractResponse {
   @XmlElement(name = "moneyflowTransport")
   private List<MoneyflowTransport> moneyflowTransports;
   @XmlElement(name = "moneyflowSplitEntryTransport")
   private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
-
-  public final List<MoneyflowTransport> getMoneyflowTransports() {
-    return this.moneyflowTransports;
-  }
-
-  public final void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
-    this.moneyflowTransports = moneyflowTransports;
-  }
-
-  public final List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
-    return this.moneyflowSplitEntryTransports;
-  }
-
-  public final void setMoneyflowSplitEntryTransports(
-      final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
-    this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.moneyflowSplitEntryTransports == null) ? 0
-        : this.moneyflowSplitEntryTransports.hashCode());
-    result = prime * result
-        + ((this.moneyflowTransports == null) ? 0 : this.moneyflowTransports.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final SearchMoneyflowsByAmountResponse other = (SearchMoneyflowsByAmountResponse) obj;
-    if (this.moneyflowSplitEntryTransports == null) {
-      if (other.moneyflowSplitEntryTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowSplitEntryTransports.equals(other.moneyflowSplitEntryTransports)) {
-      return false;
-    }
-    if (this.moneyflowTransports == null) {
-      if (other.moneyflowTransports != null) {
-        return false;
-      }
-    } else if (!this.moneyflowTransports.equals(other.moneyflowTransports)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("SearchMoneyflowsByAmountResponse [moneyflowTransports=");
-    builder.append(this.moneyflowTransports);
-    builder.append(", moneyflowSplitEntryTransports=");
-    builder.append(this.moneyflowSplitEntryTransports);
-    builder.append("]");
-    return builder.toString();
-  }
 }

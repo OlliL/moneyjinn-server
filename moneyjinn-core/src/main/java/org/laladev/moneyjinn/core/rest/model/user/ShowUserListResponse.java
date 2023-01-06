@@ -1,15 +1,46 @@
 
+//
+//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+//
+
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showUserListResponse")
 public class ShowUserListResponse extends AbstractResponse {
   @XmlElement(name = "userTransport")
@@ -18,62 +49,4 @@ public class ShowUserListResponse extends AbstractResponse {
   private List<GroupTransport> groupTransports;
   @XmlElement(name = "accessRelationTransport")
   private List<AccessRelationTransport> accessRelationTransports;
-
-  public List<UserTransport> getUserTransports() {
-    return this.userTransports;
-  }
-
-  public void setUserTransports(final List<UserTransport> userTransports) {
-    this.userTransports = userTransports;
-  }
-
-  public List<GroupTransport> getGroupTransports() {
-    return this.groupTransports;
-  }
-
-  public void setGroupTransports(final List<GroupTransport> groupTransports) {
-    this.groupTransports = groupTransports;
-  }
-
-  public List<AccessRelationTransport> getAccessRelationTransports() {
-    return this.accessRelationTransports;
-  }
-
-  public void setAccessRelationTransports(
-      final List<AccessRelationTransport> accessRelationTransports) {
-    this.accessRelationTransports = accessRelationTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result
-        + Objects.hash(this.accessRelationTransports, this.groupTransports, this.userTransports);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowUserListResponse other = (ShowUserListResponse) obj;
-    return Objects.equals(this.accessRelationTransports, other.accessRelationTransports)
-        && Objects.equals(this.groupTransports, other.groupTransports)
-        && Objects.equals(this.userTransports, other.userTransports);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowUserListResponse [userTransports=" + this.userTransports + ", groupTransports="
-        + this.groupTransports + ", accessRelationTransports=" + this.accessRelationTransports
-        + "]";
-  }
 }

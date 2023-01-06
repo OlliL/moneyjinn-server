@@ -26,58 +26,16 @@
 
 package org.laladev.moneyjinn.core.rest.model.capitalsource;
 
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createCapitalsourceResponse")
 public class CreateCapitalsourceResponse extends ValidationResponse {
   private Long capitalsourceId;
-
-  public final Long getCapitalsourceId() {
-    return this.capitalsourceId;
-  }
-
-  public final void setCapitalsourceId(final Long capitalsourceId) {
-    this.capitalsourceId = capitalsourceId;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result
-        + ((this.capitalsourceId == null) ? 0 : this.capitalsourceId.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CreateCapitalsourceResponse other = (CreateCapitalsourceResponse) obj;
-    if (this.capitalsourceId == null) {
-      if (other.capitalsourceId != null) {
-        return false;
-      }
-    } else if (!this.capitalsourceId.equals(other.capitalsourceId)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CreateCapitalsourceResponse [capitalsourceId=");
-    builder.append(this.capitalsourceId);
-    builder.append("]");
-    return builder.toString();
-  }
 }

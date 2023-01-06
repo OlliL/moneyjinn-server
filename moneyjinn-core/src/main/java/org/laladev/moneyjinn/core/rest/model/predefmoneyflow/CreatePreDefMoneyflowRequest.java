@@ -1,7 +1,4 @@
 
-package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
-
-import jakarta.xml.bind.annotation.XmlRootElement;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,6 +25,16 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 //SUCH DAMAGE.
 //
 
+package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
+
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createPreDefMoneyflowRequest")
 public class CreatePreDefMoneyflowRequest extends AbstractPreDefMoneyflowRequest {
 }

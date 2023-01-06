@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartner;
 
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -28,56 +27,15 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 //SUCH DAMAGE.
 //
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createContractpartnerResponse")
 public class CreateContractpartnerResponse extends ValidationResponse {
   private Long contractpartnerId;
-
-  public final Long getContractpartnerId() {
-    return this.contractpartnerId;
-  }
-
-  public final void setContractpartnerId(final Long contractpartnerId) {
-    this.contractpartnerId = contractpartnerId;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result
-        + ((this.contractpartnerId == null) ? 0 : this.contractpartnerId.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CreateContractpartnerResponse other = (CreateContractpartnerResponse) obj;
-    if (this.contractpartnerId == null) {
-      if (other.contractpartnerId != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerId.equals(other.contractpartnerId)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CreateContractpartnerResponse [contractpartnerId=");
-    builder.append(this.contractpartnerId);
-    builder.append("]");
-    return builder.toString();
-  }
 }

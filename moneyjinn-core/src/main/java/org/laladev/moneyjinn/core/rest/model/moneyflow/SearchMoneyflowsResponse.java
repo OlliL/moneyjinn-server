@@ -29,49 +29,17 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "searchMoneyflowsResponse")
 public class SearchMoneyflowsResponse extends ValidationResponse {
   @XmlElement(name = "moneyflowTransport")
   private List<MoneyflowTransport> moneyflowTransports;
-
-  public List<MoneyflowTransport> getMoneyflowTransports() {
-    return this.moneyflowTransports;
-  }
-
-  public void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
-    this.moneyflowTransports = moneyflowTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.moneyflowTransports);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final SearchMoneyflowsResponse other = (SearchMoneyflowsResponse) obj;
-    return Objects.equals(this.moneyflowTransports, other.moneyflowTransports);
-  }
-
-  @Override
-  public String toString() {
-    return "SearchMoneyflowsResponse [moneyflowTransports=" + this.moneyflowTransports + "]";
-  }
-
 }

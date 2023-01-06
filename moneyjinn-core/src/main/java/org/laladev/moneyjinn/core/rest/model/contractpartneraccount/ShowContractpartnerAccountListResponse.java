@@ -31,52 +31,18 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 //
 
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {
   @XmlElement(name = "contractpartnerAccountTransport")
   private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
-
-  public List<ContractpartnerAccountTransport> getContractpartnerAccountTransports() {
-    return this.contractpartnerAccountTransports;
-  }
-
-  public void setContractpartnerAccountTransports(
-      final List<ContractpartnerAccountTransport> contractpartnerAccountTransports) {
-    this.contractpartnerAccountTransports = contractpartnerAccountTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.contractpartnerAccountTransports);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowContractpartnerAccountListResponse other = (ShowContractpartnerAccountListResponse) obj;
-    return Objects.equals(this.contractpartnerAccountTransports,
-        other.contractpartnerAccountTransports);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowContractpartnerAccountListResponse [contractpartnerAccountTransports="
-        + this.contractpartnerAccountTransports + "]";
-  }
 
 }

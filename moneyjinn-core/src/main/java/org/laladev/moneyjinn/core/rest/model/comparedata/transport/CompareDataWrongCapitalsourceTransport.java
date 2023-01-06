@@ -26,77 +26,11 @@
 
 package org.laladev.moneyjinn.core.rest.model.comparedata.transport;
 
+import lombok.Data;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+@Data
 public class CompareDataWrongCapitalsourceTransport {
   private MoneyflowTransport moneyflowTransport;
   private CompareDataDatasetTransport compareDataDatasetTransport;
-
-  public final MoneyflowTransport getMoneyflowTransport() {
-    return this.moneyflowTransport;
-  }
-
-  public final void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
-    this.moneyflowTransport = moneyflowTransport;
-  }
-
-  public final CompareDataDatasetTransport getCompareDataDatasetTransport() {
-    return this.compareDataDatasetTransport;
-  }
-
-  public final void setCompareDataDatasetTransport(
-      final CompareDataDatasetTransport compareDataDatasetTransport) {
-    this.compareDataDatasetTransport = compareDataDatasetTransport;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.compareDataDatasetTransport == null) ? 0
-        : this.compareDataDatasetTransport.hashCode());
-    result = prime * result
-        + ((this.moneyflowTransport == null) ? 0 : this.moneyflowTransport.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CompareDataWrongCapitalsourceTransport other = (CompareDataWrongCapitalsourceTransport) obj;
-    if (this.compareDataDatasetTransport == null) {
-      if (other.compareDataDatasetTransport != null) {
-        return false;
-      }
-    } else if (!this.compareDataDatasetTransport.equals(other.compareDataDatasetTransport)) {
-      return false;
-    }
-    if (this.moneyflowTransport == null) {
-      if (other.moneyflowTransport != null) {
-        return false;
-      }
-    } else if (!this.moneyflowTransport.equals(other.moneyflowTransport)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CompareDataWrongCapitalsourceTransport [moneyflowTransport=");
-    builder.append(this.moneyflowTransport);
-    builder.append(", compareDataDatasetTransport=");
-    builder.append(this.compareDataDatasetTransport);
-    builder.append("]");
-    return builder.toString();
-  }
 }

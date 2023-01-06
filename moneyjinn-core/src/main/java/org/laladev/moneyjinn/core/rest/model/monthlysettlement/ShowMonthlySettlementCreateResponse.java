@@ -1,12 +1,43 @@
+//
+//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+//All rights reserved.
+//
+//Redistribution and use in source and binary forms, with or without
+//modification, are permitted provided that the following conditions
+//are met:
+//1. Redistributions of source code must retain the above copyright
+//notice, this list of conditions and the following disclaimer
+//2. Redistributions in binary form must reproduce the above copyright
+//notice, this list of conditions and the following disclaimer in the
+//documentation and/or other materials provided with the distribution.
+//
+//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE.
+//
 
 package org.laladev.moneyjinn.core.rest.model.monthlysettlement;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showMonthlySettlementCreateResponse")
 public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
   private Short year;
@@ -16,128 +47,4 @@ public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
   private List<MonthlySettlementTransport> monthlySettlementTransports;
   @XmlElement(name = "importedMonthlySettlementTransport")
   private List<MonthlySettlementTransport> importedMonthlySettlementTransports;
-
-  public final Short getYear() {
-    return this.year;
-  }
-
-  public final void setYear(final Short year) {
-    this.year = year;
-  }
-
-  public final Short getMonth() {
-    return this.month;
-  }
-
-  public final void setMonth(final Short month) {
-    this.month = month;
-  }
-
-  public final Short getEditMode() {
-    return this.editMode;
-  }
-
-  public final void setEditMode(final Short editMode) {
-    this.editMode = editMode;
-  }
-
-  public final List<MonthlySettlementTransport> getMonthlySettlementTransports() {
-    return this.monthlySettlementTransports;
-  }
-
-  public final void setMonthlySettlementTransports(
-      final List<MonthlySettlementTransport> monthlySettlementTransports) {
-    this.monthlySettlementTransports = monthlySettlementTransports;
-  }
-
-  public final List<MonthlySettlementTransport> getImportedMonthlySettlementTransports() {
-    return this.importedMonthlySettlementTransports;
-  }
-
-  public final void setImportedMonthlySettlementTransports(
-      final List<MonthlySettlementTransport> importedMonthlySettlementTransports) {
-    this.importedMonthlySettlementTransports = importedMonthlySettlementTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.editMode == null) ? 0 : this.editMode.hashCode());
-    result = prime * result + ((this.importedMonthlySettlementTransports == null) ? 0
-        : this.importedMonthlySettlementTransports.hashCode());
-    result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
-    result = prime * result + ((this.monthlySettlementTransports == null) ? 0
-        : this.monthlySettlementTransports.hashCode());
-    result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowMonthlySettlementCreateResponse other = (ShowMonthlySettlementCreateResponse) obj;
-    if (this.editMode == null) {
-      if (other.editMode != null) {
-        return false;
-      }
-    } else if (!this.editMode.equals(other.editMode)) {
-      return false;
-    }
-    if (this.importedMonthlySettlementTransports == null) {
-      if (other.importedMonthlySettlementTransports != null) {
-        return false;
-      }
-    } else if (!this.importedMonthlySettlementTransports
-        .equals(other.importedMonthlySettlementTransports)) {
-      return false;
-    }
-    if (this.month == null) {
-      if (other.month != null) {
-        return false;
-      }
-    } else if (!this.month.equals(other.month)) {
-      return false;
-    }
-    if (this.monthlySettlementTransports == null) {
-      if (other.monthlySettlementTransports != null) {
-        return false;
-      }
-    } else if (!this.monthlySettlementTransports.equals(other.monthlySettlementTransports)) {
-      return false;
-    }
-    if (this.year == null) {
-      if (other.year != null) {
-        return false;
-      }
-    } else if (!this.year.equals(other.year)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("ShowMonthlySettlementCreateResponse [year=");
-    builder.append(this.year);
-    builder.append(", month=");
-    builder.append(this.month);
-    builder.append(", editMode=");
-    builder.append(this.editMode);
-    builder.append(", monthlySettlementTransports=");
-    builder.append(this.monthlySettlementTransports);
-    builder.append(", importedMonthlySettlementTransports=");
-    builder.append(this.importedMonthlySettlementTransports);
-    builder.append("]");
-    return builder.toString();
-  }
 }

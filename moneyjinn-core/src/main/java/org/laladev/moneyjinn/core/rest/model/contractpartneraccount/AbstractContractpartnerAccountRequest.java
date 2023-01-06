@@ -1,6 +1,10 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -30,56 +34,9 @@ package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AbstractContractpartnerAccountRequest extends AbstractRequest {
   private ContractpartnerAccountTransport contractpartnerAccountTransport;
-
-  public final ContractpartnerAccountTransport getContractpartnerAccountTransport() {
-    return this.contractpartnerAccountTransport;
-  }
-
-  public final void setContractpartnerAccountTransport(
-      final ContractpartnerAccountTransport contractpartnerAccountTransport) {
-    this.contractpartnerAccountTransport = contractpartnerAccountTransport;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.contractpartnerAccountTransport == null) ? 0
-        : this.contractpartnerAccountTransport.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final AbstractContractpartnerAccountRequest other = (AbstractContractpartnerAccountRequest) obj;
-    if (this.contractpartnerAccountTransport == null) {
-      if (other.contractpartnerAccountTransport != null) {
-        return false;
-      }
-    } else if (!this.contractpartnerAccountTransport
-        .equals(other.contractpartnerAccountTransport)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("AbstractContractpartnerRequest [contractpartnerAccountTransport=");
-    builder.append(this.contractpartnerAccountTransport);
-    builder.append("]");
-    return builder.toString();
-  }
 }

@@ -30,13 +30,19 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "listReportsResponse")
-public class ListReportsResponse {
+public class ListReportsResponse extends AbstractResponse {
   @XmlElement(name = "moneyflowTransport")
   private List<MoneyflowTransport> moneyflowTransports;
   @XmlElement(name = "moneyflowSplitEntryTransport")
@@ -48,111 +54,4 @@ public class ListReportsResponse {
   private BigDecimal turnoverEndOfYearCalculated;
   private BigDecimal amountBeginOfYear;
   private List<Long> moneyflowsWithReceipt;
-
-  public List<MoneyflowTransport> getMoneyflowTransports() {
-    return this.moneyflowTransports;
-  }
-
-  public void setMoneyflowTransports(final List<MoneyflowTransport> moneyflowTransports) {
-    this.moneyflowTransports = moneyflowTransports;
-  }
-
-  public List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
-    return this.moneyflowSplitEntryTransports;
-  }
-
-  public void setMoneyflowSplitEntryTransports(
-      final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
-    this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
-  }
-
-  public Short getYear() {
-    return this.year;
-  }
-
-  public void setYear(final Short year) {
-    this.year = year;
-  }
-
-  public Short getMonth() {
-    return this.month;
-  }
-
-  public void setMonth(final Short month) {
-    this.month = month;
-  }
-
-  public List<ReportTurnoverCapitalsourceTransport> getReportTurnoverCapitalsourceTransports() {
-    return this.reportTurnoverCapitalsourceTransports;
-  }
-
-  public void setReportTurnoverCapitalsourceTransports(
-      final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports) {
-    this.reportTurnoverCapitalsourceTransports = reportTurnoverCapitalsourceTransports;
-  }
-
-  public BigDecimal getTurnoverEndOfYearCalculated() {
-    return this.turnoverEndOfYearCalculated;
-  }
-
-  public void setTurnoverEndOfYearCalculated(final BigDecimal turnoverEndOfYearCalculated) {
-    this.turnoverEndOfYearCalculated = turnoverEndOfYearCalculated;
-  }
-
-  public BigDecimal getAmountBeginOfYear() {
-    return this.amountBeginOfYear;
-  }
-
-  public void setAmountBeginOfYear(final BigDecimal amountBeginOfYear) {
-    this.amountBeginOfYear = amountBeginOfYear;
-  }
-
-  public List<Long> getMoneyflowsWithReceipt() {
-    return this.moneyflowsWithReceipt;
-  }
-
-  public void setMoneyflowsWithReceipt(final List<Long> moneyflowsWithReceipt) {
-    this.moneyflowsWithReceipt = moneyflowsWithReceipt;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.amountBeginOfYear, this.moneyflowSplitEntryTransports,
-        this.moneyflowTransports, this.moneyflowsWithReceipt, this.month,
-        this.reportTurnoverCapitalsourceTransports, this.turnoverEndOfYearCalculated, this.year);
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ListReportsResponse other = (ListReportsResponse) obj;
-    return Objects.equals(this.amountBeginOfYear, other.amountBeginOfYear)
-        && Objects.equals(this.moneyflowSplitEntryTransports, other.moneyflowSplitEntryTransports)
-        && Objects.equals(this.moneyflowTransports, other.moneyflowTransports)
-        && Objects.equals(this.moneyflowsWithReceipt, other.moneyflowsWithReceipt)
-        && Objects.equals(this.month, other.month)
-        && Objects.equals(this.reportTurnoverCapitalsourceTransports,
-            other.reportTurnoverCapitalsourceTransports)
-        && Objects.equals(this.turnoverEndOfYearCalculated, other.turnoverEndOfYearCalculated)
-        && Objects.equals(this.year, other.year);
-  }
-
-  @Override
-  public String toString() {
-    return "ListReportsResponse [moneyflowTransports=" + this.moneyflowTransports
-        + ", moneyflowSplitEntryTransports=" + this.moneyflowSplitEntryTransports + ", year="
-        + this.year + ", month=" + this.month + ", reportTurnoverCapitalsourceTransports="
-        + this.reportTurnoverCapitalsourceTransports + ", turnoverEndOfYearCalculated="
-        + this.turnoverEndOfYearCalculated + ", amountBeginOfYear=" + this.amountBeginOfYear
-        + ", moneyflowsWithReceipt=" + this.moneyflowsWithReceipt + "]";
-  }
-
 }

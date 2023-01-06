@@ -29,10 +29,15 @@ package org.laladev.moneyjinn.core.rest.model.comparedata;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showCompareDataFormResponse")
 public class ShowCompareDataFormResponse extends AbstractResponse {
   @XmlElement(name = "compareDataFormatTransport")
@@ -40,72 +45,4 @@ public class ShowCompareDataFormResponse extends AbstractResponse {
   private Long selectedCapitalsourceId;
   private Long selectedDataFormat;
   private Short selectedSourceIsFile;
-
-  public List<CompareDataFormatTransport> getCompareDataFormatTransports() {
-    return this.compareDataFormatTransports;
-  }
-
-  public void setCompareDataFormatTransports(
-      final List<CompareDataFormatTransport> compareDataFormatTransports) {
-    this.compareDataFormatTransports = compareDataFormatTransports;
-  }
-
-  public Long getSelectedCapitalsourceId() {
-    return this.selectedCapitalsourceId;
-  }
-
-  public void setSelectedCapitalsourceId(final Long selectedCapitalsourceId) {
-    this.selectedCapitalsourceId = selectedCapitalsourceId;
-  }
-
-  public Long getSelectedDataFormat() {
-    return this.selectedDataFormat;
-  }
-
-  public void setSelectedDataFormat(final Long selectedDataFormat) {
-    this.selectedDataFormat = selectedDataFormat;
-  }
-
-  public Short getSelectedSourceIsFile() {
-    return this.selectedSourceIsFile;
-  }
-
-  public void setSelectedSourceIsFile(final Short selectedSourceIsFile) {
-    this.selectedSourceIsFile = selectedSourceIsFile;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.compareDataFormatTransports,
-        this.selectedCapitalsourceId, this.selectedDataFormat, this.selectedSourceIsFile);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowCompareDataFormResponse other = (ShowCompareDataFormResponse) obj;
-    return Objects.equals(this.compareDataFormatTransports, other.compareDataFormatTransports)
-        && Objects.equals(this.selectedCapitalsourceId, other.selectedCapitalsourceId)
-        && Objects.equals(this.selectedDataFormat, other.selectedDataFormat)
-        && Objects.equals(this.selectedSourceIsFile, other.selectedSourceIsFile);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowCompareDataFormResponse [compareDataFormatTransports="
-        + this.compareDataFormatTransports + ", selectedCapitalsourceId="
-        + this.selectedCapitalsourceId + ", selectedDataFormat=" + this.selectedDataFormat
-        + ", selectedSourceIsFile=" + this.selectedSourceIsFile + "]";
-  }
 }

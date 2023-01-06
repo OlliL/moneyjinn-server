@@ -30,69 +30,18 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showTrendsFormResponse")
 public class ShowTrendsFormResponse extends AbstractResponse {
   private Date minDate;
   private Date maxDate;
   @XmlElement(name = "settingTrendCapitalsourceId")
   private List<Long> settingTrendCapitalsourceIds;
-
-  public Date getMinDate() {
-    return this.minDate;
-  }
-
-  public void setMinDate(final Date minDate) {
-    this.minDate = minDate;
-  }
-
-  public Date getMaxDate() {
-    return this.maxDate;
-  }
-
-  public void setMaxDate(final Date maxDate) {
-    this.maxDate = maxDate;
-  }
-
-  public List<Long> getSettingTrendCapitalsourceIds() {
-    return this.settingTrendCapitalsourceIds;
-  }
-
-  public void setSettingTrendCapitalsourceIds(final List<Long> settingTrendCapitalsourceIds) {
-    this.settingTrendCapitalsourceIds = settingTrendCapitalsourceIds;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result
-        + Objects.hash(this.maxDate, this.minDate, this.settingTrendCapitalsourceIds);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowTrendsFormResponse other = (ShowTrendsFormResponse) obj;
-    return Objects.equals(this.maxDate, other.maxDate)
-        && Objects.equals(this.minDate, other.minDate)
-        && Objects.equals(this.settingTrendCapitalsourceIds, other.settingTrendCapitalsourceIds);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowTrendsFormResponse [minDate=" + this.minDate + ", maxDate=" + this.maxDate
-        + ", settingTrendCapitalsourceIds=" + this.settingTrendCapitalsourceIds + "]";
-  }
 }

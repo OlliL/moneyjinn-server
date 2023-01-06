@@ -29,70 +29,20 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showEditMoneyflowResponse")
-public class ShowEditMoneyflowResponse {
+public class ShowEditMoneyflowResponse extends AbstractResponse {
   @XmlElement(name = "moneyflowSplitEntryTransport")
   private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
   private MoneyflowTransport moneyflowTransport;
   private boolean hasReceipt;
-
-  public List<MoneyflowSplitEntryTransport> getMoneyflowSplitEntryTransports() {
-    return this.moneyflowSplitEntryTransports;
-  }
-
-  public void setMoneyflowSplitEntryTransports(
-      final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports) {
-    this.moneyflowSplitEntryTransports = moneyflowSplitEntryTransports;
-  }
-
-  public MoneyflowTransport getMoneyflowTransport() {
-    return this.moneyflowTransport;
-  }
-
-  public void setMoneyflowTransport(final MoneyflowTransport moneyflowTransport) {
-    this.moneyflowTransport = moneyflowTransport;
-  }
-
-  public boolean isHasReceipt() {
-    return this.hasReceipt;
-  }
-
-  public void setHasReceipt(final boolean hasReceipt) {
-    this.hasReceipt = hasReceipt;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.hasReceipt, this.moneyflowSplitEntryTransports,
-        this.moneyflowTransport);
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowEditMoneyflowResponse other = (ShowEditMoneyflowResponse) obj;
-    return this.hasReceipt == other.hasReceipt
-        && Objects.equals(this.moneyflowSplitEntryTransports, other.moneyflowSplitEntryTransports)
-        && Objects.equals(this.moneyflowTransport, other.moneyflowTransport);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowEditMoneyflowResponse [moneyflowSplitEntryTransports="
-        + this.moneyflowSplitEntryTransports + ", moneyflowTransport=" + this.moneyflowTransport
-        + ", hasReceipt=" + this.hasReceipt + "]";
-  }
-
 }

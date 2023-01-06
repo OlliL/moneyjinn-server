@@ -26,64 +26,20 @@
 
 package org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt;
 
-import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
+import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createImportedMoneyflowReceiptsRequest")
 public class CreateImportedMoneyflowReceiptsRequest extends AbstractRequest {
   @XmlElement(name = "importedMoneyflowReceiptTransport")
   private List<ImportedMoneyflowReceiptTransport> importedMoneyflowReceiptTransports;
-
-  public final List<ImportedMoneyflowReceiptTransport> getImportedMoneyflowReceiptTransports() {
-    return this.importedMoneyflowReceiptTransports;
-  }
-
-  public final void setImportedMoneyflowReceiptTransports(
-      final List<ImportedMoneyflowReceiptTransport> importedMoneyflowReceiptTransports) {
-    this.importedMoneyflowReceiptTransports = importedMoneyflowReceiptTransports;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.importedMoneyflowReceiptTransports == null) ? 0
-        : this.importedMoneyflowReceiptTransports.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CreateImportedMoneyflowReceiptsRequest other = (CreateImportedMoneyflowReceiptsRequest) obj;
-    if (this.importedMoneyflowReceiptTransports == null) {
-      if (other.importedMoneyflowReceiptTransports != null) {
-        return false;
-      }
-    } else if (!this.importedMoneyflowReceiptTransports
-        .equals(other.importedMoneyflowReceiptTransports)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CreateImportedMoneyflowReceiptsRequest [importedMoneyflowReceiptTransports=");
-    builder.append(this.importedMoneyflowReceiptTransports);
-    builder.append("]");
-    return builder.toString();
-  }
 }

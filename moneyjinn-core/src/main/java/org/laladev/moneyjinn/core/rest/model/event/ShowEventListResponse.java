@@ -27,80 +27,18 @@
 package org.laladev.moneyjinn.core.rest.model.event;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "showEventListResponse")
 public class ShowEventListResponse extends AbstractResponse {
   private boolean monthlySettlementMissing;
   private Short monthlySettlementMonth;
   private Short monthlySettlementYear;
   private Integer numberOfImportedMoneyflows;
-
-  public boolean isMonthlySettlementMissing() {
-    return this.monthlySettlementMissing;
-  }
-
-  public void setMonthlySettlementMissing(final boolean monthlySettlementMissing) {
-    this.monthlySettlementMissing = monthlySettlementMissing;
-  }
-
-  public Short getMonthlySettlementMonth() {
-    return this.monthlySettlementMonth;
-  }
-
-  public void setMonthlySettlementMonth(final Short monthlySettlementMonth) {
-    this.monthlySettlementMonth = monthlySettlementMonth;
-  }
-
-  public Short getMonthlySettlementYear() {
-    return this.monthlySettlementYear;
-  }
-
-  public void setMonthlySettlementYear(final Short monthlySettlementYear) {
-    this.monthlySettlementYear = monthlySettlementYear;
-  }
-
-  public Integer getNumberOfImportedMoneyflows() {
-    return this.numberOfImportedMoneyflows;
-  }
-
-  public void setNumberOfImportedMoneyflows(final Integer numberOfImportedMoneyflows) {
-    this.numberOfImportedMoneyflows = numberOfImportedMoneyflows;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.monthlySettlementMissing,
-        this.monthlySettlementMonth, this.monthlySettlementYear, this.numberOfImportedMoneyflows);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShowEventListResponse other = (ShowEventListResponse) obj;
-    return this.monthlySettlementMissing == other.monthlySettlementMissing
-        && Objects.equals(this.monthlySettlementMonth, other.monthlySettlementMonth)
-        && Objects.equals(this.monthlySettlementYear, other.monthlySettlementYear)
-        && Objects.equals(this.numberOfImportedMoneyflows, other.numberOfImportedMoneyflows);
-  }
-
-  @Override
-  public String toString() {
-    return "ShowEventListResponse [monthlySettlementMissing=" + this.monthlySettlementMissing
-        + ", monthlySettlementMonth=" + this.monthlySettlementMonth + ", monthlySettlementYear="
-        + this.monthlySettlementYear + ", numberOfImportedMoneyflows="
-        + this.numberOfImportedMoneyflows + "]";
-  }
 }

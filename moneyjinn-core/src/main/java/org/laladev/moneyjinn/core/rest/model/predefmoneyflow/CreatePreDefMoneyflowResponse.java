@@ -1,9 +1,4 @@
 
-package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
-
-import java.util.Objects;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import jakarta.xml.bind.annotation.XmlRootElement;
 //
 //Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -30,43 +25,18 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 //SUCH DAMAGE.
 //
 
+package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
+
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "createPreDefMoneyflowResponse")
 public class CreatePreDefMoneyflowResponse extends ValidationResponse {
   private Long preDefMoneyflowId;
-
-  public Long getPreDefMoneyflowId() {
-    return this.preDefMoneyflowId;
-  }
-
-  public void setPreDefMoneyflowId(final Long preDefMoneyflowId) {
-    this.preDefMoneyflowId = preDefMoneyflowId;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.preDefMoneyflowId);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CreatePreDefMoneyflowResponse other = (CreatePreDefMoneyflowResponse) obj;
-    return Objects.equals(this.preDefMoneyflowId, other.preDefMoneyflowId);
-  }
-
-  @Override
-  public String toString() {
-    return "CreatePreDefMoneyflowResponse [preDefMoneyflowId=" + this.preDefMoneyflowId + "]";
-  }
 }

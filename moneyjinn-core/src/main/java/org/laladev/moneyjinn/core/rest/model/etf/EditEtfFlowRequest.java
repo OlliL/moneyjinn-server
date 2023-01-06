@@ -27,7 +27,13 @@
 package org.laladev.moneyjinn.core.rest.model.etf;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @XmlRootElement(name = "editEtfFlowRequest")
 public class EditEtfFlowRequest extends AbstractEtfFlowRequest {
 }
