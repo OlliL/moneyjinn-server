@@ -53,7 +53,7 @@ public class SecurityConfig {
         .csrf(configurer -> {
            // FIX for https://github.com/spring-projects/spring-security/issues/12378
            configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
-           configurer.ignoringRequestMatchers("/moneyflow/server/user/login");
+           configurer.ignoringRequestMatchers("/moneyflow/server/user/login", "/moneyflow/server/user/refreshToken");
         })
         .apply(new JwtConfigurer(this.jwtTokenProvider))
         .and()
