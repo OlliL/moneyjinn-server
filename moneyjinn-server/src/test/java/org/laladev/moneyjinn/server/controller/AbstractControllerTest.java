@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -155,8 +156,8 @@ public abstract class AbstractControllerTest extends AbstractTest {
     }
     builder.headers(this.getAuthorizationHeader());
     final MvcResult result = this.mvc.perform(builder.contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8.name()))
-        .andReturn();
+        .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding(StandardCharsets.UTF_8.name())).andReturn();
     final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertNotNull(content);
     Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
