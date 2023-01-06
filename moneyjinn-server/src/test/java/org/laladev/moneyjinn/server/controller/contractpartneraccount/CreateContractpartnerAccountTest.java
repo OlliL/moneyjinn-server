@@ -130,7 +130,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
         contractpartnerAccount.getId().getId());
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
-        actual.getcontractpartnerAccountId());
+        actual.getContractpartnerAccountId());
   }
 
   @Test
@@ -150,7 +150,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
         contractpartnerAccount.getId().getId());
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.NEXT_ID,
-        actual.getcontractpartnerAccountId());
+        actual.getContractpartnerAccountId());
     Assertions.assertEquals(transport.getBankCode() + "XXX",
         contractpartnerAccount.getBankAccount().getBankCode());
   }

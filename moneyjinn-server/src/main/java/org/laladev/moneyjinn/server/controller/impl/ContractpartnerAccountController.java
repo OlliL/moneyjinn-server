@@ -98,7 +98,7 @@ public class ContractpartnerAccountController extends AbstractController {
     }
     final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
         .createContractpartnerAccount(userId, contractpartnerAccount);
-    response.setcontractpartnerAccountId(contractpartnerAccountID.getId());
+    response.setContractpartnerAccountId(contractpartnerAccountID.getId());
     return response;
   }
 
