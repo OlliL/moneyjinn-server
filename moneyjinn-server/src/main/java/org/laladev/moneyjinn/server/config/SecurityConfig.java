@@ -1,9 +1,11 @@
 
-package org.laladev.moneyjinn.server.jwt;
+package org.laladev.moneyjinn.server.config;
 
 import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
+import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

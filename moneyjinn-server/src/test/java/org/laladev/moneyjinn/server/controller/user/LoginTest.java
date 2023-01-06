@@ -10,8 +10,8 @@ import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
 import org.laladev.moneyjinn.core.rest.model.user.LoginResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.server.jwt.JwtTokenProvider;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 

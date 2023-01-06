@@ -1,5 +1,5 @@
 
-package org.laladev.moneyjinn.server.jwt;
+package org.laladev.moneyjinn.server.config.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

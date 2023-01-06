@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.server.config.websocket;
 
 import jakarta.inject.Inject;
-import org.laladev.moneyjinn.server.jwt.JwtTokenProvider;
+import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;

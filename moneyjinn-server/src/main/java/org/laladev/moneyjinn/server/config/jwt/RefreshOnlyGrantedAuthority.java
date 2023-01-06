@@ -1,5 +1,5 @@
 
-package org.laladev.moneyjinn.server.jwt;
+package org.laladev.moneyjinn.server.config.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;

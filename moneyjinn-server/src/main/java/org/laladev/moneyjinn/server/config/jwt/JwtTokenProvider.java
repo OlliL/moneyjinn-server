@@ -1,5 +1,5 @@
 
-package org.laladev.moneyjinn.server.jwt;
+package org.laladev.moneyjinn.server.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
