@@ -245,11 +245,14 @@ public class ContractpartnerService extends AbstractService implements IContract
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(groupId, "groupId must not be null!");
     Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
+
     final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
     if (contractpartner != null) {
       try {
         this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
+
         this.evictContractpartnerCache(userId, contractpartnerId);
+
         final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
             EventType.DELETE, contractpartner);
         super.publishEvent(event);

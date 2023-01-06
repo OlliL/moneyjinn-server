@@ -42,6 +42,8 @@ import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.dao.PostingAccountDao;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountDataMapper;
+import org.laladev.moneyjinn.service.event.EventType;
+import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -117,6 +119,10 @@ public class PostingAccountService extends AbstractService implements IPostingAc
         PostingAccountData.class);
     this.postingAccountDao.updatePostingAccount(postingAccountData);
     this.evictPostingAccountCache(postingAccount.getId());
+
+    final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.UPDATE,
+        postingAccount);
+    super.publishEvent(event);
   }
 
   @Override
@@ -132,22 +138,39 @@ public class PostingAccountService extends AbstractService implements IPostingAc
     }
     final PostingAccountData postingAccountData = super.map(postingAccount,
         PostingAccountData.class);
-    final Long postingAccountId = this.postingAccountDao.createPostingAccount(postingAccountData);
-    this.evictPostingAccountCache(new PostingAccountID(postingAccountId));
-    return new PostingAccountID(postingAccountId);
+    final Long postingAccountIdLong = this.postingAccountDao
+        .createPostingAccount(postingAccountData);
+    final PostingAccountID postingAccountId = new PostingAccountID(postingAccountIdLong);
+    postingAccount.setId(postingAccountId);
+
+    this.evictPostingAccountCache(postingAccountId);
+
+    final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.CREATE,
+        postingAccount);
+    super.publishEvent(event);
+
+    return postingAccountId;
   }
 
   @Override
   public void deletePostingAccount(final PostingAccountID postingAccountId) {
     Assert.notNull(postingAccountId, "postingAccountId must not be null!");
-    try {
-      this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
-      this.evictPostingAccountCache(postingAccountId);
-    } catch (final Exception e) {
-      LOG.info(e);
-      throw new BusinessException(
-          "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
-          ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
+    final PostingAccount postingAccount = this.getPostingAccountById(postingAccountId);
+    if (postingAccount != null) {
+      try {
+        this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
+
+        this.evictPostingAccountCache(postingAccountId);
+
+        final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this,
+            EventType.DELETE, postingAccount);
+        super.publishEvent(event);
+      } catch (final Exception e) {
+        LOG.info(e);
+        throw new BusinessException(
+            "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
+            ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
+      }
     }
   }
 

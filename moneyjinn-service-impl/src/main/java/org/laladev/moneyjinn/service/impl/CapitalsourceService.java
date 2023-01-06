@@ -56,6 +56,8 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.CapitalsourceDao;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceDataMapper;
+import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
+import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -223,6 +225,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
     this.capitalsourceDao.updateCapitalsource(capitalsourceData);
     this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
         capitalsource.getId());
+    final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE,
+        capitalsource);
+    super.publishEvent(event);
   }
 
   @Override
@@ -237,10 +242,18 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
           validationResultItem.getError());
     }
     final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
-    final Long capitalsourceId = this.capitalsourceDao.createCapitalsource(capitalsourceData);
+    final Long capitalsourceIdLong = this.capitalsourceDao.createCapitalsource(capitalsourceData);
+    final CapitalsourceID capitalsourceId = new CapitalsourceID(capitalsourceIdLong);
+    capitalsource.setId(capitalsourceId);
+
     this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
-        new CapitalsourceID(capitalsourceId));
-    return new CapitalsourceID(capitalsourceId);
+        capitalsourceId);
+
+    final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE,
+        capitalsource);
+    super.publishEvent(event);
+
+    return capitalsourceId;
   }
 
   @Override
@@ -249,15 +262,25 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(groupId, "GroupId must not be null!");
     Assert.notNull(capitalsourceId, "CapitalsourceId must not be null!");
-    try {
-      this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(),
-          capitalsourceId.getId());
-      this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
-    } catch (final Exception e) {
-      LOG.info(e);
-      throw new BusinessException(
-          "You may not delete a source of capital while it is referenced by a flow of money!",
-          ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+
+    final Capitalsource capitalsource = this.getCapitalsourceById(userId, groupId, capitalsourceId);
+    if (capitalsource != null) {
+      try {
+        this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(),
+            capitalsourceId.getId());
+
+        this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
+
+        final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this,
+            EventType.DELETE, capitalsource);
+        super.publishEvent(event);
+
+      } catch (final Exception e) {
+        LOG.info(e);
+        throw new BusinessException(
+            "You may not delete a source of capital while it is referenced by a flow of money!",
+            ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+      }
     }
   }
 
