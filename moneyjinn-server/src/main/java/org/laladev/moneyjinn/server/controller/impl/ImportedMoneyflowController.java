@@ -1,4 +1,4 @@
-//Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -75,7 +75,6 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,7 +94,6 @@ public class ImportedMoneyflowController extends AbstractController {
   private final ICapitalsourceService capitalsourceService;
   private final IContractpartnerService contractpartnerService;
   private final IContractpartnerAccountService contractpartnerAccountService;
-  private final IPostingAccountService postingAccountService;
   private final IMoneyflowService moneyflowService;
   private final IImportedMoneyflowService importedMoneyflowService;
   private final IMoneyflowSplitEntryService moneyflowSplitEntryService;

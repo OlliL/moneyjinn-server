@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
-//Copyright (c) 2015 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without

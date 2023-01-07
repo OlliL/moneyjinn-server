@@ -1,4 +1,4 @@
-//Copyright (c) 2015-2018 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +55,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/moneyflow/server/predefmoneyflow/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowController extends AbstractController {
-  private final IAccessRelationService accessRelationService;
   private final IPreDefMoneyflowService preDefMoneyflowService;
 
   @Override

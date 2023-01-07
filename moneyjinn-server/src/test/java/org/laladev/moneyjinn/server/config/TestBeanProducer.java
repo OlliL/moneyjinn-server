@@ -1,4 +1,4 @@
-//Copyright (c) 2015-2018 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
 import org.springframework.security.web.firewall.RequestRejectedHandler;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class TestBeanProducer {
 
