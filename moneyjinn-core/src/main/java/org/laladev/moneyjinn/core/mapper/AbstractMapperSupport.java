@@ -46,10 +46,6 @@ public abstract class AbstractMapperSupport {
   // -----returnTyp---------parameter- Object to execute
   private final Map<Class<?>, Map<Class<?>, IMapper<?, ?>>> mapperClasses = new HashMap<>();
 
-  protected AbstractMapperSupport() {
-    this.addBeanMapper();
-  }
-
   protected abstract void addBeanMapper();
 
   protected void registerBeanMapper(final IMapper<?, ?> mapper) {
