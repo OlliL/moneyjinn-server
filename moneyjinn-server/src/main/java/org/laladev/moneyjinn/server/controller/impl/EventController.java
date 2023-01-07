@@ -30,6 +30,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.event.ShowEventListResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -47,13 +48,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/event/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EventController extends AbstractController {
-  @Inject
-  private IMonthlySettlementService monthlySettlementService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IImportedMoneyflowService importedMoneyflowService;
+  private final IMonthlySettlementService monthlySettlementService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IImportedMoneyflowService importedMoneyflowService;
 
   @Override
   protected void addBeanMapper() {

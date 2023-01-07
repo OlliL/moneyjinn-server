@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
@@ -87,25 +88,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/importedmoneyflow/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowController extends AbstractController {
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IContractpartnerAccountService contractpartnerAccountService;
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IImportedMoneyflowService importedMoneyflowService;
-  @Inject
-  private IMoneyflowSplitEntryService moneyflowSplitEntryService;
+  private final IUserService userService;
+  private final IAccessRelationService accessRelationService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IContractpartnerService contractpartnerService;
+  private final IContractpartnerAccountService contractpartnerAccountService;
+  private final IPostingAccountService postingAccountService;
+  private final IMoneyflowService moneyflowService;
+  private final IImportedMoneyflowService importedMoneyflowService;
+  private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
 
   @Override
   protected void addBeanMapper() {

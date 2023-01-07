@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceResponse;
@@ -55,13 +56,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/capitalsource/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceController extends AbstractController {
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IUserService userService;
+  private final IAccessRelationService accessRelationService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IUserService userService;
 
   @Override
   protected void addBeanMapper() {

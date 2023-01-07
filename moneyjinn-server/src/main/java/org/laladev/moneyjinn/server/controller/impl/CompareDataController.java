@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataRequest;
 import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.ShowCompareDataFormResponse;
@@ -68,13 +69,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/comparedata/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompareDataController extends AbstractController {
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private ISettingService settingService;
-  @Inject
-  private ICompareDataService compareDataService;
+  private final IAccessRelationService accessRelationService;
+  private final ISettingService settingService;
+  private final ICompareDataService compareDataService;
 
   @Override
   protected void addBeanMapper() {

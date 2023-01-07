@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.CalcEtfSaleRequest;
@@ -81,13 +82,12 @@ import org.springframework.web.bind.annotation.RestController;
 // TODO: Multi-User
 // TODO: Multi-ETF
 // TODO: Unit-Testing
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfController extends AbstractController {
   private static final BigDecimal TAX_RELEVANT_PERCENTAGE = new BigDecimal(70)
       .scaleByPowerOfTen(-2);
-  @Inject
-  private IEtfService etfService;
-  @Inject
-  private ISettingService settingService;
+  private final IEtfService etfService;
+  private final ISettingService settingService;
 
   @RequestMapping(value = "listEtfOverview/{year}/{month}", method = { RequestMethod.GET })
   public ListEtfOverviewResponse listEtfOverview(

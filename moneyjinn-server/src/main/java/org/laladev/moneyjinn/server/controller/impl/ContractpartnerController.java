@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
 import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
@@ -57,15 +58,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartner/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerController extends AbstractController {
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IContractpartnerAccountService contractpartnerAccountService;
-  @Inject
-  private IUserService userService;
+  private final IAccessRelationService accessRelationService;
+  private final IContractpartnerService contractpartnerService;
+  private final IContractpartnerAccountService contractpartnerAccountService;
+  private final IUserService userService;
 
   @Override
   protected void addBeanMapper() {

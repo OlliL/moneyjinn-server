@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.CreateImportedMoneyflowReceiptsRequest;
@@ -61,17 +62,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/importedmoneyflowreceipt/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptController extends AbstractController {
-  @Inject
-  private IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
-  @Inject
-  private IMoneyflowReceiptService moneyflowReceiptService;
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IUserService userService;
+  private final IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
+  private final IMoneyflowReceiptService moneyflowReceiptService;
+  private final IMoneyflowService moneyflowService;
+  private final IAccessRelationService accessRelationService;
+  private final IUserService userService;
   private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
 

@@ -27,6 +27,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement.CreateImportedMonthlySettlementRequest;
@@ -51,11 +52,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/importedmonthlysettlement/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMonthlySettlementController extends AbstractController {
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IImportedMonthlySettlementService importedMonthlySettlementService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IImportedMonthlySettlementService importedMonthlySettlementService;
 
   @Override
   protected void addBeanMapper() {

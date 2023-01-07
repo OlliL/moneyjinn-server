@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
 import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
@@ -51,9 +52,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/group/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupController extends AbstractController {
-  @Inject
-  private IGroupService groupService;
+  private final IGroupService groupService;
 
   @Override
   protected void addBeanMapper() {
