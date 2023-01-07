@@ -33,15 +33,16 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfDao {
-  @Inject
-  private IEtfDaoMapper mapper;
+  private final IEtfDaoMapper mapper;
 
   public List<EtfData> getAllEtf() {
     return this.mapper.getAllEtf();

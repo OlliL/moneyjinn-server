@@ -30,13 +30,14 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerDao {
-  @Inject
-  private IContractpartnerDaoMapper mapper;
+  private final IContractpartnerDaoMapper mapper;
 
   public List<ContractpartnerData> getAllContractpartners(final Long userId) {
     return this.mapper.getAllContractpartners(userId);

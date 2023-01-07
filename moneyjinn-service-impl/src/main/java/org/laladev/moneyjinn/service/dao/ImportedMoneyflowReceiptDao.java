@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowReceiptDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptDao {
-  @Inject
-  private IImportedMoneyflowReceiptDaoMapper mapper;
+  private final IImportedMoneyflowReceiptDaoMapper mapper;
 
   public List<ImportedMoneyflowReceiptData> getAllImportedMoneyflowReceipts(final Long groupId) {
     return this.mapper.getAllImportedMoneyflowReceipts(groupId);

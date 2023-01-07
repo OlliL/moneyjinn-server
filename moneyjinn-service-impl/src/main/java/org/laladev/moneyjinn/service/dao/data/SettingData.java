@@ -26,43 +26,15 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SettingData {
   private Long accessId;
   private String name;
   private String value;
-
-  public SettingData() {
-    // Default Constructor for MyBatis
-  }
-
-  public SettingData(final Long accessId, final String name, final String value) {
-    super();
-    this.accessId = accessId;
-    this.name = name;
-    this.value = value;
-  }
-
-  public final Long getAccessId() {
-    return this.accessId;
-  }
-
-  public final void setAccessId(final Long accessId) {
-    this.accessId = accessId;
-  }
-
-  public final String getName() {
-    return this.name;
-  }
-
-  public final void setName(final String name) {
-    this.name = name;
-  }
-
-  public final String getValue() {
-    return this.value;
-  }
-
-  public final void setValue(final String value) {
-    this.value = value;
-  }
 }

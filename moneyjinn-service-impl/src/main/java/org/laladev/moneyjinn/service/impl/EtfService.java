@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
@@ -57,9 +58,9 @@ import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 import org.springframework.util.Assert;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfService extends AbstractService implements IEtfService {
-  @Inject
-  private EtfDao etfDao;
+  private final EtfDao etfDao;
 
   @Override
   protected void addBeanMapper() {

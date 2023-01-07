@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedMonthlySettlementDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMonthlySettlementDao {
-  @Inject
-  private IImportedMonthlySettlementDaoMapper mapper;
+  private final IImportedMonthlySettlementDaoMapper mapper;
 
   public List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(final Short year,
       final Short month) {

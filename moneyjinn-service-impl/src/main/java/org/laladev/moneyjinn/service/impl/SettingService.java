@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -81,11 +82,10 @@ import org.springframework.util.Assert;
 
 // TODO - copy and paste hell, use Optional!
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SettingService extends AbstractService implements ISettingService {
-  @Inject
-  private SettingDao settingDao;
-  @Inject
-  private ObjectMapper objectMapper;
+  private final SettingDao settingDao;
+  private final ObjectMapper objectMapper;
 
   @Override
   protected void addBeanMapper() {

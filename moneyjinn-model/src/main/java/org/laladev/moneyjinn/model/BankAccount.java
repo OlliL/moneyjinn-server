@@ -30,12 +30,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 
 @Data
-@AllArgsConstructor
 public class BankAccount implements Serializable {
   private static final long serialVersionUID = 1L;
   private static final Short ACCOUNT_NUMBER_MAX_LENGTH = 34;
@@ -43,6 +41,12 @@ public class BankAccount implements Serializable {
   private String accountNumber;
   private String bankCode;
   private static final Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+
+  public BankAccount(final String accountNumber, final String bankCode) {
+    super();
+    this.accountNumber = accountNumber;
+    this.setBankCode(bankCode);
+  }
 
   public final void setBankCode(final String bankCode) {
     // Always fill 8 digits BIC to 11 digits BIC!

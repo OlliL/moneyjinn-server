@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -66,18 +67,14 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
   private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
-  @Inject
-  private ContractpartnerDao contractpartnerDao;
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IGroupService groupService;
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final ContractpartnerDao contractpartnerDao;
+  private final IUserService userService;
+  private final IGroupService groupService;
+  private final IPostingAccountService postingAccountService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

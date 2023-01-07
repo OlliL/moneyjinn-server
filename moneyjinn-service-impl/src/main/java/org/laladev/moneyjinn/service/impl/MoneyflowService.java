@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -81,19 +82,14 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowService extends AbstractService implements IMoneyflowService {
-  @Inject
-  private IUserService userService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private MoneyflowDao moneyflowDao;
+  private final IUserService userService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IContractpartnerService contractpartnerService;
+  private final IAccessRelationService accessRelationService;
+  private final IPostingAccountService postingAccountService;
+  private final MoneyflowDao moneyflowDao;
 
   @Override
   protected void addBeanMapper() {

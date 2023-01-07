@@ -30,13 +30,14 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceDao {
-  @Inject
-  private ICapitalsourceDaoMapper mapper;
+  private final ICapitalsourceDaoMapper mapper;
 
   public List<CapitalsourceData> getAllCapitalsources(final Long userId) {
     return this.mapper.getAllCapitalsources(userId);

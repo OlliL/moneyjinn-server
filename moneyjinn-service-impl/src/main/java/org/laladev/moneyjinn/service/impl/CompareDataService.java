@@ -49,6 +49,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
@@ -79,16 +80,13 @@ import org.laladev.moneyjinn.service.dao.data.mapper.CompareDataFormatDataMapper
 import org.xml.sax.InputSource;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompareDataService extends AbstractService implements ICompareDataService {
   private static final String WRONG_FILE_FORMAT_TEXT = "The specified file is not parseable! Maybe you've selected the wrong format or file?";
-  @Inject
-  private CompareDataFormatDao compareDataFormatDao;
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IImportedMoneyflowService importedMoneyflowService;
-  @Inject
-  private IContractpartnerAccountService contractpartnerAccountService;
+  private final CompareDataFormatDao compareDataFormatDao;
+  private final IMoneyflowService moneyflowService;
+  private final IImportedMoneyflowService importedMoneyflowService;
+  private final IContractpartnerAccountService contractpartnerAccountService;
   private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
   @Override

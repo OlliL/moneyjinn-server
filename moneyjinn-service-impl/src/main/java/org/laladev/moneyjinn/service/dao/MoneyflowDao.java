@@ -31,15 +31,16 @@ import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowDao {
-  @Inject
-  private IMoneyflowDaoMapper mapper;
+  private final IMoneyflowDaoMapper mapper;
 
   public Long createMoneyflow(final MoneyflowData moneyflowData) {
     this.mapper.createMoneyflow(moneyflowData);

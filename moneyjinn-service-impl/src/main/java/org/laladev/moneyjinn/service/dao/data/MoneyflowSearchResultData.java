@@ -27,51 +27,13 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.math.BigDecimal;
+import lombok.Data;
 
+@Data
 public class MoneyflowSearchResultData {
   private Short year;
   private Short month;
   private BigDecimal amount;
   private Long contractpartnerid;
   private String comment;
-
-  public final Short getYear() {
-    return this.year;
-  }
-
-  public final void setYear(final Short year) {
-    this.year = year;
-  }
-
-  public final Short getMonth() {
-    return this.month;
-  }
-
-  public final void setMonth(final Short month) {
-    this.month = month;
-  }
-
-  public final BigDecimal getAmount() {
-    return this.amount;
-  }
-
-  public final void setAmount(final BigDecimal amount) {
-    this.amount = amount;
-  }
-
-  public final Long getContractpartnerid() {
-    return this.contractpartnerid;
-  }
-
-  public final void setContractpartnerid(final Long contractpartnerid) {
-    this.contractpartnerid = contractpartnerid;
-  }
-
-  public final String getComment() {
-    return this.comment;
-  }
-
-  public final void setComment(final String comment) {
-    this.comment = comment;
-  }
 }

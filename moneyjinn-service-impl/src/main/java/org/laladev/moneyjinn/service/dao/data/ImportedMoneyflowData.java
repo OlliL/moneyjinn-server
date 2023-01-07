@@ -28,7 +28,9 @@ package org.laladev.moneyjinn.service.dao.data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.Data;
 
+@Data
 public class ImportedMoneyflowData {
   private Long id;
   private String externalId;
@@ -41,92 +43,4 @@ public class ImportedMoneyflowData {
   private String comment;
   private BigDecimal amount;
   private Short status;
-
-  public final Long getId() {
-    return this.id;
-  }
-
-  public final void setId(final Long id) {
-    this.id = id;
-  }
-
-  public final String getExternalId() {
-    return this.externalId;
-  }
-
-  public final void setExternalId(final String externalId) {
-    this.externalId = externalId;
-  }
-
-  public final Long getMcsCapitalsourceId() {
-    return this.mcsCapitalsourceId;
-  }
-
-  public final void setMcsCapitalsourceId(final Long mcsCapitalsourceId) {
-    this.mcsCapitalsourceId = mcsCapitalsourceId;
-  }
-
-  public final LocalDate getBookingdate() {
-    return this.bookingdate;
-  }
-
-  public final void setBookingdate(final LocalDate bookingdate) {
-    this.bookingdate = bookingdate;
-  }
-
-  public final LocalDate getInvoicedate() {
-    return this.invoicedate;
-  }
-
-  public final void setInvoicedate(final LocalDate invoicedate) {
-    this.invoicedate = invoicedate;
-  }
-
-  public final String getName() {
-    return this.name;
-  }
-
-  public final void setName(final String name) {
-    this.name = name;
-  }
-
-  public final String getAccountNumber() {
-    return this.accountNumber;
-  }
-
-  public final void setAccountNumber(final String accountNumber) {
-    this.accountNumber = accountNumber;
-  }
-
-  public final String getBankCode() {
-    return this.bankCode;
-  }
-
-  public final void setBankCode(final String bankCode) {
-    this.bankCode = bankCode;
-  }
-
-  public final String getComment() {
-    return this.comment;
-  }
-
-  public final void setComment(final String comment) {
-    this.comment = comment;
-  }
-
-  public final BigDecimal getAmount() {
-    return this.amount;
-  }
-
-  public final void setAmount(final BigDecimal amount) {
-    this.amount = amount;
-  }
-
-  public final Short getStatus() {
-    return this.status;
-  }
-
-  public final void setStatus(final Short status) {
-    this.status = status;
-  }
 }

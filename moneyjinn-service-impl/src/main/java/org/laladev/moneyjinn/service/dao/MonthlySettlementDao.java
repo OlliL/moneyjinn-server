@@ -30,13 +30,14 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MonthlySettlementDao {
-  @Inject
-  private IMonthlySettlementDaoMapper mapper;
+  private final IMonthlySettlementDaoMapper mapper;
 
   public List<Short> getAllYears(final Long userId) {
     return this.mapper.getAllYears(userId);

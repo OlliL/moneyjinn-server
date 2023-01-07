@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.laladev.moneyjinn.service.dao.mapper.IPreDefMoneyflowDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowDao {
-  @Inject
-  private IPreDefMoneyflowDaoMapper mapper;
+  private final IPreDefMoneyflowDaoMapper mapper;
 
   public List<PreDefMoneyflowData> getAllPreDefMoneyflows(final Long userId) {
     return this.mapper.getAllPreDefMoneyflows(userId);

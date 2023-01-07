@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -66,16 +67,13 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
   private static final Log LOG = LogFactory.getLog(CapitalsourceService.class);
-  @Inject
-  private CapitalsourceDao capitalsourceDao;
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IGroupService groupService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final CapitalsourceDao capitalsourceDao;
+  private final IUserService userService;
+  private final IGroupService groupService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

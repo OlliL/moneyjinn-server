@@ -26,41 +26,12 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
+@Data
 public class ContractpartnerAccountData {
   private Long id;
   private Long mcpContractpartnerId;
   private String accountNumber;
   private String bankCode;
-
-  public final Long getId() {
-    return this.id;
-  }
-
-  public final void setId(final Long id) {
-    this.id = id;
-  }
-
-  public final Long getMcpContractpartnerId() {
-    return this.mcpContractpartnerId;
-  }
-
-  public final void setMcpContractpartnerId(final Long mcpContractpartnerId) {
-    this.mcpContractpartnerId = mcpContractpartnerId;
-  }
-
-  public final String getAccountNumber() {
-    return this.accountNumber;
-  }
-
-  public final void setAccountNumber(final String accountNumber) {
-    this.accountNumber = accountNumber;
-  }
-
-  public final String getBankCode() {
-    return this.bankCode;
-  }
-
-  public final void setBankCode(final String bankCode) {
-    this.bankCode = bankCode;
-  }
 }

@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupDao {
-  @Inject
-  private IGroupDaoMapper mapper;
+  private final IGroupDaoMapper mapper;
 
   public List<GroupData> getAllGroups() {
     return this.mapper.getAllGroups();

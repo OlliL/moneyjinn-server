@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.impl;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -51,10 +52,10 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
   private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
-  @Inject
-  private PostingAccountDao postingAccountDao;
+  private final PostingAccountDao postingAccountDao;
 
   @Override
   protected void addBeanMapper() {

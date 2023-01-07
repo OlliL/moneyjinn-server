@@ -29,14 +29,15 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerAccountDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountDao {
-  @Inject
-  private IContractpartnerAccountDaoMapper mapper;
+  private final IContractpartnerAccountDaoMapper mapper;
 
   public ContractpartnerAccountData getContractpartnerAccountByBankAccount(final Long userId,
       final String bankCode, final String accountNumber) {

@@ -55,8 +55,8 @@ public class ShowUserListTest extends AbstractControllerTest {
     userTransports.add(new UserTransportBuilder().forUser3().build());
     expected.setUserTransports(userTransports);
     final List<GroupTransport> groupTransports = new ArrayList<>();
-    groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
     groupTransports.add(new GroupTransportBuilder().forGroup1().build());
+    groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
     expected.setGroupTransports(groupTransports);
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports.add(new AccessRelationTransportBuilder().forAdminUser().build());

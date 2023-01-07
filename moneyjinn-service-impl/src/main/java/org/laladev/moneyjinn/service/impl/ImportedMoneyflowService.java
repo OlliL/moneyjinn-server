@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -51,13 +52,11 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowStatusMapp
 import org.springframework.util.Assert;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowService extends AbstractService implements IImportedMoneyflowService {
-  @Inject
-  private ImportedMoneyflowDao importedMoneyflowDao;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final ImportedMoneyflowDao importedMoneyflowDao;
+  private final ICapitalsourceService capitalsourceService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

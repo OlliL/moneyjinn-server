@@ -30,13 +30,14 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowDao {
-  @Inject
-  private IImportedMoneyflowDaoMapper mapper;
+  private final IImportedMoneyflowDaoMapper mapper;
 
   public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs,
       final Short status) {

@@ -26,23 +26,10 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
+@Data
 public class BankAccountData {
   private String accountNumber;
   private String bankCode;
-
-  public final String getAccountNumber() {
-    return this.accountNumber;
-  }
-
-  public final void setAccountNumber(final String accountNumber) {
-    this.accountNumber = accountNumber;
-  }
-
-  public final String getBankCode() {
-    return this.bankCode;
-  }
-
-  public final void setBankCode(final String bankCode) {
-    this.bankCode = bankCode;
-  }
 }

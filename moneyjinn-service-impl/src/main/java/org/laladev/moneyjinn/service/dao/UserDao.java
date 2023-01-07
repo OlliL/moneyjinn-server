@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserDao {
-  @Inject
-  private IUserDaoMapper mapper;
+  private final IUserDaoMapper mapper;
 
   public UserData getUserById(final Long id) {
     return this.mapper.getUserById(id);

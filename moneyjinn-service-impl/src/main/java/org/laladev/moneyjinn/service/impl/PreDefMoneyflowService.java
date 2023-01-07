@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -91,19 +92,14 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowService extends AbstractService implements IPreDefMoneyflowService {
-  @Inject
-  private IUserService userService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private PreDefMoneyflowDao preDefMoneyflowDao;
+  private final IUserService userService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IContractpartnerService contractpartnerService;
+  private final IAccessRelationService accessRelationService;
+  private final IPostingAccountService postingAccountService;
+  private final PreDefMoneyflowDao preDefMoneyflowDao;
 
   @Override
   protected void addBeanMapper() {

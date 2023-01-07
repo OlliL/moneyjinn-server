@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.mapper.IImportedBalanceDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedBalanceDao {
-  @Inject
-  private IImportedBalanceDaoMapper mapper;
+  private final IImportedBalanceDaoMapper mapper;
 
   public void upsertImportedBalance(final ImportedBalanceData importedBalanceData) {
     this.mapper.upsertImportedBalance(importedBalanceData);

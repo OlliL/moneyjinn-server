@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
@@ -55,12 +56,11 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryService extends AbstractService
     implements IMoneyflowSplitEntryService {
-  @Inject
-  private IPostingAccountService postingAccountService;
-  @Inject
-  private MoneyflowSplitEntryDao moneyflowSplitEntryDao;
+  private final IPostingAccountService postingAccountService;
+  private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
 
   @Override
   protected void addBeanMapper() {

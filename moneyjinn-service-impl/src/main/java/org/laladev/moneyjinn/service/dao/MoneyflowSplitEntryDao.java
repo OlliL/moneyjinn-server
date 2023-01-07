@@ -30,13 +30,14 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.mapper.IMoneyflowSplitEntryDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryDao {
-  @Inject
-  private IMoneyflowSplitEntryDaoMapper mapper;
+  private final IMoneyflowSplitEntryDaoMapper mapper;
 
   public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(final List<Long> moneyflowIds) {
     if (moneyflowIds.isEmpty()) {

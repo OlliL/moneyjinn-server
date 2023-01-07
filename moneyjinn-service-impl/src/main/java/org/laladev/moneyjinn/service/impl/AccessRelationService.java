@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -58,12 +59,11 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
   private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
-  @Inject
-  private AccessRelationDao accessRelationDao;
-  @Inject
-  private IGroupService groupService;
+  private final AccessRelationDao accessRelationDao;
+  private final IGroupService groupService;
 
   @Override
   protected void addBeanMapper() {

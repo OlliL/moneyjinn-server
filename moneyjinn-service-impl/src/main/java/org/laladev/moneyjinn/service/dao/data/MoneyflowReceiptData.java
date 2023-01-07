@@ -26,41 +26,12 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
+@Data
 public class MoneyflowReceiptData {
   private Long id;
   private Long mmfMoneyflowId;
   private byte[] receipt;
   private Short receiptType;
-
-  public final Long getId() {
-    return this.id;
-  }
-
-  public final void setId(final Long id) {
-    this.id = id;
-  }
-
-  public final Long getMmfMoneyflowId() {
-    return this.mmfMoneyflowId;
-  }
-
-  public final void setMmfMoneyflowId(final Long mmfMoneyflowId) {
-    this.mmfMoneyflowId = mmfMoneyflowId;
-  }
-
-  public final byte[] getReceipt() {
-    return this.receipt;
-  }
-
-  public final void setReceipt(final byte[] receipt) {
-    this.receipt = receipt;
-  }
-
-  public final Short getReceiptType() {
-    return this.receiptType;
-  }
-
-  public final void setReceiptType(final Short receiptType) {
-    this.receiptType = receiptType;
-  }
 }

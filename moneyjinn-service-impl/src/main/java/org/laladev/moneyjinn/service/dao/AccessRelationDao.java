@@ -31,14 +31,15 @@ import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.mapper.IAccessRelationDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationDao {
-  @Inject
-  private IAccessRelationDaoMapper mapper;
+  private final IAccessRelationDaoMapper mapper;
 
   public AccessRelationData getAccessRelationById(final Long id, final LocalDate date) {
     return this.mapper.getAccessRelationById(id, date);

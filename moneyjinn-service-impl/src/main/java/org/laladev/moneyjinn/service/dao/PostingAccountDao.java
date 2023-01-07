@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.mapper.IPostingAccountDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountDao {
-  @Inject
-  private IPostingAccountDaoMapper mapper;
+  private final IPostingAccountDaoMapper mapper;
 
   public List<PostingAccountData> getAllPostingAccounts() {
     return this.mapper.getAllPostingAccounts();

@@ -31,6 +31,7 @@ import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -46,13 +47,11 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 import org.springframework.util.Assert;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
-  @Inject
-  private ImportedBalanceDao importedBalanceDao;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final ImportedBalanceDao importedBalanceDao;
+  private final ICapitalsourceService capitalsourceService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

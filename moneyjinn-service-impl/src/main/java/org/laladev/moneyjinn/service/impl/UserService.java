@@ -31,6 +31,7 @@ import jakarta.inject.Named;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -51,10 +52,10 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserService extends AbstractService implements IUserService {
   private static final Log LOG = LogFactory.getLog(UserService.class);
-  @Inject
-  private UserDao userDao;
+  private final UserDao userDao;
 
   @Override
   protected void addBeanMapper() {

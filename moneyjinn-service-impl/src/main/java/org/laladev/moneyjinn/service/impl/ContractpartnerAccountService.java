@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -58,14 +59,12 @@ import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountService extends AbstractService
     implements IContractpartnerAccountService {
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private ContractpartnerAccountDao contractpartnerAccountDao;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final IContractpartnerService contractpartnerService;
+  private final ContractpartnerAccountDao contractpartnerAccountDao;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

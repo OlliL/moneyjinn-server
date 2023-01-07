@@ -35,6 +35,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -55,15 +56,12 @@ import org.laladev.moneyjinn.service.dao.data.mapper.MonthlySettlementDataMapper
 import org.springframework.util.Assert;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MonthlySettlementService extends AbstractService implements IMonthlySettlementService {
-  @Inject
-  private MonthlySettlementDao monthlySettlementDao;
-  @Inject
-  private IUserService userService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final MonthlySettlementDao monthlySettlementDao;
+  private final IUserService userService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

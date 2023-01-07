@@ -30,6 +30,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -48,14 +49,14 @@ import org.springframework.util.Assert;
 
 @Named
 @EnableCaching
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptService extends AbstractService
     implements IImportedMoneyflowReceiptService {
   private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
   private static final List<String> SUPPORTED_MEDIA_TYPES = Arrays
       .asList(MEDIA_TYPE_APPLICATION_PDF, MEDIA_TYPE_IMAGE_JPEG);
-  @Inject
-  private ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
+  private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
   private final Tika tika = new Tika();
 
   @Override

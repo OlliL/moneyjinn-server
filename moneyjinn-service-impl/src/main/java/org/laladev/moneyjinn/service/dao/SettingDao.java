@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.dao;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper;
 
@@ -38,9 +39,9 @@ import org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper;
  *
  */
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SettingDao {
-  @Inject
-  private ISettingDaoMapper mapper;
+  private final ISettingDaoMapper mapper;
 
   public SettingData getSetting(final Long accessId, final String name) {
     return this.mapper.getSetting(accessId, name);

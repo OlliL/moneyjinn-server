@@ -29,13 +29,14 @@ package org.laladev.moneyjinn.service.dao;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.service.dao.mapper.ICompareDataFormatDaoMapper;
 
 @Named
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompareDataFormatDao {
-  @Inject
-  private ICompareDataFormatDaoMapper mapper;
+  private final ICompareDataFormatDaoMapper mapper;
 
   public CompareDataFormatData getCompareDataFormatById(final Long id) {
     return this.mapper.getCompareDataFormatById(id);
