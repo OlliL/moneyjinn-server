@@ -65,12 +65,14 @@ public class AccessRelationService extends AbstractService implements IAccessRel
   private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
   private final AccessRelationDao accessRelationDao;
   private final IGroupService groupService;
+  private final AccessRelationDataMapper accessRelationDataMapper;
+  private final AccessFlattenedDataMapper accessFlattenedDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new AccessRelationDataMapper());
-    super.registerBeanMapper(new AccessFlattenedDataMapper());
+    super.registerBeanMapper(this.accessRelationDataMapper);
+    super.registerBeanMapper(this.accessFlattenedDataMapper);
   }
 
   public LocalDate now() {

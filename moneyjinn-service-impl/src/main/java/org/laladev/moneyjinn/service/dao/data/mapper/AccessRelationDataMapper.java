@@ -26,31 +26,35 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.AccessIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
-public class AccessRelationDataMapper implements IMapper<AccessRelation, AccessRelationData> {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = AccessIdMapper.class)
+public interface AccessRelationDataMapper extends IMapper<AccessRelation, AccessRelationData> {
   @Override
-  public AccessRelation mapBToA(final AccessRelationData accessRelationData) {
-    // Only one level is supported right now, and the second level is always "0"
-    final AccessRelation parentAccessRelation = new AccessRelation(
-        new AccessID(accessRelationData.getRefId()));
-    parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
-    return new AccessRelation(new AccessID(accessRelationData.getId()), parentAccessRelation,
-        accessRelationData.getValidFrom(), accessRelationData.getValidTil());
-  }
+  @Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")
+  AccessRelation mapBToA(AccessRelationData accessRelationData);
 
   @Override
-  public AccessRelationData mapAToB(final AccessRelation accessRelation) {
-    final AccessRelationData accessRelationData = new AccessRelationData();
-    accessRelationData.setId(accessRelation.getId().getId());
-    accessRelationData.setValidFrom(accessRelation.getValidFrom());
-    accessRelationData.setValidTil(accessRelation.getValidTil());
-    if (accessRelation.getParentAccessRelation() != null) {
-      accessRelationData.setRefId(accessRelation.getParentAccessRelation().getId().getId());
+  @Mapping(target = "refId", source = "parentAccessRelation.id")
+  AccessRelationData mapAToB(AccessRelation accessRelation);
+
+  @Named("createParentAccessRelation")
+  default AccessRelation createParentAccessRelation(final Long refId) {
+    if (refId == null) {
+      return null;
     }
-    return accessRelationData;
+
+    final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(refId));
+    parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
+    return parentAccessRelation;
   }
 }

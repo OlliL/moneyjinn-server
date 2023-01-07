@@ -26,11 +26,13 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import jakarta.inject.Named;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 
+@Named
 public class AccessFlattenedDataMapper implements IMapper<AccessRelation, AccessFlattenedData> {
   @Override
   public AccessRelation mapBToA(final AccessFlattenedData accessFlattenedData) {
