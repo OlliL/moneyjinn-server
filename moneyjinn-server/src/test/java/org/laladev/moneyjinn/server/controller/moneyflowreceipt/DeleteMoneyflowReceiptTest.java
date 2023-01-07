@@ -5,7 +5,6 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
@@ -80,7 +79,6 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
         true, Object.class);
   }
