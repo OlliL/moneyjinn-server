@@ -26,76 +26,18 @@
 
 package org.laladev.moneyjinn.model.etf;
 
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.model.AbstractEntity;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Etf extends AbstractEntity<EtfIsin> {
   private static final long serialVersionUID = 1L;
   private String name;
   private String wkn;
   private String ticker;
   private String chartUrl;
-
-  public final String getName() {
-    return this.name;
-  }
-
-  public final void setName(final String name) {
-    this.name = name;
-  }
-
-  public final String getWkn() {
-    return this.wkn;
-  }
-
-  public final void setWkn(final String wkn) {
-    this.wkn = wkn;
-  }
-
-  public final String getTicker() {
-    return this.ticker;
-  }
-
-  public final void setTicker(final String ticker) {
-    this.ticker = ticker;
-  }
-
-  public final String getChartUrl() {
-    return this.chartUrl;
-  }
-
-  public final void setChartUrl(final String chartUrl) {
-    this.chartUrl = chartUrl;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(this.chartUrl, this.name, this.ticker, this.wkn);
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final Etf other = (Etf) obj;
-    return Objects.equals(this.chartUrl, other.chartUrl) && Objects.equals(this.name, other.name)
-        && Objects.equals(this.ticker, other.ticker) && Objects.equals(this.wkn, other.wkn);
-  }
-
-  @Override
-  public String toString() {
-    return "Etf [name=" + this.name + ", wkn=" + this.wkn + ", ticker=" + this.ticker
-        + ", chartUrl=" + this.chartUrl + "]";
-  }
-
 }

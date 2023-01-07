@@ -1,11 +1,5 @@
-/moneyjinn-server/target/
-/moneyjinn-server/.settings/
-/moneyjinn-server/.classpath
-/moneyjinn-server/.project
-/moneyjinn-model/target/
-/moneyjinn-model/.settings/
-/moneyjinn-model/.classpath
-/moneyjinn-model/.project
-/.settings/
-/.classpath
-/.project
+**/target/
+**/.settings/
+**/.classpath
+**/.project
+**/.factorypath

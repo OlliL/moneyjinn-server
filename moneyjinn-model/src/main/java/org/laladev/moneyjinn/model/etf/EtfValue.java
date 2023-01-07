@@ -29,82 +29,13 @@ package org.laladev.moneyjinn.model.etf;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import lombok.Data;
 
+@Data
 public class EtfValue {
   private EtfIsin isin;
   private LocalDate date;
   private BigDecimal buyPrice;
   private BigDecimal sellPrice;
   private LocalDateTime changeDate;
-
-  public final EtfIsin getIsin() {
-    return this.isin;
-  }
-
-  public final void setIsin(final EtfIsin isin) {
-    this.isin = isin;
-  }
-
-  public final LocalDate getDate() {
-    return this.date;
-  }
-
-  public final void setDate(final LocalDate date) {
-    this.date = date;
-  }
-
-  public final BigDecimal getBuyPrice() {
-    return this.buyPrice;
-  }
-
-  public final void setBuyPrice(final BigDecimal buyPrice) {
-    this.buyPrice = buyPrice;
-  }
-
-  public final BigDecimal getSellPrice() {
-    return this.sellPrice;
-  }
-
-  public final void setSellPrice(final BigDecimal sellPrice) {
-    this.sellPrice = sellPrice;
-  }
-
-  public final LocalDateTime getChangeDate() {
-    return this.changeDate;
-  }
-
-  public final void setChangeDate(final LocalDateTime changeDate) {
-    this.changeDate = changeDate;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.buyPrice, this.changeDate, this.date, this.isin, this.sellPrice);
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final EtfValue other = (EtfValue) obj;
-    return Objects.equals(this.buyPrice, other.buyPrice)
-        && Objects.equals(this.changeDate, other.changeDate)
-        && Objects.equals(this.date, other.date) && Objects.equals(this.isin, other.isin)
-        && Objects.equals(this.sellPrice, other.sellPrice);
-  }
-
-  @Override
-  public String toString() {
-    return "EtfValue [isin=" + this.isin + ", date=" + this.date + ", buyPrice=" + this.buyPrice
-        + ", sellPrice=" + this.sellPrice + ", changeDate=" + this.changeDate + "]";
-  }
-
 }

@@ -26,56 +26,10 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
+import lombok.Data;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
+@Data
 public class CompareDataNotInFile {
   private final Moneyflow moneyflow;
-
-  public CompareDataNotInFile(final Moneyflow moneyflow) {
-    super();
-    this.moneyflow = moneyflow;
-  }
-
-  public final Moneyflow getMoneyflow() {
-    return this.moneyflow;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.moneyflow == null) ? 0 : this.moneyflow.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CompareDataNotInFile other = (CompareDataNotInFile) obj;
-    if (this.moneyflow == null) {
-      if (other.moneyflow != null) {
-        return false;
-      }
-    } else if (!this.moneyflow.equals(other.moneyflow)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CompareDataNotInFile [moneyflow=");
-    builder.append(this.moneyflow);
-    builder.append("]");
-    return builder.toString();
-  }
 }

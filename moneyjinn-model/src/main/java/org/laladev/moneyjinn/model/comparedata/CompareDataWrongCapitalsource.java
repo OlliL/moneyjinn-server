@@ -26,74 +26,11 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
+import lombok.Data;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
+@Data
 public class CompareDataWrongCapitalsource {
   private final Moneyflow moneyflow;
   private final CompareDataDataset compareDataDataset;
-
-  public CompareDataWrongCapitalsource(final Moneyflow moneyflow,
-      final CompareDataDataset compareDataDataset) {
-    super();
-    this.moneyflow = moneyflow;
-    this.compareDataDataset = compareDataDataset;
-  }
-
-  public final Moneyflow getMoneyflow() {
-    return this.moneyflow;
-  }
-
-  public final CompareDataDataset getCompareDataDataset() {
-    return this.compareDataDataset;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result
-        + ((this.compareDataDataset == null) ? 0 : this.compareDataDataset.hashCode());
-    result = prime * result + ((this.moneyflow == null) ? 0 : this.moneyflow.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    final CompareDataWrongCapitalsource other = (CompareDataWrongCapitalsource) obj;
-    if (this.compareDataDataset == null) {
-      if (other.compareDataDataset != null) {
-        return false;
-      }
-    } else if (!this.compareDataDataset.equals(other.compareDataDataset)) {
-      return false;
-    }
-    if (this.moneyflow == null) {
-      if (other.moneyflow != null) {
-        return false;
-      }
-    } else if (!this.moneyflow.equals(other.moneyflow)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("CompareDataWrongCapitalsource [moneyflow=");
-    builder.append(this.moneyflow);
-    builder.append(", compareDataDataset=");
-    builder.append(this.compareDataDataset);
-    builder.append("]");
-    return builder.toString();
-  }
 }
