@@ -27,35 +27,25 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.model.setting.SettingType;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.ValueMapping;
 
-public class SettingTypeConverter {
-  private SettingTypeConverter() {
-  }
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface SettingTypeConverter {
 
-  public static String getSettingNameByType(final SettingType type) {
-    switch (type) {
-      case CLIENT_TREND_CAPITALSOURCEIDS:
-        return "trend_capitalsourceid";
-      case CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS:
-        return "reporting_postingaccountids";
-      case CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE:
-        return "compare_capitalsource";
-      case CLIENT_COMPARE_DATA_SELECTED_FORMAT:
-        return "compare_format";
-      case CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE:
-        return "compare_source_is_file";
-      case CLIENT_CALC_ETF_SALE_ASK_PRICE:
-        return "client_calc_etf_sale_ask_price";
-      case CLIENT_CALC_ETF_SALE_BID_PRICE:
-        return "client_calc_etf_sale_bid_price";
-      case CLIENT_CALC_ETF_SALE_ISIN:
-        return "client_calc_etf_sale_isin";
-      case CLIENT_CALC_ETF_SALE_PIECES:
-        return "client_calc_etf_sale_pieces";
-      case CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS:
-        return "client_calc_etf_sale_transaction_costs";
-      default:
-        throw new UnsupportedOperationException("SettingType " + type + " unsupported!");
-    }
-  }
+  @ValueMapping(target = "trend_capitalsourceid", source = "CLIENT_TREND_CAPITALSOURCEIDS")
+  @ValueMapping(target = "reporting_postingaccountids", source = "CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS")
+  @ValueMapping(target = "compare_capitalsource", source = "CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE")
+  @ValueMapping(target = "compare_format", source = "CLIENT_COMPARE_DATA_SELECTED_FORMAT")
+  @ValueMapping(target = "compare_source_is_file", source = "CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE")
+  @ValueMapping(target = "client_calc_etf_sale_ask_price", source = "CLIENT_CALC_ETF_SALE_ASK_PRICE")
+  @ValueMapping(target = "client_calc_etf_sale_bid_price", source = "CLIENT_CALC_ETF_SALE_BID_PRICE")
+  @ValueMapping(target = "client_calc_etf_sale_isin", source = "CLIENT_CALC_ETF_SALE_ISIN")
+  @ValueMapping(target = "client_calc_etf_sale_pieces", source = "CLIENT_CALC_ETF_SALE_PIECES")
+  @ValueMapping(target = "client_calc_etf_sale_transaction_costs", source = "CLIENT_CALC_ETF_SALE_TRANSACTION_COSTS")
+  @ValueMapping(target = MappingConstants.THROW_EXCEPTION, source = MappingConstants.ANY_UNMAPPED)
+  String getSettingNameByType(SettingType type);
 }
