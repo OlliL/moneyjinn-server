@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
@@ -36,18 +37,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = ContractpartnerAccountIdMapper.class)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    ContractpartnerAccountIdMapper.class, ContractpartnerIdMapper.class })
 public interface ContractpartnerAccountDataMapper
     extends IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
 
   @Override
-  @Mapping(target = "contractpartner.id.id", source = "mcpContractpartnerId")
+  @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
   @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
   @Mapping(target = "bankAccount.bankCode", source = "bankCode")
   ContractpartnerAccount mapBToA(final ContractpartnerAccountData b);
 
   @Override
-  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id.id")
+  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
   @Mapping(target = ".", source = "bankAccount")
   ContractpartnerAccountData mapAToB(final ContractpartnerAccount a);
 
