@@ -32,9 +32,10 @@ import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = EtfIsinMapper.class)
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = EtfIsinMapper.class)
 public interface EtfValueDataMapper extends IMapper<EtfValue, EtfValueData> {
   @Override
   @Mapping(target = "changeDate", source = "changedate")

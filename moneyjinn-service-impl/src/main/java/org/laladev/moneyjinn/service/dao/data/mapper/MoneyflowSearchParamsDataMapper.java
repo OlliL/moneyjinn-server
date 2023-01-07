@@ -33,9 +33,10 @@ import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSearchParamsDataMapper
     extends IMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {

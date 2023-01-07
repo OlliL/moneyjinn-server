@@ -36,10 +36,11 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
     PostingAccountIdMapper.class })
 public interface ContractpartnerDataMapper extends IMapper<Contractpartner, ContractpartnerData> {

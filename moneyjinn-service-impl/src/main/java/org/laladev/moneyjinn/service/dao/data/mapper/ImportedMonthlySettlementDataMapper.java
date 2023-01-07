@@ -34,9 +34,10 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     ImportedMonthlySettlementIdMapper.class, MonthMapper.class, CapitalsourceIdMapper.class })
 public interface ImportedMonthlySettlementDataMapper
     extends IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {

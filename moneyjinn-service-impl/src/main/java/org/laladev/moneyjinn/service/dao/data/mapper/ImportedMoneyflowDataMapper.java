@@ -35,10 +35,11 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, ImportedMoneyflowStatusMapper.class,
     ImportedMoneyflowIdMapper.class })
 public interface ImportedMoneyflowDataMapper

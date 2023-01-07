@@ -36,10 +36,11 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = UserIdMapper.class)
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = UserIdMapper.class)
 public interface UserDataMapper extends IMapper<User, UserData> {
   @Override
   @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")

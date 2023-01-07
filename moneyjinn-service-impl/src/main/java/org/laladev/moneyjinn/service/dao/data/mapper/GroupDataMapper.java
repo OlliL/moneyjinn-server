@@ -31,8 +31,9 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = GroupIdMapper.class)
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = GroupIdMapper.class)
 public interface GroupDataMapper extends IMapper<Group, GroupData> {
 }

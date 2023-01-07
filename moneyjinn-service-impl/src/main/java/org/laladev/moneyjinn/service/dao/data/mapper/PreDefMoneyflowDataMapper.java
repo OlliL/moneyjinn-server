@@ -36,9 +36,10 @@ import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     PreDefMoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
     PostingAccountIdMapper.class, UserIdMapper.class })
 public interface PreDefMoneyflowDataMapper extends IMapper<PreDefMoneyflow, PreDefMoneyflowData> {

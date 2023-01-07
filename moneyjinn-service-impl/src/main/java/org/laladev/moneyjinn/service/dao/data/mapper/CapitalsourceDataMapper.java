@@ -35,10 +35,11 @@ import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class,
     CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class })
 public interface CapitalsourceDataMapper extends IMapper<Capitalsource, CapitalsourceData> {

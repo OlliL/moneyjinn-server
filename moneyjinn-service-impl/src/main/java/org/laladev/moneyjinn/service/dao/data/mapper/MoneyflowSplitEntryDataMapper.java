@@ -34,9 +34,10 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
     MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSplitEntryDataMapper
     extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryData> {

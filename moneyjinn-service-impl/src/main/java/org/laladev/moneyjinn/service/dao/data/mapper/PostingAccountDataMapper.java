@@ -31,8 +31,9 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = PostingAccountIdMapper.class)
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = PostingAccountIdMapper.class)
 public interface PostingAccountDataMapper extends IMapper<PostingAccount, PostingAccountData> {
 }

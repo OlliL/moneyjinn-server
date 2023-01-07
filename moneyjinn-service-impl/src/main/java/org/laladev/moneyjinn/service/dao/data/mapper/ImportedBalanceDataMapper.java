@@ -32,9 +32,10 @@ import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = CapitalsourceIdMapper.class)
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = CapitalsourceIdMapper.class)
 public interface ImportedBalanceDataMapper extends IMapper<ImportedBalance, ImportedBalanceData> {
   @Override
   @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
