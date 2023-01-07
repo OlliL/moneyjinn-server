@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.monthlysettlement.ShowMonthlySettlementCreateResponse;
@@ -68,19 +69,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/monthlysettlement/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MonthlySettlementController extends AbstractController {
-  @Inject
-  private IMonthlySettlementService monthlySettlementService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IImportedMonthlySettlementService importedMonthlySettlementService;
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IAccessRelationService accessRelationService;
+  private final IMonthlySettlementService monthlySettlementService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IImportedMonthlySettlementService importedMonthlySettlementService;
+  private final IMoneyflowService moneyflowService;
+  private final IUserService userService;
+  private final IAccessRelationService accessRelationService;
 
   @Override
   protected void addBeanMapper() {

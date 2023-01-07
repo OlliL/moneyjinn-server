@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountResponse;
@@ -51,9 +52,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/postingaccount/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountController extends AbstractController {
-  @Inject
-  private IPostingAccountService postingAccountService;
+  private final IPostingAccountService postingAccountService;
 
   @Override
   protected void addBeanMapper() {

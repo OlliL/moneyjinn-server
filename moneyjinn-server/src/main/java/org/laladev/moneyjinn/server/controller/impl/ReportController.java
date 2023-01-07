@@ -40,6 +40,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.report.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
 import org.laladev.moneyjinn.core.rest.model.report.ShowMonthlyReportGraphRequest;
@@ -92,21 +93,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/report/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ReportController extends AbstractController {
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IMoneyflowSplitEntryService moneyflowSplitEntryService;
-  @Inject
-  private IMoneyflowReceiptService moneyflowReceiptService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IMonthlySettlementService monthlySettlementService;
-  @Inject
-  private IImportedBalanceService importedBalanceService;
-  @Inject
-  private ISettingService settingService;
+  private final IMoneyflowService moneyflowService;
+  private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
+  private final IMoneyflowReceiptService moneyflowReceiptService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IMonthlySettlementService monthlySettlementService;
+  private final IImportedBalanceService importedBalanceService;
+  private final ISettingService settingService;
 
   @Override
   protected void addBeanMapper() {

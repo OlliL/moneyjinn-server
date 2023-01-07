@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.Base64;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -44,11 +45,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/moneyflowreceipt/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowReceiptController extends AbstractController {
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IMoneyflowReceiptService moneyflowReceiptService;
+  private final IMoneyflowService moneyflowService;
+  private final IMoneyflowReceiptService moneyflowReceiptService;
 
   @Override
   protected void addBeanMapper() {

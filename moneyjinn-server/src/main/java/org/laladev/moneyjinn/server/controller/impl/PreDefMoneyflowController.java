@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowResponse;
@@ -53,11 +54,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/predefmoneyflow/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowController extends AbstractController {
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IPreDefMoneyflowService preDefMoneyflowService;
+  private final IAccessRelationService accessRelationService;
+  private final IPreDefMoneyflowService preDefMoneyflowService;
 
   @Override
   protected void addBeanMapper() {

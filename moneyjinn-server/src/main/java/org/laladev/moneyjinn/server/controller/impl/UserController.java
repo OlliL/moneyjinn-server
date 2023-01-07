@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
@@ -81,15 +82,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/user/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserController extends AbstractController {
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IGroupService groupService;
-  @Inject
-  private ISettingService settingService;
+  private final IUserService userService;
+  private final IAccessRelationService accessRelationService;
+  private final IGroupService groupService;
+  private final ISettingService settingService;
   @Inject
   AuthenticationManager authenticationManager;
   @Inject

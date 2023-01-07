@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
@@ -85,24 +86,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/moneyflow/")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowController extends AbstractController {
   private static final Short SHORT_1 = Short.valueOf("1");
-  @Inject
-  private IUserService userService;
-  @Inject
-  private IAccessRelationService accessRelationService;
-  @Inject
-  private IPreDefMoneyflowService preDefMoneyflowService;
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IContractpartnerService contractpartnerService;
-  @Inject
-  private IMoneyflowService moneyflowService;
-  @Inject
-  private IMoneyflowSplitEntryService moneyflowSplitEntryService;
-  @Inject
-  private IMoneyflowReceiptService moneyflowReceiptService;
+  private final IUserService userService;
+  private final IAccessRelationService accessRelationService;
+  private final IPreDefMoneyflowService preDefMoneyflowService;
+  private final ICapitalsourceService capitalsourceService;
+  private final IContractpartnerService contractpartnerService;
+  private final IMoneyflowService moneyflowService;
+  private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
+  private final IMoneyflowReceiptService moneyflowReceiptService;
   private static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter
       .ofPattern("yyyyMMdd");
 
