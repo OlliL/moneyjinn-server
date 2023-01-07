@@ -26,35 +26,26 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
+import org.laladev.moneyjinn.converter.MoneyflowReceiptIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptID;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class MoneyflowReceiptDataMapper implements IMapper<MoneyflowReceipt, MoneyflowReceiptData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    MoneyflowReceiptIdMapper.class, MoneyflowReceiptTypeMapper.class, MoneyflowIdMapper.class })
+public interface MoneyflowReceiptDataMapper
+    extends IMapper<MoneyflowReceipt, MoneyflowReceiptData> {
   @Override
-  public MoneyflowReceipt mapBToA(final MoneyflowReceiptData moneyflowReceiptData) {
-    final MoneyflowReceipt moneyflowReceipt = new MoneyflowReceipt();
-    moneyflowReceipt.setId(new MoneyflowReceiptID(moneyflowReceiptData.getId()));
-    moneyflowReceipt.setMoneyflowId(new MoneyflowID(moneyflowReceiptData.getMmfMoneyflowId()));
-    moneyflowReceipt.setReceipt(moneyflowReceiptData.getReceipt());
-    moneyflowReceipt.setMoneyflowReceiptType(
-        MoneyflowReceiptTypeMapper.map(moneyflowReceiptData.getReceiptType()));
-    return moneyflowReceipt;
-  }
+  @Mapping(target = "moneyflowReceiptType", source = "receiptType")
+  @Mapping(target = "moneyflowId", source = "mmfMoneyflowId")
+  MoneyflowReceipt mapBToA(MoneyflowReceiptData moneyflowReceiptData);
 
   @Override
-  public MoneyflowReceiptData mapAToB(final MoneyflowReceipt moneyflowReceipt) {
-    final MoneyflowReceiptData moneyflowReceiptData = new MoneyflowReceiptData();
-    // might be null for new MoneyflowReceipts
-    if (moneyflowReceipt.getId() != null) {
-      moneyflowReceiptData.setId(moneyflowReceipt.getId().getId());
-    }
-    moneyflowReceiptData.setMmfMoneyflowId(moneyflowReceipt.getMoneyflowId().getId());
-    moneyflowReceiptData.setReceipt(moneyflowReceipt.getReceipt());
-    moneyflowReceiptData
-        .setReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
-    return moneyflowReceiptData;
-  }
+  @Mapping(target = "receiptType", source = "moneyflowReceiptType")
+  @Mapping(target = "mmfMoneyflowId", source = "moneyflowId")
+  MoneyflowReceiptData mapAToB(MoneyflowReceipt moneyflowReceipt);
 }

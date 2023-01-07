@@ -26,60 +26,41 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class MoneyflowDataMapper implements IMapper<Moneyflow, MoneyflowData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    MoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
+    PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
+public interface MoneyflowDataMapper extends IMapper<Moneyflow, MoneyflowData> {
   @Override
-  public Moneyflow mapBToA(final MoneyflowData moneyflowData) {
-    final Moneyflow moneyflow = new Moneyflow();
-    moneyflow.setId(new MoneyflowID(moneyflowData.getId()));
-    moneyflow.setAmount(moneyflowData.getAmount());
-    moneyflow.setBookingDate(moneyflowData.getBookingdate());
-    moneyflow.setInvoiceDate(moneyflowData.getInvoicedate());
-    moneyflow.setCapitalsource(
-        new Capitalsource(new CapitalsourceID(moneyflowData.getMcsCapitalsourceId())));
-    moneyflow.setContractpartner(
-        new Contractpartner(new ContractpartnerID(moneyflowData.getMcpContractpartnerId())));
-    moneyflow.setComment(moneyflowData.getComment());
-    moneyflow.setUser(new User(new UserID(moneyflowData.getMacIdCreator())));
-    moneyflow.setPrivat(moneyflowData.isPrivat());
-    moneyflow.setPostingAccount(
-        new PostingAccount(new PostingAccountID(moneyflowData.getMpaPostingAccountId())));
-    return moneyflow;
-  }
+  @Mapping(target = "bookingDate", source = "bookingdate")
+  @Mapping(target = "invoiceDate", source = "invoicedate")
+  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+  @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+  @Mapping(target = "user.id", source = "macIdCreator")
+  @Mapping(target = "group.id", source = "macIdAccessor")
+  @Mapping(target = "moneyflowSplitEntries", ignore = true)
+  Moneyflow mapBToA(MoneyflowData moneyflowData);
 
   @Override
-  public MoneyflowData mapAToB(final Moneyflow moneyflow) {
-    final MoneyflowData moneyflowData = new MoneyflowData();
-    // might be null for new Moneyflows
-    if (moneyflow.getId() != null) {
-      moneyflowData.setId(moneyflow.getId().getId());
-    }
-    moneyflowData.setAmount(moneyflow.getAmount());
-    moneyflowData.setBookingdate(moneyflow.getBookingDate());
-    moneyflowData.setInvoicedate(moneyflow.getInvoiceDate());
-    moneyflowData.setMcsCapitalsourceId(moneyflow.getCapitalsource().getId().getId());
-    moneyflowData.setMcpContractpartnerId(moneyflow.getContractpartner().getId().getId());
-    moneyflowData.setComment(moneyflow.getComment());
-    if (moneyflow.getUser() != null) {
-      moneyflowData.setMacIdCreator(moneyflow.getUser().getId().getId());
-    }
-    if (moneyflow.getGroup() != null) {
-      moneyflowData.setMacIdAccessor(moneyflow.getGroup().getId().getId());
-    }
-    moneyflowData.setPrivat(moneyflow.isPrivat());
-    moneyflowData.setMpaPostingAccountId(moneyflow.getPostingAccount().getId().getId());
-    return moneyflowData;
-  }
+  @Mapping(target = "bookingdate", source = "bookingDate")
+  @Mapping(target = "invoicedate", source = "invoiceDate")
+  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+  @Mapping(target = "macIdCreator", source = "user.id")
+  @Mapping(target = "macIdAccessor", source = "group.id")
+  public MoneyflowData mapAToB(Moneyflow moneyflow);
 }

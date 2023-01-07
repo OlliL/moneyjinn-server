@@ -76,11 +76,12 @@ public class ContractpartnerService extends AbstractService implements IContract
   private final IGroupService groupService;
   private final IPostingAccountService postingAccountService;
   private final IAccessRelationService accessRelationService;
+  private final ContractpartnerDataMapper contractpartnerDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ContractpartnerDataMapper());
+    super.registerBeanMapper(this.contractpartnerDataMapper);
   }
 
   private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {

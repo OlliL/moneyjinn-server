@@ -75,11 +75,12 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
   private final IUserService userService;
   private final IGroupService groupService;
   private final IAccessRelationService accessRelationService;
+  private final CapitalsourceDataMapper capitalsourceDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new CapitalsourceDataMapper());
+    super.registerBeanMapper(this.capitalsourceDataMapper);
   }
 
   private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {

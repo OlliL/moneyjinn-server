@@ -26,49 +26,32 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import java.time.Month;
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.MonthMapper;
+import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
-import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlementID;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class MonthlySettlementDataMapper
-    implements IMapper<MonthlySettlement, MonthlySettlementData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    MonthlySettlementIdMapper.class, MonthMapper.class, CapitalsourceIdMapper.class,
+    UserIdMapper.class, GroupIdMapper.class })
+public interface MonthlySettlementDataMapper
+    extends IMapper<MonthlySettlement, MonthlySettlementData> {
   @Override
-  public MonthlySettlement mapBToA(final MonthlySettlementData monthlySettlementData) {
-    final MonthlySettlement monthlySettlement = new MonthlySettlement();
-    monthlySettlement.setId(new MonthlySettlementID(monthlySettlementData.getId()));
-    monthlySettlement.setAmount(monthlySettlementData.getAmount());
-    monthlySettlement.setMonth(Month.of(monthlySettlementData.getMonth().intValue()));
-    monthlySettlement.setYear(monthlySettlementData.getYear());
-    monthlySettlement.setCapitalsource(
-        new Capitalsource(new CapitalsourceID(monthlySettlementData.getMcsCapitalsourceId())));
-    monthlySettlement.setUser(new User(new UserID(monthlySettlementData.getMacIdCreator())));
-    return monthlySettlement;
-  }
+  @Mapping(target = "user.id", source = "macIdCreator")
+  @Mapping(target = "group.id", source = "macIdAccessor")
+  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+  MonthlySettlement mapBToA(MonthlySettlementData monthlySettlementData);
 
   @Override
-  public MonthlySettlementData mapAToB(final MonthlySettlement monthlySettlement) {
-    final MonthlySettlementData monthlySettlementData = new MonthlySettlementData();
-    // might be null for new MonthlySettlements
-    if (monthlySettlement.getId() != null) {
-      monthlySettlementData.setId(monthlySettlement.getId().getId());
-    }
-    monthlySettlementData.setAmount(monthlySettlement.getAmount());
-    monthlySettlementData.setMonth((short) monthlySettlement.getMonth().getValue());
-    monthlySettlementData.setYear(monthlySettlement.getYear());
-    monthlySettlementData
-        .setMcsCapitalsourceId(monthlySettlement.getCapitalsource().getId().getId());
-    if (monthlySettlement.getUser() != null) {
-      monthlySettlementData.setMacIdCreator(monthlySettlement.getUser().getId().getId());
-    }
-    if (monthlySettlement.getGroup() != null) {
-      monthlySettlementData.setMacIdAccessor(monthlySettlement.getGroup().getId().getId());
-    }
-    return monthlySettlementData;
-  }
+  @Mapping(target = "macIdCreator", source = "user.id")
+  @Mapping(target = "macIdAccessor", source = "group.id")
+  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+  MonthlySettlementData mapAToB(MonthlySettlement monthlySettlement);
 }

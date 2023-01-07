@@ -26,63 +26,44 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-public class ContractpartnerDataMapper implements IMapper<Contractpartner, ContractpartnerData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+    PostingAccountIdMapper.class })
+public interface ContractpartnerDataMapper extends IMapper<Contractpartner, ContractpartnerData> {
   @Override
-  public Contractpartner mapBToA(final ContractpartnerData contractpartnerData) {
-    final Contractpartner contractpartner = new Contractpartner(
-        new ContractpartnerID(contractpartnerData.getId()));
-    contractpartner.setUser(new User(new UserID(contractpartnerData.getMacIdCreator())));
-    contractpartner.setAccess(new Group(new GroupID(contractpartnerData.getMacIdAccessor())));
-    contractpartner.setValidFrom(contractpartnerData.getValidFrom());
-    contractpartner.setValidTil(contractpartnerData.getValidTil());
-    contractpartner.setName(contractpartnerData.getName());
-    contractpartner.setStreet(contractpartnerData.getStreet());
-    contractpartner.setPostcode(contractpartnerData.getPostcode());
-    contractpartner.setTown(contractpartnerData.getTown());
-    contractpartner.setCountry(contractpartnerData.getCountry());
-    contractpartner.setMoneyflowComment(contractpartnerData.getMmfComment());
-    final Long postingAccountId = contractpartnerData.getMpaPostingAccountId();
-    if (postingAccountId != null) {
-      contractpartner.setPostingAccount(new PostingAccount(new PostingAccountID(postingAccountId)));
-    }
-    return contractpartner;
-  }
+  @Mapping(target = "user.id", source = "macIdCreator")
+  @Mapping(target = "access.id", source = "macIdAccessor")
+  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+  @Mapping(target = "moneyflowComment", source = "mmfComment")
+  Contractpartner mapBToA(ContractpartnerData contractpartnerData);
 
   @Override
-  public ContractpartnerData mapAToB(final Contractpartner contractpartner) {
-    final ContractpartnerData contractpartnerData = new ContractpartnerData();
-    if (contractpartner.getId() != null) {
-      contractpartnerData.setId(contractpartner.getId().getId());
+  @Mapping(target = "macIdCreator", source = "user.id")
+  @Mapping(target = "macIdAccessor", source = "access.id")
+  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+  @Mapping(target = "mmfComment", source = "moneyflowComment")
+  ContractpartnerData mapAToB(Contractpartner contractpartner);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default Contractpartner doAfterMapping(@MappingTarget final Contractpartner entity) {
+    if (entity != null && entity.getPostingAccount() != null
+        && entity.getPostingAccount().getId() == null) {
+      entity.setPostingAccount(null);
     }
-    if (contractpartner.getUser() != null) {
-      contractpartnerData.setMacIdCreator(contractpartner.getUser().getId().getId());
-    }
-    if (contractpartner.getAccess() != null) {
-      contractpartnerData.setMacIdAccessor(contractpartner.getAccess().getId().getId());
-    }
-    contractpartnerData.setValidFrom(contractpartner.getValidFrom());
-    contractpartnerData.setValidTil(contractpartner.getValidTil());
-    contractpartnerData.setName(contractpartner.getName());
-    contractpartnerData.setStreet(contractpartner.getStreet());
-    contractpartnerData.setPostcode(contractpartner.getPostcode());
-    contractpartnerData.setTown(contractpartner.getTown());
-    contractpartnerData.setCountry(contractpartner.getCountry());
-    contractpartnerData.setMmfComment(contractpartner.getMoneyflowComment());
-    final PostingAccount postingAccount = contractpartner.getPostingAccount();
-    if (postingAccount != null) {
-      contractpartnerData.setMpaPostingAccountId(postingAccount.getId().getId());
-    }
-    return contractpartnerData;
+    return entity;
   }
 }

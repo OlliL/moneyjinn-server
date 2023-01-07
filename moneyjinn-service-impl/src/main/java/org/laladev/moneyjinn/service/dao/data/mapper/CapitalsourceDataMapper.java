@@ -26,63 +26,46 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-public class CapitalsourceDataMapper implements IMapper<Capitalsource, CapitalsourceData> {
-  @Override
-  public Capitalsource mapBToA(final CapitalsourceData capitalsourceData) {
-    final Capitalsource capitalsource = new Capitalsource(
-        new CapitalsourceID(capitalsourceData.getId()));
-    if (capitalsourceData.getAccountNumber() != null) {
-      capitalsource.setBankAccount(
-          new BankAccount(capitalsourceData.getAccountNumber(), capitalsourceData.getBankCode()));
-    }
-    capitalsource.setComment(capitalsourceData.getComment());
-    capitalsource.setGroupUse(capitalsourceData.isAttGroupUse());
-    capitalsource
-        .setImportAllowed(CapitalsourceImportMapper.map(capitalsourceData.getImportAllowed()));
-    capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceData.getState()));
-    capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceData.getType()));
-    capitalsource.setUser(new User(new UserID(capitalsourceData.getMacIdCreator())));
-    capitalsource.setAccess(new Group(new GroupID(capitalsourceData.getMacIdAccessor())));
-    capitalsource.setValidFrom(capitalsourceData.getValidFrom());
-    capitalsource.setValidTil(capitalsourceData.getValidTil());
-    return capitalsource;
-  }
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class,
+    CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class })
+public interface CapitalsourceDataMapper extends IMapper<Capitalsource, CapitalsourceData> {
 
   @Override
-  public CapitalsourceData mapAToB(final Capitalsource capitalsource) {
-    final CapitalsourceData capitalsourceData = new CapitalsourceData();
-    if (capitalsource.getId() != null) {
-      capitalsourceData.setId(capitalsource.getId().getId());
+  @Mapping(target = "groupUse", source = "attGroupUse")
+  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+  @Mapping(target = "user.id", source = "macIdCreator")
+  @Mapping(target = "access.id", source = "macIdAccessor")
+  Capitalsource mapBToA(final CapitalsourceData b);
+
+  @Override
+  @Mapping(target = "attGroupUse", source = "groupUse")
+  @Mapping(target = ".", source = "bankAccount")
+  @Mapping(target = "macIdCreator", source = "user.id")
+  @Mapping(target = "macIdAccessor", source = "access.id")
+  CapitalsourceData mapAToB(final Capitalsource a);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default Capitalsource doAfterMapping(@MappingTarget final Capitalsource entity) {
+    if (entity != null && entity.getBankAccount() != null
+        && entity.getBankAccount().getAccountNumber() == null
+        && entity.getBankAccount().getBankCode() == null) {
+      entity.setBankAccount(null);
     }
-    final BankAccount bankAccount = capitalsource.getBankAccount();
-    if (bankAccount != null) {
-      capitalsourceData.setAccountNumber(bankAccount.getAccountNumber());
-      capitalsourceData.setBankCode(bankAccount.getBankCode());
-    }
-    capitalsourceData.setComment(capitalsource.getComment());
-    capitalsourceData.setAttGroupUse(capitalsource.isGroupUse());
-    capitalsourceData
-        .setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
-    capitalsourceData.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
-    capitalsourceData.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
-    if (capitalsource.getUser() != null) {
-      capitalsourceData.setMacIdCreator(capitalsource.getUser().getId().getId());
-    }
-    if (capitalsource.getAccess() != null) {
-      capitalsourceData.setMacIdAccessor(capitalsource.getAccess().getId().getId());
-    }
-    capitalsourceData.setValidFrom(capitalsource.getValidFrom());
-    capitalsourceData.setValidTil(capitalsource.getValidTil());
-    return capitalsourceData;
+    return entity;
   }
 }

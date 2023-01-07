@@ -58,11 +58,12 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   private final ImportedMoneyflowDao importedMoneyflowDao;
   private final ICapitalsourceService capitalsourceService;
   private final IAccessRelationService accessRelationService;
+  private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedMoneyflowDataMapper());
+    super.registerBeanMapper(this.importedMoneyflowDataMapper);
   }
 
   private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,

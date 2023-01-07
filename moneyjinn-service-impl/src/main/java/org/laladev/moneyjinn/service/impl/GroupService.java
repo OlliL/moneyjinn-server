@@ -55,11 +55,12 @@ import org.springframework.util.Assert;
 public class GroupService extends AbstractService implements IGroupService {
   private static final Log LOG = LogFactory.getLog(GroupService.class);
   private final GroupDao groupDao;
+  private final GroupDataMapper croupDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new GroupDataMapper());
+    super.registerBeanMapper(this.croupDataMapper);
   }
 
   @Override

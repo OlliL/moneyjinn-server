@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import jakarta.inject.Named;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatType;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 
+@Named
 public class CompareDataFormatDataMapper
     implements IMapper<CompareDataFormat, CompareDataFormatData> {
   @Override

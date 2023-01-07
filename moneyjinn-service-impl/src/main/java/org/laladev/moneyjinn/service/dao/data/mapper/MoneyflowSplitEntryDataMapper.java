@@ -26,41 +26,27 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
+import org.laladev.moneyjinn.converter.MoneyflowSplitEntryIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class MoneyflowSplitEntryDataMapper
-    implements IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class, PostingAccountIdMapper.class })
+public interface MoneyflowSplitEntryDataMapper
+    extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryData> {
   @Override
-  public MoneyflowSplitEntry mapBToA(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-    final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
-    moneyflowSplitEntry.setId(new MoneyflowSplitEntryID(moneyflowSplitEntryData.getId()));
-    moneyflowSplitEntry
-        .setMoneyflowId(new MoneyflowID(moneyflowSplitEntryData.getMmfMoneyflowId()));
-    moneyflowSplitEntry.setAmount(moneyflowSplitEntryData.getAmount());
-    moneyflowSplitEntry.setComment(moneyflowSplitEntryData.getComment());
-    moneyflowSplitEntry.setPostingAccount(
-        new PostingAccount(new PostingAccountID(moneyflowSplitEntryData.getMpaPostingAccountId())));
-    return moneyflowSplitEntry;
-  }
+  @Mapping(target = "moneyflowId", source = "mmfMoneyflowId")
+  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+  MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryData moneyflowSplitEntryData);
 
   @Override
-  public MoneyflowSplitEntryData mapAToB(final MoneyflowSplitEntry moneyflowSplitEntry) {
-    final MoneyflowSplitEntryData moneyflowSplitEntryData = new MoneyflowSplitEntryData();
-    // might be null for new MoneyflowSplitEntrys
-    if (moneyflowSplitEntry.getId() != null) {
-      moneyflowSplitEntryData.setId(moneyflowSplitEntry.getId().getId());
-    }
-    moneyflowSplitEntryData.setMmfMoneyflowId(moneyflowSplitEntry.getMoneyflowId().getId());
-    moneyflowSplitEntryData.setAmount(moneyflowSplitEntry.getAmount());
-    moneyflowSplitEntryData.setComment(moneyflowSplitEntry.getComment());
-    moneyflowSplitEntryData
-        .setMpaPostingAccountId(moneyflowSplitEntry.getPostingAccount().getId().getId());
-    return moneyflowSplitEntryData;
-  }
+  @Mapping(target = "mmfMoneyflowId", source = "moneyflowId")
+  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+  MoneyflowSplitEntryData mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
 }

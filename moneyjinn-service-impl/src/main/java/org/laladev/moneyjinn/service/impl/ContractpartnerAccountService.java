@@ -67,11 +67,12 @@ public class ContractpartnerAccountService extends AbstractService
   private final ContractpartnerAccountDao contractpartnerAccountDao;
   private final IAccessRelationService accessRelationService;
   private final BankAccountDataMapper bankAccountDataMapper;
+  private final ContractpartnerAccountDataMapper contractpartnerAccountDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ContractpartnerAccountDataMapper());
+    super.registerBeanMapper(this.contractpartnerAccountDataMapper);
     super.registerBeanMapper(this.bankAccountDataMapper);
   }
 

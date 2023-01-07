@@ -48,11 +48,12 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowReceiptService extends AbstractService implements IMoneyflowReceiptService {
   private final MoneyflowReceiptDao moneyflowReceiptDao;
+  private final MoneyflowReceiptDataMapper moneyflowReceiptDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MoneyflowReceiptDataMapper());
+    super.registerBeanMapper(this.moneyflowReceiptDataMapper);
   }
 
   private MoneyflowReceipt mapMoneyflowReceiptData(

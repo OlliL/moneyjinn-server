@@ -15,6 +15,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
+			<artifactId>moneyjinn-mapstruct-converter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-service-api</artifactId>
 		</dependency>
 		<dependency>

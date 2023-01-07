@@ -26,31 +26,25 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import java.time.Month;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.MonthMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class MoneyflowSearchResultDataMapper
-    implements IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    MonthMapper.class, ContractpartnerIdMapper.class })
+public interface MoneyflowSearchResultDataMapper
+    extends IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
   @Override
-  public MoneyflowSearchResult mapBToA(final MoneyflowSearchResultData moneyflowSearchResultData) {
-    final MoneyflowSearchResult moneyflowSearchResult = new MoneyflowSearchResult();
-    moneyflowSearchResult.setAmount(moneyflowSearchResultData.getAmount());
-    moneyflowSearchResult.setComment(moneyflowSearchResultData.getComment());
-    if (moneyflowSearchResultData.getMonth() != null) {
-      moneyflowSearchResult.setMonth(Month.of(moneyflowSearchResultData.getMonth().intValue()));
-    }
-    moneyflowSearchResult.setYear(moneyflowSearchResultData.getYear());
-    moneyflowSearchResult.setContractpartner(new Contractpartner(
-        new ContractpartnerID(moneyflowSearchResultData.getContractpartnerid())));
-    return moneyflowSearchResult;
-  }
+  @Mapping(target = "contractpartner.id", source = "contractpartnerid")
+  MoneyflowSearchResult mapBToA(MoneyflowSearchResultData moneyflowSearchResultData);
 
   @Override
-  public MoneyflowSearchResultData mapAToB(final MoneyflowSearchResult moneyflowSearchResult) {
-    throw new UnsupportedOperationException("Mapping not supported!");
-  }
+  @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+  MoneyflowSearchResultData mapAToB(MoneyflowSearchResult moneyflowSearchResult);
+
 }

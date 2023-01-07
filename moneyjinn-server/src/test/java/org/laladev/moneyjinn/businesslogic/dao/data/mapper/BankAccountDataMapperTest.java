@@ -11,7 +11,7 @@ import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
 
 public class BankAccountDataMapperTest extends AbstractTest {
   @Inject
-  BankAccountDataMapper bankAccountDataMapper;
+  private BankAccountDataMapper bankAccountDataMapper;
 
   @Test
   public void testBankAccountMapping() {

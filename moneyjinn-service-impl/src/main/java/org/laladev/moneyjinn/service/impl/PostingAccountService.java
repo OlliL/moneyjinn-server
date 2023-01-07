@@ -57,11 +57,12 @@ import org.springframework.util.Assert;
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
   private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
   private final PostingAccountDao postingAccountDao;
+  private final PostingAccountDataMapper postingAccountDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new PostingAccountDataMapper());
+    super.registerBeanMapper(this.postingAccountDataMapper);
   }
 
   @Override

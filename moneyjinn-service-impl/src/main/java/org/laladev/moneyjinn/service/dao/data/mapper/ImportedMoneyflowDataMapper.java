@@ -26,62 +26,55 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-public class ImportedMoneyflowDataMapper
-    implements IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, ImportedMoneyflowStatusMapper.class,
+    ImportedMoneyflowIdMapper.class })
+public interface ImportedMoneyflowDataMapper
+    extends IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
   @Override
-  public ImportedMoneyflow mapBToA(final ImportedMoneyflowData importedMoneyflowData) {
-    final ImportedMoneyflow importedMoneyflow = new ImportedMoneyflow();
-    importedMoneyflow.setId(new ImportedMoneyflowID(importedMoneyflowData.getId()));
-    importedMoneyflow.setAmount(importedMoneyflowData.getAmount());
-    importedMoneyflow.setBookingDate(importedMoneyflowData.getBookingdate());
-    importedMoneyflow.setInvoiceDate(importedMoneyflowData.getInvoicedate());
-    importedMoneyflow.setCapitalsource(
-        new Capitalsource(new CapitalsourceID(importedMoneyflowData.getMcsCapitalsourceId())));
-    if (importedMoneyflowData.getAccountNumber() != null) {
-      importedMoneyflow.setBankAccount(new BankAccount(importedMoneyflowData.getAccountNumber(),
-          importedMoneyflowData.getBankCode()));
-    }
-    importedMoneyflow.setExternalId(importedMoneyflowData.getExternalId());
-    importedMoneyflow.setUsage(importedMoneyflowData.getComment());
-    importedMoneyflow.setName(importedMoneyflowData.getName());
-    importedMoneyflow
-        .setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflowData.getStatus()));
-    return importedMoneyflow;
-  }
+  @Mapping(target = "bookingDate", source = "bookingdate")
+  @Mapping(target = "invoiceDate", source = "invoicedate")
+  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+  @Mapping(target = "usage", source = "comment")
+  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "group", ignore = true)
+  @Mapping(target = "contractpartner", ignore = true)
+  @Mapping(target = "postingAccount", ignore = true)
+  @Mapping(target = "privat", ignore = true)
+  @Mapping(target = "comment", ignore = true)
+  ImportedMoneyflow mapBToA(ImportedMoneyflowData importedMoneyflowData);
 
   @Override
-  public ImportedMoneyflowData mapAToB(final ImportedMoneyflow importedMoneyflow) {
-    final ImportedMoneyflowData importedMoneyflowData = new ImportedMoneyflowData();
-    // might be null for new ImportedMoneyflows
-    if (importedMoneyflow.getId() != null) {
-      importedMoneyflowData.setId(importedMoneyflow.getId().getId());
+  @Mapping(target = "accountNumber", source = "bankAccount.accountNumber", defaultValue = "")
+  @Mapping(target = "bankCode", source = "bankAccount.bankCode", defaultValue = "")
+  @Mapping(target = "bookingdate", source = "bookingDate")
+  @Mapping(target = "invoicedate", source = "invoiceDate")
+  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+  @Mapping(target = "comment", source = "usage")
+  ImportedMoneyflowData mapAToB(ImportedMoneyflow importedMoneyflow);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default ImportedMoneyflow doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
+    if (entity != null && entity.getBankAccount() != null
+        && entity.getBankAccount().getAccountNumber() == null
+        && entity.getBankAccount().getBankCode() == null) {
+      entity.setBankAccount(null);
     }
-    importedMoneyflowData.setAmount(importedMoneyflow.getAmount());
-    importedMoneyflowData.setBookingdate(importedMoneyflow.getBookingDate());
-    importedMoneyflowData.setInvoicedate(importedMoneyflow.getInvoiceDate());
-    importedMoneyflowData
-        .setMcsCapitalsourceId(importedMoneyflow.getCapitalsource().getId().getId());
-    final BankAccount bankAccount = importedMoneyflow.getBankAccount();
-    if (bankAccount != null) {
-      importedMoneyflowData.setAccountNumber(bankAccount.getAccountNumber());
-      importedMoneyflowData.setBankCode(bankAccount.getBankCode());
-    } else {
-      importedMoneyflowData.setAccountNumber("");
-      importedMoneyflowData.setBankCode("");
-    }
-    importedMoneyflowData.setExternalId(importedMoneyflow.getExternalId());
-    importedMoneyflowData.setComment(importedMoneyflow.getUsage());
-    importedMoneyflowData.setName(importedMoneyflow.getName());
-    importedMoneyflowData
-        .setStatus(ImportedMoneyflowStatusMapper.map(importedMoneyflow.getStatus()));
-    return importedMoneyflowData;
+    return entity;
   }
 }

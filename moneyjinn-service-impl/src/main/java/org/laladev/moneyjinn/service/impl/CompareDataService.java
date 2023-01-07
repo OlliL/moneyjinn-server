@@ -88,12 +88,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
   private final IMoneyflowService moneyflowService;
   private final IImportedMoneyflowService importedMoneyflowService;
   private final IContractpartnerAccountService contractpartnerAccountService;
+  private final CompareDataFormatDataMapper compareDataFormatDataMapper;
+
   private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new CompareDataFormatDataMapper());
+    super.registerBeanMapper(this.compareDataFormatDataMapper);
   }
 
   @Override

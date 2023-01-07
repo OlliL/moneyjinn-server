@@ -26,29 +26,23 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ImportedBalance;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class ImportedBalanceDataMapper implements IMapper<ImportedBalance, ImportedBalanceData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = CapitalsourceIdMapper.class)
+public interface ImportedBalanceDataMapper extends IMapper<ImportedBalance, ImportedBalanceData> {
   @Override
-  public ImportedBalance mapBToA(final ImportedBalanceData importedBalanceData) {
-    final ImportedBalance importedBalance = new ImportedBalance();
-    importedBalance.setBalance(importedBalanceData.getBalance());
-    importedBalance.setDate(importedBalanceData.getChangedate());
-    importedBalance.setCapitalsource(
-        new Capitalsource(new CapitalsourceID(importedBalanceData.getMcsCapitalsourceId())));
-    return importedBalance;
-  }
+  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+  @Mapping(target = "date", source = "changedate")
+  ImportedBalance mapBToA(ImportedBalanceData importedBalanceData);
 
   @Override
-  public ImportedBalanceData mapAToB(final ImportedBalance importedBalance) {
-    final ImportedBalanceData importedBalanceData = new ImportedBalanceData();
-    importedBalanceData.setBalance(importedBalance.getBalance());
-    importedBalanceData.setMcsCapitalsourceId(importedBalance.getCapitalsource().getId().getId());
-    importedBalanceData.setChangedate(importedBalance.getDate());
-    return importedBalanceData;
-  }
+  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+  @Mapping(target = "changedate", source = "date")
+  ImportedBalanceData mapAToB(ImportedBalance importedBalance);
 }

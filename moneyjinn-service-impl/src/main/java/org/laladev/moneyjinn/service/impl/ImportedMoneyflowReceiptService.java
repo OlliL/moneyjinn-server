@@ -57,13 +57,16 @@ public class ImportedMoneyflowReceiptService extends AbstractService
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
   private static final List<String> SUPPORTED_MEDIA_TYPES = Arrays
       .asList(MEDIA_TYPE_APPLICATION_PDF, MEDIA_TYPE_IMAGE_JPEG);
-  private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
+
   private final Tika tika = new Tika();
+
+  private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
+  private final ImportedMoneyflowReceiptDataMapper importedMoneyflowReceiptDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedMoneyflowReceiptDataMapper());
+    super.registerBeanMapper(this.importedMoneyflowReceiptDataMapper);
   }
 
   @Override

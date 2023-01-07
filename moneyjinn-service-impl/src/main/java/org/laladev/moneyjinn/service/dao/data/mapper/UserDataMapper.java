@@ -28,17 +28,38 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.service.dao.data.UserData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
-public class UserDataMapper implements IMapper<User, UserData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = UserIdMapper.class)
+public interface UserDataMapper extends IMapper<User, UserData> {
   @Override
-  public User mapBToA(final UserData b) {
+  @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
+  @Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
+  User mapBToA(UserData b);
+
+  @Named("mapUserAttributesToEntity")
+  default Collection<UserAttribute> mapUserAttributesToEntity(final UserData b) {
     final Collection<UserAttribute> attributes = new ArrayList<>();
+    if (b.isAttChangePassword()) {
+      attributes.add(UserAttribute.IS_NEW);
+    }
+    if (attributes.isEmpty()) {
+      attributes.add(UserAttribute.NONE);
+    }
+    return attributes;
+  }
+
+  @Named("mapUserPermissionsToEntity")
+  default Collection<UserPermission> mapUserPermissionsToEntity(final UserData b) {
     final Collection<UserPermission> permissions = new ArrayList<>();
     if (b.isPermAdmin()) {
       permissions.add(UserPermission.ADMIN);
@@ -49,44 +70,36 @@ public class UserDataMapper implements IMapper<User, UserData> {
     if (permissions.isEmpty()) {
       permissions.add(UserPermission.NONE);
     }
-    if (b.isAttChangePassword()) {
-      attributes.add(UserAttribute.IS_NEW);
-    }
-    if (attributes.isEmpty()) {
-      attributes.add(UserAttribute.NONE);
-    }
-    return new User(new UserID(b.getId()), b.getName(), b.getPassword(), attributes, permissions);
+    return permissions;
   }
 
   @Override
-  public UserData mapAToB(final User a) {
-    final UserData userData = new UserData();
-    // might be null for new users
-    if (a.getId() != null) {
-      userData.setId(a.getId().getId());
+  @Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
+  @Mapping(target = "permLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToData")
+  @Mapping(target = "permAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToData")
+  UserData mapAToB(User a);
+
+  @Named("mapUserAttributeIsNewToData")
+  default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
+    if (a != null && a.contains(UserAttribute.IS_NEW)) {
+      return true;
     }
-    userData.setName(a.getName());
-    userData.setPassword(a.getPassword());
-    if (a.getAttributes() != null && a.getAttributes().contains(UserAttribute.IS_NEW)) {
-      userData.setAttChangePassword(true);
-    } else {
-      userData.setAttChangePassword(false);
+    return false;
+  }
+
+  @Named("mapUserPermissionAdminToData")
+  default boolean mapUserPermissionAdminToData(final Collection<UserPermission> a) {
+    if (a != null && a.contains(UserPermission.ADMIN)) {
+      return true;
     }
-    if (a.getPermissions() != null) {
-      if (a.getPermissions().contains(UserPermission.ADMIN)) {
-        userData.setPermAdmin(true);
-      } else {
-        userData.setPermAdmin(false);
-      }
-      if (a.getPermissions().contains(UserPermission.LOGIN)) {
-        userData.setPermLogin(true);
-      } else {
-        userData.setPermLogin(false);
-      }
-    } else {
-      userData.setPermAdmin(false);
-      userData.setPermLogin(false);
+    return false;
+  }
+
+  @Named("mapUserPermissionLoginToData")
+  default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
+    if (a != null && a.contains(UserPermission.LOGIN)) {
+      return true;
     }
-    return userData;
+    return false;
   }
 }

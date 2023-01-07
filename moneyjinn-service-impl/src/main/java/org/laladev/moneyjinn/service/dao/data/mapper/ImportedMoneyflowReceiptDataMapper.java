@@ -26,52 +26,28 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.ImportedMoneyflowReceiptIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceiptID;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class ImportedMoneyflowReceiptDataMapper
-    implements IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    ImportedMoneyflowReceiptIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+    MoneyflowReceiptTypeMapper.class })
+public interface ImportedMoneyflowReceiptDataMapper
+    extends IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
   @Override
-  public ImportedMoneyflowReceipt mapBToA(
-      final ImportedMoneyflowReceiptData importedMoneyflowReceiptData) {
-    final ImportedMoneyflowReceipt importedMoneyflowReceipt = new ImportedMoneyflowReceipt();
-    importedMoneyflowReceipt
-        .setId(new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId()));
-    importedMoneyflowReceipt
-        .setUser(new User(new UserID(importedMoneyflowReceiptData.getMacIdCreator())));
-    importedMoneyflowReceipt
-        .setAccess(new Group(new GroupID(importedMoneyflowReceiptData.getMacIdAccessor())));
-    importedMoneyflowReceipt.setReceipt(importedMoneyflowReceiptData.getReceipt());
-    importedMoneyflowReceipt.setFilename(importedMoneyflowReceiptData.getFilename());
-    importedMoneyflowReceipt.setMediaType(importedMoneyflowReceiptData.getMediaType());
-    return importedMoneyflowReceipt;
-  }
+  @Mapping(target = "user.id", source = "macIdCreator")
+  @Mapping(target = "access.id", source = "macIdAccessor")
+  ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
 
   @Override
-  public ImportedMoneyflowReceiptData mapAToB(
-      final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-    final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = new ImportedMoneyflowReceiptData();
-    // might be null for new ImportedMoneyflowReceipts
-    if (importedMoneyflowReceipt.getId() != null) {
-      importedMoneyflowReceiptData.setId(importedMoneyflowReceipt.getId().getId());
-    }
-    if (importedMoneyflowReceipt.getUser() != null) {
-      importedMoneyflowReceiptData
-          .setMacIdCreator(importedMoneyflowReceipt.getUser().getId().getId());
-    }
-    if (importedMoneyflowReceipt.getAccess() != null) {
-      importedMoneyflowReceiptData
-          .setMacIdAccessor(importedMoneyflowReceipt.getAccess().getId().getId());
-    }
-    importedMoneyflowReceiptData.setReceipt(importedMoneyflowReceipt.getReceipt());
-    importedMoneyflowReceiptData.setFilename(importedMoneyflowReceipt.getFilename());
-    importedMoneyflowReceiptData.setMediaType(importedMoneyflowReceipt.getMediaType());
-    return importedMoneyflowReceiptData;
-  }
+  @Mapping(target = "macIdCreator", source = "user.id")
+  @Mapping(target = "macIdAccessor", source = "access.id")
+  ImportedMoneyflowReceiptData mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
 }

@@ -57,11 +57,12 @@ public class ImportedMonthlySettlementService extends AbstractService
   private final ImportedMonthlySettlementDao importedMonthlySettlementDao;
   private final ICapitalsourceService capitalsourceService;
   private final IAccessRelationService accessRelationService;
+  private final ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedMonthlySettlementDataMapper());
+    super.registerBeanMapper(this.importedMonthlySettlementDataMapper);
   }
 
   private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,

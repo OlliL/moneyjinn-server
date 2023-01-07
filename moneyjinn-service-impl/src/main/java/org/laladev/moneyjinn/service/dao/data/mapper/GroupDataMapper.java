@@ -26,25 +26,13 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
-public class GroupDataMapper implements IMapper<Group, GroupData> {
-  @Override
-  public Group mapBToA(final GroupData groupData) {
-    return new Group(new GroupID(groupData.getId()), groupData.getName());
-  }
-
-  @Override
-  public GroupData mapAToB(final Group group) {
-    final GroupData groupData = new GroupData();
-    // might be null for new users
-    if (group.getId() != null) {
-      groupData.setId(group.getId().getId());
-    }
-    groupData.setName(group.getName());
-    return groupData;
-  }
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = GroupIdMapper.class)
+public interface GroupDataMapper extends IMapper<Group, GroupData> {
 }

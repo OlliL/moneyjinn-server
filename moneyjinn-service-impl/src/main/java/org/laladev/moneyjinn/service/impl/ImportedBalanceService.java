@@ -53,11 +53,12 @@ public class ImportedBalanceService extends AbstractService implements IImported
   private final ImportedBalanceDao importedBalanceDao;
   private final ICapitalsourceService capitalsourceService;
   private final IAccessRelationService accessRelationService;
+  private final ImportedBalanceDataMapper importedBalanceDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedBalanceDataMapper());
+    super.registerBeanMapper(this.importedBalanceDataMapper);
   }
 
   private ImportedBalance mapImportedBalanceData(final UserID userId,

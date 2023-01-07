@@ -62,11 +62,12 @@ public class MoneyflowSplitEntryService extends AbstractService
     implements IMoneyflowSplitEntryService {
   private final IPostingAccountService postingAccountService;
   private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
+  private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MoneyflowSplitEntryDataMapper());
+    super.registerBeanMapper(this.moneyflowSplitEntryDataMapper);
   }
 
   private MoneyflowSplitEntry mapMoneyflowSplitEntryData(

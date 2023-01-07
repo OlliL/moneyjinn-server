@@ -62,13 +62,16 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfService extends AbstractService implements IEtfService {
   private final EtfDao etfDao;
+  private final EtfFlowDataMapper etfFlowDataMapper;
+  private final EtfValueDataMapper etfValueDataMapper;
+  private final EtfDataMapper etfDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new EtfFlowDataMapper());
-    super.registerBeanMapper(new EtfValueDataMapper());
-    super.registerBeanMapper(new EtfDataMapper());
+    super.registerBeanMapper(this.etfFlowDataMapper);
+    super.registerBeanMapper(this.etfValueDataMapper);
+    super.registerBeanMapper(this.etfDataMapper);
   }
 
   @Override

@@ -26,58 +26,37 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.PreDefMoneyflowIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
-import org.laladev.moneyjinn.model.PreDefMoneyflowID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class PreDefMoneyflowDataMapper implements IMapper<PreDefMoneyflow, PreDefMoneyflowData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    PreDefMoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
+    PostingAccountIdMapper.class, UserIdMapper.class })
+public interface PreDefMoneyflowDataMapper extends IMapper<PreDefMoneyflow, PreDefMoneyflowData> {
   @Override
-  public PreDefMoneyflow mapBToA(final PreDefMoneyflowData preDefMoneyflowData) {
-    final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
-    preDefMoneyflow.setId(new PreDefMoneyflowID(preDefMoneyflowData.getId()));
-    preDefMoneyflow.setAmount(preDefMoneyflowData.getAmount());
-    preDefMoneyflow.setCreationDate(preDefMoneyflowData.getCreatedate());
-    preDefMoneyflow.setCapitalsource(
-        new Capitalsource(new CapitalsourceID(preDefMoneyflowData.getMcsCapitalsourceId())));
-    preDefMoneyflow.setContractpartner(
-        new Contractpartner(new ContractpartnerID(preDefMoneyflowData.getMcpContractpartnerId())));
-    preDefMoneyflow.setComment(preDefMoneyflowData.getComment());
-    preDefMoneyflow.setLastUsedDate(preDefMoneyflowData.getLastUsed());
-    preDefMoneyflow.setUser(new User(new UserID(preDefMoneyflowData.getMacId())));
-    preDefMoneyflow.setOnceAMonth(preDefMoneyflowData.isOnceAMonth());
-    preDefMoneyflow.setPostingAccount(
-        new PostingAccount(new PostingAccountID(preDefMoneyflowData.getMpaPostingAccountId())));
-    return preDefMoneyflow;
-  }
+  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+  @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+  @Mapping(target = "creationDate", source = "createdate")
+  @Mapping(target = "lastUsedDate", source = "lastUsed")
+  @Mapping(target = "user.id", source = "macId")
+  PreDefMoneyflow mapBToA(PreDefMoneyflowData preDefMoneyflowData);
 
   @Override
-  public PreDefMoneyflowData mapAToB(final PreDefMoneyflow preDefMoneyflow) {
-    final PreDefMoneyflowData preDefMoneyflowData = new PreDefMoneyflowData();
-    // might be null for new PreDefMoneyflows
-    if (preDefMoneyflow.getId() != null) {
-      preDefMoneyflowData.setId(preDefMoneyflow.getId().getId());
-    }
-    preDefMoneyflowData.setAmount(preDefMoneyflow.getAmount());
-    preDefMoneyflowData.setCreatedate(preDefMoneyflowData.getLastUsed());
-    preDefMoneyflowData.setMcsCapitalsourceId(preDefMoneyflow.getCapitalsource().getId().getId());
-    preDefMoneyflowData
-        .setMcpContractpartnerId(preDefMoneyflow.getContractpartner().getId().getId());
-    preDefMoneyflowData.setComment(preDefMoneyflow.getComment());
-    preDefMoneyflowData.setLastUsed(preDefMoneyflow.getLastUsedDate());
-    if (preDefMoneyflow.getUser() != null) {
-      preDefMoneyflowData.setMacId(preDefMoneyflow.getUser().getId().getId());
-    }
-    preDefMoneyflowData.setOnceAMonth(preDefMoneyflow.isOnceAMonth());
-    preDefMoneyflowData.setMpaPostingAccountId(preDefMoneyflow.getPostingAccount().getId().getId());
-    return preDefMoneyflowData;
-  }
+  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+  @Mapping(target = "createdate", source = "creationDate")
+  @Mapping(target = "lastUsed", source = "lastUsedDate")
+  @Mapping(target = "macId", source = "user.id")
+  PreDefMoneyflowData mapAToB(PreDefMoneyflow preDefMoneyflow);
 }

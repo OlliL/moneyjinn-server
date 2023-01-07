@@ -26,44 +26,40 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-public class ContractpartnerAccountDataMapper
-    implements IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
-  @Override
-  public ContractpartnerAccount mapBToA(
-      final ContractpartnerAccountData contractpartnerAccountData) {
-    final BankAccount bankAccount = new BankAccount(contractpartnerAccountData.getAccountNumber(),
-        contractpartnerAccountData.getBankCode());
-    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-        contractpartnerAccountData.getId());
-    final Contractpartner contractpartner = new Contractpartner(
-        new ContractpartnerID(contractpartnerAccountData.getMcpContractpartnerId()));
-    return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
-  }
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = ContractpartnerAccountIdMapper.class)
+public interface ContractpartnerAccountDataMapper
+    extends IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
 
   @Override
-  public ContractpartnerAccountData mapAToB(final ContractpartnerAccount contractpartnerAccount) {
-    final ContractpartnerAccountData contractpartnerAccountData = new ContractpartnerAccountData();
-    if (contractpartnerAccount.getId() != null) {
-      contractpartnerAccountData.setId(contractpartnerAccount.getId().getId());
+  @Mapping(target = "contractpartner.id.id", source = "mcpContractpartnerId")
+  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+  ContractpartnerAccount mapBToA(final ContractpartnerAccountData b);
+
+  @Override
+  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id.id")
+  @Mapping(target = ".", source = "bankAccount")
+  ContractpartnerAccountData mapAToB(final ContractpartnerAccount a);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default ContractpartnerAccount doAfterMapping(
+      @MappingTarget final ContractpartnerAccount entity) {
+    if (entity != null && entity.getBankAccount() != null
+        && entity.getBankAccount().getAccountNumber() == null
+        && entity.getBankAccount().getBankCode() == null) {
+      entity.setBankAccount(null);
     }
-    if (contractpartnerAccount.getBankAccount() != null) {
-      contractpartnerAccountData
-          .setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
-      contractpartnerAccountData.setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
-    }
-    if (contractpartnerAccount.getContractpartner() != null
-        && contractpartnerAccount.getContractpartner().getId() != null) {
-      contractpartnerAccountData
-          .setMcpContractpartnerId(contractpartnerAccount.getContractpartner().getId().getId());
-    }
-    return contractpartnerAccountData;
+    return entity;
   }
 }

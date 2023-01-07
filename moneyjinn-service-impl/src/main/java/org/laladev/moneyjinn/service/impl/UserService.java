@@ -57,11 +57,12 @@ import org.springframework.util.Assert;
 public class UserService extends AbstractService implements IUserService {
   private static final Log LOG = LogFactory.getLog(UserService.class);
   private final UserDao userDao;
+  private final UserDataMapper userDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new UserDataMapper());
+    this.registerBeanMapper(this.userDataMapper);
   }
 
   @Override

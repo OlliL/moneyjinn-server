@@ -34,7 +34,7 @@ import org.springframework.context.annotation.FilterType;
 
 @SpringBootConfiguration
 @Configuration
-@ComponentScan(value = { "org.laladev.moneyjinn.service",
+@ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
     "org.laladev.moneyjinn.server" }, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = BeanProducer.class),

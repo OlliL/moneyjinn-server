@@ -91,14 +91,18 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   private final IAccessRelationService accessRelationService;
   private final IPostingAccountService postingAccountService;
   private final MoneyflowDao moneyflowDao;
+  private final MoneyflowDataMapper moneyflowDataMapper;
+  private final PostingAccountAmountDataMapper postingAccountAmountDataMapper;
+  private final MoneyflowSearchParamsDataMapper moneyflowSearchParamsDataMapper;
+  private final MoneyflowSearchResultDataMapper moneyflowSearchResultDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MoneyflowDataMapper());
-    super.registerBeanMapper(new PostingAccountAmountDataMapper());
-    super.registerBeanMapper(new MoneyflowSearchParamsDataMapper());
-    super.registerBeanMapper(new MoneyflowSearchResultDataMapper());
+    super.registerBeanMapper(this.moneyflowDataMapper);
+    super.registerBeanMapper(this.postingAccountAmountDataMapper);
+    super.registerBeanMapper(this.moneyflowSearchParamsDataMapper);
+    super.registerBeanMapper(this.moneyflowSearchResultDataMapper);
   }
 
   private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {

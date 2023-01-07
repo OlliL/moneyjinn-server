@@ -63,11 +63,12 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
   private final IUserService userService;
   private final ICapitalsourceService capitalsourceService;
   private final IAccessRelationService accessRelationService;
+  private final MonthlySettlementDataMapper monthlySettlementDataMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MonthlySettlementDataMapper());
+    super.registerBeanMapper(this.monthlySettlementDataMapper);
   }
 
   private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {

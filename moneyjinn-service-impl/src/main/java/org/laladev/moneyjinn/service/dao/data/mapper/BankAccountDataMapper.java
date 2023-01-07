@@ -30,7 +30,8 @@ import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface BankAccountDataMapper extends IMapper<BankAccount, BankAccountData> {
 }

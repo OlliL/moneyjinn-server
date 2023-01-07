@@ -26,34 +26,25 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
+import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-public class EtfFlowDataMapper implements IMapper<EtfFlow, EtfFlowData> {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    EtfIsinMapper.class, EtfFlowIdMapper.class })
+public interface EtfFlowDataMapper extends IMapper<EtfFlow, EtfFlowData> {
   @Override
-  public EtfFlow mapBToA(final EtfFlowData b) {
-    final EtfFlow a = new EtfFlow();
-    a.setId(new EtfFlowID(b.getEtfflowid()));
-    a.setIsin(new EtfIsin(b.getIsin()));
-    a.setTime(b.getFlowdate());
-    a.setAmount(b.getAmount());
-    a.setPrice(b.getPrice());
-    return a;
-  }
+  @Mapping(target = "id", source = "etfflowid")
+  @Mapping(target = "time", source = "flowdate")
+  EtfFlow mapBToA(EtfFlowData a);
 
   @Override
-  public EtfFlowData mapAToB(final EtfFlow a) {
-    final EtfFlowData b = new EtfFlowData();
-    b.setAmount(a.getAmount());
-    if (a.getId() != null) {
-      b.setEtfflowid(a.getId().getId());
-    }
-    b.setFlowdate(a.getTime());
-    b.setIsin(a.getIsin().getId());
-    b.setPrice(a.getPrice());
-    return b;
-  }
+  @Mapping(target = "etfflowid", source = "id")
+  @Mapping(target = "flowdate", source = "time")
+  EtfFlowData mapAToB(EtfFlow b);
 }

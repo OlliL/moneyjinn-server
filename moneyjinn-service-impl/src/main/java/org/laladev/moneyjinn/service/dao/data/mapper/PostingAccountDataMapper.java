@@ -26,26 +26,13 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
-public class PostingAccountDataMapper implements IMapper<PostingAccount, PostingAccountData> {
-  @Override
-  public PostingAccount mapBToA(final PostingAccountData postingAccountData) {
-    return new PostingAccount(new PostingAccountID(postingAccountData.getId()),
-        postingAccountData.getName());
-  }
-
-  @Override
-  public PostingAccountData mapAToB(final PostingAccount postingAccount) {
-    final PostingAccountData postingAccountData = new PostingAccountData();
-    // might be null for new PostingAccounts
-    if (postingAccount.getId() != null) {
-      postingAccountData.setId(postingAccount.getId().getId());
-    }
-    postingAccountData.setName(postingAccount.getName());
-    return postingAccountData;
-  }
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR, uses = PostingAccountIdMapper.class)
+public interface PostingAccountDataMapper extends IMapper<PostingAccount, PostingAccountData> {
 }
