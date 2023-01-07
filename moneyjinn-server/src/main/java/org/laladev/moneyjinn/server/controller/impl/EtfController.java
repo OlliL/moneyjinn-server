@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -280,6 +281,7 @@ public class EtfController extends AbstractController {
   }
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new EtfFlowTransportMapper());
     super.registerBeanMapper(new EtfEffectiveFlowTransportMapper());

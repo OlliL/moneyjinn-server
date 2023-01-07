@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,7 @@ public class PreDefMoneyflowController extends AbstractController {
   private final IPreDefMoneyflowService preDefMoneyflowService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new PreDefMoneyflowTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());

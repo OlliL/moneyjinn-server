@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -79,6 +80,7 @@ public class MonthlySettlementController extends AbstractController {
   private final IAccessRelationService accessRelationService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new MonthlySettlementTransportMapper());
     this.registerBeanMapper(new ImportedMonthlySettlementTransportMapper());

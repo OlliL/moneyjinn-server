@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
   private final MoneyflowReceiptDao moneyflowReceiptDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new MoneyflowReceiptDataMapper());
   }

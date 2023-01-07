@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
   private final IAccessRelationService accessRelationService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ImportedBalanceDataMapper());
   }

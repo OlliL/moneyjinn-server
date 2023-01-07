@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,7 @@ public class ContractpartnerAccountController extends AbstractController {
   private final IContractpartnerAccountService contractpartnerAccountService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ContractpartnerAccountTransportMapper());
     super.registerBeanMapper(new ValidationItemTransportMapper());

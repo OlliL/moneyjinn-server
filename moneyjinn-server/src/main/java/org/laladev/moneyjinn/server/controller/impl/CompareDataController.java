@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -74,6 +75,7 @@ public class CompareDataController extends AbstractController {
   private final ICompareDataService compareDataService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new CompareDataFormatTransportMapper());
     super.registerBeanMapper(new CapitalsourceTransportMapper());

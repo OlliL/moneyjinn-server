@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -94,6 +95,7 @@ public class UserController extends AbstractController {
   JwtTokenProvider jwtTokenProvider;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new UserTransportMapper());
     this.registerBeanMapper(new GroupTransportMapper());

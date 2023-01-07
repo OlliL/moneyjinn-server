@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.math.BigDecimal;
@@ -92,6 +93,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   private final MoneyflowDao moneyflowDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new MoneyflowDataMapper());
     super.registerBeanMapper(new PostingAccountAmountDataMapper());

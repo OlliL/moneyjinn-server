@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.security.MessageDigest;
@@ -58,6 +59,7 @@ public class UserService extends AbstractService implements IUserService {
   private final UserDao userDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new UserDataMapper());
   }

@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,7 @@ public class CapitalsourceController extends AbstractController {
   private final IUserService userService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new CapitalsourceTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());

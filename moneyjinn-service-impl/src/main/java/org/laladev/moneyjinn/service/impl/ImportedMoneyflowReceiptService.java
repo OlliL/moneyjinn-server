@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.Arrays;
@@ -60,6 +61,7 @@ public class ImportedMoneyflowReceiptService extends AbstractService
   private final Tika tika = new Tika();
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ImportedMoneyflowReceiptDataMapper());
   }

@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
@@ -66,6 +67,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
   private final IGroupService groupService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new AccessRelationDataMapper());
     super.registerBeanMapper(new AccessFlattenedDataMapper());

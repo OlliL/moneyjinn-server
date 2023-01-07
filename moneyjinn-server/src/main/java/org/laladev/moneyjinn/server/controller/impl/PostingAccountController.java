@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ public class PostingAccountController extends AbstractController {
   private final IPostingAccountService postingAccountService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new PostingAccountTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());

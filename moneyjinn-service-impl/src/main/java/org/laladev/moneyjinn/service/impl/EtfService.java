@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.math.BigDecimal;
@@ -63,6 +64,7 @@ public class EtfService extends AbstractService implements IEtfService {
   private final EtfDao etfDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new EtfFlowDataMapper());
     super.registerBeanMapper(new EtfValueDataMapper());

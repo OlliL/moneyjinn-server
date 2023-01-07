@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,7 @@ public class MoneyflowReceiptController extends AbstractController {
   private final IMoneyflowReceiptService moneyflowReceiptService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
   }
 

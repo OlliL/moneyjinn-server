@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -58,6 +59,7 @@ public class ImportedMonthlySettlementController extends AbstractController {
   private final IImportedMonthlySettlementService importedMonthlySettlementService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ImportedMonthlySettlementTransportMapper());
   }

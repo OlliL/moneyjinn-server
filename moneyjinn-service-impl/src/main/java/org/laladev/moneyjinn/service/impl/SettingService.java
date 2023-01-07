@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.IOException;
@@ -88,6 +89,7 @@ public class SettingService extends AbstractService implements ISettingService {
   private final ObjectMapper objectMapper;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     // no Mapper needed
   }

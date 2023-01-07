@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -101,6 +102,7 @@ public class MoneyflowController extends AbstractController {
       .ofPattern("yyyyMMdd");
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new MoneyflowTransportMapper());
     super.registerBeanMapper(new ValidationItemTransportMapper());

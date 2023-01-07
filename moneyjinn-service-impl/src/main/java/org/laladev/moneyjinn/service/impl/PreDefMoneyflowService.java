@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.math.BigDecimal;
@@ -102,6 +103,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
   private final PreDefMoneyflowDao preDefMoneyflowDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new PreDefMoneyflowDataMapper());
   }

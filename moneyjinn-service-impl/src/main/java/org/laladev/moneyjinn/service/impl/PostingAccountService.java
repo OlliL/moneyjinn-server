@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.List;
@@ -58,6 +59,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
   private final PostingAccountDao postingAccountDao;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new PostingAccountDataMapper());
   }

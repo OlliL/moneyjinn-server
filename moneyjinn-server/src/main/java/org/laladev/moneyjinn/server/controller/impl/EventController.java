@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.Month;
@@ -55,6 +56,7 @@ public class EventController extends AbstractController {
   private final IImportedMoneyflowService importedMoneyflowService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     // No Mapping needed.
   }

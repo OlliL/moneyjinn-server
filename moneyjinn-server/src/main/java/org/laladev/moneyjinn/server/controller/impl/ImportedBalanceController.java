@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ public class ImportedBalanceController extends AbstractController {
   private final IImportedBalanceService importedBalanceService;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ImportedBalanceTransportMapper());
   }

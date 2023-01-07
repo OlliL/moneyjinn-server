@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.ArrayList;
@@ -65,11 +66,13 @@ public class ContractpartnerAccountService extends AbstractService
   private final IContractpartnerService contractpartnerService;
   private final ContractpartnerAccountDao contractpartnerAccountDao;
   private final IAccessRelationService accessRelationService;
+  private final BankAccountDataMapper bankAccountDataMapper;
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new ContractpartnerAccountDataMapper());
-    super.registerBeanMapper(new BankAccountDataMapper());
+    super.registerBeanMapper(this.bankAccountDataMapper);
   }
 
   @Override

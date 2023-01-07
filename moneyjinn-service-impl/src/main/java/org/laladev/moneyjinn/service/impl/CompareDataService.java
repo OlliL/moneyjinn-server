@@ -31,6 +31,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.IOException;
@@ -90,6 +91,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
   private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new CompareDataFormatDataMapper());
   }

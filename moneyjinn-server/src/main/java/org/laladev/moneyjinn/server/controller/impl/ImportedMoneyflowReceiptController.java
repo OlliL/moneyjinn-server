@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +74,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
 
   @Override
+  @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new ImportedMoneyflowReceiptTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());
