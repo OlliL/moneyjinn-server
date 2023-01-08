@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 
@@ -19,7 +18,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
     super.setIsin(ISIN);
     super.setNanoseconds(320000000);
     super.setPrice(new BigDecimal("777.666"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 14, 15, 16, 20, 320000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 14, 15, 16, 20, 320000000));
     return this;
   }
 
@@ -29,7 +28,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
     super.setIsin(ISIN);
     super.setNanoseconds(320000000);
     super.setPrice(new BigDecimal("877.000"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 15, 15, 16, 20, 320000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 15, 15, 16, 20, 320000000));
     return this;
   }
 
@@ -39,7 +38,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
     super.setIsin(ISIN);
     super.setNanoseconds(320000000);
     super.setPrice(new BigDecimal("666.123"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 16, 15, 16, 20, 320000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 16, 15, 16, 20, 320000000));
     return this;
   }
 
@@ -49,7 +48,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
     super.setIsin(ISIN);
     super.setNanoseconds(20000000);
     super.setPrice(new BigDecimal("667.456"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 17, 23, 59, 59, 200000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 17, 23, 59, 59, 200000000));
     return this;
   }
 

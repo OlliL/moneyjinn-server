@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -41,14 +40,8 @@ public class MoneyflowSearchParamsTransportMapper
   public MoneyflowSearchParams mapBToA(
       final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
     final MoneyflowSearchParams moneyflowSearchParams = new MoneyflowSearchParams();
-    if (moneyflowSearchParamsTransport.getStartDate() != null) {
-      final LocalDate startDate = moneyflowSearchParamsTransport.getStartDate().toLocalDate();
-      moneyflowSearchParams.setStartDate(startDate);
-    }
-    if (moneyflowSearchParamsTransport.getEndDate() != null) {
-      final LocalDate endDate = moneyflowSearchParamsTransport.getEndDate().toLocalDate();
-      moneyflowSearchParams.setEndDate(endDate);
-    }
+    moneyflowSearchParams.setStartDate(moneyflowSearchParamsTransport.getStartDate());
+    moneyflowSearchParams.setEndDate(moneyflowSearchParamsTransport.getEndDate());
     moneyflowSearchParams.setFeatureEqual(
         TRUE.equals(moneyflowSearchParamsTransport.getFeatureEqual()) ? true : false);
     moneyflowSearchParams.setFeatureCaseSensitive(

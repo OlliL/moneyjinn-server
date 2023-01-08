@@ -122,8 +122,8 @@ public class CompareDataController extends AbstractController {
     if (request.getCapitalsourceId() != null && request.getEndDate() != null
         && request.getStartDate() != null) {
       final CapitalsourceID capitalsourceId = new CapitalsourceID(request.getCapitalsourceId());
-      final LocalDate startDate = request.getStartDate().toLocalDate();
-      final LocalDate endDate = request.getEndDate().toLocalDate();
+      final LocalDate startDate = request.getStartDate();
+      final LocalDate endDate = request.getEndDate();
       final boolean useImportedData = request.getUseImportedData() != null
           && request.getUseImportedData().compareTo((short) 1) == 0;
       if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {

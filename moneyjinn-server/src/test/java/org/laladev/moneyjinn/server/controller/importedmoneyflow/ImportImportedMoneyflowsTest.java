@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,6 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
@@ -269,8 +269,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .forImportedMoneyflow2ToImport().build();
     transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE3_ACCOUNTNUMBER);
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE3_BANKCODE);
-    transport.setBookingdate(DateUtil.getGmtDate("2000-01-02"));
-    transport.setInvoicedate(DateUtil.getGmtDate("2000-01-01"));
+    transport.setBookingdate(LocalDate.parse("2000-01-02"));
+    transport.setInvoicedate(LocalDate.parse("2000-01-01"));
     request.setImportedMoneyflowTransport(transport);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
@@ -343,7 +343,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
     Assertions.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
+    Assertions.assertEquals(transport.getBookingdate(), capitalsource.getValidTil());
   }
 
   @Test
@@ -355,7 +355,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setCapitalsourceid(capitalsourceId.getId());
-    transport.setBookingdate(DateUtil.getGmtDate("2000-01-01"));
+    transport.setBookingdate(LocalDate.parse("2000-01-01"));
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     request.setImportedMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
@@ -365,7 +365,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
     Assertions.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
+    Assertions.assertEquals(transport.getBookingdate(), capitalsource.getValidFrom());
   }
 
   @Test
@@ -375,7 +375,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    transport.setBookingdate(DateUtil.getGmtDate("2011-01-01"));
+    transport.setBookingdate(LocalDate.parse("2011-01-01"));
     transport.setContractpartnerid(contractpartnerId.getId());
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     request.setImportedMoneyflowTransport(transport);
@@ -386,8 +386,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
     Assertions.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(),
-        contractpartner.getValidTil());
+    Assertions.assertEquals(transport.getBookingdate(), contractpartner.getValidTil());
   }
 
   @Test
@@ -397,7 +396,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    transport.setBookingdate(DateUtil.getGmtDate("2000-01-01"));
+    transport.setBookingdate(LocalDate.parse("2000-01-01"));
     transport.setContractpartnerid(contractpartnerId.getId());
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     request.setImportedMoneyflowTransport(transport);
@@ -408,8 +407,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
     Assertions.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(),
-        contractpartner.getValidFrom());
+    Assertions.assertEquals(transport.getBookingdate(), contractpartner.getValidFrom());
   }
 
   @Test
@@ -505,7 +503,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   public void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    transport.setBookingdate(DateUtil.getGmtDate("1970-01-01"));
+    transport.setBookingdate(LocalDate.parse("1970-01-01"));
     this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT,
         ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY, ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
   }
@@ -514,7 +512,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   public void test_BookingDateAfterGroupAssignment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    transport.setBookingdate(DateUtil.getGmtDate("2600-01-01"));
+    transport.setBookingdate(LocalDate.parse("2600-01-01"));
     this.testError(transport, ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
   }
 

@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
@@ -51,11 +50,11 @@ public class MoneyflowTransportMapper implements IMapper<Moneyflow, MoneyflowTra
     }
     moneyflow.setAmount(moneyflowTransport.getAmount());
     if (moneyflowTransport.getBookingdate() != null) {
-      final LocalDate bookingDate = moneyflowTransport.getBookingdate().toLocalDate();
+      final LocalDate bookingDate = moneyflowTransport.getBookingdate();
       moneyflow.setBookingDate(bookingDate);
     }
     if (moneyflowTransport.getInvoicedate() != null) {
-      final LocalDate invoiceDate = moneyflowTransport.getInvoicedate().toLocalDate();
+      final LocalDate invoiceDate = moneyflowTransport.getInvoicedate();
       moneyflow.setInvoiceDate(invoiceDate);
     }
     if (moneyflowTransport.getCapitalsourceid() != null) {
@@ -86,14 +85,8 @@ public class MoneyflowTransportMapper implements IMapper<Moneyflow, MoneyflowTra
     final MoneyflowTransport moneyflowTransport = new MoneyflowTransport();
     moneyflowTransport.setId(moneyflow.getId().getId());
     moneyflowTransport.setAmount(moneyflow.getAmount());
-    if (moneyflow.getBookingDate() != null) {
-      final Date bookingDate = Date.valueOf(moneyflow.getBookingDate());
-      moneyflowTransport.setBookingdate(bookingDate);
-    }
-    if (moneyflow.getInvoiceDate() != null) {
-      final Date invoiceDate = Date.valueOf(moneyflow.getInvoiceDate());
-      moneyflowTransport.setInvoicedate(invoiceDate);
-    }
+    moneyflowTransport.setBookingdate(moneyflow.getBookingDate());
+    moneyflowTransport.setInvoicedate(moneyflow.getInvoiceDate());
     final Capitalsource capitalsource = moneyflow.getCapitalsource();
     moneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
     moneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());

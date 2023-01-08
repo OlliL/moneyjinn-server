@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
+import java.time.LocalDate;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 
 public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
@@ -22,8 +23,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(CONTRACTPARTNER1_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
     super.setName(CONTRACTPARTNER1_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setStreet("Street1");
     super.setPostcode(12345);
     super.setTown("Town1");
@@ -38,8 +39,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(CONTRACTPARTNER2_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
     super.setName(CONTRACTPARTNER2_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setStreet("Street2");
     super.setPostcode(12345);
     super.setTown("Town2");
@@ -54,8 +55,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(CONTRACTPARTNER3_ID);
     super.setUserid(UserTransportBuilder.USER3_ID);
     super.setName(CONTRACTPARTNER3_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2010-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-01"));
+    super.setValidTil(LocalDate.parse("2010-12-31"));
     super.setStreet("Street3");
     super.setPostcode(12345);
     super.setTown("Town3");
@@ -70,8 +71,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(CONTRACTPARTNER4_ID);
     super.setUserid(UserTransportBuilder.USER3_ID);
     super.setName(CONTRACTPARTNER4_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-02"));
-    super.setValidTil(DateUtil.getGmtDate("2010-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-02"));
+    super.setValidTil(LocalDate.parse("2010-12-31"));
     super.setStreet("Street4");
     super.setPostcode(12345);
     super.setTown("Town4");
@@ -86,8 +87,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(CONTRACTPARTNER5_ID);
     super.setUserid(UserTransportBuilder.ADMIN_ID);
     super.setName(CONTRACTPARTNER5_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setStreet("Street");
     super.setPostcode(12345);
     super.setTown("Town");
@@ -102,8 +103,8 @@ public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
     super.setId(NON_EXISTING_ID);
     super.setUserid(UserTransportBuilder.USER2_ID);
     super.setName(NEWCONTRACTPARTNER_NAME);
-    super.setValidFrom(DateUtil.getGmtDate("1980-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("1980-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setStreet("StreetNew");
     super.setPostcode(12345);
     super.setTown("TownNew");

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +18,6 @@ import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearch
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
@@ -136,8 +136,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("ENERATED");
-    transport.setStartDate(DateUtil.getGmtDate("2009-05-01"));
-    transport.setEndDate(DateUtil.getGmtDate("2009-11-10"));
+    transport.setStartDate(LocalDate.parse("2009-05-01"));
+    transport.setEndDate(LocalDate.parse("2009-11-10"));
     request.setMoneyflowSearchParamsTransport(transport);
     final SearchMoneyflowsResponse expected = this.getDefaultResponse();
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();

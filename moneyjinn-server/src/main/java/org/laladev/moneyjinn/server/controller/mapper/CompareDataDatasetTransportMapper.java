@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
@@ -44,14 +43,8 @@ public class CompareDataDatasetTransportMapper
     compareDataDatasetTransport.setAmount(compareDataDataset.getAmount());
     compareDataDatasetTransport.setPartner(compareDataDataset.getPartner());
     compareDataDatasetTransport.setComment(compareDataDataset.getComment());
-    if (compareDataDataset.getBookingDate() != null) {
-      final Date bookingDate = Date.valueOf(compareDataDataset.getBookingDate());
-      compareDataDatasetTransport.setBookingDate(bookingDate);
-    }
-    if (compareDataDataset.getInvoiceDate() != null) {
-      final Date invoiceDate = Date.valueOf(compareDataDataset.getInvoiceDate());
-      compareDataDatasetTransport.setInvoiceDate(invoiceDate);
-    }
+    compareDataDatasetTransport.setBookingDate(compareDataDataset.getBookingDate());
+    compareDataDatasetTransport.setInvoiceDate(compareDataDataset.getInvoiceDate());
     return compareDataDatasetTransport;
   }
 }

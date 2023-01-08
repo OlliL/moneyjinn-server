@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -56,12 +55,11 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     return super.getUsecaseFromTestClassName(this.getClass());
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_maxDateRange_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-    request.setStartDate(new Date(70, 0, 1));
-    request.setEndDate(new Date(199, 11, 31));
+    request.setStartDate(LocalDate.parse("1970-01-01"));
+    request.setEndDate(LocalDate.parse("2099-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
@@ -114,12 +112,11 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     Assertions.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_only2009_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-    request.setStartDate(new Date(109, 0, 1));
-    request.setEndDate(new Date(109, 11, 31));
+    request.setStartDate(LocalDate.parse("2009-01-01"));
+    request.setEndDate(LocalDate.parse("2009-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
@@ -156,12 +153,11 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     Assertions.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_onlyOneUnsettledMonth_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-    request.setStartDate(new Date(110, 4, 1));
-    request.setEndDate(new Date(110, 11, 31));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
@@ -176,7 +172,6 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     Assertions.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_validtyPeriodOfCapitalsource_response() throws Exception {
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -188,8 +183,8 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     capitalsource.setValidTil(LocalDate.of(2010, Month.APRIL, 30));
     this.capitalsourceService.updateCapitalsource(capitalsource);
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-    request.setStartDate(new Date(110, 3, 1));
-    request.setEndDate(new Date(110, 11, 31));
+    request.setStartDate(LocalDate.parse("2010-04-01"));
+    request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
     final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
@@ -217,15 +212,14 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     super.callUsecaseWithContent("", this.method, request, false, ShowTrendsGraphResponse.class);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   @Sql("classpath:h2defaults.sql")
   public void test_emptyDatabaseFakeRequestData_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-    request.setStartDate(new Date(110, 3, 1));
-    request.setEndDate(new Date(110, 11, 31));
+    request.setStartDate(LocalDate.parse("2010-04-01"));
+    request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     super.callUsecaseWithContent("", this.method, request, false, ShowTrendsGraphResponse.class);
   }

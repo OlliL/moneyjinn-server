@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -351,7 +352,6 @@ public class ListReportsV2Test extends AbstractControllerTest {
     this.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_MayNotSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
@@ -365,7 +365,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(new Timestamp(109, 11, 1, 20, 20, 20, 0));
+    transport1.setAmountCurrentState(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     reportTurnoverCapitalsourceTransports.add(transport1);
     reportTurnoverCapitalsourceTransports.add(new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build());
@@ -388,7 +388,6 @@ public class ListReportsV2Test extends AbstractControllerTest {
     this.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_MaywithPrivateMoneyflows_privateMoneyflowNotShown() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
@@ -407,7 +406,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(new Timestamp(109, 11, 1, 20, 20, 20, 0));
+    transport1.setAmountCurrentState(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     reportTurnoverCapitalsourceTransports.add(transport1);
     final ReportTurnoverCapitalsourceTransport transport2 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build();

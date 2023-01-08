@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.time.LocalDate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,6 @@ import org.laladev.moneyjinn.core.rest.model.report.ShowReportingFormResponse;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -49,8 +49,8 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   private ShowReportingFormResponse getDefaultResponse() {
     final ShowReportingFormResponse expected = new ShowReportingFormResponse();
 
-    expected.setMinDate(DateUtil.getGmtDate("2008-12-01"));
-    expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
+    expected.setMinDate(LocalDate.parse("2008-12-01"));
+    expected.setMaxDate(LocalDate.parse("2010-05-03"));
     return expected;
   }
 

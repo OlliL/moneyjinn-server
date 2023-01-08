@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 
 public class PostingAccountAmountTransportBuilder extends PostingAccountAmountTransport {
@@ -11,7 +12,7 @@ public class PostingAccountAmountTransportBuilder extends PostingAccountAmountTr
   }
 
   public PostingAccountAmountTransportBuilder withDate(final String date) {
-    super.setDate(DateUtil.getGmtDate(date));
+    super.setDate(LocalDate.parse(date));
     return this;
   }
 

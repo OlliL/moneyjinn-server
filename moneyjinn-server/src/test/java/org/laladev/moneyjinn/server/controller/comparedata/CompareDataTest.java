@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.comparedata;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWr
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataDatasetTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -68,8 +68,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_bookedWithWrongCapitalsource_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -96,8 +96,8 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-03"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-03"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -117,8 +117,8 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2009-02-01"));
-    request.setEndDate(DateUtil.getGmtDate("2009-02-20"));
+    request.setStartDate(LocalDate.parse("2009-02-01"));
+    request.setEndDate(LocalDate.parse("2009-02-20"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -134,8 +134,8 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-03"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-03"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -154,8 +154,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_noDataForThisMonth_FileContentIsFilteredAllMoneyflowsMissing() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-03-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-03-31"));
+    request.setStartDate(LocalDate.parse("2010-03-01"));
+    request.setEndDate(LocalDate.parse("2010-03-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -174,8 +174,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_onePossibleMatch_matchIsTakenNoRatingInvolved() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-02-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-02-28"));
+    request.setStartDate(LocalDate.parse("2010-02-01"));
+    request.setEndDate(LocalDate.parse("2010-02-28"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -196,8 +196,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_moneyflowIsOutOfSearchFrame_missingReported() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-01-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-01-31"));
+    request.setStartDate(LocalDate.parse("2010-01-01"));
+    request.setEndDate(LocalDate.parse("2010-01-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -220,8 +220,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_invalidFileFormat_Exception() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-01-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-01-31"));
+    request.setStartDate(LocalDate.parse("2010-01-01"));
+    request.setEndDate(LocalDate.parse("2010-01-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     // just pick a file which does not match the above set FormatId
     final String base64FileContents = this.getFileContents(this.spardaBankResource);
@@ -239,8 +239,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_SpardaBank_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
     final String base64FileContents = this.getFileContents(this.spardaBankResource);
     request.setFileContents(base64FileContents);
@@ -270,8 +270,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_PostbankOnline_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
@@ -302,8 +302,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_Sparkasse_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT5_ID);
     final String base64FileContents = this.getFileContents(this.sparkasseResource);
     request.setFileContents(base64FileContents);
@@ -334,8 +334,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_Volksbank_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT6_ID);
     final String base64FileContents = this.getFileContents(this.volksbankResource);
     request.setFileContents(base64FileContents);
@@ -367,8 +367,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_Camt_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT4_ID);
     final String base64FileContents = this.getFileContents(this.camtResource);
     request.setFileContents(base64FileContents);
@@ -399,8 +399,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_standardRequest_Import_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
-    request.setStartDate(DateUtil.getGmtDate("2010-05-01"));
-    request.setEndDate(DateUtil.getGmtDate("2010-05-31"));
+    request.setStartDate(LocalDate.parse("2010-05-01"));
+    request.setEndDate(LocalDate.parse("2010-05-31"));
     request.setUseImportedData((short) 1);
     final CompareDataResponse expected = new CompareDataResponse();
 
@@ -432,8 +432,8 @@ public class CompareDataTest extends AbstractControllerTest {
       throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
-    request.setStartDate(DateUtil.getGmtDate("1999-01-01"));
-    request.setEndDate(DateUtil.getGmtDate("1999-01-10"));
+    request.setStartDate(LocalDate.parse("1999-01-01"));
+    request.setEndDate(LocalDate.parse("1999-01-10"));
     request.setUseImportedData((short) 1);
     final CompareDataResponse expected = new CompareDataResponse();
 
@@ -446,8 +446,8 @@ public class CompareDataTest extends AbstractControllerTest {
   public void test_accessesImportedMoneyflowsAfterGroupAssignemnts_dataNotShown() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
-    request.setStartDate(DateUtil.getGmtDate("2600-01-01"));
-    request.setEndDate(DateUtil.getGmtDate("2600-01-10"));
+    request.setStartDate(LocalDate.parse("2600-01-01"));
+    request.setEndDate(LocalDate.parse("2600-01-10"));
     request.setUseImportedData((short) 1);
     final CompareDataResponse expected = new CompareDataResponse();
 

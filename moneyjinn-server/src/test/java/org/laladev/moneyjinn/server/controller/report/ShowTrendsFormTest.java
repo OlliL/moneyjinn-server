@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +13,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
@@ -53,8 +53,8 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   private ShowTrendsFormResponse getDefaultResponse() {
     final ShowTrendsFormResponse expected = new ShowTrendsFormResponse();
 
-    expected.setMinDate(DateUtil.getGmtDate("2008-11-01"));
-    expected.setMaxDate(DateUtil.getGmtDate("2010-05-03"));
+    expected.setMinDate(LocalDate.parse("2008-11-01"));
+    expected.setMaxDate(LocalDate.parse("2010-05-03"));
     return expected;
   }
 

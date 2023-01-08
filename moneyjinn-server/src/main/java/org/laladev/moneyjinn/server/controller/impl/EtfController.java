@@ -28,7 +28,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -116,7 +115,7 @@ public class EtfController extends AbstractController {
         if (etfValue != null) {
           transport.setBuyPrice(etfValue.getBuyPrice());
           transport.setSellPrice(etfValue.getSellPrice());
-          transport.setPricesTimestamp(Timestamp.valueOf(etfValue.getChangeDate()));
+          transport.setPricesTimestamp(etfValue.getChangeDate());
         }
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal spentValue = BigDecimal.ZERO;

@@ -29,7 +29,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
@@ -170,7 +169,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
     Assertions.assertEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidTil());
+    Assertions.assertEquals(transport.getBookingdate(), capitalsource.getValidTil());
   }
 
   @Test
@@ -181,7 +180,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(capitalsourceId.getId());
-    transport.setBookingdate(DateUtil.getGmtDate("2000-01-01"));
+    transport.setBookingdate(LocalDate.parse("2000-01-01"));
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     request.setMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
@@ -191,7 +190,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
     Assertions.assertEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), capitalsource.getValidFrom());
+    Assertions.assertEquals(transport.getBookingdate(), capitalsource.getValidFrom());
   }
 
   @Test
@@ -214,7 +213,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
-    transport.setBookingdate(DateUtil.getGmtDate("2011-01-01"));
+    transport.setBookingdate(LocalDate.parse("2011-01-01"));
     transport.setContractpartnerid(contractpartnerId.getId());
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     request.setMoneyflowTransport(transport);
@@ -225,7 +224,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
     Assertions.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(),
+    Assertions.assertEquals(transport.getBookingdate(),
         contractpartner.getValidTil());
   }
 
@@ -235,7 +234,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
-    transport.setBookingdate(DateUtil.getGmtDate("2000-01-01"));
+    transport.setBookingdate(LocalDate.parse("2000-01-01"));
     transport.setContractpartnerid(contractpartnerId.getId());
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     request.setMoneyflowTransport(transport);
@@ -246,7 +245,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
     Assertions.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(),
+    Assertions.assertEquals(transport.getBookingdate(),
         contractpartner.getValidFrom());
   }
 
@@ -297,7 +296,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(capitalsourceId.getId());
     transport.setContractpartnerid(contractpartnerId.getId());
-    transport.setBookingdate(DateUtil.getGmtDate("1970-01-01"));
+    transport.setBookingdate(LocalDate.parse("1970-01-01"));
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotNull(capitalsourceOrig);
@@ -327,7 +326,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(capitalsourceId.getId());
     transport.setContractpartnerid(contractpartnerId.getId());
-    transport.setBookingdate(DateUtil.getGmtDate("2600-01-01"));
+    transport.setBookingdate(LocalDate.parse("2600-01-01"));
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotNull(capitalsourceOrig);
@@ -373,8 +372,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getContractpartnerid(),
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getInvoiceDate());
+    Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
+    Assertions.assertEquals(transport.getBookingdate(), moneyflow.getInvoiceDate());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
   }
@@ -399,8 +398,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getContractpartnerid(),
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
-    Assertions.assertEquals(transport.getBookingdate().toLocalDate(), moneyflow.getBookingDate());
-    Assertions.assertEquals(transport.getInvoicedate().toLocalDate(), moneyflow.getInvoiceDate());
+    Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
+    Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
     final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(

@@ -27,8 +27,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
@@ -121,10 +119,10 @@ public class ReportController extends AbstractController {
     final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
     final LocalDate minMoneyflowDate = this.moneyflowService.getMinMoneyflowDate(userId);
     if (maxMoneyflowDate != null) {
-      response.setMaxDate(Date.valueOf(maxMoneyflowDate));
+      response.setMaxDate(maxMoneyflowDate);
     }
     if (minMoneyflowDate != null) {
-      response.setMinDate(Date.valueOf(minMoneyflowDate));
+      response.setMinDate(minMoneyflowDate);
     }
     if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
       final List<Long> postingAccountIds = setting.getSetting().stream()
@@ -142,8 +140,8 @@ public class ReportController extends AbstractController {
     if (request.getStartDate() != null && request.getEndDate() != null
         && request.getPostingAccountIdsYes() != null
         && !request.getPostingAccountIdsYes().isEmpty()) {
-      final LocalDate startDate = request.getStartDate().toLocalDate();
-      final LocalDate endDate = request.getEndDate().toLocalDate();
+      final LocalDate startDate = request.getStartDate();
+      final LocalDate endDate = request.getEndDate();
       final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
           .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
       if (request.getPostingAccountIdsNo() != null) {
@@ -171,8 +169,8 @@ public class ReportController extends AbstractController {
     if (request.getStartDate() != null && request.getEndDate() != null
         && request.getPostingAccountIdsYes() != null
         && !request.getPostingAccountIdsYes().isEmpty()) {
-      final LocalDate startDate = request.getStartDate().toLocalDate();
-      final LocalDate endDate = request.getEndDate().toLocalDate();
+      final LocalDate startDate = request.getStartDate();
+      final LocalDate endDate = request.getEndDate();
       final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
           .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
       if (request.getPostingAccountIdsNo() != null) {
@@ -200,11 +198,11 @@ public class ReportController extends AbstractController {
     final LocalDate minMonthlysettlementwDate = this.monthlySettlementService
         .getMinSettlementDate(userId);
     if (maxMoneyflowDate != null) {
-      response.setMaxDate(Date.valueOf(maxMoneyflowDate));
-      response.setMinDate(Date.valueOf(maxMoneyflowDate));
+      response.setMaxDate(maxMoneyflowDate);
+      response.setMinDate(maxMoneyflowDate);
     }
     if (minMonthlysettlementwDate != null) {
-      response.setMinDate(Date.valueOf(minMonthlysettlementwDate));
+      response.setMinDate(minMonthlysettlementwDate);
     }
     final ClientTrendCapitalsourceIDsSetting clientTrendCapitalsourceIDsSetting = this.settingService
         .getClientTrendCapitalsourceIDsSetting(userId);
@@ -225,9 +223,8 @@ public class ReportController extends AbstractController {
     final ShowTrendsGraphResponse response = new ShowTrendsGraphResponse();
     if (request.getStartDate() != null && request.getEndDate() != null
         && request.getCapitalSourceIds() != null && !request.getCapitalSourceIds().isEmpty()) {
-      final LocalDate startDate = request.getStartDate().toLocalDate();
-      final LocalDate endDate = request.getEndDate().toLocalDate()
-          .with(TemporalAdjusters.lastDayOfMonth());
+      final LocalDate startDate = request.getStartDate();
+      final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
       final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
           .map(CapitalsourceID::new).collect(Collectors.toCollection(ArrayList::new));
       final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
@@ -685,7 +682,7 @@ public class ReportController extends AbstractController {
     }
     if (importedBalance != null) {
       turnoverCapitalsource.setAmountCurrent(importedBalance.getBalance());
-      turnoverCapitalsource.setAmountCurrentState(Timestamp.valueOf(importedBalance.getDate()));
+      turnoverCapitalsource.setAmountCurrentState(importedBalance.getDate());
     } else {
       final BigDecimal movement = this.getMovementForCapitalsourceAndDateRange(moneyflows,
           capitalsourceId, startOfMonth, today);

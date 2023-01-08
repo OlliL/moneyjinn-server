@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 
 public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
@@ -25,7 +26,7 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
     super.setComment(PRE_DEF_MONEYFLOW1_COMMENT);
     super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
     super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
-    super.setCreatedate(DateUtil.getGmtDate("2000-10-10"));
+    super.setCreatedate(LocalDate.parse("2000-10-10"));
     super.setLastUsed(null);
     super.setOnceAMonth(SHORT_1);
     super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
@@ -42,7 +43,7 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
     super.setComment(PRE_DEF_MONEYFLOW2_COMMENT);
     super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
     super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER3_NAME);
-    super.setCreatedate(DateUtil.getGmtDate("2000-10-10"));
+    super.setCreatedate(LocalDate.parse("2000-10-10"));
     super.setLastUsed(null);
     super.setOnceAMonth(SHORT_1);
     super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
@@ -59,7 +60,7 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
     super.setComment(PRE_DEF_MONEYFLOW3_COMMENT);
     super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
     super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME);
-    super.setCreatedate(DateUtil.getGmtDate("2000-10-10"));
+    super.setCreatedate(LocalDate.parse("2000-10-10"));
     super.setLastUsed(null);
     super.setOnceAMonth(null);
     super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
@@ -76,7 +77,7 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
     super.setComment(NEWPRE_DEF_MONEYFLOW_COMMENT);
     super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
     super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER2_NAME);
-    super.setCreatedate(DateUtil.getGmtDate("2000-10-10"));
+    super.setCreatedate(LocalDate.parse("2000-10-10"));
     super.setLastUsed(null);
     super.setOnceAMonth(null);
     super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);

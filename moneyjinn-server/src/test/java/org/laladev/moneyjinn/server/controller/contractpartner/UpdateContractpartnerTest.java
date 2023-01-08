@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
 import jakarta.inject.Inject;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +17,6 @@ import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -87,8 +87,8 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
   public void test_ValidTilBeforeValidFrom_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forContractpartner2().build();
-    transport.setValidTil(DateUtil.getGmtDate("2000-01-01"));
-    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    transport.setValidTil(LocalDate.parse("2000-01-01"));
+    transport.setValidFrom(LocalDate.parse("2010-01-01"));
     this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
   }
 
@@ -96,7 +96,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
   public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forContractpartner1().build();
-    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    transport.setValidFrom(LocalDate.parse("2010-01-01"));
     this.testError(transport, ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD);
   }
 

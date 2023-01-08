@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 
@@ -18,7 +17,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
     super.setIsin(ISIN);
     super.setNanoseconds(320000000);
     super.setPrice(new BigDecimal("777.666"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 14, 15, 16, 20, 320000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 14, 15, 16, 20, 320000000));
     return this;
   }
 
@@ -28,7 +27,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
     super.setIsin(ISIN);
     super.setNanoseconds(320000000);
     super.setPrice(new BigDecimal("666.123"));
-    super.setTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 16, 15, 16, 20, 320000000)));
+    super.setTimestamp(LocalDateTime.of(2008, 12, 16, 15, 16, 20, 320000000));
     return this;
   }
 

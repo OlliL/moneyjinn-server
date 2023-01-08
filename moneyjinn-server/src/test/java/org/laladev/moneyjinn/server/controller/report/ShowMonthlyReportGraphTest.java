@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,12 +50,11 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     return super.getUsecaseFromTestClassName(this.getClass());
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_maxDateRange_response() throws Exception {
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-    request.setStartDate(new Date(70, 0, 1));
-    request.setEndDate(new Date(199, 11, 31));
+    request.setStartDate(LocalDate.parse("1970-01-01"));
+    request.setEndDate(LocalDate.parse("2099-12-31"));
     request
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
@@ -107,25 +106,23 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     Assertions.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-    request.setStartDate(new Date(70, 0, 1));
-    request.setEndDate(new Date(199, 11, 31));
+    request.setStartDate(LocalDate.parse("1970-01-01"));
+    request.setEndDate(LocalDate.parse("2099-12-31"));
     final ShowMonthlyReportGraphResponse expected = new ShowMonthlyReportGraphResponse();
     final ShowMonthlyReportGraphResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, ShowMonthlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-    request.setStartDate(new Date(70, 0, 1));
-    request.setEndDate(new Date(199, 11, 31));
+    request.setStartDate(LocalDate.parse("1970-01-01"));
+    request.setEndDate(LocalDate.parse("2099-12-31"));
     request
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
@@ -144,14 +141,13 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
         setting.getSetting().get(0).getId());
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test_privateMoneyflows_ignored() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-    request.setStartDate(new Date(70, 0, 1));
-    request.setEndDate(new Date(199, 11, 31));
+    request.setStartDate(LocalDate.parse("1970-01-01"));
+    request.setEndDate(LocalDate.parse("2099-12-31"));
     request
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
@@ -192,15 +188,14 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
         ShowMonthlyReportGraphResponse.class);
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   @Sql("classpath:h2defaults.sql")
   public void test_emptyDatabaseFakeRequestData_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-    request.setStartDate(new Date(110, 3, 1));
-    request.setEndDate(new Date(110, 11, 31));
+    request.setStartDate(LocalDate.parse("2010-04-01"));
+    request.setEndDate(LocalDate.parse("2010-12-31"));
     request
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));

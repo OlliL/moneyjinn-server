@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.model.BankAccount;
@@ -52,14 +50,8 @@ public class ImportedMoneyflowTransportMapper
       importedMoneyflow.setId(new ImportedMoneyflowID(importedMoneyflowTransport.getId()));
     }
     importedMoneyflow.setAmount(importedMoneyflowTransport.getAmount());
-    if (importedMoneyflowTransport.getBookingdate() != null) {
-      final LocalDate bookingDate = importedMoneyflowTransport.getBookingdate().toLocalDate();
-      importedMoneyflow.setBookingDate(bookingDate);
-    }
-    if (importedMoneyflowTransport.getInvoicedate() != null) {
-      final LocalDate invoiceDate = importedMoneyflowTransport.getInvoicedate().toLocalDate();
-      importedMoneyflow.setInvoiceDate(invoiceDate);
-    }
+    importedMoneyflow.setBookingDate(importedMoneyflowTransport.getBookingdate());
+    importedMoneyflow.setInvoiceDate(importedMoneyflowTransport.getInvoicedate());
     if (importedMoneyflowTransport.getCapitalsourceid() != null) {
       final Capitalsource capitalsource = new Capitalsource(
           new CapitalsourceID(importedMoneyflowTransport.getCapitalsourceid()));
@@ -97,14 +89,8 @@ public class ImportedMoneyflowTransportMapper
     final ImportedMoneyflowTransport importedMoneyflowTransport = new ImportedMoneyflowTransport();
     importedMoneyflowTransport.setId(importedMoneyflow.getId().getId());
     importedMoneyflowTransport.setAmount(importedMoneyflow.getAmount());
-    if (importedMoneyflow.getBookingDate() != null) {
-      final Date bookingDate = Date.valueOf(importedMoneyflow.getBookingDate());
-      importedMoneyflowTransport.setBookingdate(bookingDate);
-    }
-    if (importedMoneyflow.getInvoiceDate() != null) {
-      final Date invoiceDate = Date.valueOf(importedMoneyflow.getInvoiceDate());
-      importedMoneyflowTransport.setInvoicedate(invoiceDate);
-    }
+    importedMoneyflowTransport.setBookingdate(importedMoneyflow.getBookingDate());
+    importedMoneyflowTransport.setInvoicedate(importedMoneyflow.getInvoiceDate());
     final Capitalsource capitalsource = importedMoneyflow.getCapitalsource();
     importedMoneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
     importedMoneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());

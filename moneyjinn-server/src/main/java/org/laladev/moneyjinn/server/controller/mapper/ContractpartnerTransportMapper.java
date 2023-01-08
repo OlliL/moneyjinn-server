@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -46,14 +44,8 @@ public class ContractpartnerTransportMapper
       contractpartner.setId(new ContractpartnerID(contractpartnerTransport.getId()));
     }
     contractpartner.setUser(new User(new UserID(contractpartnerTransport.getUserid())));
-    if (contractpartnerTransport.getValidFrom() != null) {
-      final LocalDate validFrom = contractpartnerTransport.getValidFrom().toLocalDate();
-      contractpartner.setValidFrom(validFrom);
-    }
-    if (contractpartnerTransport.getValidTil() != null) {
-      final LocalDate validTil = contractpartnerTransport.getValidTil().toLocalDate();
-      contractpartner.setValidTil(validTil);
-    }
+    contractpartner.setValidFrom(contractpartnerTransport.getValidFrom());
+    contractpartner.setValidTil(contractpartnerTransport.getValidTil());
     contractpartner.setName(contractpartnerTransport.getName());
     contractpartner.setStreet(contractpartnerTransport.getStreet());
     contractpartner.setPostcode(contractpartnerTransport.getPostcode());
@@ -73,8 +65,6 @@ public class ContractpartnerTransportMapper
     final User user = contractpartner.getUser();
     final Long id = contractpartnerId == null ? null : contractpartnerId.getId();
     final Long userId = user == null ? null : user.getId().getId();
-    final Date validFrom = Date.valueOf(contractpartner.getValidFrom());
-    final Date validTil = Date.valueOf(contractpartner.getValidTil());
     Long postingAccountId = null;
     String postingAccountName = null;
     final PostingAccount postingAccount = contractpartner.getPostingAccount();
@@ -84,7 +74,7 @@ public class ContractpartnerTransportMapper
     }
     return new ContractpartnerTransport(id, userId, contractpartner.getName(),
         contractpartner.getStreet(), contractpartner.getPostcode(), contractpartner.getTown(),
-        validTil, validFrom, contractpartner.getCountry(), contractpartner.getMoneyflowComment(),
-        postingAccountName, postingAccountId);
+        contractpartner.getValidTil(), contractpartner.getValidFrom(), contractpartner.getCountry(),
+        contractpartner.getMoneyflowComment(), postingAccountName, postingAccountId);
   }
 }

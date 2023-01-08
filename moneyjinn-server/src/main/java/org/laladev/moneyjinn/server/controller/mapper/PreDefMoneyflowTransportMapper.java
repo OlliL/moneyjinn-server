@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -51,10 +49,7 @@ public class PreDefMoneyflowTransportMapper
       preDefMoneyflow.setId(new PreDefMoneyflowID(preDefMoneyflowTransport.getId()));
     }
     preDefMoneyflow.setAmount(preDefMoneyflowTransport.getAmount());
-    if (preDefMoneyflowTransport.getCreatedate() != null) {
-      final LocalDate creationDate = preDefMoneyflowTransport.getCreatedate().toLocalDate();
-      preDefMoneyflow.setCreationDate(creationDate);
-    }
+    preDefMoneyflow.setCreationDate(preDefMoneyflowTransport.getCreatedate());
     if (preDefMoneyflowTransport.getCapitalsourceid() != null) {
       final Capitalsource capitalsource = new Capitalsource(
           new CapitalsourceID(preDefMoneyflowTransport.getCapitalsourceid()));
@@ -66,10 +61,7 @@ public class PreDefMoneyflowTransportMapper
       preDefMoneyflow.setContractpartner(contractpartner);
     }
     preDefMoneyflow.setComment(preDefMoneyflowTransport.getComment());
-    if (preDefMoneyflowTransport.getLastUsed() != null) {
-      final LocalDate lastUsedDate = preDefMoneyflowTransport.getLastUsed().toLocalDate();
-      preDefMoneyflow.setLastUsedDate(lastUsedDate);
-    }
+    preDefMoneyflow.setLastUsedDate(preDefMoneyflowTransport.getLastUsed());
     if (preDefMoneyflowTransport.getOnceAMonth() != null
         && ONCE_A_MONTH_SHORT.equals(preDefMoneyflowTransport.getOnceAMonth())) {
       preDefMoneyflow.setOnceAMonth(true);
@@ -87,10 +79,7 @@ public class PreDefMoneyflowTransportMapper
     final PreDefMoneyflowTransport preDefMoneyflowTransport = new PreDefMoneyflowTransport();
     preDefMoneyflowTransport.setId(preDefMoneyflow.getId().getId());
     preDefMoneyflowTransport.setAmount(preDefMoneyflow.getAmount());
-    if (preDefMoneyflow.getCreationDate() != null) {
-      final Date creationDate = Date.valueOf(preDefMoneyflow.getCreationDate());
-      preDefMoneyflowTransport.setCreatedate(creationDate);
-    }
+    preDefMoneyflowTransport.setCreatedate(preDefMoneyflow.getCreationDate());
     final Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
     preDefMoneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
     preDefMoneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
@@ -98,10 +87,7 @@ public class PreDefMoneyflowTransportMapper
     preDefMoneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
     preDefMoneyflowTransport.setContractpartnername(contractpartner.getName());
     preDefMoneyflowTransport.setComment(preDefMoneyflow.getComment());
-    if (preDefMoneyflow.getLastUsedDate() != null) {
-      final Date lastUserDate = Date.valueOf(preDefMoneyflow.getLastUsedDate());
-      preDefMoneyflowTransport.setLastUsed(lastUserDate);
-    }
+    preDefMoneyflowTransport.setLastUsed(preDefMoneyflow.getLastUsedDate());
     if (preDefMoneyflow.isOnceAMonth()) {
       preDefMoneyflowTransport.setOnceAMonth(ONCE_A_MONTH_SHORT);
     }

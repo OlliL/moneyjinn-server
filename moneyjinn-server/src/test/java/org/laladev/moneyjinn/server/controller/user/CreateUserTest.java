@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
@@ -167,8 +165,7 @@ public class CreateUserTest extends AbstractControllerTest {
         accessRelation.getParentAccessRelation().getId().getId());
     Assertions.assertEquals(accessRelationTransport.getValidfrom(), accessRelation.getValidFrom());
     // default if validTil is empty
-    Assertions.assertEquals(DateUtil.getGmtDate("2999-12-31").getTime(),
-        accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+    Assertions.assertEquals(LocalDate.parse("2999-12-31"), accessRelation.getValidTil());
   }
 
   @Test

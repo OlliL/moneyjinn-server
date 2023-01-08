@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
@@ -67,7 +66,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     // latest etfvalues table entry
     transport.setBuyPrice(new BigDecimal("666.000"));
     transport.setSellPrice(new BigDecimal("666.543"));
-    transport.setPricesTimestamp(Timestamp.valueOf(LocalDateTime.of(2008, 12, 16, 22, 5, 2)));
+    transport.setPricesTimestamp(LocalDateTime.of(2008, 12, 16, 22, 5, 2));
 
     expected.setEtfSummaryTransports(Collections.singletonList(transport));
 

@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
@@ -46,7 +45,7 @@ public class EtfEffectiveFlowTransportMapper
     etfFlow.setIsin(new EtfIsin(etfEffectiveFlowTransport.getIsin()));
     etfFlow.setPrice(etfEffectiveFlowTransport.getPrice());
     if (etfEffectiveFlowTransport.getTimestamp() != null) {
-      final LocalDateTime time = etfEffectiveFlowTransport.getTimestamp().toLocalDateTime();
+      final LocalDateTime time = etfEffectiveFlowTransport.getTimestamp();
       final int nanos = etfEffectiveFlowTransport.getNanoseconds() != null
           ? etfEffectiveFlowTransport.getNanoseconds()
           : 0;
@@ -61,8 +60,7 @@ public class EtfEffectiveFlowTransportMapper
     transport.setEtfflowid(etfFlow.getId().getId());
     transport.setIsin(etfFlow.getIsin().getId());
     if (etfFlow.getTime() != null) {
-      final Timestamp time = Timestamp.valueOf(etfFlow.getTime());
-      transport.setTimestamp(time);
+      transport.setTimestamp(etfFlow.getTime());
       transport.setNanoseconds(etfFlow.getTime().getNano());
     }
     transport.setAmount(etfFlow.getAmount());
