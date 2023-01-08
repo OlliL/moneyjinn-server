@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.core.rest.model.user.transport;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
 public class AccessRelationTransport {
   private Long id;
   private Long refId;
-  private Date validfrom;
-  private Date validtil;
+  private LocalDate validfrom;
+  private LocalDate validtil;
 }
