@@ -27,10 +27,8 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.sql.Date;
 import java.util.Observable;
 import java.util.Observer;
-
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
@@ -41,72 +39,74 @@ import org.springframework.web.client.RestTemplate;
 
 public class AccountMovementObserver implements Observer {
 
-	private final RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
-	public AccountMovementObserver() {
-		this.restTemplate = new RestTemplate();
+  public AccountMovementObserver() {
+    this.restTemplate = new RestTemplate();
 
-		this.restTemplate.getMessageConverters().clear();
-		this.restTemplate.getMessageConverters().add(new MessageConverter());
-	}
+    this.restTemplate.getMessageConverters().clear();
+    this.restTemplate.getMessageConverters().add(new MessageConverter());
+  }
 
-	@Override
-	public void update(final Observable o, final Object arg) {
-		if (arg instanceof AccountMovement) {
-			this.notify((AccountMovement) arg);
-		}
+  @Override
+  public void update(final Observable o, final Object arg) {
+    if (arg instanceof AccountMovement) {
+      this.notify((AccountMovement) arg);
+    }
 
-	}
+  }
 
-	private void notify(final AccountMovement transaction) {
-		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransport();
-		transport.setAccountNumberCapitalsource(transaction.getMyIban());
-		transport.setBankCodeCapitalsource(transaction.getMyBic());
-		transport.setExternalid(transaction.getId().toString());
-		transport.setBookingdate(Date.valueOf(transaction.getValueDate()));
-		if (transaction.getInvoiceTimestamp() == null) {
-			transport.setInvoicedate(Date.valueOf(transaction.getBookingDate()));
-		} else {
-			transport.setInvoicedate(Date.valueOf(transaction.getInvoiceTimestamp().toLocalDate()));
-		}
-		transport.setName(transaction.getOtherName());
-		transport.setAccountNumber(transaction.getOtherAccountnumber() == null ? transaction.getOtherIban()
-				: transaction.getOtherAccountnumber().toString());
-		transport.setBankCode(transaction.getOtherBankcode() == null ? transaction.getOtherBic()
-				: transaction.getOtherBankcode().toString());
-		transport.setUsage(transaction.getMovementReason());
-		transport.setAmount(transaction.getMovementValue());
+  private void notify(final AccountMovement transaction) {
+    final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransport();
+    transport.setAccountNumberCapitalsource(transaction.getMyIban());
+    transport.setBankCodeCapitalsource(transaction.getMyBic());
+    transport.setExternalid(transaction.getId().toString());
+    transport.setBookingdate(transaction.getValueDate());
+    if (transaction.getInvoiceTimestamp() == null) {
+      transport.setInvoicedate(transaction.getBookingDate());
+    } else {
+      transport.setInvoicedate(transaction.getInvoiceTimestamp().toLocalDate());
+    }
+    transport.setName(transaction.getOtherName());
+    transport
+        .setAccountNumber(transaction.getOtherAccountnumber() == null ? transaction.getOtherIban()
+            : transaction.getOtherAccountnumber().toString());
+    transport.setBankCode(transaction.getOtherBankcode() == null ? transaction.getOtherBic()
+        : transaction.getOtherBankcode().toString());
+    transport.setUsage(transaction.getMovementReason());
+    transport.setAmount(transaction.getMovementValue());
 
-		if (transport.getName() == null) {
-			transport.setName(" ");
-		}
+    if (transport.getName() == null) {
+      transport.setName(" ");
+    }
 
-		if (transport.getAccountNumber() == null) {
-			transport.setAccountNumber(" ");
-		}
+    if (transport.getAccountNumber() == null) {
+      transport.setAccountNumber(" ");
+    }
 
-		if (transport.getBankCode() == null) {
-			transport.setBankCode(" ");
-		}
+    if (transport.getBankCode() == null) {
+      transport.setBankCode(" ");
+    }
 
-		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-		request.setImportedMoneyflowTransport(transport);
+    final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
+    request.setImportedMoneyflowTransport(transport);
 
-		final ValidationResponse response = this.restTemplate.postForObject(
-				Configuration.ROOT_URL + "/importedmoneyflow/createImportedMoneyflow", request,
-				ValidationResponse.class);
+    final ValidationResponse response = this.restTemplate.postForObject(
+        Configuration.ROOT_URL + "/importedmoneyflow/createImportedMoneyflow", request,
+        ValidationResponse.class);
 
-		if (response != null) {
-			if (response.getErrorResponse() != null) {
-				throw (new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
-						+ transport.getBankCodeCapitalsource() + ") " + response.getErrorResponse().getMessage()));
-			} else if (response.getResult().equals(Boolean.FALSE)) {
-				throw (new RuntimeException(
-						"error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode() + ") "
-								+ response.getValidationItemTransports().get(0).getError().toString()));
-			}
+    if (response != null) {
+      if (response.getErrorResponse() != null) {
+        throw (new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
+            + transport.getBankCodeCapitalsource() + ") "
+            + response.getErrorResponse().getMessage()));
+      } else if (response.getResult().equals(Boolean.FALSE)) {
+        throw (new RuntimeException(
+            "error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode()
+                + ") " + response.getValidationItemTransports().get(0).getError().toString()));
+      }
 
-		}
-	}
+    }
+  }
 
 }
