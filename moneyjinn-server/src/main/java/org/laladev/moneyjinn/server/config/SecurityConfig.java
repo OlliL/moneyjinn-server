@@ -54,6 +54,12 @@ public class SecurityConfig {
   @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
   private List<String> allowedOrigins;
 
+  private static String[] OPEN_ENDPOINTS = { "/moneyflow/server/user/login",
+      "/moneyflow/server/user/refreshToken",
+      "/moneyflow/server/importedbalance/createImportedBalance",
+      "/moneyflow/server/importedmoneyflow/createImportedMoneyflow",
+      "/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement" };
+
   @Bean
   public AuthenticationManager authenticationManager(
       final AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -81,18 +87,14 @@ public class SecurityConfig {
         .csrf(configurer -> {
           // FIX for https://github.com/spring-projects/spring-security/issues/12378
           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
-          configurer.ignoringRequestMatchers("/moneyflow/server/user/login", "/moneyflow/server/user/refreshToken");
+          configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
         })
         .apply(new JwtConfigurer(this.jwtTokenProvider))
         .and()
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
             .requestMatchers("/moneyflow/server/csrf/csrf").permitAll()
-            .requestMatchers("/moneyflow/server/user/login").permitAll()
-            .requestMatchers("/moneyflow/server/user/refreshToken").permitAll()
-            .requestMatchers("/moneyflow/server/importedbalance/createImportedBalance").permitAll()
-            .requestMatchers("/moneyflow/server/importedmoneyflow/createImportedMoneyflow").permitAll()
-            .requestMatchers("/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement").permitAll()
+            .requestMatchers(OPEN_ENDPOINTS).permitAll()
             .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
