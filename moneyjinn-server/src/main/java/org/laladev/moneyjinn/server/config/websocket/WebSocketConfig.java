@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.config.websocket;
 
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -41,9 +42,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-  @Inject
-  private AuthChannelInterceptorAdapter authChannelInterceptorAdapter;
+  private final AuthChannelInterceptorAdapter authChannelInterceptorAdapter;
   @Value("${org.laladev.moneyjinn.server.websocket.heartbeat.server}")
   private long heartbeatServer;
   @Value("${org.laladev.moneyjinn.server.websocket.heartbeat.client}")

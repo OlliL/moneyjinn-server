@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.config.websocket;
 
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -39,9 +40,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
-  @Inject
-  private JwtTokenProvider jwtTokenProvider;
+  private final JwtTokenProvider jwtTokenProvider;
 
   @Override
   public Message<?> preSend(final Message<?> message, final MessageChannel channel)

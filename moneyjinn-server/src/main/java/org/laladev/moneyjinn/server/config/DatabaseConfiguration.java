@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.config;
 
 import jakarta.inject.Inject;
 import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -37,9 +38,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @MapperScan("org.laladev.moneyjinn.service.dao.mapper")
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DatabaseConfiguration {
-  @Inject
-  private DataSource pool;
+  private final DataSource pool;
 
   @Bean
   public SqlSessionFactory sqlSessionFactoryBean() throws Exception {

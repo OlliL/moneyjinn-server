@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.server.config;
 import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,9 +47,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SecurityConfig {
-  @Inject
-  JwtTokenProvider jwtTokenProvider;
+  private final JwtTokenProvider jwtTokenProvider;
 
   @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
   private List<String> allowedOrigins;
