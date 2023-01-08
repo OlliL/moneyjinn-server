@@ -26,45 +26,39 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.time.LocalDateTime;
+import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
+import org.laladev.moneyjinn.converter.EtfIsinMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class EtfEffectiveFlowTransportMapper
-    implements IMapper<EtfFlow, EtfEffectiveFlowTransport> {
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
+public interface EtfEffectiveFlowTransportMapper
+    extends IMapper<EtfFlow, EtfEffectiveFlowTransport> {
   @Override
-  public EtfFlow mapBToA(final EtfEffectiveFlowTransport etfEffectiveFlowTransport) {
-    final EtfFlow etfFlow = new EtfFlow();
-    if (etfEffectiveFlowTransport.getEtfflowid() != null) {
-      etfFlow.setId(new EtfFlowID(etfEffectiveFlowTransport.getEtfflowid()));
-    }
-    etfFlow.setAmount(etfEffectiveFlowTransport.getAmount());
-    etfFlow.setIsin(new EtfIsin(etfEffectiveFlowTransport.getIsin()));
-    etfFlow.setPrice(etfEffectiveFlowTransport.getPrice());
-    if (etfEffectiveFlowTransport.getTimestamp() != null) {
-      final LocalDateTime time = etfEffectiveFlowTransport.getTimestamp();
-      final int nanos = etfEffectiveFlowTransport.getNanoseconds() != null
-          ? etfEffectiveFlowTransport.getNanoseconds()
-          : 0;
-      etfFlow.setTime(time.withNano(nanos));
-    }
-    return etfFlow;
-  }
+  @Mapping(target = "id", source = "etfflowid")
+  @Mapping(target = "time", source = "timestamp")
+  EtfFlow mapBToA(EtfEffectiveFlowTransport etfEffectiveFlowTransport);
 
   @Override
-  public EtfEffectiveFlowTransport mapAToB(final EtfFlow etfFlow) {
-    final EtfEffectiveFlowTransport transport = new EtfEffectiveFlowTransport();
-    transport.setEtfflowid(etfFlow.getId().getId());
-    transport.setIsin(etfFlow.getIsin().getId());
-    if (etfFlow.getTime() != null) {
-      transport.setTimestamp(etfFlow.getTime());
-      transport.setNanoseconds(etfFlow.getTime().getNano());
+  @Mapping(target = "etfflowid", source = "id")
+  @Mapping(target = "nanoseconds", source = "time.nano")
+  @Mapping(target = "timestamp", source = "time")
+  EtfEffectiveFlowTransport mapAToB(EtfFlow etfFlow);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default EtfFlow doAfterMapping(final EtfEffectiveFlowTransport source,
+      @MappingTarget final EtfFlow entity) {
+    if (entity != null && source != null && entity.getTime() != null) {
+      final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
+      entity.setTime(entity.getTime().withNano(nanos));
     }
-    transport.setAmount(etfFlow.getAmount());
-    transport.setPrice(etfFlow.getPrice());
-    return transport;
+    return entity;
   }
 }

@@ -26,55 +26,42 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class ContractpartnerTransportMapper
-    implements IMapper<Contractpartner, ContractpartnerTransport> {
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
+    GroupIdMapper.class, PostingAccountIdMapper.class })
+public interface ContractpartnerTransportMapper
+    extends IMapper<Contractpartner, ContractpartnerTransport> {
   @Override
-  public Contractpartner mapBToA(final ContractpartnerTransport contractpartnerTransport) {
-    final Contractpartner contractpartner = new Contractpartner();
-    if (contractpartnerTransport.getId() != null) {
-      contractpartner.setId(new ContractpartnerID(contractpartnerTransport.getId()));
-    }
-    contractpartner.setUser(new User(new UserID(contractpartnerTransport.getUserid())));
-    contractpartner.setValidFrom(contractpartnerTransport.getValidFrom());
-    contractpartner.setValidTil(contractpartnerTransport.getValidTil());
-    contractpartner.setName(contractpartnerTransport.getName());
-    contractpartner.setStreet(contractpartnerTransport.getStreet());
-    contractpartner.setPostcode(contractpartnerTransport.getPostcode());
-    contractpartner.setTown(contractpartnerTransport.getTown());
-    contractpartner.setCountry(contractpartnerTransport.getCountry());
-    contractpartner.setMoneyflowComment(contractpartnerTransport.getMoneyflowComment());
-    final Long postingAccountId = contractpartnerTransport.getPostingAccountId();
-    if (postingAccountId != null) {
-      contractpartner.setPostingAccount(new PostingAccount(new PostingAccountID(postingAccountId)));
-    }
-    return contractpartner;
-  }
+  @Mapping(target = "user.id", source = "userid")
+  @Mapping(target = "access", ignore = true)
+  @Mapping(target = "postingAccount.id", source = "postingAccountId")
+  Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
 
   @Override
-  public ContractpartnerTransport mapAToB(final Contractpartner contractpartner) {
-    final ContractpartnerID contractpartnerId = contractpartner.getId();
-    final User user = contractpartner.getUser();
-    final Long id = contractpartnerId == null ? null : contractpartnerId.getId();
-    final Long userId = user == null ? null : user.getId().getId();
-    Long postingAccountId = null;
-    String postingAccountName = null;
-    final PostingAccount postingAccount = contractpartner.getPostingAccount();
-    if (postingAccount != null) {
-      postingAccountId = postingAccount.getId().getId();
-      postingAccountName = postingAccount.getName();
+  @Mapping(target = "userid", source = "user.id")
+  @Mapping(target = "postingAccountId", source = "postingAccount.id")
+  @Mapping(target = "postingAccountName", source = "postingAccount.name")
+  ContractpartnerTransport mapAToB(Contractpartner contractpartner);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default Contractpartner doAfterMapping(@MappingTarget final Contractpartner entity) {
+    if (entity != null && entity.getPostingAccount() != null
+        && entity.getPostingAccount().getId() == null) {
+      entity.setPostingAccount(null);
     }
-    return new ContractpartnerTransport(id, userId, contractpartner.getName(),
-        contractpartner.getStreet(), contractpartner.getPostcode(), contractpartner.getTown(),
-        contractpartner.getValidTil(), contractpartner.getValidFrom(), contractpartner.getCountry(),
-        contractpartner.getMoneyflowComment(), postingAccountName, postingAccountId);
+    return entity;
   }
 }

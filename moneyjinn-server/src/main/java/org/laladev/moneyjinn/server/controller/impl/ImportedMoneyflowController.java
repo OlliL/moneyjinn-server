@@ -99,12 +99,13 @@ public class ImportedMoneyflowController extends AbstractController {
   private final IImportedMoneyflowService importedMoneyflowService;
   private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final ContractpartnerTransportMapper contractpartnerTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(this.capitalsourceTransportMapper);
-    this.registerBeanMapper(new ContractpartnerTransportMapper());
+    this.registerBeanMapper(this.contractpartnerTransportMapper);
     this.registerBeanMapper(new PostingAccountTransportMapper());
     this.registerBeanMapper(new ImportedMoneyflowTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());

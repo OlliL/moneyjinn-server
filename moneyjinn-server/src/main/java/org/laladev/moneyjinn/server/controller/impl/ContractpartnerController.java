@@ -65,11 +65,12 @@ public class ContractpartnerController extends AbstractController {
   private final IContractpartnerService contractpartnerService;
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final IUserService userService;
+  private final ContractpartnerTransportMapper contractpartnerTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new ContractpartnerTransportMapper());
+    this.registerBeanMapper(this.contractpartnerTransportMapper);
     this.registerBeanMapper(new PostingAccountTransportMapper());
     this.registerBeanMapper(new ValidationItemTransportMapper());
   }
