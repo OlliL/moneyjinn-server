@@ -26,28 +26,30 @@
 
 package org.laladev.moneyjinn.server.event;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.rest.model.wsevent.CapitalsourceChangedEventTransport;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceChangedEventListener
     implements ApplicationListener<CapitalsourceChangedEvent> {
 
-  @Autowired
-  SimpMessagingTemplate simpMessagingTemplate;
-  private final CapitalsourceTransportMapper mapper = new CapitalsourceTransportMapper();
+  private final SimpMessagingTemplate simpMessagingTemplate;
+  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 
   @Override
   public void onApplicationEvent(final CapitalsourceChangedEvent event) {
     final CapitalsourceChangedEventTransport eventTransport = new CapitalsourceChangedEventTransport();
 
     eventTransport.setEventType(event.getEventType().name());
-    eventTransport.setCapitalsourceTransport(this.mapper.mapAToB(event.getCapitalsource()));
+    eventTransport.setCapitalsourceTransport(
+        this.capitalsourceTransportMapper.mapAToB(event.getCapitalsource()));
 
     this.simpMessagingTemplate.convertAndSend("/topic/capitalsourceChanged", eventTransport);
   }

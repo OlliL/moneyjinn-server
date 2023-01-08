@@ -26,76 +26,48 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-public class CapitalsourceTransportMapper
-    implements IMapper<Capitalsource, CapitalsourceTransport> {
-  private static final Short GROUP_USE_SHORT = Short.valueOf((short) 1);
-
-  @Override
-  public Capitalsource mapBToA(final CapitalsourceTransport capitalsourceTransport) {
-    final Capitalsource capitalsource = new Capitalsource();
-    if (capitalsourceTransport.getId() != null) {
-      capitalsource.setId(new CapitalsourceID(capitalsourceTransport.getId()));
-    }
-    if (capitalsourceTransport.getAccountNumber() != null) {
-      capitalsource.setBankAccount(new BankAccount(capitalsourceTransport.getAccountNumber(),
-          capitalsourceTransport.getBankCode()));
-    }
-    capitalsource.setComment(capitalsourceTransport.getComment());
-    if (capitalsourceTransport.getGroupUse() != null
-        && GROUP_USE_SHORT.equals(capitalsourceTransport.getGroupUse())) {
-      capitalsource.setGroupUse(true);
-    }
-    capitalsource
-        .setImportAllowed(CapitalsourceImportMapper.map(capitalsourceTransport.getImportAllowed()));
-    capitalsource.setState(CapitalsourceStateMapper.map(capitalsourceTransport.getState()));
-    capitalsource.setType(CapitalsourceTypeMapper.map(capitalsourceTransport.getType()));
-    capitalsource.setUser(new User(new UserID(capitalsourceTransport.getUserid())));
-    if (capitalsourceTransport.getValidFrom() != null) {
-      final LocalDate validFrom = capitalsourceTransport.getValidFrom().toLocalDate();
-      capitalsource.setValidFrom(validFrom);
-    }
-    if (capitalsourceTransport.getValidTil() != null) {
-      final LocalDate validTil = capitalsourceTransport.getValidTil().toLocalDate();
-      capitalsource.setValidTil(validTil);
-    }
-    return capitalsource;
-  }
+@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+    CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class,
+    CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class,
+    BooleanToShortMapper.class })
+public interface CapitalsourceTransportMapper
+    extends IMapper<Capitalsource, CapitalsourceTransport> {
 
   @Override
-  public CapitalsourceTransport mapAToB(final Capitalsource capitalsource) {
-    final CapitalsourceTransport capitalsourceTransport = new CapitalsourceTransport();
-    capitalsourceTransport.setId(capitalsource.getId().getId());
-    final BankAccount bankAccount = capitalsource.getBankAccount();
-    if (bankAccount != null) {
-      capitalsourceTransport.setAccountNumber(bankAccount.getAccountNumber());
-      capitalsourceTransport.setBankCode(bankAccount.getBankCode());
+  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+  @Mapping(target = "user.id", source = "userid")
+  @Mapping(target = "access", ignore = true)
+  Capitalsource mapBToA(final CapitalsourceTransport b);
+
+  @Override
+  @Mapping(target = ".", source = "bankAccount")
+  @Mapping(target = "userid", source = "user.id")
+  CapitalsourceTransport mapAToB(final Capitalsource a);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+
+  default Capitalsource doAfterMapping(@MappingTarget final Capitalsource entity) {
+    if (entity != null && entity.getBankAccount() != null
+        && entity.getBankAccount().getAccountNumber() == null
+        && entity.getBankAccount().getBankCode() == null) {
+      entity.setBankAccount(null);
     }
-    capitalsourceTransport.setComment(capitalsource.getComment());
-    if (capitalsource.isGroupUse()) {
-      capitalsourceTransport.setGroupUse(GROUP_USE_SHORT);
-    }
-    capitalsourceTransport
-        .setImportAllowed(CapitalsourceImportMapper.map(capitalsource.getImportAllowed()));
-    capitalsourceTransport.setState(CapitalsourceStateMapper.map(capitalsource.getState()));
-    capitalsourceTransport.setType(CapitalsourceTypeMapper.map(capitalsource.getType()));
-    final User user = capitalsource.getUser();
-    if (user != null) {
-      capitalsourceTransport.setUserid(user.getId().getId());
-    }
-    final Date validFrom = Date.valueOf(capitalsource.getValidFrom());
-    final Date validTil = Date.valueOf(capitalsource.getValidTil());
-    capitalsourceTransport.setValidFrom(validFrom);
-    capitalsourceTransport.setValidTil(validTil);
-    return capitalsourceTransport;
+    return entity;
   }
 }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
 import jakarta.inject.Inject;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +19,6 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import org.laladev.moneyjinn.server.builder.DateUtil;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
@@ -90,8 +90,8 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   public void test_ValidTilBeforeValidFrom_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
-    transport.setValidTil(DateUtil.getGmtDate("2000-01-01"));
-    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    transport.setValidTil(LocalDate.parse("2000-01-01"));
+    transport.setValidFrom(LocalDate.parse("2010-01-01"));
     this.testError(transport, ErrorCode.VALIDFROM_AFTER_VALIDTIL);
   }
 
@@ -99,7 +99,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1()
         .build();
-    transport.setValidFrom(DateUtil.getGmtDate("2010-01-01"));
+    transport.setValidFrom(LocalDate.parse("2010-01-01"));
     this.testError(transport, ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
   }
 

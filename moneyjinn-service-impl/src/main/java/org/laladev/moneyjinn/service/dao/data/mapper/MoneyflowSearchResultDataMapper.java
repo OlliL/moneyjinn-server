@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
-import org.laladev.moneyjinn.converter.MonthMapper;
+import org.laladev.moneyjinn.converter.javatypes.MonthToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
@@ -37,7 +37,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
-    MonthMapper.class, ContractpartnerIdMapper.class })
+    MonthToShortMapper.class, ContractpartnerIdMapper.class })
 public interface MoneyflowSearchResultDataMapper
     extends IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
   @Override

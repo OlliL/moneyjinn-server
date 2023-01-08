@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
+import java.time.LocalDate;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
@@ -68,8 +69,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE1_COMMENT);
     super.setAccountNumber(CAPITALSOURCE1_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE1_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("1980-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("1980-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setGroupUse(CAPITALSOURCE1_GROUP_USE);
     super.setImportAllowed((short) 1);
     return this;
@@ -83,8 +84,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE2_COMMENT);
     super.setAccountNumber(CAPITALSOURCE2_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE2_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("1981-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2799-12-31"));
+    super.setValidFrom(LocalDate.parse("1981-01-01"));
+    super.setValidTil(LocalDate.parse("2799-12-31"));
     super.setGroupUse(CAPITALSOURCE2_GROUP_USE);
     super.setImportAllowed(null);
     return this;
@@ -98,8 +99,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE3_COMMENT);
     super.setAccountNumber(CAPITALSOURCE3_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE3_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("1982-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2000-12-31"));
+    super.setValidFrom(LocalDate.parse("1982-01-01"));
+    super.setValidTil(LocalDate.parse("2000-12-31"));
     super.setGroupUse(CAPITALSOURCE3_GROUP_USE);
     super.setImportAllowed((short) 2);
     return this;
@@ -113,8 +114,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE4_COMMENT);
     super.setAccountNumber(CAPITALSOURCE4_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE4_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-02"));
-    super.setValidTil(DateUtil.getGmtDate("2010-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-02"));
+    super.setValidTil(LocalDate.parse("2010-12-31"));
     super.setGroupUse(CAPITALSOURCE4_GROUP_USE);
     super.setImportAllowed((short) 1);
     return this;
@@ -128,8 +129,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE5_COMMENT);
     super.setAccountNumber(CAPITALSOURCE5_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE5_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("2014-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2799-12-31"));
+    super.setValidFrom(LocalDate.parse("2014-01-01"));
+    super.setValidTil(LocalDate.parse("2799-12-31"));
     super.setGroupUse(CAPITALSOURCE5_GROUP_USE);
     super.setImportAllowed((short) 2);
     return this;
@@ -143,8 +144,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(CAPITALSOURCE6_COMMENT);
     super.setAccountNumber(CAPITALSOURCE6_ACCOUNTNUMBER);
     super.setBankCode(CAPITALSOURCE6_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("2000-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2799-12-31"));
+    super.setValidFrom(LocalDate.parse("2000-01-01"));
+    super.setValidTil(LocalDate.parse("2799-12-31"));
     super.setGroupUse(CAPITALSOURCE6_GROUP_USE);
     super.setImportAllowed((short) 2);
     return this;
@@ -158,8 +159,8 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setComment(NEWCAPITALSOURCE_COMMENT);
     super.setAccountNumber("1234567");
     super.setBankCode(CAPITALSOURCE4_BANKCODE);
-    super.setValidFrom(DateUtil.getGmtDate("1980-01-01"));
-    super.setValidTil(DateUtil.getGmtDate("2999-12-31"));
+    super.setValidFrom(LocalDate.parse("1980-01-01"));
+    super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setGroupUse(null);
     super.setImportAllowed((short) 1);
     return this;

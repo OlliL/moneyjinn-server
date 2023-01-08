@@ -31,6 +31,8 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   private String userPassword;
   @Inject
   private ICapitalsourceService capitalsourceService;
+  @Inject
+  private CapitalsourceTransportMapper capitalsourceTransportMapper;
 
   @BeforeEach
   public void setUp() {
@@ -99,11 +101,11 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement1().build());
     monthlySettlementTransports
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().build());
-    final CapitalsourceTransportMapper mapper = new CapitalsourceTransportMapper();
     final CapitalsourceTransport newCapitalsourceTransport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().withUserId(UserTransportBuilder.USER1_ID)
         .withId(CapitalsourceTransportBuilder.NEXT_ID).build();
-    final Capitalsource newCapitalsource = mapper.mapBToA(newCapitalsourceTransport);
+    final Capitalsource newCapitalsource = this.capitalsourceTransportMapper
+        .mapBToA(newCapitalsourceTransport);
     newCapitalsource.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
     this.capitalsourceService.createCapitalsource(newCapitalsource);
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()

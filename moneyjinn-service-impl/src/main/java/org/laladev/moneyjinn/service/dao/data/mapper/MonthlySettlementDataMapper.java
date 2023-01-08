@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
-import org.laladev.moneyjinn.converter.MonthMapper;
 import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.javatypes.MonthToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
@@ -40,7 +40,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
-    MonthlySettlementIdMapper.class, MonthMapper.class, CapitalsourceIdMapper.class,
+    MonthlySettlementIdMapper.class, MonthToShortMapper.class, CapitalsourceIdMapper.class,
     UserIdMapper.class, GroupIdMapper.class })
 public interface MonthlySettlementDataMapper
     extends IMapper<MonthlySettlement, MonthlySettlementData> {

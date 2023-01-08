@@ -73,12 +73,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompareDataController extends AbstractController {
   private final ISettingService settingService;
   private final ICompareDataService compareDataService;
+  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(new CompareDataFormatTransportMapper());
-    super.registerBeanMapper(new CapitalsourceTransportMapper());
+    super.registerBeanMapper(this.capitalsourceTransportMapper);
     super.registerBeanMapper(new MoneyflowTransportMapper());
     super.registerBeanMapper(new CompareDataDatasetTransportMapper());
   }

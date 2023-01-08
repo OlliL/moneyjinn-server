@@ -62,11 +62,12 @@ public class CapitalsourceController extends AbstractController {
   private final IAccessRelationService accessRelationService;
   private final ICapitalsourceService capitalsourceService;
   private final IUserService userService;
+  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new CapitalsourceTransportMapper());
+    this.registerBeanMapper(this.capitalsourceTransportMapper);
     this.registerBeanMapper(new ValidationItemTransportMapper());
   }
 
