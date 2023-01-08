@@ -27,14 +27,14 @@
 package org.laladev.moneyjinn.core.rest.model.etf.transport;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
 public class EtfFlowTransport {
   private Long etfflowid;
   private String isin;
-  private Timestamp timestamp;
+  private LocalDateTime timestamp;
   private Integer nanoseconds;
   private BigDecimal amount;
   private BigDecimal price;

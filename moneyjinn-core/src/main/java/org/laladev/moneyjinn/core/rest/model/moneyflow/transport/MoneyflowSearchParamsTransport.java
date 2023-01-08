@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow.transport;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
 public class MoneyflowSearchParamsTransport {
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
   private String searchString;
   private Short featureEqual;
   private Short featureRegexp;

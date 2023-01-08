@@ -27,7 +27,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +40,6 @@ import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 public class AbstractShowReportGraphRequest extends AbstractRequest {
   private List<Long> postingAccountIdsYes;
   private List<Long> postingAccountIdsNo;
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
 }

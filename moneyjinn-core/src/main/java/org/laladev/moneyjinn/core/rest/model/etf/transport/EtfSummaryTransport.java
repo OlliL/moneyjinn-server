@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.core.rest.model.etf.transport;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -39,5 +39,5 @@ public class EtfSummaryTransport {
   private BigDecimal spentValue;
   private BigDecimal buyPrice;
   private BigDecimal sellPrice;
-  private Timestamp pricesTimestamp;
+  private LocalDateTime pricesTimestamp;
 }

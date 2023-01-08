@@ -27,13 +27,13 @@
 package org.laladev.moneyjinn.core.rest.model.comparedata.transport;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
 public class CompareDataDatasetTransport {
-  private Date bookingDate;
-  private Date invoiceDate;
+  private LocalDate bookingDate;
+  private LocalDate invoiceDate;
   private BigDecimal amount;
   private String partner;
   private String comment;

@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.core.rest.model.report;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,8 +40,8 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 @ToString(callSuper = true)
 @XmlRootElement(name = "showTrendsFormResponse")
 public class ShowTrendsFormResponse extends AbstractResponse {
-  private Date minDate;
-  private Date maxDate;
+  private LocalDate minDate;
+  private LocalDate maxDate;
   @XmlElement(name = "settingTrendCapitalsourceId")
   private List<Long> settingTrendCapitalsourceIds;
 }

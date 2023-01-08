@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.core.rest.model.comparedata;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -42,8 +42,8 @@ public class CompareDataRequest extends AbstractRequest {
   private Long formatId;
   @XmlElement(name = "capitalSourceId")
   private Long capitalsourceId;
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
   private String fileContents;
   private Short useImportedData;
 }

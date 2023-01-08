@@ -28,15 +28,15 @@ package org.laladev.moneyjinn.core.rest.model.transport;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
 public class MoneyflowTransport {
   private Long id;
   private Long userid;
-  private Date bookingdate;
-  private Date invoicedate;
+  private LocalDate bookingdate;
+  private LocalDate invoicedate;
   private BigDecimal amount;
   private Long capitalsourceid;
   private String capitalsourcecomment;

@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.core.rest.model.report;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +40,6 @@ import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 @XmlRootElement(name = "showTrendsGraphRequest")
 public class ShowTrendsGraphRequest extends AbstractRequest {
   private List<Long> capitalSourceIds;
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
 }

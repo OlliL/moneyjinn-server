@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.core.rest.model.transport;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
@@ -40,9 +40,9 @@ public class PreDefMoneyflowTransport {
   private Long contractpartnerid;
   private String contractpartnername;
   private String comment;
-  private Date createdate;
+  private LocalDate createdate;
   private Short onceAMonth;
-  private Date lastUsed;
+  private LocalDate lastUsed;
   private Long postingaccountid;
   private String postingaccountname;
 }

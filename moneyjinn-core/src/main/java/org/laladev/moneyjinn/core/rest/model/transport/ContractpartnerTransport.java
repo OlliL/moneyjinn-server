@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.core.rest.model.transport;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,8 +41,8 @@ public class ContractpartnerTransport {
   private String street;
   private Integer postcode;
   private String town;
-  private Date validTil;
-  private Date validFrom;
+  private LocalDate validTil;
+  private LocalDate validFrom;
   private String country;
   private String moneyflowComment;
   private String postingAccountName;
