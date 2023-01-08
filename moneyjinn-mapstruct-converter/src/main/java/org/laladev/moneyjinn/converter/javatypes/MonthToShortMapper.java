@@ -1,11 +1,10 @@
 package org.laladev.moneyjinn.converter.javatypes;
 
 import java.time.Month;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(config = MapStructConfig.class)
 public abstract class MonthToShortMapper {
   public Month mapBToA(final Short b) {
     return b == null ? null : Month.of(b.intValue());

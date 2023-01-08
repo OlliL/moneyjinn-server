@@ -26,25 +26,20 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class CompareDataDatasetTransportMapper
-    implements IMapper<CompareDataDataset, CompareDataDatasetTransport> {
+@Mapper(config = MapStructConfig.class)
+public interface CompareDataDatasetTransportMapper
+    extends IMapper<CompareDataDataset, CompareDataDatasetTransport> {
   @Override
-  public CompareDataDataset mapBToA(final CompareDataDatasetTransport compareDataDatasetTransport) {
-    throw new UnsupportedOperationException("Mapping not supported!");
-  }
+  @Mapping(target = "partnerBankAccount", ignore = true)
+  CompareDataDataset mapBToA(CompareDataDatasetTransport compareDataDatasetTransport);
 
   @Override
-  public CompareDataDatasetTransport mapAToB(final CompareDataDataset compareDataDataset) {
-    final CompareDataDatasetTransport compareDataDatasetTransport = new CompareDataDatasetTransport();
-    compareDataDatasetTransport.setAmount(compareDataDataset.getAmount());
-    compareDataDatasetTransport.setPartner(compareDataDataset.getPartner());
-    compareDataDatasetTransport.setComment(compareDataDataset.getComment());
-    compareDataDatasetTransport.setBookingDate(compareDataDataset.getBookingDate());
-    compareDataDatasetTransport.setInvoiceDate(compareDataDataset.getInvoiceDate());
-    return compareDataDatasetTransport;
-  }
+  CompareDataDatasetTransport mapAToB(CompareDataDataset compareDataDataset);
 }

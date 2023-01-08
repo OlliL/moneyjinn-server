@@ -31,15 +31,14 @@ import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.PreDefMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {
+@Mapper(config = MapStructConfig.class, uses = {
     PreDefMoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
     PostingAccountIdMapper.class, UserIdMapper.class })
 public interface PreDefMoneyflowDataMapper extends IMapper<PreDefMoneyflow, PreDefMoneyflowData> {

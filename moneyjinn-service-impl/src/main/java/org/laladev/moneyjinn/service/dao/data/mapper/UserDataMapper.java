@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
@@ -36,11 +37,9 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = UserIdMapper.class)
+@Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserDataMapper extends IMapper<User, UserData> {
   @Override
   @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")

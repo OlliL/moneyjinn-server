@@ -74,14 +74,16 @@ public class CompareDataController extends AbstractController {
   private final ISettingService settingService;
   private final ICompareDataService compareDataService;
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
+  private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new CompareDataFormatTransportMapper());
+    super.registerBeanMapper(this.compareDataFormatTransportMapper);
     super.registerBeanMapper(this.capitalsourceTransportMapper);
     super.registerBeanMapper(new MoneyflowTransportMapper());
-    super.registerBeanMapper(new CompareDataDatasetTransportMapper());
+    super.registerBeanMapper(this.compareDataDatasetTransportMapper);
   }
 
   @RequestMapping(value = "showCompareDataForm", method = { RequestMethod.GET })

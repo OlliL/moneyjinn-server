@@ -27,15 +27,14 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = PostingAccountIdMapper.class)
+@Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
 public interface PostingAccountAmountDataMapper
     extends IMapper<PostingAccountAmount, PostingAccountAmountData> {
   @Override

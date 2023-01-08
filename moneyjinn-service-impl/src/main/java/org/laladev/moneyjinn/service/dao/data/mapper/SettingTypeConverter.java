@@ -26,14 +26,13 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.setting.SettingType;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.ValueMapping;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(config = MapStructConfig.class)
 public interface SettingTypeConverter {
 
   @ValueMapping(target = "trend_capitalsourceid", source = "CLIENT_TREND_CAPITALSOURCEIDS")

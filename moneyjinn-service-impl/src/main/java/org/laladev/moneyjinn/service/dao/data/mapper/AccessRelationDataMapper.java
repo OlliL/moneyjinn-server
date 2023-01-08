@@ -27,17 +27,16 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.AccessIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = AccessIdMapper.class)
+@Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
 public interface AccessRelationDataMapper extends IMapper<AccessRelation, AccessRelationData> {
   @Override
   @Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")

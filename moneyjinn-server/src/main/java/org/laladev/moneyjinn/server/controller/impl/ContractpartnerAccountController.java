@@ -57,11 +57,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountController extends AbstractController {
   private final IContractpartnerAccountService contractpartnerAccountService;
+  private final ContractpartnerAccountTransportMapper contractpartnerAccountTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ContractpartnerAccountTransportMapper());
+    super.registerBeanMapper(this.contractpartnerAccountTransportMapper);
     super.registerBeanMapper(new ValidationItemTransportMapper());
   }
 

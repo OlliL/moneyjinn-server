@@ -27,15 +27,14 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = EtfIsinMapper.class)
+@Mapper(config = MapStructConfig.class, uses = EtfIsinMapper.class)
 public interface EtfDataMapper extends IMapper<Etf, EtfData> {
   @Override
   @Mapping(target = "id", source = "isin")

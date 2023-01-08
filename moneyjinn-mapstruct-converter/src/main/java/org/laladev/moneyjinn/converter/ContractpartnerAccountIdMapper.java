@@ -1,11 +1,10 @@
 package org.laladev.moneyjinn.converter;
 
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = ComponentModel.JAKARTA, unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(config = MapStructConfig.class)
 public class ContractpartnerAccountIdMapper
     extends AbstractEntityIdMapper<ContractpartnerAccountID, Long> {
 }

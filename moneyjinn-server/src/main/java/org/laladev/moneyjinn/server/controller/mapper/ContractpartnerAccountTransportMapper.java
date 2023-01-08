@@ -26,46 +26,46 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class ContractpartnerAccountTransportMapper
-    implements IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
-  @Override
-  public ContractpartnerAccount mapBToA(
-      final ContractpartnerAccountTransport contractpartnerAccountTransport) {
-    BankAccount bankAccount = null;
-    if (contractpartnerAccountTransport.getAccountNumber() != null
-        && contractpartnerAccountTransport.getBankCode() != null) {
-      bankAccount = new BankAccount(contractpartnerAccountTransport.getAccountNumber(),
-          contractpartnerAccountTransport.getBankCode());
-    }
-    final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
-        contractpartnerAccountTransport.getId());
-    Contractpartner contractpartner = null;
-    if (contractpartnerAccountTransport.getContractpartnerid() != null) {
-      contractpartner = new Contractpartner(
-          new ContractpartnerID(contractpartnerAccountTransport.getContractpartnerid()));
-    }
-    return new ContractpartnerAccount(contractpartnerAccountId, contractpartner, bankAccount);
-  }
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class,
+    ContractpartnerIdMapper.class })
+public interface ContractpartnerAccountTransportMapper
+    extends IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
 
   @Override
-  public ContractpartnerAccountTransport mapAToB(
-      final ContractpartnerAccount contractpartnerAccount) {
-    final ContractpartnerAccountTransport contractpartnerAccountTransport = new ContractpartnerAccountTransport();
-    contractpartnerAccountTransport.setId(contractpartnerAccount.getId().getId());
-    contractpartnerAccountTransport
-        .setAccountNumber(contractpartnerAccount.getBankAccount().getAccountNumber());
-    contractpartnerAccountTransport
-        .setBankCode(contractpartnerAccount.getBankAccount().getBankCode());
-    contractpartnerAccountTransport
-        .setContractpartnerid(contractpartnerAccount.getContractpartner().getId().getId());
-    return contractpartnerAccountTransport;
+  @Mapping(target = "contractpartner.id", source = "contractpartnerid")
+  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+  ContractpartnerAccount mapBToA(final ContractpartnerAccountTransport b);
+
+  @Override
+  @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+  @Mapping(target = ".", source = "bankAccount")
+  ContractpartnerAccountTransport mapAToB(final ContractpartnerAccount a);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default ContractpartnerAccount doAfterMapping(
+      @MappingTarget final ContractpartnerAccount entity) {
+    if (entity != null) {
+      if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
+          && entity.getBankAccount().getBankCode() == null) {
+        entity.setBankAccount(null);
+      }
+      if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
+        entity.setContractpartner(null);
+      }
+    }
+    return entity;
   }
 }
