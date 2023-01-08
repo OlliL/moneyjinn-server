@@ -78,13 +78,16 @@ public class MonthlySettlementController extends AbstractController {
   private final IMoneyflowService moneyflowService;
   private final IUserService userService;
   private final IAccessRelationService accessRelationService;
+  private final ImportedMonthlySettlementTransportMapper importedMonthlySettlementTransportMapper;
+  private final MonthlySettlementTransportMapper monthlySettlementTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new MonthlySettlementTransportMapper());
-    this.registerBeanMapper(new ImportedMonthlySettlementTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.monthlySettlementTransportMapper);
+    this.registerBeanMapper(this.importedMonthlySettlementTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "getAvailableMonth", method = { RequestMethod.GET })

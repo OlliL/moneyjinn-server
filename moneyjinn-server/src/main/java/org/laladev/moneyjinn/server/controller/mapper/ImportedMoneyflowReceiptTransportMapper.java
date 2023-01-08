@@ -27,45 +27,44 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.Base64;
+import org.laladev.moneyjinn.converter.ImportedMoneyflowReceiptIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceiptID;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-public class ImportedMoneyflowReceiptTransportMapper
-    implements IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
+@Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class,
+    UserIdMapper.class })
+public interface ImportedMoneyflowReceiptTransportMapper
+    extends IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
   @Override
-  public ImportedMoneyflowReceipt mapBToA(
-      final ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport) {
-    final ImportedMoneyflowReceipt importedMoneyflowReceipt = new ImportedMoneyflowReceipt();
-    if (importedMoneyflowReceiptTransport.getId() != null) {
-      importedMoneyflowReceipt
-          .setId(new ImportedMoneyflowReceiptID(importedMoneyflowReceiptTransport.getId()));
-    }
-    importedMoneyflowReceipt.setFilename(importedMoneyflowReceiptTransport.getFilename());
-    importedMoneyflowReceipt.setMediaType(importedMoneyflowReceiptTransport.getMediaType());
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "access", ignore = true)
+  @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
+  ImportedMoneyflowReceipt mapBToA(
+      ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport);
+
+  @Override
+  @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
+  ImportedMoneyflowReceiptTransport mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
+
+  @Named("mapReceiptToModel")
+  default byte[] mapReceiptToModel(final String receipt) {
     try {
-      importedMoneyflowReceipt
-          .setReceipt(Base64.getDecoder().decode(importedMoneyflowReceiptTransport.getReceipt()));
+      return Base64.getDecoder().decode(receipt);
     } catch (final IllegalArgumentException e) {
       throw new BusinessException("Unsupported file format!", ErrorCode.WRONG_FILE_FORMAT);
     }
-    return importedMoneyflowReceipt;
   }
 
-  @Override
-  public ImportedMoneyflowReceiptTransport mapAToB(
-      final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-    final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = importedMoneyflowReceipt.getId();
-    final Long id = importedMoneyflowReceiptId == null ? null : importedMoneyflowReceiptId.getId();
-    final ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport = new ImportedMoneyflowReceiptTransport();
-    importedMoneyflowReceiptTransport.setId(id);
-    importedMoneyflowReceiptTransport.setFilename(importedMoneyflowReceipt.getFilename());
-    importedMoneyflowReceiptTransport.setMediaType(importedMoneyflowReceipt.getMediaType());
-    importedMoneyflowReceiptTransport
-        .setReceipt(Base64.getEncoder().encodeToString(importedMoneyflowReceipt.getReceipt()));
-    return importedMoneyflowReceiptTransport;
+  @Named("mapReceiptToModel")
+  default String mapReceiptToModel(final byte[] receipt) {
+    return Base64.getEncoder().encodeToString(receipt);
   }
 }

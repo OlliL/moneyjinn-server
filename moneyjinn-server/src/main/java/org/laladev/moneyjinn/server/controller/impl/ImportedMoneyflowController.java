@@ -100,16 +100,20 @@ public class ImportedMoneyflowController extends AbstractController {
   private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
   private final ContractpartnerTransportMapper contractpartnerTransportMapper;
+  private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
+  private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
+  private final PostingAccountTransportMapper postingAccountTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(this.capitalsourceTransportMapper);
     this.registerBeanMapper(this.contractpartnerTransportMapper);
-    this.registerBeanMapper(new PostingAccountTransportMapper());
-    this.registerBeanMapper(new ImportedMoneyflowTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
-    super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
+    this.registerBeanMapper(this.postingAccountTransportMapper);
+    this.registerBeanMapper(this.importedMoneyflowTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
+    super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
   }
 
   private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,

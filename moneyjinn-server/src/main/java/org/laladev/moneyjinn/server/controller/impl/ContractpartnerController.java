@@ -42,7 +42,6 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -66,13 +65,13 @@ public class ContractpartnerController extends AbstractController {
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final IUserService userService;
   private final ContractpartnerTransportMapper contractpartnerTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(this.contractpartnerTransportMapper);
-    this.registerBeanMapper(new PostingAccountTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "showContractpartnerList", method = { RequestMethod.GET })

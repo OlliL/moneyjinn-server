@@ -26,47 +26,23 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
+import org.mapstruct.Mapper;
 
-public class MoneyflowSearchParamsTransportMapper
-    implements IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
-  private static final Short TRUE = (short) 1;
-
-  @Override
-  public MoneyflowSearchParams mapBToA(
-      final MoneyflowSearchParamsTransport moneyflowSearchParamsTransport) {
-    final MoneyflowSearchParams moneyflowSearchParams = new MoneyflowSearchParams();
-    moneyflowSearchParams.setStartDate(moneyflowSearchParamsTransport.getStartDate());
-    moneyflowSearchParams.setEndDate(moneyflowSearchParamsTransport.getEndDate());
-    moneyflowSearchParams.setFeatureEqual(
-        TRUE.equals(moneyflowSearchParamsTransport.getFeatureEqual()) ? true : false);
-    moneyflowSearchParams.setFeatureCaseSensitive(
-        TRUE.equals(moneyflowSearchParamsTransport.getFeatureCaseSensitive()) ? true : false);
-    moneyflowSearchParams.setFeatureOnlyMinusAmounts(
-        TRUE.equals(moneyflowSearchParamsTransport.getFeatureOnlyMinusAmounts()) ? true : false);
-    moneyflowSearchParams.setFeatureRegexp(
-        TRUE.equals(moneyflowSearchParamsTransport.getFeatureRegexp()) ? true : false);
-    if (moneyflowSearchParamsTransport.getSearchString() != null
-        && !moneyflowSearchParamsTransport.getSearchString().isEmpty()) {
-      moneyflowSearchParams.setSearchString(moneyflowSearchParamsTransport.getSearchString());
-    }
-    if (moneyflowSearchParamsTransport.getContractpartnerId() != null) {
-      moneyflowSearchParams.setContractpartnerId(
-          new ContractpartnerID(moneyflowSearchParamsTransport.getContractpartnerId()));
-    }
-    if (moneyflowSearchParamsTransport.getPostingAccountId() != null) {
-      moneyflowSearchParams.setPostingAccountId(
-          new PostingAccountID(moneyflowSearchParamsTransport.getPostingAccountId()));
-    }
-    return moneyflowSearchParams;
-  }
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class,
+    PostingAccountIdMapper.class, BooleanToShortMapper.class })
+public interface MoneyflowSearchParamsTransportMapper
+    extends IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
 
   @Override
-  public MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
+  default MoneyflowSearchParamsTransport mapAToB(
+      final MoneyflowSearchParams moneyflowSearchParams) {
     throw new UnsupportedOperationException("Mapping not supported!");
   }
 }

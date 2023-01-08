@@ -26,55 +26,51 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.time.Month;
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.ImportedMonthlySettlementIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.MonthToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
-import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlementID;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class ImportedMonthlySettlementTransportMapper
-    implements IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
+@Mapper(config = MapStructConfig.class, uses = { ImportedMonthlySettlementIdMapper.class,
+    MonthToShortMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class })
+public interface ImportedMonthlySettlementTransportMapper
+    extends IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
   @Override
-  public ImportedMonthlySettlement mapBToA(
-      final ImportedMonthlySettlementTransport importedMonthlySettlementTransport) {
-    final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
-    if (importedMonthlySettlementTransport.getId() != null) {
-      importedMonthlySettlement
-          .setId(new ImportedMonthlySettlementID(importedMonthlySettlementTransport.getId()));
-    }
-    importedMonthlySettlement.setAmount(importedMonthlySettlementTransport.getAmount());
-    importedMonthlySettlement.setYear(importedMonthlySettlementTransport.getYear());
-    final Short month = importedMonthlySettlementTransport.getMonth();
-    if (importedMonthlySettlementTransport.getMonth() != null) {
-      importedMonthlySettlement.setMonth(Month.of(month));
-    }
-    if (importedMonthlySettlementTransport.getCapitalsourceid() != null) {
-      final Capitalsource capitalsource = new Capitalsource(
-          new CapitalsourceID(importedMonthlySettlementTransport.getCapitalsourceid()));
-      importedMonthlySettlement.setCapitalsource(capitalsource);
-    }
-    importedMonthlySettlement.setExternalId(importedMonthlySettlementTransport.getExternalid());
-    return importedMonthlySettlement;
-  }
+  @Mapping(target = "capitalsource.id", source = "capitalsourceid")
+  @Mapping(target = "externalId", source = "externalid")
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "group", ignore = true)
+  ImportedMonthlySettlement mapBToA(
+      ImportedMonthlySettlementTransport importedMonthlySettlementTransport);
 
   @Override
-  public ImportedMonthlySettlementTransport mapAToB(
-      final ImportedMonthlySettlement importedMonthlySettlement) {
-    final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = new ImportedMonthlySettlementTransport();
-    importedMonthlySettlementTransport.setId(importedMonthlySettlement.getId().getId());
-    importedMonthlySettlementTransport.setAmount(importedMonthlySettlement.getAmount());
-    importedMonthlySettlementTransport.setYear(importedMonthlySettlement.getYear());
-    importedMonthlySettlementTransport
-        .setMonth((short) importedMonthlySettlement.getMonth().getValue());
-    final Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
-    importedMonthlySettlementTransport.setCapitalsourceid(capitalsource.getId().getId());
-    importedMonthlySettlementTransport.setCapitalsourcecomment(capitalsource.getComment());
-    final User user = importedMonthlySettlement.getUser();
-    importedMonthlySettlementTransport.setUserid(user.getId().getId());
-    importedMonthlySettlementTransport.setExternalid(importedMonthlySettlement.getExternalId());
-    return importedMonthlySettlementTransport;
+  @Mapping(target = "accountNumberCapitalsource", source = "capitalsource.bankAccount.accountNumber")
+  @Mapping(target = "bankCodeCapitalsource", source = "capitalsource.bankAccount.bankCode")
+  @Mapping(target = "capitalsourceid", source = "capitalsource.id")
+  @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+  @Mapping(target = "capitalsourcegroupuse", ignore = true)
+  @Mapping(target = "capitalsourcetype", ignore = true)
+  @Mapping(target = "externalid", source = "externalId")
+  @Mapping(target = "userid", source = "user.id")
+  ImportedMonthlySettlementTransport mapAToB(ImportedMonthlySettlement importedMonthlySettlement);
+
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default ImportedMonthlySettlement doAfterMapping(
+      @MappingTarget final ImportedMonthlySettlement entity) {
+    if (entity != null) {
+      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
+        entity.setCapitalsource(null);
+      }
+    }
+    return entity;
   }
 }

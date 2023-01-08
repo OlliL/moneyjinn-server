@@ -57,12 +57,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowController extends AbstractController {
   private final IPreDefMoneyflowService preDefMoneyflowService;
+  private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new PreDefMoneyflowTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.preDefMoneyflowTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "showPreDefMoneyflowList", method = { RequestMethod.GET })

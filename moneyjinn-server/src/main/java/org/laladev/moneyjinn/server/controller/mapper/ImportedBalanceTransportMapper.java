@@ -26,23 +26,24 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import java.time.LocalDateTime;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class ImportedBalanceTransportMapper
-    implements IMapper<ImportedBalance, ImportedBalanceTransport> {
+@Mapper(config = MapStructConfig.class, imports = { LocalDateTime.class })
+public interface ImportedBalanceTransportMapper
+    extends IMapper<ImportedBalance, ImportedBalanceTransport> {
   @Override
-  public ImportedBalance mapBToA(final ImportedBalanceTransport importedBalanceTransport) {
-    final ImportedBalance importedBalance = new ImportedBalance();
-    importedBalance.setBalance(importedBalanceTransport.getBalance());
-    return importedBalance;
-  }
+  @Mapping(target = "capitalsource", ignore = true)
+  @Mapping(target = "date", expression = "java(LocalDateTime.now())")
+  ImportedBalance mapBToA(ImportedBalanceTransport importedBalanceTransport);
 
   @Override
-  public ImportedBalanceTransport mapAToB(final ImportedBalance importedBalance) {
-    final ImportedBalanceTransport importedBalanceTransport = new ImportedBalanceTransport();
-    importedBalanceTransport.setBalance(importedBalance.getBalance());
-    return importedBalanceTransport;
-  }
+  @Mapping(target = "accountNumberCapitalsource", source = "capitalsource.bankAccount.accountNumber")
+  @Mapping(target = "bankCodeCapitalsource", source = "capitalsource.bankAccount.bankCode")
+  ImportedBalanceTransport mapAToB(ImportedBalance importedBalance);
 }

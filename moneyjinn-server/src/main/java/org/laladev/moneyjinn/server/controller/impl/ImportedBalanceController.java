@@ -56,11 +56,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImportedBalanceController extends AbstractController {
   private final ICapitalsourceService capitalsourceService;
   private final IImportedBalanceService importedBalanceService;
+  private final ImportedBalanceTransportMapper importedBalanceTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedBalanceTransportMapper());
+    super.registerBeanMapper(this.importedBalanceTransportMapper);
   }
 
   @RequestMapping(value = "createImportedBalance", method = { RequestMethod.POST })
@@ -72,7 +73,7 @@ public class ImportedBalanceController extends AbstractController {
     final BankAccount bankAccount = new BankAccount(
         importedBalanceTransport.getAccountNumberCapitalsource(),
         importedBalanceTransport.getBankCodeCapitalsource());
-    final LocalDateTime now = LocalDateTime.now();
+    final LocalDateTime now = importedBalance.getDate();
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null,
         bankAccount, now.toLocalDate());
     if (capitalsource != null) {
@@ -81,7 +82,6 @@ public class ImportedBalanceController extends AbstractController {
             ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED);
       }
       importedBalance.setCapitalsource(capitalsource);
-      importedBalance.setDate(now);
       final ValidationResult validationResult = this.importedBalanceService
           .validateImportedBalance(importedBalance);
       if (validationResult.isValid()) {

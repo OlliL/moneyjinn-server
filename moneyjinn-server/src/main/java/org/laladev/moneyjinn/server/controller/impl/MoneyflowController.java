@@ -98,16 +98,21 @@ public class MoneyflowController extends AbstractController {
   private final IMoneyflowService moneyflowService;
   private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
   private final IMoneyflowReceiptService moneyflowReceiptService;
+  private final MoneyflowSearchParamsTransportMapper moneyflowSearchParamsTransportMapper;
+  private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
+  private final MoneyflowTransportMapper moneyflowTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
+
   private static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter
       .ofPattern("yyyyMMdd");
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MoneyflowTransportMapper());
-    super.registerBeanMapper(new ValidationItemTransportMapper());
-    super.registerBeanMapper(new MoneyflowSearchParamsTransportMapper());
-    super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
+    super.registerBeanMapper(this.moneyflowTransportMapper);
+    super.registerBeanMapper(this.validationItemTransportMapper);
+    super.registerBeanMapper(this.moneyflowSearchParamsTransportMapper);
+    super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
   }
 
   /**

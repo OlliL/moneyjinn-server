@@ -58,12 +58,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContractpartnerAccountController extends AbstractController {
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final ContractpartnerAccountTransportMapper contractpartnerAccountTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(this.contractpartnerAccountTransportMapper);
-    super.registerBeanMapper(new ValidationItemTransportMapper());
+    super.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })

@@ -101,13 +101,16 @@ public class ReportController extends AbstractController {
   private final IMonthlySettlementService monthlySettlementService;
   private final IImportedBalanceService importedBalanceService;
   private final ISettingService settingService;
+  private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
+  private final MoneyflowTransportMapper moneyflowTransportMapper;
+  private final PostingAccountAmountTransportMapper postingAccountAmountTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new MoneyflowTransportMapper());
-    super.registerBeanMapper(new MoneyflowSplitEntryTransportMapper());
-    super.registerBeanMapper(new PostingAccountAmountTransportMapper());
+    super.registerBeanMapper(this.moneyflowTransportMapper);
+    super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
+    super.registerBeanMapper(this.postingAccountAmountTransportMapper);
   }
 
   @RequestMapping(value = "showReportingForm", method = { RequestMethod.GET })

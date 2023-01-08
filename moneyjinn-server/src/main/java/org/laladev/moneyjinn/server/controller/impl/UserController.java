@@ -92,14 +92,17 @@ public class UserController extends AbstractController {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
   private final AccessRelationTransportMapper accessRelationTransportMapper;
+  private final GroupTransportMapper groupTransportMapper;
+  private final UserTransportMapper userTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new UserTransportMapper());
-    this.registerBeanMapper(new GroupTransportMapper());
+    this.registerBeanMapper(this.userTransportMapper);
+    this.registerBeanMapper(this.groupTransportMapper);
     this.registerBeanMapper(this.accessRelationTransportMapper);
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "login", method = { RequestMethod.POST })

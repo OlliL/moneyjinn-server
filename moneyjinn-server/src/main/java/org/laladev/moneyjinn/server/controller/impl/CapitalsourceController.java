@@ -63,12 +63,13 @@ public class CapitalsourceController extends AbstractController {
   private final ICapitalsourceService capitalsourceService;
   private final IUserService userService;
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(this.capitalsourceTransportMapper);
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "showCapitalsourceList", method = { RequestMethod.GET })

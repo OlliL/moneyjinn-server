@@ -57,11 +57,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImportedMonthlySettlementController extends AbstractController {
   private final ICapitalsourceService capitalsourceService;
   private final IImportedMonthlySettlementService importedMonthlySettlementService;
+  private final ImportedMonthlySettlementTransportMapper importedMonthlySettlementTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    super.registerBeanMapper(new ImportedMonthlySettlementTransportMapper());
+    super.registerBeanMapper(this.importedMonthlySettlementTransportMapper);
   }
 
   @RequestMapping(value = "createImportedMonthlySettlement", method = { RequestMethod.POST })

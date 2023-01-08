@@ -39,10 +39,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class,
-    CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class,
-    BooleanToShortMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
+    CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
+    UserIdMapper.class, GroupIdMapper.class, BooleanToShortMapper.class })
 public interface CapitalsourceTransportMapper
     extends IMapper<Capitalsource, CapitalsourceTransport> {
 
@@ -60,12 +59,15 @@ public interface CapitalsourceTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-
   default Capitalsource doAfterMapping(@MappingTarget final Capitalsource entity) {
-    if (entity != null && entity.getBankAccount() != null
-        && entity.getBankAccount().getAccountNumber() == null
-        && entity.getBankAccount().getBankCode() == null) {
-      entity.setBankAccount(null);
+    if (entity != null) {
+      if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
+          && entity.getBankAccount().getBankCode() == null) {
+        entity.setBankAccount(null);
+      }
+      if (entity.getUser() != null && entity.getUser().getId() == null) {
+        entity.setUser(null);
+      }
     }
     return entity;
   }

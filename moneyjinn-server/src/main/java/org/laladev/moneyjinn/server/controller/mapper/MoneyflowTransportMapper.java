@@ -26,82 +26,62 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.time.LocalDate;
+import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
-import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
-import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class MoneyflowTransportMapper implements IMapper<Moneyflow, MoneyflowTransport> {
-  private static final Short IS_PRIVATE_SHORT = Short.valueOf((short) 1);
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
+    ContractpartnerIdMapper.class, PostingAccountIdMapper.class, MoneyflowIdMapper.class,
+    BooleanToShortMapper.class, UserIdMapper.class })
+public interface MoneyflowTransportMapper extends IMapper<Moneyflow, MoneyflowTransport> {
+  @Override
+  @Mapping(target = "bookingDate", source = "bookingdate")
+  @Mapping(target = "invoiceDate", source = "invoicedate")
+  @Mapping(target = "capitalsource.id", source = "capitalsourceid")
+  @Mapping(target = "contractpartner.id", source = "contractpartnerid")
+  @Mapping(target = "postingAccount.id", source = "postingaccountid")
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "group", ignore = true)
+  @Mapping(target = "moneyflowSplitEntries", ignore = true)
+  Moneyflow mapBToA(MoneyflowTransport MoneyflowTransport);
 
   @Override
-  public Moneyflow mapBToA(final MoneyflowTransport moneyflowTransport) {
-    final Moneyflow moneyflow = new Moneyflow();
-    if (moneyflowTransport.getId() != null) {
-      moneyflow.setId(new MoneyflowID(moneyflowTransport.getId()));
-    }
-    moneyflow.setAmount(moneyflowTransport.getAmount());
-    if (moneyflowTransport.getBookingdate() != null) {
-      final LocalDate bookingDate = moneyflowTransport.getBookingdate();
-      moneyflow.setBookingDate(bookingDate);
-    }
-    if (moneyflowTransport.getInvoicedate() != null) {
-      final LocalDate invoiceDate = moneyflowTransport.getInvoicedate();
-      moneyflow.setInvoiceDate(invoiceDate);
-    }
-    if (moneyflowTransport.getCapitalsourceid() != null) {
-      final Capitalsource capitalsource = new Capitalsource(
-          new CapitalsourceID(moneyflowTransport.getCapitalsourceid()));
-      moneyflow.setCapitalsource(capitalsource);
-    }
-    if (moneyflowTransport.getContractpartnerid() != null) {
-      final Contractpartner contractpartner = new Contractpartner(
-          new ContractpartnerID(moneyflowTransport.getContractpartnerid()));
-      moneyflow.setContractpartner(contractpartner);
-    }
-    moneyflow.setComment(moneyflowTransport.getComment());
-    if (moneyflowTransport.getPrivat() != null
-        && IS_PRIVATE_SHORT.equals(moneyflowTransport.getPrivat())) {
-      moneyflow.setPrivat(true);
-    }
-    if (moneyflowTransport.getPostingaccountid() != null) {
-      final PostingAccount postingAccount = new PostingAccount(
-          new PostingAccountID(moneyflowTransport.getPostingaccountid()));
-      moneyflow.setPostingAccount(postingAccount);
-    }
-    return moneyflow;
-  }
+  @Mapping(target = "bookingdate", source = "bookingDate")
+  @Mapping(target = "invoicedate", source = "invoiceDate")
+  @Mapping(target = "capitalsourceid", source = "capitalsource.id")
+  @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+  @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+  @Mapping(target = "contractpartnername", source = "contractpartner.name")
+  @Mapping(target = "postingaccountid", source = "postingAccount.id")
+  @Mapping(target = "postingaccountname", source = "postingAccount.name")
+  @Mapping(target = "userid", source = "user.id")
+  MoneyflowTransport mapAToB(Moneyflow importedMoneyflow);
 
-  @Override
-  public MoneyflowTransport mapAToB(final Moneyflow moneyflow) {
-    final MoneyflowTransport moneyflowTransport = new MoneyflowTransport();
-    moneyflowTransport.setId(moneyflow.getId().getId());
-    moneyflowTransport.setAmount(moneyflow.getAmount());
-    moneyflowTransport.setBookingdate(moneyflow.getBookingDate());
-    moneyflowTransport.setInvoicedate(moneyflow.getInvoiceDate());
-    final Capitalsource capitalsource = moneyflow.getCapitalsource();
-    moneyflowTransport.setCapitalsourceid(capitalsource.getId().getId());
-    moneyflowTransport.setCapitalsourcecomment(capitalsource.getComment());
-    final Contractpartner contractpartner = moneyflow.getContractpartner();
-    moneyflowTransport.setContractpartnerid(contractpartner.getId().getId());
-    moneyflowTransport.setContractpartnername(contractpartner.getName());
-    moneyflowTransport.setComment(moneyflow.getComment());
-    if (moneyflow.isPrivat()) {
-      moneyflowTransport.setPrivat(IS_PRIVATE_SHORT);
+  // work around https://github.com/mapstruct/mapstruct/issues/1166
+  @AfterMapping
+  default Moneyflow doAfterMapping(@MappingTarget final Moneyflow entity) {
+    if (entity != null) {
+      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
+        entity.setCapitalsource(null);
+      }
+      if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
+        entity.setContractpartner(null);
+      }
+      if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
+        entity.setPostingAccount(null);
+      }
     }
-    final User user = moneyflow.getUser();
-    moneyflowTransport.setUserid(user.getId().getId());
-    final PostingAccount postingAccount = moneyflow.getPostingAccount();
-    moneyflowTransport.setPostingaccountid(postingAccount.getId().getId());
-    moneyflowTransport.setPostingaccountname(postingAccount.getName());
-    return moneyflowTransport;
+    return entity;
   }
 }

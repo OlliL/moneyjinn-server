@@ -76,13 +76,14 @@ public class CompareDataController extends AbstractController {
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
   private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
   private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
+  private final MoneyflowTransportMapper moneyflowTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     super.registerBeanMapper(this.compareDataFormatTransportMapper);
     super.registerBeanMapper(this.capitalsourceTransportMapper);
-    super.registerBeanMapper(new MoneyflowTransportMapper());
+    super.registerBeanMapper(this.moneyflowTransportMapper);
     super.registerBeanMapper(this.compareDataDatasetTransportMapper);
   }
 

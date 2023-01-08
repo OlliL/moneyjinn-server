@@ -91,6 +91,7 @@ public class EtfController extends AbstractController {
   private final EtfTransportMapper etfTransportMapper;
   private final EtfFlowTransportMapper etfFlowTransportMapper;
   private final EtfEffectiveFlowTransportMapper etfEffectiveFlowTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @RequestMapping(value = "listEtfOverview/{year}/{month}", method = { RequestMethod.GET })
   public ListEtfOverviewResponse listEtfOverview(
@@ -288,6 +289,6 @@ public class EtfController extends AbstractController {
     super.registerBeanMapper(this.etfFlowTransportMapper);
     super.registerBeanMapper(this.etfEffectiveFlowTransportMapper);
     super.registerBeanMapper(this.etfTransportMapper);
-    super.registerBeanMapper(new ValidationItemTransportMapper());
+    super.registerBeanMapper(this.validationItemTransportMapper);
   }
 }

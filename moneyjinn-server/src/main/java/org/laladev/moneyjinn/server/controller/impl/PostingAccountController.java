@@ -56,12 +56,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountController extends AbstractController {
   private final IPostingAccountService postingAccountService;
+  private final PostingAccountTransportMapper postingAccountTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new PostingAccountTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.postingAccountTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })

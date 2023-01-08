@@ -26,27 +26,25 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class PostingAccountAmountTransportMapper
-    implements IMapper<PostingAccountAmount, PostingAccountAmountTransport> {
+@Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
+public interface PostingAccountAmountTransportMapper
+    extends IMapper<PostingAccountAmount, PostingAccountAmountTransport> {
   @Override
-  public PostingAccountAmount mapBToA(
+  default PostingAccountAmount mapBToA(
       final PostingAccountAmountTransport postingAccountAmountTransport) {
     throw new UnsupportedOperationException("Mapping not supported!");
   }
 
   @Override
-  public PostingAccountAmountTransport mapAToB(final PostingAccountAmount postingAccountAmount) {
-    final PostingAccountAmountTransport postingAccountAmountTransport = new PostingAccountAmountTransport();
-    postingAccountAmountTransport
-        .setPostingaccountid(postingAccountAmount.getPostingAccount().getId().getId());
-    postingAccountAmountTransport
-        .setPostingaccountname(postingAccountAmount.getPostingAccount().getName());
-    postingAccountAmountTransport.setAmount(postingAccountAmount.getAmount());
-    postingAccountAmountTransport.setDate(postingAccountAmount.getDate());
-    return postingAccountAmountTransport;
-  }
+  @Mapping(target = "postingaccountid", source = "postingAccount.id")
+  @Mapping(target = "postingaccountname", source = "postingAccount.name")
+  PostingAccountAmountTransport mapAToB(PostingAccountAmount postingAccountAmount);
 }

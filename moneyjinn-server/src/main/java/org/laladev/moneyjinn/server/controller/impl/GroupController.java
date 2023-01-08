@@ -56,12 +56,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupController extends AbstractController {
   private final IGroupService groupService;
+  private final GroupTransportMapper groupTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new GroupTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.groupTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @PreAuthorize(HAS_AUTHORITY_ADMIN)

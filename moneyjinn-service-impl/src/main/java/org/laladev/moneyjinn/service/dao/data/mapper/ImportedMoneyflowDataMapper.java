@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
-import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
@@ -38,9 +37,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, ImportedMoneyflowStatusMapper.class,
-    ImportedMoneyflowIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
+    ImportedMoneyflowStatusMapper.class, ImportedMoneyflowIdMapper.class })
 public interface ImportedMoneyflowDataMapper
     extends IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
   @Override

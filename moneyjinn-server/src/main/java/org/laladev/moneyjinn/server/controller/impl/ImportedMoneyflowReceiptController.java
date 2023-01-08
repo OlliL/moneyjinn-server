@@ -70,14 +70,17 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
   private final IMoneyflowService moneyflowService;
   private final IAccessRelationService accessRelationService;
   private final IUserService userService;
+  private final ImportedMoneyflowReceiptTransportMapper importedMoneyflowReceiptTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
+
   private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
-    this.registerBeanMapper(new ImportedMoneyflowReceiptTransportMapper());
-    this.registerBeanMapper(new ValidationItemTransportMapper());
+    this.registerBeanMapper(this.importedMoneyflowReceiptTransportMapper);
+    this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
   @RequestMapping(value = "createImportedMoneyflowReceipts", method = { RequestMethod.POST })
