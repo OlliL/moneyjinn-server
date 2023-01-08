@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,8 +165,7 @@ public class CreateUserTest extends AbstractControllerTest {
     Assertions.assertNotNull(accessRelation);
     Assertions.assertEquals(accessRelationTransport.getRefId(),
         accessRelation.getParentAccessRelation().getId().getId());
-    Assertions.assertEquals(accessRelationTransport.getValidfrom().getTime(),
-        accessRelation.getValidFrom().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+    Assertions.assertEquals(accessRelationTransport.getValidfrom(), accessRelation.getValidFrom());
     // default if validTil is empty
     Assertions.assertEquals(DateUtil.getGmtDate("2999-12-31").getTime(),
         accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
@@ -178,7 +178,7 @@ public class CreateUserTest extends AbstractControllerTest {
     request.setUserTransport(transport);
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forNewUser_2000_01_01().build();
-    accessRelationTransport.setValidtil(DateUtil.getGmtDate("2900-12-31"));
+    accessRelationTransport.setValidtil(LocalDate.parse("2900-12-31"));
     request.setAccessRelationTransport(accessRelationTransport);
     final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         CreateUserResponse.class);
@@ -187,8 +187,7 @@ public class CreateUserTest extends AbstractControllerTest {
         .getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(accessRelation);
     // default did not overwrite
-    Assertions.assertEquals(accessRelationTransport.getValidtil().getTime(),
-        accessRelation.getValidTil().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+    Assertions.assertEquals(accessRelationTransport.getValidtil(), accessRelation.getValidTil());
   }
 
   @Test

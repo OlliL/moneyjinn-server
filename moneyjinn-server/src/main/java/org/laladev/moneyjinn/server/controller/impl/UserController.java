@@ -89,17 +89,16 @@ public class UserController extends AbstractController {
   private final IAccessRelationService accessRelationService;
   private final IGroupService groupService;
   private final ISettingService settingService;
-  @Inject
-  AuthenticationManager authenticationManager;
-  @Inject
-  JwtTokenProvider jwtTokenProvider;
+  private final AuthenticationManager authenticationManager;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final AccessRelationTransportMapper accessRelationTransportMapper;
 
   @Override
   @PostConstruct
   protected void addBeanMapper() {
     this.registerBeanMapper(new UserTransportMapper());
     this.registerBeanMapper(new GroupTransportMapper());
-    this.registerBeanMapper(new AccessRelationTransportMapper());
+    this.registerBeanMapper(this.accessRelationTransportMapper);
     this.registerBeanMapper(new ValidationItemTransportMapper());
   }
 

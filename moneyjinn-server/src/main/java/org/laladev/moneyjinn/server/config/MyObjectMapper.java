@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationIntrospector;
 
 public class MyObjectMapper extends ObjectMapper {
@@ -42,5 +43,6 @@ public class MyObjectMapper extends ObjectMapper {
     super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     super.setAnnotationIntrospector(
         new JakartaXmlBindAnnotationIntrospector(TypeFactory.defaultInstance()));
+    super.registerModule(new JavaTimeModule());
   }
 }
