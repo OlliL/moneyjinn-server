@@ -5,12 +5,12 @@
 	<artifactId>moneyjinn-hbci-batch</artifactId>
 	<version>0.0.10-SNAPSHOT</version>
 	<properties>
-		<hibernate-core.version>5.4.30.Final</hibernate-core.version>
-		<mysql.version>8.0.23</mysql.version>
+		<hibernate-core.version>6.1.6.Final</hibernate-core.version>
+		<mysql.version>8.0.31</mysql.version>
 		<hbci4java.version>3.1.55</hbci4java.version>
-		<slf4j.version>1.7.30</slf4j.version>
-		<slf4j-log4j12.version>1.7.30</slf4j-log4j12.version>
-		<junit.version>5.7.1</junit.version>
+		<slf4j.version>2.0.6</slf4j.version>
+		<slf4j-reload4j.version>2.0.6</slf4j-reload4j.version>
+		<junit.version>5.9.1</junit.version>
 		<moneyjinn-hbci-core.version>0.0.9-SNAPSHOT</moneyjinn-hbci-core.version>
 		<moneyjinn-core.version>0.0.1-SNAPSHOT</moneyjinn-core.version>
 		<spring.version>6.0.3</spring.version>
@@ -41,8 +41,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j-log4j12.version}</version>
+			<artifactId>slf4j-reload4j</artifactId>
+			<version>${slf4j-reload4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.hbci4j</groupId>
