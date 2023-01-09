@@ -4,17 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.laladev.moneyjinn</groupId>
-		<artifactId>moneyjinn-parent</artifactId>
-		<version>0.0.3-SNAPSHOT</version>
+		<artifactId>moneyjinn-server-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>moneyjinn-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<properties>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<java.version>17</java.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

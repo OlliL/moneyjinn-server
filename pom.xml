@@ -2,17 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.laladev.moneyjinn</groupId>
-		<artifactId>moneyjinn-parent</artifactId>
-		<version>0.0.3-SNAPSHOT</version>
-	</parent>
-
+	<groupId>org.laladev.moneyjinn</groupId>
 	<artifactId>moneyjinn-server-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>moneyjinn-core</module>
 		<module>moneyjinn-model</module>
 		<module>moneyjinn-mapstruct-converter</module>
 		<module>moneyjinn-service-api</module>
@@ -21,9 +17,25 @@
 	</modules>
 
 	<properties>
-		<moneyjinn-core.version>0.0.1-SNAPSHOT</moneyjinn-core.version>
 		<moneyjinn-sepa-camt.version>0.0.1-SNAPSHOT</moneyjinn-sepa-camt.version>
-
+	
+		<spring.boot.version>3.0.1</spring.boot.version>
+		<mybatis.version>3.5.11</mybatis.version>
+		<mybatis-spring.version>3.0.1</mybatis-spring.version>
+		<commons.io.version>2.11.0</commons.io.version>
+		<commons.codec.version>1.15</commons.codec.version>
+		<apache.tika.version>2.6.0</apache.tika.version>
+		<jjwt.version>0.11.5</jjwt.version>
+		<lombok.version>1.18.24</lombok.version>
+		<mapstruct.version>1.5.3.Final</mapstruct.version>
+		 
+		<maven-compiler-plugin>3.10.1</maven-compiler-plugin>
+		
+		<junit.version>5.9.1</junit.version>
+		<juniversalchardet.version>2.4.0</juniversalchardet.version>
+		<opencsv.version>5.7.1</opencsv.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -44,7 +56,7 @@
 			<dependency>
 				<groupId>org.laladev.moneyjinn</groupId>
 				<artifactId>moneyjinn-core</artifactId>
-				<version>${moneyjinn-core.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.laladev.moneyjinn</groupId>
@@ -73,6 +85,83 @@
 				<version>${project.version}</version>
 				<scope>runtime</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.opencsv</groupId>
+				<artifactId>opencsv</artifactId>
+				<version>${opencsv.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons.codec.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jakarta.inject</groupId>
+				<artifactId>jakarta.inject-api</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>${mybatis-spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-core</artifactId>
+				<version>${apache.tika.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-api</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-impl</artifactId>
+				<version>${jjwt.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-jackson</artifactId>
+				<version>${jjwt.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${mapstruct.version}</version>
+			</dependency>
+			
+			<!-- TEST SCOPE -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.github.albfernandez</groupId>
+				<artifactId>juniversalchardet</artifactId>
+				<version>${juniversalchardet.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -80,23 +169,19 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>1.1.10</version>
-					<configuration>
-						<targetClasses>
-							<!-- get Services clean first -->
-							<param>org.laladev.moneyjinn.businesslogic.service.impl*</param>
-							<!-- <param>org.laladev.moneyjinn.server.controller.impl*</param> 
-								<param>org.laladev.moneyjinn.server.controller.mapper*</param> <param>org.laladev.moneyjinn.businesslogic.dao.data.mapper*</param> -->
-						</targetClasses>
-						<targetTests>
-							<param>org.laladev.moneyjinn*</param>
-						</targetTests>
-						<timeoutConstant>20000</timeoutConstant>
-						<!--<verbose>true</verbose> -->
-						<threads>2</threads>
-					</configuration>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
