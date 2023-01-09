@@ -27,7 +27,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import jakarta.xml.bind.annotation.XmlElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +38,5 @@ import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmou
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AbstractShowReportGraphResponse extends AbstractResponse {
-  @XmlElement(name = "postingAccountAmountTransport")
   private List<PostingAccountAmountTransport> postingAccountAmountTransports;
 }

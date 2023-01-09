@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.transport;
 
-import jakarta.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;
@@ -43,7 +42,6 @@ public class MoneyflowTransport {
   private Long contractpartnerid;
   private String contractpartnername;
   private String comment;
-  @XmlElement(name = "private")
   private Short privat;
   private Long postingaccountid;
   private String postingaccountname;

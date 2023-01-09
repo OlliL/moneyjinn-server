@@ -27,7 +27,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -36,7 +35,6 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createPreDefMoneyflowResponse")
 public class CreatePreDefMoneyflowResponse extends ValidationResponse {
   private Long preDefMoneyflowId;
 }

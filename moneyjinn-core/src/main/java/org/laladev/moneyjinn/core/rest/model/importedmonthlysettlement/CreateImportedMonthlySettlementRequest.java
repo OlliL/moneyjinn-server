@@ -28,7 +28,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -38,7 +37,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlement
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createImportedMonthlySettlementRequest")
 public class CreateImportedMonthlySettlementRequest extends AbstractRequest {
   private ImportedMonthlySettlementTransport importedMonthlySettlementTransport;
 }

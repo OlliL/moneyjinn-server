@@ -27,12 +27,10 @@
 
 package org.laladev.moneyjinn.core.rest.model.wsevent;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
 
 @Data
-@XmlRootElement(name = "contractpartnerChangedEventTransport")
 public class ContractpartnerChangedEventTransport {
   private String eventType;
   private ContractpartnerTransport contractpartnerTransport;

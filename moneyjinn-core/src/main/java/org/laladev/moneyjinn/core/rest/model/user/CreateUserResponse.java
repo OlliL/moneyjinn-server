@@ -27,14 +27,14 @@
 
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createUserResponse")
-public class CreateUserResponse extends AbstractCreateUserResponse {
+public class CreateUserResponse extends ValidationResponse {
+  private Long userId;
 }

@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.monthlysettlement;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,13 +36,10 @@ import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTranspor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showMonthlySettlementCreateResponse")
 public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
   private Short year;
   private Short month;
   private Short editMode;
-  @XmlElement(name = "monthlySettlementTransport")
   private List<MonthlySettlementTransport> monthlySettlementTransports;
-  @XmlElement(name = "importedMonthlySettlementTransport")
   private List<MonthlySettlementTransport> importedMonthlySettlementTransports;
 }

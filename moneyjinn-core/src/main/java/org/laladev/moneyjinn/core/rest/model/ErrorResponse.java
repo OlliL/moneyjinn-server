@@ -28,11 +28,9 @@
 
 package org.laladev.moneyjinn.core.rest.model;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
 @Data
-@XmlRootElement(name = "error")
 public class ErrorResponse {
   private Integer code;
   private String message;

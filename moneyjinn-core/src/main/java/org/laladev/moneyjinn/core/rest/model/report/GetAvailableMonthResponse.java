@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +35,6 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "getAvailableMonthResponse")
 public class GetAvailableMonthResponse extends AbstractResponse {
   private Short year;
   private Short month;

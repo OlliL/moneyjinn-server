@@ -27,16 +27,16 @@
 
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
+import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showEditUserResponse")
-public class ShowEditUserResponse extends AbstractUpdateUserResponse {
-  private UserTransport userTransport;
+public class ShowEditUserResponse extends AbstractResponse {
+  private List<AccessRelationTransport> accessRelationTransports;
 }

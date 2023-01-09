@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.importedmoneyflow;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,8 +36,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTranspor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showAddImportedMoneyflowsResponse")
 public class ShowAddImportedMoneyflowsResponse extends ValidationResponse {
-  @XmlElement(name = "importedMoneyflowTransport")
   private List<ImportedMoneyflowTransport> importedMoneyflowTransports;
 }

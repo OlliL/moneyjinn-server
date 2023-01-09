@@ -1,8 +1,6 @@
 
 package org.laladev.moneyjinn.core.rest.model;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,9 +35,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "validationResponse")
 public class ValidationResponse extends AbstractResponse {
   private Boolean result;
-  @XmlElement(name = "validationItemTransport")
   private List<ValidationItemTransport> validationItemTransports;
 }

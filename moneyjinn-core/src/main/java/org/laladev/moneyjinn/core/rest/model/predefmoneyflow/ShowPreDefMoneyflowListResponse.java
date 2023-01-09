@@ -27,8 +27,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.predefmoneyflow;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,8 +37,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showPreDefMoneyflowListResponse")
 public class ShowPreDefMoneyflowListResponse extends AbstractResponse {
-  @XmlElement(name = "preDefMoneyflowTransport")
   private List<PreDefMoneyflowTransport> preDefMoneyflowTransports;
 }

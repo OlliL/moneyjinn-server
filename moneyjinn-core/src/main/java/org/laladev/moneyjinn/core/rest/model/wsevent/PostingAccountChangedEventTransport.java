@@ -27,12 +27,10 @@
 
 package org.laladev.moneyjinn.core.rest.model.wsevent;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 @Data
-@XmlRootElement(name = "postingAccountChangedEventTransport")
 public class PostingAccountChangedEventTransport {
   private String eventType;
   private PostingAccountTransport postingAccountTransport;

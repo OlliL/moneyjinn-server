@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
@@ -38,9 +36,7 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showReportingFormResponse")
 public class ShowReportingFormResponse extends AbstractResponse {
-  @XmlElement(name = "postingAccountIdsNo")
   private List<Long> postingAccountIds;
   private LocalDate minDate;
   private LocalDate maxDate;

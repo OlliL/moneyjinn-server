@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.comparedata;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,9 +36,7 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFo
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showCompareDataFormResponse")
 public class ShowCompareDataFormResponse extends AbstractResponse {
-  @XmlElement(name = "compareDataFormatTransport")
   private List<CompareDataFormatTransport> compareDataFormatTransports;
   private Long selectedCapitalsourceId;
   private Long selectedDataFormat;

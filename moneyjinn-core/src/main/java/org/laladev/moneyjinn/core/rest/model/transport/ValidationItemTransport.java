@@ -26,12 +26,10 @@
 
 package org.laladev.moneyjinn.core.rest.model.transport;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 
 @Data
-@XmlRootElement(name = "validationItemTransport")
 public class ValidationItemTransport {
   private Object key;
   private Integer error;

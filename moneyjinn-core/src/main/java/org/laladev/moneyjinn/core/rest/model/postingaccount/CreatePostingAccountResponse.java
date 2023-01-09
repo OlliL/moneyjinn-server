@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.postingaccount;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,7 +34,6 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createPostingAccountResponse")
 public class CreatePostingAccountResponse extends ValidationResponse {
   private Long postingAccountId;
 }

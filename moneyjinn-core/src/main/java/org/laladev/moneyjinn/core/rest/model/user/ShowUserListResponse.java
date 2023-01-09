@@ -27,8 +27,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,12 +39,8 @@ import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransp
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showUserListResponse")
 public class ShowUserListResponse extends AbstractResponse {
-  @XmlElement(name = "userTransport")
   private List<UserTransport> userTransports;
-  @XmlElement(name = "groupTransport")
   private List<GroupTransport> groupTransports;
-  @XmlElement(name = "accessRelationTransport")
   private List<AccessRelationTransport> accessRelationTransports;
 }

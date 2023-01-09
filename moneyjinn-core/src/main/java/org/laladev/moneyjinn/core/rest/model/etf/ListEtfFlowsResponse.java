@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Data;
@@ -41,13 +39,9 @@ import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "listEtfFlowsResponse")
 public class ListEtfFlowsResponse extends AbstractResponse {
-  @XmlElement(name = "etfTransport")
   private List<EtfTransport> etfTransports;
-  @XmlElement(name = "etfFlowTransport")
   private List<EtfFlowTransport> etfFlowTransports;
-  @XmlElement(name = "etfEffectiveFlowTransport")
   private List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports;
   private String calcEtfSaleIsin;
   private BigDecimal calcEtfSalePieces;

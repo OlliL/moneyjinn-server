@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.group;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,8 +36,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showGroupListResponse")
 public class ShowGroupListResponse extends AbstractResponse {
-  @XmlElement(name = "groupTransport")
   private List<GroupTransport> groupTransports;
 }

@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,7 +34,6 @@ import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showMoneyflowReceiptResponse")
 public class ShowMoneyflowReceiptResponse extends AbstractResponse {
   private String receipt;
   private Short receiptType;

@@ -27,12 +27,10 @@
 
 package org.laladev.moneyjinn.core.rest.model.wsevent;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
 
 @Data
-@XmlRootElement(name = "capitalsourceChangedEventTransport")
 public class CapitalsourceChangedEventTransport {
   private String eventType;
   private CapitalsourceTransport capitalsourceTransport;

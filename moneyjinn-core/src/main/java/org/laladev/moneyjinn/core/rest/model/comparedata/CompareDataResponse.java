@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.comparedata;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -42,15 +40,10 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWr
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "compareDataResponse")
 public class CompareDataResponse extends AbstractResponse {
-  @XmlElement(name = "compareDataMatchingTransport")
   private final List<CompareDataMatchingTransport> compareDataMatchingTransports = new ArrayList<>();
-  @XmlElement(name = "compareDataWrongCapitalsourceTransport")
   private final List<CompareDataWrongCapitalsourceTransport> compareDataWrongCapitalsourceTransports = new ArrayList<>();
-  @XmlElement(name = "compareDataNotInFileTransport")
   private final List<CompareDataNotInFileTransport> compareDataNotInFileTransports = new ArrayList<>();
-  @XmlElement(name = "compareDataNotInDatabaseTransport")
   private final List<CompareDataNotInDatabaseTransport> compareDataNotInDatabaseTransports = new ArrayList<>();
 
   public final void addCompareDataMatchingTransport(

@@ -28,7 +28,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.importedbalance;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -38,7 +37,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createImportedBalanceRequest")
 public class CreateImportedBalanceRequest extends AbstractRequest {
   private ImportedBalanceTransport importedBalanceTransport;
 }

@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,8 +36,6 @@ import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "listEtfOverviewResponse")
 public class ListEtfOverviewResponse extends AbstractResponse {
-  @XmlElement(name = "etfSummaryTransport")
   private List<EtfSummaryTransport> etfSummaryTransports;
 }

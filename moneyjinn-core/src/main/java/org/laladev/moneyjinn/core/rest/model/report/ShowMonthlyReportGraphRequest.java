@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.report;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -34,6 +33,5 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showMonthlyReportGraphRequest")
 public class ShowMonthlyReportGraphRequest extends AbstractShowReportGraphRequest {
 }

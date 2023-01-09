@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.etf;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +35,6 @@ import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "calcEtfSaleResponse")
 public class CalcEtfSaleResponse extends ValidationResponse {
   private String isin;
   private BigDecimal originalBuyPrice;

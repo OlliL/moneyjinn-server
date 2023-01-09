@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,10 +37,8 @@ import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "createMoneyflowRequest")
 public class CreateMoneyflowRequest extends AbstractRequest {
   private MoneyflowTransport moneyflowTransport;
-  @XmlElement(name = "insertMoneyflowSplitEntryTransport")
   public List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports;
   private Long usedPreDefMoneyflowId;
   private Short saveAsPreDefMoneyflow;

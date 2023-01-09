@@ -1,9 +1,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.contractpartneraccount;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-
 //
 //Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -40,9 +37,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTra
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "showContractpartnerAccountListResponse")
 public class ShowContractpartnerAccountListResponse extends AbstractResponse {
-  @XmlElement(name = "contractpartnerAccountTransport")
   private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
 
 }

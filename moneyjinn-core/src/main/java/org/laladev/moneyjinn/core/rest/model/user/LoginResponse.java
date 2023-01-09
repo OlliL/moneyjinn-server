@@ -27,7 +27,6 @@
 
 package org.laladev.moneyjinn.core.rest.model.user;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -37,7 +36,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@XmlRootElement(name = "loginResponse")
 public class LoginResponse extends ValidationResponse {
   public UserTransport userTransport;
   public String token;
