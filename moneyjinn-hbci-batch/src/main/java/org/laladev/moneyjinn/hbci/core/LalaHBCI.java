@@ -25,14 +25,14 @@
 //
 package org.laladev.moneyjinn.hbci.core;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.kapott.hbci.manager.HBCIHandler;
@@ -178,18 +178,27 @@ public final class LalaHBCI {
   }
 
   private void addIbanBic(final AbstractAccountEntitiy accountEntity) {
-    System.out.println("====> MyIban: " + accountEntity.getMyIban());
-    System.out.println("====> MyAccountnumber: " + accountEntity.getMyAccountnumber());
-    System.out.println("====> MyBankcode: " + accountEntity.getMyBankcode());
-    if (accountEntity.getMyIban() == null && accountEntity.getMyAccountnumber() != null
-        && accountEntity.getMyBankcode() != null) {
-      accountEntity.setMyIban(
-          this.getProperty("hbci.mapping.iban." + accountEntity.getMyAccountnumber().toString()
-              + "." + accountEntity.getMyBankcode().toString()));
-      accountEntity.setMyBic(
-          this.getProperty("hbci.mapping.bic." + accountEntity.getMyAccountnumber().toString() + "."
-              + accountEntity.getMyBankcode().toString()));
+    System.out.println("1===> MyIban: " + accountEntity.getMyIban());
+    System.out.println("1===> MyBic: " + accountEntity.getMyBic());
+    System.out.println("1===> MyAccountnumber: " + accountEntity.getMyAccountnumber());
+    System.out.println("1===> MyBankcode: " + accountEntity.getMyBankcode());
+
+    if (accountEntity.getMyAccountnumber() != null && accountEntity.getMyBankcode() != null) {
+      if (accountEntity.getMyIban() == null) {
+        accountEntity.setMyIban(
+            this.getProperty("hbci.mapping.iban." + accountEntity.getMyAccountnumber().toString()
+                + "." + accountEntity.getMyBankcode().toString()));
+        System.out.println("2===> MyIban: " + accountEntity.getMyIban());
+      }
+      if (accountEntity.getMyBic() == null) {
+        accountEntity.setMyBic(
+            this.getProperty("hbci.mapping.bic." + accountEntity.getMyAccountnumber().toString()
+                + "." + accountEntity.getMyBankcode().toString()));
+        System.out.println("2===> MyBic: " + accountEntity.getMyBic());
+      }
     }
+    System.out.println("==========================");
+
   }
 
   /**
