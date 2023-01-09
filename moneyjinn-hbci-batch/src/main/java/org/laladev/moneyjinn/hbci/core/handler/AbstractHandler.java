@@ -25,10 +25,20 @@
 //
 package org.laladev.moneyjinn.hbci.core.handler;
 
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-public abstract class AbstractHandler extends Observable {
+public abstract class AbstractHandler {
 
-	public abstract void handle();
+  protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+  public abstract void handle();
+
+  public void addObserver(final PropertyChangeListener l) {
+    this.pcs.addPropertyChangeListener(l);
+  }
+
+  public void notifyObservers(final Object object) {
+    this.pcs.firePropertyChange(null, null, object);
+  }
 }

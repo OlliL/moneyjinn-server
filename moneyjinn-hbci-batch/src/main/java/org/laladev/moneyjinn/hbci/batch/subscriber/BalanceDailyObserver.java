@@ -27,9 +27,8 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.util.Observable;
-import java.util.Observer;
-
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
@@ -38,46 +37,47 @@ import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.springframework.web.client.RestTemplate;
 
-public class BalanceDailyObserver implements Observer {
+public class BalanceDailyObserver implements PropertyChangeListener {
 
-	private final RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
-	public BalanceDailyObserver() {
-		this.restTemplate = new RestTemplate();
+  public BalanceDailyObserver() {
+    this.restTemplate = new RestTemplate();
 
-		this.restTemplate.getMessageConverters().clear();
-		this.restTemplate.getMessageConverters().add(new MessageConverter());
-	}
+    this.restTemplate.getMessageConverters().clear();
+    this.restTemplate.getMessageConverters().add(new MessageConverter());
+  }
 
-	@Override
-	public void update(final Observable o, final Object arg) {
-		if (arg instanceof BalanceDaily) {
-			this.notify((BalanceDaily) arg);
-		}
+  @Override
+  public void propertyChange(final PropertyChangeEvent event) {
+    if (event.getNewValue() instanceof BalanceDaily) {
+      this.notify((BalanceDaily) event.getNewValue());
+    }
 
-	}
+  }
 
-	private void notify(final BalanceDaily balanceDaily) {
-		final ImportedBalanceTransport transport = new ImportedBalanceTransport();
-		transport.setAccountNumberCapitalsource(balanceDaily.getMyIban());
-		transport.setBankCodeCapitalsource(balanceDaily.getMyBic());
-		transport.setBalance(balanceDaily.getBalanceAvailableValue());
+  private void notify(final BalanceDaily balanceDaily) {
+    final ImportedBalanceTransport transport = new ImportedBalanceTransport();
+    transport.setAccountNumberCapitalsource(balanceDaily.getMyIban());
+    transport.setBankCodeCapitalsource(balanceDaily.getMyBic());
+    transport.setBalance(balanceDaily.getBalanceAvailableValue());
 
-		final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
-		request.setImportedBalanceTransport(transport);
+    final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
+    request.setImportedBalanceTransport(transport);
 
-		final ValidationResponse response = this.restTemplate.postForObject(
-				Configuration.ROOT_URL + "/importedbalance/createImportedBalance", request, ValidationResponse.class);
+    final ValidationResponse response = this.restTemplate.postForObject(
+        Configuration.ROOT_URL + "/importedbalance/createImportedBalance", request,
+        ValidationResponse.class);
 
-		if (response != null) {
-			if (response.getErrorResponse() != null) {
-				throw (new RuntimeException("error: " + response.getErrorResponse().getMessage()));
-			} else if (response.getResult().equals(Boolean.FALSE)) {
-				throw (new RuntimeException(
-						"error: " + response.getValidationItemTransports().get(0).getError().toString()));
-			}
+    if (response != null) {
+      if (response.getMessage() != null) {
+        throw (new RuntimeException("error: " + response.getMessage()));
+      } else if (response.getResult().equals(Boolean.FALSE)) {
+        throw (new RuntimeException(
+            "error: " + response.getValidationItemTransports().get(0).getError().toString()));
+      }
 
-		}
-	}
+    }
+  }
 
 }

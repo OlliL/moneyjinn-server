@@ -27,9 +27,8 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.util.Observable;
-import java.util.Observer;
-
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
@@ -38,50 +37,50 @@ import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 import org.springframework.web.client.RestTemplate;
 
-public class BalanceMonthlyObserver implements Observer {
+public class BalanceMonthlyObserver implements PropertyChangeListener {
 
-	private final RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
-	public BalanceMonthlyObserver() {
-		this.restTemplate = new RestTemplate();
+  public BalanceMonthlyObserver() {
+    this.restTemplate = new RestTemplate();
 
-		this.restTemplate.getMessageConverters().clear();
-		this.restTemplate.getMessageConverters().add(new MessageConverter());
-	}
+    this.restTemplate.getMessageConverters().clear();
+    this.restTemplate.getMessageConverters().add(new MessageConverter());
+  }
 
-	@Override
-	public void update(final Observable o, final Object arg) {
-		if (arg instanceof BalanceMonthly) {
-			this.notify((BalanceMonthly) arg);
-		}
+  @Override
+  public void propertyChange(final PropertyChangeEvent event) {
+    if (event.getNewValue() instanceof BalanceMonthly) {
+      this.notify((BalanceMonthly) event.getNewValue());
+    }
 
-	}
+  }
 
-	private void notify(final BalanceMonthly balanceMonthly) {
-		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransport();
-		transport.setAccountNumberCapitalsource(balanceMonthly.getMyIban());
-		transport.setBankCodeCapitalsource(balanceMonthly.getMyBic());
-		transport.setExternalid(balanceMonthly.getId().toString());
-		transport.setMonth(balanceMonthly.getBalanceMonth().shortValue());
-		transport.setYear(balanceMonthly.getBalanceYear().shortValue());
-		transport.setAmount(balanceMonthly.getBalanceValue());
+  private void notify(final BalanceMonthly balanceMonthly) {
+    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransport();
+    transport.setAccountNumberCapitalsource(balanceMonthly.getMyIban());
+    transport.setBankCodeCapitalsource(balanceMonthly.getMyBic());
+    transport.setExternalid(balanceMonthly.getId().toString());
+    transport.setMonth(balanceMonthly.getBalanceMonth().shortValue());
+    transport.setYear(balanceMonthly.getBalanceYear().shortValue());
+    transport.setAmount(balanceMonthly.getBalanceValue());
 
-		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-		request.setImportedMonthlySettlementTransport(transport);
+    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+    request.setImportedMonthlySettlementTransport(transport);
 
-		final ValidationResponse response = this.restTemplate.postForObject(
-				Configuration.ROOT_URL + "/importedmonthlysettlement/createImportedMonthlySettlement", request,
-				ValidationResponse.class);
+    final ValidationResponse response = this.restTemplate.postForObject(
+        Configuration.ROOT_URL + "/importedmonthlysettlement/createImportedMonthlySettlement",
+        request, ValidationResponse.class);
 
-		if (response != null) {
-			if (response.getErrorResponse() != null) {
-				throw (new RuntimeException("error: " + response.getErrorResponse().getMessage()));
-			} else if (response.getResult().equals(Boolean.FALSE)) {
-				throw (new RuntimeException(
-						"error: " + response.getValidationItemTransports().get(0).getError().toString()));
-			}
+    if (response != null) {
+      if (response.getMessage() != null) {
+        throw (new RuntimeException("error: " + response.getMessage()));
+      } else if (response.getResult().equals(Boolean.FALSE)) {
+        throw (new RuntimeException(
+            "error: " + response.getValidationItemTransports().get(0).getError().toString()));
+      }
 
-		}
-	}
+    }
+  }
 
 }

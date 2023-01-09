@@ -27,57 +27,13 @@
 //
 package org.laladev.moneyjinn.hbci.batch.config;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-
-import org.apache.commons.io.IOUtils;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.springframework.http.HttpInputMessage;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 public class MessageConverter extends MappingJackson2HttpMessageConverter {
 
-	public MessageConverter() {
-		final ObjectMapper mapper = new MyObjectMapper();
-		super.setObjectMapper(mapper);
-	}
-
-	// @Override
-	// protected Object readInternal(Class<?> clazz, HttpInputMessage
-	// inputMessage)
-	// throws JsonParseException, JsonMappingException, IOException {
-
-	@Override
-	public Object read(final Type type, final Class<?> contextClass, final HttpInputMessage inputMessage)
-			throws IOException, HttpMessageNotReadableException {
-
-		final byte[] body = IOUtils.toByteArray(inputMessage.getBody());
-		inputMessage.getBody().close();
-
-		try {
-			final JavaType javaType = this.getJavaType(type, contextClass);
-			return super.getObjectMapper().readValue(body, javaType);
-		} catch (final IOException ex) {
-			try {
-				if (type != null && type instanceof Class) {
-					final Class<?> clazz = (Class<?>) type;
-					final Object response = clazz.getDeclaredConstructor().newInstance();
-					if (response instanceof AbstractResponse) {
-						final JavaType javaType = this.getJavaType(ErrorResponse.class, null);
-						final ErrorResponse errorResponse = super.getObjectMapper().readValue(body, javaType);
-						((AbstractResponse) response).setErrorResponse(errorResponse);
-						return response;
-					}
-				}
-			} catch (final Exception e) {
-				throw new HttpMessageNotReadableException("Could not read JSON: " + e.getMessage(), e);
-			}
-			throw new HttpMessageNotReadableException("Could not read JSON: " + ex.getMessage(), ex);
-		}
-	}
+  public MessageConverter() {
+    final ObjectMapper mapper = new MyObjectMapper();
+    super.setObjectMapper(mapper);
+  }
 }

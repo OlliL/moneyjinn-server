@@ -27,8 +27,8 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
@@ -37,7 +37,7 @@ import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.springframework.web.client.RestTemplate;
 
-public class AccountMovementObserver implements Observer {
+public class AccountMovementObserver implements PropertyChangeListener {
 
   private final RestTemplate restTemplate;
 
@@ -49,9 +49,9 @@ public class AccountMovementObserver implements Observer {
   }
 
   @Override
-  public void update(final Observable o, final Object arg) {
-    if (arg instanceof AccountMovement) {
-      this.notify((AccountMovement) arg);
+  public void propertyChange(final PropertyChangeEvent event) {
+    if (event.getNewValue() instanceof AccountMovement) {
+      this.notify((AccountMovement) event.getNewValue());
     }
 
   }
@@ -96,10 +96,9 @@ public class AccountMovementObserver implements Observer {
         ValidationResponse.class);
 
     if (response != null) {
-      if (response.getErrorResponse() != null) {
+      if (response.getMessage() != null) {
         throw (new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
-            + transport.getBankCodeCapitalsource() + ") "
-            + response.getErrorResponse().getMessage()));
+            + transport.getBankCodeCapitalsource() + ") " + response.getMessage()));
       } else if (response.getResult().equals(Boolean.FALSE)) {
         throw (new RuntimeException(
             "error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode()
