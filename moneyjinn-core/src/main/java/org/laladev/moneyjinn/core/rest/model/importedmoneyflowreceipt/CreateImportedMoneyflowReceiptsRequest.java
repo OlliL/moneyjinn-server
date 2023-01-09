@@ -28,14 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt;
 
 import java.util.List;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CreateImportedMoneyflowReceiptsRequest extends AbstractRequest {
+public class CreateImportedMoneyflowReceiptsRequest {
   private List<ImportedMoneyflowReceiptTransport> importedMoneyflowReceiptTransports;
 }

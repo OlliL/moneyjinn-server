@@ -27,14 +27,9 @@
 package org.laladev.moneyjinn.core.rest.model.group;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public abstract class AbstractGroupRequest extends AbstractRequest {
+public abstract class AbstractGroupRequest {
   private GroupTransport groupTransport;
 }

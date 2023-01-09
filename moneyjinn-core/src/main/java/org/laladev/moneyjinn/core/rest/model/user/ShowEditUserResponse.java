@@ -31,12 +31,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowEditUserResponse extends AbstractResponse {
+public class ShowEditUserResponse extends ErrorResponse {
   private List<AccessRelationTransport> accessRelationTransports;
 }

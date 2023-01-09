@@ -29,14 +29,9 @@
 package org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CreateImportedMonthlySettlementRequest extends AbstractRequest {
+public class CreateImportedMonthlySettlementRequest {
   private ImportedMonthlySettlementTransport importedMonthlySettlementTransport;
 }

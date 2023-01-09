@@ -31,13 +31,13 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowContractpartnerAccountListResponse extends AbstractResponse {
+public class ShowContractpartnerAccountListResponse extends ErrorResponse {
   private List<ContractpartnerAccountTransport> contractpartnerAccountTransports;
 
 }

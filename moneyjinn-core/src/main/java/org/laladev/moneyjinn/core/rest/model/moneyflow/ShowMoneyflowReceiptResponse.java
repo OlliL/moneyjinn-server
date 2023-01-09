@@ -29,12 +29,12 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowMoneyflowReceiptResponse extends AbstractResponse {
+public class ShowMoneyflowReceiptResponse extends ErrorResponse {
   private String receipt;
   private Short receiptType;
 }

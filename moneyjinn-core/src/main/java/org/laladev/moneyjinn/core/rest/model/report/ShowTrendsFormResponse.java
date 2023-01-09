@@ -31,12 +31,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowTrendsFormResponse extends AbstractResponse {
+public class ShowTrendsFormResponse extends ErrorResponse {
   private LocalDate minDate;
   private LocalDate maxDate;
   private List<Long> settingTrendCapitalsourceIds;

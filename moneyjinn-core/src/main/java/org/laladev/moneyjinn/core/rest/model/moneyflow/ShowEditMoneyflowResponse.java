@@ -30,14 +30,14 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowEditMoneyflowResponse extends AbstractResponse {
+public class ShowEditMoneyflowResponse extends ErrorResponse {
   private List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports;
   private MoneyflowTransport moneyflowTransport;
   private boolean hasReceipt;

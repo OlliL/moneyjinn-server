@@ -27,14 +27,9 @@
 package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class SearchMoneyflowsRequest extends AbstractRequest {
+public class SearchMoneyflowsRequest {
   private MoneyflowSearchParamsTransport moneyflowSearchParamsTransport;
 }

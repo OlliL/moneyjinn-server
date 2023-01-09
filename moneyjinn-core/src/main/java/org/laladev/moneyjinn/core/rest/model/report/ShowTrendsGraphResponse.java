@@ -30,14 +30,14 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.core.rest.model.report.transport.TrendsSettledTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowTrendsGraphResponse extends AbstractResponse {
+public class ShowTrendsGraphResponse extends ErrorResponse {
   private List<TrendsSettledTransport> trendsSettledTransports;
   private List<TrendsCalculatedTransport> trendsCalculatedTransports;
 }

@@ -28,16 +28,11 @@ package org.laladev.moneyjinn.core.rest.model.moneyflow;
 
 import java.util.List;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CreateMoneyflowRequest extends AbstractRequest {
+public class CreateMoneyflowRequest {
   private MoneyflowTransport moneyflowTransport;
   public List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports;
   private Long usedPreDefMoneyflowId;

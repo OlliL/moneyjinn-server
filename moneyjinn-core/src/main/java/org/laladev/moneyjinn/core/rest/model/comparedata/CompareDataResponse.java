@@ -31,7 +31,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInDatabaseTransport;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInFileTransport;
@@ -40,7 +40,7 @@ import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWr
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CompareDataResponse extends AbstractResponse {
+public class CompareDataResponse extends ErrorResponse {
   private final List<CompareDataMatchingTransport> compareDataMatchingTransports = new ArrayList<>();
   private final List<CompareDataWrongCapitalsourceTransport> compareDataWrongCapitalsourceTransports = new ArrayList<>();
   private final List<CompareDataNotInFileTransport> compareDataNotInFileTransports = new ArrayList<>();

@@ -28,14 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.comparedata;
 
 import java.time.LocalDate;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CompareDataRequest extends AbstractRequest {
+public class CompareDataRequest {
   private Long formatId;
   private Long capitalsourceId;
   private LocalDate startDate;

@@ -29,14 +29,9 @@
 package org.laladev.moneyjinn.core.rest.model.importedbalance;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CreateImportedBalanceRequest extends AbstractRequest {
+public class CreateImportedBalanceRequest {
   private ImportedBalanceTransport importedBalanceTransport;
 }

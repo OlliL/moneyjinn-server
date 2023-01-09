@@ -30,13 +30,13 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowMonthlySettlementCreateResponse extends AbstractResponse {
+public class ShowMonthlySettlementCreateResponse extends ErrorResponse {
   private Short year;
   private Short month;
   private Short editMode;

@@ -28,14 +28,9 @@ package org.laladev.moneyjinn.core.rest.model.etf;
 
 import java.math.BigDecimal;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CalcEtfSaleRequest extends AbstractRequest {
+public class CalcEtfSaleRequest {
   private String isin;
   private BigDecimal pieces;
   private BigDecimal bidPrice;

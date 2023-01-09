@@ -28,16 +28,11 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class UpdateUserRequest extends AbstractRequest {
+public class UpdateUserRequest {
   private UserTransport userTransport;
   private AccessRelationTransport accessRelationTransport;
 }

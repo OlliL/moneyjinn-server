@@ -28,14 +28,9 @@
 package org.laladev.moneyjinn.core.rest.model.user;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class ChangePasswordRequest extends AbstractRequest {
+public class ChangePasswordRequest {
   private String oldPassword;
   private String password;
 }

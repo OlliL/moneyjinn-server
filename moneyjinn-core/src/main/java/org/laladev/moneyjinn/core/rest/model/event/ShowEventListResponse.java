@@ -29,12 +29,12 @@ package org.laladev.moneyjinn.core.rest.model.event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowEventListResponse extends AbstractResponse {
+public class ShowEventListResponse extends ErrorResponse {
   private boolean monthlySettlementMissing;
   private Short monthlySettlementMonth;
   private Short monthlySettlementYear;

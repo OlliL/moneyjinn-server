@@ -31,7 +31,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
@@ -39,7 +39,7 @@ import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransp
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowUserListResponse extends AbstractResponse {
+public class ShowUserListResponse extends ErrorResponse {
   private List<UserTransport> userTransports;
   private List<GroupTransport> groupTransports;
   private List<AccessRelationTransport> accessRelationTransports;

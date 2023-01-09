@@ -30,12 +30,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowPostingAccountListResponse extends AbstractResponse {
+public class ShowPostingAccountListResponse extends ErrorResponse {
   private List<PostingAccountTransport> postingAccountTransports;
 }

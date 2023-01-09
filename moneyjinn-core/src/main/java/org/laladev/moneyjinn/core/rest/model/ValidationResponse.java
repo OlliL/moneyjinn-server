@@ -35,7 +35,7 @@ import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ValidationResponse extends AbstractResponse {
+public class ValidationResponse extends ErrorResponse {
   private Boolean result;
   private List<ValidationItemTransport> validationItemTransports;
 }

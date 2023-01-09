@@ -30,13 +30,13 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ShowCompareDataFormResponse extends AbstractResponse {
+public class ShowCompareDataFormResponse extends ErrorResponse {
   private List<CompareDataFormatTransport> compareDataFormatTransports;
   private Long selectedCapitalsourceId;
   private Long selectedDataFormat;

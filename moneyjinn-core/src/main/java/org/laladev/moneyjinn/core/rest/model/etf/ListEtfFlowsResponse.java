@@ -31,7 +31,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractResponse;
+import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
@@ -39,7 +39,7 @@ import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ListEtfFlowsResponse extends AbstractResponse {
+public class ListEtfFlowsResponse extends ErrorResponse {
   private List<EtfTransport> etfTransports;
   private List<EtfFlowTransport> etfFlowTransports;
   private List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports;

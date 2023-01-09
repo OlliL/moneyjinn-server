@@ -29,14 +29,9 @@ package org.laladev.moneyjinn.core.rest.model.report;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.laladev.moneyjinn.core.rest.model.AbstractRequest;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class ShowTrendsGraphRequest extends AbstractRequest {
+public class ShowTrendsGraphRequest {
   private List<Long> capitalSourceIds;
   private LocalDate startDate;
   private LocalDate endDate;
