@@ -10,7 +10,6 @@ import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
@@ -52,13 +51,6 @@ public class ShowEditUserTest extends AbstractControllerTest {
   @Test
   public void test_User1_completeResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
-    expected.setUserTransport(new UserTransportBuilder().forUser1().build());
-    final List<GroupTransport> groupTransports = new ArrayList<>();
-    groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup1().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup2().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup3().build());
-    expected.setGroupTransports(groupTransports);
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports
         .add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
@@ -77,13 +69,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   @Test
   public void test_User2_completeResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
-    expected.setUserTransport(new UserTransportBuilder().forUser2().build());
     final List<GroupTransport> groupTransports = new ArrayList<>();
-    groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup1().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup2().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup3().build());
-    expected.setGroupTransports(groupTransports);
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports
         .add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());

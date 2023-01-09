@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
@@ -85,22 +84,6 @@ public class UpdateUserTest extends AbstractControllerTest {
     request.setUserTransport(transport);
     request.setAccessRelationTransport(accessRelationTransport);
     final UpdateUserResponse expected = new UpdateUserResponse();
-    final List<GroupTransport> groupTransports = new ArrayList<>();
-    groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup1().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup2().build());
-    groupTransports.add(new GroupTransportBuilder().forGroup3().build());
-    expected.setGroupTransports(groupTransports);
-    final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
-    accessRelationTransports
-        .add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
-    accessRelationTransports
-        .add(new AccessRelationTransportBuilder().forUser1_2600_01_01().build());
-    accessRelationTransports
-        .add(new AccessRelationTransportBuilder().forUser1_2700_01_01().build());
-    accessRelationTransports
-        .add(new AccessRelationTransportBuilder().forUser1_2800_01_01().build());
-    expected.setAccessRelationTransports(accessRelationTransports);
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
         .withError(errorCode.getErrorCode()).build());

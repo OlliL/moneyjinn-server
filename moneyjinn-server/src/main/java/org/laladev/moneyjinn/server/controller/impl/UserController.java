@@ -38,8 +38,6 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractCreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.AbstractUpdateUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.ChangePasswordRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
 import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
@@ -165,9 +163,12 @@ public class UserController extends AbstractController {
     final ShowEditUserResponse response = new ShowEditUserResponse();
     final User user = this.userService.getUserById(new UserID(userId));
     if (user != null) {
-      final UserTransport userTransport = super.map(user, UserTransport.class);
-      response.setUserTransport(userTransport);
-      this.fillAbstractUpdateUserResponse(user.getId(), response);
+      final List<AccessRelation> accessRelations = this.accessRelationService
+          .getAllAccessRelationsById(user.getId());
+      final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
+          AccessRelationTransport.class);
+      response.setAccessRelationTransports(accessRelationTransports);
+
     }
 
     return response;
@@ -200,8 +201,6 @@ public class UserController extends AbstractController {
     final UpdateUserResponse response = new UpdateUserResponse();
     response.setResult(validationResult.isValid());
     if (!validationResult.isValid()) {
-      // TODO Rollback
-      this.fillAbstractUpdateUserResponse(user.getId(), response);
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
@@ -256,7 +255,6 @@ public class UserController extends AbstractController {
     final CreateUserResponse response = new CreateUserResponse();
     response.setResult(validationResult.isValid());
     if (!validationResult.isValid()) {
-      this.fillAbstractCreateUserResponse(response);
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     } else {
@@ -280,21 +278,4 @@ public class UserController extends AbstractController {
     this.settingService.deleteSettings(userId);
     this.userService.deleteUser(userId);
   }
-
-  private void fillAbstractCreateUserResponse(final AbstractCreateUserResponse response) {
-    final List<Group> groups = this.groupService.getAllGroups();
-    final List<GroupTransport> groupTransports = super.mapList(groups, GroupTransport.class);
-    response.setGroupTransports(groupTransports);
-  }
-
-  private void fillAbstractUpdateUserResponse(final UserID userId,
-      final AbstractUpdateUserResponse response) {
-    final List<AccessRelation> accessRelations = this.accessRelationService
-        .getAllAccessRelationsById(userId);
-    final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
-        AccessRelationTransport.class);
-    response.setAccessRelationTransports(accessRelationTransports);
-    this.fillAbstractCreateUserResponse(response);
-  }
-
 }
