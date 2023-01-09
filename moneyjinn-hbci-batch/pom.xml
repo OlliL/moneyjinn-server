@@ -1,84 +1,58 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.laladev.moneyjinn</groupId>
+	<parent>
+		<groupId>org.laladev.moneyjinn</groupId>
+		<artifactId>moneyjinn-server-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
-	<version>0.0.10-SNAPSHOT</version>
-	<properties>
-		<hibernate-core.version>6.1.6.Final</hibernate-core.version>
-		<mysql.version>8.0.31</mysql.version>
-		<hbci4java.version>3.1.64</hbci4java.version>
-		<slf4j.version>2.0.6</slf4j.version>
-		<slf4j-reload4j.version>2.0.6</slf4j-reload4j.version>
-		<junit.version>5.9.1</junit.version>
-		<moneyjinn-hbci-core.version>0.0.9-SNAPSHOT</moneyjinn-hbci-core.version>
-		<moneyjinn-core.version>0.0.1-SNAPSHOT</moneyjinn-core.version>
-		<spring.version>6.0.3</spring.version>
-		<jackson.version>2.14.1</jackson.version>
-		<commons.io.version>2.11.0</commons.io.version>
-
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<java.version>17</java.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-reload4j</artifactId>
-			<version>${slf4j-reload4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.hbci4j</groupId>
 			<artifactId>hbci4j-core</artifactId>
-			<version>${hbci4java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-core</artifactId>
-			<version>${moneyjinn-core.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -86,18 +60,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<compilerVersion>17</compilerVersion>
-					<source>17</source>
-					<target>17</target>
+					<compilerVersion>${java.version}</compilerVersion>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
 				<configuration>
 					<argLine>-Dfile.encoding=UTF-8</argLine>
 				</configuration>
