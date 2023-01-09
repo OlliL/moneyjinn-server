@@ -28,5 +28,5 @@
 package org.laladev.moneyjinn.hbci.batch.config;
 
 public class Configuration {
-	public static String ROOT_URL = "http://bomba.salatschuessel.net:8080/moneyflow/server";
+  public static String ROOT_URL = "http://localhost:8080/moneyflow/server";
 }
