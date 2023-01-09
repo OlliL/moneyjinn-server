@@ -67,7 +67,8 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     expected.setResult(Boolean.FALSE);
     final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         ValidationResponse.class);
-    Assertions.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
+    Assertions.assertEquals(expected.getCode(), actual.getCode());
+    Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
     Assertions.assertEquals(expected.getValidationItemTransports(),
         actual.getValidationItemTransports());

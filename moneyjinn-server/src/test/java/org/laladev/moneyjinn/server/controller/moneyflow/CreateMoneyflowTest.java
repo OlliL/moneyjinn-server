@@ -98,7 +98,8 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     expected.setValidationItemTransports(validationItems);
     final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         ValidationResponse.class);
-    Assertions.assertEquals(expected.getErrorResponse(), actual.getErrorResponse());
+    Assertions.assertEquals(expected.getCode(), actual.getCode());
+    Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
     Assertions.assertEquals(expected.getValidationItemTransports(),
         actual.getValidationItemTransports());
@@ -224,8 +225,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
     Assertions.assertEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
-    Assertions.assertEquals(transport.getBookingdate(),
-        contractpartner.getValidTil());
+    Assertions.assertEquals(transport.getBookingdate(), contractpartner.getValidTil());
   }
 
   @Test
@@ -245,8 +245,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
     Assertions.assertEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
-    Assertions.assertEquals(transport.getBookingdate(),
-        contractpartner.getValidFrom());
+    Assertions.assertEquals(transport.getBookingdate(), contractpartner.getValidFrom());
   }
 
   @Test
