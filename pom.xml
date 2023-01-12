@@ -22,7 +22,7 @@
 	</scm>
 
 	<properties>
-		<moneyjinn-sepa-camt.version>0.0.1-SNAPSHOT</moneyjinn-sepa-camt.version>
+		<moneyjinn-sepa-camt.version>1.0.0</moneyjinn-sepa-camt.version>
 	
 		<spring.boot.version>3.0.1</spring.boot.version>
 		<mybatis.version>3.5.11</mybatis.version>
