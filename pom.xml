@@ -16,6 +16,10 @@
 		<module>moneyjinn-service-impl</module>
 		<module>moneyjinn-server</module>
 	</modules>
+	
+	<scm>
+		<developerConnection>scm:git:https://github.com/OlliL/moneyjinn-server.git</developerConnection>
+	</scm>
 
 	<properties>
 		<moneyjinn-sepa-camt.version>0.0.1-SNAPSHOT</moneyjinn-sepa-camt.version>
@@ -202,6 +206,13 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.0-M7</version>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
