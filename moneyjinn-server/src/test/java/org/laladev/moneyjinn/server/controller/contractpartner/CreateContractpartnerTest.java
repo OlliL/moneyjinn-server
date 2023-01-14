@@ -17,6 +17,7 @@ import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -81,6 +82,14 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
         .forNewContractpartner().build();
     transport.setName("");
     this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+  }
+
+  @Test
+  public void test_invalidPostingAccount_Error() throws Exception {
+    final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
+        .forNewContractpartner().build();
+    transport.setPostingAccountId(PostingAccountTransportBuilder.NON_EXISTING_ID);
+    this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
   }
 
   @Test

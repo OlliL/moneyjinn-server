@@ -134,8 +134,11 @@ public class ContractpartnerService extends AbstractService implements IContract
     Assert.notNull(contractpartner.getAccess(), "contractpartner.getAccess() must not be null!");
     Assert.notNull(contractpartner.getAccess().getId(),
         "contractpartner.getAccess().getId() must not be null!");
+
     this.prepareContractpartner(contractpartner);
+
     final ValidationResult validationResult = new ValidationResult();
+
     if (contractpartner.getValidTil().isBefore(contractpartner.getValidFrom())) {
       validationResult.addValidationResultItem(
           new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
@@ -147,6 +150,7 @@ public class ContractpartnerService extends AbstractService implements IContract
       validationResult.addValidationResultItem(new ValidationResultItem(contractpartner.getId(),
           ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
     }
+
     if (contractpartner.getName() == null || contractpartner.getName().trim().isEmpty()) {
       validationResult.addValidationResultItem(
           new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
@@ -160,6 +164,19 @@ public class ContractpartnerService extends AbstractService implements IContract
             new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
       }
     }
+
+    if (contractpartner.getPostingAccount() != null) {
+      final PostingAccount postingAccount = this.postingAccountService
+          .getPostingAccountById(contractpartner.getPostingAccount().getId());
+      if (postingAccount == null) {
+        validationResult.addValidationResultItem(new ValidationResultItem(contractpartner.getId(),
+            ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+      } else {
+        // Replace by full object to send postingAccountComment via the event later.
+        contractpartner.setPostingAccount(postingAccount);
+      }
+    }
+
     return validationResult;
   }
 
