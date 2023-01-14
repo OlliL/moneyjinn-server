@@ -4,7 +4,6 @@ package org.laladev.moneyjinn.server.controller.report;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -381,7 +380,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ImportedBalance importedBalance = new ImportedBalance();
     importedBalance.setBalance(new BigDecimal("111.00"));
     importedBalance.setCapitalsource(capitalsource);
-    importedBalance.setDate(new Timestamp(109, 11, 1, 20, 20, 20, 0).toLocalDateTime());
+    importedBalance.setDate(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     this.importedBalanceService.upsertImportedBalance(importedBalance);
     final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method,
         false, ListReportsResponse.class);
@@ -419,7 +418,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ImportedBalance importedBalance = new ImportedBalance();
     importedBalance.setBalance(new BigDecimal("111.00"));
     importedBalance.setCapitalsource(capitalsource);
-    importedBalance.setDate(new Timestamp(109, 11, 1, 20, 20, 20, 0).toLocalDateTime());
+    importedBalance.setDate(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     this.importedBalanceService.upsertImportedBalance(importedBalance);
     final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method,
         false, ListReportsResponse.class);

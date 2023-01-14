@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
 import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
 import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
@@ -69,7 +68,6 @@ public class ShowEditUserTest extends AbstractControllerTest {
   @Test
   public void test_User2_completeResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
-    final List<GroupTransport> groupTransports = new ArrayList<>();
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports
         .add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
