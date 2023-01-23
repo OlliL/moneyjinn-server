@@ -24,7 +24,7 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.0</moneyjinn-sepa-camt.version>
 	
-		<spring.boot.version>3.0.1</spring.boot.version>
+		<spring.boot.version>3.0.2</spring.boot.version>
 		<mybatis.version>3.5.11</mybatis.version>
 		<mybatis-spring.version>3.0.1</mybatis-spring.version>
 		<commons.io.version>2.11.0</commons.io.version>
@@ -40,7 +40,7 @@
 
 		<maven-compiler-plugin>3.10.1</maven-compiler-plugin>
 		
-		<junit.version>5.9.1</junit.version>
+		<junit.version>5.9.2</junit.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.7.1</opencsv.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
