@@ -1,8 +1,12 @@
--- MySQL dump 10.13  Distrib 5.6.26, for FreeBSD10.1 (amd64)
+-- generated with:
+--   mysqldump --no-data --skip-quote-names moneyflow_hbci account_movements balance_monthly balance_daily | sed 's/ AUTO_INCREMENT=[0-9]*//' | grep -v '/*!'
+--
+
+-- MySQL dump 10.13  Distrib 5.6.51, for FreeBSD12.3 (amd64)
 --
 -- Host: localhost    Database: moneyflow_hbci
 -- ------------------------------------------------------
--- Server version       5.6.26
+-- Server version       5.6.51-log
 
 
 --
@@ -13,8 +17,8 @@ DROP TABLE IF EXISTS account_movements;
 CREATE TABLE account_movements (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   creation_time datetime NOT NULL,
-  my_iban varchar(34) NOT NULL,
-  my_bic varchar(11) NOT NULL,
+  my_iban varchar(34) DEFAULT NULL,
+  my_bic varchar(11) DEFAULT NULL,
   my_accountnumber bigint(10) unsigned NOT NULL,
   my_bankcode int(8) unsigned NOT NULL,
   booking_date date NOT NULL,
@@ -31,7 +35,7 @@ CREATE TABLE account_movements (
   original_currency varchar(3) DEFAULT NULL,
   movement_value decimal(15,2) NOT NULL,
   movement_currency varchar(3) NOT NULL,
-  movement_reason text,
+  movement_reason mediumtext,
   movement_type_code int(3) NOT NULL,
   movement_type_text varchar(31) DEFAULT NULL,
   customer_reference varchar(16) NOT NULL,
@@ -43,9 +47,9 @@ CREATE TABLE account_movements (
   balance_date date NOT NULL,
   balance_value decimal(15,2) NOT NULL,
   balance_currency varchar(3) NOT NULL,
-  PRIMARY KEY (account_movement_id),
+  PRIMARY KEY (id),
   UNIQUE KEY hbci_i_03 (my_iban,my_bic,my_accountnumber,my_bankcode,booking_date,value_date,movement_value,movement_currency,movement_type_code,customer_reference,cancellation,balance_date,balance_value,balance_currency)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `balance_monthly`
@@ -64,7 +68,7 @@ CREATE TABLE balance_monthly (
   balance_currency varchar(3) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY hbci_i_02 (my_iban,my_bic,my_accountnumber,my_bankcode,balance_year,balance_month)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `balance_daily`
@@ -85,7 +89,7 @@ CREATE TABLE balance_daily (
   last_balance_update timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY hbci_i_04 (my_iban,my_bic,my_accountnumber,my_bankcode,balance_date)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dump completed on 2015-09-23 21:52:34
+-- Dump completed on 2023-01-28  2:07:08
