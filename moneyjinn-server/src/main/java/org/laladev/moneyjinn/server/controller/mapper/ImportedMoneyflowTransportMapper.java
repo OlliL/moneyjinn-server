@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -81,8 +82,11 @@ public interface ImportedMoneyflowTransportMapper
   @AfterMapping
   default ImportedMoneyflow doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
     if (entity != null) {
-      if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
-          && entity.getBankAccount().getBankCode() == null) {
+      final BankAccount bankAccount = entity.getBankAccount();
+      if (bankAccount != null && (bankAccount.getAccountNumber() == null
+          || bankAccount.getAccountNumber().trim().isEmpty()
+              && (entity.getBankAccount().getBankCode() == null
+                  || bankAccount.getBankCode().trim().isEmpty()))) {
         entity.setBankAccount(null);
       }
       if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
