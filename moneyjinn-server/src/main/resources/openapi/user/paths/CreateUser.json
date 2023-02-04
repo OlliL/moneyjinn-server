@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"user-controller"
+		],
+		"operationId": "createUser",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateUserRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateUserResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

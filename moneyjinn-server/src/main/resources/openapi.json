@@ -1,0 +1,4239 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/moneyflow/server/user/updateUser": {
+			"$ref": "openapi/user/paths/UpdateUser.json"
+		},
+		"/moneyflow/server/user/changePassword": {
+			"$ref": "openapi/user/paths/ChangePassword.json"
+		},
+		"/moneyflow/server/user/login": {
+			"$ref": "openapi/user/paths/Login.json"
+		},
+		"/moneyflow/server/user/createUser": {
+			"$ref": "openapi/user/paths/CreateUser.json"
+		},
+		"/moneyflow/server/user/showUserList": {
+			"$ref": "openapi/user/paths/ShowUserList.json"
+		},
+		"/moneyflow/server/user/showEditUser/{id}": {
+			"$ref": "openapi/user/paths/ShowEditUser.json"
+		},
+		"/moneyflow/server/user/refreshToken": {
+			"$ref": "openapi/user/paths/RefreshToken.json"
+		},
+		"/moneyflow/server/user/deleteUserById/{id}": {
+			"$ref": "openapi/user/paths/DeleteUserById.json"
+		},
+		"/moneyflow/server/report/showYearlyReportGraph": {
+			"put": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showYearlyReportGraph",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ShowYearlyReportGraphRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowYearlyReportGraphResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/showTrendsGraph": {
+			"put": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showTrendsGraph",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ShowTrendsGraphRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowTrendsGraphResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/showMonthlyReportGraph": {
+			"put": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showMonthlyReportGraph",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ShowMonthlyReportGraphRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMonthlyReportGraphResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/predefmoneyflow/updatePreDefMoneyflow": {
+			"put": {
+				"tags": [
+					"pre-def-moneyflow-controller"
+				],
+				"operationId": "updatePreDefMoneyflow",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePreDefMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/postingaccount/updatePostingAccount": {
+			"put": {
+				"tags": [
+					"posting-account-controller"
+				],
+				"operationId": "updatePostingAccount",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePostingAccountRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/updateMoneyflowV2": {
+			"put": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "updateMoneyflowV2",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateMoneyflowResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/searchMoneyflows": {
+			"put": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "searchMoneyflows",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SearchMoneyflowsRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/SearchMoneyflowsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/group/updateGroup": {
+			"put": {
+				"tags": [
+					"group-controller"
+				],
+				"operationId": "updateGroup",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateGroupRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/updateEtfFlow": {
+			"put": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "updateEtfFlow",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateEtfFlowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/calcEtfSale": {
+			"put": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "calcEtfSale",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CalcEtfSaleRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CalcEtfSaleResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartneraccount/updateContractpartnerAccount": {
+			"put": {
+				"tags": [
+					"contractpartner-account-controller"
+				],
+				"operationId": "updateContractpartnerAccount",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateContractpartnerAccountRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartner/updateContractpartner": {
+			"put": {
+				"tags": [
+					"contractpartner-controller"
+				],
+				"operationId": "updateContractpartner",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateContractpartnerRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/comparedata/compareData": {
+			"put": {
+				"tags": [
+					"compare-data-controller"
+				],
+				"operationId": "compareData",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CompareDataRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CompareDataResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/capitalsource/updateCapitalsource": {
+			"put": {
+				"tags": [
+					"capitalsource-controller"
+				],
+				"operationId": "updateCapitalsource",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCapitalsourceRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/predefmoneyflow/createPreDefMoneyflow": {
+			"post": {
+				"tags": [
+					"pre-def-moneyflow-controller"
+				],
+				"operationId": "createPreDefMoneyflow",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePreDefMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreatePreDefMoneyflowResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/postingaccount/createPostingAccount": {
+			"post": {
+				"tags": [
+					"posting-account-controller"
+				],
+				"operationId": "createPostingAccount",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePostingAccountRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreatePostingAccountResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement": {
+			"post": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "upsertMonthlySettlement",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpsertMonthlySettlementRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/createMoneyflow": {
+			"post": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "createMoneyflows",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement": {
+			"post": {
+				"tags": [
+					"imported-monthly-settlement-controller"
+				],
+				"operationId": "createImportedMonthlySettlement",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateImportedMonthlySettlementRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}": {
+			"post": {
+				"tags": [
+					"imported-moneyflow-receipt-controller"
+				],
+				"operationId": "importImportedMoneyflowReceipt",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					{
+						"name": "moneyflowid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflowreceipt/createImportedMoneyflowReceipts": {
+			"post": {
+				"tags": [
+					"imported-moneyflow-receipt-controller"
+				],
+				"operationId": "createImportedMoneyflowReceipts",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateImportedMoneyflowReceiptsRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflow/importImportedMoneyflows": {
+			"post": {
+				"tags": [
+					"imported-moneyflow-controller"
+				],
+				"operationId": "importImportedMoneyflows",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ImportImportedMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflow/createImportedMoneyflow": {
+			"post": {
+				"tags": [
+					"imported-moneyflow-controller"
+				],
+				"operationId": "createImportedMoneyflow",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateImportedMoneyflowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedbalance/createImportedBalance": {
+			"post": {
+				"tags": [
+					"imported-balance-controller"
+				],
+				"operationId": "createImportedBalance",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateImportedBalanceRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "openapi/abstract/ValidationResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/group/createGroup": {
+			"post": {
+				"tags": [
+					"group-controller"
+				],
+				"operationId": "createGroup",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateGroupRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateGroupResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/createEtfFlow": {
+			"post": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "createEtfFlow",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateEtfFlowRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateEtfFlowResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartneraccount/createContractpartnerAccount": {
+			"post": {
+				"tags": [
+					"contractpartner-account-controller"
+				],
+				"operationId": "createContractpartnerAccount",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateContractpartnerAccountRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateContractpartnerAccountResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartner/createContractpartner": {
+			"post": {
+				"tags": [
+					"contractpartner-controller"
+				],
+				"operationId": "createContractpartner",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateContractpartnerRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateContractpartnerResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/capitalsource/createCapitalsource": {
+			"post": {
+				"tags": [
+					"capitalsource-controller"
+				],
+				"operationId": "createCapitalsource",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCapitalsourceRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateCapitalsourceResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/showTrendsForm": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showTrendsForm",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowTrendsFormResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/showReportingForm": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showReportingForm",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowReportingFormResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/listReportsV2/{year}/{month}": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "listReportsV2",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ListReportsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/getAvailableMonth": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "getAvailableMonth",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/getAvailableMonth/{year}": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "getAvailableMonth_1",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/report/getAvailableMonth/{year}/{month}": {
+			"get": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "getAvailableMonth_2",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/predefmoneyflow/showPreDefMoneyflowList": {
+			"get": {
+				"tags": [
+					"pre-def-moneyflow-controller"
+				],
+				"operationId": "showPreDefMoneyflowList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowPreDefMoneyflowListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/postingaccount/showPostingAccountList": {
+			"get": {
+				"tags": [
+					"posting-account-controller"
+				],
+				"operationId": "showPostingAccountList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowPostingAccountListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/showMonthlySettlementListV2/{year}/{month}": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "showMonthlySettlementListV2",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMonthlySettlementListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "showMonthlySettlementCreate",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "showMonthlySettlementCreate_1",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}/{month}": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "showMonthlySettlementCreate_2",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/getAvailableMonth": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "getAvailableMonth_3",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "getAvailableMonth_4",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}/{month}": {
+			"get": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "getAvailableMonth_5",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflowreceipt/showMoneyflowReceipt/{id}": {
+			"get": {
+				"tags": [
+					"moneyflow-receipt-controller"
+				],
+				"operationId": "showMoneyflowReceipt",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowMoneyflowReceiptResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/showEditMoneyflow/{id}": {
+			"get": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "showEditMoneyflow",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowEditMoneyflowResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}": {
+			"get": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "searchMoneyflowsByAmount",
+				"parameters": [
+					{
+						"name": "amount",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "dateFromStr",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "dateTilStr",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/SearchMoneyflowsByAmountResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflowreceipt/showImportImportedMoneyflowReceipts": {
+			"get": {
+				"tags": [
+					"imported-moneyflow-receipt-controller"
+				],
+				"operationId": "showImportImportedMoneyflowReceipts",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowImportImportedMoneyflowReceiptsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflow/showAddImportedMoneyflows": {
+			"get": {
+				"tags": [
+					"imported-moneyflow-controller"
+				],
+				"operationId": "showAddImportedMoneyflows",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowAddImportedMoneyflowsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/group/showGroupList": {
+			"get": {
+				"tags": [
+					"group-controller"
+				],
+				"operationId": "showGroupList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowGroupListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/event/showEventList": {
+			"get": {
+				"tags": [
+					"event-controller"
+				],
+				"operationId": "showEventList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowEventListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/listEtfOverview/{year}/{month}": {
+			"get": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "listEtfOverview",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ListEtfOverviewResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/listEtfFlows": {
+			"get": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "listEtfFlows",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ListEtfFlowsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartneraccount/showContractpartnerAccountList/{id}": {
+			"get": {
+				"tags": [
+					"contractpartner-account-controller"
+				],
+				"operationId": "showContractpartnerAccountList",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowContractpartnerAccountListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartner/showContractpartnerList": {
+			"get": {
+				"tags": [
+					"contractpartner-controller"
+				],
+				"operationId": "showContractpartnerList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowContractpartnerListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/comparedata/showCompareDataForm": {
+			"get": {
+				"tags": [
+					"compare-data-controller"
+				],
+				"operationId": "showCompareDataForm",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowCompareDataFormResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/capitalsource/showCapitalsourceList": {
+			"get": {
+				"tags": [
+					"capitalsource-controller"
+				],
+				"operationId": "showCapitalsourceList",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/ShowCapitalsourceListResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
+			"delete": {
+				"tags": [
+					"pre-def-moneyflow-controller"
+				],
+				"operationId": "deletePreDefMoneyflowById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/postingaccount/deletePostingAccountById/{id}": {
+			"delete": {
+				"tags": [
+					"posting-account-controller"
+				],
+				"operationId": "deletePostingAccountById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/monthlysettlement/deleteMonthlySettlement/{year}/{month}": {
+			"delete": {
+				"tags": [
+					"monthly-settlement-controller"
+				],
+				"operationId": "deleteMonthlySettlement",
+				"parameters": [
+					{
+						"name": "year",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "month",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflowreceipt/deleteMoneyflowReceipt/{id}": {
+			"delete": {
+				"tags": [
+					"moneyflow-receipt-controller"
+				],
+				"operationId": "deleteMoneyflowReceipt",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/moneyflow/deleteMoneyflowById/{id}": {
+			"delete": {
+				"tags": [
+					"moneyflow-controller"
+				],
+				"operationId": "deleteMoneyflowById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflowreceipt/deleteImportedMoneyflowReceiptById/{id}": {
+			"delete": {
+				"tags": [
+					"imported-moneyflow-receipt-controller"
+				],
+				"operationId": "deleteImportedMoneyflowReceiptById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/importedmoneyflow/deleteImportedMoneyflowById/{id}": {
+			"delete": {
+				"tags": [
+					"imported-moneyflow-controller"
+				],
+				"operationId": "deleteImportedMoneyflowById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/group/deleteGroupById/{id}": {
+			"delete": {
+				"tags": [
+					"group-controller"
+				],
+				"operationId": "deleteGroupById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/etf/deleteEtfFlow/{id}": {
+			"delete": {
+				"tags": [
+					"etf-controller"
+				],
+				"operationId": "deleteEtfFlow",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartneraccount/deleteContractpartnerAccount/{id}": {
+			"delete": {
+				"tags": [
+					"contractpartner-account-controller"
+				],
+				"operationId": "deleteContractpartnerAccount",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/contractpartner/deleteContractpartner/{id}": {
+			"delete": {
+				"tags": [
+					"contractpartner-controller"
+				],
+				"operationId": "deleteContractpartner",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
+			"delete": {
+				"tags": [
+					"capitalsource-controller"
+				],
+				"operationId": "deleteCapitalsourceById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/moneyflow/server/csrf/csrf": {
+			"get": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_3",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_2",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_5",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"options": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_6",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"head": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_1",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": [
+					"csrf-controller"
+				],
+				"operationId": "csrf_4",
+				"parameters": [
+					{
+						"name": "arg0",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/CsrfToken"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/CsrfToken"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"ShowYearlyReportGraphRequest": {
+				"type": "object",
+				"properties": {
+					"postingAccountIdsYes": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"postingAccountIdsNo": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"PostingAccountAmountTransport": {
+				"type": "object",
+				"properties": {
+					"date": {
+						"type": "string",
+						"format": "date"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"postingaccountid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingaccountname": {
+						"type": "string"
+					}
+				}
+			},
+			"ShowYearlyReportGraphResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"postingAccountAmountTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PostingAccountAmountTransport"
+						}
+					}
+				}
+			},
+			"ShowTrendsGraphRequest": {
+				"type": "object",
+				"properties": {
+					"capitalSourceIds": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"ShowTrendsGraphResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"trendsSettledTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/TrendsSettledTransport"
+						}
+					},
+					"trendsCalculatedTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/TrendsCalculatedTransport"
+						}
+					}
+				}
+			},
+			"TrendsCalculatedTransport": {
+				"type": "object",
+				"properties": {
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					}
+				}
+			},
+			"TrendsSettledTransport": {
+				"type": "object",
+				"properties": {
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					}
+				}
+			},
+			"ShowMonthlyReportGraphRequest": {
+				"type": "object",
+				"properties": {
+					"postingAccountIdsYes": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"postingAccountIdsNo": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"ShowMonthlyReportGraphResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"postingAccountAmountTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PostingAccountAmountTransport"
+						}
+					}
+				}
+			},
+			"PreDefMoneyflowTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"capitalsourceid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourcecomment": {
+						"type": "string"
+					},
+					"contractpartnerid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"contractpartnername": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"createdate": {
+						"type": "string",
+						"format": "date"
+					},
+					"onceAMonth": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"lastUsed": {
+						"type": "string",
+						"format": "date"
+					},
+					"postingaccountid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingaccountname": {
+						"type": "string"
+					}
+				}
+			},
+			"UpdatePreDefMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"preDefMoneyflowTransport": {
+						"$ref": "#/components/schemas/PreDefMoneyflowTransport"
+					}
+				}
+			},
+			"PostingAccountTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"UpdatePostingAccountRequest": {
+				"type": "object",
+				"properties": {
+					"postingAccountTransport": {
+						"$ref": "#/components/schemas/PostingAccountTransport"
+					}
+				}
+			},
+			"MoneyflowSplitEntryTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"moneyflowid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"postingaccountid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingaccountname": {
+						"type": "string"
+					}
+				}
+			},
+			"MoneyflowTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"bookingdate": {
+						"type": "string",
+						"format": "date"
+					},
+					"invoicedate": {
+						"type": "string",
+						"format": "date"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"capitalsourceid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourcecomment": {
+						"type": "string"
+					},
+					"contractpartnerid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"contractpartnername": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"privat": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"postingaccountid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingaccountname": {
+						"type": "string"
+					}
+				}
+			},
+			"UpdateMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"deleteMoneyflowSplitEntryIds": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"updateMoneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					},
+					"insertMoneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					}
+				}
+			},
+			"UpdateMoneyflowResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"moneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					},
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"hasReceipt": {
+						"type": "boolean"
+					}
+				}
+			},
+			"MoneyflowSearchParamsTransport": {
+				"type": "object",
+				"properties": {
+					"startDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"searchString": {
+						"type": "string"
+					},
+					"featureEqual": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"featureRegexp": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"featureCaseSensitive": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"featureOnlyMinusAmounts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"contractpartnerId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingAccountId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"SearchMoneyflowsRequest": {
+				"type": "object",
+				"properties": {
+					"moneyflowSearchParamsTransport": {
+						"$ref": "#/components/schemas/MoneyflowSearchParamsTransport"
+					}
+				}
+			},
+			"SearchMoneyflowsResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"moneyflowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowTransport"
+						}
+					}
+				}
+			},
+			"UpdateGroupRequest": {
+				"type": "object",
+				"properties": {
+					"groupTransport": {
+						"$ref": "openapi/transport/GroupTransport.json"
+					}
+				}
+			},
+			"EtfFlowTransport": {
+				"type": "object",
+				"properties": {
+					"etfflowid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"isin": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"nanoseconds": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"price": {
+						"type": "number"
+					}
+				}
+			},
+			"UpdateEtfFlowRequest": {
+				"type": "object",
+				"properties": {
+					"etfFlowTransport": {
+						"$ref": "#/components/schemas/EtfFlowTransport"
+					}
+				}
+			},
+			"CalcEtfSaleRequest": {
+				"type": "object",
+				"properties": {
+					"isin": {
+						"type": "string"
+					},
+					"pieces": {
+						"type": "number"
+					},
+					"bidPrice": {
+						"type": "number"
+					},
+					"askPrice": {
+						"type": "number"
+					},
+					"transactionCosts": {
+						"type": "number"
+					}
+				}
+			},
+			"CalcEtfSaleResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"isin": {
+						"type": "string"
+					},
+					"originalBuyPrice": {
+						"type": "number"
+					},
+					"sellPrice": {
+						"type": "number"
+					},
+					"newBuyPrice": {
+						"type": "number"
+					},
+					"profit": {
+						"type": "number"
+					},
+					"chargeable": {
+						"type": "number"
+					},
+					"transactionCosts": {
+						"type": "number"
+					},
+					"rebuyLosses": {
+						"type": "number"
+					},
+					"overallCosts": {
+						"type": "number"
+					},
+					"pieces": {
+						"type": "number"
+					}
+				}
+			},
+			"ContractpartnerAccountTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"contractpartnerid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"accountNumber": {
+						"type": "string"
+					},
+					"bankCode": {
+						"type": "string"
+					}
+				}
+			},
+			"UpdateContractpartnerAccountRequest": {
+				"type": "object",
+				"properties": {
+					"contractpartnerAccountTransport": {
+						"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+					}
+				}
+			},
+			"ContractpartnerTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"name": {
+						"type": "string"
+					},
+					"street": {
+						"type": "string"
+					},
+					"postcode": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"town": {
+						"type": "string"
+					},
+					"validTil": {
+						"type": "string",
+						"format": "date"
+					},
+					"validFrom": {
+						"type": "string",
+						"format": "date"
+					},
+					"country": {
+						"type": "string"
+					},
+					"moneyflowComment": {
+						"type": "string"
+					},
+					"postingAccountName": {
+						"type": "string"
+					},
+					"postingAccountId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"UpdateContractpartnerRequest": {
+				"type": "object",
+				"properties": {
+					"contractpartnerTransport": {
+						"$ref": "#/components/schemas/ContractpartnerTransport"
+					}
+				}
+			},
+			"CompareDataRequest": {
+				"type": "object",
+				"properties": {
+					"formatId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourceId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"fileContents": {
+						"type": "string"
+					},
+					"useImportedData": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"CompareDataDatasetTransport": {
+				"type": "object",
+				"properties": {
+					"bookingDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"invoiceDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"partner": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					}
+				}
+			},
+			"CompareDataMatchingTransport": {
+				"type": "object",
+				"properties": {
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"compareDataDatasetTransport": {
+						"$ref": "#/components/schemas/CompareDataDatasetTransport"
+					}
+				}
+			},
+			"CompareDataNotInDatabaseTransport": {
+				"type": "object",
+				"properties": {
+					"compareDataDatasetTransport": {
+						"$ref": "#/components/schemas/CompareDataDatasetTransport"
+					}
+				}
+			},
+			"CompareDataNotInFileTransport": {
+				"type": "object",
+				"properties": {
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					}
+				}
+			},
+			"CompareDataResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"compareDataMatchingTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CompareDataMatchingTransport"
+						}
+					},
+					"compareDataWrongCapitalsourceTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CompareDataWrongCapitalsourceTransport"
+						}
+					},
+					"compareDataNotInFileTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CompareDataNotInFileTransport"
+						}
+					},
+					"compareDataNotInDatabaseTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CompareDataNotInDatabaseTransport"
+						}
+					}
+				}
+			},
+			"CompareDataWrongCapitalsourceTransport": {
+				"type": "object",
+				"properties": {
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"compareDataDatasetTransport": {
+						"$ref": "#/components/schemas/CompareDataDatasetTransport"
+					}
+				}
+			},
+			"CapitalsourceTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"type": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"state": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"accountNumber": {
+						"type": "string"
+					},
+					"bankCode": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"validTil": {
+						"type": "string",
+						"format": "date"
+					},
+					"validFrom": {
+						"type": "string",
+						"format": "date"
+					},
+					"groupUse": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"importAllowed": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"UpdateCapitalsourceRequest": {
+				"type": "object",
+				"properties": {
+					"capitalsourceTransport": {
+						"$ref": "#/components/schemas/CapitalsourceTransport"
+					}
+				}
+			},
+			"CreatePreDefMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"preDefMoneyflowTransport": {
+						"$ref": "#/components/schemas/PreDefMoneyflowTransport"
+					}
+				}
+			},
+			"CreatePreDefMoneyflowResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"preDefMoneyflowId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"CreatePostingAccountRequest": {
+				"type": "object",
+				"properties": {
+					"postingAccountTransport": {
+						"$ref": "#/components/schemas/PostingAccountTransport"
+					}
+				}
+			},
+			"CreatePostingAccountResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"postingAccountId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"MonthlySettlementTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"capitalsourceid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourcecomment": {
+						"type": "string"
+					},
+					"capitalsourcegroupuse": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"capitalsourcetype": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"UpsertMonthlySettlementRequest": {
+				"type": "object",
+				"properties": {
+					"monthlySettlementTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MonthlySettlementTransport"
+						}
+					}
+				}
+			},
+			"CreateMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"insertMoneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					},
+					"usedPreDefMoneyflowId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"saveAsPreDefMoneyflow": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"CreateImportedMonthlySettlementRequest": {
+				"type": "object",
+				"properties": {
+					"importedMonthlySettlementTransport": {
+						"$ref": "#/components/schemas/ImportedMonthlySettlementTransport"
+					}
+				}
+			},
+			"ImportedMonthlySettlementTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"capitalsourceid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourcecomment": {
+						"type": "string"
+					},
+					"capitalsourcegroupuse": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"capitalsourcetype": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"externalid": {
+						"type": "string"
+					},
+					"accountNumberCapitalsource": {
+						"type": "string"
+					},
+					"bankCodeCapitalsource": {
+						"type": "string"
+					}
+				}
+			},
+			"CreateImportedMoneyflowReceiptsRequest": {
+				"type": "object",
+				"properties": {
+					"importedMoneyflowReceiptTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImportedMoneyflowReceiptTransport"
+						}
+					}
+				}
+			},
+			"ImportedMoneyflowReceiptTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"receipt": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					},
+					"mediaType": {
+						"type": "string"
+					}
+				}
+			},
+			"ImportImportedMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"importedMoneyflowTransport": {
+						"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+					},
+					"insertMoneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					}
+				}
+			},
+			"ImportedMoneyflowTransport": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"userid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"bookingdate": {
+						"type": "string",
+						"format": "date"
+					},
+					"invoicedate": {
+						"type": "string",
+						"format": "date"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"capitalsourceid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"capitalsourcecomment": {
+						"type": "string"
+					},
+					"contractpartnerid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"contractpartnername": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"privat": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"postingaccountid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"postingaccountname": {
+						"type": "string"
+					},
+					"accountNumber": {
+						"type": "string"
+					},
+					"bankCode": {
+						"type": "string"
+					},
+					"externalid": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"usage": {
+						"type": "string"
+					},
+					"accountNumberCapitalsource": {
+						"type": "string"
+					},
+					"bankCodeCapitalsource": {
+						"type": "string"
+					}
+				}
+			},
+			"CreateImportedMoneyflowRequest": {
+				"type": "object",
+				"properties": {
+					"importedMoneyflowTransport": {
+						"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+					}
+				}
+			},
+			"CreateImportedBalanceRequest": {
+				"type": "object",
+				"properties": {
+					"importedBalanceTransport": {
+						"$ref": "#/components/schemas/ImportedBalanceTransport"
+					}
+				}
+			},
+			"ImportedBalanceTransport": {
+				"type": "object",
+				"properties": {
+					"balance": {
+						"type": "number"
+					},
+					"accountNumberCapitalsource": {
+						"type": "string"
+					},
+					"bankCodeCapitalsource": {
+						"type": "string"
+					}
+				}
+			},
+			"CreateGroupRequest": {
+				"type": "object",
+				"properties": {
+					"groupTransport": {
+						"$ref": "openapi/transport/GroupTransport.json"
+					}
+				}
+			},
+			"CreateGroupResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"groupId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"CreateEtfFlowRequest": {
+				"type": "object",
+				"properties": {
+					"etfFlowTransport": {
+						"$ref": "#/components/schemas/EtfFlowTransport"
+					}
+				}
+			},
+			"CreateEtfFlowResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"etfFlowId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"CreateContractpartnerAccountRequest": {
+				"type": "object",
+				"properties": {
+					"contractpartnerAccountTransport": {
+						"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+					}
+				}
+			},
+			"CreateContractpartnerAccountResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"contractpartnerAccountId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"CreateContractpartnerRequest": {
+				"type": "object",
+				"properties": {
+					"contractpartnerTransport": {
+						"$ref": "#/components/schemas/ContractpartnerTransport"
+					}
+				}
+			},
+			"CreateContractpartnerResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"contractpartnerId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"CreateCapitalsourceRequest": {
+				"type": "object",
+				"properties": {
+					"capitalsourceTransport": {
+						"$ref": "#/components/schemas/CapitalsourceTransport"
+					}
+				}
+			},
+			"CreateCapitalsourceResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"capitalsourceId": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"ShowTrendsFormResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"minDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"maxDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"settingTrendCapitalsourceIds": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				}
+			},
+			"ShowReportingFormResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"postingAccountIds": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					},
+					"minDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"maxDate": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"ListReportsResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"moneyflowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowTransport"
+						}
+					},
+					"moneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					},
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"reportTurnoverCapitalsourceTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ReportTurnoverCapitalsourceTransport"
+						}
+					},
+					"turnoverEndOfYearCalculated": {
+						"type": "number"
+					},
+					"amountBeginOfYear": {
+						"type": "number"
+					},
+					"moneyflowsWithReceipt": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				}
+			},
+			"ReportTurnoverCapitalsourceTransport": {
+				"type": "object",
+				"properties": {
+					"capitalsourceType": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"capitalsourceState": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"capitalsourceComment": {
+						"type": "string"
+					},
+					"amountBeginOfMonthFixed": {
+						"type": "number"
+					},
+					"amountEndOfMonthFixed": {
+						"type": "number"
+					},
+					"amountEndOfMonthCalculated": {
+						"type": "number"
+					},
+					"amountCurrent": {
+						"type": "number"
+					},
+					"amountCurrentState": {
+						"type": "string",
+						"format": "date-time"
+					}
+				}
+			},
+			"GetAvailableMonthResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"allYears": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					"allMonth": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					"nextMonthHasMoneyflows": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"previousMonthHasMoneyflows": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"previousMonth": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"previousYear": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"nextMonth": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"nextYear": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"ShowPreDefMoneyflowListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"preDefMoneyflowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PreDefMoneyflowTransport"
+						}
+					}
+				}
+			},
+			"ShowPostingAccountListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"postingAccountTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PostingAccountTransport"
+						}
+					}
+				}
+			},
+			"ShowMonthlySettlementListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"monthlySettlementTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MonthlySettlementTransport"
+						}
+					}
+				}
+			},
+			"ShowMonthlySettlementCreateResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"year": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"month": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"editMode": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"monthlySettlementTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MonthlySettlementTransport"
+						}
+					},
+					"importedMonthlySettlementTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MonthlySettlementTransport"
+						}
+					}
+				}
+			},
+			"ShowMoneyflowReceiptResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"receipt": {
+						"type": "string"
+					},
+					"receiptType": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"ShowEditMoneyflowResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"moneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					},
+					"moneyflowTransport": {
+						"$ref": "#/components/schemas/MoneyflowTransport"
+					},
+					"hasReceipt": {
+						"type": "boolean"
+					}
+				}
+			},
+			"SearchMoneyflowsByAmountResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"moneyflowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowTransport"
+						}
+					},
+					"moneyflowSplitEntryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+						}
+					}
+				}
+			},
+			"ShowImportImportedMoneyflowReceiptsResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"importedMoneyflowReceiptTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImportedMoneyflowReceiptTransport"
+						}
+					}
+				}
+			},
+			"ShowAddImportedMoneyflowsResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"validationItemTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/ValidationItemTransport.json"
+						}
+					},
+					"importedMoneyflowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+						}
+					}
+				}
+			},
+			"ShowGroupListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"groupTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "openapi/transport/GroupTransport.json"
+						}
+					}
+				}
+			},
+			"ShowEventListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"monthlySettlementMissing": {
+						"type": "boolean"
+					},
+					"monthlySettlementMonth": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"monthlySettlementYear": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"numberOfImportedMoneyflows": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"EtfSummaryTransport": {
+				"type": "object",
+				"properties": {
+					"isin": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"chartUrl": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"spentValue": {
+						"type": "number"
+					},
+					"buyPrice": {
+						"type": "number"
+					},
+					"sellPrice": {
+						"type": "number"
+					},
+					"pricesTimestamp": {
+						"type": "string",
+						"format": "date-time"
+					}
+				}
+			},
+			"ListEtfOverviewResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"etfSummaryTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EtfSummaryTransport"
+						}
+					}
+				}
+			},
+			"EtfEffectiveFlowTransport": {
+				"type": "object",
+				"properties": {
+					"etfflowid": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"isin": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"nanoseconds": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"price": {
+						"type": "number"
+					}
+				}
+			},
+			"EtfTransport": {
+				"type": "object",
+				"properties": {
+					"isin": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"wkn": {
+						"type": "string"
+					},
+					"ticker": {
+						"type": "string"
+					},
+					"chartUrl": {
+						"type": "string"
+					}
+				}
+			},
+			"ListEtfFlowsResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"etfTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EtfTransport"
+						}
+					},
+					"etfFlowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EtfFlowTransport"
+						}
+					},
+					"etfEffectiveFlowTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EtfEffectiveFlowTransport"
+						}
+					},
+					"calcEtfSaleIsin": {
+						"type": "string"
+					},
+					"calcEtfSalePieces": {
+						"type": "number"
+					},
+					"calcEtfBidPrice": {
+						"type": "number"
+					},
+					"calcEtfAskPrice": {
+						"type": "number"
+					},
+					"calcEtfTransactionCosts": {
+						"type": "number"
+					}
+				}
+			},
+			"ShowContractpartnerAccountListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"contractpartnerAccountTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+						}
+					}
+				}
+			},
+			"ShowContractpartnerListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"contractpartnerTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ContractpartnerTransport"
+						}
+					}
+				}
+			},
+			"CompareDataFormatTransport": {
+				"type": "object",
+				"properties": {
+					"formatId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"ShowCompareDataFormResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"compareDataFormatTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CompareDataFormatTransport"
+						}
+					},
+					"selectedCapitalsourceId": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"selectedDataFormat": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"selectedSourceIsFile": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"ShowCapitalsourceListResponse": {
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"message": {
+						"type": "string"
+					},
+					"capitalsourceTransports": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CapitalsourceTransport"
+						}
+					}
+				}
+			},
+			"CsrfToken": {
+				"type": "object",
+				"properties": {
+					"parameterName": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					},
+					"headerName": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}

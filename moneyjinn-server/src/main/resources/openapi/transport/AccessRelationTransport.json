@@ -1,0 +1,21 @@
+{
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"refId": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"validfrom": {
+			"type": "string",
+			"format": "date"
+		},
+		"validtil": {
+			"type": "string",
+			"format": "date"
+		}
+	}
+}

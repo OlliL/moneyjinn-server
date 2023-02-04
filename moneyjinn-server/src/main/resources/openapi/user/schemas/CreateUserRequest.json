@@ -1,0 +1,11 @@
+{
+	"type": "object",
+	"properties": {
+		"userTransport": {
+			"$ref": "../../transport/UserTransport.json"
+		},
+		"accessRelationTransport": {
+			"$ref": "../../transport/AccessRelationTransport.json"
+		}
+	}
+}

@@ -6,11 +6,11 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
-import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
 import org.springframework.http.HttpMethod;
 
 public class ShowEditUserTest extends AbstractControllerTest {

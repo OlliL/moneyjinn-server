@@ -1,0 +1,30 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/AbstractResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"userTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/UserTransport.json"
+					}
+				},
+				"groupTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/GroupTransport.json"
+					}
+				},
+				"accessRelationTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/AccessRelationTransport.json"
+					}
+				}
+			}
+		}
+	]
+}

@@ -26,7 +26,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,19 +34,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.ChangePasswordRequest;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
-import org.laladev.moneyjinn.core.rest.model.user.LoginResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowEditUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.ShowUserListResponse;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -59,14 +45,29 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
-import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiAccessRelationTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiGroupTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiUserTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
+import org.laladev.moneyjinn.server.model.CreateUserRequest;
+import org.laladev.moneyjinn.server.model.CreateUserResponse;
+import org.laladev.moneyjinn.server.model.GroupTransport;
+import org.laladev.moneyjinn.server.model.LoginRequest;
+import org.laladev.moneyjinn.server.model.LoginResponse;
+import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
+import org.laladev.moneyjinn.server.model.ShowUserListResponse;
+import org.laladev.moneyjinn.server.model.UpdateUserRequest;
+import org.laladev.moneyjinn.server.model.UpdateUserResponse;
+import org.laladev.moneyjinn.server.model.UserTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,25 +75,22 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/user/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class UserController extends AbstractController {
+public class UserController extends AbstractController implements UserControllerApi {
   private final IUserService userService;
   private final IAccessRelationService accessRelationService;
   private final IGroupService groupService;
   private final ISettingService settingService;
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
-  private final AccessRelationTransportMapper accessRelationTransportMapper;
-  private final GroupTransportMapper groupTransportMapper;
-  private final UserTransportMapper userTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+  private final OpenapiAccessRelationTransportMapper accessRelationTransportMapper;
+  private final OpenapiGroupTransportMapper groupTransportMapper;
+  private final OpenapiUserTransportMapper userTransportMapper;
+  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
@@ -103,22 +101,23 @@ public class UserController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
-  @RequestMapping(value = "login", method = { RequestMethod.POST })
-  public LoginResponse login(@RequestBody final LoginRequest request) {
+  @Override
+  public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest request) {
     final String username = request.getUserName();
     final String password = this.userService.cryptPassword(request.getUserPassword());
     final LoginResponse response = new LoginResponse();
     this.authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(username, password));
     final User user = this.userService.getUserByName(username);
-    return this.generateLoginResponse(response, user);
+    return ResponseEntity.ok(this.generateLoginResponse(response, user));
   }
 
-  @RequestMapping(value = "refreshToken", method = { RequestMethod.GET })
-  public LoginResponse refreshToken() throws NoSuchAlgorithmException {
+  @Override
+  public ResponseEntity<LoginResponse> refreshToken() {
     final LoginResponse response = new LoginResponse();
     final User user = this.userService.getUserById(super.getUserId());
-    return this.generateLoginResponse(response, user);
+    return ResponseEntity.ok(this.generateLoginResponse(response, user));
+
   }
 
   private LoginResponse generateLoginResponse(final LoginResponse response, final User user) {
@@ -140,8 +139,8 @@ public class UserController extends AbstractController {
     throw new BusinessException("Wrong username or password!", ErrorCode.USERNAME_PASSWORD_WRONG);
   }
 
-  @RequestMapping(value = "changePassword", method = { RequestMethod.PUT })
-  public void changePassword(@RequestBody final ChangePasswordRequest request) {
+  @Override
+  public ResponseEntity<Void> changePassword(@RequestBody final ChangePasswordRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
     final String password = request.getPassword();
@@ -155,11 +154,13 @@ public class UserController extends AbstractController {
       throw new BusinessException("You have to change your password!",
           ErrorCode.PASSWORD_MUST_BE_CHANGED);
     }
+    return ResponseEntity.noContent().build();
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "showEditUser/{id}", method = { RequestMethod.GET })
-  public ShowEditUserResponse showEditUser(@PathVariable(value = "id") final Long userId) {
+  public ResponseEntity<ShowEditUserResponse> showEditUser(
+      @PathVariable(value = "id") final Long userId) {
     final ShowEditUserResponse response = new ShowEditUserResponse();
     final User user = this.userService.getUserById(new UserID(userId));
     if (user != null) {
@@ -171,12 +172,13 @@ public class UserController extends AbstractController {
 
     }
 
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "updateUser", method = { RequestMethod.PUT })
-  public UpdateUserResponse updateUser(@RequestBody final UpdateUserRequest request) {
+  public ResponseEntity<UpdateUserResponse> updateUser(
+      @RequestBody final UpdateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
     final ValidationResult validationResultUser = this.userService.validateUser(user);
     final ValidationResult validationResult = new ValidationResult();
@@ -204,12 +206,12 @@ public class UserController extends AbstractController {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "showUserList", method = { RequestMethod.GET })
-  public ShowUserListResponse showUserList() {
+  public ResponseEntity<ShowUserListResponse> showUserList() {
     final List<User> users = this.userService.getAllUsers();
 
     final ShowUserListResponse response = new ShowUserListResponse();
@@ -233,12 +235,13 @@ public class UserController extends AbstractController {
           super.mapList(accessRelationList, AccessRelationTransport.class));
       response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "createUser", method = { RequestMethod.POST })
-  public CreateUserResponse createUser(@RequestBody final CreateUserRequest request) {
+  public ResponseEntity<CreateUserResponse> createUser(
+      @RequestBody final CreateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
     user.setId(null);
     final ValidationResult validationResultUser = this.userService.validateUser(user);
@@ -267,15 +270,18 @@ public class UserController extends AbstractController {
         }
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "deleteUserById/{id}", method = { RequestMethod.DELETE })
-  public void deleteUserById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") final Long id) {
     final UserID userId = new UserID(id);
+
     this.accessRelationService.deleteAllAccessRelation(userId);
     this.settingService.deleteSettings(userId);
     this.userService.deleteUser(userId);
+
+    return ResponseEntity.noContent().build();
   }
 }

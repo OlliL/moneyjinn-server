@@ -1,0 +1,21 @@
+{
+	"allOf": [
+		{
+			"$ref": "AbstractResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"result": {
+					"type": "boolean"
+				},
+				"validationItemTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../transport/ValidationItemTransport.json"
+					}
+				}
+			}
+		}
+	]
+}

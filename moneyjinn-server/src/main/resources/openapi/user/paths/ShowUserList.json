@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"user-controller"
+		],
+		"operationId": "showUserList",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowUserListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

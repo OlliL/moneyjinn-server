@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.CreateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserPermission;
-import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.CreateUserRequest;
+import org.laladev.moneyjinn.server.model.CreateUserResponse;
+import org.laladev.moneyjinn.server.model.UserTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
@@ -103,7 +103,7 @@ public class CreateUserTest extends AbstractControllerTest {
     /*
      * this must be ignored by the server as the attribute is always set to 1 on creation
      */
-    transport.setUserIsNew(Short.valueOf((short) 0));
+    transport.setUserIsNew(0);
     request.setUserTransport(transport);
     final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         CreateUserResponse.class);
@@ -123,7 +123,7 @@ public class CreateUserTest extends AbstractControllerTest {
     /*
      * this must be ignored by the server as the attribute is always set to 1 on creation
      */
-    transport.setUserIsNew(Short.valueOf((short) 0));
+    transport.setUserIsNew(0);
     request.setUserTransport(transport);
     final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         CreateUserResponse.class);

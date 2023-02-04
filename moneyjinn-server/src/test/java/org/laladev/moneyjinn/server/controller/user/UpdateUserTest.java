@@ -10,22 +10,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserRequest;
-import org.laladev.moneyjinn.core.rest.model.user.UpdateUserResponse;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
-import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.GroupTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.UpdateUserRequest;
+import org.laladev.moneyjinn.server.model.UpdateUserResponse;
+import org.laladev.moneyjinn.server.model.UserTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
@@ -112,7 +112,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   public void test_AccessRelationAndPasswordEmpty_SuccessfullPasswordNotChanged() throws Exception {
     final UpdateUserRequest request = new UpdateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
-    transport.setUserIsNew(Short.valueOf((short) 0));
+    transport.setUserIsNew(0);
     request.setUserTransport(transport);
     final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         UpdateUserResponse.class);
@@ -128,13 +128,13 @@ public class UpdateUserTest extends AbstractControllerTest {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserPassword("123");
     transport.setUserName("hugo");
-    transport.setUserCanLogin(Short.valueOf((short) 0));
-    transport.setUserIsAdmin(Short.valueOf((short) 1));
+    transport.setUserCanLogin(0);
+    transport.setUserIsAdmin(1);
     /*
      * this must be ignored by the server as the password is changed (which is done by the admin
      * here so the user MUST reset the password afterwards)
      */
-    transport.setUserIsNew(Short.valueOf((short) 0));
+    transport.setUserIsNew(0);
     request.setUserTransport(transport);
     final UpdateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         UpdateUserResponse.class);
