@@ -40,6 +40,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -87,6 +88,7 @@ public class SecurityConfig {
         .csrf(configurer -> {
           // FIX for https://github.com/spring-projects/spring-security/issues/12378
           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
+          configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
           configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
         })
         .apply(new JwtConfigurer(this.jwtTokenProvider))
