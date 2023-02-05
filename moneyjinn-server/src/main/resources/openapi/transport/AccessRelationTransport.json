@@ -1,10 +1,8 @@
 {
 	"type": "object",
 	"required": [
-		"id",
 		"refId",
-		"validfrom",
-		"validtil"
+		"validfrom"
 	],
 	"properties": {
 		"id": {
