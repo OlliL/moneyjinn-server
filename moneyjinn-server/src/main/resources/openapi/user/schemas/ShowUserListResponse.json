@@ -1,4 +1,5 @@
 {
+	"title": "ShowUserListResponse",
 	"allOf": [
 		{
 			"$ref": "../../abstract/AbstractResponse.json"

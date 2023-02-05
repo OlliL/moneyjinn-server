@@ -1,5 +1,8 @@
 {
-	"allOf": [{
-	  "$ref": "../../abstract/ValidationResponse.json"
-	}]
+	"title": "UpdateUserResponse",
+	"allOf": [
+		{
+			"$ref": "../../abstract/ValidationResponse.json"
+		}
+	]
 }

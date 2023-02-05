@@ -1,4 +1,5 @@
 {
+	"title": "LoginResponse",
 	"allOf": [
 		{
 			"$ref": "../../abstract/ValidationResponse.json"
