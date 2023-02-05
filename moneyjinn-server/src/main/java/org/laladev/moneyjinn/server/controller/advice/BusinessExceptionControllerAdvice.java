@@ -24,22 +24,20 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.server.main;
+package org.laladev.moneyjinn.server.controller.advice;
 
 import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandler
-    implements BeanPostProcessor {
+public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHandler {
+
   @ExceptionHandler(BusinessException.class)
   @ResponseBody
   ResponseEntity<Object> handleControllerException(final BusinessException ex) {
@@ -56,19 +54,5 @@ public class ErrorResponseExceptionHandler extends ResponseEntityExceptionHandle
         httpStatus = HttpStatus.OK;
     }
     return new ResponseEntity<>(errorResponse, httpStatus);
-  }
-
-  @Override
-  public Object postProcessBeforeInitialization(final Object bean, final String beanName) {
-    if (bean instanceof DispatcherServlet) { // otherwise we get a 404 before our exception handler
-                                             // kicks in
-      ((DispatcherServlet) bean).setThrowExceptionIfNoHandlerFound(true);
-    }
-    return bean;
-  }
-
-  @Override
-  public Object postProcessAfterInitialization(final Object bean, final String beanName) {
-    return bean;
   }
 }
