@@ -97,7 +97,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     for (final ErrorCode errorCode : errorCodes) {
       validationItems.add(new ValidationItemTransportBuilder()
-          .withKey((validationId == null ? transport.getId() : validationId).intValue())
+          .withKey((validationId == null ? transport.getId() : validationId).toString())
           .withError(errorCode.getErrorCode()).build());
     }
     final UpdateMoneyflowResponse expected = new UpdateMoneyflowResponse();

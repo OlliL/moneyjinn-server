@@ -58,7 +58,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     final UpdateContractpartnerRequest request = new UpdateContractpartnerRequest();
     request.setContractpartnerTransport(transport);
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
-    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().toString())
         .withError(errorCode.getErrorCode()).build());
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);

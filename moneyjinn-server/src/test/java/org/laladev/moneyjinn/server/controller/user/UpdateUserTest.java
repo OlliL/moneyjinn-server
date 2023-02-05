@@ -85,7 +85,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     request.setAccessRelationTransport(accessRelationTransport);
     final UpdateUserResponse expected = new UpdateUserResponse();
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
-    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().toString())
         .withError(errorCode.getErrorCode()).build());
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);

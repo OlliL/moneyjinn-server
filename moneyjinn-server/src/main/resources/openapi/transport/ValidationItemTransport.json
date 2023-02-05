@@ -2,7 +2,7 @@
 	"type": "object",
 	"properties": {
 		"key": {
-			"type": "object"
+			"type": "string"
 		},
 		"error": {
 			"type": "integer",

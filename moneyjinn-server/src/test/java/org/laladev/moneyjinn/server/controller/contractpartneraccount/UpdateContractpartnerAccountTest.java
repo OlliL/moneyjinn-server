@@ -61,7 +61,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     for (final ErrorCode errorCode : errorCodes) {
       final ValidationItemTransportBuilder builder = new ValidationItemTransportBuilder()
-          .withKey(transport.getId().intValue()).withError(errorCode.getErrorCode());
+          .withKey(transport.getId().toString()).withError(errorCode.getErrorCode());
       if (contractpartnerName != null) {
         builder.withVariableArray(Arrays.asList(contractpartnerName));
       }

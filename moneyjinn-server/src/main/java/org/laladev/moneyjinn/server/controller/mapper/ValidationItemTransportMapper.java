@@ -26,12 +26,15 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import java.io.Serializable;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class)
 public interface ValidationItemTransportMapper
@@ -43,6 +46,15 @@ public interface ValidationItemTransportMapper
 
   @Override
   @Mapping(target = "error", source = "error.errorCode")
-  @Mapping(target = "key", source = "key.id")
+  @Mapping(target = "key", source = "key", qualifiedByName = "mapKeyToTransport")
   ValidationItemTransport mapBToA(ValidationResultItem b);
+
+  @Named("mapKeyToTransport")
+  default String mapKeyToTransport(final AbstractEntityID<? extends Serializable> idModel) {
+    if (idModel != null) {
+      return idModel.getId().toString();
+    }
+    return null;
+  }
+
 }

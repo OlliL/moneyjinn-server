@@ -5,7 +5,7 @@ import java.util.List;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 
 public class ValidationItemTransportBuilder extends ValidationItemTransport {
-  public ValidationItemTransportBuilder withKey(final Object key) {
+  public ValidationItemTransportBuilder withKey(final String key) {
     super.setKey(key);
     return this;
   }

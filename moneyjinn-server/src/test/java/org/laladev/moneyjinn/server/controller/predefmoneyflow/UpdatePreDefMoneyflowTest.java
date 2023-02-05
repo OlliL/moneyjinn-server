@@ -60,7 +60,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     final UpdatePreDefMoneyflowRequest request = new UpdatePreDefMoneyflowRequest();
     request.setPreDefMoneyflowTransport(transport);
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
-    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().intValue())
+    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().toString())
         .withError(errorCode.getErrorCode()).build());
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);

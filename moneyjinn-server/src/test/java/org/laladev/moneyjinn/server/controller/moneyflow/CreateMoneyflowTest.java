@@ -92,7 +92,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     for (final ErrorCode errorCode : errorCodes) {
       validationItems.add(new ValidationItemTransportBuilder()
-          .withKey(transport.getId() == null ? null : transport.getId().intValue())
+          .withKey(transport.getId() == null ? null : transport.getId().toString())
           .withError(errorCode.getErrorCode()).build());
     }
     expected.setValidationItemTransports(validationItems);

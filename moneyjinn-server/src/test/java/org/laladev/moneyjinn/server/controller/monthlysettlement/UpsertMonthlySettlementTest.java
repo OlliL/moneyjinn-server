@@ -60,7 +60,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
     request.setMonthlySettlementTransports(transports);
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder()
-        .withKey(transports.get(0).getId().intValue()).withError(errorCode.getErrorCode()).build());
+        .withKey(transports.get(0).getId().toString()).withError(errorCode.getErrorCode()).build());
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);

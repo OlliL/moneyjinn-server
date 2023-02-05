@@ -31,7 +31,7 @@ import lombok.Data;
 
 @Data
 public class ValidationItemTransport {
-  private Object key;
+  private String key;
   private Integer error;
   private List<String> variableArray;
 }
