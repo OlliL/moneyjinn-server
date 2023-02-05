@@ -5,6 +5,11 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"userTransports",
+				"groupTransports",
+				"accessRelationTransports"
+			],
 			"properties": {
 				"userTransports": {
 					"type": "array",

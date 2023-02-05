@@ -1,5 +1,9 @@
 {
 	"type": "object",
+	"required": [
+		"userName",
+		"userPassword"
+	],
 	"properties": {
 		"userName": {
 			"type": "string"

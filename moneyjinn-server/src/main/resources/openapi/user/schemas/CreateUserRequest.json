@@ -1,5 +1,9 @@
 {
 	"type": "object",
+	"required": [
+		"userTransport",
+		"accessRelationTransport"
+	],
 	"properties": {
 		"userTransport": {
 			"$ref": "../../transport/UserTransport.json"

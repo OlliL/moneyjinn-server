@@ -1,5 +1,11 @@
 {
 	"type": "object",
+	"required": [
+		"id",
+		"refId",
+		"validfrom",
+		"validtil"
+	],
 	"properties": {
 		"id": {
 			"type": "integer",

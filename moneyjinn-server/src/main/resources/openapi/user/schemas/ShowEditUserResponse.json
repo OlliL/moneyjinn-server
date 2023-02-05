@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"accessRelationTransports"
+			],
 			"properties": {
 				"accessRelationTransports": {
 					"type": "array",
