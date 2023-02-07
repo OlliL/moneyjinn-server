@@ -54,6 +54,7 @@ import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
@@ -140,7 +141,8 @@ public class UserController extends AbstractController implements UserController
   }
 
   @Override
-  public ResponseEntity<Void> changePassword(@RequestBody final ChangePasswordRequest request) {
+  public ResponseEntity<ErrorResponse> changePassword(
+      @RequestBody final ChangePasswordRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
     final String password = request.getPassword();
@@ -275,7 +277,7 @@ public class UserController extends AbstractController implements UserController
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteUserById(@PathVariable(value = "id") final Long id) {
     final UserID userId = new UserID(id);
 
     this.accessRelationService.deleteAllAccessRelation(userId);

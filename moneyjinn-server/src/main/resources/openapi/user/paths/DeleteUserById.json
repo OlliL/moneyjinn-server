@@ -18,6 +18,16 @@
 		"responses": {
 			"204": {
 				"description": "OK"
+			},
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ErrorResponse.json"
+						}
+					}
+				}
 			}
 		}
 	}

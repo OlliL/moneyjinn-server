@@ -1,7 +1,7 @@
 {
 	"allOf": [
 		{
-			"$ref": "AbstractResponse.json"
+			"$ref": "ErrorResponse.json"
 		},
 		{
 			"type": "object",
