@@ -9,20 +9,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
-import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.openapi.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.UpdateCapitalsourceRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -180,7 +180,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
-    transport.setImportAllowed((short) 1);
+    transport.setImportAllowed(1);
     request.setCapitalsourceTransport(transport);
     final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         ValidationResponse.class);
@@ -201,7 +201,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
-    transport.setImportAllowed((short) 2);
+    transport.setImportAllowed(2);
     request.setCapitalsourceTransport(transport);
     final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         ValidationResponse.class);
@@ -222,7 +222,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1()
         .build();
-    transport.setImportAllowed((short) 0);
+    transport.setImportAllowed(0);
     request.setCapitalsourceTransport(transport);
     final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
         ValidationResponse.class);

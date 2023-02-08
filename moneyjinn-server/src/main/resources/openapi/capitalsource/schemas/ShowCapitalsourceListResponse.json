@@ -1,0 +1,25 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"message": {
+					"type": "string"
+				},
+				"capitalsourceTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/CapitalsourceTransport.json"
+					}
+				}
+			}
+		}
+	]
+}

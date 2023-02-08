@@ -35,6 +35,18 @@
 		"/moneyflow/server/user/deleteUserById/{id}": {
 			"$ref": "openapi/user/paths/DeleteUserById.json"
 		},
+		"/moneyflow/server/capitalsource/updateCapitalsource": {
+			"$ref": "openapi/capitalsource/paths/UpdateCapitalsource.json"
+		},
+		"/moneyflow/server/capitalsource/showCapitalsourceList": {
+			"$ref": "openapi/capitalsource/paths/ShowCapitalsourceList.json"
+		},
+		"/moneyflow/server/capitalsource/createCapitalsource": {
+			"$ref": "openapi/capitalsource/paths/CreateCapitalsource.json"
+		},
+		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
+			"$ref": "openapi/capitalsource/paths/DeleteCapitalsourceById.json"
+		},
 		"/moneyflow/server/report/showYearlyReportGraph": {
 			"put": {
 				"tags": [
@@ -418,36 +430,6 @@
 							"*/*": {
 								"schema": {
 									"$ref": "#/components/schemas/CompareDataResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/capitalsource/updateCapitalsource": {
-			"put": {
-				"tags": [
-					"capitalsource-controller"
-				],
-				"operationId": "updateCapitalsource",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UpdateCapitalsourceRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
 							}
 						}
@@ -871,36 +853,6 @@
 							"*/*": {
 								"schema": {
 									"$ref": "#/components/schemas/CreateContractpartnerResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/capitalsource/createCapitalsource": {
-			"post": {
-				"tags": [
-					"capitalsource-controller"
-				],
-				"operationId": "createCapitalsource",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateCapitalsourceRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CreateCapitalsourceResponse"
 								}
 							}
 						}
@@ -1660,26 +1612,6 @@
 				}
 			}
 		},
-		"/moneyflow/server/capitalsource/showCapitalsourceList": {
-			"get": {
-				"tags": [
-					"capitalsource-controller"
-				],
-				"operationId": "showCapitalsourceList",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowCapitalsourceListResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
 		"/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
 			"delete": {
 				"tags": [
@@ -1935,30 +1867,6 @@
 					"contractpartner-controller"
 				],
 				"operationId": "deleteContractpartner",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int64"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK"
-					}
-				}
-			}
-		},
-		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
-			"delete": {
-				"tags": [
-					"capitalsource-controller"
-				],
-				"operationId": "deleteCapitalsourceById",
 				"parameters": [
 					{
 						"name": "id",
@@ -2975,60 +2883,6 @@
 					}
 				}
 			},
-			"CapitalsourceTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"type": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"state": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"accountNumber": {
-						"type": "string"
-					},
-					"bankCode": {
-						"type": "string"
-					},
-					"comment": {
-						"type": "string"
-					},
-					"validTil": {
-						"type": "string",
-						"format": "date"
-					},
-					"validFrom": {
-						"type": "string",
-						"format": "date"
-					},
-					"groupUse": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"importAllowed": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"UpdateCapitalsourceRequest": {
-				"type": "object",
-				"properties": {
-					"capitalsourceTransport": {
-						"$ref": "#/components/schemas/CapitalsourceTransport"
-					}
-				}
-			},
 			"CreatePreDefMoneyflowRequest": {
 				"type": "object",
 				"properties": {
@@ -3496,39 +3350,6 @@
 						}
 					},
 					"contractpartnerId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreateCapitalsourceRequest": {
-				"type": "object",
-				"properties": {
-					"capitalsourceTransport": {
-						"$ref": "#/components/schemas/CapitalsourceTransport"
-					}
-				}
-			},
-			"CreateCapitalsourceResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"capitalsourceId": {
 						"type": "integer",
 						"format": "int64"
 					}
@@ -4199,24 +4020,6 @@
 					"selectedSourceIsFile": {
 						"type": "integer",
 						"format": "int32"
-					}
-				}
-			},
-			"ShowCapitalsourceListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"capitalsourceTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CapitalsourceTransport"
-						}
 					}
 				}
 			},

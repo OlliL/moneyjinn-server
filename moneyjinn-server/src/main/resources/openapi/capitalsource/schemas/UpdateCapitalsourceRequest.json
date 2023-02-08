@@ -1,0 +1,11 @@
+{
+	"type": "object",
+	"required": [
+		"capitalsourceTransport"
+	],
+	"properties": {
+		"capitalsourceTransport": {
+			"$ref": "../../transport/CapitalsourceTransport.json"
+		}
+	}
+}

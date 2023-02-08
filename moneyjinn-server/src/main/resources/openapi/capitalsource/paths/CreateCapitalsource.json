@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"capitalsource-controller"
+		],
+		"operationId": "createCapitalsource",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateCapitalsourceRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateCapitalsourceResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

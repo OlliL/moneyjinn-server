@@ -28,24 +28,27 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceRequest;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.CreateCapitalsourceResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.ShowCapitalsourceListResponse;
-import org.laladev.moneyjinn.core.rest.model.capitalsource.UpdateCapitalsourceRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.api.CapitalsourceControllerApi;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.CreateCapitalsourceRequest;
+import org.laladev.moneyjinn.server.model.CreateCapitalsourceResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ShowCapitalsourceListResponse;
+import org.laladev.moneyjinn.server.model.UpdateCapitalsourceRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,12 +61,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/capitalsource/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class CapitalsourceController extends AbstractController {
+public class CapitalsourceController extends AbstractController
+    implements CapitalsourceControllerApi {
   private final IAccessRelationService accessRelationService;
   private final ICapitalsourceService capitalsourceService;
   private final IUserService userService;
-  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+  private final OpenapiCapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
@@ -72,8 +76,9 @@ public class CapitalsourceController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
+  @Override
   @RequestMapping(value = "showCapitalsourceList", method = { RequestMethod.GET })
-  public ShowCapitalsourceListResponse showCapitalsourceList() {
+  public ResponseEntity<ShowCapitalsourceListResponse> showCapitalsourceList() {
     final UserID userId = super.getUserId();
     final List<Capitalsource> capitalsources = this.capitalsourceService
         .getAllCapitalsources(userId);
@@ -82,11 +87,12 @@ public class CapitalsourceController extends AbstractController {
       response
           .setCapitalsourceTransports(super.mapList(capitalsources, CapitalsourceTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "createCapitalsource", method = { RequestMethod.POST })
-  public CreateCapitalsourceResponse createCapitalsource(
+  public ResponseEntity<CreateCapitalsourceResponse> createCapitalsource(
       @RequestBody final CreateCapitalsourceRequest request) {
     final UserID userId = super.getUserId();
     final Capitalsource capitalsource = super.map(request.getCapitalsourceTransport(),
@@ -98,21 +104,26 @@ public class CapitalsourceController extends AbstractController {
     capitalsource.setAccess(accessor);
     final ValidationResult validationResult = this.capitalsourceService
         .validateCapitalsource(capitalsource);
+
     final CreateCapitalsourceResponse response = new CreateCapitalsourceResponse();
     response.setResult(validationResult.isValid());
+
     if (!validationResult.isValid()) {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
+
     final CapitalsourceID capitalsourceId = this.capitalsourceService
         .createCapitalsource(capitalsource);
     response.setCapitalsourceId(capitalsourceId.getId());
-    return response;
+
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "updateCapitalsource", method = { RequestMethod.PUT })
-  public ValidationResponse updateCapitalsource(
+  public ResponseEntity<ValidationResponse> updateCapitalsource(
       @RequestBody final UpdateCapitalsourceRequest request) {
     final UserID userId = super.getUserId();
     final Capitalsource capitalsource = super.map(request.getCapitalsourceTransport(),
@@ -123,22 +134,31 @@ public class CapitalsourceController extends AbstractController {
     capitalsource.setAccess(accessor);
     final ValidationResult validationResult = this.capitalsourceService
         .validateCapitalsource(capitalsource);
+
     final ValidationResponse response = new ValidationResponse();
     response.setResult(validationResult.isValid());
+
     if (validationResult.isValid()) {
       this.capitalsourceService.updateCapitalsource(capitalsource);
     } else {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+
+    return ResponseEntity.ok(response);
+
   }
 
+  @Override
   @RequestMapping(value = "deleteCapitalsourceById/{id}", method = { RequestMethod.DELETE })
-  public void deleteCapitalsourceById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteCapitalsourceById(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group accessor = this.accessRelationService.getAccessor(userId);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
+
     this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);
+
+    return ResponseEntity.noContent().build();
   }
 }
