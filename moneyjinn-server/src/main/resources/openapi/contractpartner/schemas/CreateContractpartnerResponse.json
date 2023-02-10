@@ -1,0 +1,19 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ValidationResponse.json"
+		},
+		{
+			"type": "object",
+			"required": [
+				"contractpartnerId"
+			],
+			"properties": {
+				"contractpartnerId": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		}
+	]
+}

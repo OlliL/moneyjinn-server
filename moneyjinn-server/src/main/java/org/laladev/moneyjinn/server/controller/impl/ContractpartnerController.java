@@ -28,25 +28,28 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerRequest;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.CreateContractpartnerResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.ShowContractpartnerListResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartner.UpdateContractpartnerRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.api.ContractpartnerControllerApi;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiContractpartnerTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerRequest;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ShowContractpartnerListResponse;
+import org.laladev.moneyjinn.server.model.UpdateContractpartnerRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,13 +62,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/contractpartner/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ContractpartnerController extends AbstractController {
+public class ContractpartnerController extends AbstractController
+    implements ContractpartnerControllerApi {
   private final IAccessRelationService accessRelationService;
   private final IContractpartnerService contractpartnerService;
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final IUserService userService;
-  private final ContractpartnerTransportMapper contractpartnerTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+  private final OpenapiContractpartnerTransportMapper contractpartnerTransportMapper;
+  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct
@@ -74,8 +78,9 @@ public class ContractpartnerController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
+  @Override
   @RequestMapping(value = "showContractpartnerList", method = { RequestMethod.GET })
-  public ShowContractpartnerListResponse showContractpartnerList() {
+  public ResponseEntity<ShowContractpartnerListResponse> showContractpartnerList() {
     final UserID userId = super.getUserId();
 
     final List<Contractpartner> contractpartners = this.contractpartnerService
@@ -86,11 +91,12 @@ public class ContractpartnerController extends AbstractController {
           super.mapList(contractpartners, ContractpartnerTransport.class));
     }
 
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
-  public CreateContractpartnerResponse createContractpartner(
+  public ResponseEntity<CreateContractpartnerResponse> createContractpartner(
       @RequestBody final CreateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
     final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(),
@@ -107,16 +113,17 @@ public class ContractpartnerController extends AbstractController {
     if (!validationResult.isValid()) {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     final ContractpartnerID contractpartnerId = this.contractpartnerService
         .createContractpartner(contractpartner);
     response.setContractpartnerId(contractpartnerId.getId());
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
-  public ValidationResponse updateContractpartner(
+  public ResponseEntity<ValidationResponse> updateContractpartner(
       @RequestBody final UpdateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
     final Contractpartner contractpartner = super.map(request.getContractpartnerTransport(),
@@ -135,15 +142,18 @@ public class ContractpartnerController extends AbstractController {
     } else {
       this.contractpartnerService.updateContractpartner(contractpartner);
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
-  public void deleteContractpartner(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteContractpartner(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group accessor = this.accessRelationService.getAccessor(userId);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
     this.contractpartnerAccountService.deleteContractpartnerAccounts(userId, contractpartnerId);
     this.contractpartnerService.deleteContractpartner(userId, accessor.getId(), contractpartnerId);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"contractpartner-controller"
+		],
+		"operationId": "createContractpartner",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateContractpartnerRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateContractpartnerResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -47,6 +47,18 @@
 		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
 			"$ref": "openapi/capitalsource/paths/DeleteCapitalsourceById.json"
 		},
+		"/moneyflow/server/contractpartner/updateContractpartner": {
+			"$ref": "openapi/contractpartner/paths/UpdateContractpartner.json"
+		},
+		"/moneyflow/server/contractpartner/createContractpartner": {
+			"$ref": "openapi/contractpartner/paths/CreateContractpartner.json"
+		},
+		"/moneyflow/server/contractpartner/showContractpartnerList": {
+			"$ref": "openapi/contractpartner/paths/ShowContractpartnerList.json"
+		},
+		"/moneyflow/server/contractpartner/deleteContractpartner/{id}": {
+			"$ref": "openapi/contractpartner/paths/DeleteContractpartner.json"
+		},
 		"/moneyflow/server/report/showYearlyReportGraph": {
 			"put": {
 				"tags": [
@@ -358,36 +370,6 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UpdateContractpartnerAccountRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/contractpartner/updateContractpartner": {
-			"put": {
-				"tags": [
-					"contractpartner-controller"
-				],
-				"operationId": "updateContractpartner",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UpdateContractpartnerRequest"
 							}
 						}
 					},
@@ -823,36 +805,6 @@
 							"*/*": {
 								"schema": {
 									"$ref": "#/components/schemas/CreateContractpartnerAccountResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/contractpartner/createContractpartner": {
-			"post": {
-				"tags": [
-					"contractpartner-controller"
-				],
-				"operationId": "createContractpartner",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateContractpartnerRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CreateContractpartnerResponse"
 								}
 							}
 						}
@@ -1572,26 +1524,6 @@
 				}
 			}
 		},
-		"/moneyflow/server/contractpartner/showContractpartnerList": {
-			"get": {
-				"tags": [
-					"contractpartner-controller"
-				],
-				"operationId": "showContractpartnerList",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowContractpartnerListResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
 		"/moneyflow/server/comparedata/showCompareDataForm": {
 			"get": {
 				"tags": [
@@ -1843,30 +1775,6 @@
 					"contractpartner-account-controller"
 				],
 				"operationId": "deleteContractpartnerAccount",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int64"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK"
-					}
-				}
-			}
-		},
-		"/moneyflow/server/contractpartner/deleteContractpartner/{id}": {
-			"delete": {
-				"tags": [
-					"contractpartner-controller"
-				],
-				"operationId": "deleteContractpartner",
 				"parameters": [
 					{
 						"name": "id",
@@ -2704,61 +2612,6 @@
 					}
 				}
 			},
-			"ContractpartnerTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"name": {
-						"type": "string"
-					},
-					"street": {
-						"type": "string"
-					},
-					"postcode": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"town": {
-						"type": "string"
-					},
-					"validTil": {
-						"type": "string",
-						"format": "date"
-					},
-					"validFrom": {
-						"type": "string",
-						"format": "date"
-					},
-					"country": {
-						"type": "string"
-					},
-					"moneyflowComment": {
-						"type": "string"
-					},
-					"postingAccountName": {
-						"type": "string"
-					},
-					"postingAccountId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"UpdateContractpartnerRequest": {
-				"type": "object",
-				"properties": {
-					"contractpartnerTransport": {
-						"$ref": "#/components/schemas/ContractpartnerTransport"
-					}
-				}
-			},
 			"CompareDataRequest": {
 				"type": "object",
 				"properties": {
@@ -3317,39 +3170,6 @@
 						}
 					},
 					"contractpartnerAccountId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreateContractpartnerRequest": {
-				"type": "object",
-				"properties": {
-					"contractpartnerTransport": {
-						"$ref": "#/components/schemas/ContractpartnerTransport"
-					}
-				}
-			},
-			"CreateContractpartnerResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"contractpartnerId": {
 						"type": "integer",
 						"format": "int64"
 					}
@@ -3959,24 +3779,6 @@
 						"type": "array",
 						"items": {
 							"$ref": "#/components/schemas/ContractpartnerAccountTransport"
-						}
-					}
-				}
-			},
-			"ShowContractpartnerListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"contractpartnerTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ContractpartnerTransport"
 						}
 					}
 				}

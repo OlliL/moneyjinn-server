@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"contractpartner-controller"
+		],
+		"operationId": "showContractpartnerList",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowContractpartnerListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}
