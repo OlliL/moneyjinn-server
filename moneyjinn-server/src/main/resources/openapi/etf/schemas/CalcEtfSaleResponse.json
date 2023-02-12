@@ -1,0 +1,42 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ValidationResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"isin": {
+					"type": "string"
+				},
+				"originalBuyPrice": {
+					"type": "number"
+				},
+				"sellPrice": {
+					"type": "number"
+				},
+				"newBuyPrice": {
+					"type": "number"
+				},
+				"profit": {
+					"type": "number"
+				},
+				"chargeable": {
+					"type": "number"
+				},
+				"transactionCosts": {
+					"type": "number"
+				},
+				"rebuyLosses": {
+					"type": "number"
+				},
+				"overallCosts": {
+					"type": "number"
+				},
+				"pieces": {
+					"type": "number"
+				}
+			}
+		}
+	]
+}

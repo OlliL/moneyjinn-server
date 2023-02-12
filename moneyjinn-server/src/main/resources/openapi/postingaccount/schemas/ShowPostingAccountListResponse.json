@@ -5,14 +5,11 @@
 		},
 		{
 			"type": "object",
-			"required": [
-				"accessRelationTransports"
-			],
 			"properties": {
-				"accessRelationTransports": {
+				"postingAccountTransports": {
 					"type": "array",
 					"items": {
-						"$ref": "../../transport/AccessRelationTransport.json"
+						"$ref": "../../transport/PostingAccountTransport.json"
 					}
 				}
 			}

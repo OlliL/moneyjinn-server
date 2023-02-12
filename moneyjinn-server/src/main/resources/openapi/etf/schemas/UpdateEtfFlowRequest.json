@@ -2,7 +2,7 @@
 	"type": "object",
 	"properties": {
 		"etfFlowTransport": {
-			"$ref": "../..//transport/EtfFlowTransport.json"
+			"$ref": "../../transport/EtfFlowTransport.json"
 		}
 	}
 }

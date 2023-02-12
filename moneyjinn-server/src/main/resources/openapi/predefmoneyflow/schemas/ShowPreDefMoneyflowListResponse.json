@@ -5,14 +5,11 @@
 		},
 		{
 			"type": "object",
-			"required": [
-				"accessRelationTransports"
-			],
 			"properties": {
-				"accessRelationTransports": {
+				"preDefMoneyflowTransports": {
 					"type": "array",
 					"items": {
-						"$ref": "../../transport/AccessRelationTransport.json"
+						"$ref": "../../transport/PreDefMoneyflowTransport.json"
 					}
 				}
 			}

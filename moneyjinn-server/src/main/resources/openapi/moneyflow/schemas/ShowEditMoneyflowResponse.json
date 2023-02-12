@@ -1,0 +1,24 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"moneyflowSplitEntryTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
+					}
+				},
+				"moneyflowTransport": {
+					"$ref": "../../transport/MoneyflowTransport.json"
+				},
+				"hasReceipt": {
+					"type": "boolean"
+				}
+			}
+		}
+	]
+}

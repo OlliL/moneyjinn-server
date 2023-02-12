@@ -1,0 +1,27 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"monthlySettlementMissing": {
+					"type": "boolean"
+				},
+				"monthlySettlementMonth": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"monthlySettlementYear": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"numberOfImportedMoneyflows": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		}
+	]
+}

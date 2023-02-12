@@ -2,7 +2,7 @@
 	"type": "object",
 	"properties": {
 		"moneyflowTransport": {
-			"$ref": "../..//transport/MoneyflowTransport.json"
+			"$ref": "../../transport/MoneyflowTransport.json"
 		},
 		"deleteMoneyflowSplitEntryIds": {
 			"type": "array",
@@ -14,13 +14,13 @@
 		"updateMoneyflowSplitEntryTransports": {
 			"type": "array",
 			"items": {
-				"$ref": "../..//transport/MoneyflowSplitEntryTransport.json"
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
 			}
 		},
 		"insertMoneyflowSplitEntryTransports": {
 			"type": "array",
 			"items": {
-				"$ref": "../..//transport/MoneyflowSplitEntryTransport.json"
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
 			}
 		}
 	}

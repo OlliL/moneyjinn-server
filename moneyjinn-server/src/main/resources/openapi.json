@@ -102,7 +102,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "openapi/predefmoneyflow/schemas/UpdatePreDefMoneyflowRequest"
+								"$ref": "openapi/predefmoneyflow/schemas/UpdatePreDefMoneyflowRequest.json"
 							}
 						}
 					},
@@ -112,7 +112,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -132,7 +132,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "openapi/postinfaccount/schemas/UpdatePostingAccountRequest"
+								"$ref": "openapi/postingaccount/schemas/UpdatePostingAccountRequest.json"
 							}
 						}
 					},
@@ -142,7 +142,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -172,9 +172,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UpdateMoneyflowResponse"
+									"$ref": "openapi/moneyflow/schemas/UpdateMoneyflowResponse.json"
 								}
 							}
 						}
@@ -192,7 +192,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsRequest"
+								"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsRequest.json"
 							}
 						}
 					},
@@ -202,9 +202,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/SearchMoneyflowsResponse"
+									"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsResponse.json"
 								}
 							}
 						}
@@ -232,7 +232,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -262,7 +262,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -292,9 +292,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CalcEtfSaleResponse"
+									"$ref": "openapi/etf/schemas/CalcEtfSaleResponse.json"
 								}
 							}
 						}
@@ -322,7 +322,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -352,9 +352,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreatePreDefMoneyflowResponse"
+									"$ref": "openapi/predefmoneyflow/schemas/CreatePreDefMoneyflowResponse.json"
 								}
 							}
 						}
@@ -381,9 +381,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreatePostingAccountResponse"
+									"$ref": "openapi/postingaccount/schemas/CreatePostingAccountResponse.json"
 								}
 							}
 						}
@@ -411,7 +411,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -441,7 +441,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -471,7 +471,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -534,7 +534,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -564,7 +564,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -584,7 +584,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "openapi/importedmoneyflow/schemas/CreateImportedMoneyflowRequest"
+								"$ref": "openapi/importedmoneyflow/schemas/CreateImportedMoneyflowRequest.json"
 							}
 						}
 					},
@@ -594,7 +594,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -624,7 +624,7 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
 								}
@@ -654,9 +654,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreateGroupResponse"
+									"$ref": "openapi/group/schemas/CreateGroupResponse.json"
 								}
 							}
 						}
@@ -684,9 +684,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreateEtfFlowResponse"
+									"$ref": "openapi/etf/schemas/CreateEtfFlowResponse.json"
 								}
 							}
 						}
@@ -714,9 +714,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreateContractpartnerAccountResponse"
+									"$ref": "openapi/contractpartneraccount/schemas/CreateContractpartnerAccountResponse.json"
 								}
 							}
 						}
@@ -734,9 +734,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowPreDefMoneyflowListResponse"
+									"$ref": "openapi/predefmoneyflow/schemas/ShowPreDefMoneyflowListResponse.json"
 								}
 							}
 						}
@@ -754,9 +754,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowPostingAccountListResponse"
+									"$ref": "openapi/postingaccount/schemas/ShowPostingAccountListResponse.json"
 								}
 							}
 						}
@@ -794,9 +794,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowMonthlySettlementListResponse"
+									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementListResponse.json"
 								}
 							}
 						}
@@ -814,9 +814,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
 								}
 							}
 						}
@@ -845,9 +845,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
 								}
 							}
 						}
@@ -885,9 +885,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowMonthlySettlementCreateResponse"
+									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
 								}
 							}
 						}
@@ -905,9 +905,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
 								}
 							}
 						}
@@ -936,9 +936,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
 								}
 							}
 						}
@@ -976,9 +976,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
+									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
 								}
 							}
 						}
@@ -1007,9 +1007,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowMoneyflowReceiptResponse"
+									"$ref": "openapi/moneyflowreceipt/schemas/ShowMoneyflowReceiptResponse.json"
 								}
 							}
 						}
@@ -1038,9 +1038,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowEditMoneyflowResponse"
+									"$ref": "openapi/moneyflow/schemas/ShowEditMoneyflowResponse.json"
 								}
 							}
 						}
@@ -1084,9 +1084,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/SearchMoneyflowsByAmountResponse"
+									"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsByAmountResponse.json"
 								}
 							}
 						}
@@ -1104,9 +1104,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowImportImportedMoneyflowReceiptsResponse"
+									"$ref": "openapi/importedmoneyflowreceipt/schemas/ShowImportImportedMoneyflowReceiptsResponse.json"
 								}
 							}
 						}
@@ -1124,9 +1124,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowAddImportedMoneyflowsResponse"
+									"$ref": "openapi/importedmoneyflow/schemas/ShowAddImportedMoneyflowsResponse.json"
 								}
 							}
 						}
@@ -1144,9 +1144,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowGroupListResponse"
+									"$ref": "openapi/group/schemas/ShowGroupListResponse.json"
 								}
 							}
 						}
@@ -1164,9 +1164,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowEventListResponse"
+									"$ref": "openapi/event/schemas/ShowEventListResponse.json"
 								}
 							}
 						}
@@ -1204,9 +1204,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ListEtfOverviewResponse"
+									"$ref": "openapi/etf/schemas/ListEtfOverviewResponse.json"
 								}
 							}
 						}
@@ -1224,9 +1224,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ListEtfFlowsResponse"
+									"$ref": "openapi/etf/schemas/ListEtfFlowsResponse.json"
 								}
 							}
 						}
@@ -1255,9 +1255,9 @@
 					"200": {
 						"description": "OK",
 						"content": {
-							"*/*": {
+							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ShowContractpartnerAccountListResponse"
+									"$ref": "openapi/contractpartneraccount/schemas/ShowContractpartnerAccountListResponse.json"
 								}
 							}
 						}
@@ -1283,7 +1283,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1307,7 +1307,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1340,7 +1340,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1364,7 +1364,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1388,7 +1388,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1412,7 +1412,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1436,7 +1436,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1460,7 +1460,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1484,7 +1484,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
 					}
 				}
@@ -1508,855 +1508,8 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "OK"
-					}
-				}
-			}
-		},
-		"/moneyflow/server/csrf/csrf": {
-			"get": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"put": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_3",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"post": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_2",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_5",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"options": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_6",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"head": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_1",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			},
-			"patch": {
-				"tags": [
-					"csrf-controller"
-				],
-				"operationId": "csrf_4",
-				"parameters": [
-					{
-						"name": "arg0",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/CsrfToken"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CsrfToken"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"UpdateMoneyflowResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"moneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					},
-					"moneyflowTransport": {
-						"$ref": "openapi/transport/MoneyflowTransport.json"
-					},
-					"hasReceipt": {
-						"type": "boolean"
-					}
-				}
-			},
-			"SearchMoneyflowsResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"moneyflowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowTransport.json"
-						}
-					}
-				}
-			},
-			"CalcEtfSaleResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"isin": {
-						"type": "string"
-					},
-					"originalBuyPrice": {
-						"type": "number"
-					},
-					"sellPrice": {
-						"type": "number"
-					},
-					"newBuyPrice": {
-						"type": "number"
-					},
-					"profit": {
-						"type": "number"
-					},
-					"chargeable": {
-						"type": "number"
-					},
-					"transactionCosts": {
-						"type": "number"
-					},
-					"rebuyLosses": {
-						"type": "number"
-					},
-					"overallCosts": {
-						"type": "number"
-					},
-					"pieces": {
-						"type": "number"
-					}
-				}
-			},
-			"CreatePreDefMoneyflowResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"preDefMoneyflowId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreatePostingAccountResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"postingAccountId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreateGroupResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"groupId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreateEtfFlowResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"etfFlowId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"CreateContractpartnerAccountResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"contractpartnerAccountId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
-			"GetAvailableMonthResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"allYears": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					"allMonth": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					"nextMonthHasMoneyflows": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"previousMonthHasMoneyflows": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"previousMonth": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"previousYear": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"nextMonth": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"nextYear": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"ShowPreDefMoneyflowListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"preDefMoneyflowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
-						}
-					}
-				}
-			},
-			"ShowPostingAccountListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"postingAccountTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/PostingAccountTransport.json"
-						}
-					}
-				}
-			},
-			"ShowMonthlySettlementListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"monthlySettlementTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MonthlySettlementTransport.json"
-						}
-					}
-				}
-			},
-			"ShowMonthlySettlementCreateResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"editMode": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"monthlySettlementTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MonthlySettlementTransport.json"
-						}
-					},
-					"importedMonthlySettlementTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MonthlySettlementTransport.json"
-						}
-					}
-				}
-			},
-			"ShowMoneyflowReceiptResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"receipt": {
-						"type": "string"
-					},
-					"receiptType": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"ShowEditMoneyflowResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"moneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					},
-					"moneyflowTransport": {
-						"$ref": "openapi/transport/MoneyflowTransport.json"
-					},
-					"hasReceipt": {
-						"type": "boolean"
-					}
-				}
-			},
-			"SearchMoneyflowsByAmountResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"moneyflowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowTransport.json"
-						}
-					},
-					"moneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					}
-				}
-			},
-			"ShowImportImportedMoneyflowReceiptsResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"importedMoneyflowReceiptTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ImportedMoneyflowReceiptTransport.json"
-						}
-					}
-				}
-			},
-			"ShowAddImportedMoneyflowsResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"result": {
-						"type": "boolean"
-					},
-					"validationItemTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ValidationItemTransport.json"
-						}
-					},
-					"importedMoneyflowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
-						}
-					}
-				}
-			},
-			"ShowGroupListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"groupTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/GroupTransport.json"
-						}
-					}
-				}
-			},
-			"ShowEventListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"monthlySettlementMissing": {
-						"type": "boolean"
-					},
-					"monthlySettlementMonth": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"monthlySettlementYear": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"numberOfImportedMoneyflows": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"ListEtfOverviewResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"etfSummaryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/EtfSummaryTransport.json"
-						}
-					}
-				}
-			},
-			"ListEtfFlowsResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"etfTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/EtfTransport.json"
-						}
-					},
-					"etfFlowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/EtfFlowTransport.json"
-						}
-					},
-					"etfEffectiveFlowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/EtfEffectiveFlowTransport.json"
-						}
-					},
-					"calcEtfSaleIsin": {
-						"type": "string"
-					},
-					"calcEtfSalePieces": {
-						"type": "number"
-					},
-					"calcEtfBidPrice": {
-						"type": "number"
-					},
-					"calcEtfAskPrice": {
-						"type": "number"
-					},
-					"calcEtfTransactionCosts": {
-						"type": "number"
-					}
-				}
-			},
-			"ShowContractpartnerAccountListResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"contractpartnerAccountTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
-						}
-					}
-				}
-			},
-			"CsrfToken": {
-				"type": "object",
-				"properties": {
-					"parameterName": {
-						"type": "string"
-					},
-					"token": {
-						"type": "string"
-					},
-					"headerName": {
-						"type": "string"
 					}
 				}
 			}

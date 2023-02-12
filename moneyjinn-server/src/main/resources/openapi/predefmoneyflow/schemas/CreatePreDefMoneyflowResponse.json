@@ -1,0 +1,16 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ValidationResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"preDefMoneyflowId": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		}
+	]
+}

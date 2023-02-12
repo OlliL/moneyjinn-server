@@ -1,0 +1,16 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ValidationResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"postingAccountId": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		}
+	]
+}
