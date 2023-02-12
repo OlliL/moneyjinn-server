@@ -47,6 +47,12 @@
 		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
 			"$ref": "openapi/capitalsource/paths/DeleteCapitalsourceById.json"
 		},
+		"/moneyflow/server/comparedata/compareData": {
+			"$ref": "openapi/comparedata/paths/CompareData.json"
+		},
+		"/moneyflow/server/comparedata/showCompareDataForm": {
+			"$ref": "openapi/comparedata/paths/ShowCompareDataForm.json"
+		},
 		"/moneyflow/server/contractpartner/updateContractpartner": {
 			"$ref": "openapi/contractpartner/paths/UpdateContractpartner.json"
 		},
@@ -382,36 +388,6 @@
 							"*/*": {
 								"schema": {
 									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/comparedata/compareData": {
-			"put": {
-				"tags": [
-					"compare-data-controller"
-				],
-				"operationId": "compareData",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CompareDataRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/CompareDataResponse"
 								}
 							}
 						}
@@ -1524,26 +1500,6 @@
 				}
 			}
 		},
-		"/moneyflow/server/comparedata/showCompareDataForm": {
-			"get": {
-				"tags": [
-					"compare-data-controller"
-				],
-				"operationId": "showCompareDataForm",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowCompareDataFormResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
 		"/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
 			"delete": {
 				"tags": [
@@ -2285,63 +2241,11 @@
 					}
 				}
 			},
-			"MoneyflowTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"bookingdate": {
-						"type": "string",
-						"format": "date"
-					},
-					"invoicedate": {
-						"type": "string",
-						"format": "date"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"capitalsourceid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourcecomment": {
-						"type": "string"
-					},
-					"contractpartnerid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"contractpartnername": {
-						"type": "string"
-					},
-					"comment": {
-						"type": "string"
-					},
-					"privat": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"postingaccountid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingaccountname": {
-						"type": "string"
-					}
-				}
-			},
 			"UpdateMoneyflowRequest": {
 				"type": "object",
 				"properties": {
 					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
+						"$ref": "openapi/transport/MoneyflowTransport.json"
 					},
 					"deleteMoneyflowSplitEntryIds": {
 						"type": "array",
@@ -2390,7 +2294,7 @@
 						}
 					},
 					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
+						"$ref": "openapi/transport/MoneyflowTransport.json"
 					},
 					"hasReceipt": {
 						"type": "boolean"
@@ -2467,7 +2371,7 @@
 					"moneyflowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowTransport"
+							"$ref": "openapi/transport/MoneyflowTransport.json"
 						}
 					}
 				}
@@ -2612,130 +2516,6 @@
 					}
 				}
 			},
-			"CompareDataRequest": {
-				"type": "object",
-				"properties": {
-					"formatId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourceId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"fileContents": {
-						"type": "string"
-					},
-					"useImportedData": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"CompareDataDatasetTransport": {
-				"type": "object",
-				"properties": {
-					"bookingDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"invoiceDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"partner": {
-						"type": "string"
-					},
-					"comment": {
-						"type": "string"
-					}
-				}
-			},
-			"CompareDataMatchingTransport": {
-				"type": "object",
-				"properties": {
-					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
-					},
-					"compareDataDatasetTransport": {
-						"$ref": "#/components/schemas/CompareDataDatasetTransport"
-					}
-				}
-			},
-			"CompareDataNotInDatabaseTransport": {
-				"type": "object",
-				"properties": {
-					"compareDataDatasetTransport": {
-						"$ref": "#/components/schemas/CompareDataDatasetTransport"
-					}
-				}
-			},
-			"CompareDataNotInFileTransport": {
-				"type": "object",
-				"properties": {
-					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
-					}
-				}
-			},
-			"CompareDataResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"compareDataMatchingTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CompareDataMatchingTransport"
-						}
-					},
-					"compareDataWrongCapitalsourceTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CompareDataWrongCapitalsourceTransport"
-						}
-					},
-					"compareDataNotInFileTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CompareDataNotInFileTransport"
-						}
-					},
-					"compareDataNotInDatabaseTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CompareDataNotInDatabaseTransport"
-						}
-					}
-				}
-			},
-			"CompareDataWrongCapitalsourceTransport": {
-				"type": "object",
-				"properties": {
-					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
-					},
-					"compareDataDatasetTransport": {
-						"$ref": "#/components/schemas/CompareDataDatasetTransport"
-					}
-				}
-			},
 			"CreatePreDefMoneyflowRequest": {
 				"type": "object",
 				"properties": {
@@ -2856,7 +2636,7 @@
 				"type": "object",
 				"properties": {
 					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
+						"$ref": "openapi/transport/MoneyflowTransport.json"
 					},
 					"insertMoneyflowSplitEntryTransports": {
 						"type": "array",
@@ -3242,7 +3022,7 @@
 					"moneyflowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowTransport"
+							"$ref": "openapi/transport/MoneyflowTransport.json"
 						}
 					},
 					"moneyflowSplitEntryTransports": {
@@ -3496,7 +3276,7 @@
 						}
 					},
 					"moneyflowTransport": {
-						"$ref": "#/components/schemas/MoneyflowTransport"
+						"$ref": "openapi/transport/MoneyflowTransport.json"
 					},
 					"hasReceipt": {
 						"type": "boolean"
@@ -3516,7 +3296,7 @@
 					"moneyflowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowTransport"
+							"$ref": "openapi/transport/MoneyflowTransport.json"
 						}
 					},
 					"moneyflowSplitEntryTransports": {
@@ -3780,48 +3560,6 @@
 						"items": {
 							"$ref": "#/components/schemas/ContractpartnerAccountTransport"
 						}
-					}
-				}
-			},
-			"CompareDataFormatTransport": {
-				"type": "object",
-				"properties": {
-					"formatId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"name": {
-						"type": "string"
-					}
-				}
-			},
-			"ShowCompareDataFormResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"compareDataFormatTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CompareDataFormatTransport"
-						}
-					},
-					"selectedCapitalsourceId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"selectedDataFormat": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"selectedSourceIsFile": {
-						"type": "integer",
-						"format": "int32"
 					}
 				}
 			},

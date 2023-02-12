@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"compare-data-controller"
+		],
+		"operationId": "compareData",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CompareDataRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"*/*": {
+						"schema": {
+							"$ref": "../schemas/CompareDataResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

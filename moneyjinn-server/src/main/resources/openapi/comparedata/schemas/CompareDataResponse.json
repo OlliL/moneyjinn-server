@@ -1,0 +1,36 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"compareDataMatchingTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/CompareDataMatchingTransport.json"
+					}
+				},
+				"compareDataWrongCapitalsourceTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/CompareDataWrongCapitalsourceTransport.json"
+					}
+				},
+				"compareDataNotInFileTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/CompareDataNotInFileTransport.json"
+					}
+				},
+				"compareDataNotInDatabaseTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/CompareDataNotInDatabaseTransport.json"
+					}
+				}
+			}
+		}
+	]
+}

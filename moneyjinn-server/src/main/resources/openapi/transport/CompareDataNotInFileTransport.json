@@ -1,0 +1,11 @@
+{
+	"type": "object",
+	"required": [
+		"moneyflowTransport"
+	],
+	"properties": {
+		"moneyflowTransport": {
+			"$ref": "./MoneyflowTransport.json"
+		}
+	}
+}

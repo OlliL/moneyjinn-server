@@ -28,19 +28,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataRequest;
-import org.laladev.moneyjinn.core.rest.model.comparedata.CompareDataResponse;
-import org.laladev.moneyjinn.core.rest.model.comparedata.ShowCompareDataFormResponse;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataMatchingTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInDatabaseTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataNotInFileTransport;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataWrongCapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
@@ -53,12 +44,24 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCompareDataDatasetTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCompareDataFormatTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiMoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
+import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
+import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
+import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
+import org.laladev.moneyjinn.server.model.CompareDataNotInFileTransport;
+import org.laladev.moneyjinn.server.model.CompareDataRequest;
+import org.laladev.moneyjinn.server.model.CompareDataResponse;
+import org.laladev.moneyjinn.server.model.CompareDataWrongCapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.ISettingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,13 +73,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequestMapping("/moneyflow/server/comparedata/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class CompareDataController extends AbstractController {
+public class CompareDataController extends AbstractController implements CompareDataControllerApi {
   private final ISettingService settingService;
   private final ICompareDataService compareDataService;
-  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
-  private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
-  private final MoneyflowTransportMapper moneyflowTransportMapper;
+  private final OpenapiCapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final OpenapiCompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
+  private final OpenapiCompareDataFormatTransportMapper compareDataFormatTransportMapper;
+  private final OpenapiMoneyflowTransportMapper moneyflowTransportMapper;
 
   @Override
   @PostConstruct
@@ -87,8 +90,9 @@ public class CompareDataController extends AbstractController {
     super.registerBeanMapper(this.compareDataDatasetTransportMapper);
   }
 
+  @Override
   @RequestMapping(value = "showCompareDataForm", method = { RequestMethod.GET })
-  public ShowCompareDataFormResponse showCompareDataForm() {
+  public ResponseEntity<ShowCompareDataFormResponse> showCompareDataForm() {
     final UserID userId = super.getUserId();
     final ShowCompareDataFormResponse response = new ShowCompareDataFormResponse();
     final List<CompareDataFormat> compareDataFormats = this.compareDataService
@@ -105,7 +109,7 @@ public class CompareDataController extends AbstractController {
       final ClientCompareDataSelectedSourceIsFile selectedSourceIsFile = this.settingService
           .getClientCompareDataSelectedSourceIsFile(userId);
       if (selectedSourceIsFile != null && selectedSourceIsFile.getSetting().equals(Boolean.TRUE)) {
-        response.setSelectedSourceIsFile((short) 1);
+        response.setSelectedSourceIsFile(1);
       }
 
       final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
@@ -114,11 +118,13 @@ public class CompareDataController extends AbstractController {
         response.setSelectedCapitalsourceId(selectedCapitalsource.getSetting().getId());
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @RequestMapping(value = "compareData", method = { RequestMethod.PUT })
-  public CompareDataResponse compareData(@RequestBody final CompareDataRequest request) {
+  public ResponseEntity<CompareDataResponse> compareData(
+      @RequestBody final CompareDataRequest request) {
     final UserID userId = super.getUserId();
     final CompareDataResponse response = new CompareDataResponse();
     CompareDataResult compareDataResult = null;
@@ -128,7 +134,7 @@ public class CompareDataController extends AbstractController {
       final LocalDate startDate = request.getStartDate();
       final LocalDate endDate = request.getEndDate();
       final boolean useImportedData = request.getUseImportedData() != null
-          && request.getUseImportedData().compareTo((short) 1) == 0;
+          && request.getUseImportedData() == 1;
       if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {
         final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(
             request.getFormatId());
@@ -157,26 +163,32 @@ public class CompareDataController extends AbstractController {
         final List<CompareDataNotInFile> compareDataNotInFileList = compareDataResult
             .getCompareDataNotInFile();
         if (compareDataNotInDatabaseList != null && !compareDataNotInDatabaseList.isEmpty()) {
+          final List<CompareDataNotInDatabaseTransport> transports = new ArrayList<>();
           for (final CompareDataNotInDatabase compareDataNotInDatabase : compareDataNotInDatabaseList) {
             final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
             compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 super.map(compareDataNotInDatabase.getCompareDataDataset(),
                     CompareDataDatasetTransport.class));
-            response.addCompareDataNotInDatabaseTransport(compareDataNotInDatabaseTransport);
+            transports.add(compareDataNotInDatabaseTransport);
           }
+          response.setCompareDataNotInDatabaseTransports(transports);
         }
         if (compareDataMatchingList != null && !compareDataMatchingList.isEmpty()) {
+          final List<CompareDataMatchingTransport> transports = new ArrayList<>();
           for (final CompareDataMatching compareDataMatching : compareDataMatchingList) {
             final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
             compareDataMatchingTransport.setCompareDataDatasetTransport(super.map(
                 compareDataMatching.getCompareDataDataset(), CompareDataDatasetTransport.class));
             compareDataMatchingTransport.setMoneyflowTransport(
                 super.map(compareDataMatching.getMoneyflow(), MoneyflowTransport.class));
-            response.addCompareDataMatchingTransport(compareDataMatchingTransport);
+            transports.add(compareDataMatchingTransport);
           }
+          response.setCompareDataMatchingTransports(transports);
+
         }
         if (compareDataWrongCapitalsourceList != null
             && !compareDataWrongCapitalsourceList.isEmpty()) {
+          final List<CompareDataWrongCapitalsourceTransport> transports = new ArrayList<>();
           for (final CompareDataWrongCapitalsource compareDataWrongCapitalsource : compareDataWrongCapitalsourceList) {
             final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
             compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
@@ -184,23 +196,25 @@ public class CompareDataController extends AbstractController {
                     CompareDataDatasetTransport.class));
             compareDataWrongCapitalsourceTransport.setMoneyflowTransport(
                 super.map(compareDataWrongCapitalsource.getMoneyflow(), MoneyflowTransport.class));
-            response
-                .addCompareDataWrongCapitalsourceTransport(compareDataWrongCapitalsourceTransport);
+            transports.add(compareDataWrongCapitalsourceTransport);
           }
+          response.setCompareDataWrongCapitalsourceTransports(transports);
         }
         if (compareDataNotInFileList != null && !compareDataNotInFileList.isEmpty()) {
+          final List<CompareDataNotInFileTransport> transports = new ArrayList<>();
           for (final CompareDataNotInFile compareDataNotInFile : compareDataNotInFileList) {
             final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
             compareDataNotInFileTransport.setMoneyflowTransport(
                 super.map(compareDataNotInFile.getMoneyflow(), MoneyflowTransport.class));
-            response.addCompareDataNotInFileTransport(compareDataNotInFileTransport);
+            transports.add(compareDataNotInFileTransport);
           }
+          response.setCompareDataNotInFileTransports(transports);
         }
       }
       final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
           capitalsourceId);
       this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 }

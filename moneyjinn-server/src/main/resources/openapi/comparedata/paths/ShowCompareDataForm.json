@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"compare-data-controller"
+		],
+		"operationId": "showCompareDataForm",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"*/*": {
+						"schema": {
+							"$ref": "../schemas/ShowCompareDataFormResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}
