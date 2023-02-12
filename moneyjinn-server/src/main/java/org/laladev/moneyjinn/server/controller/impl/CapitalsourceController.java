@@ -53,13 +53,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/capitalsource/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceController extends AbstractController
     implements CapitalsourceControllerApi {
@@ -77,7 +74,6 @@ public class CapitalsourceController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "showCapitalsourceList", method = { RequestMethod.GET })
   public ResponseEntity<ShowCapitalsourceListResponse> showCapitalsourceList() {
     final UserID userId = super.getUserId();
     final List<Capitalsource> capitalsources = this.capitalsourceService
@@ -91,7 +87,6 @@ public class CapitalsourceController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "createCapitalsource", method = { RequestMethod.POST })
   public ResponseEntity<CreateCapitalsourceResponse> createCapitalsource(
       @RequestBody final CreateCapitalsourceRequest request) {
     final UserID userId = super.getUserId();
@@ -122,7 +117,6 @@ public class CapitalsourceController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "updateCapitalsource", method = { RequestMethod.PUT })
   public ResponseEntity<ValidationResponse> updateCapitalsource(
       @RequestBody final UpdateCapitalsourceRequest request) {
     final UserID userId = super.getUserId();
@@ -150,7 +144,6 @@ public class CapitalsourceController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "deleteCapitalsourceById/{id}", method = { RequestMethod.DELETE })
   public ResponseEntity<ErrorResponse> deleteCapitalsourceById(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();

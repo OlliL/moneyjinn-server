@@ -65,13 +65,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/comparedata/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompareDataController extends AbstractController implements CompareDataControllerApi {
   private final ISettingService settingService;
@@ -91,7 +88,6 @@ public class CompareDataController extends AbstractController implements Compare
   }
 
   @Override
-  @RequestMapping(value = "showCompareDataForm", method = { RequestMethod.GET })
   public ResponseEntity<ShowCompareDataFormResponse> showCompareDataForm() {
     final UserID userId = super.getUserId();
     final ShowCompareDataFormResponse response = new ShowCompareDataFormResponse();
@@ -122,7 +118,6 @@ public class CompareDataController extends AbstractController implements Compare
   }
 
   @Override
-  @RequestMapping(value = "compareData", method = { RequestMethod.PUT })
   public ResponseEntity<CompareDataResponse> compareData(
       @RequestBody final CompareDataRequest request) {
     final UserID userId = super.getUserId();

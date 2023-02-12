@@ -54,13 +54,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/contractpartner/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerController extends AbstractController
     implements ContractpartnerControllerApi {
@@ -79,7 +76,6 @@ public class ContractpartnerController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "showContractpartnerList", method = { RequestMethod.GET })
   public ResponseEntity<ShowContractpartnerListResponse> showContractpartnerList() {
     final UserID userId = super.getUserId();
 
@@ -95,7 +91,6 @@ public class ContractpartnerController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "createContractpartner", method = { RequestMethod.POST })
   public ResponseEntity<CreateContractpartnerResponse> createContractpartner(
       @RequestBody final CreateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
@@ -122,7 +117,6 @@ public class ContractpartnerController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "updateContractpartner", method = { RequestMethod.PUT })
   public ResponseEntity<ValidationResponse> updateContractpartner(
       @RequestBody final UpdateContractpartnerRequest request) {
     final UserID userId = super.getUserId();
@@ -146,7 +140,6 @@ public class ContractpartnerController extends AbstractController
   }
 
   @Override
-  @RequestMapping(value = "deleteContractpartner/{id}", method = { RequestMethod.DELETE })
   public ResponseEntity<ErrorResponse> deleteContractpartner(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
