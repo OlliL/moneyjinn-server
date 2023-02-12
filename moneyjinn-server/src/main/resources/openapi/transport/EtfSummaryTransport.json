@@ -1,0 +1,40 @@
+{
+	"type": "object",
+	"required": [
+		"isin",
+		"name",
+		"chartUrl",
+		"amount",
+		"spentValue",
+		"buyPrice",
+		"sellPrice",
+		"pricesTimestamp"
+	],
+	"properties": {
+		"isin": {
+			"type": "string"
+		},
+		"name": {
+			"type": "string"
+		},
+		"chartUrl": {
+			"type": "string"
+		},
+		"amount": {
+			"type": "number"
+		},
+		"spentValue": {
+			"type": "number"
+		},
+		"buyPrice": {
+			"type": "number"
+		},
+		"sellPrice": {
+			"type": "number"
+		},
+		"pricesTimestamp": {
+			"type": "string",
+			"format": "date-time"
+		}
+	}
+}

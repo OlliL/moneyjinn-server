@@ -2066,21 +2066,7 @@
 				"type": "object",
 				"properties": {
 					"importedBalanceTransport": {
-						"$ref": "#/components/schemas/ImportedBalanceTransport"
-					}
-				}
-			},
-			"ImportedBalanceTransport": {
-				"type": "object",
-				"properties": {
-					"balance": {
-						"type": "number"
-					},
-					"accountNumberCapitalsource": {
-						"type": "string"
-					},
-					"bankCodeCapitalsource": {
-						"type": "string"
+						"$ref": "openapi/transport/ImportedBalanceTransport.json"
 					}
 				}
 			},
@@ -2497,36 +2483,6 @@
 					}
 				}
 			},
-			"EtfSummaryTransport": {
-				"type": "object",
-				"properties": {
-					"isin": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"chartUrl": {
-						"type": "string"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"spentValue": {
-						"type": "number"
-					},
-					"buyPrice": {
-						"type": "number"
-					},
-					"sellPrice": {
-						"type": "number"
-					},
-					"pricesTimestamp": {
-						"type": "string",
-						"format": "date-time"
-					}
-				}
-			},
 			"ListEtfOverviewResponse": {
 				"type": "object",
 				"properties": {
@@ -2540,54 +2496,8 @@
 					"etfSummaryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/EtfSummaryTransport"
+							"$ref": "openapi/transport/EtfSummaryTransport.json"
 						}
-					}
-				}
-			},
-			"EtfEffectiveFlowTransport": {
-				"type": "object",
-				"properties": {
-					"etfflowid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"isin": {
-						"type": "string"
-					},
-					"timestamp": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"nanoseconds": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"price": {
-						"type": "number"
-					}
-				}
-			},
-			"EtfTransport": {
-				"type": "object",
-				"properties": {
-					"isin": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"wkn": {
-						"type": "string"
-					},
-					"ticker": {
-						"type": "string"
-					},
-					"chartUrl": {
-						"type": "string"
 					}
 				}
 			},
@@ -2604,7 +2514,7 @@
 					"etfTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/EtfTransport"
+							"$ref": "openapi/transport/EtfTransport.json"
 						}
 					},
 					"etfFlowTransports": {
@@ -2616,7 +2526,7 @@
 					"etfEffectiveFlowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/EtfEffectiveFlowTransport"
+							"$ref": "openapi/transport/EtfEffectiveFlowTransport.json"
 						}
 					},
 					"calcEtfSaleIsin": {

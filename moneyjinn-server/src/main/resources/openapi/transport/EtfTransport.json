@@ -1,0 +1,27 @@
+{
+	"type": "object",
+	"required": [
+		"isin",
+		"name",
+		"wkn",
+		"ticker",
+		"chartUrl"
+	],
+	"properties": {
+		"isin": {
+			"type": "string"
+		},
+		"name": {
+			"type": "string"
+		},
+		"wkn": {
+			"type": "string"
+		},
+		"ticker": {
+			"type": "string"
+		},
+		"chartUrl": {
+			"type": "string"
+		}
+	}
+}
