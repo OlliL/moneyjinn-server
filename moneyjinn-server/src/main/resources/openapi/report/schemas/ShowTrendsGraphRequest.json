@@ -1,0 +1,20 @@
+{
+	"type": "object",
+	"properties": {
+		"capitalSourceIds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
+			}
+		},
+		"startDate": {
+			"type": "string",
+			"format": "date"
+		},
+		"endDate": {
+			"type": "string",
+			"format": "date"
+		}
+	}
+}

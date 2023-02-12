@@ -1,0 +1,25 @@
+{
+	"type": "object",
+	"required": [
+		"id",
+		"contractpartnerid",
+		"accountNumber",
+		"bankCode"
+	],
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"contractpartnerid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"accountNumber": {
+			"type": "string"
+		},
+		"bankCode": {
+			"type": "string"
+		}
+	}
+}

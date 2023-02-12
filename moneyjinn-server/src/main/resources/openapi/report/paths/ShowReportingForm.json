@@ -1,16 +1,16 @@
 {
 	"get": {
 		"tags": [
-			"compare-data-controller"
+			"report-controller"
 		],
-		"operationId": "showCompareDataForm",
+		"operationId": "showReportingForm",
 		"responses": {
 			"200": {
 				"description": "OK",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "../schemas/ShowCompareDataFormResponse.json"
+							"$ref": "../schemas/ShowReportingFormResponse.json"
 						}
 					}
 				}

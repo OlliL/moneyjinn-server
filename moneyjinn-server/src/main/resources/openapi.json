@@ -66,94 +66,31 @@
 			"$ref": "openapi/contractpartner/paths/DeleteContractpartner.json"
 		},
 		"/moneyflow/server/report/showYearlyReportGraph": {
-			"put": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "showYearlyReportGraph",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ShowYearlyReportGraphRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowYearlyReportGraphResponse"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/report/paths/ShowYearlyReportGraph.json"
 		},
 		"/moneyflow/server/report/showTrendsGraph": {
-			"put": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "showTrendsGraph",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ShowTrendsGraphRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowTrendsGraphResponse"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/report/paths/ShowTrendsGraph.json"
 		},
 		"/moneyflow/server/report/showMonthlyReportGraph": {
-			"put": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "showMonthlyReportGraph",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ShowMonthlyReportGraphRequest"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowMonthlyReportGraphResponse"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/report/paths/ShowMonthlyReportGraph.json"
+		},
+		"/moneyflow/server/report/showTrendsForm": {
+			"$ref": "openapi/report/paths/ShowTrendsForm.json"
+		},
+		"/moneyflow/server/report/showReportingForm": {
+			"$ref": "openapi/report/paths/ShowReportingForm.json"
+		},
+		"/moneyflow/server/report/listReportsV2/{year}/{month}": {
+			"$ref": "openapi/report/paths/ListReportsV2.json"
+		},
+		"/moneyflow/server/report/getAvailableMonth": {
+			"$ref": "openapi/report/paths/GetAvailableMonth.json"
+		},
+		"/moneyflow/server/report/getAvailableMonth/{year}": {
+			"$ref": "openapi/report/paths/GetAvailableMonthYear.json"
+		},
+		"/moneyflow/server/report/getAvailableMonth/{year}/{month}": {
+			"$ref": "openapi/report/paths/GetAvailableMonthYearMonth.json"
 		},
 		"/moneyflow/server/predefmoneyflow/updatePreDefMoneyflow": {
 			"put": {
@@ -781,177 +718,6 @@
 							"*/*": {
 								"schema": {
 									"$ref": "#/components/schemas/CreateContractpartnerAccountResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/showTrendsForm": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "showTrendsForm",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowTrendsFormResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/showReportingForm": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "showReportingForm",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ShowReportingFormResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/listReportsV2/{year}/{month}": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "listReportsV2",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					{
-						"name": "month",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/ListReportsResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/getAvailableMonth": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "getAvailableMonth",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/getAvailableMonth/{year}": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "getAvailableMonth_1",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/moneyflow/server/report/getAvailableMonth/{year}/{month}": {
-			"get": {
-				"tags": [
-					"report-controller"
-				],
-				"operationId": "getAvailableMonth_2",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					{
-						"name": "month",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"*/*": {
-								"schema": {
-									"$ref": "#/components/schemas/GetAvailableMonthResponse"
 								}
 							}
 						}
@@ -1950,260 +1716,11 @@
 	},
 	"components": {
 		"schemas": {
-			"ShowYearlyReportGraphRequest": {
-				"type": "object",
-				"properties": {
-					"postingAccountIdsYes": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"postingAccountIdsNo": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date"
-					}
-				}
-			},
-			"PostingAccountAmountTransport": {
-				"type": "object",
-				"properties": {
-					"date": {
-						"type": "string",
-						"format": "date"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"postingaccountid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingaccountname": {
-						"type": "string"
-					}
-				}
-			},
-			"ShowYearlyReportGraphResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"postingAccountAmountTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/PostingAccountAmountTransport"
-						}
-					}
-				}
-			},
-			"ShowTrendsGraphRequest": {
-				"type": "object",
-				"properties": {
-					"capitalSourceIds": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date"
-					}
-				}
-			},
-			"ShowTrendsGraphResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"trendsSettledTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/TrendsSettledTransport"
-						}
-					},
-					"trendsCalculatedTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/TrendsCalculatedTransport"
-						}
-					}
-				}
-			},
-			"TrendsCalculatedTransport": {
-				"type": "object",
-				"properties": {
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					}
-				}
-			},
-			"TrendsSettledTransport": {
-				"type": "object",
-				"properties": {
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					}
-				}
-			},
-			"ShowMonthlyReportGraphRequest": {
-				"type": "object",
-				"properties": {
-					"postingAccountIdsYes": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"postingAccountIdsNo": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date"
-					}
-				}
-			},
-			"ShowMonthlyReportGraphResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"postingAccountAmountTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/PostingAccountAmountTransport"
-						}
-					}
-				}
-			},
-			"PreDefMoneyflowTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"capitalsourceid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourcecomment": {
-						"type": "string"
-					},
-					"contractpartnerid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"contractpartnername": {
-						"type": "string"
-					},
-					"comment": {
-						"type": "string"
-					},
-					"createdate": {
-						"type": "string",
-						"format": "date"
-					},
-					"onceAMonth": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"lastUsed": {
-						"type": "string",
-						"format": "date"
-					},
-					"postingaccountid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingaccountname": {
-						"type": "string"
-					}
-				}
-			},
 			"UpdatePreDefMoneyflowRequest": {
 				"type": "object",
 				"properties": {
 					"preDefMoneyflowTransport": {
-						"$ref": "#/components/schemas/PreDefMoneyflowTransport"
-					}
-				}
-			},
-			"PostingAccountTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"name": {
-						"type": "string"
+						"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
 					}
 				}
 			},
@@ -2211,33 +1728,7 @@
 				"type": "object",
 				"properties": {
 					"postingAccountTransport": {
-						"$ref": "#/components/schemas/PostingAccountTransport"
-					}
-				}
-			},
-			"MoneyflowSplitEntryTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"moneyflowid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"comment": {
-						"type": "string"
-					},
-					"postingaccountid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingaccountname": {
-						"type": "string"
+						"$ref": "openapi/transport/PostingAccountTransport.json"
 					}
 				}
 			},
@@ -2257,13 +1748,13 @@
 					"updateMoneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					},
 					"insertMoneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					}
 				}
@@ -2290,7 +1781,7 @@
 					"moneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					},
 					"moneyflowTransport": {
@@ -2301,51 +1792,11 @@
 					}
 				}
 			},
-			"MoneyflowSearchParamsTransport": {
-				"type": "object",
-				"properties": {
-					"startDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"searchString": {
-						"type": "string"
-					},
-					"featureEqual": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"featureRegexp": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"featureCaseSensitive": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"featureOnlyMinusAmounts": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"contractpartnerId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingAccountId": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
-			},
 			"SearchMoneyflowsRequest": {
 				"type": "object",
 				"properties": {
 					"moneyflowSearchParamsTransport": {
-						"$ref": "#/components/schemas/MoneyflowSearchParamsTransport"
+						"$ref": "openapi/transport/MoneyflowSearchParamsTransport.json"
 					}
 				}
 			},
@@ -2384,37 +1835,11 @@
 					}
 				}
 			},
-			"EtfFlowTransport": {
-				"type": "object",
-				"properties": {
-					"etfflowid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"isin": {
-						"type": "string"
-					},
-					"timestamp": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"nanoseconds": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"price": {
-						"type": "number"
-					}
-				}
-			},
 			"UpdateEtfFlowRequest": {
 				"type": "object",
 				"properties": {
 					"etfFlowTransport": {
-						"$ref": "#/components/schemas/EtfFlowTransport"
+						"$ref": "openapi/transport/EtfFlowTransport.json"
 					}
 				}
 			},
@@ -2489,30 +1914,11 @@
 					}
 				}
 			},
-			"ContractpartnerAccountTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"contractpartnerid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"accountNumber": {
-						"type": "string"
-					},
-					"bankCode": {
-						"type": "string"
-					}
-				}
-			},
 			"UpdateContractpartnerAccountRequest": {
 				"type": "object",
 				"properties": {
 					"contractpartnerAccountTransport": {
-						"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+						"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
 					}
 				}
 			},
@@ -2520,7 +1926,7 @@
 				"type": "object",
 				"properties": {
 					"preDefMoneyflowTransport": {
-						"$ref": "#/components/schemas/PreDefMoneyflowTransport"
+						"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
 					}
 				}
 			},
@@ -2553,7 +1959,7 @@
 				"type": "object",
 				"properties": {
 					"postingAccountTransport": {
-						"$ref": "#/components/schemas/PostingAccountTransport"
+						"$ref": "openapi/transport/PostingAccountTransport.json"
 					}
 				}
 			},
@@ -2582,52 +1988,13 @@
 					}
 				}
 			},
-			"MonthlySettlementTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"capitalsourceid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourcecomment": {
-						"type": "string"
-					},
-					"capitalsourcegroupuse": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"capitalsourcetype": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
 			"UpsertMonthlySettlementRequest": {
 				"type": "object",
 				"properties": {
 					"monthlySettlementTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MonthlySettlementTransport"
+							"$ref": "openapi/transport/MonthlySettlementTransport.json"
 						}
 					}
 				}
@@ -2641,7 +2008,7 @@
 					"insertMoneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					},
 					"usedPreDefMoneyflowId": {
@@ -2658,55 +2025,7 @@
 				"type": "object",
 				"properties": {
 					"importedMonthlySettlementTransport": {
-						"$ref": "#/components/schemas/ImportedMonthlySettlementTransport"
-					}
-				}
-			},
-			"ImportedMonthlySettlementTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"capitalsourceid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourcecomment": {
-						"type": "string"
-					},
-					"capitalsourcegroupuse": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"capitalsourcetype": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"externalid": {
-						"type": "string"
-					},
-					"accountNumberCapitalsource": {
-						"type": "string"
-					},
-					"bankCodeCapitalsource": {
-						"type": "string"
+						"$ref": "openapi/transport/ImportedMonthlySettlementTransport.json"
 					}
 				}
 			},
@@ -2716,26 +2035,8 @@
 					"importedMoneyflowReceiptTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/ImportedMoneyflowReceiptTransport"
+							"$ref": "openapi/transport/ImportedMoneyflowReceiptTransport.json"
 						}
-					}
-				}
-			},
-			"ImportedMoneyflowReceiptTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"receipt": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					},
-					"mediaType": {
-						"type": "string"
 					}
 				}
 			},
@@ -2743,86 +2044,13 @@
 				"type": "object",
 				"properties": {
 					"importedMoneyflowTransport": {
-						"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+						"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
 					},
 					"insertMoneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
-					}
-				}
-			},
-			"ImportedMoneyflowTransport": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"userid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"bookingdate": {
-						"type": "string",
-						"format": "date"
-					},
-					"invoicedate": {
-						"type": "string",
-						"format": "date"
-					},
-					"amount": {
-						"type": "number"
-					},
-					"capitalsourceid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"capitalsourcecomment": {
-						"type": "string"
-					},
-					"contractpartnerid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"contractpartnername": {
-						"type": "string"
-					},
-					"comment": {
-						"type": "string"
-					},
-					"privat": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"postingaccountid": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"postingaccountname": {
-						"type": "string"
-					},
-					"accountNumber": {
-						"type": "string"
-					},
-					"bankCode": {
-						"type": "string"
-					},
-					"externalid": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"usage": {
-						"type": "string"
-					},
-					"accountNumberCapitalsource": {
-						"type": "string"
-					},
-					"bankCodeCapitalsource": {
-						"type": "string"
 					}
 				}
 			},
@@ -2830,7 +2058,7 @@
 				"type": "object",
 				"properties": {
 					"importedMoneyflowTransport": {
-						"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+						"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
 					}
 				}
 			},
@@ -2893,7 +2121,7 @@
 				"type": "object",
 				"properties": {
 					"etfFlowTransport": {
-						"$ref": "#/components/schemas/EtfFlowTransport"
+						"$ref": "openapi/transport/EtfFlowTransport.json"
 					}
 				}
 			},
@@ -2926,7 +2154,7 @@
 				"type": "object",
 				"properties": {
 					"contractpartnerAccountTransport": {
-						"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+						"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
 					}
 				}
 			},
@@ -2952,143 +2180,6 @@
 					"contractpartnerAccountId": {
 						"type": "integer",
 						"format": "int64"
-					}
-				}
-			},
-			"ShowTrendsFormResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"minDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"maxDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"settingTrendCapitalsourceIds": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					}
-				}
-			},
-			"ShowReportingFormResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"postingAccountIds": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"minDate": {
-						"type": "string",
-						"format": "date"
-					},
-					"maxDate": {
-						"type": "string",
-						"format": "date"
-					}
-				}
-			},
-			"ListReportsResponse": {
-				"type": "object",
-				"properties": {
-					"code": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"message": {
-						"type": "string"
-					},
-					"moneyflowTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowTransport.json"
-						}
-					},
-					"moneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
-						}
-					},
-					"year": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"month": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"reportTurnoverCapitalsourceTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ReportTurnoverCapitalsourceTransport"
-						}
-					},
-					"turnoverEndOfYearCalculated": {
-						"type": "number"
-					},
-					"amountBeginOfYear": {
-						"type": "number"
-					},
-					"moneyflowsWithReceipt": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					}
-				}
-			},
-			"ReportTurnoverCapitalsourceTransport": {
-				"type": "object",
-				"properties": {
-					"capitalsourceType": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"capitalsourceState": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"capitalsourceComment": {
-						"type": "string"
-					},
-					"amountBeginOfMonthFixed": {
-						"type": "number"
-					},
-					"amountEndOfMonthFixed": {
-						"type": "number"
-					},
-					"amountEndOfMonthCalculated": {
-						"type": "number"
-					},
-					"amountCurrent": {
-						"type": "number"
-					},
-					"amountCurrentState": {
-						"type": "string",
-						"format": "date-time"
 					}
 				}
 			},
@@ -3163,7 +2254,7 @@
 					"preDefMoneyflowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/PreDefMoneyflowTransport"
+							"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
 						}
 					}
 				}
@@ -3181,7 +2272,7 @@
 					"postingAccountTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/PostingAccountTransport"
+							"$ref": "openapi/transport/PostingAccountTransport.json"
 						}
 					}
 				}
@@ -3199,7 +2290,7 @@
 					"monthlySettlementTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MonthlySettlementTransport"
+							"$ref": "openapi/transport/MonthlySettlementTransport.json"
 						}
 					}
 				}
@@ -3229,13 +2320,13 @@
 					"monthlySettlementTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MonthlySettlementTransport"
+							"$ref": "openapi/transport/MonthlySettlementTransport.json"
 						}
 					},
 					"importedMonthlySettlementTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MonthlySettlementTransport"
+							"$ref": "openapi/transport/MonthlySettlementTransport.json"
 						}
 					}
 				}
@@ -3272,7 +2363,7 @@
 					"moneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					},
 					"moneyflowTransport": {
@@ -3302,7 +2393,7 @@
 					"moneyflowSplitEntryTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/MoneyflowSplitEntryTransport"
+							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
 						}
 					}
 				}
@@ -3329,7 +2420,7 @@
 					"importedMoneyflowReceiptTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/ImportedMoneyflowReceiptTransport"
+							"$ref": "openapi/transport/ImportedMoneyflowReceiptTransport.json"
 						}
 					}
 				}
@@ -3356,7 +2447,7 @@
 					"importedMoneyflowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/ImportedMoneyflowTransport"
+							"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
 						}
 					}
 				}
@@ -3519,7 +2610,7 @@
 					"etfFlowTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/EtfFlowTransport"
+							"$ref": "openapi/transport/EtfFlowTransport.json"
 						}
 					},
 					"etfEffectiveFlowTransports": {
@@ -3558,7 +2649,7 @@
 					"contractpartnerAccountTransports": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/ContractpartnerAccountTransport"
+							"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
 						}
 					}
 				}

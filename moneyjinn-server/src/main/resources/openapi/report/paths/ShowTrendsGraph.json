@@ -1,0 +1,30 @@
+{
+			"put": {
+				"tags": [
+					"report-controller"
+				],
+				"operationId": "showTrendsGraph",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "../schemas/ShowTrendsGraphRequest.json"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "../schemas/ShowTrendsGraphResponse.json"
+								}
+							}
+						}
+					}
+				}
+			}
+		}

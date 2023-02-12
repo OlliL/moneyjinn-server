@@ -1,0 +1,34 @@
+{
+	"type": "object",
+	"required": [
+		"etfflowid",
+		"isin",
+		"timestamp",
+		"nanoseconds",
+		"amount",
+		"price"
+	],
+	"properties": {
+		"etfflowid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"isin": {
+			"type": "string"
+		},
+		"timestamp": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"nanoseconds": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"amount": {
+			"type": "number"
+		},
+		"price": {
+			"type": "number"
+		}
+	}
+}

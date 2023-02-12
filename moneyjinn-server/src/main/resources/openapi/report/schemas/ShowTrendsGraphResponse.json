@@ -1,0 +1,24 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"trendsSettledTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/TrendsSettledTransport.json"
+					}
+				},
+				"trendsCalculatedTransports": {
+					"type": "array",
+					"items": {
+						"$ref": "../../transport/TrendsCalculatedTransport.json"
+					}
+				}
+			}
+		}
+	]
+}

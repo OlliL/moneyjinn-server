@@ -1,14 +1,14 @@
 {
 	"put": {
 		"tags": [
-			"compare-data-controller"
+			"report-controller"
 		],
-		"operationId": "compareData",
+		"operationId": "showYearlyReportGraph",
 		"requestBody": {
 			"content": {
 				"application/json": {
 					"schema": {
-						"$ref": "../schemas/CompareDataRequest.json"
+						"$ref": "../schemas/ShowYearlyReportGraphRequest.json"
 					}
 				}
 			},
@@ -20,7 +20,7 @@
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "../schemas/CompareDataResponse.json"
+							"$ref": "../schemas/ShowYearlyReportGraphResponse.json"
 						}
 					}
 				}

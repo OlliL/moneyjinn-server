@@ -1,0 +1,58 @@
+{
+	"allOf": [
+		{
+			"$ref": "../../abstract/ErrorResponse.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"year": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"month": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"allYears": {
+					"type": "array",
+					"items": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"allMonth": {
+					"type": "array",
+					"items": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"nextMonthHasMoneyflows": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"previousMonthHasMoneyflows": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"previousMonth": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"previousYear": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"nextMonth": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"nextYear": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		}
+	]
+}

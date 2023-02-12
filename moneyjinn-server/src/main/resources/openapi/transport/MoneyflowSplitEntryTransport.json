@@ -1,0 +1,33 @@
+{
+	"type": "object",
+	"required": [
+		"id",
+		"moneyflowid",
+		"amount",
+		"comment",
+		"postingaccountid"
+	],
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"moneyflowid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"amount": {
+			"type": "number"
+		},
+		"comment": {
+			"type": "string"
+		},
+		"postingaccountid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"postingaccountname": {
+			"type": "string"
+		}
+	}
+}

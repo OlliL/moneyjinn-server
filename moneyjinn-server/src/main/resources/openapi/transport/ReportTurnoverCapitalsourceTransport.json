@@ -1,0 +1,42 @@
+{
+	"type": "object",
+	"required": [
+		"capitalsourceType",
+		"capitalsourceStatecapitalsourceState",
+		"capitalsourceComment",
+		"amountBeginOfMonthFixed",
+		"amountEndOfMonthFixed",
+		"amountEndOfMonthCalculated",
+		"amountCurrent",
+		"amountCurrentState"
+	],
+	"properties": {
+		"capitalsourceType": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"capitalsourceState": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"capitalsourceComment": {
+			"type": "string"
+		},
+		"amountBeginOfMonthFixed": {
+			"type": "number"
+		},
+		"amountEndOfMonthFixed": {
+			"type": "number"
+		},
+		"amountEndOfMonthCalculated": {
+			"type": "number"
+		},
+		"amountCurrent": {
+			"type": "number"
+		},
+		"amountCurrentState": {
+			"type": "string",
+			"format": "date-time"
+		}
+	}
+}

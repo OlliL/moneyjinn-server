@@ -1,0 +1,61 @@
+{
+	"type": "object",
+	"required": [
+		"id",
+		"userid",
+		"amount",
+		"capitalsourceid",
+		"contractpartnerid",
+		"comment",
+		"postingaccountid"
+	],
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"userid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"amount": {
+			"type": "number"
+		},
+		"capitalsourceid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"capitalsourcecomment": {
+			"type": "string"
+		},
+		"contractpartnerid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"contractpartnername": {
+			"type": "string"
+		},
+		"comment": {
+			"type": "string"
+		},
+		"createdate": {
+			"type": "string",
+			"format": "date"
+		},
+		"onceAMonth": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"lastUsed": {
+			"type": "string",
+			"format": "date"
+		},
+		"postingaccountid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"postingaccountname": {
+			"type": "string"
+		}
+	}
+}
