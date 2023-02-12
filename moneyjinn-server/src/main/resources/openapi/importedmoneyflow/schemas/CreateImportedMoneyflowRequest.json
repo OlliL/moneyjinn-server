@@ -1,0 +1,8 @@
+{
+	"type": "object",
+	"properties": {
+		"importedMoneyflowTransport": {
+			"$ref": "../../transport/ImportedMoneyflowTransport.json"
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"type": "object",
+	"properties": {
+		"isin": {
+			"type": "string"
+		},
+		"pieces": {
+			"type": "number"
+		},
+		"bidPrice": {
+			"type": "number"
+		},
+		"askPrice": {
+			"type": "number"
+		},
+		"transactionCosts": {
+			"type": "number"
+		}
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"type": "object",
+	"properties": {
+		"importedMoneyflowTransport": {
+			"$ref": "../../transport/ImportedMoneyflowTransport.json"
+		},
+		"insertMoneyflowSplitEntryTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
+			}
+		}
+	}
+}

@@ -102,7 +102,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdatePreDefMoneyflowRequest"
+								"$ref": "openapi/predefmoneyflow/schemas/UpdatePreDefMoneyflowRequest"
 							}
 						}
 					},
@@ -132,7 +132,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdatePostingAccountRequest"
+								"$ref": "openapi/postinfaccount/schemas/UpdatePostingAccountRequest"
 							}
 						}
 					},
@@ -162,7 +162,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdateMoneyflowRequest"
+								"$ref": "openapi/moneyflow/schemas/UpdateMoneyflowRequest.json"
 							}
 						}
 					},
@@ -192,7 +192,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/SearchMoneyflowsRequest"
+								"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsRequest"
 							}
 						}
 					},
@@ -222,7 +222,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdateGroupRequest"
+								"$ref": "openapi/group/schemas/UpdateGroupRequest.json"
 							}
 						}
 					},
@@ -252,7 +252,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdateEtfFlowRequest"
+								"$ref": "openapi/etf/schemas/UpdateEtfFlowRequest.json"
 							}
 						}
 					},
@@ -282,7 +282,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CalcEtfSaleRequest"
+								"$ref": "openapi/etf/schemas/CalcEtfSaleRequest.json"
 							}
 						}
 					},
@@ -312,7 +312,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdateContractpartnerAccountRequest"
+								"$ref": "openapi/contractpartneraccount/schemas/UpdateContractpartnerAccountRequest.json"
 							}
 						}
 					},
@@ -342,7 +342,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreatePreDefMoneyflowRequest"
+								"$ref": "openapi/predefmoneyflow/schemas/CreatePreDefMoneyflowRequest.json"
 							}
 						}
 					},
@@ -372,8 +372,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreatePostingAccountRequest"
-							}
+								"$ref": "openapi/postingaccount/schemas/CreatePostingAccountRequest.json"							}
 						}
 					},
 					"required": true
@@ -402,7 +401,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpsertMonthlySettlementRequest"
+								"$ref": "openapi/monthlysettlement/schemas/UpsertMonthlySettlementRequest.json"
 							}
 						}
 					},
@@ -432,7 +431,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateMoneyflowRequest"
+								"$ref": "openapi/moneyflow/schemas/CreateMoneyflowRequest.json"
 							}
 						}
 					},
@@ -462,7 +461,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateImportedMonthlySettlementRequest"
+								"$ref": "openapi/importedmonthlysettlement/schemas/CreateImportedMonthlySettlementRequest.json"
 							}
 						}
 					},
@@ -525,7 +524,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateImportedMoneyflowReceiptsRequest"
+								"$ref": "openapi/importedmoneyflowreceipt/schemas/CreateImportedMoneyflowReceiptsRequest.json"
 							}
 						}
 					},
@@ -555,7 +554,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ImportImportedMoneyflowRequest"
+								"$ref": "openapi/importedmoneyflow/schemas/ImportImportedMoneyflowRequest.json"
 							}
 						}
 					},
@@ -585,7 +584,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateImportedMoneyflowRequest"
+								"$ref": "openapi/importedmoneyflow/schemas/CreateImportedMoneyflowRequest"
 							}
 						}
 					},
@@ -615,7 +614,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateImportedBalanceRequest"
+								"$ref": "openapi/importedbalance/schemas/CreateImportedBalanceRequest.json"
 							}
 						}
 					},
@@ -645,7 +644,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateGroupRequest"
+								"$ref": "openapi/group/schemas/CreateGroupRequest.json"
 							}
 						}
 					},
@@ -675,7 +674,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateEtfFlowRequest"
+								"$ref": "openapi/etf/schemas/CreateEtfFlowRequest.json"
 							}
 						}
 					},
@@ -705,7 +704,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateContractpartnerAccountRequest"
+								"$ref": "openapi/contractpartneraccount/schemas/CreateContractpartnerAccountRequest.json"
 							}
 						}
 					},
@@ -1716,49 +1715,6 @@
 	},
 	"components": {
 		"schemas": {
-			"UpdatePreDefMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"preDefMoneyflowTransport": {
-						"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
-					}
-				}
-			},
-			"UpdatePostingAccountRequest": {
-				"type": "object",
-				"properties": {
-					"postingAccountTransport": {
-						"$ref": "openapi/transport/PostingAccountTransport.json"
-					}
-				}
-			},
-			"UpdateMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"moneyflowTransport": {
-						"$ref": "openapi/transport/MoneyflowTransport.json"
-					},
-					"deleteMoneyflowSplitEntryIds": {
-						"type": "array",
-						"items": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					"updateMoneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					},
-					"insertMoneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					}
-				}
-			},
 			"UpdateMoneyflowResponse": {
 				"type": "object",
 				"properties": {
@@ -1792,14 +1748,6 @@
 					}
 				}
 			},
-			"SearchMoneyflowsRequest": {
-				"type": "object",
-				"properties": {
-					"moneyflowSearchParamsTransport": {
-						"$ref": "openapi/transport/MoneyflowSearchParamsTransport.json"
-					}
-				}
-			},
 			"SearchMoneyflowsResponse": {
 				"type": "object",
 				"properties": {
@@ -1824,42 +1772,6 @@
 						"items": {
 							"$ref": "openapi/transport/MoneyflowTransport.json"
 						}
-					}
-				}
-			},
-			"UpdateGroupRequest": {
-				"type": "object",
-				"properties": {
-					"groupTransport": {
-						"$ref": "openapi/transport/GroupTransport.json"
-					}
-				}
-			},
-			"UpdateEtfFlowRequest": {
-				"type": "object",
-				"properties": {
-					"etfFlowTransport": {
-						"$ref": "openapi/transport/EtfFlowTransport.json"
-					}
-				}
-			},
-			"CalcEtfSaleRequest": {
-				"type": "object",
-				"properties": {
-					"isin": {
-						"type": "string"
-					},
-					"pieces": {
-						"type": "number"
-					},
-					"bidPrice": {
-						"type": "number"
-					},
-					"askPrice": {
-						"type": "number"
-					},
-					"transactionCosts": {
-						"type": "number"
 					}
 				}
 			},
@@ -1914,22 +1826,6 @@
 					}
 				}
 			},
-			"UpdateContractpartnerAccountRequest": {
-				"type": "object",
-				"properties": {
-					"contractpartnerAccountTransport": {
-						"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
-					}
-				}
-			},
-			"CreatePreDefMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"preDefMoneyflowTransport": {
-						"$ref": "openapi/transport/PreDefMoneyflowTransport.json"
-					}
-				}
-			},
 			"CreatePreDefMoneyflowResponse": {
 				"type": "object",
 				"properties": {
@@ -1952,14 +1848,6 @@
 					"preDefMoneyflowId": {
 						"type": "integer",
 						"format": "int64"
-					}
-				}
-			},
-			"CreatePostingAccountRequest": {
-				"type": "object",
-				"properties": {
-					"postingAccountTransport": {
-						"$ref": "openapi/transport/PostingAccountTransport.json"
 					}
 				}
 			},
@@ -1988,96 +1876,6 @@
 					}
 				}
 			},
-			"UpsertMonthlySettlementRequest": {
-				"type": "object",
-				"properties": {
-					"monthlySettlementTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MonthlySettlementTransport.json"
-						}
-					}
-				}
-			},
-			"CreateMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"moneyflowTransport": {
-						"$ref": "openapi/transport/MoneyflowTransport.json"
-					},
-					"insertMoneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					},
-					"usedPreDefMoneyflowId": {
-						"type": "integer",
-						"format": "int64"
-					},
-					"saveAsPreDefMoneyflow": {
-						"type": "integer",
-						"format": "int32"
-					}
-				}
-			},
-			"CreateImportedMonthlySettlementRequest": {
-				"type": "object",
-				"properties": {
-					"importedMonthlySettlementTransport": {
-						"$ref": "openapi/transport/ImportedMonthlySettlementTransport.json"
-					}
-				}
-			},
-			"CreateImportedMoneyflowReceiptsRequest": {
-				"type": "object",
-				"properties": {
-					"importedMoneyflowReceiptTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/ImportedMoneyflowReceiptTransport.json"
-						}
-					}
-				}
-			},
-			"ImportImportedMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"importedMoneyflowTransport": {
-						"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
-					},
-					"insertMoneyflowSplitEntryTransports": {
-						"type": "array",
-						"items": {
-							"$ref": "openapi/transport/MoneyflowSplitEntryTransport.json"
-						}
-					}
-				}
-			},
-			"CreateImportedMoneyflowRequest": {
-				"type": "object",
-				"properties": {
-					"importedMoneyflowTransport": {
-						"$ref": "openapi/transport/ImportedMoneyflowTransport.json"
-					}
-				}
-			},
-			"CreateImportedBalanceRequest": {
-				"type": "object",
-				"properties": {
-					"importedBalanceTransport": {
-						"$ref": "openapi/transport/ImportedBalanceTransport.json"
-					}
-				}
-			},
-			"CreateGroupRequest": {
-				"type": "object",
-				"properties": {
-					"groupTransport": {
-						"$ref": "openapi/transport/GroupTransport.json"
-					}
-				}
-			},
 			"CreateGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -2103,14 +1901,6 @@
 					}
 				}
 			},
-			"CreateEtfFlowRequest": {
-				"type": "object",
-				"properties": {
-					"etfFlowTransport": {
-						"$ref": "openapi/transport/EtfFlowTransport.json"
-					}
-				}
-			},
 			"CreateEtfFlowResponse": {
 				"type": "object",
 				"properties": {
@@ -2133,14 +1923,6 @@
 					"etfFlowId": {
 						"type": "integer",
 						"format": "int64"
-					}
-				}
-			},
-			"CreateContractpartnerAccountRequest": {
-				"type": "object",
-				"properties": {
-					"contractpartnerAccountTransport": {
-						"$ref": "openapi/transport/ContractpartnerAccountTransport.json"
 					}
 				}
 			},

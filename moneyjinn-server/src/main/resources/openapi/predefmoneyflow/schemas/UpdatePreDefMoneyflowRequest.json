@@ -1,0 +1,8 @@
+{
+	"type": "object",
+	"properties": {
+		"preDefMoneyflowTransport": {
+			"$ref": "../../transport/PreDefMoneyflowTransport.json"
+		}
+	}
+}

@@ -1,0 +1,8 @@
+{
+				"type": "object",
+				"properties": {
+					"groupTransport": {
+						"$ref": "../../transport/GroupTransport.json"
+					}
+				}
+			}
