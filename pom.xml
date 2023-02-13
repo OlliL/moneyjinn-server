@@ -29,15 +29,15 @@
 		<mybatis-spring.version>3.0.1</mybatis-spring.version>
 		<commons.io.version>2.11.0</commons.io.version>
 		<commons.codec.version>1.15</commons.codec.version>
-		<apache.tika.version>2.6.0</apache.tika.version>
+		<apache.tika.version>2.7.0</apache.tika.version>
 		<jjwt.version>0.11.5</jjwt.version>
-		<lombok.version>1.18.24</lombok.version>
+		<lombok.version>1.18.26</lombok.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<swagger.version>2.2.8</swagger.version>
 		<openapi-generator.version>6.3.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.1.6.Final</hibernate-core.version>
+		<hibernate-core.version>6.1.7.Final</hibernate-core.version>
 		<hbci4java.version>3.1.64</hbci4java.version>
 
 		<maven-compiler-plugin>3.10.1</maven-compiler-plugin>
