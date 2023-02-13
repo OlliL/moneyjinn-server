@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"moneyflow-controller"
+		],
+		"operationId": "searchMoneyflows",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/SearchMoneyflowsRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/SearchMoneyflowsResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"imported-balance-controller"
+		],
+		"operationId": "createImportedBalance",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateImportedBalanceRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

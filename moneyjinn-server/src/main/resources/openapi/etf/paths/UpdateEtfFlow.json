@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"etf-controller"
+		],
+		"operationId": "updateEtfFlow",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/UpdateEtfFlowRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

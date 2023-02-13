@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"monthly-settlement-controller"
+		],
+		"operationId": "upsertMonthlySettlement",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/UpsertMonthlySettlementRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

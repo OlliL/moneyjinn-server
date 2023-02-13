@@ -1,0 +1,33 @@
+{
+	"post": {
+		"tags": [
+			"imported-moneyflow-receipt-controller"
+		],
+		"operationId": "importImportedMoneyflowReceipt",
+		"parameters": [
+			{
+				"name": "id",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int64"
+				}
+			},
+			{
+				"name": "moneyflowid",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		],
+		"responses": {
+			"200": {
+				"description": "OK"
+			}
+		}
+	}
+}

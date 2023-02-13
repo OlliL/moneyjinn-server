@@ -93,546 +93,58 @@
 			"$ref": "openapi/report/paths/GetAvailableMonthYearMonth.json"
 		},
 		"/moneyflow/server/predefmoneyflow/updatePreDefMoneyflow": {
-			"put": {
-				"tags": [
-					"pre-def-moneyflow-controller"
-				],
-				"operationId": "updatePreDefMoneyflow",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/predefmoneyflow/schemas/UpdatePreDefMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/predefmoneyflow/paths/UpdatePreDefMoneyflow.json"
 		},
 		"/moneyflow/server/postingaccount/updatePostingAccount": {
-			"put": {
-				"tags": [
-					"posting-account-controller"
-				],
-				"operationId": "updatePostingAccount",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/postingaccount/schemas/UpdatePostingAccountRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/postingaccount/paths/UpdatePostingAccount.json"
 		},
 		"/moneyflow/server/moneyflow/updateMoneyflowV2": {
-			"put": {
-				"tags": [
-					"moneyflow-controller"
-				],
-				"operationId": "updateMoneyflowV2",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/moneyflow/schemas/UpdateMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/moneyflow/schemas/UpdateMoneyflowResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/moneyflow/paths/UpdateMoneyflowV2.json"
 		},
 		"/moneyflow/server/moneyflow/searchMoneyflows": {
-			"put": {
-				"tags": [
-					"moneyflow-controller"
-				],
-				"operationId": "searchMoneyflows",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/moneyflow/schemas/SearchMoneyflowsResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/moneyflow/paths/SearchMoneyflows.json"
 		},
 		"/moneyflow/server/group/updateGroup": {
-			"put": {
-				"tags": [
-					"group-controller"
-				],
-				"operationId": "updateGroup",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/group/schemas/UpdateGroupRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/group/paths/UpdateGroup.json"
 		},
 		"/moneyflow/server/etf/updateEtfFlow": {
-			"put": {
-				"tags": [
-					"etf-controller"
-				],
-				"operationId": "updateEtfFlow",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/etf/schemas/UpdateEtfFlowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/etf/paths/UpdateEtfFlow.json"
 		},
 		"/moneyflow/server/etf/calcEtfSale": {
-			"put": {
-				"tags": [
-					"etf-controller"
-				],
-				"operationId": "calcEtfSale",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/etf/schemas/CalcEtfSaleRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/etf/schemas/CalcEtfSaleResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/etf/paths/CalcEtfSale.json"
 		},
 		"/moneyflow/server/contractpartneraccount/updateContractpartnerAccount": {
-			"put": {
-				"tags": [
-					"contractpartner-account-controller"
-				],
-				"operationId": "updateContractpartnerAccount",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/contractpartneraccount/schemas/UpdateContractpartnerAccountRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/contractpartneraccount/paths/updateContractpartnerAccount.json"
 		},
 		"/moneyflow/server/predefmoneyflow/createPreDefMoneyflow": {
-			"post": {
-				"tags": [
-					"pre-def-moneyflow-controller"
-				],
-				"operationId": "createPreDefMoneyflow",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/predefmoneyflow/schemas/CreatePreDefMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/predefmoneyflow/schemas/CreatePreDefMoneyflowResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/predefmoneyflow/paths/createPreDefMoneyflow.json"
 		},
 		"/moneyflow/server/postingaccount/createPostingAccount": {
-			"post": {
-				"tags": [
-					"posting-account-controller"
-				],
-				"operationId": "createPostingAccount",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/postingaccount/schemas/CreatePostingAccountRequest.json"							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/postingaccount/schemas/CreatePostingAccountResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/postingaccount/paths/CreatePostingAccount.json"
 		},
-		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement": {
-			"post": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "upsertMonthlySettlement",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/monthlysettlement/schemas/UpsertMonthlySettlementRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement":  {
+			"$ref": "openapi/monthlysettlement/paths/UpsertMonthlySettlement.json"
 		},
 		"/moneyflow/server/moneyflow/createMoneyflow": {
-			"post": {
-				"tags": [
-					"moneyflow-controller"
-				],
-				"operationId": "createMoneyflows",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/moneyflow/schemas/CreateMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/moneyflow/paths/CreateMoneyflow.json"
 		},
-		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement": {
-			"post": {
-				"tags": [
-					"imported-monthly-settlement-controller"
-				],
-				"operationId": "createImportedMonthlySettlement",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/importedmonthlysettlement/schemas/CreateImportedMonthlySettlementRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement":  {
+			"$ref": "openapi/importedmonthlysettlement/paths/CreateImportedMonthlySettlement.json"
 		},
-		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}": {
-			"post": {
-				"tags": [
-					"imported-moneyflow-receipt-controller"
-				],
-				"operationId": "importImportedMoneyflowReceipt",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int64"
-						}
-					},
-					{
-						"name": "moneyflowid",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int64"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK"
-					}
-				}
-			}
+		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}":  {
+			"$ref": "openapi/importedmoneyflowreceipt/paths/ImportImportedMoneyflowReceipt.json"
 		},
 		"/moneyflow/server/importedmoneyflowreceipt/createImportedMoneyflowReceipts": {
-			"post": {
-				"tags": [
-					"imported-moneyflow-receipt-controller"
-				],
-				"operationId": "createImportedMoneyflowReceipts",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/importedmoneyflowreceipt/schemas/CreateImportedMoneyflowReceiptsRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/importedmoneyflowreceipt/paths/CreateImportedMoneyflowReceipts.json"
 		},
 		"/moneyflow/server/importedmoneyflow/importImportedMoneyflows": {
-			"post": {
-				"tags": [
-					"imported-moneyflow-controller"
-				],
-				"operationId": "importImportedMoneyflows",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/importedmoneyflow/schemas/ImportImportedMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/importedmoneyflow/paths/ImportImportedMoneyflows.json"
 		},
 		"/moneyflow/server/importedmoneyflow/createImportedMoneyflow": {
-			"post": {
-				"tags": [
-					"imported-moneyflow-controller"
-				],
-				"operationId": "createImportedMoneyflow",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/importedmoneyflow/schemas/CreateImportedMoneyflowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/importedmoneyflow/paths/CreateImportedMoneyflow.json"
 		},
 		"/moneyflow/server/importedbalance/createImportedBalance": {
-			"post": {
-				"tags": [
-					"imported-balance-controller"
-				],
-				"operationId": "createImportedBalance",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/importedbalance/schemas/CreateImportedBalanceRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/abstract/ValidationResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/importedbalance/paths/CreateImportedBalance.json"
 		},
 		"/moneyflow/server/group/createGroup": {
 			"post": {

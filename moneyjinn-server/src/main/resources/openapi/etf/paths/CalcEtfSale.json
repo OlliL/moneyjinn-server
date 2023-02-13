@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"etf-controller"
+		],
+		"operationId": "calcEtfSale",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CalcEtfSaleRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CalcEtfSaleResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

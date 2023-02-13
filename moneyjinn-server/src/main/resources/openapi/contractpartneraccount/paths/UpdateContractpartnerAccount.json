@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"contractpartner-account-controller"
+		],
+		"operationId": "updateContractpartnerAccount",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/UpdateContractpartnerAccountRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

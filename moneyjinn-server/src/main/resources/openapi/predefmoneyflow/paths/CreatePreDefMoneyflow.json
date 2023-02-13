@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"pre-def-moneyflow-controller"
+		],
+		"operationId": "createPreDefMoneyflow",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreatePreDefMoneyflowRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreatePreDefMoneyflowResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

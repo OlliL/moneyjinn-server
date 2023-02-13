@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"imported-monthly-settlement-controller"
+		],
+		"operationId": "createImportedMonthlySettlement",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateImportedMonthlySettlementRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"imported-moneyflow-controller"
+		],
+		"operationId": "importImportedMoneyflows",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/ImportImportedMoneyflowRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"posting-account-controller"
+		],
+		"operationId": "createPostingAccount",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreatePostingAccountRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreatePostingAccountResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"put": {
+		"tags": [
+			"moneyflow-controller"
+		],
+		"operationId": "updateMoneyflowV2",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/UpdateMoneyflowRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/UpdateMoneyflowResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}
