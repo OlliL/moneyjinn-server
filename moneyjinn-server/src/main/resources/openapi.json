@@ -122,16 +122,16 @@
 		"/moneyflow/server/postingaccount/createPostingAccount": {
 			"$ref": "openapi/postingaccount/paths/CreatePostingAccount.json"
 		},
-		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement":  {
+		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement": {
 			"$ref": "openapi/monthlysettlement/paths/UpsertMonthlySettlement.json"
 		},
 		"/moneyflow/server/moneyflow/createMoneyflow": {
 			"$ref": "openapi/moneyflow/paths/CreateMoneyflow.json"
 		},
-		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement":  {
+		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement": {
 			"$ref": "openapi/importedmonthlysettlement/paths/CreateImportedMonthlySettlement.json"
 		},
-		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}":  {
+		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}": {
 			"$ref": "openapi/importedmoneyflowreceipt/paths/ImportImportedMoneyflowReceipt.json"
 		},
 		"/moneyflow/server/importedmoneyflowreceipt/createImportedMoneyflowReceipts": {
@@ -147,356 +147,40 @@
 			"$ref": "openapi/importedbalance/paths/CreateImportedBalance.json"
 		},
 		"/moneyflow/server/group/createGroup": {
-			"post": {
-				"tags": [
-					"group-controller"
-				],
-				"operationId": "createGroup",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/group/schemas/CreateGroupRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/group/schemas/CreateGroupResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/group/paths/CreateGroup.json"
 		},
 		"/moneyflow/server/etf/createEtfFlow": {
-			"post": {
-				"tags": [
-					"etf-controller"
-				],
-				"operationId": "createEtfFlow",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/etf/schemas/CreateEtfFlowRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/etf/schemas/CreateEtfFlowResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/etf/paths/CreateEtfFlow.json"
 		},
 		"/moneyflow/server/contractpartneraccount/createContractpartnerAccount": {
-			"post": {
-				"tags": [
-					"contractpartner-account-controller"
-				],
-				"operationId": "createContractpartnerAccount",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "openapi/contractpartneraccount/schemas/CreateContractpartnerAccountRequest.json"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/contractpartneraccount/schemas/CreateContractpartnerAccountResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/contractpartneraccount/paths/CreateContractpartnerAccount.json"
 		},
 		"/moneyflow/server/predefmoneyflow/showPreDefMoneyflowList": {
-			"get": {
-				"tags": [
-					"pre-def-moneyflow-controller"
-				],
-				"operationId": "showPreDefMoneyflowList",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/predefmoneyflow/schemas/ShowPreDefMoneyflowListResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/predefmoneyflow/paths/ShowPreDefMoneyflowList.json"
 		},
 		"/moneyflow/server/postingaccount/showPostingAccountList": {
-			"get": {
-				"tags": [
-					"posting-account-controller"
-				],
-				"operationId": "showPostingAccountList",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/postingaccount/schemas/ShowPostingAccountListResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/postingaccount/paths/ShowPostingAccountList.json"
 		},
 		"/moneyflow/server/monthlysettlement/showMonthlySettlementListV2/{year}/{month}": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "showMonthlySettlementListV2",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					{
-						"name": "month",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementListResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementListV2.json"
 		},
 		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "showMonthlySettlementCreate",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreate.json"
 		},
 		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "showMonthlySettlementCreate_1",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYear.json"
 		},
 		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}/{month}": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "showMonthlySettlementCreate_2",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					{
-						"name": "month",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/ShowMonthlySettlementCreateResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYearMonth.json"
 		},
 		"/moneyflow/server/monthlysettlement/getAvailableMonth": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "getAvailableMonth_3",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonth.json"
 		},
 		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "getAvailableMonth_4",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYear.json"
 		},
 		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}/{month}": {
-			"get": {
-				"tags": [
-					"monthly-settlement-controller"
-				],
-				"operationId": "getAvailableMonth_5",
-				"parameters": [
-					{
-						"name": "year",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					},
-					{
-						"name": "month",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "integer",
-							"format": "int32"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "openapi/monthlysettlement/schemas/GetAvailableMonthResponse.json"
-								}
-							}
-						}
-					}
-				}
-			}
+			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYearMonth.json"
 		},
 		"/moneyflow/server/moneyflowreceipt/showMoneyflowReceipt/{id}": {
 			"get": {

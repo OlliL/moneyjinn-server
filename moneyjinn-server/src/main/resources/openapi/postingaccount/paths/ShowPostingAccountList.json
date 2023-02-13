@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"posting-account-controller"
+		],
+		"operationId": "showPostingAccountList",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowPostingAccountListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+},

@@ -1,0 +1,40 @@
+{
+	"get": {
+		"tags": [
+			"monthly-settlement-controller"
+		],
+		"operationId": "showMonthlySettlementListV2",
+		"parameters": [
+			{
+				"name": "year",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
+			},
+			{
+				"name": "month",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		],
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowMonthlySettlementListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

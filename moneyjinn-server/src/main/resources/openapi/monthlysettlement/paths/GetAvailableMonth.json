@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"monthly-settlement-controller"
+		],
+		"operationId": "getAvailableMonth_3",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/GetAvailableMonthResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

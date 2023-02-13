@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"etf-controller"
+		],
+		"operationId": "createEtfFlow",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateEtfFlowRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateEtfFlowResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

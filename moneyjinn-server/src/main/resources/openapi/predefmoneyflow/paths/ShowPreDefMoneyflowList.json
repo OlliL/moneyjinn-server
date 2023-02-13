@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"pre-def-moneyflow-controller"
+		],
+		"operationId": "showPreDefMoneyflowList",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowPreDefMoneyflowListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

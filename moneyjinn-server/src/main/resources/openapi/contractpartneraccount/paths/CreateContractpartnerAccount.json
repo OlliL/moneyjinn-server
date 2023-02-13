@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"contractpartner-account-controller"
+		],
+		"operationId": "createContractpartnerAccount",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateContractpartnerAccountRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateContractpartnerAccountResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"post": {
+		"tags": [
+			"group-controller"
+		],
+		"operationId": "createGroup",
+		"requestBody": {
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../schemas/CreateGroupRequest.json"
+					}
+				}
+			},
+			"required": true
+		},
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/CreateGroupResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}
