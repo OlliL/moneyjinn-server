@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"group-controller"
+		],
+		"operationId": "showGroupList",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowGroupListResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

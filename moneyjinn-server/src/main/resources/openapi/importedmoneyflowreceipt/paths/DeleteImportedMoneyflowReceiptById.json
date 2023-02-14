@@ -1,0 +1,24 @@
+{
+	"delete": {
+		"tags": [
+			"imported-moneyflow-receipt-controller"
+		],
+		"operationId": "deleteImportedMoneyflowReceiptById",
+		"parameters": [
+			{
+				"name": "id",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		],
+		"responses": {
+			"204": {
+				"description": "OK"
+			}
+		}
+	}
+}

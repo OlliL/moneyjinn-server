@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"etf-controller"
+		],
+		"operationId": "listEtfFlows",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ListEtfFlowsResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+}

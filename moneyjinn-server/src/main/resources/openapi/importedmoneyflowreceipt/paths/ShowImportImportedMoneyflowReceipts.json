@@ -1,0 +1,20 @@
+{
+	"get": {
+		"tags": [
+			"imported-moneyflow-receipt-controller"
+		],
+		"operationId": "showImportImportedMoneyflowReceipts",
+		"responses": {
+			"200": {
+				"description": "OK",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../schemas/ShowImportImportedMoneyflowReceiptsResponse.json"
+						}
+					}
+				}
+			}
+		}
+	}
+},

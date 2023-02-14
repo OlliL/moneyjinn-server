@@ -1,0 +1,33 @@
+{
+	"delete": {
+		"tags": [
+			"monthly-settlement-controller"
+		],
+		"operationId": "deleteMonthlySettlement",
+		"parameters": [
+			{
+				"name": "year",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
+			},
+			{
+				"name": "month",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		],
+		"responses": {
+			"204": {
+				"description": "OK"
+			}
+		}
+	}
+}
