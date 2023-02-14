@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
+import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
 
 public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransport {
   public CompareDataDatasetTransportBuilder withPartner(final String partner) {

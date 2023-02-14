@@ -41,7 +41,7 @@ public interface IEtfService {
 
   List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDateTime timeUntil);
 
-  EtfValue getEtfValueEndOfMonth(EtfIsin isin, Short year, Month month);
+  EtfValue getEtfValueEndOfMonth(EtfIsin isin, Integer year, Month month);
 
   EtfFlow getEtfFlowById(EtfFlowID etfFlowId);
 

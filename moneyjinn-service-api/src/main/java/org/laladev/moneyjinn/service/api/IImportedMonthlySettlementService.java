@@ -57,21 +57,21 @@ public interface IImportedMonthlySettlementService {
    * Retrieves all the imported monthly settlements for the given year and month.
    *
    * @param userId
-   *          The {@link UserID}
+   *                 The {@link UserID}
    * @param year
-   *          The year of the Settlement
+   *                 The year of the Settlement
    * @param month
-   *          The month of the Settlement
+   *                 The month of the Settlement
    * @return All matching {@link ImportedMonthlySettlement}
    */
-  List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(UserID userId, Short year,
+  List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(UserID userId, Integer year,
       Month month);
 
   /**
    * Persists the given {@link ImportedMonthlySettlement}.
    *
    * @param importedMonthlySettlement
-   *          The {@link ImportedMonthlySettlement}
+   *                                    The {@link ImportedMonthlySettlement}
    */
   void upsertImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
 
@@ -79,7 +79,7 @@ public interface IImportedMonthlySettlementService {
    * Validates the given {@link ImportedMonthlySettlement} for correctness.
    *
    * @param importedMonthlySettlement
-   *          The {@link ImportedMonthlySettlement}
+   *                                    The {@link ImportedMonthlySettlement}
    * @return The {@link ValidationResult}
    */
   ValidationResult validateImportedMonthlySettlement(

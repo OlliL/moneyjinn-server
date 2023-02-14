@@ -36,8 +36,8 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 @Data
 public class BankAccount implements Serializable {
   private static final long serialVersionUID = 1L;
-  private static final Short ACCOUNT_NUMBER_MAX_LENGTH = 34;
-  private static final Short BANK_CODE_MAX_LENGTH = 11;
+  private static final Integer ACCOUNT_NUMBER_MAX_LENGTH = 34;
+  private static final Integer BANK_CODE_MAX_LENGTH = 11;
   private String accountNumber;
   private String bankCode;
   private static final Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");

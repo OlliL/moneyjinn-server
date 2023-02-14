@@ -33,7 +33,7 @@ import org.laladev.moneyjinn.model.Contractpartner;
 
 @Data
 public class MoneyflowSearchResult {
-  private Short year;
+  private Integer year;
   private Month month;
   private BigDecimal amount;
   private Contractpartner contractpartner;

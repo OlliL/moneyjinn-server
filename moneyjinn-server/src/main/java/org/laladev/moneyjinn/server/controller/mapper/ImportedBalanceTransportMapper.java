@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import java.time.LocalDateTime;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
+import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

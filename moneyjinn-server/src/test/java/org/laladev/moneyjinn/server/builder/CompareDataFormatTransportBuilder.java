@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataFormatTransport;
+import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
 
 public class CompareDataFormatTransportBuilder extends CompareDataFormatTransport {
   public static final Long COMPARE_DATA_FORMAT2_ID = 2l;

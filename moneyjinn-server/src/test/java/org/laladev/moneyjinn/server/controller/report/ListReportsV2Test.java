@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,10 +17,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.report.ListReportsResponse;
-import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -32,6 +30,10 @@ import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ReportTurnoverCapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ListReportsResponse;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ReportTurnoverCapitalsourceTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -121,14 +123,14 @@ public class ListReportsV2Test extends AbstractControllerTest {
   @Test
   public void test_invalidMonth_defaultsResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
+    expected.setYear(2010);
     ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/13", this.method, false,
         ListReportsResponse.class);
     this.assertEquals(expected, actual);
     actual = super.callUsecaseWithoutContent("/2010/0", this.method, false,
         ListReportsResponse.class);
     this.assertEquals(expected, actual);
-    expected.setMonth(Short.valueOf("11"));
+    expected.setMonth(Integer.valueOf("11"));
     actual = super.callUsecaseWithoutContent("/2010/11", this.method, false,
         ListReportsResponse.class);
     this.assertEquals(expected, actual);
@@ -138,8 +140,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_DecemberFirstMonthAtAllSettledAndAlsoPreviousMonthSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2008);
-    expected.setMonth((short) 12);
+    expected.setYear(2008);
+    expected.setMonth(12);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow2().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -164,8 +166,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   @Test
   public void test_JanuarySettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2009);
-    expected.setMonth((short) 1);
+    expected.setYear(2009);
+    expected.setMonth(1);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow1().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -196,8 +198,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   @Test
   public void test_DecemberSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2009);
-    expected.setMonth((short) 12);
+    expected.setYear(2009);
+    expected.setMonth(12);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow13().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -224,8 +226,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW14_ID);
     this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2009);
-    expected.setMonth((short) 12);
+    expected.setYear(2009);
+    expected.setMonth(12);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow13().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -250,8 +252,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_JanuarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 1);
+    expected.setYear(2010);
+    expected.setMonth(1);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -277,8 +279,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 1);
+    expected.setYear(2010);
+    expected.setMonth(1);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -303,8 +305,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_FebruarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 2);
+    expected.setYear(2010);
+    expected.setMonth(2);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow15().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -329,8 +331,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_MarchSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 3);
+    expected.setYear(2010);
+    expected.setMonth(3);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow16().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -354,8 +356,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   @Test
   public void test_MayNotSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 5);
+    expected.setYear(2010);
+    expected.setMonth(5);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
@@ -364,7 +366,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
+    transport1.setAmountCurrentState(OffsetDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneOffset.UTC));
     reportTurnoverCapitalsourceTransports.add(transport1);
     reportTurnoverCapitalsourceTransports.add(new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build());
@@ -392,8 +394,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 5);
+    expected.setYear(2010);
+    expected.setMonth(5);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
     expected.setMoneyflowTransports(moneyflowTransports);
@@ -405,7 +407,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
+    transport1.setAmountCurrentState(OffsetDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneOffset.UTC));
     reportTurnoverCapitalsourceTransports.add(transport1);
     final ReportTurnoverCapitalsourceTransport transport2 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build();
@@ -437,8 +439,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     capitalsource.setValidTil(LocalDate.of(2010, Month.APRIL, 30));
     this.capitalsourceService.updateCapitalsource(capitalsource);
     final ListReportsResponse expected = new ListReportsResponse();
-    expected.setYear((short) 2010);
-    expected.setMonth((short) 5);
+    expected.setYear(2010);
+    expected.setMonth(5);
     final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());

@@ -127,7 +127,7 @@ public interface IMoneyflowService {
    * @param userId
    * @return
    */
-  List<Short> getAllYears(UserID userId);
+  List<Integer> getAllYears(UserID userId);
 
   /**
    * Returns all {@link Month} which contain {@link Moneyflow}s.
@@ -136,7 +136,7 @@ public interface IMoneyflowService {
    * @param year
    * @return
    */
-  List<Month> getAllMonth(UserID userId, Short year);
+  List<Month> getAllMonth(UserID userId, Integer year);
 
   /**
    * Returns all {@link Moneyflow}s which Bookingdate is in the defined Daterange. Including also
@@ -158,7 +158,7 @@ public interface IMoneyflowService {
    * @param month
    * @return
    */
-  boolean monthHasMoneyflows(UserID userId, Short year, Month month);
+  boolean monthHasMoneyflows(UserID userId, Integer year, Month month);
 
   /**
    * Retrieves the sum of all booked {@link Moneyflow}s for the given {@link CapitalsourceID}s

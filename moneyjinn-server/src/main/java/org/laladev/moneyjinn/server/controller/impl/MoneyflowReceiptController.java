@@ -28,26 +28,27 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
+import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowReceiptTypeMapper;
+import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/moneyflowreceipt/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class MoneyflowReceiptController extends AbstractController {
+public class MoneyflowReceiptController extends AbstractController
+    implements MoneyflowReceiptControllerApi {
   private final IMoneyflowService moneyflowService;
   private final IMoneyflowReceiptService moneyflowReceiptService;
 
@@ -56,8 +57,8 @@ public class MoneyflowReceiptController extends AbstractController {
   protected void addBeanMapper() {
   }
 
-  @RequestMapping(value = "showMoneyflowReceipt/{id}", method = { RequestMethod.GET })
-  public ShowMoneyflowReceiptResponse showMoneyflowReceipt(
+  @Override
+  public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
@@ -72,16 +73,17 @@ public class MoneyflowReceiptController extends AbstractController {
             MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "deleteMoneyflowReceipt/{id}", method = { RequestMethod.DELETE })
-  public void deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+  @Override
+  public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     if (moneyflow != null) {
       this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
     }
+    return ResponseEntity.noContent().build();
   }
 }

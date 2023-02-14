@@ -39,16 +39,16 @@ import org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper;
 public class MonthlySettlementDao {
   private final IMonthlySettlementDaoMapper mapper;
 
-  public List<Short> getAllYears(final Long userId) {
+  public List<Integer> getAllYears(final Long userId) {
     return this.mapper.getAllYears(userId);
   }
 
-  public List<Short> getAllMonth(final Long userId, final Short year) {
+  public List<Integer> getAllMonth(final Long userId, final Integer year) {
     return this.mapper.getAllMonth(userId, year);
   }
 
   public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final Long userId,
-      final Short year, final Short month) {
+      final Integer year, final Integer month) {
     return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
   }
 
@@ -60,9 +60,9 @@ public class MonthlySettlementDao {
     return this.mapper.getMinSettlementDate(userId);
   }
 
-  public boolean checkMonthlySettlementsExists(final Long userId, final Short year,
-      final Short month) {
-    final Short exists = this.mapper.checkMonthlySettlementsExists(userId, year, month);
+  public boolean checkMonthlySettlementsExists(final Long userId, final Integer year,
+      final Integer month) {
+    final Integer exists = this.mapper.checkMonthlySettlementsExists(userId, year, month);
     return exists != null;
   }
 
@@ -70,7 +70,7 @@ public class MonthlySettlementDao {
     this.mapper.upsertMonthlySettlement(monthlySettlementData);
   }
 
-  public void deleteMonthlySettlement(final Long userId, final Short year, final Short month) {
+  public void deleteMonthlySettlement(final Long userId, final Integer year, final Integer month) {
     this.mapper.deleteMonthlySettlement(userId, year, month);
   }
 

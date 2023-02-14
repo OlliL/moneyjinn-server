@@ -31,13 +31,13 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
 public class MoneyflowReceiptTypeMapper {
-  private static final Short JPEG = Short.valueOf((short) 1);
-  private static final Short PDF = Short.valueOf((short) 2);
+  private static final Integer JPEG = 1;
+  private static final Integer PDF = 2;
 
   private MoneyflowReceiptTypeMapper() {
   }
 
-  public static MoneyflowReceiptType map(final Short type) {
+  public static MoneyflowReceiptType map(final Integer type) {
     if (type != null) {
       switch (type) {
         case 1:
@@ -51,7 +51,7 @@ public class MoneyflowReceiptTypeMapper {
     return null;
   }
 
-  public static Short map(final MoneyflowReceiptType type) {
+  public static Integer map(final MoneyflowReceiptType type) {
     if (type != null) {
       switch (type) {
         case JPEG:

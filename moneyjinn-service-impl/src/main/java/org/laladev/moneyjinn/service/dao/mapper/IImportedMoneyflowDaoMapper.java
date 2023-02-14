@@ -33,14 +33,14 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 
 public interface IImportedMoneyflowDaoMapper {
   Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
-      @Param("status") Short status);
+      @Param("status") Integer status);
 
   List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
-      @Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Short status,
+      @Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Integer status,
       @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
   void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId,
-      @Param("status") Short status);
+      @Param("status") Integer status);
 
   void deleteImportedMoneyflowById(Long impMoneyflowId);
 

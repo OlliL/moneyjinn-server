@@ -8,7 +8,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.report.ShowTrendsFormResponse;
+import org.laladev.moneyjinn.server.model.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
@@ -63,14 +63,14 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
       throws Exception {
     final UserID userId1 = new UserID(UserTransportBuilder.USER1_ID);
     final UserID userId3 = new UserID(UserTransportBuilder.USER3_ID);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1, (short) 2010, Month.JANUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1, (short) 2010, Month.FEBRUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1, (short) 2010, Month.MARCH);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1, (short) 2010, Month.APRIL);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3, (short) 2010, Month.JANUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3, (short) 2010, Month.FEBRUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3, (short) 2010, Month.MARCH);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3, (short) 2010, Month.APRIL);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.JANUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.FEBRUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.MARCH);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.APRIL);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.JANUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.FEBRUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.MARCH);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.APRIL);
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
     final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
         ShowTrendsFormResponse.class);

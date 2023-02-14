@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.config;
 
 import java.util.concurrent.ConcurrentHashMap;
-import org.laladev.moneyjinn.core.rest.model.user.LoginRequest;
+import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.springframework.stereotype.Component;
 
 @Component

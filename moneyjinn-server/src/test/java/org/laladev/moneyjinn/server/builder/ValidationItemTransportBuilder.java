@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.util.List;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 
 public class ValidationItemTransportBuilder extends ValidationItemTransport {
   public ValidationItemTransportBuilder withKey(final String key) {

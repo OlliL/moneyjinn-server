@@ -32,9 +32,9 @@ import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -43,7 +43,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class, MoneyflowIdMapper.class,
-    BooleanToShortMapper.class, UserIdMapper.class })
+    BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface MoneyflowTransportMapper extends IMapper<Moneyflow, MoneyflowTransport> {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")

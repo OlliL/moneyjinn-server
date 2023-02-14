@@ -5,7 +5,7 @@ import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowMoneyflowReceiptResponse;
+import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -14,9 +14,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   private static final String MONEYFLOW_RECEIPT_1 = "FFFFFFFF";
-  private static final Short MONEYFLOW_RECEIPT_1_TYPE = (short) 1;
+  private static final Integer MONEYFLOW_RECEIPT_1_TYPE =  1;
   private static final String MONEYFLOW_RECEIPT_2 = "FFFFFFFF";
-  private static final Short MONEYFLOW_RECEIPT_2_TYPE = (short) 2;
+  private static final Integer MONEYFLOW_RECEIPT_2_TYPE =  2;
   private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;

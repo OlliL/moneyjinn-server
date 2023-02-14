@@ -37,17 +37,17 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
   private String name;
   private List<String> startTrigger;
   private Character delimiter;
-  private Short positionDate;
-  private Short positionPartner;
-  private Short positionAmount;
-  private Short positionComment;
+  private Integer positionDate;
+  private Integer positionPartner;
+  private Integer positionAmount;
+  private Integer positionComment;
   private DateTimeFormatter formatDate;
   private Character formatAmountDecimal;
   private Character formatAmountThousand;
-  private Short positionPartnerAlternative;
-  private Short partnerAlternativeIndicatorPosition;
+  private Integer positionPartnerAlternative;
+  private Integer partnerAlternativeIndicatorPosition;
   private Pattern partnerAlternativeIndicator;
-  private Short positionCreditDebitIndicator;
+  private Integer positionCreditDebitIndicator;
   private Pattern creditIndicator;
 
   public final CompareDataFormatType getType() {
@@ -82,35 +82,35 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
     this.delimiter = delimiter;
   }
 
-  public final Short getPositionDate() {
+  public final Integer getPositionDate() {
     return this.positionDate;
   }
 
-  public final void setPositionDate(final Short positionDate) {
+  public final void setPositionDate(final Integer positionDate) {
     this.positionDate = positionDate;
   }
 
-  public final Short getPositionPartner() {
+  public final Integer getPositionPartner() {
     return this.positionPartner;
   }
 
-  public final void setPositionPartner(final Short positionPartner) {
+  public final void setPositionPartner(final Integer positionPartner) {
     this.positionPartner = positionPartner;
   }
 
-  public final Short getPositionAmount() {
+  public final Integer getPositionAmount() {
     return this.positionAmount;
   }
 
-  public final void setPositionAmount(final Short positionAmount) {
+  public final void setPositionAmount(final Integer positionAmount) {
     this.positionAmount = positionAmount;
   }
 
-  public final Short getPositionComment() {
+  public final Integer getPositionComment() {
     return this.positionComment;
   }
 
-  public final void setPositionComment(final Short positionComment) {
+  public final void setPositionComment(final Integer positionComment) {
     this.positionComment = positionComment;
   }
 
@@ -138,20 +138,20 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
     this.formatAmountThousand = formatAmountThousand;
   }
 
-  public final Short getPositionPartnerAlternative() {
+  public final Integer getPositionPartnerAlternative() {
     return this.positionPartnerAlternative;
   }
 
-  public final void setPositionPartnerAlternative(final Short positionPartnerAlternative) {
+  public final void setPositionPartnerAlternative(final Integer positionPartnerAlternative) {
     this.positionPartnerAlternative = positionPartnerAlternative;
   }
 
-  public final Short getPartnerAlternativeIndicatorPosition() {
+  public final Integer getPartnerAlternativeIndicatorPosition() {
     return this.partnerAlternativeIndicatorPosition;
   }
 
   public final void setPartnerAlternativeIndicatorPosition(
-      final Short partnerAlternativeIndicatorPosition) {
+      final Integer partnerAlternativeIndicatorPosition) {
     this.partnerAlternativeIndicatorPosition = partnerAlternativeIndicatorPosition;
   }
 
@@ -163,11 +163,11 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
     this.partnerAlternativeIndicator = partnerAlternativeIndicator;
   }
 
-  public final Short getPositionCreditDebitIndicator() {
+  public final Integer getPositionCreditDebitIndicator() {
     return this.positionCreditDebitIndicator;
   }
 
-  public final void setPositionCreditDebitIndicator(final Short positionCreditDebitIndicator) {
+  public final void setPositionCreditDebitIndicator(final Integer positionCreditDebitIndicator) {
     this.positionCreditDebitIndicator = positionCreditDebitIndicator;
   }
 

@@ -3,10 +3,10 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 
 public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
-  private static final Short SHORT_1 = Short.valueOf("1");
+  private static final Integer SHORT_1 = Integer.valueOf("1");
   public static final String PRE_DEF_MONEYFLOW1_COMMENT = "Pre1";
   public static final String PRE_DEF_MONEYFLOW2_COMMENT = "Qre2";
   public static final String PRE_DEF_MONEYFLOW3_COMMENT = "Rre3";

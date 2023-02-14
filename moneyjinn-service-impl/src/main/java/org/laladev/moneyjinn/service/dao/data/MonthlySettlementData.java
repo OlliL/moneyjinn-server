@@ -35,7 +35,7 @@ public class MonthlySettlementData {
   private Long macIdCreator;
   private Long macIdAccessor;
   private Long mcsCapitalsourceId;
-  private Short month;
-  private Short year;
+  private Integer month;
+  private Integer year;
   private BigDecimal amount;
 }

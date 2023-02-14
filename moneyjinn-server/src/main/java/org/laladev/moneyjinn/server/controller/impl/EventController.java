@@ -32,25 +32,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.event.ShowEventListResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
+import org.laladev.moneyjinn.server.controller.api.EventControllerApi;
+import org.laladev.moneyjinn.server.model.ShowEventListResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/event/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class EventController extends AbstractController {
+public class EventController extends AbstractController implements EventControllerApi {
   private final IMonthlySettlementService monthlySettlementService;
   private final ICapitalsourceService capitalsourceService;
   private final IImportedMoneyflowService importedMoneyflowService;
@@ -61,14 +60,14 @@ public class EventController extends AbstractController {
     // No Mapping needed.
   }
 
-  @RequestMapping(value = "showEventList", method = { RequestMethod.GET })
-  public ShowEventListResponse showEventList() {
+  @Override
+  public ResponseEntity<ShowEventListResponse> showEventList() {
     final UserID userId = super.getUserId();
     final ShowEventListResponse response = new ShowEventListResponse();
     // missing monthly settlements from last month?
     final LocalDate beginOfPreviousMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
     final Month month = beginOfPreviousMonth.getMonth();
-    final Short year = (short) beginOfPreviousMonth.getYear();
+    final Integer year = beginOfPreviousMonth.getYear();
     final boolean monthlySettlementExists = this.monthlySettlementService
         .checkMonthlySettlementsExists(userId, year, month);
 
@@ -83,8 +82,8 @@ public class EventController extends AbstractController {
       response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
     }
     response.setMonthlySettlementMissing(!monthlySettlementExists);
-    response.setMonthlySettlementMonth((short) month.getValue());
+    response.setMonthlySettlementMonth(month.getValue());
     response.setMonthlySettlementYear(year);
-    return response;
+    return ResponseEntity.ok(response);
   }
 }

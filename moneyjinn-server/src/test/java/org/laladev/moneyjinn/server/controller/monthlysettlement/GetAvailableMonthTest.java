@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.monthlysettlement.GetAvailableMonthResponse;
+import org.laladev.moneyjinn.server.model.GetAvailableMonthResponse;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
@@ -39,9 +39,9 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
 
   private GetAvailableMonthResponse getDefaultResponse() {
     final GetAvailableMonthResponse expected = new GetAvailableMonthResponse();
-    expected.setAllMonth(Arrays.asList((short) 1, (short) 2, (short) 3, (short) 4));
-    expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
-    expected.setYear((short) 2010);
+    expected.setAllMonth(Arrays.asList( 1,  2,  3,  4));
+    expected.setAllYears(Arrays.asList( 2008,  2009,  2010));
+    expected.setYear( 2010);
     return expected;
   }
 
@@ -96,10 +96,10 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   @Test
   public void test_withYearAndMonth_FullResponseObject() throws Exception {
     final GetAvailableMonthResponse expected = new GetAvailableMonthResponse();
-    expected.setAllMonth(Arrays.asList((short) 11, (short) 12));
-    expected.setAllYears(Arrays.asList((short) 2008, (short) 2009, (short) 2010));
-    expected.setYear((short) 2008);
-    expected.setMonth((short) 12);
+    expected.setAllMonth(Arrays.asList( 11,  12));
+    expected.setAllYears(Arrays.asList( 2008,  2009,  2010));
+    expected.setYear( 2008);
+    expected.setMonth( 12);
     final GetAvailableMonthResponse actual = super.callUsecaseWithoutContent("/2008/12",
         this.method, false, GetAvailableMonthResponse.class);
     Assertions.assertEquals(expected, actual);

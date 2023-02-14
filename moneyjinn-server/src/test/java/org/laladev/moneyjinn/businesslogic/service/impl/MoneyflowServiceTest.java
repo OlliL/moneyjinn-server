@@ -30,14 +30,14 @@ public class MoneyflowServiceTest extends AbstractTest {
 
   @Test
   public void monthHasMoneyflows_true() {
-    final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, (short) 2010,
+    final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1,  2010,
         Month.JANUARY);
     Assertions.assertTrue(result);
   }
 
   @Test
   public void monthHasMoneyflows_false() {
-    final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, (short) 2010,
+    final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1,  2010,
         Month.DECEMBER);
     Assertions.assertFalse(result);
   }
@@ -102,7 +102,7 @@ public class MoneyflowServiceTest extends AbstractTest {
 
   @Test
   public void getAllMonth_noMonthFound() {
-    final List<Month> month = this.moneyflowService.getAllMonth(USER_ID_1, (short) 2011);
+    final List<Month> month = this.moneyflowService.getAllMonth(USER_ID_1,  2011);
     Assertions.assertNotNull(month);
     Assertions.assertEquals(0, month.size());
   }
@@ -170,14 +170,14 @@ public class MoneyflowServiceTest extends AbstractTest {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     // this caches
-    final List<Short> allYears1 = this.moneyflowService.getAllYears(user1Id);
+    final List<Integer> allYears1 = this.moneyflowService.getAllYears(user1Id);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
         new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
     moneyflow.getUser().setId(user2Id);
     moneyflow.setBookingDate(LocalDate.now());
     // this should also modify the cache of user 1!
     this.moneyflowService.createMoneyflow(moneyflow);
-    final List<Short> allYears2 = this.moneyflowService.getAllYears(user1Id);
+    final List<Integer> allYears2 = this.moneyflowService.getAllYears(user1Id);
     // Cache of user1 should have been invalidated and the added Moneyflow should be now
     // in the List of all years.
     Assertions.assertNotEquals(allYears1.size(), allYears2.size());

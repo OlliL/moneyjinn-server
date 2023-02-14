@@ -31,14 +31,14 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceImportMapper {
-  private static final short NOT_ALLOWED_SHORT = (short) 0;
-  private static final short ALL_ALLOWED_SHORT = (short) 1;
-  private static final short BALANCE_ALLOWED_SHORT = (short) 2;
+  private static final int NOT_ALLOWED_SHORT = 0;
+  private static final int ALL_ALLOWED_SHORT = 1;
+  private static final int BALANCE_ALLOWED_SHORT = 2;
 
   private CapitalsourceImportMapper() {
   }
 
-  public static CapitalsourceImport map(final Short capitalsourceImport) {
+  public static CapitalsourceImport map(final Integer capitalsourceImport) {
     if (capitalsourceImport != null) {
       switch (capitalsourceImport) {
         case NOT_ALLOWED_SHORT:
@@ -55,7 +55,7 @@ public class CapitalsourceImportMapper {
     return CapitalsourceImport.NOT_ALLOWED;
   }
 
-  public static Short map(final CapitalsourceImport capitalsourceImport) {
+  public static Integer map(final CapitalsourceImport capitalsourceImport) {
     if (capitalsourceImport != null) {
       switch (capitalsourceImport) {
         case NOT_ALLOWED:

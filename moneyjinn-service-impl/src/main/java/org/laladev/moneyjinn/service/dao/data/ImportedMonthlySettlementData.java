@@ -34,7 +34,7 @@ public class ImportedMonthlySettlementData {
   private Long id;
   private String externalId;
   private Long mcsCapitalsourceId;
-  private Short month;
-  private Short year;
+  private Integer month;
+  private Integer year;
   private BigDecimal amount;
 }

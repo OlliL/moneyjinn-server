@@ -45,10 +45,10 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsourc
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCompareDataDatasetTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCompareDataFormatTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiMoneyflowTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
 import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
 import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
@@ -73,10 +73,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompareDataController extends AbstractController implements CompareDataControllerApi {
   private final ISettingService settingService;
   private final ICompareDataService compareDataService;
-  private final OpenapiCapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final OpenapiCompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
-  private final OpenapiCompareDataFormatTransportMapper compareDataFormatTransportMapper;
-  private final OpenapiMoneyflowTransportMapper moneyflowTransportMapper;
+  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
+  private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
+  private final MoneyflowTransportMapper moneyflowTransportMapper;
 
   @Override
   @PostConstruct

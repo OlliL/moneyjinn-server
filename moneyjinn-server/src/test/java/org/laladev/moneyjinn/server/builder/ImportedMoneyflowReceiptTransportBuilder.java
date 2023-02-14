@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 
 public class ImportedMoneyflowReceiptTransportBuilder extends ImportedMoneyflowReceiptTransport {
   public static final Long RECEIPT_1ID = 1L;

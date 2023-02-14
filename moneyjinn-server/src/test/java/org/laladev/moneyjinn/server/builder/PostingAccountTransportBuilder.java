@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
+import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 
 public class PostingAccountTransportBuilder extends PostingAccountTransport {
   public static final String POSTING_ACCOUNT1_NAME = "postingaccount1";

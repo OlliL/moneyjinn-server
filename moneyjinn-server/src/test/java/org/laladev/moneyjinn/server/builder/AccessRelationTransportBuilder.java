@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 
 public class AccessRelationTransportBuilder extends AccessRelationTransport {
   public AccessRelationTransportBuilder forAdminUser() {

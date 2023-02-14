@@ -31,7 +31,7 @@ import org.laladev.moneyjinn.converter.MoneyflowSplitEntryIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

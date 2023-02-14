@@ -31,14 +31,14 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 
 public class ImportedMoneyflowStatusMapper {
-  private static final Short CREATED = Short.valueOf((short) 0);
-  private static final Short PROCESSED = Short.valueOf((short) 1);
-  private static final Short IGNORED = Short.valueOf((short) 2);
+  private static final Integer CREATED = 0;
+  private static final Integer PROCESSED = 1;
+  private static final Integer IGNORED = 2;
 
   private ImportedMoneyflowStatusMapper() {
   }
 
-  public static ImportedMoneyflowStatus map(final Short type) {
+  public static ImportedMoneyflowStatus map(final Integer type) {
     if (type != null) {
       switch (type) {
         case 0:
@@ -54,7 +54,7 @@ public class ImportedMoneyflowStatusMapper {
     return null;
   }
 
-  public static Short map(final ImportedMoneyflowStatus type) {
+  public static Integer map(final ImportedMoneyflowStatus type) {
     if (type != null) {
       switch (type) {
         case CREATED:

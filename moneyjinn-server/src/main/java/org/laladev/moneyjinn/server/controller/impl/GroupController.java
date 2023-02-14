@@ -28,33 +28,33 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.group.CreateGroupRequest;
-import org.laladev.moneyjinn.core.rest.model.group.CreateGroupResponse;
-import org.laladev.moneyjinn.core.rest.model.group.ShowGroupListResponse;
-import org.laladev.moneyjinn.core.rest.model.group.UpdateGroupRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreateGroupRequest;
+import org.laladev.moneyjinn.server.model.CreateGroupResponse;
+import org.laladev.moneyjinn.server.model.GroupTransport;
+import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
+import org.laladev.moneyjinn.server.model.UpdateGroupRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/group/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class GroupController extends AbstractController {
+public class GroupController extends AbstractController implements GroupControllerApi {
   private final IGroupService groupService;
   private final GroupTransportMapper groupTransportMapper;
   private final ValidationItemTransportMapper validationItemTransportMapper;
@@ -66,20 +66,21 @@ public class GroupController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "showGroupList", method = { RequestMethod.GET })
-  public ShowGroupListResponse showGroupList() {
+  public ResponseEntity<ShowGroupListResponse> showGroupList() {
     final List<Group> groups = this.groupService.getAllGroups();
     final ShowGroupListResponse response = new ShowGroupListResponse();
     if (groups != null && !groups.isEmpty()) {
       response.setGroupTransports(super.mapList(groups, GroupTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "createGroup", method = { RequestMethod.POST })
-  public CreateGroupResponse createGroup(@RequestBody final CreateGroupRequest request) {
+  public ResponseEntity<CreateGroupResponse> createGroup(
+      @RequestBody final CreateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     group.setId(null);
     final ValidationResult validationResult = this.groupService.validateGroup(group);
@@ -92,12 +93,13 @@ public class GroupController extends AbstractController {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "updateGroup", method = { RequestMethod.PUT })
-  public ValidationResponse updateGroup(@RequestBody final UpdateGroupRequest request) {
+  public ResponseEntity<ValidationResponse> updateGroup(
+      @RequestBody final UpdateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     final ValidationResult validationResult = this.groupService.validateGroup(group);
     final ValidationResponse response = new ValidationResponse();
@@ -108,14 +110,15 @@ public class GroupController extends AbstractController {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "deleteGroupById/{id}", method = { RequestMethod.DELETE })
-  public void deleteGroupById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
     final GroupID groupId = new GroupID(id);
     this.groupService.deleteGroup(groupId);
+    return ResponseEntity.noContent().build();
   }
 
 }

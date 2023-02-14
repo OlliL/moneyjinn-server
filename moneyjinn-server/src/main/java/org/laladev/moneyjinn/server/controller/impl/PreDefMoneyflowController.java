@@ -28,13 +28,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.CreatePreDefMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.ShowPreDefMoneyflowListResponse;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.User;
@@ -42,18 +35,23 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
+import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/predefmoneyflow/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowController extends AbstractController {
   private final IPreDefMoneyflowService preDefMoneyflowService;
@@ -67,8 +65,7 @@ public class PreDefMoneyflowController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
-  @RequestMapping(value = "showPreDefMoneyflowList", method = { RequestMethod.GET })
-  public ShowPreDefMoneyflowListResponse showPreDefMoneyflowList() {
+  public ResponseEntity<ShowPreDefMoneyflowListResponse> showPreDefMoneyflowList() {
     final UserID userId = super.getUserId();
     final List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService
         .getAllPreDefMoneyflows(userId);
@@ -77,11 +74,10 @@ public class PreDefMoneyflowController extends AbstractController {
       response.setPreDefMoneyflowTransports(
           super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "createPreDefMoneyflow", method = { RequestMethod.POST })
-  public CreatePreDefMoneyflowResponse createPreDefMoneyflow(
+  public ResponseEntity<CreatePreDefMoneyflowResponse> createPreDefMoneyflow(
       @RequestBody final CreatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
         PreDefMoneyflow.class);
@@ -100,11 +96,10 @@ public class PreDefMoneyflowController extends AbstractController {
           .createPreDefMoneyflow(preDefMoneyflow);
       response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "updatePreDefMoneyflow", method = { RequestMethod.PUT })
-  public ValidationResponse updatePreDefMoneyflow(
+  public ResponseEntity<ValidationResponse> updatePreDefMoneyflow(
       @RequestBody final UpdatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
         PreDefMoneyflow.class);
@@ -119,16 +114,16 @@ public class PreDefMoneyflowController extends AbstractController {
       response.setResult(validationResult.isValid());
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     return null;
   }
 
-  @RequestMapping(value = "deletePreDefMoneyflow/{id}", method = { RequestMethod.DELETE })
-  public void deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
     this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
+    return ResponseEntity.noContent().build();
   }
 
 }

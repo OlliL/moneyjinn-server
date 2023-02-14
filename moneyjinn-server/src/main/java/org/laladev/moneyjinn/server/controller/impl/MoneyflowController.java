@@ -37,17 +37,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsByAmountResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.ShowEditMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
@@ -64,10 +53,22 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
+import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsRequest;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsResponse;
+import org.laladev.moneyjinn.server.model.ShowEditMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
@@ -76,20 +77,18 @@ import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/moneyflow/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class MoneyflowController extends AbstractController {
-  private static final Short SHORT_1 = Short.valueOf("1");
+public class MoneyflowController extends AbstractController implements MoneyflowControllerApi {
   private final IUserService userService;
   private final IAccessRelationService accessRelationService;
   private final IPreDefMoneyflowService preDefMoneyflowService;
@@ -214,8 +213,9 @@ public class MoneyflowController extends AbstractController {
     return validationResult;
   }
 
-  @RequestMapping(value = "showEditMoneyflow/{id}", method = { RequestMethod.GET })
-  public ShowEditMoneyflowResponse showEditMoneyflow(@PathVariable(value = "id") final Long id) {
+  @Override
+  public ResponseEntity<ShowEditMoneyflowResponse> showEditMoneyflow(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ShowEditMoneyflowResponse response = new ShowEditMoneyflowResponse();
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, new MoneyflowID(id));
@@ -231,11 +231,11 @@ public class MoneyflowController extends AbstractController {
           .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
       response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "searchMoneyflows", method = { RequestMethod.PUT })
-  public SearchMoneyflowsResponse searchMoneyflows(
+  @Override
+  public ResponseEntity<SearchMoneyflowsResponse> searchMoneyflows(
       @RequestBody final SearchMoneyflowsRequest request) {
     final UserID userId = super.getUserId();
     final SearchMoneyflowsResponse response = new SearchMoneyflowsResponse();
@@ -264,7 +264,7 @@ public class MoneyflowController extends AbstractController {
         response.setMoneyflowTransports(moneyflowTransports);
       }
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -274,16 +274,17 @@ public class MoneyflowController extends AbstractController {
    *                  The request which contains the moneyflow
    * @return ValidationResponse
    */
-  @RequestMapping(value = "createMoneyflow", method = { RequestMethod.POST })
-  public ValidationResponse createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
+
+  @Override
+  public ResponseEntity<ValidationResponse> createMoneyflows(
+      @RequestBody final CreateMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
         request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
     final Long preDefMoneyflowIdLong = request.getUsedPreDefMoneyflowId();
     boolean saveAsPreDefMoneyflow = false;
-    final Short saveAsPreDefMoneyflowShort = request.getSaveAsPreDefMoneyflow();
-    if (saveAsPreDefMoneyflowShort != null && saveAsPreDefMoneyflowShort.equals(SHORT_1)) {
+    if (Integer.valueOf(1).equals(request.getSaveAsPreDefMoneyflow())) {
       saveAsPreDefMoneyflow = true;
     }
     final User user = this.userService.getUserById(userId);
@@ -347,7 +348,7 @@ public class MoneyflowController extends AbstractController {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -357,8 +358,9 @@ public class MoneyflowController extends AbstractController {
    *                  The Request object which contains the Moneyflow.
    * @return Validation Response
    */
-  @RequestMapping(value = "updateMoneyflowV2", method = { RequestMethod.PUT })
-  public UpdateMoneyflowResponse updateMoneyflowV2(
+
+  @Override
+  public ResponseEntity<UpdateMoneyflowResponse> updateMoneyflowV2(
       @RequestBody final UpdateMoneyflowRequest request) {
     final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
     final UserID userId = super.getUserId();
@@ -436,7 +438,7 @@ public class MoneyflowController extends AbstractController {
     if (!validationResult.isValid()) {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     final Moneyflow moneyflowNew = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(request.getMoneyflowTransport().getId()));
@@ -452,7 +454,7 @@ public class MoneyflowController extends AbstractController {
           .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflowNew.getId()));
       response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -461,13 +463,15 @@ public class MoneyflowController extends AbstractController {
    * @param id
    *             The ID of the Moneyflow to delete
    */
-  @RequestMapping(value = "deleteMoneyflowById/{id}", method = { RequestMethod.DELETE })
-  public void deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
+
+  @Override
+  public ResponseEntity<Void> deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
     this.moneyflowSplitEntryService.deleteMoneyflowSplitEntries(userId, moneyflowId);
     this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
     this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
+    return ResponseEntity.noContent().build();
   }
 
   /**
@@ -481,9 +485,9 @@ public class MoneyflowController extends AbstractController {
    *                      date to end searching (format: YYYYMMDD)
    * @return matching Moneyflows
    */
-  @RequestMapping(value = "searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}", method = {
-      RequestMethod.GET })
-  public SearchMoneyflowsByAmountResponse searchMoneyflowsByAmount(
+
+  @Override
+  public ResponseEntity<SearchMoneyflowsByAmountResponse> searchMoneyflowsByAmount(
       @PathVariable(value = "amount") final BigDecimal amount,
       @PathVariable(value = "dateFromStr") final String dateFromStr,
       @PathVariable(value = "dateTilStr") final String dateTilStr) {
@@ -513,7 +517,7 @@ public class MoneyflowController extends AbstractController {
           response.setMoneyflowSplitEntryTransports(
               super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
         }
-        return response;
+        return ResponseEntity.ok(response);
       }
     }
     return null;

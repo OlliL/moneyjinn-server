@@ -2,19 +2,20 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.etf.ListEtfOverviewResponse;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfEffectiveFlowTransport;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfSummaryTransport;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
 import org.laladev.moneyjinn.server.builder.EtfEffectiveFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
+import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
+import org.laladev.moneyjinn.server.model.EtfTransport;
+import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -66,7 +67,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     // latest etfvalues table entry
     transport.setBuyPrice(new BigDecimal("666.000"));
     transport.setSellPrice(new BigDecimal("666.543"));
-    transport.setPricesTimestamp(LocalDateTime.of(2008, 12, 16, 22, 5, 2));
+    transport.setPricesTimestamp(OffsetDateTime.of(2008, 12, 16, 22, 5, 2, 0, ZoneOffset.UTC));
 
     expected.setEtfSummaryTransports(Collections.singletonList(transport));
 

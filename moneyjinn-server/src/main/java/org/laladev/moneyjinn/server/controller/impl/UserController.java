@@ -46,10 +46,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiAccessRelationTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiGroupTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiUserTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
@@ -88,10 +88,10 @@ public class UserController extends AbstractController implements UserController
   private final ISettingService settingService;
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
-  private final OpenapiAccessRelationTransportMapper accessRelationTransportMapper;
-  private final OpenapiGroupTransportMapper groupTransportMapper;
-  private final OpenapiUserTransportMapper userTransportMapper;
-  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
+  private final AccessRelationTransportMapper accessRelationTransportMapper;
+  private final GroupTransportMapper groupTransportMapper;
+  private final UserTransportMapper userTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct

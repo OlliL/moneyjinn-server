@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.report.transport.PostingAccountAmountTransport;
+import org.laladev.moneyjinn.server.model.PostingAccountAmountTransport;
 
 public class PostingAccountAmountTransportBuilder extends PostingAccountAmountTransport {
   public PostingAccountAmountTransportBuilder withAmount(final String amount) {

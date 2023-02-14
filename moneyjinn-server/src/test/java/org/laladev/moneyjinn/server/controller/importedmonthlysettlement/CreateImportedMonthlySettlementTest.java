@@ -8,9 +8,9 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement.CreateImportedMonthlySettlementRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
+import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
@@ -101,7 +101,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId, (short) 2015, Month.FEBRUARY);
+        .getImportedMonthlySettlementsByMonth(userId,  2015, Month.FEBRUARY);
     Assertions.assertNotNull(importedMonthlySettlements);
     Assertions.assertEquals(1, importedMonthlySettlements.size());
     Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,

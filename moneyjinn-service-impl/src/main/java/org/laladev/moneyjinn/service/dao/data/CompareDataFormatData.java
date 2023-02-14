@@ -37,16 +37,16 @@ public class CompareDataFormatData {
   private String startTrigger2;
   private String startline;
   private String delimiter;
-  private Short posDate;
-  private Short posPartner;
-  private Short posAmount;
-  private Short posComment;
+  private Integer posDate;
+  private Integer posPartner;
+  private Integer posAmount;
+  private Integer posComment;
   private String fmtDate;
   private String fmtAmountDecimal;
   private String fmtAmountThousand;
-  private Short posPartnerAlt;
-  private Short posPartnerAltPosKey;
+  private Integer posPartnerAlt;
+  private Integer posPartnerAltPosKey;
   private String posPartnerAltKeyword;
-  private Short posCreditDebitIndicator;
+  private Integer posCreditDebitIndicator;
   private String creditIndicator;
 }

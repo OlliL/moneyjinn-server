@@ -28,8 +28,8 @@ package org.laladev.moneyjinn.server.event;
 
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.wsevent.CapitalsourceChangedEventTransport;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.model.wsevent.CapitalsourceChangedEventTransport;
 import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

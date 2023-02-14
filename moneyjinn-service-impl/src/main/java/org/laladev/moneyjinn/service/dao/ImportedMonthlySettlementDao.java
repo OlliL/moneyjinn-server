@@ -38,8 +38,8 @@ import org.laladev.moneyjinn.service.dao.mapper.IImportedMonthlySettlementDaoMap
 public class ImportedMonthlySettlementDao {
   private final IImportedMonthlySettlementDaoMapper mapper;
 
-  public List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(final Short year,
-      final Short month) {
+  public List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(
+      final Integer year, final Integer month) {
     return this.mapper.getImportedMonthlySettlementsByMonth(year, month);
   }
 

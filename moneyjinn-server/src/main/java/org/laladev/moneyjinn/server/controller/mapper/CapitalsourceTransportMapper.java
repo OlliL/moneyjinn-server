@@ -30,9 +30,9 @@ import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -41,7 +41,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
-    UserIdMapper.class, GroupIdMapper.class, BooleanToShortMapper.class })
+    UserIdMapper.class, GroupIdMapper.class, BooleanToIntegerMapper.class })
 public interface CapitalsourceTransportMapper
     extends IMapper<Capitalsource, CapitalsourceTransport> {
 

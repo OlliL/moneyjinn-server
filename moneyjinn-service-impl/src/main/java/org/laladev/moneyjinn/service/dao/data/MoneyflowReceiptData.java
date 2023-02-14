@@ -33,5 +33,5 @@ public class MoneyflowReceiptData {
   private Long id;
   private Long mmfMoneyflowId;
   private byte[] receipt;
-  private Short receiptType;
+  private Integer receiptType;
 }

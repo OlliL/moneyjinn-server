@@ -87,7 +87,7 @@ public class EtfService extends AbstractService implements IEtfService {
   }
 
   @Override
-  public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Short year, final Month month) {
+  public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Integer year, final Month month) {
     final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
     return super.map(etfValueData, EtfValue.class);
   }

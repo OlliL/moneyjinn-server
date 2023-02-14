@@ -329,13 +329,13 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
   @Override
   @Cacheable(value = CacheNames.MONEYFLOW_YEARS)
-  public List<Short> getAllYears(final UserID userId) {
+  public List<Integer> getAllYears(final UserID userId) {
     Assert.notNull(userId, "UserId must not be null!");
     return this.moneyflowDao.getAllYears(userId.getId());
   }
 
   @Override
-  public List<Month> getAllMonth(final UserID userId, final Short year) {
+  public List<Month> getAllMonth(final UserID userId, final Integer year) {
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(year, "year must not be null!");
     final Cache cache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
@@ -346,7 +346,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     }
     final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
     final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
-    final List<Short> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear,
+    final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear,
         endOfYear);
     if (allMonths == null || allMonths.isEmpty()) {
       months = new ArrayList<>();
@@ -370,7 +370,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   }
 
   @Override
-  public boolean monthHasMoneyflows(final UserID userId, final Short year, final Month month) {
+  public boolean monthHasMoneyflows(final UserID userId, final Integer year, final Month month) {
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(year, "year must not be null!");
     Assert.notNull(month, "month must not be null!");

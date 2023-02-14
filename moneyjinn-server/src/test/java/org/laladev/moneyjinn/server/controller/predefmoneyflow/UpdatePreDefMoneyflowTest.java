@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.predefmoneyflow.UpdatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.PreDefMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
+import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -228,7 +228,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
     Assertions.assertEquals(transport.getContractpartnerid(),
         preDefMoneyflow.getContractpartner().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()),
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getOnceAMonth()),
         preDefMoneyflow.isOnceAMonth());
     Assertions.assertEquals(transport.getPostingaccountid(),
         preDefMoneyflow.getPostingAccount().getId().getId());
@@ -236,7 +236,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     transport.setComment("hugo");
     transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
-    transport.setOnceAMonth((short) 0);
+    transport.setOnceAMonth( 0);
     transport.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
     request.setPreDefMoneyflowTransport(transport);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
@@ -248,7 +248,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getComment(), preDefMoneyflow.getComment());
     Assertions.assertEquals(transport.getContractpartnerid(),
         preDefMoneyflow.getContractpartner().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getOnceAMonth()),
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getOnceAMonth()),
         preDefMoneyflow.isOnceAMonth());
     Assertions.assertEquals(transport.getPostingaccountid(),
         preDefMoneyflow.getPostingAccount().getId().getId());

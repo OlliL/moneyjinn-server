@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 
 public class ContractpartnerAccountTransportBuilder extends ContractpartnerAccountTransport {
   public static final String CONTRACTPARTNER_ACCOUNT1_ACCOUNT_NUMBER = "DE1234567890";

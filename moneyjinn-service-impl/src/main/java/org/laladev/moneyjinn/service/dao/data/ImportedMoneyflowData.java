@@ -42,5 +42,5 @@ public class ImportedMoneyflowData {
   private String bankCode;
   private String comment;
   private BigDecimal amount;
-  private Short status;
+  private Integer status;
 }

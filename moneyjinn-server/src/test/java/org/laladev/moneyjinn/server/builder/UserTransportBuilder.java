@@ -1,10 +1,10 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
+import org.laladev.moneyjinn.server.model.UserTransport;
 
 public class UserTransportBuilder extends UserTransport {
-  private static final Short SHORT_1 = Short.valueOf("1");
+  private static final Integer SHORT_1 = Integer.valueOf("1");
   public static final String ADMIN_NAME = "admin";
   public static final String USER1_NAME = "user1";
   public static final String USER2_NAME = "user2";

@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 
 public class ContractpartnerTransportBuilder extends ContractpartnerTransport {
   public static final String CONTRACTPARTNER1_NAME = "Partner1";

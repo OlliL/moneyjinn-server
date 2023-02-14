@@ -30,10 +30,10 @@ import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
-import org.laladev.moneyjinn.converter.javatypes.MonthToShortMapper;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
+import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -41,8 +41,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { MonthlySettlementIdMapper.class,
-    MonthToShortMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
-    CapitalsourceTypeMapper.class, BooleanToShortMapper.class })
+    MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
+    CapitalsourceTypeMapper.class, BooleanToIntegerMapper.class })
 public interface MonthlySettlementTransportMapper
     extends IMapper<MonthlySettlement, MonthlySettlementTransport> {
   @Override

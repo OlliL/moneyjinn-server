@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 
 public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
   public static final String CAPITALSOURCE1_ACCOUNTNUMBER = "1234567";
@@ -32,24 +32,24 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
   public static final Long CAPITALSOURCE6_ID = 6l;
   public static final Long NON_EXISTING_ID = 666l;
   public static final Long NEXT_ID = 7l;
-  public static final Short CAPITALSOURCE1_GROUP_USE = null;
-  public static final Short CAPITALSOURCE2_GROUP_USE = (short) 1;
-  public static final Short CAPITALSOURCE3_GROUP_USE = (short) 1;
-  public static final Short CAPITALSOURCE4_GROUP_USE = (short) 1;
-  public static final Short CAPITALSOURCE5_GROUP_USE = (short) 1;
-  public static final Short CAPITALSOURCE6_GROUP_USE = null;
-  public static final Short CAPITALSOURCE1_TYPE = (short) 1;
-  public static final Short CAPITALSOURCE2_TYPE = (short) 2;
-  public static final Short CAPITALSOURCE3_TYPE = (short) 3;
-  public static final Short CAPITALSOURCE4_TYPE = (short) 4;
-  public static final Short CAPITALSOURCE5_TYPE = (short) 5;
-  public static final Short CAPITALSOURCE6_TYPE = (short) 1;
-  public static final Short CAPITALSOURCE1_STATE = (short) 1;
-  public static final Short CAPITALSOURCE2_STATE = (short) 2;
-  public static final Short CAPITALSOURCE3_STATE = (short) 1;
-  public static final Short CAPITALSOURCE4_STATE = (short) 1;
-  public static final Short CAPITALSOURCE5_STATE = (short) 1;
-  public static final Short CAPITALSOURCE6_STATE = (short) 1;
+  public static final Integer CAPITALSOURCE1_GROUP_USE = null;
+  public static final Integer CAPITALSOURCE2_GROUP_USE =  1;
+  public static final Integer CAPITALSOURCE3_GROUP_USE =  1;
+  public static final Integer CAPITALSOURCE4_GROUP_USE =  1;
+  public static final Integer CAPITALSOURCE5_GROUP_USE =  1;
+  public static final Integer CAPITALSOURCE6_GROUP_USE = null;
+  public static final Integer CAPITALSOURCE1_TYPE =  1;
+  public static final Integer CAPITALSOURCE2_TYPE =  2;
+  public static final Integer CAPITALSOURCE3_TYPE =  3;
+  public static final Integer CAPITALSOURCE4_TYPE =  4;
+  public static final Integer CAPITALSOURCE5_TYPE =  5;
+  public static final Integer CAPITALSOURCE6_TYPE =  1;
+  public static final Integer CAPITALSOURCE1_STATE =  1;
+  public static final Integer CAPITALSOURCE2_STATE =  2;
+  public static final Integer CAPITALSOURCE3_STATE =  1;
+  public static final Integer CAPITALSOURCE4_STATE =  1;
+  public static final Integer CAPITALSOURCE5_STATE =  1;
+  public static final Integer CAPITALSOURCE6_STATE =  1;
 
   public CapitalsourceTransportBuilder withUserId(final Long userId) {
     super.setUserid(userId);
@@ -72,7 +72,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setValidFrom(LocalDate.parse("1980-01-01"));
     super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setGroupUse(CAPITALSOURCE1_GROUP_USE);
-    super.setImportAllowed((short) 1);
+    super.setImportAllowed( 1);
     return this;
   }
 
@@ -102,7 +102,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setValidFrom(LocalDate.parse("1982-01-01"));
     super.setValidTil(LocalDate.parse("2000-12-31"));
     super.setGroupUse(CAPITALSOURCE3_GROUP_USE);
-    super.setImportAllowed((short) 2);
+    super.setImportAllowed( 2);
     return this;
   }
 
@@ -117,7 +117,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setValidFrom(LocalDate.parse("2000-01-02"));
     super.setValidTil(LocalDate.parse("2010-12-31"));
     super.setGroupUse(CAPITALSOURCE4_GROUP_USE);
-    super.setImportAllowed((short) 1);
+    super.setImportAllowed( 1);
     return this;
   }
 
@@ -132,7 +132,7 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setValidFrom(LocalDate.parse("2014-01-01"));
     super.setValidTil(LocalDate.parse("2799-12-31"));
     super.setGroupUse(CAPITALSOURCE5_GROUP_USE);
-    super.setImportAllowed((short) 2);
+    super.setImportAllowed( 2);
     return this;
   }
 
@@ -147,22 +147,22 @@ public class CapitalsourceTransportBuilder extends CapitalsourceTransport {
     super.setValidFrom(LocalDate.parse("2000-01-01"));
     super.setValidTil(LocalDate.parse("2799-12-31"));
     super.setGroupUse(CAPITALSOURCE6_GROUP_USE);
-    super.setImportAllowed((short) 2);
+    super.setImportAllowed( 2);
     return this;
   }
 
   public CapitalsourceTransportBuilder forNewCapitalsource() {
     super.setId(NON_EXISTING_ID);
     super.setUserid(UserTransportBuilder.USER3_ID);
-    super.setType((short) 3);
-    super.setState((short) 1);
+    super.setType( 3);
+    super.setState( 1);
     super.setComment(NEWCAPITALSOURCE_COMMENT);
     super.setAccountNumber("1234567");
     super.setBankCode(CAPITALSOURCE4_BANKCODE);
     super.setValidFrom(LocalDate.parse("1980-01-01"));
     super.setValidTil(LocalDate.parse("2999-12-31"));
     super.setGroupUse(null);
-    super.setImportAllowed((short) 1);
+    super.setImportAllowed( 1);
     return this;
   }
 

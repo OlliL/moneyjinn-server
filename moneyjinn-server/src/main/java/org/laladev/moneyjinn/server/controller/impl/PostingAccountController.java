@@ -28,31 +28,29 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountRequest;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.CreatePostingAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.ShowPostingAccountListResponse;
-import org.laladev.moneyjinn.core.rest.model.postingaccount.UpdatePostingAccountRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.PostingAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
+import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
+import org.laladev.moneyjinn.server.model.PostingAccountTransport;
+import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
+import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/postingaccount/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountController extends AbstractController {
   private final IPostingAccountService postingAccountService;
@@ -66,20 +64,18 @@ public class PostingAccountController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
-  @RequestMapping(value = "showPostingAccountList", method = { RequestMethod.GET })
-  public ShowPostingAccountListResponse showPostingAccountList() {
+  public ResponseEntity<ShowPostingAccountListResponse> showPostingAccountList() {
     final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
     final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
     if (postingAccounts != null && !postingAccounts.isEmpty()) {
       response.setPostingAccountTransports(
           super.mapList(postingAccounts, PostingAccountTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "createPostingAccount", method = { RequestMethod.POST })
-  public CreatePostingAccountResponse createPostingAccount(
+  public ResponseEntity<CreatePostingAccountResponse> createPostingAccount(
       @RequestBody final CreatePostingAccountRequest request) {
     final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
         PostingAccount.class);
@@ -91,17 +87,16 @@ public class PostingAccountController extends AbstractController {
     if (!validationResult.isValid()) {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     final PostingAccountID postingAccountId = this.postingAccountService
         .createPostingAccount(postingAccount);
     response.setPostingAccountId(postingAccountId.getId());
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "updatePostingAccount", method = { RequestMethod.PUT })
-  public ValidationResponse updatePostingAccount(
+  public ResponseEntity<ValidationResponse> updatePostingAccount(
       @RequestBody final UpdatePostingAccountRequest request) {
     final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
         PostingAccount.class);
@@ -115,13 +110,13 @@ public class PostingAccountController extends AbstractController {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  @RequestMapping(value = "deletePostingAccountById/{id}", method = { RequestMethod.DELETE })
-  public void deletePostingAccountById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);
     this.postingAccountService.deletePostingAccount(postingAccountId);
+    return ResponseEntity.noContent().build();
   }
 }

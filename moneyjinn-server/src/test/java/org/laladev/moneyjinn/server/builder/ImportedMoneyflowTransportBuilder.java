@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 
 public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTransport {
   public static final String IMPORTED_MONEYFLOW1_EXTERNAL_ID = "8765421A";
@@ -13,7 +13,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
   public static final Long NON_EXISTING_ID = 666l;
   public static final Long NEXT_ID = 3l;
 
-  public ImportedMoneyflowTransportBuilder withPrivat(final Short privat) {
+  public ImportedMoneyflowTransportBuilder withPrivat(final Integer privat) {
     super.setPrivat(privat);
     return this;
   }

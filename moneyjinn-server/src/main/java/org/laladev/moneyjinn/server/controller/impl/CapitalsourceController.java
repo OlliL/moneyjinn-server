@@ -35,8 +35,8 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CapitalsourceControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiCapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceResponse;
@@ -63,8 +63,8 @@ public class CapitalsourceController extends AbstractController
   private final IAccessRelationService accessRelationService;
   private final ICapitalsourceService capitalsourceService;
   private final IUserService userService;
-  private final OpenapiCapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
+  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct

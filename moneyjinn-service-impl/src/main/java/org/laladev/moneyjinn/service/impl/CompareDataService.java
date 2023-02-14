@@ -399,7 +399,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
           /*
            * Comment
            */
-          final Short posComment = compareDataFormat.getPositionComment();
+          final Integer posComment = compareDataFormat.getPositionComment();
           if (posComment != null) {
             final String comment = cmpDataRaw[posComment - 1];
             data.setComment(comment.trim());

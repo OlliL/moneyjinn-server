@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import org.laladev.moneyjinn.core.rest.model.report.transport.ReportTurnoverCapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.ReportTurnoverCapitalsourceTransport;
 
 public class ReportTurnoverCapitalsourceTransportBuilder
     extends ReportTurnoverCapitalsourceTransport {

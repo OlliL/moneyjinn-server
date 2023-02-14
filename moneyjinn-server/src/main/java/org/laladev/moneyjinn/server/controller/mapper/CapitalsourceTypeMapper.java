@@ -31,16 +31,16 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceTypeMapper {
-  private static final Short CURRENT_ASSET_SHORT = Short.valueOf((short) 1);
-  private static final Short LONG_TERM_ASSET_SHORT = Short.valueOf((short) 2);
-  private static final Short RESERVE_ASSET_SHORT = Short.valueOf((short) 3);
-  private static final Short PROVISION_ASSET_SHORT = Short.valueOf((short) 4);
-  private static final Short CREDIT_SHORT = Short.valueOf((short) 5);
+  private static final Integer CURRENT_ASSET_SHORT = 1;
+  private static final Integer LONG_TERM_ASSET_SHORT = 2;
+  private static final Integer RESERVE_ASSET_SHORT = 3;
+  private static final Integer PROVISION_ASSET_SHORT = 4;
+  private static final Integer CREDIT_SHORT = 5;
 
   private CapitalsourceTypeMapper() {
   }
 
-  public static CapitalsourceType map(final Short type) {
+  public static CapitalsourceType map(final Integer type) {
     if (type != null) {
       switch (type) {
         case 1:
@@ -60,7 +60,7 @@ public class CapitalsourceTypeMapper {
     return null;
   }
 
-  public static Short map(final CapitalsourceType type) {
+  public static Integer map(final CapitalsourceType type) {
     if (type != null) {
       switch (type) {
         case CURRENT_ASSET:

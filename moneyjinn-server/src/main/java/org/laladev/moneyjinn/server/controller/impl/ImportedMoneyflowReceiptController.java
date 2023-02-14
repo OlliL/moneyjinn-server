@@ -29,11 +29,6 @@ import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.CreateImportedMoneyflowReceiptsRequest;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.ShowImportImportedMoneyflowReceiptsResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflowreceipt.transport.ImportedMoneyflowReceiptTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -45,26 +40,32 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowReceiptTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
+import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/importedmoneyflowreceipt/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ImportedMoneyflowReceiptController extends AbstractController {
+public class ImportedMoneyflowReceiptController extends AbstractController
+    implements ImportedMoneyflowReceiptControllerApi {
   private final IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
   private final IMoneyflowReceiptService moneyflowReceiptService;
   private final IMoneyflowService moneyflowService;
@@ -83,8 +84,8 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
-  @RequestMapping(value = "createImportedMoneyflowReceipts", method = { RequestMethod.POST })
-  public ValidationResponse createImportedMoneyflowReceipts(
+  @Override
+  public ResponseEntity<ValidationResponse> createImportedMoneyflowReceipts(
       @RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
@@ -104,15 +105,15 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
       response.setResult(false);
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     importedMoneyflowReceipts.stream()
         .forEach(imr -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(imr));
     return null;
   }
 
-  @RequestMapping(value = "showImportImportedMoneyflowReceipts", method = { RequestMethod.GET })
-  public ShowImportImportedMoneyflowReceiptsResponse showImportImportedMoneyflowReceipts() {
+  @Override
+  public ResponseEntity<ShowImportImportedMoneyflowReceiptsResponse> showImportImportedMoneyflowReceipts() {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
     final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
@@ -121,23 +122,25 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
     final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = super.mapList(
         allImportedMoneyflowReceipts, ImportedMoneyflowReceiptTransport.class);
     response.setImportedMoneyflowReceiptTransports(allImportedMoneyflowReceiptTransports);
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "deleteImportedMoneyflowReceiptById/{id}", method = {
-      RequestMethod.DELETE })
-  public void deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
+  @Override
+  public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
     final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(
         id);
     this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
         importedMoneyflowReceiptId);
+    return ResponseEntity.noContent().build();
+
   }
 
-  @RequestMapping(value = "importImportedMoneyflowReceipt/{id}/{moneyflowid}", method = {
-      RequestMethod.POST })
-  public void importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
+  @Override
+  public ResponseEntity<Void> importImportedMoneyflowReceipt(
+      @PathVariable(value = "id") final Long id,
       @PathVariable(value = "moneyflowid") final Long moneyflowid) {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
@@ -168,5 +171,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController {
       this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
           importedMoneyflowReceiptId);
     }
+    return ResponseEntity.noContent().build();
+
   }
 }

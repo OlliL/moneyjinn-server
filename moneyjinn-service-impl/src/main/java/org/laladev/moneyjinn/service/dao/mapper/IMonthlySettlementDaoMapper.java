@@ -32,24 +32,24 @@ import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 
 public interface IMonthlySettlementDaoMapper {
-  public List<Short> getAllYears(Long userId);
+  public List<Integer> getAllYears(Long userId);
 
-  public List<Short> getAllMonth(@Param("userId") Long userId, @Param("year") Short year);
+  public List<Integer> getAllMonth(@Param("userId") Long userId, @Param("year") Integer year);
 
   public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(
-      @Param("userId") Long userId, @Param("year") Short year, @Param("month") Short month);
+      @Param("userId") Long userId, @Param("year") Integer year, @Param("month") Integer month);
 
   public LocalDate getMaxSettlementDate(Long userId);
 
   public LocalDate getMinSettlementDate(Long userId);
 
-  public Short checkMonthlySettlementsExists(@Param("userId") Long userId,
-      @Param("year") Short year, @Param("month") Short month);
+  public Integer checkMonthlySettlementsExists(@Param("userId") Long userId,
+      @Param("year") Integer year, @Param("month") Integer month);
 
   public void upsertMonthlySettlement(MonthlySettlementData monthlySettlementData);
 
-  public void deleteMonthlySettlement(@Param("userId") Long userId, @Param("year") Short year,
-      @Param("month") Short month);
+  public void deleteMonthlySettlement(@Param("userId") Long userId, @Param("year") Integer year,
+      @Param("month") Integer month);
 
   public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(
       @Param("userId") Long user, @Param("startYear") int startYear,

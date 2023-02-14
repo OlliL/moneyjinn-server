@@ -31,10 +31,10 @@ import java.util.Collection;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.UserTransport;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.server.model.UserTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -48,8 +48,8 @@ public interface UserTransportMapper extends IMapper<User, UserTransport> {
   @Mapping(target = "password", source = "userPassword")
   User mapBToA(UserTransport b);
 
-  default boolean isTrue(final Short property) {
-    return property != null && property.equals(Short.valueOf((short) 1));
+  default boolean isTrue(final Integer property) {
+    return property != null && property.equals(1);
   }
 
   @Named("mapUserAttributesToEntity")
@@ -88,7 +88,7 @@ public interface UserTransportMapper extends IMapper<User, UserTransport> {
   UserTransport mapAToB(User a);
 
   @Named("mapUserAttributeIsNewToTransport")
-  default Short mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
+  default Integer mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
     if (a != null && a.contains(UserAttribute.IS_NEW)) {
       return 1;
     }
@@ -96,7 +96,7 @@ public interface UserTransportMapper extends IMapper<User, UserTransport> {
   }
 
   @Named("mapUserPermissionAdminToTransport")
-  default Short mapUserPermissionAdminToTransport(final Collection<UserPermission> a) {
+  default Integer mapUserPermissionAdminToTransport(final Collection<UserPermission> a) {
     if (a != null && a.contains(UserPermission.ADMIN)) {
       return 1;
     }
@@ -104,7 +104,7 @@ public interface UserTransportMapper extends IMapper<User, UserTransport> {
   }
 
   @Named("mapUserPermissionLoginToTransport")
-  default Short mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
+  default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
     if (a != null && a.contains(UserPermission.LOGIN)) {
       return 1;
     }

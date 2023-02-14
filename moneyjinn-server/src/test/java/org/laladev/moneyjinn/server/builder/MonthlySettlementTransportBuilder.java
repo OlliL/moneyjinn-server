@@ -2,8 +2,8 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import org.laladev.moneyjinn.core.rest.model.transport.CapitalsourceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 
 public class MonthlySettlementTransportBuilder extends MonthlySettlementTransport {
   public static final BigDecimal MONTHLYSETTLEMENT1_AMOUNT = new BigDecimal("10.00");
@@ -35,12 +35,12 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
   }
 
   public MonthlySettlementTransportBuilder withMonth(final int month) {
-    super.setMonth((short) month);
+    super.setMonth( month);
     return this;
   }
 
   public MonthlySettlementTransportBuilder withYear(final int year) {
-    super.setYear((short) year);
+    super.setYear( year);
     return this;
   }
 
@@ -57,8 +57,8 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
     super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
     super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);
-    super.setMonth((short) 12);
-    super.setYear((short) 2008);
+    super.setMonth( 12);
+    super.setYear( 2008);
     return this;
   }
 
@@ -70,8 +70,8 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE2_GROUP_USE);
     super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE2_TYPE);
-    super.setMonth((short) 12);
-    super.setYear((short) 2008);
+    super.setMonth( 12);
+    super.setYear( 2008);
     return this;
   }
 
@@ -83,8 +83,8 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE4_GROUP_USE);
     super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
     super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE4_TYPE);
-    super.setMonth((short) 12);
-    super.setYear((short) 2008);
+    super.setMonth( 12);
+    super.setYear( 2008);
     return this;
   }
 
@@ -96,8 +96,8 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE1_GROUP_USE);
     super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
     super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE1_TYPE);
-    super.setMonth((short) 1);
-    super.setYear((short) 2019);
+    super.setMonth( 1);
+    super.setYear( 2019);
     return this;
   }
 
@@ -109,8 +109,8 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     super.setCapitalsourcegroupuse(CapitalsourceTransportBuilder.CAPITALSOURCE6_GROUP_USE);
     super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE6_ID);
     super.setCapitalsourcetype(CapitalsourceTransportBuilder.CAPITALSOURCE6_TYPE);
-    super.setMonth((short) 5);
-    super.setYear((short) 2010);
+    super.setMonth( 5);
+    super.setYear( 2010);
     return this;
   }
 

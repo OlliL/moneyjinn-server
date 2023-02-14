@@ -40,19 +40,19 @@ public class ImportedMoneyflowDao {
   private final IImportedMoneyflowDaoMapper mapper;
 
   public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs,
-      final Short status) {
+      final Integer status) {
     return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
   }
 
   public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
-      final List<Long> capitalsourceIdLongs, final Short status, final LocalDate dateFrom,
+      final List<Long> capitalsourceIdLongs, final Integer status, final LocalDate dateFrom,
       final LocalDate dateTil) {
     return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status,
         dateFrom, dateTil);
   }
 
   public void updateImportedMoneyflowStatus(final Long userId, final Long importedMoneyflowId,
-      final Short status) {
+      final Integer status) {
     this.mapper.updateImportedMoneyflowStatus(importedMoneyflowId, status);
   }
 

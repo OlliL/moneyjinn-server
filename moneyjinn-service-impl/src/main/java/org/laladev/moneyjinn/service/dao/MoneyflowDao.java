@@ -59,11 +59,11 @@ public class MoneyflowDao {
     this.mapper.deleteMoneyflow(groupId, id);
   }
 
-  public List<Short> getAllYears(final Long userId) {
+  public List<Integer> getAllYears(final Long userId) {
     return this.mapper.getAllYears(userId);
   }
 
-  public List<Short> getAllMonth(final Long userId, final LocalDate beginOfYear,
+  public List<Integer> getAllMonth(final Long userId, final LocalDate beginOfYear,
       final LocalDate endOfYear) {
     return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
   }

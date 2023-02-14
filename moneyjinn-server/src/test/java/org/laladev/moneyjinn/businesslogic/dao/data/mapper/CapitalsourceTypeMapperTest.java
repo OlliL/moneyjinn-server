@@ -9,8 +9,8 @@ import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceTypeMapper;
 
 public class CapitalsourceTypeMapperTest {
   @Test
-  public void testNullShort() {
-    Assertions.assertNull(CapitalsourceTypeMapper.map((Short) null));
+  public void testNullInteger() {
+    Assertions.assertNull(CapitalsourceTypeMapper.map((Integer) null));
   }
 
   @Test
@@ -21,7 +21,7 @@ public class CapitalsourceTypeMapperTest {
   @Test
   public void test_unknownCapitalsourceType_exception() {
     Assertions.assertThrows(TechnicalException.class, () -> {
-      Assertions.assertNull(CapitalsourceTypeMapper.map(Short.valueOf("66")));
+      Assertions.assertNull(CapitalsourceTypeMapper.map(Integer.valueOf("66")));
     });
   }
 }

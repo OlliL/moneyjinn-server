@@ -11,13 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ImportImportedMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -39,6 +32,12 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
@@ -159,7 +158,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
-        .forImportedMoneyflow1ToImport().withPrivat(Short.valueOf("1")).build();
+        .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("1")).build();
     request.setImportedMoneyflowTransport(transport);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
@@ -174,7 +173,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
-        .forImportedMoneyflow1ToImport().withPrivat(Short.valueOf("0")).build();
+        .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("0")).build();
     request.setImportedMoneyflowTransport(transport);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
@@ -525,13 +524,15 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
   }
 
-  private MoneyflowSplitEntryTransport getMseTransport2(final MoneyflowTransport transport) {
+  private MoneyflowSplitEntryTransport getMseTransport2(
+      final ImportedMoneyflowTransport transport) {
     return new MoneyflowSplitEntryTransportBuilder()
         .withAmount(transport.getAmount().divide(new BigDecimal(2))).withComment("comment2")
         .withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID).build();
   }
 
-  private MoneyflowSplitEntryTransport getMseTransport1(final MoneyflowTransport transport) {
+  private MoneyflowSplitEntryTransport getMseTransport1(
+      final ImportedMoneyflowTransport transport) {
     return new MoneyflowSplitEntryTransportBuilder()
         .withAmount(transport.getAmount().divide(new BigDecimal(2))).withComment("comment1")
         .withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID).build();
@@ -542,7 +543,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(transport.getAmount());
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -577,7 +578,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment("");
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -593,7 +594,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(BigDecimal.ZERO);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -611,7 +612,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(new BigDecimal("0.00000"));
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -628,7 +629,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -644,7 +645,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -661,7 +662,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -676,7 +677,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(transport);
+    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);

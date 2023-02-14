@@ -32,7 +32,7 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 
 public interface IImportedMonthlySettlementDaoMapper {
   List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(
-      @Param("year") Short year, @Param("month") Short month);
+      @Param("year") Integer year, @Param("month") Integer month);
 
   void upsertImportedMonthlySettlement(ImportedMonthlySettlementData importedMonthlySettlementData);
 }

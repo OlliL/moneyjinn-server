@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 
 public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySettlementTransport {
   public static final Long IMPORTED_MONTHLYSETTLEMENT1_ID = 1l;
@@ -15,12 +15,12 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
   }
 
   public ImportedMonthlySettlementTransportBuilder withMonth(final int month) {
-    super.setMonth((short) month);
+    super.setMonth( month);
     return this;
   }
 
   public ImportedMonthlySettlementTransportBuilder withYear(final int year) {
-    super.setYear((short) year);
+    super.setYear( year);
     return this;
   }
 
@@ -34,8 +34,8 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
     super.setExternalid("A");
     super.setUserid(UserTransportBuilder.USER3_ID);
     super.setAmount(new BigDecimal("9.00"));
-    super.setMonth((short) 5);
-    super.setYear((short) 2010);
+    super.setMonth( 5);
+    super.setYear( 2010);
     super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE4_BANKCODE);
     super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE4_ACCOUNTNUMBER);
     return this;
@@ -46,8 +46,8 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
     super.setExternalid("B");
     super.setUserid(UserTransportBuilder.USER3_ID);
     super.setAmount(BigDecimal.valueOf(1000l));
-    super.setMonth((short) 2);
-    super.setYear((short) 2009);
+    super.setMonth( 2);
+    super.setYear( 2009);
     super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE4_BANKCODE);
     super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE4_ACCOUNTNUMBER);
     return this;
@@ -58,8 +58,8 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
     super.setExternalid("B");
     super.setUserid(UserTransportBuilder.USER3_ID);
     super.setAmount(BigDecimal.valueOf(1000l));
-    super.setMonth((short) 2);
-    super.setYear((short) 2015);
+    super.setMonth( 2);
+    super.setYear( 2015);
     super.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
     super.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
     return this;

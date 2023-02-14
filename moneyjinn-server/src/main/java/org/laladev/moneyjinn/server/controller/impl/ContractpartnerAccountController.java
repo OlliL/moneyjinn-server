@@ -28,34 +28,34 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.CreateContractpartnerAccountResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.ShowContractpartnerAccountListResponse;
-import org.laladev.moneyjinn.core.rest.model.contractpartneraccount.UpdateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerAccountTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.ContractpartnerAccountControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountResponse;
+import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
+import org.laladev.moneyjinn.server.model.UpdateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/contractpartneraccount/")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ContractpartnerAccountController extends AbstractController {
+public class ContractpartnerAccountController extends AbstractController
+    implements ContractpartnerAccountControllerApi {
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final ContractpartnerAccountTransportMapper contractpartnerAccountTransportMapper;
   private final ValidationItemTransportMapper validationItemTransportMapper;
@@ -67,8 +67,8 @@ public class ContractpartnerAccountController extends AbstractController {
     super.registerBeanMapper(this.validationItemTransportMapper);
   }
 
-  @RequestMapping(value = "showContractpartnerAccountList/{id}", method = { RequestMethod.GET })
-  public ShowContractpartnerAccountListResponse showContractpartnerAccountList(
+  @Override
+  public ResponseEntity<ShowContractpartnerAccountListResponse> showContractpartnerAccountList(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
@@ -82,11 +82,11 @@ public class ContractpartnerAccountController extends AbstractController {
       response.setContractpartnerAccountTransports(contractpartnerAccountTransports);
     }
 
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "createContractpartnerAccount", method = { RequestMethod.POST })
-  public CreateContractpartnerAccountResponse createContractpartnerAccount(
+  @Override
+  public ResponseEntity<CreateContractpartnerAccountResponse> createContractpartnerAccount(
       @RequestBody final CreateContractpartnerAccountRequest request) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccount contractpartnerAccount = super.map(
@@ -99,16 +99,16 @@ public class ContractpartnerAccountController extends AbstractController {
     if (!validationResult.isValid()) {
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
         .createContractpartnerAccount(userId, contractpartnerAccount);
     response.setContractpartnerAccountId(contractpartnerAccountID.getId());
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "updateContractpartnerAccount", method = { RequestMethod.PUT })
-  public ValidationResponse updateContractpartnerAccount(
+  @Override
+  public ResponseEntity<ValidationResponse> updateContractpartnerAccount(
       @RequestBody final UpdateContractpartnerAccountRequest request) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccount contractpartnerAccount = super.map(
@@ -124,15 +124,17 @@ public class ContractpartnerAccountController extends AbstractController {
       this.contractpartnerAccountService.updateContractpartnerAccount(userId,
           contractpartnerAccount);
     }
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "deleteContractpartnerAccount/{id}", method = { RequestMethod.DELETE })
-  public void deleteContractpartnerAccount(@PathVariable(value = "id") final Long id) {
+  @Override
+  public ResponseEntity<Void> deleteContractpartnerAccount(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);
     this.contractpartnerAccountService.deleteContractpartnerAccountById(userId,
         contractpartnerAccountId);
+    return ResponseEntity.noContent().build();
   }
 
 }

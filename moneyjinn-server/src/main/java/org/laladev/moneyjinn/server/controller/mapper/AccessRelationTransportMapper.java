@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.AccessIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.user.transport.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

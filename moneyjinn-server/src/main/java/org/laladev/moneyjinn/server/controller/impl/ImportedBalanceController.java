@@ -29,31 +29,32 @@ import jakarta.inject.Inject;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
+import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
+import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.ImportedBalanceControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedBalanceTransportMapper;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/importedbalance/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ImportedBalanceController extends AbstractController {
+public class ImportedBalanceController extends AbstractController
+    implements ImportedBalanceControllerApi {
   private final ICapitalsourceService capitalsourceService;
   private final IImportedBalanceService importedBalanceService;
   private final ImportedBalanceTransportMapper importedBalanceTransportMapper;
@@ -64,8 +65,7 @@ public class ImportedBalanceController extends AbstractController {
     super.registerBeanMapper(this.importedBalanceTransportMapper);
   }
 
-  @RequestMapping(value = "createImportedBalance", method = { RequestMethod.POST })
-  public ValidationResponse createImportedBalance(
+  public ResponseEntity<ValidationResponse> createImportedBalance(
       @RequestBody final CreateImportedBalanceRequest request) {
     final ImportedBalanceTransport importedBalanceTransport = request.getImportedBalanceTransport();
     final ImportedBalance importedBalance = super.map(importedBalanceTransport,
@@ -91,7 +91,7 @@ public class ImportedBalanceController extends AbstractController {
         response.setResult(false);
         response.setValidationItemTransports(super.mapList(
             validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return response;
+        return ResponseEntity.ok(response);
       }
     } else {
       throw new BusinessException("No matching capitalsource found!",

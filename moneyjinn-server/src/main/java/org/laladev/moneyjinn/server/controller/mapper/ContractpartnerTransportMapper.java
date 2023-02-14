@@ -32,7 +32,7 @@ import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.ContractpartnerTransport;
+import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

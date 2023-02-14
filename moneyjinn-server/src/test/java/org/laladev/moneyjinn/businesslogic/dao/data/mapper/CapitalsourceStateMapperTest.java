@@ -9,8 +9,8 @@ import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceStateMapper;
 
 public class CapitalsourceStateMapperTest {
   @Test
-  public void testNullShort() {
-    Assertions.assertNull(CapitalsourceStateMapper.map((Short) null));
+  public void testNullInteger() {
+    Assertions.assertNull(CapitalsourceStateMapper.map((Integer) null));
   }
 
   @Test
@@ -21,7 +21,7 @@ public class CapitalsourceStateMapperTest {
   @Test
   public void test_unknownCapitalsourceState_exception() {
     Assertions.assertThrows(TechnicalException.class, () -> {
-      Assertions.assertNull(CapitalsourceStateMapper.map(Short.valueOf("66")));
+      Assertions.assertNull(CapitalsourceStateMapper.map(Integer.valueOf("66")));
     });
   }
 }

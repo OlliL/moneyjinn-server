@@ -47,9 +47,9 @@ public interface IMoneyflowDaoMapper {
       @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil,
       @Param("mcsCapitalsourceIds") List<Long> capitalsourceIds);
 
-  public List<Short> getAllYears(Long userId);
+  public List<Integer> getAllYears(Long userId);
 
-  public List<Short> getAllMonth(@Param("userId") Long userId,
+  public List<Integer> getAllMonth(@Param("userId") Long userId,
       @Param("beginOfYear") LocalDate beginOfYear, @Param("endOfYear") LocalDate endOfYear);
 
   public List<MoneyflowData> getAllMoneyflowsByDateRangeIncludingPrivate(

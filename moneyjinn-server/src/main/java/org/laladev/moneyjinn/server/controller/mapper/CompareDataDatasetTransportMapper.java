@@ -28,7 +28,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.comparedata.transport.CompareDataDatasetTransport;
+import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -31,8 +31,8 @@ import lombok.Data;
 
 @Data
 public class MoneyflowSearchResultData {
-  private Short year;
-  private Short month;
+  private Integer year;
+  private Integer month;
   private BigDecimal amount;
   private Long contractpartnerid;
   private String comment;

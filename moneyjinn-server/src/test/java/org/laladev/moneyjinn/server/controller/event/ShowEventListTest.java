@@ -8,7 +8,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.core.rest.model.event.ShowEventListResponse;
+import org.laladev.moneyjinn.server.model.ShowEventListResponse;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
@@ -63,8 +63,8 @@ public class ShowEventListTest extends AbstractControllerTest {
     final ShowEventListResponse expected = new ShowEventListResponse();
     final LocalDate lastMonth = LocalDate.now().minusMonths(1l);
     expected.setMonthlySettlementMissing(true);
-    expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
-    expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
+    expected.setMonthlySettlementMonth( (lastMonth.getMonthValue()));
+    expected.setMonthlySettlementYear( (lastMonth.getYear()));
     expected.setNumberOfImportedMoneyflows(2);
     final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
         ShowEventListResponse.class);
@@ -76,7 +76,7 @@ public class ShowEventListTest extends AbstractControllerTest {
     final ShowEventListResponse expected = new ShowEventListResponse();
     final LocalDate lastMonth = LocalDate.now().minusMonths(1l);
     final MonthlySettlement monthlySettlement = new MonthlySettlement();
-    monthlySettlement.setYear((short) lastMonth.getYear());
+    monthlySettlement.setYear( lastMonth.getYear());
     monthlySettlement.setMonth(lastMonth.getMonth());
     monthlySettlement.setCapitalsource(
         new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
@@ -85,8 +85,8 @@ public class ShowEventListTest extends AbstractControllerTest {
     monthlySettlement.setGroup(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
     this.monthlySettlementService.upsertMonthlySettlements(Arrays.asList(monthlySettlement));
     expected.setMonthlySettlementMissing(false);
-    expected.setMonthlySettlementMonth((short) (lastMonth.getMonthValue()));
-    expected.setMonthlySettlementYear((short) (lastMonth.getYear()));
+    expected.setMonthlySettlementMonth( (lastMonth.getMonthValue()));
+    expected.setMonthlySettlementYear( (lastMonth.getYear()));
     expected.setNumberOfImportedMoneyflows(2);
     final ShowEventListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
         ShowEventListResponse.class);

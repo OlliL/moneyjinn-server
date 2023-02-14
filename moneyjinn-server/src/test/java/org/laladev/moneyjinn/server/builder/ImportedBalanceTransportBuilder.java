@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
+import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
 
 public class ImportedBalanceTransportBuilder extends ImportedBalanceTransport {
   public ImportedBalanceTransportBuilder withBalance(final BigDecimal balance) {

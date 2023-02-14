@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
+import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
@@ -370,7 +370,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
     Assertions.assertEquals(transport.getContractpartnerid(),
         moneyflow.getContractpartner().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getInvoiceDate());
     Assertions.assertEquals(transport.getPostingaccountid(),
@@ -386,7 +386,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNull(moneyflow);
     request.setMoneyflowTransport(transport);
-    request.setSaveAsPreDefMoneyflow((short) 1);
+    request.setSaveAsPreDefMoneyflow( 1);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
@@ -396,7 +396,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     Assertions.assertEquals(transport.getComment(), moneyflow.getComment());
     Assertions.assertEquals(transport.getContractpartnerid(),
         moneyflow.getContractpartner().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     Assertions.assertEquals(transport.getPostingaccountid(),
@@ -461,7 +461,7 @@ public class CreateMoneyflowTest extends AbstractControllerTest {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     request.setMoneyflowTransport(transport);
     request.setUsedPreDefMoneyflowId(preDefMoneyflowId.getId());
-    request.setSaveAsPreDefMoneyflow((short) 1);
+    request.setSaveAsPreDefMoneyflow( 1);
     super.callUsecaseWithContent("", this.method, request, true, Object.class);
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);

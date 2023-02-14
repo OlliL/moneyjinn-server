@@ -37,12 +37,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ImportImportedMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
+import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
@@ -63,6 +63,7 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransportMapper;
@@ -77,19 +78,19 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequestMapping("/moneyflow/server/importedmoneyflow/")
+
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ImportedMoneyflowController extends AbstractController {
+public class ImportedMoneyflowController extends AbstractController
+    implements ImportedMoneyflowControllerApi {
   private final IUserService userService;
   private final IAccessRelationService accessRelationService;
   private final ICapitalsourceService capitalsourceService;
@@ -170,16 +171,15 @@ public class ImportedMoneyflowController extends AbstractController {
     }
   }
 
-  @RequestMapping(value = "showAddImportedMoneyflows", method = { RequestMethod.GET })
-  public ShowAddImportedMoneyflowsResponse showAddImportedMoneyflows() {
+  @Override
+  public ResponseEntity<ShowAddImportedMoneyflowsResponse> showAddImportedMoneyflows() {
     final UserID userId = super.getUserId();
     final ShowAddImportedMoneyflowsResponse response = new ShowAddImportedMoneyflowsResponse();
     this.fillShowAddImportedMoneyflowsResponse(userId, response);
-    return response;
+    return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "createImportedMoneyflow", method = { RequestMethod.POST })
-  public ValidationResponse createImportedMoneyflow(
+  public ResponseEntity<ValidationResponse> createImportedMoneyflow(
       @RequestBody final CreateImportedMoneyflowRequest request) {
     final ImportedMoneyflowTransport importedMoneyflowTransport = request
         .getImportedMoneyflowTransport();
@@ -206,7 +206,7 @@ public class ImportedMoneyflowController extends AbstractController {
         response.setResult(false);
         response.setValidationItemTransports(super.mapList(
             validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return response;
+        return ResponseEntity.ok(response);
       }
     } else {
       throw new BusinessException("No matching capitalsource found!",
@@ -215,12 +215,15 @@ public class ImportedMoneyflowController extends AbstractController {
     return null;
   }
 
-  @RequestMapping(value = "deleteImportedMoneyflowById/{id}", method = { RequestMethod.DELETE })
-  public void deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
+  @Override
+  public ResponseEntity<Void> deleteImportedMoneyflowById(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
     this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflowId,
         ImportedMoneyflowStatus.IGNORED);
+    return ResponseEntity.noContent().build();
+
   }
 
   /**
@@ -306,8 +309,7 @@ public class ImportedMoneyflowController extends AbstractController {
     }
   }
 
-  @RequestMapping(value = "importImportedMoneyflows", method = { RequestMethod.POST })
-  public ValidationResponse importImportedMoneyflows(
+  public ResponseEntity<ValidationResponse> importImportedMoneyflows(
       @RequestBody final ImportImportedMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
@@ -382,7 +384,7 @@ public class ImportedMoneyflowController extends AbstractController {
       response.setResult(false);
       response.setValidationItemTransports(super.mapList(
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return response;
+      return ResponseEntity.ok(response);
     }
     return null;
   }

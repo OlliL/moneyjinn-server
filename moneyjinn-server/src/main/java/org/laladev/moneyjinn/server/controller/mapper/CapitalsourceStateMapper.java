@@ -31,13 +31,13 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceStateMapper {
-  private static final Short NON_CACHE_SHORT = Short.valueOf((short) 1);
-  private static final Short CACHE_SHORT = Short.valueOf((short) 2);
+  private static final Integer NON_CACHE_SHORT = 1;
+  private static final Integer CACHE_SHORT = 2;
 
   private CapitalsourceStateMapper() {
   }
 
-  public static CapitalsourceState map(final Short state) {
+  public static CapitalsourceState map(final Integer state) {
     if (state != null) {
       switch (state) {
         case 1:
@@ -51,7 +51,7 @@ public class CapitalsourceStateMapper {
     return null;
   }
 
-  public static Short map(final CapitalsourceState state) {
+  public static Integer map(final CapitalsourceState state) {
     if (state != null) {
       switch (state) {
         case NON_CACHE:

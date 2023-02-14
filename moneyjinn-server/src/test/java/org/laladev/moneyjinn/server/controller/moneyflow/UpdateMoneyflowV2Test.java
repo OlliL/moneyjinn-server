@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.UpdateMoneyflowResponse;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -340,7 +340,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     transport.setAmount(BigDecimal.valueOf(1020, 2));
@@ -348,7 +348,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     transport.setComment("hugo");
     transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID);
     transport.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
-    transport.setPrivat(Short.valueOf("1"));
+    transport.setPrivat(Integer.valueOf("1"));
     transport.setBookingdate(LocalDate.parse("2009-01-02"));
     transport.setInvoicedate(LocalDate.parse("2009-01-03"));
     request.setMoneyflowTransport(transport);
@@ -363,7 +363,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
   }
@@ -385,7 +385,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
@@ -402,7 +402,7 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Short.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
   }

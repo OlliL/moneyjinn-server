@@ -29,15 +29,17 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.LocalDateTimeToOffsetDateTimeMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfFlowTransport;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class,
+    LocalDateTimeToOffsetDateTimeMapper.class })
 public interface EtfFlowTransportMapper extends IMapper<EtfFlow, EtfFlowTransport> {
   @Override
   @Mapping(target = "id", source = "etfflowid")

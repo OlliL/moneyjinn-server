@@ -35,8 +35,8 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.ContractpartnerControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiContractpartnerTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.openapi.OpenapiValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerRequest;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerResponse;
@@ -65,8 +65,8 @@ public class ContractpartnerController extends AbstractController
   private final IContractpartnerService contractpartnerService;
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final IUserService userService;
-  private final OpenapiContractpartnerTransportMapper contractpartnerTransportMapper;
-  private final OpenapiValidationItemTransportMapper validationItemTransportMapper;
+  private final ContractpartnerTransportMapper contractpartnerTransportMapper;
+  private final ValidationItemTransportMapper validationItemTransportMapper;
 
   @Override
   @PostConstruct

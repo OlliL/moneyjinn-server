@@ -29,7 +29,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import java.io.Serializable;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.mapstruct.Mapper;

@@ -101,12 +101,12 @@ public class ImportedMonthlySettlementService extends AbstractService
 
   @Override
   public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(final UserID userId,
-      final Short year, final Month month) {
+      final Integer year, final Month month) {
     Assert.notNull(userId, "UserId must not be null!");
     Assert.notNull(year, "year must not be null!");
     Assert.notNull(month, "month must not be null!");
     final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
-        .getImportedMonthlySettlementsByMonth(year, (short) month.getValue());
+        .getImportedMonthlySettlementsByMonth(year, month.getValue());
     return this.mapImportedMonthlySettlementDataList(userId, importedMonthlySettlementDataList);
   }
 

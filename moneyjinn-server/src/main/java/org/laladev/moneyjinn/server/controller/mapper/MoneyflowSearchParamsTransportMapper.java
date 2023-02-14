@@ -29,14 +29,14 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.BooleanToShortMapper;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class,
-    PostingAccountIdMapper.class, BooleanToShortMapper.class })
+    PostingAccountIdMapper.class, BooleanToIntegerMapper.class })
 public interface MoneyflowSearchParamsTransportMapper
     extends IMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
 

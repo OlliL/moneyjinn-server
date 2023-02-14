@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.etf.transport.EtfTransport;
+import org.laladev.moneyjinn.server.model.EtfTransport;
 
 public class EtfTransportBuilder extends EtfTransport {
   public static final String ISIN = "ISIN123";

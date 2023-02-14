@@ -2,7 +2,7 @@
 package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 
 public class MoneyflowSplitEntryTransportBuilder extends MoneyflowSplitEntryTransport {
   public static final String MONEYFLOW_SPLIT_ENTRY2_COMMENT = "split2";

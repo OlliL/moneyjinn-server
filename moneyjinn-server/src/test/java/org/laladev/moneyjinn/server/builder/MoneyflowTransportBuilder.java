@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.server.builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 
 public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public static final BigDecimal MONEYFLOW2_AMOUNT = new BigDecimal("10.10");
@@ -68,7 +68,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow3() {
     super.setId(MONEYFLOW3_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-02-01"));
     super.setInvoicedate(LocalDate.parse("2009-02-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -85,7 +85,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow4() {
     super.setId(MONEYFLOW4_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-03-01"));
     super.setInvoicedate(LocalDate.parse("2009-03-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -102,7 +102,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow5() {
     super.setId(MONEYFLOW5_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-04-01"));
     super.setInvoicedate(LocalDate.parse("2009-04-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -119,7 +119,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow6() {
     super.setId(MONEYFLOW6_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-05-01"));
     super.setInvoicedate(LocalDate.parse("2009-05-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -136,7 +136,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow7() {
     super.setId(MONEYFLOW7_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-06-01"));
     super.setInvoicedate(LocalDate.parse("2009-06-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -153,7 +153,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow8() {
     super.setId(MONEYFLOW8_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-07-01"));
     super.setInvoicedate(LocalDate.parse("2009-07-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -170,7 +170,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow9() {
     super.setId(MONEYFLOW9_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-08-01"));
     super.setInvoicedate(LocalDate.parse("2009-08-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -187,7 +187,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow10() {
     super.setId(MONEYFLOW10_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-09-01"));
     super.setInvoicedate(LocalDate.parse("2009-09-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -204,7 +204,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow11() {
     super.setId(MONEYFLOW11_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-10-01"));
     super.setInvoicedate(LocalDate.parse("2009-10-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -221,7 +221,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow12() {
     super.setId(MONEYFLOW12_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-11-01"));
     super.setInvoicedate(LocalDate.parse("2009-11-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -238,7 +238,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow13() {
     super.setId(MONEYFLOW13_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2009-12-01"));
     super.setInvoicedate(LocalDate.parse("2009-12-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -271,7 +271,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow15() {
     super.setId(MONEYFLOW15_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2010-02-01"));
     super.setInvoicedate(LocalDate.parse("2010-02-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -288,7 +288,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow16() {
     super.setId(MONEYFLOW16_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2010-03-01"));
     super.setInvoicedate(LocalDate.parse("2010-03-01"));
     super.setAmount(new BigDecimal("-10.00"));
@@ -305,7 +305,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow17() {
     super.setId(MONEYFLOW17_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2010-04-01"));
     super.setInvoicedate(LocalDate.parse("2010-04-01"));
     super.setAmount(new BigDecimal("10.00"));
@@ -322,7 +322,7 @@ public class MoneyflowTransportBuilder extends MoneyflowTransport {
   public MoneyflowTransportBuilder forMoneyflow18() {
     super.setId(MONEYFLOW18_ID);
     super.setUserid(UserTransportBuilder.USER1_ID);
-    super.setPrivat((short) 1);
+    super.setPrivat( 1);
     super.setBookingdate(LocalDate.parse("2010-05-03"));
     super.setInvoicedate(LocalDate.parse("2010-05-03"));
     super.setAmount(new BigDecimal("-5.00"));

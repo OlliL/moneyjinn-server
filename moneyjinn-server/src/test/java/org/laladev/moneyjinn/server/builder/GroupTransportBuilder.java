@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.server.builder;
 
-import org.laladev.moneyjinn.core.rest.model.transport.GroupTransport;
+import org.laladev.moneyjinn.server.model.GroupTransport;
 
 public class GroupTransportBuilder extends GroupTransport {
   public static final String ADMINGROUP_NAME = "admingroup";

@@ -43,7 +43,7 @@ public abstract class AbstractMonthlySettlement<I extends AbstractEntityID<?>>
   private static final long serialVersionUID = 1L;
   private User user;
   private Group group;
-  private Short year;
+  private Integer year;
   private Month month;
   private Capitalsource capitalsource;
   private BigDecimal amount;

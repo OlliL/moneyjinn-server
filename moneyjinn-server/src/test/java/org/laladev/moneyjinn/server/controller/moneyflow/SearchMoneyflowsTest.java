@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsRequest;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.SearchMoneyflowsResponse;
-import org.laladev.moneyjinn.core.rest.model.moneyflow.transport.MoneyflowSearchParamsTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.MoneyflowTransport;
-import org.laladev.moneyjinn.core.rest.model.transport.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsRequest;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsResponse;
+import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
@@ -27,7 +27,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class SearchMoneyflowsTest extends AbstractControllerTest {
-  private static final Short SHORT_1 = (short) 1;
+  private static final Integer SHORT_1 =  1;
   private final HttpMethod method = HttpMethod.PUT;
   private String userName;
   private String userPassword;
