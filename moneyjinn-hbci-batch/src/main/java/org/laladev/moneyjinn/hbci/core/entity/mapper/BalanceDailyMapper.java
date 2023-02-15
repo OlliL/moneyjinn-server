@@ -30,43 +30,43 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
 import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
 public class BalanceDailyMapper {
-	public BalanceDaily map(final Saldo balance, final Value lineOfCredit, final Konto account) {
-		final BalanceDaily balanceDaily = new BalanceDaily();
-		balanceDaily.setMyIban(account.iban);
-		balanceDaily.setMyBic(account.bic);
-		balanceDaily.setMyAccountnumber(Long.valueOf(account.number));
-		balanceDaily.setMyBankcode(Integer.valueOf(account.blz));
+  public BalanceDaily map(final Saldo balance, final Value lineOfCredit, final Konto account) {
+    final BalanceDaily balanceDaily = new BalanceDaily();
+    balanceDaily.setMyIban(account.iban);
+    balanceDaily.setMyBic(account.bic);
+    balanceDaily.setMyAccountnumber(Long.valueOf(account.number));
+    balanceDaily.setMyBankcode(Integer.valueOf(account.blz));
 
-		balanceDaily.setBalanceCurrency(account.curr);
-		balanceDaily.setBalanceAvailableValue(balance.value.getBigDecimalValue());
+    balanceDaily.setBalanceCurrency(account.curr);
+    balanceDaily.setBalanceAvailableValue(balance.value.getBigDecimalValue());
 
-		if (lineOfCredit != null) {
-			balanceDaily.setLineOfCreditValue(lineOfCredit.getBigDecimalValue());
-		} else {
-			balanceDaily.setLineOfCreditValue(BigDecimal.ZERO);
-		}
-		balanceDaily.setBalanceDate(LocalDate.now());
-		final Instant instant = Instant.ofEpochMilli(balance.timestamp.getTime());
-		balanceDaily.setLastTransactionDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-		return balanceDaily;
-	}
+    if (lineOfCredit != null) {
+      balanceDaily.setLineOfCreditValue(lineOfCredit.getBigDecimalValue());
+    } else {
+      balanceDaily.setLineOfCreditValue(BigDecimal.ZERO);
+    }
+    balanceDaily.setBalanceDate(LocalDate.now());
+    final Instant instant = Instant.ofEpochMilli(balance.timestamp.getTime());
+    balanceDaily.setLastTransactionDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
+    balanceDaily.setLastBalanceUpdate(LocalDateTime.now());
+    return balanceDaily;
+  }
 
-	public BalanceDaily mergeBalanceDaily(final BalanceDaily oldSaldo, final BalanceDaily newSaldo) {
+  public BalanceDaily mergeBalanceDaily(final BalanceDaily oldSaldo, final BalanceDaily newSaldo) {
 
-		oldSaldo.setBalanceAvailableValue(newSaldo.getBalanceAvailableValue());
-		oldSaldo.setLineOfCreditValue(newSaldo.getLineOfCreditValue());
-		oldSaldo.setBalanceDate(newSaldo.getBalanceDate());
-		oldSaldo.setLastTransactionDate(newSaldo.getLastTransactionDate());
-		oldSaldo.setLastBalanceUpdate(LocalDateTime.now());
+    oldSaldo.setBalanceAvailableValue(newSaldo.getBalanceAvailableValue());
+    oldSaldo.setLineOfCreditValue(newSaldo.getLineOfCreditValue());
+    oldSaldo.setBalanceDate(newSaldo.getBalanceDate());
+    oldSaldo.setLastTransactionDate(newSaldo.getLastTransactionDate());
+    oldSaldo.setLastBalanceUpdate(LocalDateTime.now());
 
-		return oldSaldo;
-	}
+    return oldSaldo;
+  }
 
 }

@@ -54,7 +54,7 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
     this.balanceDate = balanceDate;
   }
 
-  @Column(name = "last_transaction_date", insertable = false)
+  @Column(name = "last_transaction_date")
   public LocalDateTime getLastTransactionDate() {
     return this.lastTransactionDate;
   }
@@ -90,7 +90,7 @@ public class BalanceDaily extends AbstractAccountEntitiy implements Serializable
     this.balanceCurrency = balanceCurrency;
   }
 
-  @Column(name = "last_balance_update", insertable = false)
+  @Column(name = "last_balance_update")
   public LocalDateTime getLastBalanceUpdate() {
     return this.lastBalanceUpdate;
   }
