@@ -59,7 +59,7 @@ public class CapitalsourceImportMapper {
     if (capitalsourceImport != null) {
       switch (capitalsourceImport) {
         case NOT_ALLOWED:
-          return NOT_ALLOWED_SHORT;
+          return null;
         case ALL_ALLOWED:
           return ALL_ALLOWED_SHORT;
         case BALANCE_ALLOWED:

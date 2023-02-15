@@ -6,7 +6,6 @@
 		<version>1.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -38,10 +37,6 @@
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
@@ -53,9 +48,39 @@
 			<groupId>org.laladev.moneyjinn</groupId>
 			<artifactId>moneyjinn-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/../moneyjinn-server/src/main/resources/openapi.json</inputSpec>
+							<generatorName>java</generatorName>
+							<apiPackage>org.laladev.moneyjinn.hbci.backend.api</apiPackage>
+							<modelPackage>org.laladev.moneyjinn.hbci.backend.model</modelPackage>
+							<skipOperationExample>true</skipOperationExample>
+							<configOptions>
+								<library>native</library>
+								<sourceFolder>src/gen/java/main</sourceFolder>
+								<useJakartaEe>true</useJakartaEe>
+								<!--								<useSpringBoot3>true</useSpringBoot3>-->
+								<openApiNullable>false</openApiNullable>
+								<useTags>true</useTags>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

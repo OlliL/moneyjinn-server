@@ -26,8 +26,8 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
-import org.laladev.moneyjinn.core.rest.model.ErrorResponse;
 import org.laladev.moneyjinn.model.exception.BusinessException;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

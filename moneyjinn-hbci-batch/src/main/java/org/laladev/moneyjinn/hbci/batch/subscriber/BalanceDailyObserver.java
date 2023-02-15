@@ -29,24 +29,14 @@ package org.laladev.moneyjinn.hbci.batch.subscriber;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedbalance.CreateImportedBalanceRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedBalanceTransport;
-import org.laladev.moneyjinn.hbci.batch.config.Configuration;
-import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
+import org.laladev.moneyjinn.hbci.backend.ApiException;
+import org.laladev.moneyjinn.hbci.backend.api.ImportedBalanceControllerApi;
+import org.laladev.moneyjinn.hbci.backend.model.CreateImportedBalanceRequest;
+import org.laladev.moneyjinn.hbci.backend.model.ImportedBalanceTransport;
+import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
-import org.springframework.web.client.RestTemplate;
 
 public class BalanceDailyObserver implements PropertyChangeListener {
-
-  private final RestTemplate restTemplate;
-
-  public BalanceDailyObserver() {
-    this.restTemplate = new RestTemplate();
-
-    this.restTemplate.getMessageConverters().clear();
-    this.restTemplate.getMessageConverters().add(new MessageConverter());
-  }
 
   @Override
   public void propertyChange(final PropertyChangeEvent event) {
@@ -65,18 +55,20 @@ public class BalanceDailyObserver implements PropertyChangeListener {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     request.setImportedBalanceTransport(transport);
 
-    final ValidationResponse response = this.restTemplate.postForObject(
-        Configuration.ROOT_URL + "/importedbalance/createImportedBalance", request,
-        ValidationResponse.class);
+    try {
+      final ValidationResponse response = new ImportedBalanceControllerApi()
+          .createImportedBalance(request);
+      if (response != null) {
+        if (response.getMessage() != null) {
+          throw new RuntimeException("error: " + response.getMessage());
+        } else if (response.getResult().equals(Boolean.FALSE)) {
+          throw new RuntimeException(
+              "error: " + response.getValidationItemTransports().get(0).getError().toString());
+        }
 
-    if (response != null) {
-      if (response.getMessage() != null) {
-        throw (new RuntimeException("error: " + response.getMessage()));
-      } else if (response.getResult().equals(Boolean.FALSE)) {
-        throw (new RuntimeException(
-            "error: " + response.getValidationItemTransports().get(0).getError().toString()));
       }
-
+    } catch (final ApiException e) {
+      throw new RuntimeException(e);
     }
   }
 

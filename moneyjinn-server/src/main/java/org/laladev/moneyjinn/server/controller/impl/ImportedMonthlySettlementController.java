@@ -89,20 +89,21 @@ public class ImportedMonthlySettlementController extends AbstractController
       importedMonthlySettlement.setCapitalsource(capitalsource);
       final ValidationResult validationResult = this.importedMonthlySettlementService
           .validateImportedMonthlySettlement(importedMonthlySettlement);
+      final ValidationResponse response = new ValidationResponse();
+
       if (validationResult.isValid()) {
         this.importedMonthlySettlementService
             .upsertImportedMonthlySettlement(importedMonthlySettlement);
+        response.setResult(true);
       } else {
-        final ValidationResponse response = new ValidationResponse();
         response.setResult(false);
         response.setValidationItemTransports(super.mapList(
             validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return ResponseEntity.ok(response);
       }
+      return ResponseEntity.ok(response);
     } else {
       throw new BusinessException("No matching capitalsource found!",
           ErrorCode.CAPITALSOURCE_NOT_FOUND);
     }
-    return ResponseEntity.noContent().build();
   }
 }

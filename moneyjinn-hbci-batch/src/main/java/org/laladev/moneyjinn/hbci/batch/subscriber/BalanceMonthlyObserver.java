@@ -29,24 +29,14 @@ package org.laladev.moneyjinn.hbci.batch.subscriber;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmonthlysettlement.CreateImportedMonthlySettlementRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMonthlySettlementTransport;
-import org.laladev.moneyjinn.hbci.batch.config.Configuration;
-import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
+import org.laladev.moneyjinn.hbci.backend.ApiException;
+import org.laladev.moneyjinn.hbci.backend.api.ImportedMonthlySettlementControllerApi;
+import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMonthlySettlementRequest;
+import org.laladev.moneyjinn.hbci.backend.model.ImportedMonthlySettlementTransport;
+import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
-import org.springframework.web.client.RestTemplate;
 
 public class BalanceMonthlyObserver implements PropertyChangeListener {
-
-  private final RestTemplate restTemplate;
-
-  public BalanceMonthlyObserver() {
-    this.restTemplate = new RestTemplate();
-
-    this.restTemplate.getMessageConverters().clear();
-    this.restTemplate.getMessageConverters().add(new MessageConverter());
-  }
 
   @Override
   public void propertyChange(final PropertyChangeEvent event) {
@@ -61,26 +51,29 @@ public class BalanceMonthlyObserver implements PropertyChangeListener {
     transport.setAccountNumberCapitalsource(balanceMonthly.getMyIban());
     transport.setBankCodeCapitalsource(balanceMonthly.getMyBic());
     transport.setExternalid(balanceMonthly.getId().toString());
-    transport.setMonth(balanceMonthly.getBalanceMonth().shortValue());
-    transport.setYear(balanceMonthly.getBalanceYear().shortValue());
+    transport.setMonth(balanceMonthly.getBalanceMonth());
+    transport.setYear(balanceMonthly.getBalanceYear());
     transport.setAmount(balanceMonthly.getBalanceValue());
 
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     request.setImportedMonthlySettlementTransport(transport);
 
-    final ValidationResponse response = this.restTemplate.postForObject(
-        Configuration.ROOT_URL + "/importedmonthlysettlement/createImportedMonthlySettlement",
-        request, ValidationResponse.class);
+    try {
+      final ValidationResponse response = new ImportedMonthlySettlementControllerApi()
+          .createImportedMonthlySettlement(request);
+      if (response != null) {
+        if (response.getMessage() != null) {
+          throw new RuntimeException("error: " + response.getMessage());
+        } else if (response.getResult().equals(Boolean.FALSE)) {
+          throw new RuntimeException(
+              "error: " + response.getValidationItemTransports().get(0).getError().toString());
+        }
 
-    if (response != null) {
-      if (response.getMessage() != null) {
-        throw (new RuntimeException("error: " + response.getMessage()));
-      } else if (response.getResult().equals(Boolean.FALSE)) {
-        throw (new RuntimeException(
-            "error: " + response.getValidationItemTransports().get(0).getError().toString()));
       }
-
+    } catch (final ApiException e) {
+      throw new RuntimeException(e);
     }
+
   }
 
 }

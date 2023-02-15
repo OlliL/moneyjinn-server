@@ -7,9 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
@@ -18,6 +16,9 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -56,7 +57,11 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
     Assertions.assertNotNull(importedMoneyflows);
@@ -80,7 +85,11 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
         .forNewImportedMoneyflow().build();
     transport.setExternalid(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_EXTERNAL_ID);
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
         .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
     Assertions.assertEquals(importedMoneyflowsOrig, importedMoneyflows);
@@ -101,7 +110,11 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
         .forNewImportedMoneyflow().build();
     transport.setBankCode("ABCDEFGH");
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
     Assertions.assertNotNull(importedMoneyflows);
@@ -130,7 +143,11 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setAccountNumber(null);
     transport.setBankCode(null);
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
     Assertions.assertNotNull(importedMoneyflows);

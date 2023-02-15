@@ -8,15 +8,16 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
-import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -47,7 +48,11 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final UserID userId = new UserID(transport.getUserid());
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
         .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
@@ -78,7 +83,11 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
         importedMonthlySettlements.get(0).getId().getId());
     Assertions.assertTrue(
         BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     importedMonthlySettlements = this.importedMonthlySettlementService
         .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
             Month.of(transport.getMonth()));
@@ -98,10 +107,14 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forOnlyBalanceImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId,  2015, Month.FEBRUARY);
+        .getImportedMonthlySettlementsByMonth(userId, 2015, Month.FEBRUARY);
     Assertions.assertNotNull(importedMonthlySettlements);
     Assertions.assertEquals(1, importedMonthlySettlements.size());
     Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,

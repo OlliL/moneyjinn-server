@@ -9,9 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
-import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
+import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -22,6 +20,9 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedBalanceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.http.HttpMethod;
@@ -55,7 +56,11 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();
     request.setImportedBalanceTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService
         .getAllImportedBalancesByCapitalsourceIds(userId,
@@ -83,7 +88,11 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     capitalsource.setValidTil(LocalDate.now().plusDays(1l));
     // Capitalsource 4 is no longer valid but we need it valid for this test, so "modify" it :-/
     this.capitalsourceService.updateCapitalsource(capitalsource);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final List<ImportedBalance> importedBalances = this.importedBalanceService
         .getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
     Assertions.assertNotNull(importedBalances);
@@ -100,7 +109,11 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forOnlyBalanceImportedBalance().build();
     request.setImportedBalanceTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
+        request, false, ValidationResponse.class);
+    Assertions.assertTrue(validationResponse.getResult());
+
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService
         .getAllImportedBalancesByCapitalsourceIds(userId,

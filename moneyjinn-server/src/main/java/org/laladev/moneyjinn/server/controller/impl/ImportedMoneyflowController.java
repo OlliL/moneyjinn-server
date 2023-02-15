@@ -37,12 +37,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
@@ -70,6 +64,12 @@ import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransport
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -179,6 +179,7 @@ public class ImportedMoneyflowController extends AbstractController
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ValidationResponse> createImportedMoneyflow(
       @RequestBody final CreateImportedMoneyflowRequest request) {
     final ImportedMoneyflowTransport importedMoneyflowTransport = request
@@ -199,20 +200,23 @@ public class ImportedMoneyflowController extends AbstractController
       importedMoneyflow.setCapitalsource(capitalsource);
       final ValidationResult validationResult = this.importedMoneyflowService
           .validateImportedMoneyflow(importedMoneyflow);
+
+      final ValidationResponse response = new ValidationResponse();
+
       if (validationResult.isValid()) {
         this.importedMoneyflowService.createImportedMoneyflow(importedMoneyflow);
+        response.setResult(true);
       } else {
-        final ValidationResponse response = new ValidationResponse();
         response.setResult(false);
         response.setValidationItemTransports(super.mapList(
             validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return ResponseEntity.ok(response);
       }
+
+      return ResponseEntity.ok(response);
     } else {
       throw new BusinessException("No matching capitalsource found!",
           ErrorCode.CAPITALSOURCE_NOT_FOUND);
     }
-    return null;
   }
 
   @Override
@@ -309,6 +313,7 @@ public class ImportedMoneyflowController extends AbstractController
     }
   }
 
+  @Override
   public ResponseEntity<ValidationResponse> importImportedMoneyflows(
       @RequestBody final ImportImportedMoneyflowRequest request) {
     final UserID userId = super.getUserId();

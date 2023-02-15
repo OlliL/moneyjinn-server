@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2014-2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,24 +29,14 @@ package org.laladev.moneyjinn.hbci.batch.subscriber;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.laladev.moneyjinn.core.rest.model.ValidationResponse;
-import org.laladev.moneyjinn.core.rest.model.importedmoneyflow.CreateImportedMoneyflowRequest;
-import org.laladev.moneyjinn.core.rest.model.transport.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.hbci.batch.config.Configuration;
-import org.laladev.moneyjinn.hbci.batch.config.MessageConverter;
+import org.laladev.moneyjinn.hbci.backend.ApiException;
+import org.laladev.moneyjinn.hbci.backend.api.ImportedMoneyflowControllerApi;
+import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMoneyflowRequest;
+import org.laladev.moneyjinn.hbci.backend.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
-import org.springframework.web.client.RestTemplate;
 
 public class AccountMovementObserver implements PropertyChangeListener {
-
-  private final RestTemplate restTemplate;
-
-  public AccountMovementObserver() {
-    this.restTemplate = new RestTemplate();
-
-    this.restTemplate.getMessageConverters().clear();
-    this.restTemplate.getMessageConverters().add(new MessageConverter());
-  }
 
   @Override
   public void propertyChange(final PropertyChangeEvent event) {
@@ -91,21 +81,24 @@ public class AccountMovementObserver implements PropertyChangeListener {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     request.setImportedMoneyflowTransport(transport);
 
-    final ValidationResponse response = this.restTemplate.postForObject(
-        Configuration.ROOT_URL + "/importedmoneyflow/createImportedMoneyflow", request,
-        ValidationResponse.class);
+    try {
+      final ValidationResponse response = new ImportedMoneyflowControllerApi()
+          .createImportedMoneyflow(request);
+      if (response != null) {
+        if (response.getMessage() != null) {
+          throw new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
+              + transport.getBankCodeCapitalsource() + ") " + response.getMessage());
+        } else if (response.getResult().equals(Boolean.FALSE)) {
+          throw new RuntimeException(
+              "error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode()
+                  + ") " + response.getValidationItemTransports().get(0).getError().toString());
+        }
 
-    if (response != null) {
-      if (response.getMessage() != null) {
-        throw (new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
-            + transport.getBankCodeCapitalsource() + ") " + response.getMessage()));
-      } else if (response.getResult().equals(Boolean.FALSE)) {
-        throw (new RuntimeException(
-            "error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode()
-                + ") " + response.getValidationItemTransports().get(0).getError().toString()));
       }
-
+    } catch (final ApiException e) {
+      throw new RuntimeException(e);
     }
+
   }
 
 }
