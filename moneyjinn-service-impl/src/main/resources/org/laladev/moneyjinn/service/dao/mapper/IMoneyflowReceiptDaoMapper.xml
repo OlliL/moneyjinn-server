@@ -6,7 +6,7 @@
                 <result property="id"             javaType="java.lang.Long"  column="id"             />
                 <result property="mmfMoneyflowId" javaType="java.lang.Long"  column="mmfMoneyflowId" />
                 <result property="receipt"        javaType="_byte[]"         column="blob_Data"      jdbcType="BLOB"/>
-                <result property="receiptType"    javaType="java.lang.Short" column="receiptType" />
+                <result property="receiptType"    javaType="java.lang.Integer" column="receiptType" />
         </resultMap>
   
         <sql id="moneyflowReceiptColumns">

@@ -54,12 +54,13 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
-import org.laladev.moneyjinn.server.model.GetAvailableMonthResponse;
+import org.laladev.moneyjinn.server.model.GetAvailableReportMonthResponse;
 import org.laladev.moneyjinn.server.model.ListReportsResponse;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
@@ -93,7 +94,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ReportController extends AbstractController {
+public class ReportController extends AbstractController implements ReportControllerApi {
   private final IMoneyflowService moneyflowService;
   private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
   private final IMoneyflowReceiptService moneyflowReceiptService;
@@ -113,6 +114,7 @@ public class ReportController extends AbstractController {
     super.registerBeanMapper(this.postingAccountAmountTransportMapper);
   }
 
+  @Override
   public ResponseEntity<ShowReportingFormResponse> showReportingForm() {
     final UserID userId = super.getUserId();
     final ShowReportingFormResponse response = new ShowReportingFormResponse();
@@ -134,6 +136,7 @@ public class ReportController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ShowMonthlyReportGraphResponse> showMonthlyReportGraph(
       @RequestBody final ShowMonthlyReportGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -162,6 +165,7 @@ public class ReportController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ShowYearlyReportGraphResponse> showYearlyReportGraph(
       @RequestBody final ShowYearlyReportGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -190,6 +194,7 @@ public class ReportController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ShowTrendsFormResponse> showTrendsForm() {
     final UserID userId = super.getUserId();
     final ShowTrendsFormResponse response = new ShowTrendsFormResponse();
@@ -215,6 +220,7 @@ public class ReportController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ShowTrendsGraphResponse> showTrendsGraph(
       @RequestBody final ShowTrendsGraphRequest request) {
     final UserID userId = super.getUserId();
@@ -333,20 +339,23 @@ public class ReportController extends AbstractController {
     capitalsourceIds.removeIf(csi -> validTilCapitalsourceIdMap.get(csi).isBefore(beginOfMonth));
   }
 
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth() {
-    return this.getAvailableMonth(null, null);
+  @Override
+  public ResponseEntity<GetAvailableReportMonthResponse> getAvailableMonth() {
+    return this.getAvailableMonthYearMonth(null, null);
   }
 
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth(
+  @Override
+  public ResponseEntity<GetAvailableReportMonthResponse> getAvailableMonthYear(
       @PathVariable(value = "year") final Integer requestYear) {
-    return this.getAvailableMonth(requestYear, null);
+    return this.getAvailableMonthYearMonth(requestYear, null);
   }
 
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth(
+  @Override
+  public ResponseEntity<GetAvailableReportMonthResponse> getAvailableMonthYearMonth(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {
     final UserID userId = super.getUserId();
-    final GetAvailableMonthResponse response = new GetAvailableMonthResponse();
+    final GetAvailableReportMonthResponse response = new GetAvailableReportMonthResponse();
     final List<Integer> allYears = this.moneyflowService.getAllYears(userId);
     boolean nextMonthHasMoneyflows = false;
     boolean previousMonthHasMoneyflows = false;
@@ -428,6 +437,7 @@ public class ReportController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ListReportsResponse> listReportsV2(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {

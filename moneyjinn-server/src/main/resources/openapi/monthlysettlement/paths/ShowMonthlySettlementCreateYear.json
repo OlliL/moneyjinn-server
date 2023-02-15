@@ -3,7 +3,7 @@
 		"tags": [
 			"monthly-settlement-controller"
 		],
-		"operationId": "showMonthlySettlementCreate_1",
+		"operationId": "showMonthlySettlementCreateYear",
 		"parameters": [
 			{
 				"name": "year",

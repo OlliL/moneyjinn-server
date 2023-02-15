@@ -47,7 +47,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.server.model.GetAvailableMonthResponse;
+import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementListResponse;
@@ -91,22 +91,22 @@ public class MonthlySettlementController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth3() {
-    return this.getAvailableMonth5(null, null);
+  public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonth() {
+    return this.getAvailableMonthYearMonth(null, null);
   }
 
   @Override
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth4(
+  public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonthYear(
       @PathVariable(value = "year") final Integer year) {
-    return this.getAvailableMonth5(year, null);
+    return this.getAvailableMonthYearMonth(year, null);
   }
 
   @Override
-  public ResponseEntity<GetAvailableMonthResponse> getAvailableMonth5(
+  public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonthYearMonth(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {
     final UserID userId = super.getUserId();
-    final GetAvailableMonthResponse response = new GetAvailableMonthResponse();
+    final GetAvailableMonthlySettlementMonthResponse response = new GetAvailableMonthlySettlementMonthResponse();
     final List<Integer> allYears = this.monthlySettlementService.getAllYears(userId);
     List<Month> allMonth = null;
     Integer year = requestYear;
@@ -155,15 +155,17 @@ public class MonthlySettlementController extends AbstractController
 
   @Override
   public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreate() {
-    return this.showMonthlySettlementCreate(null, null);
+    return this.showMonthlySettlementCreateYearMonth(null, null);
   }
 
-  public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreate(
+  @Override
+  public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreateYear(
       @PathVariable(value = "year") final Integer requestYear) {
-    return this.showMonthlySettlementCreate(requestYear, null);
+    return this.showMonthlySettlementCreateYearMonth(requestYear, null);
   }
 
-  public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreate(
+  @Override
+  public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreateYearMonth(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {
     final UserID userId = super.getUserId();

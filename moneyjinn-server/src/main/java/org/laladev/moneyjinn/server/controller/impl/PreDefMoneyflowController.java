@@ -33,6 +33,7 @@ import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
@@ -53,7 +54,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PreDefMoneyflowController extends AbstractController {
+public class PreDefMoneyflowController extends AbstractController
+    implements PreDefMoneyflowControllerApi {
   private final IPreDefMoneyflowService preDefMoneyflowService;
   private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
   private final ValidationItemTransportMapper validationItemTransportMapper;
@@ -65,6 +67,7 @@ public class PreDefMoneyflowController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
+  @Override
   public ResponseEntity<ShowPreDefMoneyflowListResponse> showPreDefMoneyflowList() {
     final UserID userId = super.getUserId();
     final List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService
@@ -77,6 +80,7 @@ public class PreDefMoneyflowController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<CreatePreDefMoneyflowResponse> createPreDefMoneyflow(
       @RequestBody final CreatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
@@ -99,6 +103,7 @@ public class PreDefMoneyflowController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   public ResponseEntity<ValidationResponse> updatePreDefMoneyflow(
       @RequestBody final UpdatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
@@ -119,6 +124,7 @@ public class PreDefMoneyflowController extends AbstractController {
     return null;
   }
 
+  @Override
   public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);

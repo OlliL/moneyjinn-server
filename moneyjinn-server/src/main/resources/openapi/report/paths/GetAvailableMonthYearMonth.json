@@ -3,7 +3,7 @@
 		"tags": [
 			"report-controller"
 		],
-		"operationId": "getAvailableMonth_2",
+		"operationId": "getAvailableMonthYearMonth",
 		"parameters": [
 			{
 				"name": "year",
@@ -30,7 +30,7 @@
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "../schemas/GetAvailableMonthResponse.json"
+							"$ref": "../schemas/GetAvailableReportMonthResponse.json"
 						}
 					}
 				}

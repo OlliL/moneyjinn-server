@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
@@ -52,7 +53,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PostingAccountController extends AbstractController {
+public class PostingAccountController extends AbstractController
+    implements PostingAccountControllerApi {
   private final IPostingAccountService postingAccountService;
   private final PostingAccountTransportMapper postingAccountTransportMapper;
   private final ValidationItemTransportMapper validationItemTransportMapper;
@@ -64,6 +66,7 @@ public class PostingAccountController extends AbstractController {
     this.registerBeanMapper(this.validationItemTransportMapper);
   }
 
+  @Override
   public ResponseEntity<ShowPostingAccountListResponse> showPostingAccountList() {
     final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
     final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
@@ -74,6 +77,7 @@ public class PostingAccountController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
   public ResponseEntity<CreatePostingAccountResponse> createPostingAccount(
       @RequestBody final CreatePostingAccountRequest request) {
@@ -95,6 +99,7 @@ public class PostingAccountController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
   public ResponseEntity<ValidationResponse> updatePostingAccount(
       @RequestBody final UpdatePostingAccountRequest request) {
@@ -113,6 +118,7 @@ public class PostingAccountController extends AbstractController {
     return ResponseEntity.ok(response);
   }
 
+  @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
   public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);

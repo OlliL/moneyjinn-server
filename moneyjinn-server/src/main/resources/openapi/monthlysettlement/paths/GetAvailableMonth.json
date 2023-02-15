@@ -3,14 +3,14 @@
 		"tags": [
 			"monthly-settlement-controller"
 		],
-		"operationId": "getAvailableMonth_3",
+		"operationId": "getAvailableMonth",
 		"responses": {
 			"200": {
 				"description": "OK",
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "../schemas/GetAvailableMonthResponse.json"
+							"$ref": "../schemas/GetAvailableMonthlySettlementMonthResponse.json"
 						}
 					}
 				}

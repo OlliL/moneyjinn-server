@@ -10,7 +10,7 @@
 				"content": {
 					"application/json": {
 						"schema": {
-							"$ref": "../schemas/GetAvailableMonthResponse.json"
+							"$ref": "../schemas/GetAvailableReportMonthResponse.json"
 						}
 					}
 				}

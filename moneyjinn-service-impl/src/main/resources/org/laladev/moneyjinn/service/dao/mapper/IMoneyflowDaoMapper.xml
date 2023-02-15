@@ -95,7 +95,7 @@
                    </foreach>
         </select>
         
-            <select id="getAllYears" resultType="java.lang.Short">
+            <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT YEAR(bookingdate)
                   FROM vw_moneyflows
                  WHERE maf_id              = #{userId}
@@ -107,7 +107,7 @@
                  ORDER BY 1 ASC
         </select>
         
-            <select id="getAllMonth" resultType="java.lang.Short">
+            <select id="getAllMonth" resultType="java.lang.Integer">
                 SELECT DISTINCT MONTH(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}

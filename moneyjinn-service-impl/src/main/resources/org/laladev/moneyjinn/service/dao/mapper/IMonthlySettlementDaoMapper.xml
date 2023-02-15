@@ -11,14 +11,14 @@
                 ,mcs_capitalsourceid        AS mcsCapitalsourceId
         </sql>
     
-            <select id="getAllYears" resultType="java.lang.Short">
+            <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT `year`
                   FROM vw_monthlysettlements
                  WHERE maf_id = #{userId}
                  ORDER BY `year` ASC
         </select>
         
-            <select id="getAllMonth" resultType="java.lang.Short">
+            <select id="getAllMonth" resultType="java.lang.Integer">
                 SELECT DISTINCT `month`
                   FROM vw_monthlysettlements
                  WHERE maf_id = #{userId}
@@ -37,7 +37,7 @@
                       ,mcs_capitalsourceid
         </select>
 
-        <select id="checkMonthlySettlementsExists" resultType="java.lang.Short">
+        <select id="checkMonthlySettlementsExists" resultType="java.lang.Integer">
                 SELECT 1
                   FROM monthlysettlements
                  WHERE mac_id_creator = #{userId}
