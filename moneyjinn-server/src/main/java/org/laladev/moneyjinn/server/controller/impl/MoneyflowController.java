@@ -340,7 +340,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         if (preDefMoneyflowId != null) {
           this.preDefMoneyflowService.setLastUsedDate(userId, preDefMoneyflowId);
         }
-        return null;
+        return ResponseEntity.noContent().build();
       }
     }
     if (!validationResult.isValid()) {
@@ -520,6 +520,6 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         return ResponseEntity.ok(response);
       }
     }
-    return null;
+    return ResponseEntity.noContent().build();
   }
 }

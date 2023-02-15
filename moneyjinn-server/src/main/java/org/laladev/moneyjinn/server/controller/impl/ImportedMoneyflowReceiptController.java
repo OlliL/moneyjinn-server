@@ -109,7 +109,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
     }
     importedMoneyflowReceipts.stream()
         .forEach(imr -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(imr));
-    return null;
+    return ResponseEntity.noContent().build();
   }
 
   @Override

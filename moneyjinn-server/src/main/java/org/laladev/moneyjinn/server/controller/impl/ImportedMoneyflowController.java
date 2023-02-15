@@ -391,6 +391,6 @@ public class ImportedMoneyflowController extends AbstractController
           validationResult.getValidationResultItems(), ValidationItemTransport.class));
       return ResponseEntity.ok(response);
     }
-    return null;
+    return ResponseEntity.noContent().build();
   }
 }
