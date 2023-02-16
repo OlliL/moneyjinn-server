@@ -75,7 +75,7 @@
 			"$ref": "openapi/contractpartneraccount/paths/ShowContractpartnerAccountList.json"
 		},
 		"/moneyflow/server/contractpartneraccount/updateContractpartnerAccount": {
-			"$ref": "openapi/contractpartneraccount/paths/updateContractpartnerAccount.json"
+			"$ref": "openapi/contractpartneraccount/paths/UpdateContractpartnerAccount.json"
 		},
 		"/moneyflow/server/etf/calcEtfSale": {
 			"$ref": "openapi/etf/paths/CalcEtfSale.json"
@@ -204,7 +204,7 @@
 			"$ref": "openapi/postingaccount/paths/UpdatePostingAccount.json"
 		},
 		"/moneyflow/server/predefmoneyflow/createPreDefMoneyflow": {
-			"$ref": "openapi/predefmoneyflow/paths/createPreDefMoneyflow.json"
+			"$ref": "openapi/predefmoneyflow/paths/CreatePreDefMoneyflow.json"
 		},
 		"/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
 			"$ref": "openapi/predefmoneyflow/paths/DeletePreDefMoneyflow.json"
