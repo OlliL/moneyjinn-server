@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"contractpartnerAccountId"
+			],
 			"properties": {
 				"contractpartnerAccountId": {
 					"type": "integer",
