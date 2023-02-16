@@ -34,6 +34,7 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowReceiptTypeMapper;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -77,7 +78,8 @@ public class MoneyflowReceiptController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteMoneyflowReceipt(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);

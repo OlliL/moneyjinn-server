@@ -39,6 +39,7 @@ import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMap
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
 import org.laladev.moneyjinn.server.model.UpdateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
@@ -128,7 +129,7 @@ public class ContractpartnerAccountController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deleteContractpartnerAccount(
+  public ResponseEntity<ErrorResponse> deleteContractpartnerAccount(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);

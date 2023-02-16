@@ -36,6 +36,7 @@ import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateGroupRequest;
 import org.laladev.moneyjinn.server.model.CreateGroupResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
 import org.laladev.moneyjinn.server.model.UpdateGroupRequest;
@@ -115,7 +116,7 @@ public class GroupController extends AbstractController implements GroupControll
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteGroupById(@PathVariable(value = "id") final Long id) {
     final GroupID groupId = new GroupID(id);
     this.groupService.deleteGroup(groupId);
     return ResponseEntity.noContent().build();

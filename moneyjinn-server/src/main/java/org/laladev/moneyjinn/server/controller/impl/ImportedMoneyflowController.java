@@ -65,6 +65,7 @@ import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTranspo
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
@@ -220,7 +221,7 @@ public class ImportedMoneyflowController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deleteImportedMoneyflowById(
+  public ResponseEntity<ErrorResponse> deleteImportedMoneyflowById(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);

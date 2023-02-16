@@ -59,6 +59,7 @@ import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
@@ -282,7 +283,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
   }
 
   @Override
-  public ResponseEntity<Void> deleteEtfFlow(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteEtfFlow(@PathVariable(value = "id") final Long id) {
     this.etfService.deleteEtfFlow(new EtfFlowID(id));
     return ResponseEntity.noContent().build();
   }

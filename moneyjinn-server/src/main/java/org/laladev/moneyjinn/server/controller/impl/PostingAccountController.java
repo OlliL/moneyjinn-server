@@ -36,6 +36,7 @@ import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMap
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
@@ -120,7 +121,8 @@ public class PostingAccountController extends AbstractController
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deletePostingAccountById(
+      @PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);
     this.postingAccountService.deletePostingAccount(postingAccountId);
     return ResponseEntity.noContent().build();

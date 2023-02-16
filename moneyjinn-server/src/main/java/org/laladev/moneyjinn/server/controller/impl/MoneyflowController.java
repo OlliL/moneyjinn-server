@@ -59,6 +59,7 @@ import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTranspo
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
@@ -465,7 +466,8 @@ public class MoneyflowController extends AbstractController implements Moneyflow
    */
 
   @Override
-  public ResponseEntity<Void> deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deleteMoneyflowById(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
     this.moneyflowSplitEntryService.deleteMoneyflowSplitEntries(userId, moneyflowId);

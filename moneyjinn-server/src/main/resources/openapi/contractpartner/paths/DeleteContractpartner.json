@@ -16,9 +16,6 @@
 			}
 		],
 		"responses": {
-			"204": {
-				"description": "OK"
-			},
 			"200": {
 				"description": "OK",
 				"content": {
@@ -28,6 +25,9 @@
 						}
 					}
 				}
+			},
+			"204": {
+				"description": "OK"
 			}
 		}
 	}

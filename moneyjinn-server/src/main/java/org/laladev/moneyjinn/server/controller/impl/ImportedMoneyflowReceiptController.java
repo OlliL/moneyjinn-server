@@ -44,6 +44,7 @@ import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptContr
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowReceiptTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
@@ -126,7 +127,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(
+  public ResponseEntity<ErrorResponse> deleteImportedMoneyflowReceiptById(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
@@ -139,7 +140,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> importImportedMoneyflowReceipt(
+  public ResponseEntity<ErrorResponse> importImportedMoneyflowReceipt(
       @PathVariable(value = "id") final Long id,
       @PathVariable(value = "moneyflowid") final Long moneyflowid) {
     final UserID userId = super.getUserId();

@@ -38,6 +38,7 @@ import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMa
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
@@ -125,7 +126,8 @@ public class PreDefMoneyflowController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<ErrorResponse> deletePreDefMoneyflowById(
+      @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
     this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);

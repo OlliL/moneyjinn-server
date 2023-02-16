@@ -47,6 +47,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
@@ -360,7 +361,7 @@ public class MonthlySettlementController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<Void> deleteMonthlySettlement(
+  public ResponseEntity<ErrorResponse> deleteMonthlySettlement(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {
     final UserID userId = super.getUserId();
