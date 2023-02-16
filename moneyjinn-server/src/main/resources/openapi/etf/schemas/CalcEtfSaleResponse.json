@@ -5,6 +5,18 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"isin",
+				"originalBuyPrice",
+				"sellPrice",
+				"newBuyPrice",
+				"profit",
+				"chargeable",
+				"transactionCosts",
+				"rebuyLosses",
+				"overallCosts",
+				"pieces"
+			],
 			"properties": {
 				"isin": {
 					"type": "string"
