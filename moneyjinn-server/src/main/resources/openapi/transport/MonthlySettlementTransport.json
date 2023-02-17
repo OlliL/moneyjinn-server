@@ -5,6 +5,7 @@
 		"userid",
 		"year",
 		"month",
+		"amount",
 		"capitalsourceid"
 	],
 	"properties": {
