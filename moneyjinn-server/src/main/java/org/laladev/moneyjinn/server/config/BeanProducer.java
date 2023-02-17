@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.config;
 
 import java.security.SecureRandom;
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,5 +48,10 @@ public class BeanProducer {
   @Bean
   public RequestRejectedHandler requestRejectedHandler() {
     return new HttpStatusRequestRejectedHandler();
+  }
+
+  @Bean
+  public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
+    return CookieSameSiteSupplier.ofLax().whenHasName("XSRF-TOKEN");
   }
 }

@@ -35,11 +35,13 @@ import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -83,7 +85,9 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     //@formatter:off
-    http
+    http.logout()
+          .logoutUrl("/moneyflow/server/logout")
+          .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))).and()
         .httpBasic().disable()
         .cors().and()
         .csrf(configurer -> {
@@ -96,7 +100,6 @@ public class SecurityConfig {
         .and()
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
-            .requestMatchers("/moneyflow/server/csrf/csrf").permitAll()
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
             .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
             // Whatever else you trying: deny
