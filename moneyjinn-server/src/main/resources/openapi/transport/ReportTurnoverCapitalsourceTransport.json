@@ -2,7 +2,7 @@
 	"type": "object",
 	"required": [
 		"capitalsourceType",
-		"capitalsourceStatecapitalsourceState",
+		"capitalsourceState",
 		"capitalsourceComment",
 		"amountBeginOfMonthFixed",
 		"amountEndOfMonthFixed",
