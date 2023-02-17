@@ -241,6 +241,9 @@
 		},
 		"/moneyflow/server/report/showYearlyReportGraph": {
 			"$ref": "openapi/report/paths/ShowYearlyReportGraph.json"
+		},
+		"/moneyflow/server/logout": {
+			"$ref": "openapi/Logout.json"
 		}
 	}
 }
