@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"postingAccountId"
+			],
 			"properties": {
 				"postingAccountId": {
 					"type": "integer",
