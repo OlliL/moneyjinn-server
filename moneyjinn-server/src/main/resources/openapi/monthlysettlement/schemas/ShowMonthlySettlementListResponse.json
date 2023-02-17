@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"monthlySettlementTransports"
+			],
 			"properties": {
 				"monthlySettlementTransports": {
 					"type": "array",
