@@ -3,7 +3,8 @@
 	"required": [
 		"date",
 		"amount",
-		"postingaccountid"
+		"postingaccountid",
+		"postingaccountname"
 	],
 	"properties": {
 		"date": {
