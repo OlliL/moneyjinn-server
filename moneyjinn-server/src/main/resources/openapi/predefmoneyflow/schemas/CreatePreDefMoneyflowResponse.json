@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"preDefMoneyflowId"
+			],
 			"properties": {
 				"preDefMoneyflowId": {
 					"type": "integer",
