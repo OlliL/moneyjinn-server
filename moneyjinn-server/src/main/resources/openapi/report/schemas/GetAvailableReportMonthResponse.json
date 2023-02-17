@@ -5,6 +5,9 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"year"
+			],
 			"properties": {
 				"year": {
 					"type": "integer",
