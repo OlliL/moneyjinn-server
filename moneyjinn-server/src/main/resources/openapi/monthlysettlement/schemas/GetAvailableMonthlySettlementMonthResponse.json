@@ -5,6 +5,12 @@
 		},
 		{
 			"type": "object",
+						"required": [
+				"year",
+				"month",
+				"allYears",
+				"allMonth"
+			],
 			"properties": {
 				"year": {
 					"type": "integer",
@@ -27,30 +33,6 @@
 						"type": "integer",
 						"format": "int32"
 					}
-				},
-				"nextMonthHasMoneyflows": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"previousMonthHasMoneyflows": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"previousMonth": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"previousYear": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"nextMonth": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"nextYear": {
-					"type": "integer",
-					"format": "int32"
 				}
 			}
 		}
