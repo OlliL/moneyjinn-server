@@ -2,8 +2,9 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,7 +68,8 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     // latest etfvalues table entry
     transport.setBuyPrice(new BigDecimal("666.000"));
     transport.setSellPrice(new BigDecimal("666.543"));
-    transport.setPricesTimestamp(OffsetDateTime.of(2008, 12, 16, 22, 5, 2, 0, ZoneOffset.UTC));
+    transport.setPricesTimestamp(ZonedDateTime.of(2008, 12, 16, 22, 5, 2, 0, ZoneId.systemDefault())
+        .toInstant().atOffset(ZoneOffset.UTC));
 
     expected.setEtfSummaryTransports(Collections.singletonList(transport));
 

@@ -7,8 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -366,7 +367,9 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(OffsetDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneOffset.UTC));
+    transport1
+        .setAmountCurrentState(ZonedDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneId.systemDefault())
+            .toInstant().atOffset(ZoneOffset.UTC));
     reportTurnoverCapitalsourceTransports.add(transport1);
     reportTurnoverCapitalsourceTransports.add(new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build());
@@ -407,7 +410,9 @@ public class ListReportsV2Test extends AbstractControllerTest {
     final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource1().build();
     transport1.setAmountCurrent(new BigDecimal("111.00"));
-    transport1.setAmountCurrentState(OffsetDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneOffset.UTC));
+    transport1
+        .setAmountCurrentState(ZonedDateTime.of(2009, 12, 1, 20, 20, 20, 0, ZoneId.systemDefault())
+            .toInstant().atOffset(ZoneOffset.UTC));
     reportTurnoverCapitalsourceTransports.add(transport1);
     final ReportTurnoverCapitalsourceTransport transport2 = new ReportTurnoverCapitalsourceTransportBuilder()
         .forReport_2010_05_Capitalsource2().build();

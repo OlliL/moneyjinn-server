@@ -29,7 +29,7 @@ import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -687,8 +687,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
     if (importedBalance != null) {
       turnoverCapitalsource.setAmountCurrent(importedBalance.getBalance());
-      turnoverCapitalsource
-          .setAmountCurrentState(importedBalance.getDate().atOffset(ZoneOffset.UTC));
+      turnoverCapitalsource.setAmountCurrentState(
+          importedBalance.getDate().atZone(ZoneId.systemDefault()).toOffsetDateTime());
     } else {
       final BigDecimal movement = this.getMovementForCapitalsourceAndDateRange(moneyflows,
           capitalsourceId, startOfMonth, today);

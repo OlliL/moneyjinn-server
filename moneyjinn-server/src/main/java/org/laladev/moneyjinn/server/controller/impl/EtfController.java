@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,7 +120,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
         if (etfValue != null) {
           transport.setBuyPrice(etfValue.getBuyPrice());
           transport.setSellPrice(etfValue.getSellPrice());
-          transport.setPricesTimestamp(etfValue.getChangeDate().atOffset(ZoneOffset.UTC));
+          transport.setPricesTimestamp(
+              etfValue.getChangeDate().atZone(ZoneId.systemDefault()).toOffsetDateTime());
         }
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal spentValue = BigDecimal.ZERO;
