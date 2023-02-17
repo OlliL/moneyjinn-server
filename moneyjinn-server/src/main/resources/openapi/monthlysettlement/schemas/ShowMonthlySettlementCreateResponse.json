@@ -5,6 +5,11 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"year",
+				"month",
+				"monthlySettlementTransports"
+			],
 			"properties": {
 				"year": {
 					"type": "integer",
