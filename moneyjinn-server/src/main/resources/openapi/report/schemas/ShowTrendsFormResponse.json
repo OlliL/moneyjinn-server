@@ -5,6 +5,10 @@
 		},
 		{
 			"type": "object",
+			"required": [
+				"minDate",
+				"maxDate"
+			],
 			"properties": {
 				"minDate": {
 					"type": "string",
