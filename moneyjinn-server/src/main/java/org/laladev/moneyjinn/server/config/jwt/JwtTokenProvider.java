@@ -34,6 +34,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -41,62 +43,80 @@ import java.util.List;
 import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+  private static final String CLAIM_USERID = "uid";
+  private static final String CLAIM_ROLES = "roles";
   private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
   @Value("${security.jwt.token.expiration-time-in-ms}")
   private long validityInMilliseconds;
   @Value("${security.jwt.token.refresh-expiration-time-in-ms}")
   private long refreshValidityInMilliseconds;
-  @Autowired
-  private UserDetailsService userDetailsService;
   Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-  public String createToken(final String username, final List<String> roles) {
+  public String createToken(final String username, final List<String> roles, final Long userId) {
     final Claims claims = Jwts.claims().setSubject(username);
-    claims.put("roles", roles);
-    final Date now = new Date();
-    final Date validity = new Date(now.getTime() + this.validityInMilliseconds);
+
+    claims.put(CLAIM_ROLES, roles);
+    claims.put(CLAIM_USERID, userId);
+
+    final Instant now = Instant.now();
+    final Instant expiration = now.plusMillis(this.validityInMilliseconds);
     return Jwts.builder()//
         .setClaims(claims)//
-        .setIssuedAt(now)//
-        .setExpiration(validity)//
+        .setIssuedAt(Date.from(now))//
+        .setExpiration(Date.from(expiration))//
         .signWith(this.secretKey)//
         .compact();
   }
 
-  public String createRefreshToken(final String username, final List<String> roles) {
+  public String createRefreshToken(final String username, final Long userId) {
     final Claims claims = Jwts.claims().setSubject(username);
-    claims.put("roles", roles);
-    final Date now = new Date();
-    final Date validity = new Date(now.getTime() + this.refreshValidityInMilliseconds);
+    claims.put(CLAIM_ROLES, Arrays.asList(RefreshOnlyGrantedAuthority.ROLE));
+    claims.put(CLAIM_USERID, userId);
+
+    final Instant now = Instant.now();
+    final Instant expiration = now.plusMillis(this.refreshValidityInMilliseconds);
+
     return Jwts.builder()//
         .setClaims(claims)//
-        .setIssuedAt(now)//
-        .setExpiration(validity)//
+        .setIssuedAt(Date.from(now))//
+        .setExpiration(Date.from(expiration))//
         .signWith(this.secretKey)//
         .compact();
   }
 
   public Authentication getAuthentication(final String token) {
-    final UserDetails userDetails = this.userDetailsService
-        .loadUserByUsername(this.getUsername(token));
-    if (userDetails != null) {
+    PreAuthenticatedAuthenticationToken authenticationToken = null;
+
+    final String username = this.getUsername(token);
+    final Long userId = this.getUserId(token);
+    final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+    if (username != null && userId != null) {
+
       if (this.isRefreshToken(token)) {
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-            Arrays.asList(new RefreshOnlyGrantedAuthority()));
+        grantedAuthorities.add(new RefreshOnlyGrantedAuthority());
+      } else {
+        this.getRoles(token).forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p)));
       }
-      return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+      final org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
+          username, "", grantedAuthorities);
+
+      authenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, "",
+          userDetails.getAuthorities());
+      authenticationToken.setDetails(userId);
     }
-    return null;
+
+    return authenticationToken;
   }
 
   private String getUsername(final String token) {
@@ -104,9 +124,20 @@ public class JwtTokenProvider {
         .getBody().getSubject();
   }
 
+  @SuppressWarnings("unchecked")
+  private List<String> getRoles(final String token) {
+    return Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token)
+        .getBody().get(CLAIM_ROLES, List.class);
+  }
+
+  private Long getUserId(final String token) {
+    return Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token)
+        .getBody().get(CLAIM_USERID, Long.class);
+  }
+
   public boolean isRefreshToken(final String token) {
     final Collection<?> roles = Jwts.parserBuilder().setSigningKey(this.secretKey).build()
-        .parseClaimsJws(token).getBody().get("roles", Collection.class);
+        .parseClaimsJws(token).getBody().get(CLAIM_ROLES, Collection.class);
     if (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE)) {
       return true;
     }
@@ -115,10 +146,6 @@ public class JwtTokenProvider {
 
   public String resolveToken(final HttpServletRequest req) {
     final String bearerToken = req.getHeader("Authorization");
-    if (bearerToken == null) {
-      final String token = req.getParameter("token");
-      return token;
-    }
     if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
       return bearerToken.substring(7, bearerToken.length());
     }

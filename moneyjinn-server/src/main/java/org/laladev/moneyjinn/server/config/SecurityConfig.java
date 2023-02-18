@@ -32,6 +32,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
+import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +59,6 @@ public class SecurityConfig {
   private List<String> allowedOrigins;
 
   private static String[] OPEN_ENDPOINTS = { "/moneyflow/server/user/login",
-      "/moneyflow/server/user/refreshToken",
       "/moneyflow/server/importedbalance/createImportedBalance",
       "/moneyflow/server/importedmoneyflow/createImportedMoneyflow",
       "/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement" };
@@ -101,6 +101,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
+            .requestMatchers("/moneyflow/server/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
             .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()

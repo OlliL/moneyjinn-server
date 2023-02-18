@@ -27,7 +27,6 @@ package org.laladev.moneyjinn.server.controller.impl;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
-import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
@@ -106,31 +104,35 @@ public class UserController extends AbstractController implements UserController
   public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest request) {
     final String username = request.getUserName();
     final String password = this.userService.cryptPassword(request.getUserPassword());
-    final LoginResponse response = new LoginResponse();
+
     this.authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
     final User user = this.userService.getUserByName(username);
-    return ResponseEntity.ok(this.generateLoginResponse(response, user));
+
+    return ResponseEntity.ok(this.generateLoginResponse(user));
   }
 
   @Override
   public ResponseEntity<LoginResponse> refreshToken() {
-    final LoginResponse response = new LoginResponse();
     final User user = this.userService.getUserById(super.getUserId());
-    return ResponseEntity.ok(this.generateLoginResponse(response, user));
+
+    return ResponseEntity.ok(this.generateLoginResponse(user));
 
   }
 
-  private LoginResponse generateLoginResponse(final LoginResponse response, final User user) {
+  private LoginResponse generateLoginResponse(final User user) {
+    final LoginResponse response = new LoginResponse();
     if (user != null) {
       if (!user.getPermissions().contains(UserPermission.LOGIN)) {
         throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
       }
       final List<String> permissions = user.getPermissions().stream().map(perm -> perm.name())
           .collect(Collectors.toCollection(ArrayList::new));
-      final String token = this.jwtTokenProvider.createToken(user.getName(), permissions);
+      final String token = this.jwtTokenProvider.createToken(user.getName(), permissions,
+          user.getId().getId());
       final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(),
-          Arrays.asList(RefreshOnlyGrantedAuthority.ROLE));
+          user.getId().getId());
       final UserTransport userTransport = super.map(user, UserTransport.class);
       response.setUserTransport(userTransport);
       response.setToken(token);
