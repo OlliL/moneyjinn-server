@@ -3,3 +3,4 @@
 **/.classpath
 **/.project
 **/.factorypath
+**/org.eclipse.m2e.core.maven2Builder.launch
