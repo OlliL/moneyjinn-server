@@ -16,8 +16,11 @@
 			}
 		],
 		"responses": {
-			"200": {
-				"description": "OK",
+			"204": {
+				"description": "OK"
+			},
+			"400": {
+				"description": "Generic Client Error",
 				"content": {
 					"application/json": {
 						"schema": {
@@ -25,9 +28,6 @@
 						}
 					}
 				}
-			},
-			"204": {
-				"description": "OK"
 			}
 		}
 	}

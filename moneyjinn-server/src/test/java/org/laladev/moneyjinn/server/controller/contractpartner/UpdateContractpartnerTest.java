@@ -12,10 +12,10 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
-import  org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.UpdateContractpartnerRequest;
@@ -63,7 +63,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -119,11 +119,11 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
         .forContractpartner1().build();
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    Assertions.assertTrue(actual.getResult());
     Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID,
         contractpartner.getId().getId());
     Assertions.assertEquals("hugo", contractpartner.getName());
@@ -139,11 +139,11 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
         .forContractpartner3().build();
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    Assertions.assertTrue(actual.getResult());
     Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID,
         contractpartner.getId().getId());
     Assertions.assertEquals("hugo", contractpartner.getName());
@@ -159,11 +159,11 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
         .forContractpartner3().build();
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    Assertions.assertTrue(actual.getResult());
     Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID,
         contractpartner.getId().getId());
     Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_NAME,
@@ -187,8 +187,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
         .forContractpartner1().build();
     transport.setPostingAccountId(null); // otherwise not existing id referenced
     request.setContractpartnerTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
   }
 }
