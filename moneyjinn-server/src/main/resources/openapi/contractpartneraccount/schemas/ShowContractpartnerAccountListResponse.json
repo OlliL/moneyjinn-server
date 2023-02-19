@@ -1,18 +1,11 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"contractpartnerAccountTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/ContractpartnerAccountTransport.json"
-					}
-				}
+	"type": "object",
+	"properties": {
+		"contractpartnerAccountTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/ContractpartnerAccountTransport.json"
 			}
 		}
-	]
+	}
 }

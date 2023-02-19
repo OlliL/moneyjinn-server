@@ -39,11 +39,8 @@ import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMap
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountRequest;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
 import org.laladev.moneyjinn.server.model.UpdateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
@@ -95,41 +92,35 @@ public class ContractpartnerAccountController extends AbstractController
     contractpartnerAccount.setId(null);
     final ValidationResult validationResult = this.contractpartnerAccountService
         .validateContractpartnerAccount(userId, contractpartnerAccount);
-    final CreateContractpartnerAccountResponse response = new CreateContractpartnerAccountResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
-    }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
     final ContractpartnerAccountID contractpartnerAccountID = this.contractpartnerAccountService
         .createContractpartnerAccount(userId, contractpartnerAccount);
+
+    final CreateContractpartnerAccountResponse response = new CreateContractpartnerAccountResponse();
     response.setContractpartnerAccountId(contractpartnerAccountID.getId());
     return ResponseEntity.ok(response);
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> updateContractpartnerAccount(
+  public ResponseEntity<Void> updateContractpartnerAccount(
       @RequestBody final UpdateContractpartnerAccountRequest request) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccount contractpartnerAccount = super.map(
         request.getContractpartnerAccountTransport(), ContractpartnerAccount.class);
     final ValidationResult validationResult = this.contractpartnerAccountService
         .validateContractpartnerAccount(userId, contractpartnerAccount);
-    final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    } else {
-      this.contractpartnerAccountService.updateContractpartnerAccount(userId,
-          contractpartnerAccount);
-    }
-    return ResponseEntity.ok(response);
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
+
+    return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteContractpartnerAccount(
+  public ResponseEntity<Void> deleteContractpartnerAccount(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(id);

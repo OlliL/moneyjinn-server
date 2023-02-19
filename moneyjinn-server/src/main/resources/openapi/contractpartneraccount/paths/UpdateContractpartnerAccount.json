@@ -15,8 +15,21 @@
 			"required": true
 		},
 		"responses": {
-			"200": {
-				"description": "OK",
+			"204": {
+				"description": "OK"
+			},
+			"400": {
+				"description": "Generic Client Error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ErrorResponse.json"
+						}
+					}
+				}
+			},
+			"422": {
+				"description": "Validation Error",
 				"content": {
 					"application/json": {
 						"schema": {

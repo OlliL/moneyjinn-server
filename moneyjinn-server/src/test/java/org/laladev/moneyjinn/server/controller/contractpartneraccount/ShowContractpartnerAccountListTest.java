@@ -6,12 +6,12 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
-import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -55,17 +55,18 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowContractpartnerAccountListResponse expected = this.getCompleteResponse();
-    final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+    final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
+        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method,
         ShowContractpartnerAccountListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
   public void test_contractpartnerWithNoAccounts_responseWithNoAccounts() throws Exception {
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
-    final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID, this.method, false,
+    final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
+        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER2_ID, this.method,
         ShowContractpartnerAccountListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -73,8 +74,8 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   @Test
   public void test_notExistingContractpartner_emptyResponseObject() throws Exception {
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
-    final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method, false,
+    final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
+        "/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method,
         ShowContractpartnerAccountListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -93,8 +94,8 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
-    final ShowContractpartnerAccountListResponse actual = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+    final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
+        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method,
         ShowContractpartnerAccountListResponse.class);
     Assertions.assertEquals(expected, actual);
   }

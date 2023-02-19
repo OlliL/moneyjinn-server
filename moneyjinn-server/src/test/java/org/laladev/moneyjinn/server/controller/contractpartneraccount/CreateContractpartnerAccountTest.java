@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountResponse;
-import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -20,6 +16,11 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.server.model.CreateContractpartnerAccountResponse;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -59,11 +60,11 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
-    final CreateContractpartnerAccountResponse expected = new CreateContractpartnerAccountResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
-        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -120,8 +121,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
     request.setContractpartnerAccountTransport(transport);
-    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
-        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    final CreateContractpartnerAccountResponse actual = super.callUsecaseExpect200(this.method,
+        request, CreateContractpartnerAccountResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.NEXT_ID);
@@ -140,8 +141,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
         .forNewContractpartnerAccount().build();
     transport.setBankCode("ABCDEFGH");
     request.setContractpartnerAccountTransport(transport);
-    final CreateContractpartnerAccountResponse actual = super.callUsecaseWithContent("",
-        this.method, request, false, CreateContractpartnerAccountResponse.class);
+    final CreateContractpartnerAccountResponse actual = super.callUsecaseExpect200(this.method,
+        request, CreateContractpartnerAccountResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.NEXT_ID);

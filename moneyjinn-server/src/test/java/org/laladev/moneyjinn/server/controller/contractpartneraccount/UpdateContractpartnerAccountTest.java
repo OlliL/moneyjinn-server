@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.server.model.UpdateContractpartnerAccountRequest;
-import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -22,6 +18,10 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
+import org.laladev.moneyjinn.server.model.UpdateContractpartnerAccountRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -70,7 +70,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -109,9 +109,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     transport2.setAccountNumber(transport1.getAccountNumber());
     final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
     request.setContractpartnerAccountTransport(transport2);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
@@ -134,9 +134,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     transport2.setBankCode(transport1.getBankCode());
     final UpdateContractpartnerAccountRequest request = new UpdateContractpartnerAccountRequest();
     request.setContractpartnerAccountTransport(transport2);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID,
@@ -158,9 +158,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     transport.setAccountNumber("1");
     transport.setBankCode("2");
     request.setContractpartnerAccountTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
@@ -180,9 +180,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
     transport.setAccountNumber("1");
     transport.setBankCode("ABCDEFGH");
     request.setContractpartnerAccountTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertEquals(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID,
@@ -210,9 +210,9 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
         .getContractpartnerAccounts(userId, contractpartner2Id);
     Assertions.assertEquals(2, contractpartner1Accounts.size());
     Assertions.assertTrue(contractpartner2Accounts.isEmpty());
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     contractpartner1Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,
         contractpartner1Id);
     contractpartner2Accounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,

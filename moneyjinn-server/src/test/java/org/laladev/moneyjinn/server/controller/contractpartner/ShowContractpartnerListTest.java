@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import  org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.ShowContractpartnerListResponse;
@@ -62,8 +62,8 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowContractpartnerListResponse expected = this.getCompleteResponse();
-    final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowContractpartnerListResponse.class);
+    final ShowContractpartnerListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowContractpartnerListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -80,8 +80,8 @@ public class ShowContractpartnerListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowContractpartnerListResponse expected = new ShowContractpartnerListResponse();
-    final ShowContractpartnerListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowContractpartnerListResponse.class);
+    final ShowContractpartnerListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowContractpartnerListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 }

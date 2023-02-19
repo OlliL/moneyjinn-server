@@ -94,6 +94,11 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return httpHeaders;
   }
 
+  protected <T> T callUsecaseExpect200(final String uriParameters, final HttpMethod httpMethod,
+      final Class<T> clazz) throws Exception {
+    return this.callUsecase(uriParameters, httpMethod, "", false, clazz, HttpStatus.OK);
+  }
+
   protected <T> T callUsecaseExpect200(final HttpMethod httpMethod, final Class<T> clazz)
       throws Exception {
     return this.callUsecase("", httpMethod, "", false, clazz, HttpStatus.OK);
@@ -157,6 +162,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
+  @Deprecated
   protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,
       final boolean noResult, final Class<T> clazz) throws Exception {
     HttpStatus status = HttpStatus.OK;
@@ -166,6 +172,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return this.callUsecase(uriParameters, httpMethod, "", noResult, clazz, status);
   }
 
+  @Deprecated
   protected <T> T callUsecaseWithContent(final String uriParameters, final HttpMethod httpMethod,
       final Object body, final boolean noResult, final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);

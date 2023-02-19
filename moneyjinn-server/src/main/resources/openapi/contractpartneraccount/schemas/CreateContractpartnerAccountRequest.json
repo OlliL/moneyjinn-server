@@ -1,8 +1,8 @@
 {
-				"type": "object",
-				"properties": {
-					"contractpartnerAccountTransport": {
-						"$ref": "../../transport/ContractpartnerAccountTransport.json"
-					}
-				}
-			}
+	"type": "object",
+	"properties": {
+		"contractpartnerAccountTransport": {
+			"$ref": "../../transport/ContractpartnerAccountTransport.json"
+		}
+	}
+}
