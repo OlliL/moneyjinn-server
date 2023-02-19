@@ -14,10 +14,10 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.UpdateCapitalsourceRequest;
@@ -65,7 +65,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -114,9 +114,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
@@ -137,9 +137,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
@@ -159,9 +159,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     transport.setBankCode("ABCDEFGH");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
@@ -182,9 +182,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setImportAllowed(1);
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
@@ -203,9 +203,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setImportAllowed(2);
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
@@ -224,9 +224,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setImportAllowed(0);
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
@@ -247,9 +247,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
@@ -268,9 +268,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
@@ -289,9 +289,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
@@ -316,8 +316,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1()
         .build();
     request.setCapitalsourceTransport(transport);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    super.callUsecaseExpect204(this.method, request);
   }
 }

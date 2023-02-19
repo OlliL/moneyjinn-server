@@ -94,6 +94,28 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return httpHeaders;
   }
 
+  protected <T> T callUsecaseExpect200(final HttpMethod httpMethod, final Class<T> clazz)
+      throws Exception {
+    return this.callUsecase("", httpMethod, "", false, clazz, HttpStatus.OK);
+  }
+
+  protected <T> T callUsecaseExpect200(final HttpMethod httpMethod, final Object body,
+      final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.OK);
+  }
+
+  protected <T> T callUsecaseExpect204(final HttpMethod httpMethod, final Object body)
+      throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase("", httpMethod, bodyStr, true, null, HttpStatus.NO_CONTENT);
+  }
+
+  protected <T> T callUsecaseExpect204(final String uriParameters, final HttpMethod httpMethod)
+      throws Exception {
+    return this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.NO_CONTENT);
+  }
+
   protected <T> T callUsecaseExpect400(final HttpMethod httpMethod, final Object body,
       final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
@@ -120,6 +142,12 @@ public abstract class AbstractControllerTest extends AbstractTest {
       final Object body, final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
     return this.callUsecase(uriParameters, httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
+  }
+
+  protected <T> T callUsecaseExpect422(final HttpMethod httpMethod, final Object body,
+      final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   protected <T> T callUsecaseExpect422(final String uriParameters, final HttpMethod httpMethod,

@@ -58,8 +58,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
-    super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method);
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
@@ -74,8 +73,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
-    super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
@@ -113,8 +111,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
-    super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method);
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
@@ -132,7 +129,6 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
   }
 }

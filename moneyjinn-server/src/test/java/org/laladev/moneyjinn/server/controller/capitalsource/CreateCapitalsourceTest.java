@@ -67,7 +67,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422("", this.method, request,
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -136,8 +136,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final CreateCapitalsourceResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -159,8 +159,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final CreateCapitalsourceResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -184,8 +184,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final CreateCapitalsourceResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -212,8 +212,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final CreateCapitalsourceResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -249,8 +249,8 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(1L);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final CreateCapitalsourceResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.ADMINGROUP_ID);

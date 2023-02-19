@@ -60,8 +60,8 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
   @Test
   public void test_FullResponseObject() throws Exception {
     final ShowCapitalsourceListResponse expected = this.getCompleteResponse();
-    final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowCapitalsourceListResponse.class);
+    final ShowCapitalsourceListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowCapitalsourceListResponse.class);
     Assertions.assertEquals(expected, actual);
 
   }
@@ -79,8 +79,8 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
-    final ShowCapitalsourceListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowCapitalsourceListResponse.class);
+    final ShowCapitalsourceListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowCapitalsourceListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 }

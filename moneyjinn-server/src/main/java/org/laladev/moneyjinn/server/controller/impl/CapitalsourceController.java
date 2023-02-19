@@ -40,11 +40,8 @@ import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMap
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ShowCapitalsourceListResponse;
 import org.laladev.moneyjinn.server.model.UpdateCapitalsourceRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IUserService;
@@ -111,7 +108,7 @@ public class CapitalsourceController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> updateCapitalsource(
+  public ResponseEntity<Void> updateCapitalsource(
       @RequestBody final UpdateCapitalsourceRequest request) {
     final UserID userId = super.getUserId();
     final Capitalsource capitalsource = super.map(request.getCapitalsourceTransport(),
@@ -123,23 +120,15 @@ public class CapitalsourceController extends AbstractController
     final ValidationResult validationResult = this.capitalsourceService
         .validateCapitalsource(capitalsource);
 
-    final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
+    this.throwValidationExceptionIfInvalid(validationResult);
 
-    if (validationResult.isValid()) {
-      this.capitalsourceService.updateCapitalsource(capitalsource);
-    } else {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    }
+    this.capitalsourceService.updateCapitalsource(capitalsource);
 
-    return ResponseEntity.ok(response);
-
+    return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteCapitalsourceById(
-      @PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteCapitalsourceById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group accessor = this.accessRelationService.getAccessor(userId);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
