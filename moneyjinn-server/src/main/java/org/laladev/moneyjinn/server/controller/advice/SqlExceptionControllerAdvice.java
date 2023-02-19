@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
-import lombok.RequiredArgsConstructor;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.server.exception.ValidationException;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
+import java.sql.SQLException;
+import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -40,23 +38,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@RequiredArgsConstructor
-public class ValidationExceptionControllerAdvice extends ResponseEntityExceptionHandler {
-  private final ValidationItemTransportMapper mapper;
+public class SqlExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(ValidationExceptionControllerAdvice.class);
+  private static Logger LOGGER = LoggerFactory.getLogger(SqlExceptionControllerAdvice.class);
 
-  @ExceptionHandler(ValidationException.class)
+  @ExceptionHandler(SQLException.class)
   @ResponseBody
-  ResponseEntity<Object> handleControllerException(final ValidationException ex) {
-    final ValidationResult result = ex.getValidationResult();
-    final ValidationResponse response = new ValidationResponse();
+  ResponseEntity<Object> handleControllerException(final SQLException ex) {
+    final ErrorResponse errorResponse = new ErrorResponse();
+    errorResponse.setCode(ErrorCode.UNKNOWN.getErrorCode());
+    errorResponse.setMessage(ex.getMessage());
 
-    response.setResult(false);
-    response.setValidationItemTransports(
-        result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
-
-    LOGGER.error("Validation error", ex);
-    return ResponseEntity.unprocessableEntity().body(response);
+    LOGGER.error(ex.getMessage(), ex);
+    return ResponseEntity.internalServerError().body(errorResponse);
   }
 }
