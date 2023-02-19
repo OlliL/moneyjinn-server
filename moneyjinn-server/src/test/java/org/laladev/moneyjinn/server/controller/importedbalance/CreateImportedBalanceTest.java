@@ -22,7 +22,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.http.HttpMethod;
@@ -57,9 +56,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
         .forNewImportedBalance().build();
     request.setImportedBalanceTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService
@@ -89,9 +86,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     // Capitalsource 4 is no longer valid but we need it valid for this test, so "modify" it :-/
     this.capitalsourceService.updateCapitalsource(capitalsource);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final List<ImportedBalance> importedBalances = this.importedBalanceService
         .getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
@@ -110,9 +105,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
         .forOnlyBalanceImportedBalance().build();
     request.setImportedBalanceTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService

@@ -39,6 +39,8 @@
 		<!--for hbci-batch only-->
 		<hibernate-core.version>6.1.7.Final</hibernate-core.version>
 		<hbci4java.version>3.1.64</hbci4java.version>
+		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
+		<httpclient.version>4.5.14</httpclient.version>
 
 		<maven-compiler-plugin>3.10.1</maven-compiler-plugin>
 		
@@ -175,6 +177,16 @@
 				<groupId>com.github.hbci4j</groupId>
 				<artifactId>hbci4j-core</artifactId>
 				<version>${hbci4java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${httpclient.version}</version>
 			</dependency>
 			
 			<!-- TEST SCOPE -->

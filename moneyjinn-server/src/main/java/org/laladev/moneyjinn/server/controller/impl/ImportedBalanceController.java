@@ -39,8 +39,6 @@ import org.laladev.moneyjinn.server.controller.api.ImportedBalanceControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedBalanceTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +64,7 @@ public class ImportedBalanceController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> createImportedBalance(
+  public ResponseEntity<Void> createImportedBalance(
       @RequestBody final CreateImportedBalanceRequest request) {
     final ImportedBalanceTransport importedBalanceTransport = request.getImportedBalanceTransport();
     final ImportedBalance importedBalance = super.map(importedBalanceTransport,
@@ -86,18 +84,11 @@ public class ImportedBalanceController extends AbstractController
       final ValidationResult validationResult = this.importedBalanceService
           .validateImportedBalance(importedBalance);
 
-      final ValidationResponse response = new ValidationResponse();
+      this.throwValidationExceptionIfInvalid(validationResult);
 
-      if (validationResult.isValid()) {
-        this.importedBalanceService.upsertImportedBalance(importedBalance);
-        response.setResult(true);
-      } else {
-        response.setResult(false);
-        response.setValidationItemTransports(super.mapList(
-            validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      }
+      this.importedBalanceService.upsertImportedBalance(importedBalance);
 
-      return ResponseEntity.ok(response);
+      return ResponseEntity.noContent().build();
     } else {
       throw new BusinessException("No matching capitalsource found!",
           ErrorCode.CAPITALSOURCE_NOT_FOUND);

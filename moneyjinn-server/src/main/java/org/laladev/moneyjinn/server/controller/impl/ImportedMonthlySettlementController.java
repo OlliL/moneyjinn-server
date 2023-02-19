@@ -40,8 +40,6 @@ import org.laladev.moneyjinn.server.controller.api.ImportedMonthlySettlementCont
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +65,7 @@ public class ImportedMonthlySettlementController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> createImportedMonthlySettlement(
+  public ResponseEntity<Void> createImportedMonthlySettlement(
       @RequestBody final CreateImportedMonthlySettlementRequest request) {
     final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = request
         .getImportedMonthlySettlementTransport();
@@ -89,18 +87,14 @@ public class ImportedMonthlySettlementController extends AbstractController
       importedMonthlySettlement.setCapitalsource(capitalsource);
       final ValidationResult validationResult = this.importedMonthlySettlementService
           .validateImportedMonthlySettlement(importedMonthlySettlement);
-      final ValidationResponse response = new ValidationResponse();
 
-      if (validationResult.isValid()) {
-        this.importedMonthlySettlementService
-            .upsertImportedMonthlySettlement(importedMonthlySettlement);
-        response.setResult(true);
-      } else {
-        response.setResult(false);
-        response.setValidationItemTransports(super.mapList(
-            validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      }
-      return ResponseEntity.ok(response);
+      this.throwValidationExceptionIfInvalid(validationResult);
+
+      this.importedMonthlySettlementService
+          .upsertImportedMonthlySettlement(importedMonthlySettlement);
+
+      return ResponseEntity.noContent().build();
+
     } else {
       throw new BusinessException("No matching capitalsource found!",
           ErrorCode.CAPITALSOURCE_NOT_FOUND);

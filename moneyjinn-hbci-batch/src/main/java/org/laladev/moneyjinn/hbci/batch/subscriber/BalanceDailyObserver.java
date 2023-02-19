@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedBalanceControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.hbci.backend.model.ImportedBalanceTransport;
-import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
 public class BalanceDailyObserver implements PropertyChangeListener {
@@ -56,17 +55,7 @@ public class BalanceDailyObserver implements PropertyChangeListener {
     request.setImportedBalanceTransport(transport);
 
     try {
-      final ValidationResponse response = new ImportedBalanceControllerApi()
-          .createImportedBalance(request);
-      if (response != null) {
-        if (response.getMessage() != null) {
-          throw new RuntimeException("error: " + response.getMessage());
-        } else if (response.getResult().equals(Boolean.FALSE)) {
-          throw new RuntimeException(
-              "error: " + response.getValidationItemTransports().get(0).getError().toString());
-        }
-
-      }
+      new ImportedBalanceControllerApi().createImportedBalance(request);
     } catch (final ApiException e) {
       throw new RuntimeException(e);
     }

@@ -18,7 +18,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -58,9 +57,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
         .forNewImportedMoneyflow().build();
     request.setImportedMoneyflowTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -86,9 +83,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setExternalid(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_EXTERNAL_ID);
     request.setImportedMoneyflowTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
         .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
@@ -111,9 +106,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setBankCode("ABCDEFGH");
     request.setImportedMoneyflowTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -144,9 +137,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setBankCode(null);
     request.setImportedMoneyflowTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);

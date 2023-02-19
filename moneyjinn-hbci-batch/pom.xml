@@ -52,6 +52,18 @@
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -70,7 +82,7 @@
 							<modelPackage>org.laladev.moneyjinn.hbci.backend.model</modelPackage>
 							<skipOperationExample>true</skipOperationExample>
 							<configOptions>
-								<library>native</library>
+								<library>apache-httpclient</library>
 								<sourceFolder>src/gen/java/main</sourceFolder>
 								<useJakartaEe>true</useJakartaEe>
 								<!--								<useSpringBoot3>true</useSpringBoot3>-->

@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.hbci.backend.model.ImportedMoneyflowTransport;
-import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
 public class AccountMovementObserver implements PropertyChangeListener {
@@ -82,19 +81,7 @@ public class AccountMovementObserver implements PropertyChangeListener {
     request.setImportedMoneyflowTransport(transport);
 
     try {
-      final ValidationResponse response = new ImportedMoneyflowControllerApi()
-          .createImportedMoneyflow(request);
-      if (response != null) {
-        if (response.getMessage() != null) {
-          throw new RuntimeException("error: (" + transport.getAccountNumberCapitalsource() + "/"
-              + transport.getBankCodeCapitalsource() + ") " + response.getMessage());
-        } else if (response.getResult().equals(Boolean.FALSE)) {
-          throw new RuntimeException(
-              "error: (" + transport.getAccountNumberCapitalsource() + "/" + transport.getBankCode()
-                  + ") " + response.getValidationItemTransports().get(0).getError().toString());
-        }
-
-      }
+      new ImportedMoneyflowControllerApi().createImportedMoneyflow(request);
     } catch (final ApiException e) {
       throw new RuntimeException(e);
     }

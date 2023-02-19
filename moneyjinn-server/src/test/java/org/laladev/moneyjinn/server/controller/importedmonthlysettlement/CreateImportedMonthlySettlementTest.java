@@ -17,7 +17,6 @@ import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -49,9 +48,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
         .forNewImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final UserID userId = new UserID(transport.getUserid());
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
@@ -84,9 +81,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     Assertions.assertTrue(
         BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     importedMonthlySettlements = this.importedMonthlySettlementService
         .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
@@ -108,9 +103,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
         .forOnlyBalanceImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
 
-    final ValidationResponse validationResponse = super.callUsecaseWithContent("", this.method,
-        request, false, ValidationResponse.class);
-    Assertions.assertTrue(validationResponse.getResult());
+    super.callUsecaseExpect204(this.method, request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService

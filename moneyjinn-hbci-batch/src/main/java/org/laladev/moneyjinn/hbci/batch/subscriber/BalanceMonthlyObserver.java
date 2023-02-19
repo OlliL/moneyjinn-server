@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedMonthlySettlementControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.hbci.backend.model.ImportedMonthlySettlementTransport;
-import org.laladev.moneyjinn.hbci.backend.model.ValidationResponse;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 
 public class BalanceMonthlyObserver implements PropertyChangeListener {
@@ -59,17 +58,7 @@ public class BalanceMonthlyObserver implements PropertyChangeListener {
     request.setImportedMonthlySettlementTransport(transport);
 
     try {
-      final ValidationResponse response = new ImportedMonthlySettlementControllerApi()
-          .createImportedMonthlySettlement(request);
-      if (response != null) {
-        if (response.getMessage() != null) {
-          throw new RuntimeException("error: " + response.getMessage());
-        } else if (response.getResult().equals(Boolean.FALSE)) {
-          throw new RuntimeException(
-              "error: " + response.getValidationItemTransports().get(0).getError().toString());
-        }
-
-      }
+      new ImportedMonthlySettlementControllerApi().createImportedMonthlySettlement(request);
     } catch (final ApiException e) {
       throw new RuntimeException(e);
     }

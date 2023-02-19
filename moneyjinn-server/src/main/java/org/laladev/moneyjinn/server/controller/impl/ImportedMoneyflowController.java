@@ -181,7 +181,7 @@ public class ImportedMoneyflowController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> createImportedMoneyflow(
+  public ResponseEntity<Void> createImportedMoneyflow(
       @RequestBody final CreateImportedMoneyflowRequest request) {
     final ImportedMoneyflowTransport importedMoneyflowTransport = request
         .getImportedMoneyflowTransport();
@@ -202,18 +202,11 @@ public class ImportedMoneyflowController extends AbstractController
       final ValidationResult validationResult = this.importedMoneyflowService
           .validateImportedMoneyflow(importedMoneyflow);
 
-      final ValidationResponse response = new ValidationResponse();
+      this.throwValidationExceptionIfInvalid(validationResult);
 
-      if (validationResult.isValid()) {
-        this.importedMoneyflowService.createImportedMoneyflow(importedMoneyflow);
-        response.setResult(true);
-      } else {
-        response.setResult(false);
-        response.setValidationItemTransports(super.mapList(
-            validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      }
+      this.importedMoneyflowService.createImportedMoneyflow(importedMoneyflow);
 
-      return ResponseEntity.ok(response);
+      return ResponseEntity.noContent().build();
     } else {
       throw new BusinessException("No matching capitalsource found!",
           ErrorCode.CAPITALSOURCE_NOT_FOUND);
