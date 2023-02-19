@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -77,13 +77,12 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
     Assertions.assertNotNull(postingAccount);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, false,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(
+        "/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, ErrorResponse.class);
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
     Assertions.assertNotNull(postingAccount);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test

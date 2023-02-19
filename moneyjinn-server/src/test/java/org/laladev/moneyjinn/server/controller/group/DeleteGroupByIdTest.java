@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
 
@@ -71,11 +71,11 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     expected.setMessage("You may not delete a group while there where/are users assigned to it!");
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + GroupTransportBuilder.GROUP1_ID, this.method, false, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400("/" + GroupTransportBuilder.GROUP1_ID,
+        this.method, ErrorResponse.class);
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test

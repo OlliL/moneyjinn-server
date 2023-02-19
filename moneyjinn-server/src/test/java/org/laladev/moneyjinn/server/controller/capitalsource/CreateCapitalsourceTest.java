@@ -15,15 +15,16 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceRequest;
 import org.laladev.moneyjinn.server.model.CreateCapitalsourceResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -63,11 +64,11 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
-    final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreateCapitalsourceResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422("", this.method, request,
+        ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -135,7 +136,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    expected.setResult(true);
     final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -159,7 +159,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    expected.setResult(true);
     final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -185,7 +184,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    expected.setResult(true);
     final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -214,7 +212,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(CapitalsourceTransportBuilder.NEXT_ID);
-    expected.setResult(true);
     final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);
@@ -252,7 +249,6 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
     request.setCapitalsourceTransport(transport);
     final CreateCapitalsourceResponse expected = new CreateCapitalsourceResponse();
     expected.setCapitalsourceId(1L);
-    expected.setResult(true);
     final CreateCapitalsourceResponse actual = super.callUsecaseWithContent("", this.method,
         request, false, CreateCapitalsourceResponse.class);
     Assertions.assertEquals(expected, actual);

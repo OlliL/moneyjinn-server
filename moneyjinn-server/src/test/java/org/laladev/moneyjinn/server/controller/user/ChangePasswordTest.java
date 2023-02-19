@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
@@ -74,11 +74,10 @@ public class ChangePasswordTest extends AbstractControllerTest {
     request.setOldPassword(this.userPassword);
     request.setPassword("");
 
-    final ErrorResponse errorResponse = super.callUsecaseWithContent("", this.method, request,
-        false, ErrorResponse.class);
-    Assertions.assertNotNull(errorResponse);
-    Assertions.assertEquals(errorResponse.getCode(),
-        ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
+        ErrorResponse.class);
+    Assertions.assertNotNull(actual);
+    Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
 
   }
 
@@ -110,11 +109,10 @@ public class ChangePasswordTest extends AbstractControllerTest {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword("wrongPassword");
 
-    final ErrorResponse errorResponse = super.callUsecaseWithContent("", this.method, request,
-        false, ErrorResponse.class);
-    Assertions.assertNotNull(errorResponse);
-    Assertions.assertEquals(errorResponse.getCode(),
-        ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
+        ErrorResponse.class);
+    Assertions.assertNotNull(actual);
+    Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
 
   }
 

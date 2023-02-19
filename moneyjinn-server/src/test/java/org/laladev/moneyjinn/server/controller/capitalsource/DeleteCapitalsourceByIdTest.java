@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -15,6 +14,7 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -94,13 +94,14 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, this.method, false,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(
+        "/" + CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, this.method, ErrorResponse.class);
+
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test

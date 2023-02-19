@@ -28,6 +28,8 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.exception.ValidationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -42,5 +44,11 @@ public abstract class AbstractController extends AbstractMapperSupport {
     }
 
     throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
+  }
+
+  protected void throwValidationExceptionIfInvalid(final ValidationResult validationResult) {
+    if (!validationResult.isValid()) {
+      throw new ValidationException(validationResult);
+    }
   }
 }

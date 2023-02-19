@@ -1,19 +1,12 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
-		},
-		{
-			"type": "object",
-			"required": [
-				"capitalsourceId"
-			],
-			"properties": {
-				"capitalsourceId": {
-					"type": "integer",
-					"format": "int64"
-				}
-			}
+	"type": "object",
+	"required": [
+		"capitalsourceId"
+	],
+	"properties": {
+		"capitalsourceId": {
+			"type": "integer",
+			"format": "int64"
 		}
-	]
+	}
 }

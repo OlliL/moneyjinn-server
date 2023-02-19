@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import  org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.CompareDataDatasetTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
+import org.laladev.moneyjinn.server.builder.CompareDataDatasetTransportBuilder;
+import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
+import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
@@ -242,7 +242,7 @@ public class CompareDataTest extends AbstractControllerTest {
     expected.setMessage(
         "The specified file is not parseable! Maybe you've selected the wrong format or file?");
     expected.setCode(ErrorCode.WRONG_FILE_FORMAT.getErrorCode());
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }

@@ -11,12 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
-import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.server.model.MoneyflowTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -35,6 +29,12 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
@@ -314,10 +314,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
     transport.setId(MoneyflowTransportBuilder.NEXT_ID);
     request.setMoneyflowTransport(transport);
-    final ErrorResponse errorResponse = super.callUsecaseWithContent("", this.method, request,
-        false, ErrorResponse.class);
-    Assertions.assertEquals(ErrorCode.MONEYFLOW_DOES_NOT_EXISTS.getErrorCode(),
-        errorResponse.getCode());
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
+        ErrorResponse.class);
+    Assertions.assertEquals(ErrorCode.MONEYFLOW_DOES_NOT_EXISTS.getErrorCode(), actual.getCode());
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
@@ -340,7 +339,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()),
+        moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     transport.setAmount(BigDecimal.valueOf(1020, 2));
@@ -363,7 +363,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()),
+        moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
   }
@@ -385,7 +386,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()),
+        moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
@@ -402,7 +404,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         moneyflow.getContractpartner().getId().getId());
     Assertions.assertEquals(transport.getPostingaccountid(),
         moneyflow.getPostingAccount().getId().getId());
-    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()), moneyflow.isPrivat());
+    Assertions.assertEquals(Integer.valueOf("1").equals(transport.getPrivat()),
+        moneyflow.isPrivat());
     Assertions.assertEquals(transport.getBookingdate(), moneyflow.getBookingDate());
     Assertions.assertEquals(transport.getInvoicedate(), moneyflow.getInvoiceDate());
   }
@@ -844,9 +847,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
     request.setMoneyflowTransport(transport);
-    final ErrorResponse errorResponse = super.callUsecaseWithContent("", this.method, request,
-        false, ErrorResponse.class);
-    Assertions.assertEquals(ErrorCode.MONEYFLOW_DOES_NOT_EXISTS.getErrorCode(),
-        errorResponse.getCode());
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
+        ErrorResponse.class);
+    Assertions.assertEquals(ErrorCode.MONEYFLOW_DOES_NOT_EXISTS.getErrorCode(), actual.getCode());
   }
 }

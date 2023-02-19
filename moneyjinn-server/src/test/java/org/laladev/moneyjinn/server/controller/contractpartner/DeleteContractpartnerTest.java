@@ -11,8 +11,8 @@ import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
-import  org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -64,12 +64,13 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
     Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
         contractpartnerId);
     Assertions.assertNotNull(contractpartner);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(
+        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID, this.method,
         ErrorResponse.class);
+
     contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotNull(contractpartner);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test
@@ -159,12 +160,14 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
     Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
         contractpartnerId);
     Assertions.assertNotNull(contractpartner);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method, false,
+
+    final ErrorResponse actual = super.callUsecaseExpect400(
+        "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method,
         ErrorResponse.class);
+
     contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotNull(contractpartner);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
     final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
         .getContractpartnerAccounts(userId, contractpartnerId);
     Assertions.assertEquals(2, contractpartnerAccounts.size());

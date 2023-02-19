@@ -135,7 +135,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
     expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -150,7 +150,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -165,7 +165,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -181,7 +181,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }

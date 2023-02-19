@@ -100,19 +100,13 @@ public class CapitalsourceController extends AbstractController
     final ValidationResult validationResult = this.capitalsourceService
         .validateCapitalsource(capitalsource);
 
-    final CreateCapitalsourceResponse response = new CreateCapitalsourceResponse();
-    response.setResult(validationResult.isValid());
-
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
-    }
+    this.throwValidationExceptionIfInvalid(validationResult);
 
     final CapitalsourceID capitalsourceId = this.capitalsourceService
         .createCapitalsource(capitalsource);
-    response.setCapitalsourceId(capitalsourceId.getId());
 
+    final CreateCapitalsourceResponse response = new CreateCapitalsourceResponse();
+    response.setCapitalsourceId(capitalsourceId.getId());
     return ResponseEntity.ok(response);
   }
 

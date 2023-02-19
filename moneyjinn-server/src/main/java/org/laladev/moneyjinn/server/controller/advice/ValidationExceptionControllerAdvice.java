@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,9 +26,11 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
-import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
+import org.laladev.moneyjinn.server.exception.ValidationException;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,23 +38,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHandler {
+@RequiredArgsConstructor
+public class ValidationExceptionControllerAdvice extends ResponseEntityExceptionHandler {
+  private final ValidationItemTransportMapper mapper;
 
-  @ExceptionHandler(BusinessException.class)
+  @ExceptionHandler(ValidationException.class)
   @ResponseBody
-  ResponseEntity<Object> handleControllerException(final BusinessException ex) {
-    final ErrorResponse errorResponse = new ErrorResponse();
-    errorResponse.setCode(ex.getErrorCode().getErrorCode());
-    errorResponse.setMessage(ex.getErrorMessage());
-    HttpStatus httpStatus;
-    switch (ex.getErrorCode()) {
-      case USERNAME_PASSWORD_WRONG:
-      case ACCOUNT_IS_LOCKED:
-        httpStatus = HttpStatus.FORBIDDEN;
-        break;
-      default:
-        httpStatus = HttpStatus.BAD_REQUEST;
-    }
-    return new ResponseEntity<>(errorResponse, httpStatus);
+  ResponseEntity<Object> handleControllerException(final ValidationException ex) {
+    final ValidationResult result = ex.getValidationResult();
+    final ValidationResponse response = new ValidationResponse();
+
+    response.setResult(false);
+    response.setValidationItemTransports(
+        result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
+
+    return ResponseEntity.unprocessableEntity().body(response);
   }
 }

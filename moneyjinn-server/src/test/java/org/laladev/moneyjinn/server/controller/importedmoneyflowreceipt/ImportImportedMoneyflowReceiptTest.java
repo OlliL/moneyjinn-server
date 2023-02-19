@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
@@ -19,6 +18,7 @@ import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBui
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.springframework.http.HttpMethod;
@@ -98,11 +98,10 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
         ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-    final ErrorResponse error = super.callUsecaseWithoutContent(
-        "/" + receiptId.getId() + "/" + moneyflowId.getId(), this.method, false,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(
+        "/" + receiptId.getId() + "/" + moneyflowId.getId(), this.method, ErrorResponse.class);
 
-    Assertions.assertEquals(ErrorCode.RECEIPT_ALREADY_EXISTS.getErrorCode(), error.getCode());
+    Assertions.assertEquals(ErrorCode.RECEIPT_ALREADY_EXISTS.getErrorCode(), actual.getCode());
 
   }
 

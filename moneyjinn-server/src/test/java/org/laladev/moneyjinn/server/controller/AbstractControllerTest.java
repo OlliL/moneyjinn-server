@@ -7,9 +7,9 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
+import org.laladev.moneyjinn.server.config.JwtCache;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
-import org.laladev.moneyjinn.server.config.JwtCache;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpHeaders;
@@ -94,6 +94,17 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return httpHeaders;
   }
 
+  protected <T> T callUsecaseExpect400(final HttpMethod httpMethod, final Object body,
+      final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.BAD_REQUEST);
+  }
+
+  protected <T> T callUsecaseExpect400(final String uriParameters, final HttpMethod httpMethod,
+      final Class<T> clazz) throws Exception {
+    return this.callUsecase(uriParameters, httpMethod, "", false, clazz, HttpStatus.BAD_REQUEST);
+  }
+
   protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod)
       throws Exception {
     this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.FORBIDDEN);
@@ -109,6 +120,13 @@ public abstract class AbstractControllerTest extends AbstractTest {
       final Object body, final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
     return this.callUsecase(uriParameters, httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
+  }
+
+  protected <T> T callUsecaseExpect422(final String uriParameters, final HttpMethod httpMethod,
+      final Object body, final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase(uriParameters, httpMethod, bodyStr, false, clazz,
+        HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,

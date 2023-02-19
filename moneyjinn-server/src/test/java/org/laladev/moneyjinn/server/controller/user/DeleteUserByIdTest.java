@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
 
@@ -69,11 +69,11 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     expected.setMessage("This user has already entered data and may therefore not be deleted!");
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
-    final ErrorResponse response = super.callUsecaseWithoutContent(
-        "/" + UserTransportBuilder.USER3_ID, this.method, false, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400("/" + UserTransportBuilder.USER3_ID,
+        this.method, ErrorResponse.class);
     user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
-    Assertions.assertEquals(expected, response);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test

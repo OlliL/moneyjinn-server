@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
@@ -20,6 +16,10 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -111,10 +111,10 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     transport.setReceipt("-----");
     request.setImportedMoneyflowReceiptTransports(Collections.singletonList(transport));
 
-    final ErrorResponse response = super.callUsecaseWithContent("", this.method, request, false,
+    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
         ErrorResponse.class);
 
-    Assertions.assertEquals(ErrorCode.WRONG_FILE_FORMAT.getErrorCode(), response.getCode());
+    Assertions.assertEquals(ErrorCode.WRONG_FILE_FORMAT.getErrorCode(), actual.getCode());
   }
 
   @Test
