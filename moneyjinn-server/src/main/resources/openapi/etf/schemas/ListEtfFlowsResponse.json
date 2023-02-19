@@ -1,45 +1,38 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"etfTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/EtfTransport.json"
-					}
-				},
-				"etfFlowTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/EtfFlowTransport.json"
-					}
-				},
-				"etfEffectiveFlowTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/EtfEffectiveFlowTransport.json"
-					}
-				},
-				"calcEtfSaleIsin": {
-					"type": "string"
-				},
-				"calcEtfSalePieces": {
-					"type": "number"
-				},
-				"calcEtfBidPrice": {
-					"type": "number"
-				},
-				"calcEtfAskPrice": {
-					"type": "number"
-				},
-				"calcEtfTransactionCosts": {
-					"type": "number"
-				}
+	"type": "object",
+	"properties": {
+		"etfTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/EtfTransport.json"
 			}
+		},
+		"etfFlowTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/EtfFlowTransport.json"
+			}
+		},
+		"etfEffectiveFlowTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
+			}
+		},
+		"calcEtfSaleIsin": {
+			"type": "string"
+		},
+		"calcEtfSalePieces": {
+			"type": "number"
+		},
+		"calcEtfBidPrice": {
+			"type": "number"
+		},
+		"calcEtfAskPrice": {
+			"type": "number"
+		},
+		"calcEtfTransactionCosts": {
+			"type": "number"
 		}
-	]
+	}
 }

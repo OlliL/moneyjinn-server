@@ -1,54 +1,47 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
+	"type": "object",
+	"required": [
+		"isin",
+		"originalBuyPrice",
+		"sellPrice",
+		"newBuyPrice",
+		"profit",
+		"chargeable",
+		"transactionCosts",
+		"rebuyLosses",
+		"overallCosts",
+		"pieces"
+	],
+	"properties": {
+		"isin": {
+			"type": "string"
 		},
-		{
-			"type": "object",
-			"required": [
-				"isin",
-				"originalBuyPrice",
-				"sellPrice",
-				"newBuyPrice",
-				"profit",
-				"chargeable",
-				"transactionCosts",
-				"rebuyLosses",
-				"overallCosts",
-				"pieces"
-			],
-			"properties": {
-				"isin": {
-					"type": "string"
-				},
-				"originalBuyPrice": {
-					"type": "number"
-				},
-				"sellPrice": {
-					"type": "number"
-				},
-				"newBuyPrice": {
-					"type": "number"
-				},
-				"profit": {
-					"type": "number"
-				},
-				"chargeable": {
-					"type": "number"
-				},
-				"transactionCosts": {
-					"type": "number"
-				},
-				"rebuyLosses": {
-					"type": "number"
-				},
-				"overallCosts": {
-					"type": "number"
-				},
-				"pieces": {
-					"type": "number"
-				}
-			}
+		"originalBuyPrice": {
+			"type": "number"
+		},
+		"sellPrice": {
+			"type": "number"
+		},
+		"newBuyPrice": {
+			"type": "number"
+		},
+		"profit": {
+			"type": "number"
+		},
+		"chargeable": {
+			"type": "number"
+		},
+		"transactionCosts": {
+			"type": "number"
+		},
+		"rebuyLosses": {
+			"type": "number"
+		},
+		"overallCosts": {
+			"type": "number"
+		},
+		"pieces": {
+			"type": "number"
 		}
-	]
+	}
 }

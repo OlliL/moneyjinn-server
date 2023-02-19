@@ -1,18 +1,11 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"etfSummaryTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/EtfSummaryTransport.json"
-					}
-				}
+	"type": "object",
+	"properties": {
+		"etfSummaryTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/EtfSummaryTransport.json"
 			}
 		}
-	]
+	}
 }

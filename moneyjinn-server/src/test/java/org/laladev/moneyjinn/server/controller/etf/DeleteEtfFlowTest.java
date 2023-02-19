@@ -50,7 +50,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
     EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
     Assertions.assertNotNull(etfFlow);
 
-    super.callUsecaseWithoutContent("/" + etfFlowId.getId(), this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.ETF_FLOW_1ID, this.method);
 
     etfFlow = this.etfService.getEtfFlowById(etfFlowId);
     Assertions.assertNull(etfFlow);
@@ -58,8 +58,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
 
   @Test
   public void test_DeleteNotExistingId_emptyResponse() throws Exception {
-    super.callUsecaseWithoutContent("/" + EtfFlowTransportBuilder.NEXT_ID, this.method, true,
-        Object.class);
+    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.NEXT_ID, this.method);
   }
 
   @Test
@@ -75,7 +74,6 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseWithoutContent("/1", this.method, true, Object.class);
-
+    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.ETF_FLOW_1ID, this.method);
   }
 }

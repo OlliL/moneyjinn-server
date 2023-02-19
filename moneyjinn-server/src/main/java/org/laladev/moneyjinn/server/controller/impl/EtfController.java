@@ -33,7 +33,6 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +49,7 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
@@ -59,7 +59,6 @@ import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
@@ -67,8 +66,6 @@ import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
 import org.laladev.moneyjinn.server.model.UpdateEtfFlowRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +79,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 // TODO: Multi-User
 // TODO: Multi-ETF
-// TODO: Unit-Testing
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfController extends AbstractController implements EtfControllerApi {
   private static final BigDecimal TAX_RELEVANT_PERCENTAGE = new BigDecimal(70)
@@ -143,30 +139,37 @@ public class EtfController extends AbstractController implements EtfControllerAp
   @Override
   public ResponseEntity<ListEtfFlowsResponse> listEtfFlows() {
     final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
+
     final List<Etf> etfs = this.etfService.getAllEtf();
-    response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-    final List<EtfFlowTransport> transports = new ArrayList<>();
-    final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
-    for (final Etf etf : etfs) {
-      final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(),
-          LocalDateTime.now());
-      transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
-      final List<EtfFlow> etfEffectiveFlows = this.etfService.calculateEffectiveEtfFlows(etfFlows);
-      Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
-      effectiveTransports.addAll(super.mapList(etfEffectiveFlows, EtfEffectiveFlowTransport.class));
+
+    if (!etfs.isEmpty()) {
+      response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+      final List<EtfFlowTransport> transports = new ArrayList<>();
+      final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
+      for (final Etf etf : etfs) {
+        final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(),
+            LocalDateTime.now());
+        transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
+        final List<EtfFlow> etfEffectiveFlows = this.etfService
+            .calculateEffectiveEtfFlows(etfFlows);
+        Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
+        effectiveTransports
+            .addAll(super.mapList(etfEffectiveFlows, EtfEffectiveFlowTransport.class));
+      }
+      response.setEtfFlowTransports(transports);
+      response.setEtfEffectiveFlowTransports(effectiveTransports);
+      this.settingService.getClientCalcEtfSaleAskPrice(this.getUserId())
+          .ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
+      this.settingService.getClientCalcEtfSaleBidPrice(this.getUserId())
+          .ifPresent(s -> response.setCalcEtfBidPrice(s.getSetting()));
+      this.settingService.getClientCalcEtfSaleIsin(this.getUserId())
+          .ifPresent(s -> response.setCalcEtfSaleIsin(s.getSetting()));
+      this.settingService.getClientCalcEtfSalePieces(this.getUserId())
+          .ifPresent(s -> response.setCalcEtfSalePieces(s.getSetting()));
+      this.settingService.getClientCalcEtfSaleTransactionCosts(this.getUserId())
+          .ifPresent(s -> response.setCalcEtfTransactionCosts(s.getSetting()));
     }
-    response.setEtfFlowTransports(transports);
-    response.setEtfEffectiveFlowTransports(effectiveTransports);
-    this.settingService.getClientCalcEtfSaleAskPrice(this.getUserId())
-        .ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
-    this.settingService.getClientCalcEtfSaleBidPrice(this.getUserId())
-        .ifPresent(s -> response.setCalcEtfBidPrice(s.getSetting()));
-    this.settingService.getClientCalcEtfSaleIsin(this.getUserId())
-        .ifPresent(s -> response.setCalcEtfSaleIsin(s.getSetting()));
-    this.settingService.getClientCalcEtfSalePieces(this.getUserId())
-        .ifPresent(s -> response.setCalcEtfSalePieces(s.getSetting()));
-    this.settingService.getClientCalcEtfSaleTransactionCosts(this.getUserId())
-        .ifPresent(s -> response.setCalcEtfTransactionCosts(s.getSetting()));
+
     return ResponseEntity.ok(response);
   }
 
@@ -211,12 +214,12 @@ public class EtfController extends AbstractController implements EtfControllerAp
         originalBuyPrice = originalBuyPrice.add(useablePieces.multiply(etfFlow.getPrice()));
       }
       if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
-        final ValidationItemTransport valItem = new ValidationItemTransport();
-        valItem.setError(ErrorCode.AMOUNT_TO_HIGH.getErrorCode());
-        response.setResult(Boolean.FALSE);
-        response.setValidationItemTransports(Arrays.asList(valItem));
+        final ValidationResult validationResult = new ValidationResult();
+        validationResult
+            .addValidationResultItem(new ValidationResultItem(null, ErrorCode.AMOUNT_TO_HIGH));
+
+        this.throwValidationExceptionIfInvalid(validationResult);
       } else {
-        response.setResult(Boolean.TRUE);
         final BigDecimal newBuyPrice = askPrice.multiply(pieces);
         final BigDecimal sellPrice = bidPrice.multiply(pieces);
         final BigDecimal transactionCosts = request.getTransactionCosts()
@@ -250,13 +253,11 @@ public class EtfController extends AbstractController implements EtfControllerAp
     if (etfFlow != null) {
       etfFlow.setId(null);
       final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
-      response.setResult(validationResult.isValid());
-      if (!validationResult.isValid()) {
-        response.setValidationItemTransports(super.mapList(
-            validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return ResponseEntity.ok(response);
-      }
+
+      this.throwValidationExceptionIfInvalid(validationResult);
+
       final EtfFlowID etfFlowId = this.etfService.createEtfFlow(etfFlow);
+
       response.setEtfFlowId(etfFlowId.getId());
     }
 
@@ -264,28 +265,24 @@ public class EtfController extends AbstractController implements EtfControllerAp
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> updateEtfFlow(
-      @RequestBody final UpdateEtfFlowRequest request) {
-    final ValidationResponse response = new ValidationResponse();
+  public ResponseEntity<Void> updateEtfFlow(@RequestBody final UpdateEtfFlowRequest request) {
     final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
 
     if (etfFlow != null) {
       final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
-      response.setResult(validationResult.isValid());
-      if (!validationResult.isValid()) {
-        response.setValidationItemTransports(super.mapList(
-            validationResult.getValidationResultItems(), ValidationItemTransport.class));
-        return ResponseEntity.ok(response);
-      }
+
+      this.throwValidationExceptionIfInvalid(validationResult);
+
       this.etfService.updateEtfFlow(etfFlow);
     }
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteEtfFlow(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteEtfFlow(@PathVariable(value = "id") final Long id) {
     this.etfService.deleteEtfFlow(new EtfFlowID(id));
+
     return ResponseEntity.noContent().build();
   }
 

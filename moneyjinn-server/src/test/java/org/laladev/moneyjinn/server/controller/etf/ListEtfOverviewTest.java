@@ -73,8 +73,8 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
 
     expected.setEtfSummaryTransports(Collections.singletonList(transport));
 
-    final ListEtfOverviewResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method,
-        false, ListEtfOverviewResponse.class);
+    final ListEtfOverviewResponse actual = super.callUsecaseExpect200("/2008/12", this.method,
+        ListEtfOverviewResponse.class);
 
     Assertions.assertEquals(expected, actual);
 
@@ -93,7 +93,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseWithoutContent("/2008/12", this.method, false, ListEtfOverviewResponse.class);
+    super.callUsecaseExpect200("/2008/12", this.method, ListEtfOverviewResponse.class);
 
   }
 }

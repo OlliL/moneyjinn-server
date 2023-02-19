@@ -8,10 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
-import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
-import org.laladev.moneyjinn.server.model.EtfFlowTransport;
-import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
@@ -23,6 +19,10 @@ import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
+import org.laladev.moneyjinn.server.model.EtfFlowTransport;
+import org.laladev.moneyjinn.server.model.EtfTransport;
+import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -103,7 +103,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   public void test_standardRequestWithoutSettings_FullResponseObject() throws Exception {
     final ListEtfFlowsResponse expected = this.fillDefaultResponse();
 
-    final ListEtfFlowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ListEtfFlowsResponse actual = super.callUsecaseExpect200(this.method,
         ListEtfFlowsResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -122,7 +122,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
     expected.setCalcEtfSalePieces(SETTING_SALE_PIECES);
     expected.setCalcEtfTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-    final ListEtfFlowsResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ListEtfFlowsResponse actual = super.callUsecaseExpect200(this.method,
         ListEtfFlowsResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -142,7 +142,10 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseWithoutContent("", this.method, false, ListEtfFlowsResponse.class);
+    final ListEtfFlowsResponse expected = new ListEtfFlowsResponse();
+    final ListEtfFlowsResponse actual = super.callUsecaseExpect200(this.method,
+        ListEtfFlowsResponse.class);
+    Assertions.assertEquals(expected, actual);
 
   }
 }
