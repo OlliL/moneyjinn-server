@@ -1,28 +1,21 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
-		},
-		{
-			"type": "object",
-			"required": [
-				"moneyflowTransport",
-				"hasReceipt"
-			],
-			"properties": {
-				"moneyflowSplitEntryTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
-					}
-				},
-				"moneyflowTransport": {
-					"$ref": "../../transport/MoneyflowTransport.json"
-				},
-				"hasReceipt": {
-					"type": "boolean"
-				}
+	"type": "object",
+	"required": [
+		"moneyflowTransport",
+		"hasReceipt"
+	],
+	"properties": {
+		"moneyflowSplitEntryTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
 			}
+		},
+		"moneyflowTransport": {
+			"$ref": "../../transport/MoneyflowTransport.json"
+		},
+		"hasReceipt": {
+			"type": "boolean"
 		}
-	]
+	}
 }

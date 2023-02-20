@@ -24,6 +24,26 @@
 						}
 					}
 				}
+			},
+			"400": {
+				"description": "Generic Client Error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ErrorResponse.json"
+						}
+					}
+				}
+			},
+			"422": {
+				"description": "Validation Error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "../../abstract/ValidationResponse.json"
+						}
+					}
+				}
 			}
 		}
 	}

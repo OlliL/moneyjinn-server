@@ -7,13 +7,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
-import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
-import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
+import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -59,8 +59,8 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     moneyflowSplitEntryTransports
         .add(new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build());
     expected.setMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
-    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseWithoutContent(
-        "/1.10/20081231/20090102", this.method, false, SearchMoneyflowsByAmountResponse.class);
+    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
+        "/1.10/20081231/20090102", this.method, SearchMoneyflowsByAmountResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -72,8 +72,8 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow15().build());
     expected.setMoneyflowTransports(moneyflowTransports);
-    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseWithoutContent(
-        "/10/20091201/20100201", this.method, false, SearchMoneyflowsByAmountResponse.class);
+    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
+        "/10/20091201/20100201", this.method, SearchMoneyflowsByAmountResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -85,8 +85,8 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     final ArrayList<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     expected.setMoneyflowTransports(moneyflowTransports);
-    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseWithoutContent(
-        "/10/20091130/20100202", this.method, false, SearchMoneyflowsByAmountResponse.class);
+    final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
+        "/10/20091130/20100202", this.method, SearchMoneyflowsByAmountResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -102,7 +102,6 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/10.00/20100101/29991231", this.method, true,
-        SearchMoneyflowsByAmountResponse.class);
+    super.callUsecaseExpect204("/10.00/20100101/29991231", this.method);
   }
 }

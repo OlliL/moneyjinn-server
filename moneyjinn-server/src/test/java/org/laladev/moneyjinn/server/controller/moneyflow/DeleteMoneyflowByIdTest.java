@@ -58,8 +58,9 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
-        true, Object.class);
+
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
+
     // Validate that everything was deleted (and do not rely on foreign key constraints)
     moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNull(moneyflow);
@@ -77,8 +78,9 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NON_EXISTING_ID);
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNull(moneyflow);
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method,
-        true, Object.class);
+
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method);
+
   }
 
   @Test
@@ -89,8 +91,9 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
-        true, Object.class);
+
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
+
     moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
   }
@@ -107,7 +110,7 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
-        true, Object.class);
+
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
   }
 }

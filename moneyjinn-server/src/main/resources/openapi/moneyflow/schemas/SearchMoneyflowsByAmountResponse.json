@@ -1,24 +1,17 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"properties": {
+		"moneyflowTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowTransport.json"
+			}
 		},
-		{
-			"type": "object",
-			"properties": {
-				"moneyflowTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowTransport.json"
-					}
-				},
-				"moneyflowSplitEntryTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
-					}
-				}
+		"moneyflowSplitEntryTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
 			}
 		}
-	]
+	}
 }

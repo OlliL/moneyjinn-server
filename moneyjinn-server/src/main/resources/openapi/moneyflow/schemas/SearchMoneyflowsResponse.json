@@ -1,18 +1,11 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"moneyflowTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowTransport.json"
-					}
-				}
+	"type": "object",
+	"properties": {
+		"moneyflowTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowTransport.json"
 			}
 		}
-	]
+	}
 }

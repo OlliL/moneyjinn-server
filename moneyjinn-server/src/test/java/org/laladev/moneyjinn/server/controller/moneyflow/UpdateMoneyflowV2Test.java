@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
@@ -100,11 +101,13 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
           .withKey((validationId == null ? transport.getId() : validationId).toString())
           .withError(errorCode.getErrorCode()).build());
     }
-    final UpdateMoneyflowResponse expected = new UpdateMoneyflowResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final UpdateMoneyflowResponse actual = super.callUsecaseWithContent("", this.method, request,
-        false, UpdateMoneyflowResponse.class);
+
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
+
     Assertions.assertEquals(expected.getCode(), actual.getCode());
     Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
@@ -167,7 +170,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     request.setMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
@@ -188,7 +193,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     request.setMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
@@ -222,7 +229,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     request.setMoneyflowTransport(transport);
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
@@ -242,7 +251,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     request.setMoneyflowTransport(transport);
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
@@ -352,7 +363,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     transport.setBookingdate(LocalDate.parse("2009-01-02"));
     transport.setInvoicedate(LocalDate.parse("2009-01-03"));
     request.setMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
     Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
@@ -393,7 +406,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
     transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
     request.setMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
     Assertions.assertEquals(transport.getAmount(), moneyflow.getAmount());
@@ -603,9 +618,10 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     insertTransport.setAmount(new BigDecimal("-0.50"));
     insertTransport.setComment("inserted");
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
-    final UpdateMoneyflowResponse response = super.callUsecaseWithContent("", this.method, request,
-        false, UpdateMoneyflowResponse.class);
-    Assertions.assertTrue(response.getResult());
+
+    final UpdateMoneyflowResponse response = super.callUsecaseExpect200(this.method, request,
+        UpdateMoneyflowResponse.class);
+
     Assertions.assertEquals(response.getMoneyflowSplitEntryTransports().get(0), updateTransport);
     insertTransport.setId(MoneyflowSplitEntryTransportBuilder.NEXT_ID);
     Assertions.assertEquals(response.getMoneyflowSplitEntryTransports().get(1), insertTransport);
@@ -625,7 +641,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         .forMoneyflowSplitEntry2().build();
     updateTransport.setAmount(new BigDecimal("-1.10"));
     request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
     Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
@@ -651,7 +669,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     insertTransport2.setMoneyflowid(moneyflowId.getId());
     request
         .setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport1, insertTransport2));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
   }
 
   private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_Mse_for_Moneyflow_1()
@@ -701,7 +720,8 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
         .forMoneyflowSplitEntry2().build();
     updateTransport.setAmount(new BigDecimal("-5.10"));
     request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
   }
 
   @Test
@@ -739,7 +759,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     insertTransport.setAmount(new BigDecimal("-1.00"));
     insertTransport.setComment("inserted");
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
     Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
@@ -764,7 +786,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     insertTransport.setComment("inserted");
     insertTransport.setMoneyflowid(moneyflowId.getId());
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
     Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
@@ -787,7 +811,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     insertTransport.setAmount(new BigDecimal("10.10"));
     insertTransport.setComment("inserted");
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
     Assertions.assertEquals(moneyflowSplitEntries.get(0).getId().getId(),
@@ -806,7 +832,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     request.setDeleteMoneyflowSplitEntryIds(
         Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID,
             MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID));
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
     Assertions.assertTrue(moneyflowSplitEntries.isEmpty());
@@ -822,7 +850,9 @@ public class UpdateMoneyflowV2Test extends AbstractControllerTest {
     transport.setComment(null);
     transport.setPostingaccountid(null);
     request.setMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, false, UpdateMoneyflowResponse.class);
+
+    super.callUsecaseExpect200(this.method, request, UpdateMoneyflowResponse.class);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
         .getMoneyflowSplitEntries(userId, moneyflowId);
