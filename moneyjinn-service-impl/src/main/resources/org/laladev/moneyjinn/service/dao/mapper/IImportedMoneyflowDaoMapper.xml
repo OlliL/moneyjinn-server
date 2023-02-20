@@ -4,7 +4,7 @@
 
         <sql id="importedMoneyflowColumns">
                  impmoneyflowid      AS id
-                ,externalid                 AS externalId
+                ,externalid          AS externalId
                 ,mcs_capitalsourceid AS mcsCapitalsourceId
                 ,bookingdate
                 ,invoicedate
@@ -15,6 +15,13 @@
                 ,amount
                 ,status
         </sql>
+
+        <select id="getImportedMoneyflowById" resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+                SELECT <include refid="importedMoneyflowColumns" />
+                  FROM impmoneyflows
+                 WHERE impmoneyflowid = #{id}
+                 LIMIT 1        
+        </select>
 
         <select id="countImportedMoneyflows" resultType="java.lang.Integer">
                 SELECT COUNT(*)

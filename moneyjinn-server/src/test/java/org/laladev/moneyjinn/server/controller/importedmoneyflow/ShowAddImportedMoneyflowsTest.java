@@ -7,13 +7,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -55,8 +55,10 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
     importedMoneyflowTransports
         .add(new ImportedMoneyflowTransportBuilder().forImportedMoneyflow2().build());
     expected.setImportedMoneyflowTransports(importedMoneyflowTransports);
-    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowAddImportedMoneyflowsResponse.class);
+
+    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseExpect200(this.method,
+        ShowAddImportedMoneyflowsResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -68,8 +70,10 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
     this.importedMoneyflowService.deleteImportedMoneyflowById(userId,
         new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW2_ID));
     final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();
-    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowAddImportedMoneyflowsResponse.class);
+
+    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseExpect200(this.method,
+        ShowAddImportedMoneyflowsResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -86,8 +90,10 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();
-    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowAddImportedMoneyflowsResponse.class);
+
+    final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseExpect200(this.method,
+        ShowAddImportedMoneyflowsResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

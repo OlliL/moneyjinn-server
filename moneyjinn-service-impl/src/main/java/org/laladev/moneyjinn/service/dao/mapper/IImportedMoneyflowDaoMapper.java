@@ -35,6 +35,8 @@ public interface IImportedMoneyflowDaoMapper {
   Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
       @Param("status") Integer status);
 
+  ImportedMoneyflowData getImportedMoneyflowById(@Param("id") Long importedMoneyflowId);
+
   List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
       @Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Integer status,
       @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);

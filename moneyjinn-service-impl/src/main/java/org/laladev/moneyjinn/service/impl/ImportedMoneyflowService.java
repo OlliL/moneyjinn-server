@@ -97,6 +97,16 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   }
 
   @Override
+  public ImportedMoneyflow getImportedMoneyflowById(final UserID userId,
+      final ImportedMoneyflowID importedMoneyflowId) {
+    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
+    final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDao
+        .getImportedMoneyflowById(userId.getId(), importedMoneyflowId.getId());
+    return this.mapImportedMoneyflowData(userId, importedMoneyflowData);
+  }
+
+  @Override
   public Integer countImportedMoneyflows(final UserID userId,
       final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
     Assert.notNull(userId, "UserId must not be null!");

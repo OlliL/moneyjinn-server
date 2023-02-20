@@ -32,7 +32,6 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
-import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
@@ -102,8 +101,10 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
           .withError(errorCode.getErrorCode()).build());
     }
     expected.setValidationItemTransports(validationItems);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
+
     Assertions.assertEquals(expected.getCode(), actual.getCode());
     Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
@@ -132,7 +133,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
     Assertions.assertNotNull(importedMoneyflows);
     final int sizeBeforeDelete = importedMoneyflows.size();
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -160,7 +163,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("1")).build();
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -175,7 +180,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("0")).build();
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -199,7 +206,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
             ImportedMoneyflowStatus.PROCESSED);
     Assertions.assertNotNull(importedMoneyflows);
     final int sizeBeforeImportInStateProcessed = importedMoneyflows.size();
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -222,7 +231,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     request.setImportedMoneyflowTransport(transport);
     final List<ContractpartnerAccount> contractpartnerAccountsBeforeInsert = this.contractpartnerAccountService
         .getContractpartnerAccounts(userId, contractpartnerId);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -247,7 +258,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE2_ACCOUNTNUMBER);
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE2_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -272,7 +285,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setBookingdate(LocalDate.parse("2000-01-02"));
     transport.setInvoicedate(LocalDate.parse("2000-01-01"));
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -295,7 +310,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE1_ACCOUNTNUMBER);
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE1_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -315,7 +332,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setAccountNumber(CapitalsourceTransportBuilder.CAPITALSOURCE5_ACCOUNTNUMBER);
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(moneyflow);
@@ -338,7 +357,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     request.setImportedMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidTil(), capitalsource.getValidTil());
@@ -360,7 +381,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     request.setImportedMoneyflowTransport(transport);
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
     Assertions.assertNotEquals(capitalsourceOrig.getValidFrom(), capitalsource.getValidFrom());
@@ -381,7 +404,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     request.setImportedMoneyflowTransport(transport);
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidTil(), contractpartner.getValidTil());
@@ -402,7 +427,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     request.setImportedMoneyflowTransport(transport);
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
     Assertions.assertNotEquals(contractpartnerOrig.getValidFrom(), contractpartner.getValidFrom());
@@ -540,10 +567,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   public void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(transport.getAmount());
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -565,7 +590,9 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(mseTransport1, mseTransport2));
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+
+    super.callUsecaseExpect204(this.method, request);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
     Assertions.assertEquals(mseTransport1.getComment(), moneyflow.getComment());
@@ -575,33 +602,25 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment("");
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.COMMENT_IS_NOT_SET);
   }
 
   @Test
   public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(BigDecimal.ZERO);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
     mseTransport2.setAmount(transport.getAmount());
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.AMOUNT_IS_ZERO);
   }
@@ -609,60 +628,46 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   // make sure it 0 is compared with compareTo not with equals
   @Test
   public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(new BigDecimal("0.00000"));
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
     mseTransport2.setAmount(transport.getAmount());
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.AMOUNT_IS_ZERO);
   }
 
   @Test
   public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.COMMENT_IS_NOT_SET);
   }
 
   @Test
   public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
     mseTransport2.setAmount(transport.getAmount());
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.AMOUNT_IS_ZERO);
   }
 
   @Test
   public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(null);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
@@ -674,16 +679,12 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
-    final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    request.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
-    // Hack because error is reported for the MoneyflowSplitEntry which has ID null
-    // set
-    transport.setId(null);
+
     this.testError(transport, Arrays.asList(mseTransport1, mseTransport2),
         ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
   }
@@ -704,6 +705,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     request.setImportedMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, false, ValidationResponse.class);
+
+    super.callUsecaseExpect204(this.method, request);
   }
 }

@@ -67,7 +67,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularGroupWithData_SuccessfullNoContent() throws Exception {
+  public void test_regularGroupWithData_ErrorResponse() throws Exception {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.GROUP_IN_USE.getErrorCode());
     expected.setMessage("You may not delete a group while there where/are users assigned to it!");

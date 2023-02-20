@@ -60,20 +60,31 @@ public interface IImportedMoneyflowService {
    * Validates the given {@link ImportedMoneyflow} for correctness.
    *
    * @param importedMoneyflow
-   *          The {@link ImportedMoneyflow}
+   *                            The {@link ImportedMoneyflow}
    * @return The {@link ValidationResult}
    */
   ValidationResult validateImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
   /**
+   * This service returns the {@link ImportedMoneyflow} specified by its Id.
+   *
+   * @param userId
+   *                      {@link UserID}
+   * @param moneyflowId
+   *                      {@link ImportedMoneyflowID}
+   * @return {@link ImportedMoneyflow}
+   */
+  ImportedMoneyflow getImportedMoneyflowById(UserID userId, ImportedMoneyflowID moneyflowId);
+
+  /**
    * Counts how much {@link ImportedMoneyflow} are there to be processed.
    *
    * @param userId
-   *          The {@link UserID}
+   *                           The {@link UserID}
    * @param capitalsourceIds
-   *          List of all {@link CapitalsourceID} to be checked
+   *                           List of all {@link CapitalsourceID} to be checked
    * @param status
-   *          {@link ImportedMoneyflowStatus} to be checked
+   *                           {@link ImportedMoneyflowStatus} to be checked
    * @return Number of matching {@link ImportedMoneyflow}
    */
   Integer countImportedMoneyflows(UserID userId, List<CapitalsourceID> capitalsourceIds,
@@ -84,13 +95,13 @@ public interface IImportedMoneyflowService {
    * {@link CapitalsourceID}s.
    *
    * @param userId
-   *          The {@link UserID}
+   *                           The {@link UserID}
    * @param capitalsourceIds
-   *          List of all {@link CapitalsourceID} to be checked
+   *                           List of all {@link CapitalsourceID} to be checked
    * @param dateFrom
-   *          Begin of checking period
+   *                           Begin of checking period
    * @param dateTil
-   *          End of checking period
+   *                           End of checking period
    * @return List of found {@link ImportedMoneyflow}
    */
   List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
@@ -101,11 +112,11 @@ public interface IImportedMoneyflowService {
    * {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
    *
    * @param userId
-   *          The {@link UserID}
+   *                           The {@link UserID}
    * @param capitalsourceIds
-   *          List of all {@link CapitalsourceID} to be checked
+   *                           List of all {@link CapitalsourceID} to be checked
    * @param status
-   *          {@link ImportedMoneyflowStatus} to be checked
+   *                           {@link ImportedMoneyflowStatus} to be checked
    * @return List of found {@link ImportedMoneyflow}
    */
   List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
@@ -115,7 +126,7 @@ public interface IImportedMoneyflowService {
    * Persists the given {@link ImportedMoneyflow}.
    *
    * @param importedMoneyflow
-   *          The {@link ImportedMoneyflow}
+   *                            The {@link ImportedMoneyflow}
    */
   void createImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
@@ -124,11 +135,11 @@ public interface IImportedMoneyflowService {
    * {@link ImportedMoneyflowID}.
    *
    * @param userId
-   *          The {@link UserID}
+   *                              The {@link UserID}
    * @param importedMoneyflowId
-   *          The {@link ImportedMoneyflow}
+   *                              The {@link ImportedMoneyflow}
    * @param status
-   *          {@link ImportedMoneyflowStatus} to be checked
+   *                              {@link ImportedMoneyflowStatus} to be checked
    */
   void updateImportedMoneyflowStatus(UserID userId, ImportedMoneyflowID importedMoneyflowId,
       ImportedMoneyflowStatus status);
@@ -137,9 +148,9 @@ public interface IImportedMoneyflowService {
    * Deletes the {@link ImportedMoneyflow} specified by its {@link ImportedMoneyflowID}.
    *
    * @param userId
-   *          The {@link UserID}
+   *                              The {@link UserID}
    * @param importedMoneyflowId
-   *          The {@link ImportedMoneyflowID}
+   *                              The {@link ImportedMoneyflowID}
    */
   void deleteImportedMoneyflowById(UserID userId, ImportedMoneyflowID importedMoneyflowId);
 
@@ -147,7 +158,7 @@ public interface IImportedMoneyflowService {
    * checks if the externalId of a {@link ImportedMoneyflow} is already in the database.
    *
    * @param externalId
-   *          An ID from an external system referencing our {@link ImportedMoneyflow}
+   *                     An ID from an external system referencing our {@link ImportedMoneyflow}
    * @return true if externalid is already in the system, otherwise false
    */
   boolean checkIfExternalIdAlreadyExists(String externalId);

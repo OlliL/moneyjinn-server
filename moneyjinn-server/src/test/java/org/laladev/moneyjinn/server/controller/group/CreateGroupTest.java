@@ -59,8 +59,10 @@ public class CreateGroupTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
+
     final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 

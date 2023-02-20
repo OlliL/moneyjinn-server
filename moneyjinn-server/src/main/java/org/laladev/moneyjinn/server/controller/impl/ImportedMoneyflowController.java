@@ -65,12 +65,9 @@ import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTranspo
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -214,12 +211,14 @@ public class ImportedMoneyflowController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteImportedMoneyflowById(
+  public ResponseEntity<Void> deleteImportedMoneyflowById(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
+
     this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflowId,
         ImportedMoneyflowStatus.IGNORED);
+
     return ResponseEntity.noContent().build();
 
   }
@@ -308,13 +307,26 @@ public class ImportedMoneyflowController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> importImportedMoneyflows(
+  public ResponseEntity<Void> importImportedMoneyflows(
       @RequestBody final ImportImportedMoneyflowRequest request) {
     final UserID userId = super.getUserId();
     final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
         ImportedMoneyflow.class);
     final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
         request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+
+    if (importedMoneyflow.getId() == null) {
+      return ResponseEntity.noContent().build();
+    }
+
+    final ImportedMoneyflow existingImportedMoneyflow = this.importedMoneyflowService
+        .getImportedMoneyflowById(userId, importedMoneyflow.getId());
+
+    if (existingImportedMoneyflow == null
+        || !ImportedMoneyflowStatus.CREATED.equals(existingImportedMoneyflow.getStatus())) {
+      return ResponseEntity.noContent().build();
+    }
+
     final User user = this.userService.getUserById(userId);
     final Group group = this.accessRelationService.getAccessor(userId);
     importedMoneyflow.setUser(user);
@@ -334,57 +346,54 @@ public class ImportedMoneyflowController extends AbstractController
         }
       }
     }
-    if (validationResult.isValid()) {
-      final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
-      if (!moneyflowSplitEntries.isEmpty()) {
-        moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
-        this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
-      }
-      /*
-       * Add the BankAccount information to the selected contractpartner so it can be preselected
-       * the next time something is imported with the same BankAccount. Additionally, create a
-       * counter booking if the BankAccount is also a capitalsource in our system which does not
-       * support importing moneyflows. For example if a moneyflow from Capitalsource 1 to
-       * Capitalsource 2 happend. Importing is only allowed for Capitalsource 2. Then the matching
-       * booking for Capitalsource 1 will be created here automatically.
-       */
-      if (importedMoneyflow.getBankAccount() != null) {
-        final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
-        contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
-        contractpartnerAccount.setContractpartner(importedMoneyflow.getContractpartner());
-        final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-            .getAllContractpartnerByAccounts(userId,
-                Collections.singletonList(importedMoneyflow.getBankAccount()));
-        if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
-          this.contractpartnerAccountService.createContractpartnerAccount(userId,
-              contractpartnerAccount);
-        }
-        // if the IBAN/BIC of the booking matches one of our own capitalsource which
-        // must not be imported (because it has no HBCI access for example), create a
-        // counterbooking for it automatically. Do not do it for a credit type
-        // capitalsource at this just makes no sense
-        final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(
-            userId, importedMoneyflow.getBankAccount(), importedMoneyflow.getBookingDate());
-        if (capitalsource != null
-            && capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED
-            && capitalsource.getType() != CapitalsourceType.CREDIT) {
-          importedMoneyflow.setCapitalsource(capitalsource);
-          importedMoneyflow.setAmount(importedMoneyflow.getAmount().negate());
-          this.moneyflowService.createMoneyflow(importedMoneyflow.getMoneyflow());
-        }
-      }
-      this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
-          ImportedMoneyflowStatus.PROCESSED);
-    } else {
-      for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
-        item.setKey(importedMoneyflow.getId());
-      }
-      final ValidationResponse response = new ValidationResponse();
-      response.setResult(false);
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
+
+    for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
+      item.setKey(importedMoneyflow.getId());
     }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
+    if (!moneyflowSplitEntries.isEmpty()) {
+      moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+      this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
+    }
+    /*
+     * Add the BankAccount information to the selected contractpartner so it can be preselected the
+     * next time something is imported with the same BankAccount. Additionally, create a counter
+     * booking if the BankAccount is also a capitalsource in our system which does not support
+     * importing moneyflows. For example if a moneyflow from Capitalsource 1 to Capitalsource 2
+     * happend. Importing is only allowed for Capitalsource 2. Then the matching booking for
+     * Capitalsource 1 will be created here automatically.
+     */
+    if (importedMoneyflow.getBankAccount() != null) {
+      final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
+      contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
+      contractpartnerAccount.setContractpartner(importedMoneyflow.getContractpartner());
+      final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+          .getAllContractpartnerByAccounts(userId,
+              Collections.singletonList(importedMoneyflow.getBankAccount()));
+      if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
+        this.contractpartnerAccountService.createContractpartnerAccount(userId,
+            contractpartnerAccount);
+      }
+      // if the IBAN/BIC of the booking matches one of our own capitalsource which
+      // must not be imported (because it has no HBCI access for example), create a
+      // counterbooking for it automatically. Do not do it for a credit type
+      // capitalsource at this just makes no sense
+      final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(
+          userId, importedMoneyflow.getBankAccount(), importedMoneyflow.getBookingDate());
+      if (capitalsource != null
+          && capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED
+          && capitalsource.getType() != CapitalsourceType.CREDIT) {
+        importedMoneyflow.setCapitalsource(capitalsource);
+        importedMoneyflow.setAmount(importedMoneyflow.getAmount().negate());
+        this.moneyflowService.createMoneyflow(importedMoneyflow.getMoneyflow());
+      }
+    }
+    this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
+        ImportedMoneyflowStatus.PROCESSED);
+
     return ResponseEntity.noContent().build();
   }
 }
