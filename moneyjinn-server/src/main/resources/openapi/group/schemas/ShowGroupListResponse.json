@@ -1,18 +1,11 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"groupTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/GroupTransport.json"
-					}
-				}
+	"type": "object",
+	"properties": {
+		"groupTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/GroupTransport.json"
 			}
 		}
-	]
+	}
 }

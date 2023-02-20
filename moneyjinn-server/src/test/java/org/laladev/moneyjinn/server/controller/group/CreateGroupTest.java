@@ -8,15 +8,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.CreateGroupRequest;
-import org.laladev.moneyjinn.server.model.CreateGroupResponse;
-import org.laladev.moneyjinn.server.model.GroupTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreateGroupRequest;
+import org.laladev.moneyjinn.server.model.CreateGroupResponse;
+import org.laladev.moneyjinn.server.model.GroupTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.HttpMethod;
 
@@ -55,11 +56,11 @@ public class CreateGroupTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
-    final CreateGroupResponse expected = new CreateGroupResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreateGroupResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        CreateGroupResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -89,11 +90,13 @@ public class CreateGroupTest extends AbstractControllerTest {
     final CreateGroupRequest request = new CreateGroupRequest();
     final GroupTransport transport = new GroupTransportBuilder().forNewGroup().build();
     request.setGroupTransport(transport);
-    final CreateGroupResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreateGroupResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateGroupResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
     final Group group = this.groupService.getGroupByName(GroupTransportBuilder.NEWGROUP_NAME);
     Assertions.assertEquals(GroupTransportBuilder.NEXT_ID, group.getId().getId());
+    Assertions.assertEquals(GroupTransportBuilder.NEXT_ID, actual.getGroupId());
     Assertions.assertEquals(GroupTransportBuilder.NEWGROUP_NAME, group.getName());
   }
 

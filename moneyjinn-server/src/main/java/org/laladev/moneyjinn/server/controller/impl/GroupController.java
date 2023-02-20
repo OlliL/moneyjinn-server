@@ -36,12 +36,9 @@ import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateGroupRequest;
 import org.laladev.moneyjinn.server.model.CreateGroupResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
 import org.laladev.moneyjinn.server.model.UpdateGroupRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -85,40 +82,36 @@ public class GroupController extends AbstractController implements GroupControll
     final Group group = super.map(request.getGroupTransport(), Group.class);
     group.setId(null);
     final ValidationResult validationResult = this.groupService.validateGroup(group);
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    final GroupID groupId = this.groupService.createGroup(group);
+
     final CreateGroupResponse response = new CreateGroupResponse();
-    response.setResult(validationResult.isValid());
-    if (validationResult.isValid()) {
-      final GroupID groupId = this.groupService.createGroup(group);
-      response.setGroupId(groupId.getId());
-    } else {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    }
+    response.setGroupId(groupId.getId());
     return ResponseEntity.ok(response);
   }
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ValidationResponse> updateGroup(
-      @RequestBody final UpdateGroupRequest request) {
+  public ResponseEntity<Void> updateGroup(@RequestBody final UpdateGroupRequest request) {
     final Group group = super.map(request.getGroupTransport(), Group.class);
     final ValidationResult validationResult = this.groupService.validateGroup(group);
-    final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
-    if (validationResult.isValid()) {
-      this.groupService.updateGroup(group);
-    } else {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    }
-    return ResponseEntity.ok(response);
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    this.groupService.updateGroup(group);
+
+    return ResponseEntity.noContent().build();
   }
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ErrorResponse> deleteGroupById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
     final GroupID groupId = new GroupID(id);
+
     this.groupService.deleteGroup(groupId);
+
     return ResponseEntity.noContent().build();
   }
 

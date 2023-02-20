@@ -47,8 +47,9 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   public void test_regularGroupNoData_SuccessfullNoContent() throws Exception {
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
     Assertions.assertNotNull(group);
-    super.callUsecaseWithoutContent("/" + GroupTransportBuilder.GROUP3_ID, this.method, true,
-        Object.class);
+
+    super.callUsecaseExpect204("/" + GroupTransportBuilder.GROUP3_ID, this.method);
+
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
     Assertions.assertNull(group);
   }
@@ -58,8 +59,9 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     Group group = this.groupService
         .getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(group);
-    super.callUsecaseWithoutContent("/" + GroupTransportBuilder.NON_EXISTING_ID, this.method, true,
-        Object.class);
+
+    super.callUsecaseExpect204("/" + GroupTransportBuilder.NON_EXISTING_ID, this.method);
+
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(group);
   }
@@ -71,8 +73,10 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     expected.setMessage("You may not delete a group while there where/are users assigned to it!");
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
+
     final ErrorResponse actual = super.callUsecaseExpect400("/" + GroupTransportBuilder.GROUP1_ID,
         this.method, ErrorResponse.class);
+
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
     Assertions.assertEquals(expected, actual);
@@ -82,6 +86,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
     super.callUsecaseExpect403("/" + GroupTransportBuilder.GROUP1_ID, this.method);
   }
 
@@ -89,6 +94,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/1", this.method);
   }
 }

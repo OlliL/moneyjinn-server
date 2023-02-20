@@ -1,16 +1,9 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"groupId": {
-					"type": "integer",
-					"format": "int64"
-				}
-			}
+	"type": "object",
+	"properties": {
+		"groupId": {
+			"type": "integer",
+			"format": "int64"
 		}
-	]
+	}
 }
