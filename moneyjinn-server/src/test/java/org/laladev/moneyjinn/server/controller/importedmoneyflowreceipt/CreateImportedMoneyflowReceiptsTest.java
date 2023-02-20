@@ -59,7 +59,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     final CreateImportedMoneyflowReceiptsRequest request = new CreateImportedMoneyflowReceiptsRequest();
     request.setImportedMoneyflowReceiptTransports(Collections.singletonList(transport));
 
-    super.callUsecaseWithContent("", this.method, request, true, ValidationResponse.class);
+    super.callUsecaseExpect204(this.method, request);
 
     final UserID userId = new UserID(userIdLong);
     final GroupID groupId = new GroupID(groupIdLong);
@@ -96,11 +96,11 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
     request.setImportedMoneyflowReceiptTransports(Collections
         .singletonList(new ImportedMoneyflowReceiptTransportBuilder().forPngReceipt().build()));
 
-    final ValidationResponse response = super.callUsecaseWithContent("", this.method, request,
-        false, ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
 
     Assertions.assertEquals(ErrorCode.UNSUPPORTED_MEDIA_TYPE.getErrorCode(),
-        response.getValidationItemTransports().get(0).getError());
+        actual.getValidationItemTransports().get(0).getError());
   }
 
   @Test
@@ -121,6 +121,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("", this.method);
   }
 

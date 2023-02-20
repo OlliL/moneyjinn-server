@@ -66,8 +66,7 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
         .getImportedMoneyflowReceiptById(userId, groupId, receiptId);
     Assertions.assertNotNull(receipt);
 
-    super.callUsecaseWithoutContent("/" + receiptId.getId() + "/" + moneyflowId.getId(),
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + receiptId.getId() + "/" + moneyflowId.getId(), this.method);
 
     receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId,
         receiptId);
@@ -118,7 +117,7 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseWithoutContent("/1/1", this.method, true, Object.class);
+    super.callUsecaseExpect204("/1/1", this.method);
 
   }
 }

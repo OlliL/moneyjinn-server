@@ -57,7 +57,7 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
         .getImportedMoneyflowReceiptById(userId, groupId, receiptId);
     Assertions.assertNotNull(receipt);
 
-    super.callUsecaseWithoutContent("/" + receiptId.getId(), this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + receiptId.getId(), this.method);
 
     receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId,
         receiptId);
@@ -66,15 +66,15 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
 
   @Test
   public void test_DeleteNotExistingId_emptyResponse() throws Exception {
-    super.callUsecaseWithoutContent("/" + ImportedMoneyflowReceiptTransportBuilder.NEXT_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + ImportedMoneyflowReceiptTransportBuilder.NEXT_ID, this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403("/1", this.method);
   }
 
   @Test
@@ -83,7 +83,7 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseWithoutContent("/1", this.method, true, Object.class);
+    super.callUsecaseExpect204("/1", this.method);
 
   }
 }

@@ -44,11 +44,8 @@ import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptContr
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowReceiptTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
@@ -86,7 +83,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> createImportedMoneyflowReceipts(
+  public ResponseEntity<Void> createImportedMoneyflowReceipts(
       @RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
@@ -101,15 +98,12 @@ public class ImportedMoneyflowReceiptController extends AbstractController
       validationResult.mergeValidationResult(
           this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(imr));
     });
-    if (!validationResult.isValid()) {
-      final ValidationResponse response = new ValidationResponse();
-      response.setResult(false);
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
-    }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
     importedMoneyflowReceipts.stream()
         .forEach(imr -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(imr));
+
     return ResponseEntity.noContent().build();
   }
 
@@ -127,20 +121,22 @@ public class ImportedMoneyflowReceiptController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteImportedMoneyflowReceiptById(
+  public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(
       @PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final Group group = this.accessRelationService.getAccessor(userId);
     final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(
         id);
+
     this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
         importedMoneyflowReceiptId);
+
     return ResponseEntity.noContent().build();
 
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> importImportedMoneyflowReceipt(
+  public ResponseEntity<Void> importImportedMoneyflowReceipt(
       @PathVariable(value = "id") final Long id,
       @PathVariable(value = "moneyflowid") final Long moneyflowid) {
     final UserID userId = super.getUserId();
@@ -153,10 +149,12 @@ public class ImportedMoneyflowReceiptController extends AbstractController
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     final MoneyflowReceipt checkMoneyflowReceipt = this.moneyflowReceiptService
         .getMoneyflowReceipt(userId, moneyflowId);
+
     if (checkMoneyflowReceipt != null) {
       throw new BusinessException("Moneyflow already has a receipt attached!",
           ErrorCode.RECEIPT_ALREADY_EXISTS);
     }
+
     if (importedMoneyflowReceipt != null && moneyflow != null) {
       final MoneyflowReceipt moneyflowReceipt = new MoneyflowReceipt();
       moneyflowReceipt.setMoneyflowId(moneyflowId);
@@ -172,6 +170,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
       this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
           importedMoneyflowReceiptId);
     }
+
     return ResponseEntity.noContent().build();
 
   }

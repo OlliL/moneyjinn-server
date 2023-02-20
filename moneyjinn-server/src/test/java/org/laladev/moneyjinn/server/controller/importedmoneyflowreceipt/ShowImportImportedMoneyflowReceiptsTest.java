@@ -6,11 +6,11 @@ import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
+import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -48,8 +48,8 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
     transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt2().build());
     expected.setImportedMoneyflowReceiptTransports(transporter);
 
-    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowImportImportedMoneyflowReceiptsResponse.class);
+    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
+        this.method, ShowImportImportedMoneyflowReceiptsResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -58,6 +58,7 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("", this.method);
   }
 
@@ -69,8 +70,10 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
 
     final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
     expected.setImportedMoneyflowReceiptTransports(Collections.emptyList());
-    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowImportImportedMoneyflowReceiptsResponse.class);
+
+    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
+        this.method, ShowImportImportedMoneyflowReceiptsResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }
