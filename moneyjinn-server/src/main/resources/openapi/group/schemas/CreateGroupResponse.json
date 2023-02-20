@@ -1,5 +1,8 @@
 {
 	"type": "object",
+	"required": [
+		"groupId"
+	],
 	"properties": {
 		"groupId": {
 			"type": "integer",
