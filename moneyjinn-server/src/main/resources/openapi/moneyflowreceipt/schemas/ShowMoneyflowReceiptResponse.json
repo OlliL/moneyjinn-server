@@ -1,23 +1,16 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"receipt",
+		"receiptType"
+	],
+	"properties": {
+		"receipt": {
+			"type": "string"
 		},
-		{
-			"type": "object",
-			"required": [
-				"receipt",
-				"receiptType"
-			],
-			"properties": {
-				"receipt": {
-					"type": "string"
-				},
-				"receiptType": {
-					"type": "integer",
-					"format": "int32"
-				}
-			}
+		"receiptType": {
+			"type": "integer",
+			"format": "int32"
 		}
-	]
+	}
 }

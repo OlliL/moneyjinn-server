@@ -46,8 +46,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
 
   @Test
   public void test_unknownMoneyflowId_NoContent() throws Exception {
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method,
-        true, Object.class);
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method);
   }
 
   @Test
@@ -60,8 +59,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
     Assertions.assertNotNull(receipt);
     Assertions.assertEquals(receipt.getId().getId(), 1L);
 
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
-        true, Object.class);
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
 
     receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
     Assertions.assertNull(receipt);
@@ -79,7 +77,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
-        true, Object.class);
+
+    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
   }
 }

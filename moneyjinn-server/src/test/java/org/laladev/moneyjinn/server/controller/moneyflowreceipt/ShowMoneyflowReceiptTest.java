@@ -5,18 +5,18 @@ import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   private static final String MONEYFLOW_RECEIPT_1 = "FFFFFFFF";
-  private static final Integer MONEYFLOW_RECEIPT_1_TYPE =  1;
+  private static final Integer MONEYFLOW_RECEIPT_1_TYPE = 1;
   private static final String MONEYFLOW_RECEIPT_2 = "FFFFFFFF";
-  private static final Integer MONEYFLOW_RECEIPT_2_TYPE =  2;
+  private static final Integer MONEYFLOW_RECEIPT_2_TYPE = 2;
   private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;
@@ -45,8 +45,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   @Test
   public void test_unknownMoneyflowReceipt_emptyResponseObject() throws Exception {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
-    final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
-        "/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method, false,
+    final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
+        "/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method,
         ShowMoneyflowReceiptResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -56,8 +56,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_1.getBytes()));
     expected.setReceiptType(MONEYFLOW_RECEIPT_1_TYPE);
-    final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
-        "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,
+    final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
+        "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
         ShowMoneyflowReceiptResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -67,8 +67,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_2.getBytes()));
     expected.setReceiptType(MONEYFLOW_RECEIPT_2_TYPE);
-    final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
-        "/" + MoneyflowTransportBuilder.MONEYFLOW2_ID, this.method, false,
+    final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
+        "/" + MoneyflowTransportBuilder.MONEYFLOW2_ID, this.method,
         ShowMoneyflowReceiptResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -86,8 +86,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
-    final ShowMoneyflowReceiptResponse actual = super.callUsecaseWithoutContent(
-        "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method, false,
+    final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
+        "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
         ShowMoneyflowReceiptResponse.class);
     Assertions.assertEquals(expected, actual);
   }

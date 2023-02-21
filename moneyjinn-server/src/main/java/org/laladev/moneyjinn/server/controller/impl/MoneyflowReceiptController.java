@@ -34,7 +34,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowReceiptTypeMapper;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -64,6 +63,7 @@ public class MoneyflowReceiptController extends AbstractController
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
     final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     if (moneyflow != null) {
       final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService
@@ -74,18 +74,20 @@ public class MoneyflowReceiptController extends AbstractController
             MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
       }
     }
+
     return ResponseEntity.ok(response);
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteMoneyflowReceipt(
-      @PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final MoneyflowID moneyflowId = new MoneyflowID(id);
+
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     if (moneyflow != null) {
       this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
     }
+
     return ResponseEntity.noContent().build();
   }
 }
