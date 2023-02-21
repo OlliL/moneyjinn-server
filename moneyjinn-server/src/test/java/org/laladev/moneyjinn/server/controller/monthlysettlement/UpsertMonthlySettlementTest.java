@@ -11,10 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.server.model.UpsertMonthlySettlementRequest;
-import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
@@ -22,6 +18,10 @@ import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.UpsertMonthlySettlementRequest;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -64,7 +64,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
         ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -76,12 +76,10 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
         .forNewMonthlySettlement().build();
     request.setMonthlySettlementTransports(Arrays.asList(monthlySettlementTransport));
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
+    super.callUsecaseExpect204(this.method, request);
     final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransport.getYear(),
             Month.of(monthlySettlementTransport.getMonth().intValue()));
-    Assertions.assertTrue(actual.getResult());
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertEquals(1, monthlySettlements.size());
     Assertions.assertEquals(monthlySettlementTransport.getYear(),
@@ -127,12 +125,10 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
     monthlySettlementTransports.add(monthlySettlementTransport1);
     monthlySettlementTransports.add(monthlySettlementTransport2);
     request.setMonthlySettlementTransports(monthlySettlementTransports);
-    final ValidationResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        ValidationResponse.class);
+    super.callUsecaseExpect204(this.method, request);
     final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.get(0).getYear(),
             Month.of(monthlySettlementTransports.get(0).getMonth().intValue()));
-    Assertions.assertTrue(actual.getResult());
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertEquals(3, monthlySettlements.size());
     Assertions.assertEquals(0,

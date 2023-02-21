@@ -48,12 +48,12 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_regularMonthlySettlement_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-        .getAllMonthlySettlementsByYearMonth(userId,  2008, Month.DECEMBER);
+        .getAllMonthlySettlementsByYearMonth(userId, 2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertEquals(3, monthlySettlements.size());
-    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+    super.callUsecaseExpect204("/2008/12", this.method);
     monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
-         2008, Month.DECEMBER);
+        2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertEquals(1, monthlySettlements.size());
     Assertions.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
@@ -64,12 +64,12 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_nonExistingMonthlySettlement_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-        .getAllMonthlySettlementsByYearMonth(userId,  1970, Month.OCTOBER);
+        .getAllMonthlySettlementsByYearMonth(userId, 1970, Month.OCTOBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertTrue(monthlySettlements.isEmpty());
-    super.callUsecaseWithoutContent("/1970/10", this.method, true, Object.class);
+    super.callUsecaseExpect204("/1970/10", this.method);
     monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
-         1970, Month.OCTOBER);
+        1970, Month.OCTOBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertTrue(monthlySettlements.isEmpty());
   }
@@ -78,12 +78,12 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_MonthlySettlementFromDifferentGroup_notSuccessfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-        .getAllMonthlySettlementsByYearMonth(userId,  2008, Month.DECEMBER);
+        .getAllMonthlySettlementsByYearMonth(userId, 2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertTrue(monthlySettlements.isEmpty());
-    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+    super.callUsecaseExpect204("/2008/12", this.method);
     monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
-         2008, Month.DECEMBER);
+        2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertTrue(monthlySettlements.isEmpty());
   }
@@ -100,6 +100,6 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/2008/12", this.method, true, Object.class);
+    super.callUsecaseExpect204("/2008/12", this.method);
   }
 }

@@ -1,41 +1,34 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"year",
+		"month",
+		"monthlySettlementTransports"
+	],
+	"properties": {
+		"year": {
+			"type": "integer",
+			"format": "int32"
 		},
-		{
-			"type": "object",
-			"required": [
-				"year",
-				"month",
-				"monthlySettlementTransports"
-			],
-			"properties": {
-				"year": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"month": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"editMode": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"monthlySettlementTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MonthlySettlementTransport.json"
-					}
-				},
-				"importedMonthlySettlementTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MonthlySettlementTransport.json"
-					}
-				}
+		"month": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"editMode": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"monthlySettlementTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MonthlySettlementTransport.json"
+			}
+		},
+		"importedMonthlySettlementTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MonthlySettlementTransport.json"
 			}
 		}
-	]
+	}
 }

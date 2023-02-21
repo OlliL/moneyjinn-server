@@ -9,9 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
-import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
-import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -21,6 +18,9 @@ import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
+import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -64,11 +64,11 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2()
         .withId(null).withYear(2000).withMonth(1).withAmount(BigDecimal.ZERO).build());
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
-    expected.setYear( 2000);
-    expected.setMonth( 1);
-    expected.setEditMode( 0);
-    final ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2000/1",
-        this.method, false, ShowMonthlySettlementCreateResponse.class);
+    expected.setYear(2000);
+    expected.setMonth(1);
+    expected.setEditMode(0);
+    final ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200("/2000/1",
+        this.method, ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -81,13 +81,13 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     monthlySettlementTransports
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement2().build());
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
-    expected.setYear( 2008);
-    expected.setMonth( 12);
-    expected.setEditMode( 1);
-    ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12",
-        this.method, false, ShowMonthlySettlementCreateResponse.class);
+    expected.setYear(2008);
+    expected.setMonth(12);
+    expected.setEditMode(1);
+    ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200("/2008/12", this.method,
+        ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2008", this.method, false,
+    actual = super.callUsecaseExpect200("/2008", this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -113,13 +113,13 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
         .withYear(2008).withUserId(UserTransportBuilder.USER1_ID).build();
     monthlySettlementTransports.add(monthlySettlementTransport);
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
-    expected.setYear( 2008);
-    expected.setMonth( 12);
-    expected.setEditMode( 1);
-    ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("/2008/12",
-        this.method, false, ShowMonthlySettlementCreateResponse.class);
+    expected.setYear(2008);
+    expected.setMonth(12);
+    expected.setEditMode(1);
+    ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200("/2008/12", this.method,
+        ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2008", this.method, false,
+    actual = super.callUsecaseExpect200("/2008", this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -134,16 +134,16 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement2()
         .withId(null).withYear(2010).withMonth(5).build());
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
-    expected.setYear( 2010);
-    expected.setMonth( 5);
-    expected.setEditMode( 0);
-    ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowMonthlySettlementCreateResponse.class);
-    Assertions.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
+    expected.setYear(2010);
+    expected.setMonth(5);
+    expected.setEditMode(0);
+    ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200(this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010", this.method, false,
+    actual = super.callUsecaseExpect200("/2010/5", this.method,
+        ShowMonthlySettlementCreateResponse.class);
+    Assertions.assertEquals(expected, actual);
+    actual = super.callUsecaseExpect200("/2010", this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -163,13 +163,13 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     monthlySettlementTransports
         .add(new MonthlySettlementTransportBuilder().forCapitalsource6().build());
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
-    expected.setYear( 2010);
-    expected.setMonth( 5);
-    expected.setEditMode( 0);
-    ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowMonthlySettlementCreateResponse.class);
+    expected.setYear(2010);
+    expected.setMonth(5);
+    expected.setEditMode(0);
+    ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200(this.method,
+        ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010/5", this.method, false,
+    actual = super.callUsecaseExpect200("/2010/5", this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -188,11 +188,11 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final LocalDate now = LocalDate.now();
-    expected.setYear( now.getYear());
-    expected.setMonth( now.getMonthValue());
-    expected.setEditMode( 0);
-    final ShowMonthlySettlementCreateResponse actual = super.callUsecaseWithoutContent("",
-        this.method, false, ShowMonthlySettlementCreateResponse.class);
+    expected.setYear(now.getYear());
+    expected.setMonth(now.getMonthValue());
+    expected.setEditMode(0);
+    final ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200(this.method,
+        ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 }

@@ -1,21 +1,14 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"required": [
-				"monthlySettlementTransports"
-			],
-			"properties": {
-				"monthlySettlementTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MonthlySettlementTransport.json"
-					}
-				}
+	"type": "object",
+	"required": [
+		"monthlySettlementTransports"
+	],
+	"properties": {
+		"monthlySettlementTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MonthlySettlementTransport.json"
 			}
 		}
-	]
+	}
 }

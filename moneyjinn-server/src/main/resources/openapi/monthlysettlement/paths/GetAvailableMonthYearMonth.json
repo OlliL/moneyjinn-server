@@ -35,6 +35,16 @@
 					}
 				}
 			}
+		},
+		"400": {
+			"description": "Generic Client Error",
+			"content": {
+				"application/json": {
+					"schema": {
+						"$ref": "../../abstract/ErrorResponse.json"
+					}
+				}
+			}
 		}
 	}
 }

@@ -47,14 +47,11 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementListResponse;
 import org.laladev.moneyjinn.server.model.UpsertMonthlySettlementRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
@@ -338,7 +335,7 @@ public class MonthlySettlementController extends AbstractController
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> upsertMonthlySettlement(
+  public ResponseEntity<Void> upsertMonthlySettlement(
       @RequestBody final UpsertMonthlySettlementRequest request) {
     final UserID userId = super.getUserId();
     final List<MonthlySettlement> monthlySettlements = super.mapList(
@@ -351,22 +348,20 @@ public class MonthlySettlementController extends AbstractController
     }
     final ValidationResult validationResult = this.monthlySettlementService
         .upsertMonthlySettlements(monthlySettlements);
-    final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    }
-    return ResponseEntity.ok(response);
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deleteMonthlySettlement(
+  public ResponseEntity<Void> deleteMonthlySettlement(
       @PathVariable(value = "year") final Integer requestYear,
       @PathVariable(value = "month") final Integer requestMonth) {
     final UserID userId = super.getUserId();
     this.monthlySettlementService.deleteMonthlySettlement(userId, requestYear,
         this.getMonth(requestMonth));
+
     return ResponseEntity.noContent().build();
   }
 
