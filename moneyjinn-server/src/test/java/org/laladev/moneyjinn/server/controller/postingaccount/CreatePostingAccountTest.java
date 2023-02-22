@@ -8,15 +8,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
-import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
-import org.laladev.moneyjinn.server.model.PostingAccountTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
+import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
+import org.laladev.moneyjinn.server.model.PostingAccountTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -56,11 +57,13 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
-    final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreatePostingAccountResponse.class);
+
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -96,11 +99,14 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     request.setPostingAccountTransport(transport);
     final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
     expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
-    super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(this.method, request,
         CreatePostingAccountResponse.class);
+
     final PostingAccount postingAccount = this.postingAccountService
         .getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);
     Assertions.assertEquals(PostingAccountTransportBuilder.NEXT_ID, postingAccount.getId().getId());
+    Assertions.assertEquals(PostingAccountTransportBuilder.NEXT_ID, actual.getPostingAccountId());
     Assertions.assertEquals(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME,
         postingAccount.getName());
   }
@@ -130,9 +136,10 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     request.setPostingAccountTransport(transport);
     final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
     expected.setPostingAccountId(1L);
-    expected.setResult(true);
-    final CreatePostingAccountResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreatePostingAccountResponse.class);
+
+    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(this.method, request,
+        CreatePostingAccountResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

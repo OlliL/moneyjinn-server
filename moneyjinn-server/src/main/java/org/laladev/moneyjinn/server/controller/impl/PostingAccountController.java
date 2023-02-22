@@ -36,12 +36,9 @@ import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMap
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -87,44 +84,40 @@ public class PostingAccountController extends AbstractController
     postingAccount.setId(null);
     final ValidationResult validationResult = this.postingAccountService
         .validatePostingAccount(postingAccount);
-    final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
-    }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
     final PostingAccountID postingAccountId = this.postingAccountService
         .createPostingAccount(postingAccount);
+
+    final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
     response.setPostingAccountId(postingAccountId.getId());
+
     return ResponseEntity.ok(response);
   }
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ValidationResponse> updatePostingAccount(
+  public ResponseEntity<Void> updatePostingAccount(
       @RequestBody final UpdatePostingAccountRequest request) {
     final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
         PostingAccount.class);
     final ValidationResult validationResult = this.postingAccountService
         .validatePostingAccount(postingAccount);
-    final ValidationResponse response = new ValidationResponse();
-    response.setResult(validationResult.isValid());
-    if (validationResult.isValid()) {
-      this.postingAccountService.updatePostingAccount(postingAccount);
-    } else {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    }
-    return ResponseEntity.ok(response);
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    this.postingAccountService.updatePostingAccount(postingAccount);
+
+    return ResponseEntity.noContent().build();
   }
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ErrorResponse> deletePostingAccountById(
-      @PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
     final PostingAccountID postingAccountId = new PostingAccountID(id);
     this.postingAccountService.deletePostingAccount(postingAccountId);
+
     return ResponseEntity.noContent().build();
   }
 }

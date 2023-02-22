@@ -49,8 +49,8 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
     Assertions.assertNotNull(postingAccount);
-    super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID,
+        this.method);
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
     Assertions.assertNull(postingAccount);
@@ -61,8 +61,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(postingAccount);
-    super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.NON_EXISTING_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.NON_EXISTING_ID, this.method);
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(postingAccount);
@@ -105,7 +104,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-        this.method, true, Object.class);
+    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
+        this.method);
   }
 }

@@ -7,11 +7,11 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
-import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.PostingAccountTransport;
+import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -57,8 +57,8 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowPostingAccountListResponse expected = this.getCompleteResponse();
-    final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowPostingAccountListResponse.class);
+    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowPostingAccountListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -75,8 +75,8 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
-    final ShowPostingAccountListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowPostingAccountListResponse.class);
+    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowPostingAccountListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 }
