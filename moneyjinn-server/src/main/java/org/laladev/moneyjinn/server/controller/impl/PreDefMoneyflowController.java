@@ -38,12 +38,9 @@ import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMa
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
-import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
@@ -92,20 +89,17 @@ public class PreDefMoneyflowController extends AbstractController
     final ValidationResult validationResult = this.preDefMoneyflowService
         .validatePreDefMoneyflow(preDefMoneyflow);
     final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    } else {
-      final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
-          .createPreDefMoneyflow(preDefMoneyflow);
-      response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
-    }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
+        .createPreDefMoneyflow(preDefMoneyflow);
+    response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
     return ResponseEntity.ok(response);
   }
 
   @Override
-  public ResponseEntity<ValidationResponse> updatePreDefMoneyflow(
+  public ResponseEntity<Void> updatePreDefMoneyflow(
       @RequestBody final UpdatePreDefMoneyflowRequest request) {
     final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
         PreDefMoneyflow.class);
@@ -113,24 +107,21 @@ public class PreDefMoneyflowController extends AbstractController
     preDefMoneyflow.setUser(new User(userId));
     final ValidationResult validationResult = this.preDefMoneyflowService
         .validatePreDefMoneyflow(preDefMoneyflow);
-    if (validationResult.isValid()) {
-      this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
-    } else {
-      final ValidationResponse response = new ValidationResponse();
-      response.setResult(validationResult.isValid());
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-      return ResponseEntity.ok(response);
-    }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+
     return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> deletePreDefMoneyflowById(
-      @PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
     final UserID userId = super.getUserId();
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
+
     this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
+
     return ResponseEntity.noContent().build();
   }
 

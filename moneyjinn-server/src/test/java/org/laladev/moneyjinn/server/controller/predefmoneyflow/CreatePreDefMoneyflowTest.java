@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
-import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -23,6 +19,11 @@ import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
+import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -62,16 +63,11 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
-    final CreatePreDefMoneyflowResponse expected = new CreatePreDefMoneyflowResponse();
+    final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreatePreDefMoneyflowResponse actual = super.callUsecaseWithContent("", this.method,
-        request, false, CreatePreDefMoneyflowResponse.class);
-    Assertions.assertEquals(expected.getCode(), actual.getCode());
-    Assertions.assertEquals(expected.getMessage(), actual.getMessage());
-    Assertions.assertEquals(expected.getResult(), actual.getResult());
-    Assertions.assertEquals(expected.getValidationItemTransports(),
-        actual.getValidationItemTransports());
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -202,8 +198,8 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forNewPreDefMoneyflow().build();
     request.setPreDefMoneyflowTransport(transport);
-    final CreatePreDefMoneyflowResponse response = super.callUsecaseWithContent("", this.method,
-        request, false, CreatePreDefMoneyflowResponse.class);
+    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(this.method, request,
+        CreatePreDefMoneyflowResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.NEXT_ID);
@@ -224,8 +220,8 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
         .forNewPreDefMoneyflow().build();
     transport.setUserid(UserTransportBuilder.ADMIN_ID);
     request.setPreDefMoneyflowTransport(transport);
-    final CreatePreDefMoneyflowResponse response = super.callUsecaseWithContent("", this.method,
-        request, false, CreatePreDefMoneyflowResponse.class);
+    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(this.method, request,
+        CreatePreDefMoneyflowResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.NEXT_ID);
@@ -266,7 +262,6 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forNewPreDefMoneyflow().build();
     request.setPreDefMoneyflowTransport(transport);
-    super.callUsecaseWithContent("", this.method, request, false,
-        CreatePreDefMoneyflowResponse.class);
+    super.callUsecaseExpect422(this.method, request, ValidationResponse.class);
   }
 }

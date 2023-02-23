@@ -51,8 +51,10 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
     PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
         preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
-    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID,
-        this.method, true, Object.class);
+
+    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID,
+        this.method);
+
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
   }
@@ -65,8 +67,9 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
     PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
         preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
-    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID,
-        this.method, true, Object.class);
+
+    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID, this.method);
+
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
   }
@@ -79,8 +82,10 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
     PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
         preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
-    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
-        this.method, true, Object.class);
+
+    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
+        this.method);
+
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
   }
@@ -97,7 +102,8 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
-        this.method, true, Object.class);
+
+    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
+        this.method);
   }
 }

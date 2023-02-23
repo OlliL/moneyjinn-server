@@ -6,11 +6,11 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
-import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
+import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -54,8 +54,8 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowPreDefMoneyflowListResponse expected = this.getCompleteResponse();
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowPreDefMoneyflowListResponse.class);
+    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowPreDefMoneyflowListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -72,8 +72,8 @@ public class ShowPreDefMoneyflowListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPreDefMoneyflowListResponse expected = new ShowPreDefMoneyflowListResponse();
-    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseWithoutContent("", this.method,
-        false, ShowPreDefMoneyflowListResponse.class);
+    final ShowPreDefMoneyflowListResponse actual = super.callUsecaseExpect200(this.method,
+        ShowPreDefMoneyflowListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
