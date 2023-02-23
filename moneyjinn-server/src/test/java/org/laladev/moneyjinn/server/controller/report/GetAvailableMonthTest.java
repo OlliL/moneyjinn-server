@@ -60,10 +60,10 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setYear(2010);
     expected.setAllYears(ALL_YEARS);
     expected.setAllMonth(Arrays.asList(1, 2, 3, 4, 5));
-    GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    GetAvailableReportMonthResponse actual = super.callUsecaseExpect200(this.method,
         GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010", this.method, false,
+    actual = super.callUsecaseExpect200("/2010", this.method,
         GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
@@ -74,13 +74,13 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setYear(2010);
     expected.setAllYears(ALL_YEARS);
     expected.setAllMonth(Arrays.asList(1, 2, 3, 4, 5));
-    GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("/2010/13",
-        this.method, false, GetAvailableReportMonthResponse.class);
-    this.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010/0", this.method, false,
+    GetAvailableReportMonthResponse actual = super.callUsecaseExpect200("/2010/13", this.method,
         GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010/11", this.method, false,
+    actual = super.callUsecaseExpect200("/2010/0", this.method,
+        GetAvailableReportMonthResponse.class);
+    this.assertEquals(expected, actual);
+    actual = super.callUsecaseExpect200("/2010/11", this.method,
         GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
@@ -96,8 +96,8 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setNextMonth(1);
     expected.setNextYear(2009);
     expected.setNextMonthHasMoneyflows(1);
-    final GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("/2008/12",
-        this.method, false, GetAvailableReportMonthResponse.class);
+    final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200("/2008/12",
+        this.method, GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -114,8 +114,8 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setNextYear(2009);
     expected.setNextMonthHasMoneyflows(1);
     expected.setPreviousMonthHasMoneyflows(1);
-    final GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("/2009/1",
-        this.method, false, GetAvailableReportMonthResponse.class);
+    final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200("/2009/1",
+        this.method, GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -132,8 +132,8 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setNextYear(2010);
     expected.setNextMonthHasMoneyflows(1);
     expected.setPreviousMonthHasMoneyflows(1);
-    final GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("/2009/12",
-        this.method, false, GetAvailableReportMonthResponse.class);
+    final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200("/2009/12",
+        this.method, GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -153,8 +153,8 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setNextYear(2010);
     expected.setPreviousMonthHasMoneyflows(1);
     expected.setNextMonthHasMoneyflows(1);
-    final GetAvailableReportMonthResponse actual = super.callUsecaseWithoutContent("/2009/12",
-        this.method, false, GetAvailableReportMonthResponse.class);
+    final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200("/2009/12",
+        this.method, GetAvailableReportMonthResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -184,6 +184,6 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("", this.method, false, GetAvailableReportMonthResponse.class);
+    super.callUsecaseExpect200("", this.method, GetAvailableReportMonthResponse.class);
   }
 }

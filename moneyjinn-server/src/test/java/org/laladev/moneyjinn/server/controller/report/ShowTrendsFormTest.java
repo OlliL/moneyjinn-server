@@ -8,13 +8,13 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
@@ -63,16 +63,16 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
       throws Exception {
     final UserID userId1 = new UserID(UserTransportBuilder.USER1_ID);
     final UserID userId3 = new UserID(UserTransportBuilder.USER3_ID);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.JANUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.FEBRUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.MARCH);
-    this.monthlySettlementService.deleteMonthlySettlement(userId1,  2010, Month.APRIL);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.JANUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.FEBRUARY);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.MARCH);
-    this.monthlySettlementService.deleteMonthlySettlement(userId3,  2010, Month.APRIL);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1, 2010, Month.JANUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1, 2010, Month.FEBRUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1, 2010, Month.MARCH);
+    this.monthlySettlementService.deleteMonthlySettlement(userId1, 2010, Month.APRIL);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.JANUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.FEBRUARY);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.MARCH);
+    this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.APRIL);
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
-    final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
         ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -80,7 +80,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   @Test
   public void test_noSetting_defaultsResponse() throws Exception {
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
-    final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
         ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -100,7 +100,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
             CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
             CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
             CapitalsourceTransportBuilder.CAPITALSOURCE6_ID));
-    final ShowTrendsFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
         ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -117,6 +117,6 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("", this.method, false, ShowTrendsFormResponse.class);
+    super.callUsecaseExpect200(this.method, ShowTrendsFormResponse.class);
   }
 }

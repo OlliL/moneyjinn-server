@@ -125,15 +125,13 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_invalidMonth_defaultsResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
-    ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/13", this.method, false,
+    ListReportsResponse actual = super.callUsecaseExpect200("/2010/13", this.method,
         ListReportsResponse.class);
     this.assertEquals(expected, actual);
-    actual = super.callUsecaseWithoutContent("/2010/0", this.method, false,
-        ListReportsResponse.class);
+    actual = super.callUsecaseExpect200("/2010/0", this.method, ListReportsResponse.class);
     this.assertEquals(expected, actual);
     expected.setMonth(Integer.valueOf("11"));
-    actual = super.callUsecaseWithoutContent("/2010/11", this.method, false,
-        ListReportsResponse.class);
+    actual = super.callUsecaseExpect200("/2010/11", this.method, ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -159,8 +157,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("10.10"));
     expected.setAmountBeginOfYear(new BigDecimal("99.90"));
     expected.setMoneyflowsWithReceipt(Arrays.asList(MoneyflowTransportBuilder.MONEYFLOW2_ID));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2008/12", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2008/12", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -191,8 +189,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("-1.10"));
     expected.setAmountBeginOfYear(new BigDecimal("110.00"));
     expected.setMoneyflowsWithReceipt(Arrays.asList(MoneyflowTransportBuilder.MONEYFLOW1_ID));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/1", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2009/1", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -216,8 +214,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("8.90"));
     expected.setAmountBeginOfYear(new BigDecimal("110.00"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/12", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2009/12", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -244,8 +242,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("8.90"));
     expected.setAmountBeginOfYear(new BigDecimal("110.00"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2009/12", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2009/12", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -270,8 +268,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
     expected.setAmountBeginOfYear(new BigDecimal("118.90"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/01", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/01", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -297,8 +295,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
     expected.setAmountBeginOfYear(new BigDecimal("118.90"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/01", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/01", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -323,8 +321,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("0.00"));
     expected.setAmountBeginOfYear(new BigDecimal("118.90"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/02", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/02", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -349,8 +347,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
     expected.setAmountBeginOfYear(new BigDecimal("118.90"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/03", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/03", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -387,8 +385,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     importedBalance.setCapitalsource(capitalsource);
     importedBalance.setDate(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     this.importedBalanceService.upsertImportedBalance(importedBalance);
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/5", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -427,8 +425,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     importedBalance.setCapitalsource(capitalsource);
     importedBalance.setDate(LocalDateTime.of(2009, 12, 1, 20, 20, 20, 0));
     this.importedBalanceService.upsertImportedBalance(importedBalance);
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/5", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -460,8 +458,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
     expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
     expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
     expected.setAmountBeginOfYear(new BigDecimal("118.90"));
-    final ListReportsResponse actual = super.callUsecaseWithoutContent("/2010/5", this.method,
-        false, ListReportsResponse.class);
+    final ListReportsResponse actual = super.callUsecaseExpect200("/2010/5", this.method,
+        ListReportsResponse.class);
     this.assertEquals(expected, actual);
   }
 
@@ -477,6 +475,6 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("/1234/10", this.method, false, ListReportsResponse.class);
+    super.callUsecaseExpect200("/1234/10", this.method, ListReportsResponse.class);
   }
 }

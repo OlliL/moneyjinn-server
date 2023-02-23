@@ -7,13 +7,13 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.ShowReportingFormResponse;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ShowReportingFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
@@ -57,7 +57,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   @Test
   public void test_noSetting_defaultsResponse() throws Exception {
     final ShowReportingFormResponse expected = this.getDefaultResponse();
-    final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowReportingFormResponse actual = super.callUsecaseExpect200(this.method,
         ShowReportingFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -72,7 +72,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
     final ShowReportingFormResponse expected = this.getDefaultResponse();
     expected.setPostingAccountIds(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
         PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
-    final ShowReportingFormResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowReportingFormResponse actual = super.callUsecaseExpect200(this.method,
         ShowReportingFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -89,6 +89,6 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    super.callUsecaseWithoutContent("", this.method, false, ShowReportingFormResponse.class);
+    super.callUsecaseExpect200(this.method, ShowReportingFormResponse.class);
   }
 }
