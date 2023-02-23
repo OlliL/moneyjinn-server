@@ -1,56 +1,49 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"year",
+		"month",
+		"moneyflowTransports"
+	],
+	"properties": {
+		"moneyflowTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowTransport.json"
+			}
 		},
-		{
-			"type": "object",
-			"required": [
-				"year",
-				"month",
-				"moneyflowTransports"
-			],
-			"properties": {
-				"moneyflowTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowTransport.json"
-					}
-				},
-				"moneyflowSplitEntryTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
-					}
-				},
-				"year": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"month": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"reportTurnoverCapitalsourceTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/ReportTurnoverCapitalsourceTransport.json"
-					}
-				},
-				"turnoverEndOfYearCalculated": {
-					"type": "number"
-				},
-				"amountBeginOfYear": {
-					"type": "number"
-				},
-				"moneyflowsWithReceipt": {
-					"type": "array",
-					"items": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
+		"moneyflowSplitEntryTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
+			}
+		},
+		"year": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"month": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"reportTurnoverCapitalsourceTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/ReportTurnoverCapitalsourceTransport.json"
+			}
+		},
+		"turnoverEndOfYearCalculated": {
+			"type": "number"
+		},
+		"amountBeginOfYear": {
+			"type": "number"
+		},
+		"moneyflowsWithReceipt": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
 			}
 		}
-	]
+	}
 }

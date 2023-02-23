@@ -1,18 +1,11 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"postingAccountAmountTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/PostingAccountAmountTransport.json"
-					}
-				}
+	"type": "object",
+	"properties": {
+		"postingAccountAmountTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/PostingAccountAmountTransport.json"
 			}
 		}
-	]
+	}
 }

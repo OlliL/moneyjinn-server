@@ -1,31 +1,24 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"required": [
-				"minDate",
-				"maxDate"
-			],
-			"properties": {
-				"postingAccountIds": {
-					"type": "array",
-					"items": {
-						"type": "integer",
-						"format": "int64"
-					}
-				},
-				"minDate": {
-					"type": "string",
-					"format": "date"
-				},
-				"maxDate": {
-					"type": "string",
-					"format": "date"
-				}
+	"type": "object",
+	"required": [
+		"minDate",
+		"maxDate"
+	],
+	"properties": {
+		"postingAccountIds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
 			}
+		},
+		"minDate": {
+			"type": "string",
+			"format": "date"
+		},
+		"maxDate": {
+			"type": "string",
+			"format": "date"
 		}
-	]
+	}
 }

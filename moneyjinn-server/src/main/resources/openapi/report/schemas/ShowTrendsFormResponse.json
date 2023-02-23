@@ -1,31 +1,24 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"minDate",
+		"maxDate"
+	],
+	"properties": {
+		"minDate": {
+			"type": "string",
+			"format": "date"
 		},
-		{
-			"type": "object",
-			"required": [
-				"minDate",
-				"maxDate"
-			],
-			"properties": {
-				"minDate": {
-					"type": "string",
-					"format": "date"
-				},
-				"maxDate": {
-					"type": "string",
-					"format": "date"
-				},
-				"settingTrendCapitalsourceIds": {
-					"type": "array",
-					"items": {
-						"type": "integer",
-						"format": "int64"
-					}
-				}
+		"maxDate": {
+			"type": "string",
+			"format": "date"
+		},
+		"settingTrendCapitalsourceIds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
 			}
 		}
-	]
+	}
 }
