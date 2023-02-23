@@ -1,26 +1,19 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ValidationResponse.json"
+	"type": "object",
+	"required": [
+		"userTransport",
+		"token",
+		"refreshToken"
+	],
+	"properties": {
+		"userTransport": {
+			"$ref": "../../transport/UserTransport.json"
 		},
-		{
-			"type": "object",
-			"required": [
-				"userTransport",
-				"token",
-				"refreshToken"
-			],
-			"properties": {
-				"userTransport": {
-					"$ref": "../../transport/UserTransport.json"
-				},
-				"token": {
-					"type": "string"
-				},
-				"refreshToken": {
-					"type": "string"
-				}
-			}
+		"token": {
+			"type": "string"
+		},
+		"refreshToken": {
+			"type": "string"
 		}
-	]
+	}
 }

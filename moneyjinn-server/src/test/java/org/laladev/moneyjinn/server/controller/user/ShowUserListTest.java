@@ -7,14 +7,14 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.model.GroupTransport;
-import org.laladev.moneyjinn.server.model.UserTransport;
-import  org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
+import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowUserListResponse;
+import org.laladev.moneyjinn.server.model.UserTransport;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
 
@@ -73,7 +73,7 @@ public class ShowUserListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowUserListResponse expected = this.getCompleteResponse();
-    final ShowUserListResponse actual = super.callUsecaseWithoutContent("", this.method, false,
+    final ShowUserListResponse actual = super.callUsecaseExpect200(this.method,
         ShowUserListResponse.class);
     Assertions.assertEquals(expected, actual);
   }

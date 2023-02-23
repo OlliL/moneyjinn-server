@@ -60,7 +60,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     String cryptedPassword = this.userService.cryptPassword(this.userPassword);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
 
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+    super.callUsecaseExpect204(this.method, request);
 
     user = this.userService.getUserById(userId);
     cryptedPassword = this.userService.cryptPassword(newPassword);
@@ -98,7 +98,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     User user = this.userService.getUserById(userId);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
 
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+    super.callUsecaseExpect204(this.method, request);
 
     user = this.userService.getUserById(userId);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
@@ -132,6 +132,6 @@ public class ChangePasswordTest extends AbstractControllerTest {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword(this.userPassword);
     request.setPassword(this.userPassword + "new");
-    super.callUsecaseWithContent("", this.method, request, true, Object.class);
+    super.callUsecaseExpect204(this.method, request);
   }
 }

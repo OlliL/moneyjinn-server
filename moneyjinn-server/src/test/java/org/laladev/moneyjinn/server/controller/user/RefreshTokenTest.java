@@ -9,15 +9,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.server.model.LoginRequest;
-import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserPermission;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
+import org.laladev.moneyjinn.server.model.LoginRequest;
+import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -81,8 +81,8 @@ public class RefreshTokenTest extends AbstractControllerTest {
 
   @Test
   public void test_RegularUser_Successfull() throws Exception {
-    final LoginResponse response = super.callUsecaseWithContent("", this.method, null, false,
-        LoginResponse.class);
+
+    final LoginResponse response = super.callUsecaseExpect200(this.method, LoginResponse.class);
 
     Assertions.assertEquals(new UserTransportBuilder().forUser1().build(),
         response.getUserTransport());
@@ -96,7 +96,7 @@ public class RefreshTokenTest extends AbstractControllerTest {
     user.setPermissions(Collections.singletonList(UserPermission.NONE));
     this.userService.updateUser(user);
 
-    final ErrorResponse response = super.callUsecaseExpect403("", this.method, null,
+    final ErrorResponse response = super.callUsecaseExpect403(this.method, null,
         ErrorResponse.class);
 
     Assertions.assertEquals(response.getCode(), ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode());

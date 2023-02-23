@@ -137,6 +137,12 @@ public abstract class AbstractControllerTest extends AbstractTest {
     this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.FORBIDDEN);
   }
 
+  protected <T> T callUsecaseExpect403(final HttpMethod httpMethod, final Object body,
+      final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
+  }
+
   protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod,
       final Object body) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);

@@ -46,8 +46,9 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   public void test_regularUserNoData_SuccessfullNoContent() throws Exception {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
     Assertions.assertNotNull(user);
-    super.callUsecaseWithoutContent("/" + UserTransportBuilder.USER2_ID, this.method, true,
-        Object.class);
+
+    super.callUsecaseExpect204("/" + UserTransportBuilder.USER2_ID, this.method);
+
     user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
     Assertions.assertNull(user);
   }
@@ -56,8 +57,9 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   public void test_nonExistingUser_SuccessfullNoContent() throws Exception {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(user);
-    super.callUsecaseWithoutContent("/" + UserTransportBuilder.NON_EXISTING_ID, this.method, true,
-        Object.class);
+
+    super.callUsecaseExpect204("/" + UserTransportBuilder.NON_EXISTING_ID, this.method);
+
     user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(user);
   }
@@ -80,6 +82,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
     super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
   }
 
@@ -87,6 +90,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/1", this.method);
   }
 }

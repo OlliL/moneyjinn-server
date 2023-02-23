@@ -15,15 +15,16 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserPermission;
-import  org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import  org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
+import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.HttpMethod;
@@ -64,14 +65,14 @@ public class CreateUserTest extends AbstractControllerTest {
     final CreateUserRequest request = new CreateUserRequest();
     request.setUserTransport(transport);
     request.setAccessRelationTransport(accessRelationTransport);
-    final CreateUserResponse expected = new CreateUserResponse();
+    final ValidationResponse expected = new ValidationResponse();
     final List<ValidationItemTransport> validationItems = new ArrayList<>();
     validationItems.add(new ValidationItemTransportBuilder().withKey(null)
         .withError(errorCode.getErrorCode()).build());
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
-        CreateUserResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
+        ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -105,11 +106,13 @@ public class CreateUserTest extends AbstractControllerTest {
      */
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
-    final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateUserResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
     final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
+    Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
     Assertions.assertEquals(null, user.getPassword());
     // instead of NONE -----------------------------vvvvvv
     Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
@@ -125,11 +128,13 @@ public class CreateUserTest extends AbstractControllerTest {
      */
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
-    final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateUserResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
     final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
+    Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
     // sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
     Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
@@ -147,9 +152,12 @@ public class CreateUserTest extends AbstractControllerTest {
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forNewUser_2000_01_01().build();
     request.setAccessRelationTransport(accessRelationTransport);
-    final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateUserResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
+
     final AccessRelation accessRelation = this.accessRelationService
         .getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(accessRelation);
@@ -169,9 +177,12 @@ public class CreateUserTest extends AbstractControllerTest {
         .forNewUser_2000_01_01().build();
     accessRelationTransport.setValidtil(LocalDate.parse("2900-12-31"));
     request.setAccessRelationTransport(accessRelationTransport);
-    final CreateUserResponse actual = super.callUsecaseWithContent("", this.method, request, false,
+
+    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateUserResponse.class);
-    Assertions.assertTrue(actual.getResult());
+
+    Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
+
     final AccessRelation accessRelation = this.accessRelationService
         .getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
     Assertions.assertNotNull(accessRelation);

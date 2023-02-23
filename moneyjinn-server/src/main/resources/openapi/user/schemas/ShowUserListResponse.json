@@ -1,35 +1,28 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"userTransports",
+		"groupTransports",
+		"accessRelationTransports"
+	],
+	"properties": {
+		"userTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/UserTransport.json"
+			}
 		},
-		{
-			"type": "object",
-			"required": [
-				"userTransports",
-				"groupTransports",
-				"accessRelationTransports"
-			],
-			"properties": {
-				"userTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/UserTransport.json"
-					}
-				},
-				"groupTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/GroupTransport.json"
-					}
-				},
-				"accessRelationTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/AccessRelationTransport.json"
-					}
-				}
+		"groupTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/GroupTransport.json"
+			}
+		},
+		"accessRelationTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/AccessRelationTransport.json"
 			}
 		}
-	]
+	}
 }

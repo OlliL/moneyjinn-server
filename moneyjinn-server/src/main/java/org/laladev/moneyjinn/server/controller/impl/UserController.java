@@ -52,16 +52,13 @@ import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
-import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
 import org.laladev.moneyjinn.server.model.ShowUserListResponse;
 import org.laladev.moneyjinn.server.model.UpdateUserRequest;
-import org.laladev.moneyjinn.server.model.UpdateUserResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
-import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -143,8 +140,7 @@ public class UserController extends AbstractController implements UserController
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> changePassword(
-      @RequestBody final ChangePasswordRequest request) {
+  public ResponseEntity<Void> changePassword(@RequestBody final ChangePasswordRequest request) {
     final UserID userId = super.getUserId();
     final User user = this.userService.getUserById(userId);
     final String password = request.getPassword();
@@ -181,8 +177,7 @@ public class UserController extends AbstractController implements UserController
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<UpdateUserResponse> updateUser(
-      @RequestBody final UpdateUserRequest request) {
+  public ResponseEntity<Void> updateUser(@RequestBody final UpdateUserRequest request) {
     final User user = super.map(request.getUserTransport(), User.class);
     final ValidationResult validationResultUser = this.userService.validateUser(user);
     final ValidationResult validationResult = new ValidationResult();
@@ -194,23 +189,21 @@ public class UserController extends AbstractController implements UserController
           .validateAccessRelation(accessRelation);
       validationResult.mergeValidationResult(validationResultAccess);
     }
-    if (validationResult.isValid()) {
-      this.userService.updateUser(user);
-      if (user.getPassword() != null) {
-        this.userService.resetPassword(user.getId(), user.getPassword());
-      }
-      if (accessRelation != null) {
-        validationResult.mergeValidationResult(
-            this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
-      }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
+    this.userService.updateUser(user);
+    if (user.getPassword() != null) {
+      this.userService.resetPassword(user.getId(), user.getPassword());
     }
-    final UpdateUserResponse response = new UpdateUserResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
+    if (accessRelation != null) {
+      validationResult.mergeValidationResult(
+          this.accessRelationService.setAccessRelationForExistingUser(accessRelation));
+
+      this.throwValidationExceptionIfInvalid(validationResult);
     }
-    return ResponseEntity.ok(response);
+
+    return ResponseEntity.noContent().build();
   }
 
   @Override
@@ -259,27 +252,25 @@ public class UserController extends AbstractController implements UserController
           .validateAccessRelation(accessRelation);
       validationResult.mergeValidationResult(validationResultAccess);
     }
+
+    this.throwValidationExceptionIfInvalid(validationResult);
+
     final CreateUserResponse response = new CreateUserResponse();
-    response.setResult(validationResult.isValid());
-    if (!validationResult.isValid()) {
-      response.setValidationItemTransports(super.mapList(
-          validationResult.getValidationResultItems(), ValidationItemTransport.class));
-    } else {
-      final UserID newUserId = this.userService.createUser(user);
-      if (newUserId != null) {
-        response.setUserId(newUserId.getId());
-        if (accessRelation != null) {
-          accessRelation.setId(newUserId);
-          this.accessRelationService.setAccessRelationForNewUser(accessRelation);
-        }
+    final UserID newUserId = this.userService.createUser(user);
+    if (newUserId != null) {
+      response.setUserId(newUserId.getId());
+      if (accessRelation != null) {
+        accessRelation.setId(newUserId);
+        this.accessRelationService.setAccessRelationForNewUser(accessRelation);
       }
     }
+
     return ResponseEntity.ok(response);
   }
 
   @Override
   @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ErrorResponse> deleteUserById(@PathVariable(value = "id") final Long id) {
+  public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") final Long id) {
     final UserID userId = new UserID(id);
 
     this.accessRelationService.deleteAllAccessRelation(userId);

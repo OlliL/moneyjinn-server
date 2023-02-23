@@ -1,21 +1,14 @@
 {
-	"allOf": [
-		{
-			"$ref": "../../abstract/ErrorResponse.json"
-		},
-		{
-			"type": "object",
-			"required": [
-				"accessRelationTransports"
-			],
-			"properties": {
-				"accessRelationTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../../transport/AccessRelationTransport.json"
-					}
-				}
+	"type": "object",
+	"required": [
+		"accessRelationTransports"
+	],
+	"properties": {
+		"accessRelationTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/AccessRelationTransport.json"
 			}
 		}
-	]
+	}
 }

@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
+import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
-import  org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -53,7 +53,7 @@ public class LoginTest extends AbstractControllerTest {
     request.setUserName(username);
     request.setUserPassword(password);
 
-    final LoginResponse response = super.callUsecaseWithContent("", this.method, request, false,
+    final LoginResponse response = super.callUsecaseExpect200(this.method, request,
         LoginResponse.class);
 
     Assertions.assertEquals(new UserTransportBuilder().forUser1().build(),
@@ -75,7 +75,7 @@ public class LoginTest extends AbstractControllerTest {
     request.setUserName(username);
     request.setUserPassword(password);
 
-    final ErrorResponse response = super.callUsecaseExpect403("", this.method, request,
+    final ErrorResponse response = super.callUsecaseExpect403(this.method, request,
         ErrorResponse.class);
 
     Assertions.assertEquals(response.getCode(), ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode());
@@ -103,6 +103,6 @@ public class LoginTest extends AbstractControllerTest {
     final LoginRequest request = new LoginRequest();
     request.setUserName(this.userName);
     request.setUserPassword(this.userPassword);
-    super.callUsecaseWithContent("", this.method, request, false, LoginResponse.class);
+    super.callUsecaseExpect200(this.method, request, LoginResponse.class);
   }
 }
