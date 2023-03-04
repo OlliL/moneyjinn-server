@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedbalance;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -19,12 +20,12 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedBalanceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedBalanceControllerApi;
 import org.laladev.moneyjinn.server.model.CreateImportedBalanceRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreateImportedBalanceTest extends AbstractControllerTest {
@@ -32,7 +33,6 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   private IImportedBalanceService importedBalanceService;
   @Inject
   private ICapitalsourceService capitalsourceService;
-  private final HttpMethod method = HttpMethod.POST;
 
   @Override
   protected String getUsername() {
@@ -45,8 +45,8 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedBalanceControllerApi.class, this.getClass());
   }
 
   @Test
@@ -56,7 +56,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
         .forNewImportedBalance().build();
     request.setImportedBalanceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService
@@ -86,7 +86,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     // Capitalsource 4 is no longer valid but we need it valid for this test, so "modify" it :-/
     this.capitalsourceService.updateCapitalsource(capitalsource);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final List<ImportedBalance> importedBalances = this.importedBalanceService
         .getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
@@ -105,7 +105,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
         .forOnlyBalanceImportedBalance().build();
     request.setImportedBalanceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedBalance> importedBalances = this.importedBalanceService
@@ -131,8 +131,9 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
     expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -146,8 +147,9 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -161,8 +163,9 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -177,8 +180,9 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

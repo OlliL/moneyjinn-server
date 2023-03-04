@@ -12,7 +12,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthTest extends AbstractControllerTest {
+public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -46,19 +46,47 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+  public void test_withYearAndInvalidMonth_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class);
+        GetAvailableMonthlySettlementMonthResponse.class, 2010, 10);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_AuthorizationRequired_1_Error() throws Exception {
+  public void test_withInvalidYearAndInvalidMonth13_FullResponseObject() throws Exception {
+    final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
+    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
+        GetAvailableMonthlySettlementMonthResponse.class, 1, 13);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test_withInvalidYearAndInvalidMonth0_FullResponseObject() throws Exception {
+    final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
+    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
+        GetAvailableMonthlySettlementMonthResponse.class, 1, 0);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test_withYearAndMonth_FullResponseObject() throws Exception {
+    final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();
+    expected.setAllMonth(Arrays.asList(11, 12));
+    expected.setAllYears(Arrays.asList(2008, 2009, 2010));
+    expected.setYear(2008);
+    expected.setMonth(12);
+    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
+        GetAvailableMonthlySettlementMonthResponse.class, 2008, 12);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test_AuthorizationRequired_3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403();
+    super.callUsecaseExpect403WithUriVariables(2008, 12);
   }
 
   @Test
@@ -69,7 +97,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();
 
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class);
+        GetAvailableMonthlySettlementMonthResponse.class, 2010, 10);
 
     Assertions.assertEquals(expected, actual);
   }

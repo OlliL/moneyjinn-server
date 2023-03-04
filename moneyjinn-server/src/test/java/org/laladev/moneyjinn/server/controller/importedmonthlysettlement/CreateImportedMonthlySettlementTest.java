@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedmonthlysettlement;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.util.List;
@@ -14,17 +15,16 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedMonthlySettlementControllerApi;
 import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
   @Inject
   IImportedMonthlySettlementService importedMonthlySettlementService;
-  private final HttpMethod method = HttpMethod.POST;
 
   @Override
   protected String getUsername() {
@@ -37,8 +37,9 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedMonthlySettlementControllerApi.class,
+        this.getClass());
   }
 
   @Test
@@ -48,7 +49,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
         .forNewImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final UserID userId = new UserID(transport.getUserid());
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
@@ -81,7 +82,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     Assertions.assertTrue(
         BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     importedMonthlySettlements = this.importedMonthlySettlementService
         .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
@@ -103,7 +104,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
         .forOnlyBalanceImportedMonthlySettlement().build();
     request.setImportedMonthlySettlementTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
@@ -128,8 +129,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
     expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -143,8 +143,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -158,8 +157,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -174,8 +172,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 }

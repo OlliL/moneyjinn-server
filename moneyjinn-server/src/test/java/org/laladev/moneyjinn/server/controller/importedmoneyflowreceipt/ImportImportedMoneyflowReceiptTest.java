@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,10 @@ import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBui
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
@@ -30,7 +31,6 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   @Inject
   IMoneyflowReceiptService moneyflowReceiptService;
 
-  private final HttpMethod method = HttpMethod.POST;
   private String userName;
   private String userPassword;
 
@@ -51,8 +51,9 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedMoneyflowReceiptControllerApi.class,
+        this.getClass());
   }
 
   private void test_import(final Long receiptIdLong, final MoneyflowReceiptType mediaType)
@@ -66,7 +67,7 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
         .getImportedMoneyflowReceiptById(userId, groupId, receiptId);
     Assertions.assertNotNull(receipt);
 
-    super.callUsecaseExpect204("/" + receiptId.getId() + "/" + moneyflowId.getId(), this.method);
+    super.callUsecaseExpect204WithUriVariables(receiptId.getId(), moneyflowId.getId());
 
     receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId,
         receiptId);
@@ -97,8 +98,8 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
         ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-    final ErrorResponse actual = super.callUsecaseExpect400(
-        "/" + receiptId.getId() + "/" + moneyflowId.getId(), this.method, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class, receiptId.getId(),
+        moneyflowId.getId());
 
     Assertions.assertEquals(ErrorCode.RECEIPT_ALREADY_EXISTS.getErrorCode(), actual.getCode());
 
@@ -109,7 +110,8 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/1/1", this.method);
+    super.callUsecaseExpect403WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
+        MoneyflowTransportBuilder.MONEYFLOW1_ID);
   }
 
   @Test
@@ -118,7 +120,8 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/1/1", this.method);
+    super.callUsecaseExpect204WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
+        MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
   }
 }

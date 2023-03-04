@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,18 +19,17 @@ import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class SearchMoneyflowsTest extends AbstractControllerTest {
   private static final Integer SHORT_1 = 1;
-  private final HttpMethod method = HttpMethod.PUT;
   private String userName;
   private String userPassword;
 
@@ -50,8 +50,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(MoneyflowControllerApi.class, this.getClass());
   }
 
   private void assertEquals(final SearchMoneyflowsResponse expected,
@@ -122,7 +122,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -147,7 +147,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow12().build());
     expected.setMoneyflowTransports(moneyflowTransports);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -162,7 +162,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     request.setMoneyflowSearchParamsTransport(transport);
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -178,7 +178,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -194,7 +194,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -210,7 +210,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     request.setMoneyflowSearchParamsTransport(transport);
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -227,7 +227,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -243,7 +243,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -258,7 +258,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     request.setMoneyflowSearchParamsTransport(transport);
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -274,7 +274,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     request.setMoneyflowSearchParamsTransport(transport);
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -291,7 +291,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     final SearchMoneyflowsResponse expected = new SearchMoneyflowsResponse();
     this.fillYearlySearchGenerated(expected);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -317,7 +317,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
     expected.setMoneyflowTransports(moneyflowTransports);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -340,7 +340,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow2().build());
     expected.setMoneyflowTransports(moneyflowTransports);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -385,7 +385,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
     expected.setMoneyflowTransports(moneyflowTransports);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -404,7 +404,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow2().build());
     expected.setMoneyflowTransports(moneyflowTransports);
 
-    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(this.method, request,
+    final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request,
         SearchMoneyflowsResponse.class);
 
     this.assertEquals(expected, actual);
@@ -438,7 +438,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new SearchMoneyflowsRequest());
+    super.callUsecaseExpect403(new SearchMoneyflowsRequest());
   }
 
   @Test
@@ -454,8 +454,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     expected.setValidationItemTransports(validationItemTransports);
     expected.setResult(Boolean.FALSE);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -470,6 +469,6 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
     transport.setSearchString("hugo");
     request.setMoneyflowSearchParamsTransport(transport);
 
-    super.callUsecaseExpect200(this.method, request, SearchMoneyflowsResponse.class);
+    super.callUsecaseExpect200(request, SearchMoneyflowsResponse.class);
   }
 }

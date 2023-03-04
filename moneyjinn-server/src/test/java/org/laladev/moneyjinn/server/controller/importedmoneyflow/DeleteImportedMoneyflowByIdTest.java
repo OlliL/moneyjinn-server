@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -15,14 +16,14 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -43,8 +44,8 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedMoneyflowControllerApi.class, this.getClass());
   }
 
   @Test
@@ -61,8 +62,8 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
     Assertions.assertNotNull(importedMoneyflows);
     final int sizeBeforeDeleteInStateCreated = importedMoneyflows.size();
 
-    super.callUsecaseExpect204("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -80,8 +81,8 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID,
-        this.method);
+    super.callUsecaseExpect403WithUriVariables(
+        ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID);
   }
 
   @Test
@@ -90,7 +91,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID);
   }
 }

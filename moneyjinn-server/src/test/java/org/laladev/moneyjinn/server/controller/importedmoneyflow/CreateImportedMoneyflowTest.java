@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -15,17 +16,16 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
-  private final HttpMethod method = HttpMethod.POST;
 
   @Override
   protected String getUsername() {
@@ -38,8 +38,8 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedMoneyflowControllerApi.class, this.getClass());
   }
 
   @Test
@@ -57,7 +57,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
         .forNewImportedMoneyflow().build();
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -83,7 +83,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setExternalid(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_EXTERNAL_ID);
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
         .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
@@ -106,7 +106,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setBankCode("ABCDEFGH");
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -137,7 +137,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     transport.setBankCode(null);
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(
         userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
@@ -161,8 +161,9 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
     expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -178,8 +179,9 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
     expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -193,8 +195,9 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -208,8 +211,9 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -224,8 +228,9 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
     expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

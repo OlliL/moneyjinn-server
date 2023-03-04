@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.moneyflowreceipt;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,15 +12,14 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   @Inject
   IMoneyflowReceiptService moneyflowReceiptService;
 
-  private final HttpMethod method = HttpMethod.DELETE;
   private String userName;
   private String userPassword;
 
@@ -40,13 +40,13 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(MoneyflowReceiptControllerApi.class, this.getClass());
   }
 
   @Test
   public void test_unknownMoneyflowId_NoContent() throws Exception {
-    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.NON_EXISTING_ID);
   }
 
   @Test
@@ -59,7 +59,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
     Assertions.assertNotNull(receipt);
     Assertions.assertEquals(receipt.getId().getId(), 1L);
 
-    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
     receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
     Assertions.assertNull(receipt);
@@ -70,7 +70,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
   }
 
   @Test
@@ -79,6 +79,6 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
   }
 }

@@ -12,7 +12,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthTest extends AbstractControllerTest {
+public class GetAvailableMonthYearTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -46,19 +46,27 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+  public void test_withYear_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class);
+        GetAvailableMonthlySettlementMonthResponse.class, 2010);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_AuthorizationRequired_1_Error() throws Exception {
+  public void test_withInvalidYear_FullResponseObject() throws Exception {
+    final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
+    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
+        GetAvailableMonthlySettlementMonthResponse.class, 1972);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void test_AuthorizationRequired_2_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403();
+    super.callUsecaseExpect403WithUriVariables(2008);
   }
 
   @Test
@@ -69,7 +77,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();
 
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class);
+        GetAvailableMonthlySettlementMonthResponse.class, 2010);
 
     Assertions.assertEquals(expected, actual);
   }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
@@ -42,7 +44,6 @@ import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
@@ -56,7 +57,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   private IContractpartnerService contractpartnerService;
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -77,8 +78,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ImportedMoneyflowControllerApi.class, this.getClass());
   }
 
   private void testError(final ImportedMoneyflowTransport transport, final ErrorCode... errorCodes)
@@ -102,8 +103,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     }
     expected.setValidationItemTransports(validationItems);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertEquals(expected.getCode(), actual.getCode());
     Assertions.assertEquals(expected.getMessage(), actual.getMessage());
@@ -134,7 +134,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     Assertions.assertNotNull(importedMoneyflows);
     final int sizeBeforeDelete = importedMoneyflows.size();
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -164,7 +164,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("1")).build();
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -181,7 +181,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .forImportedMoneyflow1ToImport().withPrivat(Integer.valueOf("0")).build();
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -207,7 +207,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     Assertions.assertNotNull(importedMoneyflows);
     final int sizeBeforeImportInStateProcessed = importedMoneyflows.size();
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -232,7 +232,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final List<ContractpartnerAccount> contractpartnerAccountsBeforeInsert = this.contractpartnerAccountService
         .getContractpartnerAccounts(userId, contractpartnerId);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -259,7 +259,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE2_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -286,7 +286,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setInvoicedate(LocalDate.parse("2000-01-01"));
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -311,7 +311,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE1_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -333,7 +333,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     transport.setBankCode(CapitalsourceTransportBuilder.CAPITALSOURCE5_BANKCODE);
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId,
         new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID));
@@ -358,7 +358,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -382,7 +382,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final Capitalsource capitalsourceOrig = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -405,7 +405,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
@@ -428,7 +428,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final Contractpartner contractpartnerOrig = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
@@ -591,7 +591,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     final MoneyflowSplitEntryTransport mseTransport2 = this.getMseTransport2(transport);
     request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(mseTransport1, mseTransport2));
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
     Assertions.assertNotNull(moneyflow);
@@ -694,7 +694,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new ImportImportedMoneyflowRequest());
+    super.callUsecaseExpect403(new ImportImportedMoneyflowRequest());
   }
 
   @Test
@@ -707,6 +707,6 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
         .forImportedMoneyflow1ToImport().build();
     request.setImportedMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }
