@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.group;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -13,18 +14,18 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.model.CreateGroupRequest;
 import org.laladev.moneyjinn.server.model.CreateGroupResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
-import org.springframework.http.HttpMethod;
 
 public class CreateGroupTest extends AbstractControllerTest {
   @Inject
   private IGroupService groupService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -45,8 +46,8 @@ public class CreateGroupTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(GroupControllerApi.class, this.getClass());
   }
 
   private void testError(final GroupTransport transport, final ErrorCode errorCode)
@@ -60,8 +61,7 @@ public class CreateGroupTest extends AbstractControllerTest {
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -93,7 +93,7 @@ public class CreateGroupTest extends AbstractControllerTest {
     final GroupTransport transport = new GroupTransportBuilder().forNewGroup().build();
     request.setGroupTransport(transport);
 
-    final CreateGroupResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateGroupResponse actual = super.callUsecaseExpect200(request,
         CreateGroupResponse.class);
 
     final Group group = this.groupService.getGroupByName(GroupTransportBuilder.NEWGROUP_NAME);
@@ -106,7 +106,7 @@ public class CreateGroupTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    super.callUsecaseExpect403(this.method, new CreateGroupRequest());
+    super.callUsecaseExpect403(new CreateGroupRequest());
   }
 
   @Test
@@ -114,6 +114,6 @@ public class CreateGroupTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CreateGroupRequest());
+    super.callUsecaseExpect403(new CreateGroupRequest());
   }
 }

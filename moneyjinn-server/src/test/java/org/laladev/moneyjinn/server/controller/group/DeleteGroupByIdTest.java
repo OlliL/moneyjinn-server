@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.group;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,14 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
-import org.springframework.http.HttpMethod;
 
 public class DeleteGroupByIdTest extends AbstractControllerTest {
   @Inject
   private IGroupService groupService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -39,8 +40,8 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(GroupControllerApi.class, this.getClass());
   }
 
   @Test
@@ -48,7 +49,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
     Assertions.assertNotNull(group);
 
-    super.callUsecaseExpect204("/" + GroupTransportBuilder.GROUP3_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(GroupTransportBuilder.GROUP3_ID);
 
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
     Assertions.assertNull(group);
@@ -60,7 +61,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
         .getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(group);
 
-    super.callUsecaseExpect204("/" + GroupTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(GroupTransportBuilder.NON_EXISTING_ID);
 
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(group);
@@ -74,8 +75,8 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
 
-    final ErrorResponse actual = super.callUsecaseExpect400("/" + GroupTransportBuilder.GROUP1_ID,
-        this.method, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
+        GroupTransportBuilder.GROUP1_ID);
 
     group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP1_ID));
     Assertions.assertNotNull(group);
@@ -87,7 +88,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403("/" + GroupTransportBuilder.GROUP1_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(GroupTransportBuilder.GROUP1_ID);
   }
 
   @Test
@@ -95,6 +96,6 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + GroupTransportBuilder.GROUP1_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(GroupTransportBuilder.GROUP1_ID);
   }
 }

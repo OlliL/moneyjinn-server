@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.event;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,10 +23,10 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.EventControllerApi;
 import org.laladev.moneyjinn.server.model.ShowEventListResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowEventListTest extends AbstractControllerTest {
@@ -33,7 +34,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   private IMonthlySettlementService monthlySettlementService;
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -54,8 +55,8 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(EventControllerApi.class, this.getClass());
   }
 
   @Test
@@ -67,8 +68,7 @@ public class ShowEventListTest extends AbstractControllerTest {
     expected.setMonthlySettlementYear((lastMonth.getYear()));
     expected.setNumberOfImportedMoneyflows(2);
 
-    final ShowEventListResponse actual = super.callUsecaseExpect200(this.method,
-        ShowEventListResponse.class);
+    final ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -91,8 +91,7 @@ public class ShowEventListTest extends AbstractControllerTest {
     expected.setMonthlySettlementYear((lastMonth.getYear()));
     expected.setNumberOfImportedMoneyflows(2);
 
-    final ShowEventListResponse actual = super.callUsecaseExpect200(this.method,
-        ShowEventListResponse.class);
+    final ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -100,15 +99,14 @@ public class ShowEventListTest extends AbstractControllerTest {
   @Test
   public void test_deletedImportedMoneyflow_isIgnored() throws Exception {
 
-    ShowEventListResponse actual = super.callUsecaseExpect200(this.method,
-        ShowEventListResponse.class);
+    ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     Assertions.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
     this.importedMoneyflowService.deleteImportedMoneyflowById(
         new UserID(UserTransportBuilder.USER1_ID),
         new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
 
-    actual = super.callUsecaseExpect200(this.method, ShowEventListResponse.class);
+    actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     Assertions.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
   }
@@ -116,8 +114,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   @Test
   public void test_importedImportedMoneyflow_isIgnored() throws Exception {
 
-    ShowEventListResponse actual = super.callUsecaseExpect200(this.method,
-        ShowEventListResponse.class);
+    ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     final int numberOfImportedMoneyflows = actual.getNumberOfImportedMoneyflows().intValue();
     this.importedMoneyflowService.updateImportedMoneyflowStatus(
@@ -125,7 +122,7 @@ public class ShowEventListTest extends AbstractControllerTest {
         new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID),
         ImportedMoneyflowStatus.PROCESSED);
 
-    actual = super.callUsecaseExpect200(this.method, ShowEventListResponse.class);
+    actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
     Assertions.assertEquals(Integer.valueOf(numberOfImportedMoneyflows - 1),
         actual.getNumberOfImportedMoneyflows());
@@ -136,7 +133,7 @@ public class ShowEventListTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -145,7 +142,7 @@ public class ShowEventListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(this.method, ShowEventListResponse.class);
+    super.callUsecaseExpect200(ShowEventListResponse.class);
 
   }
 }
