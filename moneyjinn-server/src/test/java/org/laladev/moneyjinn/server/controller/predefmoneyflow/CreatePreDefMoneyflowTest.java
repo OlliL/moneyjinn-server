@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +52,8 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(PreDefMoneyflowControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(PreDefMoneyflowControllerApi.class).createPreDefMoneyflow(null);
   }
 
   private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode)

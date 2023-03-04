@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.etf;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -42,8 +41,8 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EtfControllerApi.class).listEtfOverview(null, null);
   }
 
   @Test

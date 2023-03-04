@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -37,9 +36,8 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ContractpartnerAccountControllerApi.class,
-        this.getClass());
+  protected void loadMethod() {
+    super.getMock(ContractpartnerAccountControllerApi.class).showContractpartnerAccountList(null);
   }
 
   private ShowContractpartnerAccountListResponse getCompleteResponse() {

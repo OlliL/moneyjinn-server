@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,9 +39,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ContractpartnerAccountControllerApi.class,
-        this.getClass());
+  protected void loadMethod() {
+    super.getMock(ContractpartnerAccountControllerApi.class).deleteContractpartnerAccount(null);
   }
 
   @Test

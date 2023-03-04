@@ -8,17 +8,15 @@ import jakarta.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.server.config.JwtCache;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
-import org.laladev.moneyjinn.server.controller.user.LoginTest;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -44,28 +42,23 @@ public abstract class AbstractControllerTest extends AbstractTest {
   @Inject
   private JwtCache jwtCache;
   private String overrideJwtToken;
+  private Method method = null;
 
   protected abstract String getUsername();
 
   protected abstract String getPassword();
 
-  protected abstract Method getMethod();
+  protected abstract void loadMethod();
 
   protected void setOverrideJwtToken(final String overrideJwtToken) {
     this.overrideJwtToken = overrideJwtToken;
   }
 
-  protected Method getMethodFromTestClassName(final Class<?> apiClazz, final Class<?> testClazz) {
-    final String usecase = testClazz.getSimpleName().replace("Test", "");
-    final String methodName = Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
-
-    final Collection<Method> methods = new ArrayList<>();
-    Collections.addAll(methods, apiClazz.getDeclaredMethods());
-
-    final Method method = methods.stream().filter(m -> methodName.equals(m.getName())).findFirst()
-        .get();
-
-    return method;
+  protected <T> T getMock(final Class<T> clazz) {
+    return Mockito.mock(clazz,
+        Mockito.withSettings().invocationListeners(methodInvocationReport -> {
+          this.method = ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod();
+        }));
   }
 
   protected HttpHeaders getAuthorizationHeader() throws Exception {
@@ -89,11 +82,15 @@ public abstract class AbstractControllerTest extends AbstractTest {
     String jwtToken = this.jwtCache.getJwt(loginRequest);
 
     if (jwtToken == null) {
-      final Method method = this.getMethodFromTestClassName(UserControllerApi.class,
-          LoginTest.class);
 
-      final MockHttpServletRequestBuilder builder = this.createMockHttpServletRequestBuilder(method,
-          loginRequest);
+      final Method[] myMethod = new Method[1];
+      Mockito.mock(UserControllerApi.class,
+          Mockito.withSettings().invocationListeners(methodInvocationReport -> {
+            myMethod[0] = ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod();
+          })).login(null);
+
+      final MockHttpServletRequestBuilder builder = this
+          .createMockHttpServletRequestBuilder(myMethod[0], loginRequest);
 
       final MvcResult result = this.mvc
           .perform(builder.contentType(MediaType.APPLICATION_JSON)
@@ -193,10 +190,12 @@ public abstract class AbstractControllerTest extends AbstractTest {
   private <T> T callUsecaseNew(final Object body, final Class<T> responseClazz,
       final HttpStatus expectedHttpStatus, final Object... uriVariables) throws Exception {
 
-    final Method method = this.getMethod();
+    if (this.method == null) {
+      this.loadMethod();
+    }
 
-    final MockHttpServletRequestBuilder builder = this.createMockHttpServletRequestBuilder(method,
-        body, uriVariables);
+    final MockHttpServletRequestBuilder builder = this
+        .createMockHttpServletRequestBuilder(this.method, body, uriVariables);
 
     return this.executeCall(responseClazz, expectedHttpStatus, builder);
   }

@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +38,8 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EtfControllerApi.class).deleteEtfFlow(null);
   }
 
   @Test

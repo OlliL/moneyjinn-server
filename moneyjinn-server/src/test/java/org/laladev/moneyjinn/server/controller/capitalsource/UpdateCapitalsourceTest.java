@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +51,8 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(CapitalsourceControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(CapitalsourceControllerApi.class).updateCapitalsource(null);
   }
 
   private void testError(final CapitalsourceTransport transport, final ErrorCode errorCode)

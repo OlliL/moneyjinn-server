@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,9 +50,9 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ImportedMoneyflowReceiptControllerApi.class,
-        this.getClass());
+  protected void loadMethod() {
+    super.getMock(ImportedMoneyflowReceiptControllerApi.class).importImportedMoneyflowReceipt(null,
+        null);
   }
 
   private void test_import(final Long receiptIdLong, final MoneyflowReceiptType mediaType)

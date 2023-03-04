@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.comparedata;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -48,8 +47,8 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(CompareDataControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(CompareDataControllerApi.class).showCompareDataForm();
   }
 
   private ShowCompareDataFormResponse getDefaultResponse() {

@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.group;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -46,8 +45,8 @@ public class CreateGroupTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(GroupControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(GroupControllerApi.class).createGroup(null);
   }
 
   private void testError(final GroupTransport transport, final ErrorCode errorCode)

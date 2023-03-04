@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.importedbalance;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -45,8 +44,8 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ImportedBalanceControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ImportedBalanceControllerApi.class).createImportedBalance(null);
   }
 
   @Test

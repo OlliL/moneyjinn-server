@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,8 +40,8 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(PostingAccountControllerApi.class).deletePostingAccountById(null);
   }
 
   @Test

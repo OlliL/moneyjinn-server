@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -47,8 +46,8 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(PostingAccountControllerApi.class).createPostingAccount(null);
   }
 
   private void testError(final PostingAccountTransport transport, final ErrorCode errorCode)

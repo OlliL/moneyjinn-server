@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflow;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -78,8 +77,8 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ImportedMoneyflowControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ImportedMoneyflowControllerApi.class).importImportedMoneyflows(null);
   }
 
   private void testError(final ImportedMoneyflowTransport transport, final ErrorCode... errorCodes)

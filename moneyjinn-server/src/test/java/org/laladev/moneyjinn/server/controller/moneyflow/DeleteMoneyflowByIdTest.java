@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +48,8 @@ public class DeleteMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MoneyflowControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MoneyflowControllerApi.class).deleteMoneyflowById(null);
   }
 
   @Test

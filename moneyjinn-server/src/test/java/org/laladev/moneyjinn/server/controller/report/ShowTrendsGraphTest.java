@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -53,8 +52,8 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ReportControllerApi.class).showTrendsGraph(null);
   }
 
   @Test

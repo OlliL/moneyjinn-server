@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +32,8 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MonthlySettlementControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MonthlySettlementControllerApi.class).getAvailableMonth();
   }
 
   private GetAvailableMonthlySettlementMonthResponse getDefaultResponse() {

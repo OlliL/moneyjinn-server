@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -37,8 +36,8 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MoneyflowControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MoneyflowControllerApi.class).showEditMoneyflow(null);
   }
 
   @Test

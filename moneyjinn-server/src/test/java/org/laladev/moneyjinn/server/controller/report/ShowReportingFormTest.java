@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -43,8 +42,8 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ReportControllerApi.class).showReportingForm();
   }
 
   private ShowReportingFormResponse getDefaultResponse() {

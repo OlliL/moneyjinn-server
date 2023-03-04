@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.event;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -55,8 +54,8 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EventControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EventControllerApi.class).showEventList();
   }
 
   @Test

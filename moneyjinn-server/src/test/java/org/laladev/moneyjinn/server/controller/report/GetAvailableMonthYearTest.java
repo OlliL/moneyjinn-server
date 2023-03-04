@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -43,8 +42,8 @@ public class GetAvailableMonthYearTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ReportControllerApi.class).getAvailableMonthYear(null);
   }
 
   private void assertEquals(final GetAvailableReportMonthResponse expected,

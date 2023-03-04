@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,8 +73,8 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(UserControllerApi.class).updateUser(null);
   }
 
   private void testError(final UserTransport transport,

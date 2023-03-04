@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +57,8 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EtfControllerApi.class).listEtfFlows();
   }
 
   private UserID getUserId() {

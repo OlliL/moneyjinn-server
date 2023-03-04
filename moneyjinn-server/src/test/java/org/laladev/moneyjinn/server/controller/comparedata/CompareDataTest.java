@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.comparedata;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
@@ -62,8 +61,8 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(CompareDataControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(CompareDataControllerApi.class).compareData(null);
   }
 
   @Test

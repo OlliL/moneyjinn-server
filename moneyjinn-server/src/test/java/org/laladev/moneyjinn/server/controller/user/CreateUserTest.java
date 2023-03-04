@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,8 +55,8 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(UserControllerApi.class).createUser(null);
   }
 
   private void testError(final UserTransport transport,

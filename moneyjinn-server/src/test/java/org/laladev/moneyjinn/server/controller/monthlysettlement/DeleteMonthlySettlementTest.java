@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.Month;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -41,8 +40,8 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MonthlySettlementControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MonthlySettlementControllerApi.class).deleteMonthlySettlement(null, null);
   }
 
   @Test

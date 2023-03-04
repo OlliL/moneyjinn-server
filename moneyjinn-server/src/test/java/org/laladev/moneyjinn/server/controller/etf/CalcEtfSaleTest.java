@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.etf;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,8 +42,8 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EtfControllerApi.class).calcEtfSale(null);
   }
 
   @Test

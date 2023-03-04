@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.monthlysettlement;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -36,8 +35,8 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MonthlySettlementControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MonthlySettlementControllerApi.class).showMonthlySettlementListV2(null, null);
   }
 
   @Test

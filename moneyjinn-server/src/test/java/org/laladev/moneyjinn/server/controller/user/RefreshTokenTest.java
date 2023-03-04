@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.server.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
@@ -48,8 +47,8 @@ public class RefreshTokenTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(UserControllerApi.class).refreshToken();
   }
 
   /**

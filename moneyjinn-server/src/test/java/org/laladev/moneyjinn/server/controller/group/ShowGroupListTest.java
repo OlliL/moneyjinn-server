@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.group;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -40,8 +39,8 @@ public class ShowGroupListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(GroupControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(GroupControllerApi.class).showGroupList();
   }
 
   private ShowGroupListResponse getCompleteResponse() {

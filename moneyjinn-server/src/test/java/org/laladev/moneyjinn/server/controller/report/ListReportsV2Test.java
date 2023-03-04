@@ -3,7 +3,6 @@ package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -70,8 +69,8 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(ReportControllerApi.class).listReportsV2(null, null);
   }
 
   private void assertEquals(final ListReportsResponse expected, final ListReportsResponse actual) {

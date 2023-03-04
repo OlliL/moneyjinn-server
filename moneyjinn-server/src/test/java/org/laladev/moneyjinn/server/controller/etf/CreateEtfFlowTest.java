@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,8 +42,8 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(EtfControllerApi.class).createEtfFlow(null);
   }
 
   @Test

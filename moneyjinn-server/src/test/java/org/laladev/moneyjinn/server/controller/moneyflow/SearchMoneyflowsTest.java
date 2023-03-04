@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.moneyflow;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,8 +49,8 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MoneyflowControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MoneyflowControllerApi.class).searchMoneyflows(null);
   }
 
   private void assertEquals(final SearchMoneyflowsResponse expected,

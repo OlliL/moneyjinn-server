@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.importedmonthlysettlement;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.util.List;
@@ -37,9 +36,9 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ImportedMonthlySettlementControllerApi.class,
-        this.getClass());
+  protected void loadMethod() {
+    super.getMock(ImportedMonthlySettlementControllerApi.class)
+        .createImportedMonthlySettlement(null);
   }
 
   @Test

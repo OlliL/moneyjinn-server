@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.moneyflowreceipt;
 
-import java.lang.reflect.Method;
 import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +37,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(MoneyflowReceiptControllerApi.class, this.getClass());
+  protected void loadMethod() {
+    super.getMock(MoneyflowReceiptControllerApi.class).showMoneyflowReceipt(null);
   }
 
   @Test

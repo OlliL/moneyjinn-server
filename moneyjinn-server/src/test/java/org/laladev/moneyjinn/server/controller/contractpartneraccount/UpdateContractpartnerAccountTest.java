@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
 import jakarta.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,9 +49,8 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected Method getMethod() {
-    return super.getMethodFromTestClassName(ContractpartnerAccountControllerApi.class,
-        this.getClass());
+  protected void loadMethod() {
+    super.getMock(ContractpartnerAccountControllerApi.class).updateContractpartnerAccount(null);
   }
 
   private void testError(final ContractpartnerAccountTransport transport,
