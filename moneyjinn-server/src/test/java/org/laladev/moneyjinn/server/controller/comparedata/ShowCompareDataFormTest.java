@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.comparedata;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -17,16 +18,16 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
 import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
 import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowCompareDataFormTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -47,8 +48,8 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(CompareDataControllerApi.class, this.getClass());
   }
 
   private ShowCompareDataFormResponse getDefaultResponse() {
@@ -72,7 +73,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   public void test_noSetting_defaultsResponse() throws Exception {
     final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 
-    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(this.method, false,
+    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false,
         ShowCompareDataFormResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -95,7 +96,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
     expected.setSelectedDataFormat(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
     expected.setSelectedSourceIsFile(1);
 
-    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(this.method, false,
+    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false,
         ShowCompareDataFormResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -106,7 +107,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -115,6 +116,6 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(this.method, ShowCompareDataFormResponse.class);
+    super.callUsecaseExpect200(ShowCompareDataFormResponse.class);
   }
 }

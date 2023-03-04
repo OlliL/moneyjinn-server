@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.comparedata;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
@@ -16,6 +17,7 @@ import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
 import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
 import org.laladev.moneyjinn.server.model.CompareDataNotInFileTransport;
@@ -26,12 +28,10 @@ import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.util.FileCopyUtils;
 
 public class CompareDataTest extends AbstractControllerTest {
-  private final HttpMethod method = HttpMethod.PUT;
   private String userName;
   private String userPassword;
   @Value("classpath:comparedata/postbank_online.csv")
@@ -62,8 +62,8 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(CompareDataControllerApi.class, this.getClass());
   }
 
   @Test
@@ -88,7 +88,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -111,7 +111,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -128,7 +128,7 @@ public class CompareDataTest extends AbstractControllerTest {
     final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
     request.setFileContents(base64FileContents);
     final CompareDataResponse expected = new CompareDataResponse();
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -151,7 +151,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -173,7 +173,7 @@ public class CompareDataTest extends AbstractControllerTest {
     expected.setCompareDataNotInFileTransports(
         Collections.singletonList(compareDataNotInFileTransport));
 
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -197,7 +197,7 @@ public class CompareDataTest extends AbstractControllerTest {
     expected
         .setCompareDataMatchingTransports(Collections.singletonList(compareDataMatchingTransport));
 
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -223,7 +223,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset4().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -242,8 +242,7 @@ public class CompareDataTest extends AbstractControllerTest {
     expected.setMessage(
         "The specified file is not parseable! Maybe you've selected the wrong format or file?");
     expected.setCode(ErrorCode.WRONG_FILE_FORMAT.getErrorCode());
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -276,7 +275,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2SpardaBank().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -311,7 +310,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -346,7 +345,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -382,7 +381,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -417,7 +416,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -452,7 +451,7 @@ public class CompareDataTest extends AbstractControllerTest {
         new CompareDataDatasetTransportBuilder().forCompareDataImportDataset2().build());
     expected.setCompareDataNotInDatabaseTransports(
         Collections.singletonList(compareDataNotInDatabaseTransport));
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -467,7 +466,7 @@ public class CompareDataTest extends AbstractControllerTest {
     request.setUseImportedData(1);
     final CompareDataResponse expected = new CompareDataResponse();
 
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -481,7 +480,7 @@ public class CompareDataTest extends AbstractControllerTest {
     request.setUseImportedData(1);
     final CompareDataResponse expected = new CompareDataResponse();
 
-    final CompareDataResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CompareDataResponse actual = super.callUsecaseExpect200(request,
         CompareDataResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -509,7 +508,7 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CompareDataRequest());
+    super.callUsecaseExpect403(new CompareDataRequest());
   }
 
   @Test
@@ -519,6 +518,6 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
 
-    super.callUsecaseExpect200(this.method, request, CompareDataResponse.class);
+    super.callUsecaseExpect200(request, CompareDataResponse.class);
   }
 }

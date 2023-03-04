@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,18 +13,17 @@ import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.UpdateEtfFlowRequest;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IEtfService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class UpdateEtfFlowTest extends AbstractControllerTest {
   @Inject
   IEtfService etfService;
 
-  private final HttpMethod method = HttpMethod.PUT;
   private String userName;
   private String userPassword;
 
@@ -44,8 +44,8 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
   }
 
   @Test
@@ -55,7 +55,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setPrice(BigDecimal.ONE);
     request.setEtfFlowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final EtfFlow etfFlow = this.etfService
         .getEtfFlowById(new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID));
@@ -69,8 +69,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setIsin(null);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -85,8 +84,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setIsin("NOTEXISTING");
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -101,8 +99,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setPrice(null);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -117,8 +114,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setPrice(BigDecimal.ZERO);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -133,8 +129,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setAmount(null);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -149,8 +144,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setAmount(BigDecimal.ZERO);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -165,8 +159,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setTimestamp(null);
     request.setEtfFlowTransport(transport);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertNotNull(actual.getValidationItemTransports());
     Assertions.assertEquals(1, actual.getValidationItemTransports().size());
@@ -181,7 +174,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     transport.setNanoseconds(null);
     request.setEtfFlowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final EtfFlow etfFlow = this.etfService
         .getEtfFlowById(new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID));
@@ -194,7 +187,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdateEtfFlowRequest());
+    super.callUsecaseExpect403(new UpdateEtfFlowRequest());
   }
 
   @Test
@@ -205,6 +198,6 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
 
     final UpdateEtfFlowRequest request = new UpdateEtfFlowRequest();
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }

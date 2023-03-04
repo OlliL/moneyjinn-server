@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +18,19 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ContractpartnerControllerApi;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerRequest;
 import org.laladev.moneyjinn.server.model.CreateContractpartnerResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreateContractpartnerTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerService contractpartnerService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -50,8 +51,8 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ContractpartnerControllerApi.class, this.getClass());
   }
 
   private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode)
@@ -64,8 +65,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -109,7 +109,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     request.setContractpartnerTransport(transport);
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(request,
         CreateContractpartnerResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -132,7 +132,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     request.setContractpartnerTransport(transport);
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(request,
         CreateContractpartnerResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -156,7 +156,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     request.setContractpartnerTransport(transport);
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(request,
         CreateContractpartnerResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -186,7 +186,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     request.setContractpartnerTransport(transport);
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(ContractpartnerTransportBuilder.NEXT_ID);
-    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(request,
         CreateContractpartnerResponse.class);
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -211,7 +211,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CreateContractpartnerRequest());
+    super.callUsecaseExpect403(new CreateContractpartnerRequest());
   }
 
   @Test
@@ -232,7 +232,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(1l);
 
-    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreateContractpartnerResponse actual = super.callUsecaseExpect200(request,
         CreateContractpartnerResponse.class);
 
     Assertions.assertEquals(expected, actual);

@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.etf;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,14 +10,13 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CalcEtfSaleTest extends AbstractControllerTest {
-  private final HttpMethod method = HttpMethod.PUT;
   private String userName;
   private String userPassword;
 
@@ -43,8 +43,8 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
   }
 
   @Test
@@ -69,7 +69,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     expected.setOverallCosts(new BigDecimal("6.980"));
     expected.setPieces(BigDecimal.TEN);
 
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -86,8 +86,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setPieces(new BigDecimal(100000));
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertFalse(actual.getResult());
     Assertions.assertEquals(ErrorCode.AMOUNT_TO_HIGH.getErrorCode(),
@@ -117,7 +116,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     expected.setOverallCosts(new BigDecimal("6.980"));
     expected.setPieces(BigDecimal.TEN);
 
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -135,7 +134,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -152,7 +151,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -168,7 +167,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -184,7 +183,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -200,7 +199,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -216,7 +215,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setPieces(SETTING_SALE_PIECES);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -233,7 +232,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
     final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request,
         CalcEtfSaleResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -245,7 +244,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CalcEtfSaleRequest());
+    super.callUsecaseExpect403(new CalcEtfSaleRequest());
   }
 
   @Test
@@ -256,7 +255,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 
-    super.callUsecaseExpect200(this.method, request, CalcEtfSaleResponse.class);
+    super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
   }
 }

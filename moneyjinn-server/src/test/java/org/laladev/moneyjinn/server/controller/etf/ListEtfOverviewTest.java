@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.etf;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -13,15 +14,14 @@ import org.laladev.moneyjinn.server.builder.EtfEffectiveFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
 import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ListEtfOverviewTest extends AbstractControllerTest {
-  private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;
 
@@ -42,8 +42,8 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
   }
 
   @Test
@@ -73,8 +73,8 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
 
     expected.setEtfSummaryTransports(Collections.singletonList(transport));
 
-    final ListEtfOverviewResponse actual = super.callUsecaseExpect200("/2008/12", this.method,
-        ListEtfOverviewResponse.class);
+    final ListEtfOverviewResponse actual = super.callUsecaseExpect200(ListEtfOverviewResponse.class,
+        2008, 12);
 
     Assertions.assertEquals(expected, actual);
 
@@ -85,7 +85,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/2008/12", this.method);
+    super.callUsecaseExpect403WithUriVariables(2008, 12);
   }
 
   @Test
@@ -94,7 +94,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200("/2008/12", this.method, ListEtfOverviewResponse.class);
+    super.callUsecaseExpect200(ListEtfOverviewResponse.class, 2008, 12);
 
   }
 }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.contractpartneraccount;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,14 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.ContractpartnerAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ContractpartnerAccountControllerApi;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -39,8 +40,9 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ContractpartnerAccountControllerApi.class,
+        this.getClass());
   }
 
   @Test
@@ -52,8 +54,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertNotNull(contractpartnerAccount);
 
-    super.callUsecaseExpect204(
-        "/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID);
 
     contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -69,8 +71,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
     Assertions.assertNull(contractpartnerAccount);
 
-    super.callUsecaseExpect204("/" + ContractpartnerAccountTransportBuilder.NON_EXISTING_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ContractpartnerAccountTransportBuilder.NON_EXISTING_ID);
 
     contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -91,8 +93,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
     //
     // Assertions.assertNotNull(contractpartnerAccount);
 
-    super.callUsecaseExpect204(
-        "/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
 
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -112,8 +114,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
     //
     // Assertions.assertNotNull(contractpartnerAccount);
 
-    super.callUsecaseExpect204(
-        "/" + ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
 
     final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
         .getContractpartnerAccountById(userId, contractpartnerAccountId);
@@ -125,8 +127,8 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + ContractpartnerAccountTransportBuilder.NON_EXISTING_ID,
-        this.method);
+    super.callUsecaseExpect403WithUriVariables(
+        ContractpartnerAccountTransportBuilder.NON_EXISTING_ID);
   }
 
   @Test
@@ -135,7 +137,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + ContractpartnerAccountTransportBuilder.NON_EXISTING_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        ContractpartnerAccountTransportBuilder.NON_EXISTING_ID);
   }
 }

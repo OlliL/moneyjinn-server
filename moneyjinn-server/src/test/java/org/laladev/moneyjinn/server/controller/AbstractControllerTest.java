@@ -249,6 +249,11 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return this.callUsecaseNew(null, false, clazz, HttpStatus.OK);
   }
 
+  protected <T> T callUsecaseExpect200(final Class<T> clazz, final Object... uriVariables)
+      throws Exception {
+    return this.callUsecaseNew(null, false, clazz, HttpStatus.OK, uriVariables);
+  }
+
   protected <T> T callUsecaseExpect204(final Object body) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
     return this.callUsecaseNew(bodyStr, true, null, HttpStatus.NO_CONTENT);
@@ -259,9 +264,18 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return this.callUsecaseNew(null, true, null, HttpStatus.NO_CONTENT, uriVariables);
   }
 
+  protected <T> T callUsecaseExpect400(final Object body, final Class<T> clazz) throws Exception {
+    final String bodyStr = this.objectMapper.writeValueAsString(body);
+    return this.callUsecaseNew(bodyStr, false, clazz, HttpStatus.BAD_REQUEST);
+  }
+
   protected <T> T callUsecaseExpect400(final Class<T> clazz, final Object... uriVariables)
       throws Exception {
     return this.callUsecaseNew(null, false, clazz, HttpStatus.BAD_REQUEST, uriVariables);
+  }
+
+  protected void callUsecaseExpect403() throws Exception {
+    this.callUsecaseNew(null, true, null, HttpStatus.FORBIDDEN);
   }
 
   protected void callUsecaseExpect403WithUriVariables(final Object... uriVariables)

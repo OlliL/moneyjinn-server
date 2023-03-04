@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.contractpartner;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +18,18 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ContractpartnerControllerApi;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.UpdateContractpartnerRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class UpdateContractpartnerTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerService contractpartnerService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -49,8 +50,8 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ContractpartnerControllerApi.class, this.getClass());
   }
 
   private void testError(final ContractpartnerTransport transport, final ErrorCode errorCode)
@@ -63,8 +64,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -120,7 +120,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
@@ -140,7 +140,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
@@ -160,7 +160,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     transport.setName("hugo");
     request.setContractpartnerTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Contractpartner contractpartner = this.contractpartnerService
         .getContractpartnerById(userId, contractpartnerId);
@@ -175,7 +175,7 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdateContractpartnerRequest());
+    super.callUsecaseExpect403(new UpdateContractpartnerRequest());
   }
 
   @Test
@@ -189,6 +189,6 @@ public class UpdateContractpartnerTest extends AbstractControllerTest {
     transport.setPostingAccountId(null); // otherwise not existing id referenced
     request.setContractpartnerTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }

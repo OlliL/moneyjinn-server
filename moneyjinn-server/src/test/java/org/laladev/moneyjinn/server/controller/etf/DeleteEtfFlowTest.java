@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +11,14 @@ import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.service.api.IEtfService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteEtfFlowTest extends AbstractControllerTest {
   @Inject
   IEtfService etfService;
 
-  private final HttpMethod method = HttpMethod.DELETE;
   private String userName;
   private String userPassword;
 
@@ -39,8 +39,8 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(EtfControllerApi.class, this.getClass());
   }
 
   @Test
@@ -50,7 +50,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
     EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
     Assertions.assertNotNull(etfFlow);
 
-    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.ETF_FLOW_1ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
 
     etfFlow = this.etfService.getEtfFlowById(etfFlowId);
     Assertions.assertNull(etfFlow);
@@ -58,7 +58,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
 
   @Test
   public void test_DeleteNotExistingId_emptyResponse() throws Exception {
-    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.NEXT_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.NEXT_ID);
   }
 
   @Test
@@ -66,7 +66,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + EtfFlowTransportBuilder.ETF_FLOW_1ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
   }
 
   @Test
@@ -75,6 +75,6 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + EtfFlowTransportBuilder.ETF_FLOW_1ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
   }
 }
