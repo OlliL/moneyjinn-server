@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,15 +14,15 @@ import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccou
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowReportingFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowReportingFormTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -42,8 +43,8 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
   }
 
   private ShowReportingFormResponse getDefaultResponse() {
@@ -57,7 +58,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   @Test
   public void test_noSetting_defaultsResponse() throws Exception {
     final ShowReportingFormResponse expected = this.getDefaultResponse();
-    final ShowReportingFormResponse actual = super.callUsecaseExpect200(this.method,
+    final ShowReportingFormResponse actual = super.callUsecaseExpect200(
         ShowReportingFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -72,7 +73,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
     final ShowReportingFormResponse expected = this.getDefaultResponse();
     expected.setPostingAccountIds(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
         PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
-    final ShowReportingFormResponse actual = super.callUsecaseExpect200(this.method,
+    final ShowReportingFormResponse actual = super.callUsecaseExpect200(
         ShowReportingFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -82,7 +83,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -91,6 +92,6 @@ public class ShowReportingFormTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(this.method, ShowReportingFormResponse.class);
+    super.callUsecaseExpect200(ShowReportingFormResponse.class);
   }
 }

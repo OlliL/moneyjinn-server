@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -14,10 +15,10 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowTrendsFormResponse;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.ISettingService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowTrendsFormTest extends AbstractControllerTest {
@@ -25,7 +26,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   private ISettingService settingService;
   @Inject
   private IMonthlySettlementService monthlySettlementService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -46,8 +47,8 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
   }
 
   private ShowTrendsFormResponse getDefaultResponse() {
@@ -72,16 +73,14 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
     this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.MARCH);
     this.monthlySettlementService.deleteMonthlySettlement(userId3, 2010, Month.APRIL);
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
-    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
-        ShowTrendsFormResponse.class);
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
   public void test_noSetting_defaultsResponse() throws Exception {
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
-    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
-        ShowTrendsFormResponse.class);
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -100,8 +99,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
             CapitalsourceTransportBuilder.CAPITALSOURCE2_ID,
             CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
             CapitalsourceTransportBuilder.CAPITALSOURCE6_ID));
-    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(this.method,
-        ShowTrendsFormResponse.class);
+    final ShowTrendsFormResponse actual = super.callUsecaseExpect200(ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -110,7 +108,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -119,6 +117,6 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(this.method, ShowTrendsFormResponse.class);
+    super.callUsecaseExpect200(ShowTrendsFormResponse.class);
   }
 }

@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthTest extends AbstractControllerTest {
+public class GetAvailableMonthYearTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -58,19 +58,17 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     expected.setYear(2010);
     expected.setAllYears(ALL_YEARS);
     expected.setAllMonth(Arrays.asList(1, 2, 3, 4, 5));
-
     final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableReportMonthResponse.class);
-
+        GetAvailableReportMonthResponse.class, 2010);
     this.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_AuthorizationRequired_01_Error() throws Exception {
+  public void test_AuthorizationRequired_02_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403();
+    super.callUsecaseExpect403WithUriVariables(2010);
   }
 
   @Test
@@ -79,6 +77,6 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(GetAvailableReportMonthResponse.class);
+    super.callUsecaseExpect200(GetAvailableReportMonthResponse.class, 2010);
   }
 }

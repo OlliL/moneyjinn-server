@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -20,18 +21,18 @@ import org.laladev.moneyjinn.server.builder.TrendsCalculatedTransportBuilder;
 import org.laladev.moneyjinn.server.builder.TrendsSettledTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.server.model.TrendsCalculatedTransport;
 import org.laladev.moneyjinn.server.model.TrendsSettledTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowTrendsGraphTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -52,8 +53,8 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
   }
 
   @Test
@@ -108,7 +109,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     trendsCalculatedTransports.add(new TrendsCalculatedTransportBuilder().withYear(2010)
         .withMonth(5).withAmount("1100.00").build());
     expected.setTrendsCalculatedTransports(trendsCalculatedTransports);
-    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -149,7 +150,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(12)
         .withAmount("1118.90").build());
     expected.setTrendsSettledTransports(trendsSettledTransports);
-    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -168,7 +169,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     trendsCalculatedTransports.add(new TrendsCalculatedTransportBuilder().withYear(2010)
         .withMonth(5).withAmount("-10.00").build());
     expected.setTrendsCalculatedTransports(trendsCalculatedTransports);
-    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -192,7 +193,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(4)
         .withAmount("1000.00").build());
     expected.setTrendsSettledTransports(trendsSettledTransports);
-    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -202,7 +203,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new ShowTrendsGraphRequest());
+    super.callUsecaseExpect403(new ShowTrendsGraphRequest());
   }
 
   @Test
@@ -212,7 +213,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 
-    super.callUsecaseExpect200(this.method, request, ShowTrendsGraphResponse.class);
+    super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
   }
 
   @Test
@@ -225,6 +226,6 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
 
-    super.callUsecaseExpect200(this.method, request, ShowTrendsGraphResponse.class);
+    super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
   }
 }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.report;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,17 +16,17 @@ import org.laladev.moneyjinn.server.builder.PostingAccountAmountTransportBuilder
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowYearlyReportGraphTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -46,8 +47,8 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(ReportControllerApi.class, this.getClass());
   }
 
   @Test
@@ -71,7 +72,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
         .forPostingAccount2().withDate("2010-01-01").withAmount("-10.00").build());
     expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
 
-    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(request,
         ShowYearlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -82,7 +83,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
     final ShowYearlyReportGraphResponse expected = new ShowYearlyReportGraphResponse();
-    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(request,
         ShowYearlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -101,7 +102,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
     ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
         .getClientReportingUnselectedPostingAccountIdsSetting(userId);
     Assertions.assertNull(setting);
-    super.callUsecaseExpect200(this.method, request, ShowYearlyReportGraphResponse.class);
+    super.callUsecaseExpect200(request, ShowYearlyReportGraphResponse.class);
     setting = this.settingService.getClientReportingUnselectedPostingAccountIdsSetting(userId);
     Assertions.assertNotNull(setting);
     Assertions.assertNotNull(setting.getSetting());
@@ -133,7 +134,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
         .forPostingAccount2().withDate("2010-01-01").withAmount("-15.00").build());
     expected.setPostingAccountAmountTransports(postingAccountAmountTransports);
 
-    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(this.method, request,
+    final ShowYearlyReportGraphResponse actual = super.callUsecaseExpect200(request,
         ShowYearlyReportGraphResponse.class);
     Assertions.assertEquals(expected, actual);
   }
@@ -143,7 +144,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new ShowYearlyReportGraphRequest());
+    super.callUsecaseExpect403(new ShowYearlyReportGraphRequest());
   }
 
   @Test
@@ -153,7 +154,7 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
 
-    super.callUsecaseExpect200(this.method, request, ShowYearlyReportGraphResponse.class);
+    super.callUsecaseExpect200(request, ShowYearlyReportGraphResponse.class);
   }
 
   @Test
@@ -168,6 +169,6 @@ public class ShowYearlyReportGraphTest extends AbstractControllerTest {
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
 
-    super.callUsecaseExpect200(this.method, request, ShowYearlyReportGraphResponse.class);
+    super.callUsecaseExpect200(request, ShowYearlyReportGraphResponse.class);
   }
 }
