@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.UpdateUserRequest;
 import org.laladev.moneyjinn.server.model.UserTransport;
@@ -28,7 +30,6 @@ import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 
 public class UpdateUserTest extends AbstractControllerTest {
   @Inject
@@ -52,7 +53,7 @@ public class UpdateUserTest extends AbstractControllerTest {
       this.accessRelationGroup1, LocalDate.parse("2700-01-01"), LocalDate.parse("2799-12-31"));
   private final AccessRelation accessRelationUser1Default4 = new AccessRelation(this.accessIdUser1,
       this.accessRelationGroup2, LocalDate.parse("2800-01-01"), LocalDate.parse("2999-12-31"));
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -73,8 +74,8 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   private void testError(final UserTransport transport,
@@ -89,8 +90,7 @@ public class UpdateUserTest extends AbstractControllerTest {
         .withError(errorCode.getErrorCode()).build());
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -115,7 +115,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
     Assertions.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
@@ -137,7 +137,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
     // sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -182,7 +182,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     request.setUserTransport(transport);
     request.setAccessRelationTransport(accessRelationTransport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final List<AccessRelation> accessRelations = this.accessRelationService
         .getAllAccessRelationsById(new UserID(transport.getId()));
@@ -363,7 +363,7 @@ public class UpdateUserTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(this.method, new UpdateUserRequest());
+    super.callUsecaseExpect403(new UpdateUserRequest());
   }
 
   @Test
@@ -371,6 +371,6 @@ public class UpdateUserTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdateUserRequest());
+    super.callUsecaseExpect403(new UpdateUserRequest());
   }
 }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -11,17 +12,17 @@ import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowUserListResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 
 public class ShowUserListTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -42,8 +43,8 @@ public class ShowUserListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   private ShowUserListResponse getCompleteResponse() {
@@ -73,8 +74,7 @@ public class ShowUserListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowUserListResponse expected = this.getCompleteResponse();
-    final ShowUserListResponse actual = super.callUsecaseExpect200(this.method,
-        ShowUserListResponse.class);
+    final ShowUserListResponse actual = super.callUsecaseExpect200(ShowUserListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -83,7 +83,7 @@ public class ShowUserListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -91,7 +91,7 @@ public class ShowUserListTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
 }

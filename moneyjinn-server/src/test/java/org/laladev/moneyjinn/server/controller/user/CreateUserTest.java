@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
@@ -27,14 +29,13 @@ import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 
 public class CreateUserTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
   @Inject
   private IAccessRelationService accessRelationService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -55,8 +56,8 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   private void testError(final UserTransport transport,
@@ -71,8 +72,7 @@ public class CreateUserTest extends AbstractControllerTest {
         .withError(errorCode.getErrorCode()).build());
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -107,8 +107,7 @@ public class CreateUserTest extends AbstractControllerTest {
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
 
-    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
-        CreateUserResponse.class);
+    final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
     final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
@@ -129,8 +128,7 @@ public class CreateUserTest extends AbstractControllerTest {
     transport.setUserIsNew(0);
     request.setUserTransport(transport);
 
-    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
-        CreateUserResponse.class);
+    final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
     final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
@@ -153,8 +151,7 @@ public class CreateUserTest extends AbstractControllerTest {
         .forNewUser_2000_01_01().build();
     request.setAccessRelationTransport(accessRelationTransport);
 
-    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
-        CreateUserResponse.class);
+    final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
@@ -178,8 +175,7 @@ public class CreateUserTest extends AbstractControllerTest {
     accessRelationTransport.setValidtil(LocalDate.parse("2900-12-31"));
     request.setAccessRelationTransport(accessRelationTransport);
 
-    final CreateUserResponse actual = super.callUsecaseExpect200(this.method, request,
-        CreateUserResponse.class);
+    final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
     Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
@@ -214,7 +210,7 @@ public class CreateUserTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(this.method, new CreateUserRequest());
+    super.callUsecaseExpect403(new CreateUserRequest());
   }
 
   @Test
@@ -222,6 +218,6 @@ public class CreateUserTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CreateUserRequest());
+    super.callUsecaseExpect403(new CreateUserRequest());
   }
 }

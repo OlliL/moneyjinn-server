@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +11,11 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ChangePasswordTest extends AbstractControllerTest {
@@ -22,7 +23,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   private IUserService userService;
   @Inject
   private IAccessRelationService accessRelationService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -43,8 +44,8 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   @Test
@@ -60,7 +61,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     String cryptedPassword = this.userService.cryptPassword(this.userPassword);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     user = this.userService.getUserById(userId);
     cryptedPassword = this.userService.cryptPassword(newPassword);
@@ -74,8 +75,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     request.setOldPassword(this.userPassword);
     request.setPassword("");
 
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertNotNull(actual);
     Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
 
@@ -98,7 +98,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     User user = this.userService.getUserById(userId);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     user = this.userService.getUserById(userId);
     Assertions.assertEquals(user.getPassword(), cryptedPassword);
@@ -109,8 +109,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword("wrongPassword");
 
-    final ErrorResponse actual = super.callUsecaseExpect400(this.method, request,
-        ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
     Assertions.assertNotNull(actual);
     Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
 
@@ -121,7 +120,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new ChangePasswordRequest());
+    super.callUsecaseExpect403(new ChangePasswordRequest());
   }
 
   @Test
@@ -134,6 +133,6 @@ public class ChangePasswordTest extends AbstractControllerTest {
     request.setOldPassword(this.userPassword);
     request.setPassword(this.userPassword + "new");
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }

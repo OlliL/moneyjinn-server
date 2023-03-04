@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
@@ -15,11 +16,11 @@ import org.laladev.moneyjinn.model.access.UserPermission;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -36,8 +37,6 @@ public class RefreshTokenTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
 
-  private final HttpMethod method = HttpMethod.GET;
-
   @Override
   protected String getUsername() {
     return null;
@@ -49,8 +48,8 @@ public class RefreshTokenTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   /**
@@ -82,7 +81,7 @@ public class RefreshTokenTest extends AbstractControllerTest {
   @Test
   public void test_RegularUser_Successfull() throws Exception {
 
-    final LoginResponse response = super.callUsecaseExpect200(this.method, LoginResponse.class);
+    final LoginResponse response = super.callUsecaseExpect200(LoginResponse.class);
 
     Assertions.assertEquals(new UserTransportBuilder().forUser1().build(),
         response.getUserTransport());
@@ -96,8 +95,7 @@ public class RefreshTokenTest extends AbstractControllerTest {
     user.setPermissions(Collections.singletonList(UserPermission.NONE));
     this.userService.updateUser(user);
 
-    final ErrorResponse response = super.callUsecaseExpect403(this.method, null,
-        ErrorResponse.class);
+    final ErrorResponse response = super.callUsecaseExpect403(ErrorResponse.class);
 
     Assertions.assertEquals(response.getCode(), ErrorCode.ACCOUNT_IS_LOCKED.getErrorCode());
   }

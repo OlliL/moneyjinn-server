@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.server.config.JwtCache;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
+import org.laladev.moneyjinn.server.controller.user.LoginTest;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.springframework.cache.Cache;
@@ -47,15 +49,9 @@ public abstract class AbstractControllerTest extends AbstractTest {
 
   protected abstract String getPassword();
 
-  protected String getUsecase() {
-    throw new UnsupportedOperationException("child class must implement this!");
-  }
+  protected abstract Method getMethod();
 
-  protected Method getMethod() {
-    throw new UnsupportedOperationException("child class must implement this!");
-  }
-
-  public void setOverrideJwtToken(final String overrideJwtToken) {
+  protected void setOverrideJwtToken(final String overrideJwtToken) {
     this.overrideJwtToken = overrideJwtToken;
   }
 
@@ -72,21 +68,6 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return method;
   }
 
-  /**
-   * Returns the Usecase URL for the given class. Input "ShowEditUserTest.class" and get
-   * "user/showEditUser" back.
-   *
-   * @param clazz
-   *                The Usecase-Class
-   * @return Usecase-URL
-   */
-  protected String getUsecaseFromTestClassName(final Class<?> clazz) {
-    final String usecase = clazz.getSimpleName().replace("Test", "");
-    final String packageName = clazz.getPackage().getName();
-    final String module = packageName.substring(packageName.lastIndexOf(".") + 1);
-    return module + "/" + Character.toLowerCase(usecase.charAt(0)) + usecase.substring(1);
-  }
-
   protected HttpHeaders getAuthorizationHeader() throws Exception {
     final HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -100,21 +81,30 @@ public abstract class AbstractControllerTest extends AbstractTest {
     if (username == null || password == null) {
       return httpHeaders;
     }
+
     final LoginRequest loginRequest = new LoginRequest();
     loginRequest.setUserName(username);
     loginRequest.setUserPassword(password);
+
     String jwtToken = this.jwtCache.getJwt(loginRequest);
+
     if (jwtToken == null) {
-      final String uri = "/moneyflow/server/user/login";
-      final String body = this.objectMapper.writeValueAsString(loginRequest);
-      final MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post(uri).content(body);
+      final Method method = this.getMethodFromTestClassName(UserControllerApi.class,
+          LoginTest.class);
+
+      final MockHttpServletRequestBuilder builder = this.createMockHttpServletRequestBuilder(method,
+          loginRequest);
+
       final MvcResult result = this.mvc
           .perform(builder.contentType(MediaType.APPLICATION_JSON)
               .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8.name()))
           .andReturn();
       final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
       Assertions.assertNotNull(content);
       Assertions.assertTrue(content.length() > 0);
+      Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus(), content);
+
       final LoginResponse actual = this.objectMapper.readValue(content, LoginResponse.class);
       jwtToken = actual.getToken();
       this.jwtCache.putJwt(loginRequest, jwtToken);
@@ -123,99 +113,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return httpHeaders;
   }
 
-  protected <T> T callUsecaseExpect200(final String uriParameters, final HttpMethod httpMethod,
-      final Class<T> clazz) throws Exception {
-    return this.callUsecase(uriParameters, httpMethod, "", false, clazz, HttpStatus.OK);
-  }
-
-  protected <T> T callUsecaseExpect200(final HttpMethod httpMethod, final Class<T> clazz)
-      throws Exception {
-    return this.callUsecase("", httpMethod, "", false, clazz, HttpStatus.OK);
-  }
-
-  protected <T> T callUsecaseExpect200(final HttpMethod httpMethod, final Object body,
-      final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.OK);
-  }
-
-  protected <T> T callUsecaseExpect204(final HttpMethod httpMethod, final Object body)
-      throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase("", httpMethod, bodyStr, true, null, HttpStatus.NO_CONTENT);
-  }
-
-  protected <T> T callUsecaseExpect204(final String uriParameters, final HttpMethod httpMethod)
-      throws Exception {
-    return this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.NO_CONTENT);
-  }
-
-  protected <T> T callUsecaseExpect400(final HttpMethod httpMethod, final Object body,
-      final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.BAD_REQUEST);
-  }
-
-  protected <T> T callUsecaseExpect400(final String uriParameters, final HttpMethod httpMethod,
-      final Class<T> clazz) throws Exception {
-    return this.callUsecase(uriParameters, httpMethod, "", false, clazz, HttpStatus.BAD_REQUEST);
-  }
-
-  protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod)
-      throws Exception {
-    this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.FORBIDDEN);
-  }
-
-  protected void callUsecaseExpect403(final HttpMethod httpMethod) throws Exception {
-    this.callUsecase("", httpMethod, "", true, null, HttpStatus.FORBIDDEN);
-  }
-
-  protected <T> T callUsecaseExpect403(final HttpMethod httpMethod, final Object body,
-      final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
-  }
-
-  protected void callUsecaseExpect403(final HttpMethod httpMethod, final Object body)
-      throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    this.callUsecase("", httpMethod, bodyStr, true, null, HttpStatus.FORBIDDEN);
-  }
-
-  protected <T> T callUsecaseExpect422(final HttpMethod httpMethod, final Object body,
-      final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
-  }
-
-  private <T> T callUsecase(final String uriParameters, final HttpMethod httpMethod,
-      final String body, final boolean noResult, final Class<T> clazz, final HttpStatus status)
-      throws Exception {
-    MockHttpServletRequestBuilder builder = null;
-    final String uri = "/moneyflow/server/" + this.getUsecase() + uriParameters;
-    switch (httpMethod.name()) {
-      case "GET":
-        builder = MockMvcRequestBuilders.get(uri);
-        break;
-      case "DELETE":
-        builder = MockMvcRequestBuilders.delete(uri);
-        break;
-      case "PUT":
-        builder = MockMvcRequestBuilders.put(uri).content(body);
-        break;
-      case "POST":
-        builder = MockMvcRequestBuilders.post(uri).content(body);
-        break;
-      case "OPTIONS":
-        builder = MockMvcRequestBuilders.options(uri);
-        break;
-      default:
-        throw new UnsupportedOperationException("httpMethod " + httpMethod + " not supported");
-    }
-    return this.executeCall(noResult, clazz, status, builder);
-  }
-
-  private <T> T executeCall(final boolean noResult, final Class<T> clazz, final HttpStatus status,
+  private <T> T executeCall(final Class<T> clazz, final HttpStatus status,
       final MockHttpServletRequestBuilder builder) throws Exception, UnsupportedEncodingException,
       JsonProcessingException, JsonMappingException {
 
@@ -229,7 +127,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
     Assertions.assertNotNull(content);
     Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
 
-    if (!noResult) {
+    if (clazz != null) {
       Assertions.assertTrue(content.length() > 0,
           "Response is empty, but 'noResult' was not specified!");
       final T actual = this.objectMapper.readValue(content, clazz);
@@ -241,66 +139,70 @@ public abstract class AbstractControllerTest extends AbstractTest {
   }
 
   protected <T> T callUsecaseExpect200(final Object body, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecaseNew(bodyStr, false, clazz, HttpStatus.OK);
-  }
-
-  protected <T> T callUsecaseExpect200(final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(null, false, clazz, HttpStatus.OK);
+    return this.callUsecaseNew(body, clazz, HttpStatus.OK);
   }
 
   protected <T> T callUsecaseExpect200(final Class<T> clazz, final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, false, clazz, HttpStatus.OK, uriVariables);
+    return this.callUsecaseNew(null, clazz, HttpStatus.OK, uriVariables);
   }
 
   protected <T> T callUsecaseExpect204(final Object body) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecaseNew(bodyStr, true, null, HttpStatus.NO_CONTENT);
+    return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT);
   }
 
   protected <T> T callUsecaseExpect204WithUriVariables(final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, true, null, HttpStatus.NO_CONTENT, uriVariables);
+    return this.callUsecaseNew(null, null, HttpStatus.NO_CONTENT, uriVariables);
   }
 
   protected <T> T callUsecaseExpect400(final Object body, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecaseNew(bodyStr, false, clazz, HttpStatus.BAD_REQUEST);
+    return this.callUsecaseNew(body, clazz, HttpStatus.BAD_REQUEST);
   }
 
   protected <T> T callUsecaseExpect400(final Class<T> clazz, final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, false, clazz, HttpStatus.BAD_REQUEST, uriVariables);
+    return this.callUsecaseNew(null, clazz, HttpStatus.BAD_REQUEST, uriVariables);
   }
 
   protected void callUsecaseExpect403() throws Exception {
-    this.callUsecaseNew(null, true, null, HttpStatus.FORBIDDEN);
+    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN);
   }
 
   protected void callUsecaseExpect403WithUriVariables(final Object... uriVariables)
       throws Exception {
-    this.callUsecaseNew(null, true, null, HttpStatus.FORBIDDEN, uriVariables);
+    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN, uriVariables);
+  }
+
+  protected <T> T callUsecaseExpect403(final Class<T> clazz) throws Exception {
+    return this.callUsecaseNew(null, clazz, HttpStatus.FORBIDDEN);
   }
 
   protected void callUsecaseExpect403(final Object body) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    this.callUsecaseNew(bodyStr, true, null, HttpStatus.FORBIDDEN);
+    this.callUsecaseNew(body, null, HttpStatus.FORBIDDEN);
+  }
+
+  protected <T> T callUsecaseExpect403(final Object body, final Class<T> clazz) throws Exception {
+    return this.callUsecaseNew(body, clazz, HttpStatus.FORBIDDEN);
   }
 
   protected <T> T callUsecaseExpect422(final Object body, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecaseNew(bodyStr, false, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
+    return this.callUsecaseNew(body, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-  private <T> T callUsecaseNew(final String body, final boolean noResult,
-      final Class<T> responseClazz, final HttpStatus expectedHttpStatus,
-      final Object... uriVariables) throws Exception {
-
-    final boolean myNoResult = responseClazz == null;
+  private <T> T callUsecaseNew(final Object body, final Class<T> responseClazz,
+      final HttpStatus expectedHttpStatus, final Object... uriVariables) throws Exception {
 
     final Method method = this.getMethod();
 
+    final MockHttpServletRequestBuilder builder = this.createMockHttpServletRequestBuilder(method,
+        body, uriVariables);
+
+    return this.executeCall(responseClazz, expectedHttpStatus, builder);
+  }
+
+  private MockHttpServletRequestBuilder createMockHttpServletRequestBuilder(final Method method,
+      final Object body, final Object... uriVariables) throws JsonProcessingException {
     final RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(method,
         RequestMapping.class);
 
@@ -316,10 +218,10 @@ public abstract class AbstractControllerTest extends AbstractTest {
         .request(HttpMethod.valueOf(requestMethod.name()), path, uriVariables);
 
     if (body != null) {
-      builder = builder.content(body);
+      final String bodyStr = this.objectMapper.writeValueAsString(body);
+      builder = builder.content(bodyStr);
     }
-
-    return this.executeCall(myNoResult, responseClazz, expectedHttpStatus, builder);
+    return builder;
   }
 
   /**

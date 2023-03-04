@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -9,12 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
-import org.springframework.http.HttpMethod;
 
 public class ShowEditUserTest extends AbstractControllerTest {
-  private final HttpMethod method = HttpMethod.GET;
   private String userName;
   private String userPassword;
 
@@ -35,15 +35,17 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   @Test
   public void test_unknownUser_emptyResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
-    final ShowEditUserResponse actual = super.callUsecaseExpect200(
-        "/" + UserTransportBuilder.NON_EXISTING_ID, this.method, ShowEditUserResponse.class);
+
+    final ShowEditUserResponse actual = super.callUsecaseExpect200(ShowEditUserResponse.class,
+        UserTransportBuilder.NON_EXISTING_ID);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -60,8 +62,10 @@ public class ShowEditUserTest extends AbstractControllerTest {
     accessRelationTransports
         .add(new AccessRelationTransportBuilder().forUser1_2800_01_01().build());
     expected.setAccessRelationTransports(accessRelationTransports);
-    final ShowEditUserResponse actual = super.callUsecaseExpect200(
-        "/" + UserTransportBuilder.USER1_ID, this.method, ShowEditUserResponse.class);
+
+    final ShowEditUserResponse actual = super.callUsecaseExpect200(ShowEditUserResponse.class,
+        UserTransportBuilder.USER1_ID);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -72,8 +76,10 @@ public class ShowEditUserTest extends AbstractControllerTest {
     accessRelationTransports
         .add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
     expected.setAccessRelationTransports(accessRelationTransports);
-    final ShowEditUserResponse actual = super.callUsecaseExpect200(
-        "/" + UserTransportBuilder.USER2_ID, this.method, ShowEditUserResponse.class);
+
+    final ShowEditUserResponse actual = super.callUsecaseExpect200(ShowEditUserResponse.class,
+        UserTransportBuilder.USER2_ID);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -82,7 +88,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(UserTransportBuilder.USER2_ID);
   }
 
   @Test
@@ -90,6 +96,6 @@ public class ShowEditUserTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(UserTransportBuilder.USER2_ID);
   }
 }

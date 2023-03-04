@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,14 +11,14 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.http.HttpMethod;
 
 public class DeleteUserByIdTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -38,8 +39,8 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(UserControllerApi.class, this.getClass());
   }
 
   @Test
@@ -47,7 +48,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
     Assertions.assertNotNull(user);
 
-    super.callUsecaseExpect204("/" + UserTransportBuilder.USER2_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(UserTransportBuilder.USER2_ID);
 
     user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
     Assertions.assertNull(user);
@@ -58,7 +59,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(user);
 
-    super.callUsecaseExpect204("/" + UserTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(UserTransportBuilder.NON_EXISTING_ID);
 
     user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(user);
@@ -72,8 +73,8 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
 
-    final ErrorResponse actual = super.callUsecaseExpect400("/" + UserTransportBuilder.USER3_ID,
-        this.method, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
+        UserTransportBuilder.USER3_ID);
 
     user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
@@ -85,7 +86,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(UserTransportBuilder.USER2_ID);
   }
 
   @Test
@@ -93,6 +94,6 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(UserTransportBuilder.USER2_ID);
   }
 }
