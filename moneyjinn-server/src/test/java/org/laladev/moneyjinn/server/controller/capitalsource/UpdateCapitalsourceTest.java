@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +20,18 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.CapitalsourceControllerApi;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.UpdateCapitalsourceRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class UpdateCapitalsourceTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -51,8 +52,8 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(CapitalsourceControllerApi.class, this.getClass());
   }
 
   private void testError(final CapitalsourceTransport transport, final ErrorCode errorCode)
@@ -65,8 +66,9 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -115,7 +117,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -138,7 +140,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -160,7 +162,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setBankCode("ABCDEFGH");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -183,7 +185,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setImportAllowed(1);
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -204,7 +206,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setImportAllowed(2);
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -225,7 +227,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setImportAllowed(0);
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -248,7 +250,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -269,7 +271,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -290,7 +292,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     transport.setComment("hugo");
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
         groupId, capitalsourceId);
@@ -305,7 +307,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdateCapitalsourceRequest());
+    super.callUsecaseExpect403(new UpdateCapitalsourceRequest());
   }
 
   @Test
@@ -318,6 +320,6 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
         .build();
     request.setCapitalsourceTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }

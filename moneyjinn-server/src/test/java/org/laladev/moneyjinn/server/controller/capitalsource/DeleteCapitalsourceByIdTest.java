@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.capitalsource;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,15 +15,15 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.CapitalsourceControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -43,8 +44,8 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(CapitalsourceControllerApi.class, this.getClass());
   }
 
   @Test
@@ -58,7 +59,9 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
-    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method);
+
+    super.callUsecaseExpect204WithUriVariables(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
+
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
@@ -73,7 +76,9 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
-    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
+
+    super.callUsecaseExpect204WithUriVariables(CapitalsourceTransportBuilder.NON_EXISTING_ID);
+
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNull(capitalsource);
@@ -93,8 +98,8 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
 
-    final ErrorResponse actual = super.callUsecaseExpect400(
-        "/" + CapitalsourceTransportBuilder.CAPITALSOURCE1_ID, this.method, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
+        CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
@@ -112,7 +117,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
 
-    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
 
@@ -124,7 +129,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect403WithUriVariables(CapitalsourceTransportBuilder.NON_EXISTING_ID);
   }
 
   @Test
@@ -133,6 +138,6 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(CapitalsourceTransportBuilder.NON_EXISTING_ID);
   }
 }
