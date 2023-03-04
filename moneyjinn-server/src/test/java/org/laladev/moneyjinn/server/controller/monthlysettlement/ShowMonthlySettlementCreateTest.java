@@ -21,12 +21,13 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
-  private String userName;
-  private String userPassword;
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
   private CapitalsourceTransportMapper capitalsourceTransportMapper;
+
+  private String userName;
+  private String userPassword;
 
   @BeforeEach
   public void setUp() {

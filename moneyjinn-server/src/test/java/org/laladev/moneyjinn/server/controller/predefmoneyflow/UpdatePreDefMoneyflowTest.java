@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +20,18 @@ import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -51,8 +52,8 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PreDefMoneyflowControllerApi.class, this.getClass());
   }
 
   private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode)
@@ -65,8 +66,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected.getCode(), actual.getCode());
     Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
@@ -203,7 +203,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
         .forPreDefMoneyflow1().build();
     request.setPreDefMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
@@ -242,7 +242,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     transport.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
     request.setPreDefMoneyflowTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
@@ -266,6 +266,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
         .forPreDefMoneyflow2().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
     transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+
     this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
   }
 
@@ -274,7 +275,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdatePreDefMoneyflowRequest());
+    super.callUsecaseExpect403(new UpdatePreDefMoneyflowRequest());
   }
 
   @Test
@@ -287,6 +288,6 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
         .forPreDefMoneyflow1().build();
     request.setPreDefMoneyflowTransport(transport);
 
-    super.callUsecaseExpect422(this.method, request, ValidationResponse.class);
+    super.callUsecaseExpect422(request, ValidationResponse.class);
   }
 }

@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -10,16 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class ShowPostingAccountListTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
-  private final HttpMethod method = HttpMethod.GET;
+
   private String userName;
   private String userPassword;
 
@@ -40,8 +41,8 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
   }
 
   private ShowPostingAccountListResponse getCompleteResponse() {
@@ -58,7 +59,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   public void test_default_FullResponseObject() throws Exception {
     final ShowPostingAccountListResponse expected = this.getCompleteResponse();
 
-    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
+    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(
         ShowPostingAccountListResponse.class);
 
     Assertions.assertEquals(expected, actual);
@@ -69,7 +70,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method);
+    super.callUsecaseExpect403();
   }
 
   @Test
@@ -79,7 +80,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
 
-    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
+    final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(
         ShowPostingAccountListResponse.class);
 
     Assertions.assertEquals(expected, actual);

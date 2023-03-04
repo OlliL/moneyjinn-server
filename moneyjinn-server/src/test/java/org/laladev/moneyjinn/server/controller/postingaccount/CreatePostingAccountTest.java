@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -13,19 +14,19 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreatePostingAccountTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -46,8 +47,8 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
   }
 
   private void testError(final PostingAccountTransport transport, final ErrorCode errorCode)
@@ -61,8 +62,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -100,8 +100,10 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
     expected.setPostingAccountId(PostingAccountTransportBuilder.NEXT_ID);
 
-    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(request,
         CreatePostingAccountResponse.class);
+
+    Assertions.assertEquals(expected, actual);
 
     final PostingAccount postingAccount = this.postingAccountService
         .getPostingAccountByName(PostingAccountTransportBuilder.NEWPOSTING_ACCOUNT_NAME);
@@ -116,7 +118,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(this.method, new CreatePostingAccountRequest());
+    super.callUsecaseExpect403(new CreatePostingAccountRequest());
   }
 
   @Test
@@ -124,7 +126,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new CreatePostingAccountRequest());
+    super.callUsecaseExpect403(new CreatePostingAccountRequest());
   }
 
   @Test
@@ -139,7 +141,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
     final CreatePostingAccountResponse expected = new CreatePostingAccountResponse();
     expected.setPostingAccountId(1L);
 
-    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(this.method, request,
+    final CreatePostingAccountResponse actual = super.callUsecaseExpect200(request,
         CreatePostingAccountResponse.class);
 
     Assertions.assertEquals(expected, actual);

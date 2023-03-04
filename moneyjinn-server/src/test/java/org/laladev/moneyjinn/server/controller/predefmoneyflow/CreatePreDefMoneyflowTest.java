@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +20,19 @@ import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
-  private final HttpMethod method = HttpMethod.POST;
+
   private String userName;
   private String userPassword;
 
@@ -52,8 +53,8 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PreDefMoneyflowControllerApi.class, this.getClass());
   }
 
   private void testError(final PreDefMoneyflowTransport transport, final ErrorCode errorCode)
@@ -66,8 +67,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final ValidationResponse expected = new ValidationResponse();
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -198,7 +198,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forNewPreDefMoneyflow().build();
     request.setPreDefMoneyflowTransport(transport);
-    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(this.method, request,
+    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(request,
         CreatePreDefMoneyflowResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
@@ -220,7 +220,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
         .forNewPreDefMoneyflow().build();
     transport.setUserid(UserTransportBuilder.ADMIN_ID);
     request.setPreDefMoneyflowTransport(transport);
-    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(this.method, request,
+    final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(request,
         CreatePreDefMoneyflowResponse.class);
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
@@ -251,7 +251,7 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new PreDefMoneyflowTransportBuilder());
+    super.callUsecaseExpect403(new PreDefMoneyflowTransportBuilder());
   }
 
   @Test
@@ -263,6 +263,6 @@ public class CreatePreDefMoneyflowTest extends AbstractControllerTest {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forNewPreDefMoneyflow().build();
     request.setPreDefMoneyflowTransport(transport);
-    super.callUsecaseExpect422(this.method, request, ValidationResponse.class);
+    super.callUsecaseExpect422(request, ValidationResponse.class);
   }
 }

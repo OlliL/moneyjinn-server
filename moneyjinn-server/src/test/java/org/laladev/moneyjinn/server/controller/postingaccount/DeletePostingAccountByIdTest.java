@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,15 +12,15 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -40,8 +41,8 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
   }
 
   @Test
@@ -49,8 +50,9 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
     Assertions.assertNotNull(postingAccount);
-    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID,
-        this.method);
+
+    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
+
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
     Assertions.assertNull(postingAccount);
@@ -61,7 +63,9 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(postingAccount);
-    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.NON_EXISTING_ID, this.method);
+
+    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.NON_EXISTING_ID);
+
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(postingAccount);
@@ -77,8 +81,8 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
     Assertions.assertNotNull(postingAccount);
 
-    final ErrorResponse actual = super.callUsecaseExpect400(
-        "/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, ErrorResponse.class);
+    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
+        PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
 
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
@@ -90,8 +94,8 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    super.callUsecaseExpect403("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-        this.method);
+
+    super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
   }
 
   @Test
@@ -99,8 +103,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-        this.method);
+    super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
   }
 
   @Test
@@ -109,7 +112,6 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
   }
 }

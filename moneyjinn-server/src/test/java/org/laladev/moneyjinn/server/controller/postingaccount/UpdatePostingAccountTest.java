@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -14,18 +15,18 @@ import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
 public class UpdatePostingAccountTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
-  private final HttpMethod method = HttpMethod.PUT;
+
   private String userName;
   private String userPassword;
 
@@ -46,8 +47,8 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PostingAccountControllerApi.class, this.getClass());
   }
 
   private void testError(final PostingAccountTransport transport, final ErrorCode errorCode)
@@ -61,8 +62,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     expected.setValidationItemTransports(validationItems);
     expected.setResult(Boolean.FALSE);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(this.method, request,
-        ValidationResponse.class);
+    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
     Assertions.assertEquals(expected, actual);
   }
@@ -91,7 +91,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     transport.setName("hugo");
     request.setPostingAccountTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
 
     final PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
@@ -105,7 +105,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(this.method, new UpdatePostingAccountRequest());
+    super.callUsecaseExpect403(new UpdatePostingAccountRequest());
   }
 
   @Test
@@ -113,7 +113,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403(this.method, new UpdatePostingAccountRequest());
+    super.callUsecaseExpect403(new UpdatePostingAccountRequest());
   }
 
   @Test
@@ -126,6 +126,6 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
         .forPostingAccount1().build();
     request.setPostingAccountTransport(transport);
 
-    super.callUsecaseExpect204(this.method, request);
+    super.callUsecaseExpect204(request);
   }
 }

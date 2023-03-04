@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 
 import jakarta.inject.Inject;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,14 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.PreDefMoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
+public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
-  private final HttpMethod method = HttpMethod.DELETE;
+
   private String userName;
   private String userPassword;
 
@@ -39,8 +40,8 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Override
-  protected String getUsecase() {
-    return super.getUsecaseFromTestClassName(this.getClass());
+  protected Method getMethod() {
+    return super.getMethodFromTestClassName(PreDefMoneyflowControllerApi.class, this.getClass());
   }
 
   @Test
@@ -52,8 +53,8 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
         preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
 
-    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
 
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
@@ -68,7 +69,7 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
         preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
 
-    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.NON_EXISTING_ID, this.method);
+    super.callUsecaseExpect204WithUriVariables(PreDefMoneyflowTransportBuilder.NON_EXISTING_ID);
 
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNull(preDefMoneyflow);
@@ -83,8 +84,8 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
         preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
 
-    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
 
     preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
     Assertions.assertNotNull(preDefMoneyflow);
@@ -95,8 +96,8 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
-        this.method);
+    super.callUsecaseExpect403WithUriVariables(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
   }
 
   @Test
@@ -105,7 +106,7 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
-        this.method);
+    super.callUsecaseExpect204WithUriVariables(
+        PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
   }
 }
