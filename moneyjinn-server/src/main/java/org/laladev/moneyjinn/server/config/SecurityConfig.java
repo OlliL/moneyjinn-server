@@ -27,6 +27,11 @@
 package org.laladev.moneyjinn.server.config;
 
 import jakarta.inject.Inject;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +48,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -91,7 +99,7 @@ public class SecurityConfig {
         .httpBasic().disable()
         .cors().and()
         .csrf(configurer -> {
-          configurer.csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler()::handle);
+          configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
           configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
           configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
         })
@@ -105,8 +113,23 @@ public class SecurityConfig {
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
             .anyRequest().authenticated()
-        );
+        ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
     //@formatter:on
     return http.build();
+  }
+
+  private static final class CsrfCookieFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(final HttpServletRequest request,
+        final HttpServletResponse response, final FilterChain filterChain)
+        throws ServletException, IOException {
+      final CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+      // Render the token value to a cookie by causing the deferred token to be loaded
+      csrfToken.getToken();
+
+      filterChain.doFilter(request, response);
+    }
+
   }
 }
