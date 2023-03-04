@@ -244,7 +244,8 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new CalcEtfSaleRequest());
   }
 
   @Test
@@ -254,6 +255,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+
     super.callUsecaseExpect200(this.method, request, CalcEtfSaleResponse.class);
 
   }

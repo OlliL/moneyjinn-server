@@ -174,7 +174,8 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new ShowMonthlyReportGraphRequest());
   }
 
   @Test
@@ -183,6 +184,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
+
     super.callUsecaseExpect200(this.method, request, ShowMonthlyReportGraphResponse.class);
   }
 
@@ -197,6 +199,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
     request
         .setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
+
     super.callUsecaseExpect200(this.method, request, ShowMonthlyReportGraphResponse.class);
   }
 }

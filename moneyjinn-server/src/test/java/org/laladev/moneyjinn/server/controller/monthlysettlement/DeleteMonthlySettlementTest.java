@@ -81,7 +81,9 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
         .getAllMonthlySettlementsByYearMonth(userId, 2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
     Assertions.assertTrue(monthlySettlements.isEmpty());
+
     super.callUsecaseExpect204("/2008/12", this.method);
+
     monthlySettlements = this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId,
         2008, Month.DECEMBER);
     Assertions.assertNotNull(monthlySettlements);
@@ -92,6 +94,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2008/12", this.method);
   }
 
@@ -100,6 +103,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect204("/2008/12", this.method);
   }
 }

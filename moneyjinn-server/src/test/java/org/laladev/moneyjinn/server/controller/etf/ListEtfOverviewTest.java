@@ -84,6 +84,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2008/12", this.method);
   }
 

@@ -76,8 +76,10 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement3().build());
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     expected.setMonthlySettlementTransports(monthlySettlementTransports);
+
     final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200("/2008/12",
         this.method, ShowMonthlySettlementListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -85,6 +87,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   public void test_AuthorizationRequired_3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2008/12", this.method);
   }
 
@@ -95,8 +98,10 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     expected.setMonthlySettlementTransports(new ArrayList<>());
+
     final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200("/2020/10",
         this.method, ShowMonthlySettlementListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

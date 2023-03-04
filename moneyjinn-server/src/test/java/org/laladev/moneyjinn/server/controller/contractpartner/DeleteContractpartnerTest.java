@@ -216,7 +216,8 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + ContractpartnerTransportBuilder.NON_EXISTING_ID, this.method);
   }
 
   @Test

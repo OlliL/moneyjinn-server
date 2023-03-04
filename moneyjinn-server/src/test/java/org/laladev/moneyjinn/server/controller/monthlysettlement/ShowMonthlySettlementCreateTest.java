@@ -169,8 +169,10 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200(this.method,
         ShowMonthlySettlementCreateResponse.class);
     Assertions.assertEquals(expected, actual);
+
     actual = super.callUsecaseExpect200("/2010/5", this.method,
         ShowMonthlySettlementCreateResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -178,6 +180,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2012/08", this.method);
   }
 
@@ -191,8 +194,10 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
     expected.setYear(now.getYear());
     expected.setMonth(now.getMonthValue());
     expected.setEditMode(0);
+
     final ShowMonthlySettlementCreateResponse actual = super.callUsecaseExpect200(this.method,
         ShowMonthlySettlementCreateResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

@@ -137,56 +137,26 @@ public abstract class AbstractControllerTest extends AbstractTest {
     this.callUsecase(uriParameters, httpMethod, "", true, null, HttpStatus.FORBIDDEN);
   }
 
+  protected void callUsecaseExpect403(final HttpMethod httpMethod) throws Exception {
+    this.callUsecase("", httpMethod, "", true, null, HttpStatus.FORBIDDEN);
+  }
+
   protected <T> T callUsecaseExpect403(final HttpMethod httpMethod, final Object body,
       final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
     return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
   }
 
-  protected void callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod,
-      final Object body) throws Exception {
+  protected void callUsecaseExpect403(final HttpMethod httpMethod, final Object body)
+      throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
-    this.callUsecase(uriParameters, httpMethod, bodyStr, true, null, HttpStatus.FORBIDDEN);
-  }
-
-  protected <T> T callUsecaseExpect403(final String uriParameters, final HttpMethod httpMethod,
-      final Object body, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase(uriParameters, httpMethod, bodyStr, false, clazz, HttpStatus.FORBIDDEN);
+    this.callUsecase("", httpMethod, bodyStr, true, null, HttpStatus.FORBIDDEN);
   }
 
   protected <T> T callUsecaseExpect422(final HttpMethod httpMethod, final Object body,
       final Class<T> clazz) throws Exception {
     final String bodyStr = this.objectMapper.writeValueAsString(body);
     return this.callUsecase("", httpMethod, bodyStr, false, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
-  }
-
-  protected <T> T callUsecaseExpect422(final String uriParameters, final HttpMethod httpMethod,
-      final Object body, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    return this.callUsecase(uriParameters, httpMethod, bodyStr, false, clazz,
-        HttpStatus.UNPROCESSABLE_ENTITY);
-  }
-
-  @Deprecated
-  protected <T> T callUsecaseWithoutContent(final String uriParameters, final HttpMethod httpMethod,
-      final boolean noResult, final Class<T> clazz) throws Exception {
-    HttpStatus status = HttpStatus.OK;
-    if (noResult) {
-      status = HttpStatus.NO_CONTENT;
-    }
-    return this.callUsecase(uriParameters, httpMethod, "", noResult, clazz, status);
-  }
-
-  @Deprecated
-  protected <T> T callUsecaseWithContent(final String uriParameters, final HttpMethod httpMethod,
-      final Object body, final boolean noResult, final Class<T> clazz) throws Exception {
-    final String bodyStr = this.objectMapper.writeValueAsString(body);
-    HttpStatus status = HttpStatus.OK;
-    if (noResult) {
-      status = HttpStatus.NO_CONTENT;
-    }
-    return this.callUsecase(uriParameters, httpMethod, bodyStr, noResult, clazz, status);
   }
 
   private <T> T callUsecase(final String uriParameters, final HttpMethod httpMethod,

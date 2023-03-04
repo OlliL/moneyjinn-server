@@ -84,6 +84,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID,
         this.method);
   }
@@ -94,9 +95,11 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
+
     final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
         "/" + ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID, this.method,
         ShowContractpartnerAccountListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

@@ -210,7 +210,8 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new CreateContractpartnerRequest());
   }
 
   @Test
@@ -230,8 +231,10 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
     request.setContractpartnerTransport(transport);
     final CreateContractpartnerResponse expected = new CreateContractpartnerResponse();
     expected.setContractpartnerId(1l);
+
     final CreateContractpartnerResponse actual = super.callUsecaseExpect200(this.method, request,
         CreateContractpartnerResponse.class);
+
     Assertions.assertEquals(expected, actual);
     final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(1l);

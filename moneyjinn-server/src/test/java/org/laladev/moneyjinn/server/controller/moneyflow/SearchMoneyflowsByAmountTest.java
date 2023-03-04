@@ -59,8 +59,10 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     moneyflowSplitEntryTransports
         .add(new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build());
     expected.setMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
+
     final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
         "/1.10/20081231/20090102", this.method, SearchMoneyflowsByAmountResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -72,8 +74,10 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow15().build());
     expected.setMoneyflowTransports(moneyflowTransports);
+
     final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
         "/10/20091201/20100201", this.method, SearchMoneyflowsByAmountResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -85,8 +89,10 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
     final ArrayList<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow14().build());
     expected.setMoneyflowTransports(moneyflowTransports);
+
     final SearchMoneyflowsByAmountResponse actual = super.callUsecaseExpect200(
         "/10/20091130/20100202", this.method, SearchMoneyflowsByAmountResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -94,6 +100,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/10.00/20100101/29991231", this.method);
   }
 
@@ -102,6 +109,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect204("/10.00/20100101/29991231", this.method);
   }
 }

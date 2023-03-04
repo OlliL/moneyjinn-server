@@ -111,9 +111,11 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
     Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
     Assertions.assertNotNull(capitalsource);
+
     super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.CAPITALSOURCE3_ID, this.method);
     capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
         capitalsourceId);
+
     Assertions.assertNotNull(capitalsource);
   }
 
@@ -121,7 +123,8 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
   }
 
   @Test
@@ -129,6 +132,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect204("/" + CapitalsourceTransportBuilder.NON_EXISTING_ID, this.method);
   }
 }

@@ -57,8 +57,10 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   @Test
   public void test_default_FullResponseObject() throws Exception {
     final ShowPostingAccountListResponse expected = this.getCompleteResponse();
+
     final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
         ShowPostingAccountListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 
@@ -66,7 +68,8 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   public void test_AuthorizationRequired1_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method);
   }
 
   @Test
@@ -75,8 +78,10 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();
+
     final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(this.method,
         ShowPostingAccountListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

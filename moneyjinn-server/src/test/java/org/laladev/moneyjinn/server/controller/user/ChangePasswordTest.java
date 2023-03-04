@@ -120,7 +120,8 @@ public class ChangePasswordTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new ChangePasswordRequest());
   }
 
   @Test
@@ -132,6 +133,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword(this.userPassword);
     request.setPassword(this.userPassword + "new");
+
     super.callUsecaseExpect204(this.method, request);
   }
 }

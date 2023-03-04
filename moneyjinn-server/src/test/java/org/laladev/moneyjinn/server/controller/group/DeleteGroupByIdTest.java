@@ -95,6 +95,6 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/1", this.method);
+    super.callUsecaseExpect403("/" + GroupTransportBuilder.GROUP1_ID, this.method);
   }
 }

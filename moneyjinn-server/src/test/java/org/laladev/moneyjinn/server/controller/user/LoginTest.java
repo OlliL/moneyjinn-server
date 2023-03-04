@@ -90,7 +90,7 @@ public class LoginTest extends AbstractControllerTest {
     request.setUserName(username);
     request.setUserPassword(password);
 
-    super.callUsecaseExpect403("", this.method, request);
+    super.callUsecaseExpect403(this.method, request);
 
   }
 
@@ -103,6 +103,7 @@ public class LoginTest extends AbstractControllerTest {
     final LoginRequest request = new LoginRequest();
     request.setUserName(this.userName);
     request.setUserPassword(this.userPassword);
+
     super.callUsecaseExpect200(this.method, request, LoginResponse.class);
   }
 }

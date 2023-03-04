@@ -81,7 +81,8 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method);
   }
 
   @Test
@@ -89,6 +90,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect200(this.method, ShowReportingFormResponse.class);
   }
 }

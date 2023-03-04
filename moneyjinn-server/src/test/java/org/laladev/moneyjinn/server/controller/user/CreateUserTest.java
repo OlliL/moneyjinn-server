@@ -205,6 +205,7 @@ public class CreateUserTest extends AbstractControllerTest {
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forNewUser_2000_01_01().build();
     accessRelationTransport.setRefId(null);
+
     this.testError(transport, accessRelationTransport, ErrorCode.GROUP_MUST_BE_SPECIFIED);
   }
 
@@ -212,13 +213,15 @@ public class CreateUserTest extends AbstractControllerTest {
   public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-    super.callUsecaseExpect403("", this.method, new CreateUserRequest());
+
+    super.callUsecaseExpect403(this.method, new CreateUserRequest());
   }
 
   @Test
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new CreateUserRequest());
   }
 }

@@ -509,7 +509,7 @@ public class CompareDataTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("", this.method);
+    super.callUsecaseExpect403(this.method, new CompareDataRequest());
   }
 
   @Test

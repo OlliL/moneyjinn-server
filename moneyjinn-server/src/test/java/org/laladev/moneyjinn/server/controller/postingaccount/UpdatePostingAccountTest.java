@@ -105,7 +105,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403("", this.method, new UpdatePostingAccountRequest());
+    super.callUsecaseExpect403(this.method, new UpdatePostingAccountRequest());
   }
 
   @Test
@@ -113,7 +113,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("", this.method);
+    super.callUsecaseExpect403(this.method, new UpdatePostingAccountRequest());
   }
 
   @Test

@@ -71,8 +71,10 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     expected.setMessage("This user has already entered data and may therefore not be deleted!");
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
+
     final ErrorResponse actual = super.callUsecaseExpect400("/" + UserTransportBuilder.USER3_ID,
         this.method, ErrorResponse.class);
+
     user = this.userService.getUserById(new UserID(UserTransportBuilder.USER3_ID));
     Assertions.assertNotNull(user);
     Assertions.assertEquals(expected, actual);
@@ -91,6 +93,6 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/1", this.method);
+    super.callUsecaseExpect403("/" + UserTransportBuilder.USER2_ID, this.method);
   }
 }

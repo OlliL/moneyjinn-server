@@ -160,7 +160,8 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new CreateContractpartnerAccountRequest());
   }
 
   @Test
@@ -170,6 +171,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
+
     this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
   }
 }

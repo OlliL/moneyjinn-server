@@ -467,6 +467,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2010/1", this.method);
   }
 
@@ -475,6 +476,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect200("/1234/10", this.method, ListReportsResponse.class);
   }
 }

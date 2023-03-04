@@ -162,13 +162,15 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_01_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method);
   }
 
   @Test
   public void test_AuthorizationRequired_02_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2010", this.method);
   }
 
@@ -176,6 +178,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_03_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
+
     super.callUsecaseExpect403("/2010/1", this.method);
   }
 
@@ -184,6 +187,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect200("", this.method, GetAvailableReportMonthResponse.class);
   }
 }

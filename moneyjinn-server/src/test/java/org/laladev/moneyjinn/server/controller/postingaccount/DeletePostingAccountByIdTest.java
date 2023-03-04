@@ -76,8 +76,10 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
     Assertions.assertNotNull(postingAccount);
+
     final ErrorResponse actual = super.callUsecaseExpect400(
         "/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, this.method, ErrorResponse.class);
+
     postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
     Assertions.assertNotNull(postingAccount);
@@ -96,7 +98,9 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
+        this.method);
   }
 
   @Test
@@ -104,6 +108,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   public void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+
     super.callUsecaseExpect204("/" + PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
         this.method);
   }

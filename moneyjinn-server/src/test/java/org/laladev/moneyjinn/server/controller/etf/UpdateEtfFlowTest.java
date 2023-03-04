@@ -193,7 +193,8 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new UpdateEtfFlowRequest());
   }
 
   @Test
@@ -203,6 +204,7 @@ public class UpdateEtfFlowTest extends AbstractControllerTest {
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
     final UpdateEtfFlowRequest request = new UpdateEtfFlowRequest();
+
     super.callUsecaseExpect204(this.method, request);
   }
 }

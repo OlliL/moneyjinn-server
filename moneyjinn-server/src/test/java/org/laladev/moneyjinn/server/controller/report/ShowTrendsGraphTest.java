@@ -201,7 +201,8 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new ShowTrendsGraphRequest());
   }
 
   @Test
@@ -210,6 +211,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
+
     super.callUsecaseExpect200(this.method, request, ShowTrendsGraphResponse.class);
   }
 
@@ -222,6 +224,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
     request.setStartDate(LocalDate.parse("2010-04-01"));
     request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
+
     super.callUsecaseExpect200(this.method, request, ShowTrendsGraphResponse.class);
   }
 }

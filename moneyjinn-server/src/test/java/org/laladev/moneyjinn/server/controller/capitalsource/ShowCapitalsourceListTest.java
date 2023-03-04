@@ -70,7 +70,8 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("", this.method);
+
+    super.callUsecaseExpect403(this.method, new ShowCapitalsourceListResponse());
   }
 
   @Test
@@ -79,8 +80,10 @@ public class ShowCapitalsourceListTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowCapitalsourceListResponse expected = new ShowCapitalsourceListResponse();
+
     final ShowCapitalsourceListResponse actual = super.callUsecaseExpect200(this.method,
         ShowCapitalsourceListResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

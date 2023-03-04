@@ -80,7 +80,8 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("/1", this.method);
+    super.callUsecaseExpect403("/" + ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID,
+        this.method);
   }
 
   @Test

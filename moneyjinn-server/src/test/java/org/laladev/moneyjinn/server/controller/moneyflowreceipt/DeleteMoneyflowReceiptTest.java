@@ -69,7 +69,8 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
   }
 
   @Test

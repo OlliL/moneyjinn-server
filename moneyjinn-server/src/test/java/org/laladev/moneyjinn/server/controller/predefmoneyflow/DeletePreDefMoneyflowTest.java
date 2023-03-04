@@ -94,7 +94,9 @@ public class DeletePreDefMoneyflowTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID,
+        this.method);
   }
 
   @Test

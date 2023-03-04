@@ -77,7 +77,8 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   public void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
-    super.callUsecaseExpect403("/1", this.method);
+
+    super.callUsecaseExpect403("/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method);
   }
 
   @Test
@@ -86,9 +87,11 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
+
     final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
         "/" + MoneyflowTransportBuilder.MONEYFLOW1_ID, this.method,
         ShowMoneyflowReceiptResponse.class);
+
     Assertions.assertEquals(expected, actual);
   }
 }

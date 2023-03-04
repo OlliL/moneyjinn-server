@@ -59,7 +59,7 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
     this.userName = null;
     this.userPassword = null;
 
-    super.callUsecaseExpect403("", this.method);
+    super.callUsecaseExpect403(this.method);
   }
 
   @Test
