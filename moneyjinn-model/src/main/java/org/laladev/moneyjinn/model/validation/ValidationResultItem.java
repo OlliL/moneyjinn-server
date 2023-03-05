@@ -33,7 +33,8 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
 
 @Data
 @AllArgsConstructor
-public class ValidationResultItem {
+public class ValidationResultItem implements Serializable {
+  private static final long serialVersionUID = 1L;
   private AbstractEntityID<? extends Serializable> key;
   private ErrorCode error;
   private List<String> variableArray;

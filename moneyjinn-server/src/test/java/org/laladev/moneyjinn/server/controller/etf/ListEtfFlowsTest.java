@@ -27,7 +27,7 @@ import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ListEtfFlowsTest extends AbstractControllerTest {
+class ListEtfFlowsTest extends AbstractControllerTest {
   @Inject
   ISettingService settingService;
 
@@ -99,7 +99,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestWithoutSettings_FullResponseObject() throws Exception {
+   void test_standardRequestWithoutSettings_FullResponseObject() throws Exception {
     final ListEtfFlowsResponse expected = this.fillDefaultResponse();
 
     final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class);
@@ -109,7 +109,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestWithSettings_FullResponseObject() throws Exception {
+   void test_standardRequestWithSettings_FullResponseObject() throws Exception {
     final ListEtfFlowsResponse expected = this.fillDefaultResponse();
 
     this.initEtfSettings();
@@ -127,7 +127,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -136,7 +136,7 @@ public class ListEtfFlowsTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

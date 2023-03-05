@@ -21,7 +21,7 @@ import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
 
-public class UpdateGroupTest extends AbstractControllerTest {
+class UpdateGroupTest extends AbstractControllerTest {
   @Inject
   private IGroupService groupService;
 
@@ -66,21 +66,21 @@ public class UpdateGroupTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_GroupnameAlreadyExisting_Error() throws Exception {
+   void test_GroupnameAlreadyExisting_Error() throws Exception {
     final GroupTransport transport = new GroupTransportBuilder().forGroup2().build();
     transport.setName(GroupTransportBuilder.GROUP1_NAME);
     this.testError(transport, ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS);
   }
 
   @Test
-  public void test_EmptyGroupname_Error() throws Exception {
+   void test_EmptyGroupname_Error() throws Exception {
     final GroupTransport transport = new GroupTransportBuilder().forGroup2().build();
     transport.setName("");
     this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final UpdateGroupRequest request = new UpdateGroupRequest();
     final GroupTransport transport = new GroupTransportBuilder().forGroup1().build();
     transport.setName("hugo");
@@ -95,14 +95,14 @@ public class UpdateGroupTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
     super.callUsecaseExpect403(new UpdateGroupRequest());
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
     super.callUsecaseExpect403(new UpdateGroupRequest());

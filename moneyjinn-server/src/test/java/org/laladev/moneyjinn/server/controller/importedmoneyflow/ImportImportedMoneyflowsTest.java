@@ -45,7 +45,7 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
+class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
   @Inject
@@ -109,7 +109,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -154,7 +154,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_privateMoneyflow_Successfull() throws Exception {
+   void test_privateMoneyflow_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
@@ -171,7 +171,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NonprivateMoneyflow_Successfull() throws Exception {
+   void test_NonprivateMoneyflow_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
@@ -188,7 +188,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyBankAccount_Successfull() throws Exception {
+   void test_emptyBankAccount_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -218,7 +218,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_contractpartnerAccountUnknown_accountCreated() throws Exception {
+   void test_contractpartnerAccountUnknown_accountCreated() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
@@ -246,7 +246,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bankAccountOfUnimportableCapitalsourceIsContractpartner_counterBookingCreated()
+   void test_bankAccountOfUnimportableCapitalsourceIsContractpartner_counterBookingCreated()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
@@ -271,7 +271,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bankAccountOfOnlyBalanceImportAllowedCapitalsourceIsContractpartner_counterBookingCreated()
+   void test_bankAccountOfOnlyBalanceImportAllowedCapitalsourceIsContractpartner_counterBookingCreated()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
@@ -298,7 +298,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bankAccountOfImportableCapitalsourceIsContractpartner_counterBookingNotCreated()
+   void test_bankAccountOfImportableCapitalsourceIsContractpartner_counterBookingNotCreated()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
@@ -320,7 +320,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bankAccountOfOfOnlyBalanceImportAllowedButCreditCapitalsourceIsContractpartner_counterBookingNotCreated()
+   void test_bankAccountOfOfOnlyBalanceImportAllowedButCreditCapitalsourceIsContractpartner_counterBookingNotCreated()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
@@ -342,7 +342,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
+   void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -365,7 +365,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
+   void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -389,7 +389,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
+   void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
@@ -412,7 +412,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
+   void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
@@ -435,7 +435,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyComment_Error() throws Exception {
+   void test_emptyComment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setComment("");
@@ -443,7 +443,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullComment_Error() throws Exception {
+   void test_nullComment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setComment(null);
@@ -451,7 +451,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullCapitalsource_Error() throws Exception {
+   void test_nullCapitalsource_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setCapitalsourceid(null);
@@ -459,7 +459,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingCapitalsource_Error() throws Exception {
+   void test_notExistingCapitalsource_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
@@ -467,7 +467,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullContractpartner_Error() throws Exception {
+   void test_nullContractpartner_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setContractpartnerid(null);
@@ -475,7 +475,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingContractpartner_Error() throws Exception {
+   void test_notExistingContractpartner_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
@@ -483,7 +483,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullAmount_Error() throws Exception {
+   void test_nullAmount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setAmount(null);
@@ -491,7 +491,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_zeroAmount_Error() throws Exception {
+   void test_zeroAmount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setAmount(BigDecimal.ZERO);
@@ -500,7 +500,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   // make sure it 0 is compared with compareTo not with equals
   @Test
-  public void test_0_00Amount_Error() throws Exception {
+   void test_0_00Amount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setAmount(new BigDecimal("0.00000"));
@@ -508,7 +508,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullPostingAccount_Error() throws Exception {
+   void test_nullPostingAccount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setPostingaccountid(null);
@@ -516,7 +516,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullBookingDate_Error() throws Exception {
+   void test_nullBookingDate_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setBookingdate(null);
@@ -524,7 +524,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
+   void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setBookingdate(LocalDate.parse("1970-01-01"));
@@ -533,7 +533,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingDateAfterGroupAssignment_Error() throws Exception {
+   void test_BookingDateAfterGroupAssignment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setBookingdate(LocalDate.parse("2600-01-01"));
@@ -541,7 +541,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingPostingAccount_Error() throws Exception {
+   void test_notExistingPostingAccount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
@@ -563,7 +563,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
+   void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -574,7 +574,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
+   void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
@@ -598,7 +598,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
+   void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -610,7 +610,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
+   void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -624,7 +624,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   // make sure it 0 is compared with compareTo not with equals
   @Test
-  public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
+   void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -637,7 +637,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
+   void test_SplitEntries_Insert_nullComment_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -649,7 +649,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
+   void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -662,7 +662,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
+   void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -675,7 +675,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
+   void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
@@ -687,7 +687,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -696,7 +696,7 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();

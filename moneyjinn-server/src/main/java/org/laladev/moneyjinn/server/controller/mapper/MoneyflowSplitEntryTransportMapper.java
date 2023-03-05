@@ -31,8 +31,8 @@ import org.laladev.moneyjinn.converter.MoneyflowSplitEntryIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
+import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -56,11 +56,11 @@ public interface MoneyflowSplitEntryTransportMapper
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
   default MoneyflowSplitEntry doAfterMapping(@MappingTarget final MoneyflowSplitEntry entity) {
-    if (entity != null) {
-      if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
-        entity.setPostingAccount(null);
-      }
+    if (entity != null && entity.getPostingAccount() != null
+        && entity.getPostingAccount().getId() == null) {
+      entity.setPostingAccount(null);
     }
+
     return entity;
   }
 }

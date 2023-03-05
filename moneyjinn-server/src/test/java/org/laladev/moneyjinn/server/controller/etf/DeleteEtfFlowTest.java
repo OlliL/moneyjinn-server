@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteEtfFlowTest extends AbstractControllerTest {
+class DeleteEtfFlowTest extends AbstractControllerTest {
   @Inject
   IEtfService etfService;
 
@@ -43,7 +43,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_emptyResponse() throws Exception {
+   void test_standardRequest_emptyResponse() throws Exception {
     final EtfFlowID etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID);
 
     EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
@@ -56,12 +56,12 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DeleteNotExistingId_emptyResponse() throws Exception {
+   void test_DeleteNotExistingId_emptyResponse() throws Exception {
     super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.NEXT_ID);
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -70,7 +70,7 @@ public class DeleteEtfFlowTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

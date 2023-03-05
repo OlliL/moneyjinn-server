@@ -22,7 +22,7 @@ import org.laladev.moneyjinn.server.model.ShowMonthlyReportGraphResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
+class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
 
@@ -51,7 +51,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_maxDateRange_response() throws Exception {
+   void test_maxDateRange_response() throws Exception {
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -107,7 +107,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
+   void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -118,7 +118,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
+   void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
@@ -141,7 +141,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_privateMoneyflows_ignored() throws Exception {
+   void test_privateMoneyflows_ignored() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
@@ -171,7 +171,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -180,7 +180,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
@@ -190,7 +190,7 @@ public class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabaseFakeRequestData_noException() throws Exception {
+  void test_emptyDatabaseFakeRequestData_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();

@@ -12,7 +12,7 @@ import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi
 import org.laladev.moneyjinn.server.model.ShowMoneyflowReceiptResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
+class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   private static final String MONEYFLOW_RECEIPT_1 = "FFFFFFFF";
   private static final Integer MONEYFLOW_RECEIPT_1_TYPE = 1;
   private static final String MONEYFLOW_RECEIPT_2 = "FFFFFFFF";
@@ -42,7 +42,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownMoneyflowReceipt_emptyResponseObject() throws Exception {
+   void test_unknownMoneyflowReceipt_emptyResponseObject() throws Exception {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     final ShowMoneyflowReceiptResponse actual = super.callUsecaseExpect200(
         ShowMoneyflowReceiptResponse.class, MoneyflowTransportBuilder.NON_EXISTING_ID);
@@ -50,7 +50,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MoneyflowReceipt1_completeResponseObject() throws Exception {
+   void test_MoneyflowReceipt1_completeResponseObject() throws Exception {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_1.getBytes()));
     expected.setReceiptType(MONEYFLOW_RECEIPT_1_TYPE);
@@ -60,7 +60,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MoneyflowReceipt2_completeResponseObject() throws Exception {
+   void test_MoneyflowReceipt2_completeResponseObject() throws Exception {
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();
     expected.setReceipt(Base64.getEncoder().encodeToString(MONEYFLOW_RECEIPT_2.getBytes()));
     expected.setReceiptType(MONEYFLOW_RECEIPT_2_TYPE);
@@ -70,7 +70,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -79,7 +79,7 @@ public class ShowMoneyflowReceiptTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMoneyflowReceiptResponse expected = new ShowMoneyflowReceiptResponse();

@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(BusinessExceptionControllerAdvice.class);
+  private static final Logger MY_LOGGER = LoggerFactory
+      .getLogger(BusinessExceptionControllerAdvice.class);
 
   @ExceptionHandler(BusinessException.class)
   @ResponseBody
@@ -49,16 +51,14 @@ public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHa
     errorResponse.setCode(ex.getErrorCode().getErrorCode());
     errorResponse.setMessage(ex.getErrorMessage());
     HttpStatus httpStatus;
-    switch (ex.getErrorCode()) {
-      case USERNAME_PASSWORD_WRONG:
-      case ACCOUNT_IS_LOCKED:
-        httpStatus = HttpStatus.FORBIDDEN;
-        break;
-      default:
-        httpStatus = HttpStatus.BAD_REQUEST;
+    if (ex.getErrorCode() == ErrorCode.USERNAME_PASSWORD_WRONG
+        || ex.getErrorCode() == ErrorCode.ACCOUNT_IS_LOCKED) {
+      httpStatus = HttpStatus.FORBIDDEN;
+    } else {
+      httpStatus = HttpStatus.BAD_REQUEST;
     }
 
-    LOGGER.error(ex.getErrorMessage(), ex);
+    MY_LOGGER.error(ex.getErrorMessage(), ex);
     return new ResponseEntity<>(errorResponse, httpStatus);
   }
 }

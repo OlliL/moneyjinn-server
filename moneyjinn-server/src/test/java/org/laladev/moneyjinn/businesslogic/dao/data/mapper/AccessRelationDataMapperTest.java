@@ -10,12 +10,12 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 
-public class AccessRelationDataMapperTest extends AbstractTest {
+class AccessRelationDataMapperTest extends AbstractTest {
   @Inject
   private AccessRelationDataMapper accessRelationDataMapper;
 
   @Test
-  public void testNoParentAccessRelation() {
+  void testNoParentAccessRelation() {
     final AccessRelation accessRelation = new AccessRelation(new AccessID(0l));
     final AccessRelationData accessRelationData = this.accessRelationDataMapper
         .mapAToB(accessRelation);

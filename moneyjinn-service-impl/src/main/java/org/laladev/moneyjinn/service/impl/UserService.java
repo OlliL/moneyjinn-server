@@ -55,6 +55,8 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserService extends AbstractService implements IUserService {
+  private static final String USER_MUST_NOT_BE_NULL = "user must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private static final Log LOG = LogFactory.getLog(UserService.class);
   private final UserDao userDao;
   private final UserDataMapper userDataMapper;
@@ -67,7 +69,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public ValidationResult validateUser(final User user) {
-    Assert.notNull(user, "user must not be null!");
+    Assert.notNull(user, USER_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = new ValidationResult();
     if (user.getName() == null || user.getName().trim().isEmpty()) {
       validationResult.addValidationResultItem(
@@ -86,7 +88,7 @@ public class UserService extends AbstractService implements IUserService {
   @Override
   @Cacheable(CacheNames.USER_BY_ID)
   public User getUserById(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     final UserData userData = this.userDao.getUserById(userId.getId());
     return super.map(userData, User.class);
   }
@@ -107,7 +109,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public UserID createUser(final User user) {
-    Assert.notNull(user, "user must not be null!");
+    Assert.notNull(user, USER_MUST_NOT_BE_NULL);
     user.setId(null);
     final ValidationResult validationResult = this.validateUser(user);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -124,7 +126,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public void updateUser(final User user) {
-    Assert.notNull(user, "user must not be null!");
+    Assert.notNull(user, USER_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validateUser(user);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
       final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
@@ -140,7 +142,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public void setPassword(final UserID userId, final String password) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(password, "password must not be null!");
     final User user = this.getUserById(userId);
     this.evictUserCache(user);
@@ -150,7 +152,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public void resetPassword(final UserID userId, final String password) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(password, "password must not be null!");
     final User user = this.getUserById(userId);
     this.evictUserCache(user);
@@ -160,7 +162,7 @@ public class UserService extends AbstractService implements IUserService {
 
   @Override
   public void deleteUser(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     try {
       final User user = this.getUserById(userId);
       this.evictUserCache(user);
@@ -191,7 +193,8 @@ public class UserService extends AbstractService implements IUserService {
   private static String convert(final byte[] bytes) {
     final int l = bytes.length;
     final char[] out = new char[l << 1];
-    for (int i = 0, j = 0; i < l; i++) {
+    int j = 0;
+    for (int i = 0; i < l; i++) {
       final byte byteToWorkOn = bytes[i];
       out[j++] = HEY_ARRAY[(0xF0 & byteToWorkOn) >>> 4];
       out[j++] = HEY_ARRAY[0x0F & byteToWorkOn];

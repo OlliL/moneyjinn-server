@@ -24,7 +24,7 @@ import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlySettlementCreateYearMonthTest extends AbstractControllerTest {
+class ShowMonthlySettlementCreateYearMonthTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -56,7 +56,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_notAlreadySettledMonth_FullContentWithAmountAll0() throws Exception {
+   void test_notAlreadySettledMonth_FullContentWithAmountAll0() throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
     monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement1()
@@ -75,7 +75,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_alreadySettledMonth_FullContent() throws Exception {
+   void test_alreadySettledMonth_FullContent() throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
     monthlySettlementTransports
@@ -94,7 +94,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_alreadySettledMonthWithNewCapitalsourceCreatedAfterwardsAndValid_FullContent()
+   void test_alreadySettledMonthWithNewCapitalsourceCreatedAfterwardsAndValid_FullContent()
       throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -125,7 +125,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
+   void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
       throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -145,7 +145,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_nextUnsettledMonthWithImportedData_FullContentWithCalculatedAmount()
+   void test_nextUnsettledMonthWithImportedData_FullContentWithCalculatedAmount()
       throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
@@ -170,7 +170,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -179,7 +179,7 @@ public class ShowMonthlySettlementCreateYearMonthTest extends AbstractController
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();

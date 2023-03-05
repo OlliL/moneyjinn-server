@@ -34,8 +34,8 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
+import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -53,7 +53,7 @@ public interface PreDefMoneyflowTransportMapper
   @Mapping(target = "creationDate", source = "createdate")
   @Mapping(target = "lastUsedDate", source = "lastUsed")
   @Mapping(target = "user", ignore = true)
-  PreDefMoneyflow mapBToA(PreDefMoneyflowTransport MoneyflowTransport);
+  PreDefMoneyflow mapBToA(PreDefMoneyflowTransport preDefMoneyflowTransport);
 
   @Override
   @Mapping(target = "capitalsourceid", source = "capitalsource.id")
@@ -65,7 +65,7 @@ public interface PreDefMoneyflowTransportMapper
   @Mapping(target = "createdate", source = "creationDate")
   @Mapping(target = "lastUsed", source = "lastUsedDate")
   @Mapping(target = "userid", source = "user.id")
-  PreDefMoneyflowTransport mapAToB(PreDefMoneyflow importedMoneyflow);
+  PreDefMoneyflowTransport mapAToB(PreDefMoneyflow preDefMoneyflow);
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping

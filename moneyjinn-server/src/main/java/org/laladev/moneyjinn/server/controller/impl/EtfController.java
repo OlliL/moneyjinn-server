@@ -207,7 +207,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
     if (effectiveEtfFlows != null && !effectiveEtfFlows.isEmpty()) {
       for (final EtfFlow etfFlow : effectiveEtfFlows) {
         BigDecimal useablePieces = etfFlow.getAmount();
-        if (useablePieces.compareTo(openPieces) == 1) {
+        if (useablePieces.compareTo(openPieces) > 0) {
           useablePieces = openPieces;
         }
         openPieces = openPieces.subtract(useablePieces);

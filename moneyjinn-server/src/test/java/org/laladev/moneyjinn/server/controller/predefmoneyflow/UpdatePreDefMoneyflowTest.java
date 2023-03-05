@@ -27,7 +27,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
+class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
 
@@ -73,7 +73,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyComment_Error() throws Exception {
+   void test_emptyComment_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setComment("");
@@ -81,7 +81,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullComment_Error() throws Exception {
+   void test_nullComment_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setComment(null);
@@ -89,7 +89,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullCapitalsource_Error() throws Exception {
+   void test_nullCapitalsource_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setCapitalsourceid(null);
@@ -97,7 +97,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingCapitalsource_Error() throws Exception {
+   void test_notExistingCapitalsource_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
@@ -105,7 +105,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_creditCapitalsource_Error() throws Exception {
+   void test_creditCapitalsource_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID);
@@ -113,7 +113,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AmountToBig_Error() throws Exception {
+   void test_AmountToBig_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setAmount(new BigDecimal(9999999));
@@ -121,7 +121,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noLongerValidCapitalsource_Error() throws Exception {
+   void test_noLongerValidCapitalsource_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
@@ -129,7 +129,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullContractpartner_Error() throws Exception {
+   void test_nullContractpartner_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setContractpartnerid(null);
@@ -137,7 +137,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingContractpartner_Error() throws Exception {
+   void test_notExistingContractpartner_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
@@ -145,7 +145,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noLongerValidContractpartner_Error() throws Exception {
+   void test_noLongerValidContractpartner_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
@@ -153,7 +153,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullAmount_Error() throws Exception {
+   void test_nullAmount_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setAmount(null);
@@ -161,7 +161,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_zeroAmount_Error() throws Exception {
+   void test_zeroAmount_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setAmount(BigDecimal.ZERO);
@@ -170,7 +170,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 
   // make sure it 0 is compared with compareTo not with equals
   @Test
-  public void test_0_00Amount_Error() throws Exception {
+   void test_0_00Amount_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setAmount(new BigDecimal("0.00000"));
@@ -178,7 +178,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullPostingAccount_Error() throws Exception {
+   void test_nullPostingAccount_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setPostingaccountid(null);
@@ -186,7 +186,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingPostingAccount_Error() throws Exception {
+   void test_notExistingPostingAccount_Error() throws Exception {
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
     transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
@@ -194,7 +194,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExisting_NothingHappend() throws Exception {
+   void test_notExisting_NothingHappend() throws Exception {
     final UpdatePreDefMoneyflowRequest request = new UpdatePreDefMoneyflowRequest();
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
         .forPreDefMoneyflow1().build();
@@ -211,7 +211,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_existing_UpdateDone() throws Exception {
+   void test_existing_UpdateDone() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
@@ -256,7 +256,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
+   void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder()
@@ -268,7 +268,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -277,7 +277,7 @@ public class UpdatePreDefMoneyflowTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final UpdatePreDefMoneyflowRequest request = new UpdatePreDefMoneyflowRequest();

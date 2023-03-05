@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class MyObjectMapperTest {
+class MyObjectMapperTest {
   @Test
-  public void test_nullAttribute_notInJson() throws JsonProcessingException {
+  void test_nullAttribute_notInJson() throws JsonProcessingException {
     final MyObjectMapper mapper = new MyObjectMapper();
     final RestObject restObject = new RestObject();
     restObject.setAttribute1("l");

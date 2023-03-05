@@ -53,6 +53,7 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupService extends AbstractService implements IGroupService {
+  private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
   private static final Log LOG = LogFactory.getLog(GroupService.class);
   private final GroupDao groupDao;
   private final GroupDataMapper croupDataMapper;
@@ -65,7 +66,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
   @Override
   public ValidationResult validateGroup(final Group group) {
-    Assert.notNull(group, "group must not be null!");
+    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = new ValidationResult();
     if (group.getName() == null || group.getName().trim().isEmpty()) {
       validationResult.addValidationResultItem(
@@ -106,7 +107,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
   @Override
   public void updateGroup(final Group group) {
-    Assert.notNull(group, "group must not be null!");
+    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validateGroup(group);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
       final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
@@ -120,7 +121,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
   @Override
   public GroupID createGroup(final Group group) {
-    Assert.notNull(group, "group must not be null!");
+    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
     group.setId(null);
     final ValidationResult validationResult = this.validateGroup(group);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {

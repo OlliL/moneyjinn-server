@@ -39,18 +39,17 @@ import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerAccountDaoMapper
 public class ContractpartnerAccountDao {
   private final IContractpartnerAccountDaoMapper mapper;
 
-  public ContractpartnerAccountData getContractpartnerAccountByBankAccount(final Long userId,
-      final String bankCode, final String accountNumber) {
+  public ContractpartnerAccountData getContractpartnerAccountByBankAccount(final String bankCode,
+      final String accountNumber) {
     return this.mapper.getContractpartnerAccountByBankAccount(bankCode, accountNumber);
   }
 
-  public ContractpartnerAccountData getContractpartnerAccountById(final Long userId,
+  public ContractpartnerAccountData getContractpartnerAccountById(
       final Long contractpartnerAccountId) {
     return this.mapper.getContractpartnerAccountById(contractpartnerAccountId);
   }
 
-  public List<ContractpartnerAccountData> getContractpartnerAccounts(final Long userId,
-      final Long contractpartnerId) {
+  public List<ContractpartnerAccountData> getContractpartnerAccounts(final Long contractpartnerId) {
     return this.mapper.getContractpartnerAccounts(contractpartnerId);
   }
 
@@ -65,15 +64,15 @@ public class ContractpartnerAccountDao {
     this.mapper.updateContractpartnerAccount(contractpartnerAccountData);
   }
 
-  public void deleteContractpartnerAccount(final Long userId, final Long contractpartnerAccountId) {
+  public void deleteContractpartnerAccount(final Long contractpartnerAccountId) {
     this.mapper.deleteContractpartnerAccount(contractpartnerAccountId);
   }
 
-  public void deleteContractpartnerAccounts(final Long userId, final Long contractpartnerId) {
+  public void deleteContractpartnerAccounts(final Long contractpartnerId) {
     this.mapper.deleteContractpartnerAccounts(contractpartnerId);
   }
 
-  public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(final Long userId,
+  public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(
       final List<BankAccountData> bankAccountDatas) {
     return this.mapper.getAllContractpartnerByAccounts(bankAccountDatas);
   }

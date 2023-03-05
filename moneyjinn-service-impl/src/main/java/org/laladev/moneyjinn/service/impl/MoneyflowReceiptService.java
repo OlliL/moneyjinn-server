@@ -47,6 +47,7 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowReceiptService extends AbstractService implements IMoneyflowReceiptService {
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final MoneyflowReceiptDao moneyflowReceiptDao;
   private final MoneyflowReceiptDataMapper moneyflowReceiptDataMapper;
 
@@ -66,7 +67,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 
   @Override
   public MoneyflowReceipt getMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowId, "moneyflowId must not be null!");
     final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
         .getMoneyflowReceipt(moneyflowId.getId());
@@ -76,7 +77,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
   @Override
   public List<MoneyflowID> getMoneyflowIdsWithReceipt(final UserID userId,
       final List<MoneyflowID> moneyflowIds) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
     final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
@@ -92,14 +93,14 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 
   @Override
   public void deleteMoneyflowReceipt(final UserID userId, final MoneyflowID moneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowId, "moneyflowId must not be null!");
     this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
   }
 
   @Override
   public void createMoneyflowReceipt(final UserID userId, final MoneyflowReceipt moneyflowReceipt) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowReceipt, "MoneyflowReceipt must not be null!");
     final MoneyflowReceiptData moneyflowReceiptData = super.map(moneyflowReceipt,
         MoneyflowReceiptData.class);

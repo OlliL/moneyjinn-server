@@ -45,7 +45,7 @@ import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateMoneyflowsTest extends AbstractControllerTest {
+class CreateMoneyflowsTest extends AbstractControllerTest {
   @Inject
   private IMoneyflowService moneyflowService;
   @Inject
@@ -111,49 +111,49 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyComment_Error() throws Exception {
+  void test_emptyComment_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setComment("");
     this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
   }
 
   @Test
-  public void test_nullComment_Error() throws Exception {
+  void test_nullComment_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setComment(null);
     this.testError(transport, ErrorCode.COMMENT_IS_NOT_SET);
   }
 
   @Test
-  public void test_nullCapitalsource_Error() throws Exception {
+  void test_nullCapitalsource_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(null);
     this.testError(transport, ErrorCode.CAPITALSOURCE_IS_NOT_SET);
   }
 
   @Test
-  public void test_notExistingCapitalsource_Error() throws Exception {
+  void test_notExistingCapitalsource_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.NON_EXISTING_ID);
     this.testError(transport, ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
   }
 
   @Test
-  public void test_creditCapitalsource_Error() throws Exception {
+  void test_creditCapitalsource_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID);
     this.testError(transport, ErrorCode.CAPITALSOURCE_INVALID);
   }
 
   @Test
-  public void test_AmountToBig_Error() throws Exception {
+  void test_AmountToBig_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setAmount(new BigDecimal(9999999));
     this.testError(transport, ErrorCode.AMOUNT_TO_BIG);
   }
 
   @Test
-  public void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
+  void test_BookingdateAfterCapitalsourceValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -173,7 +173,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
+  void test_BookingdateBeforeCapitalsourceValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -194,21 +194,21 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullContractpartner_Error() throws Exception {
+  void test_nullContractpartner_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setContractpartnerid(null);
     this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
   }
 
   @Test
-  public void test_notExistingContractpartner_Error() throws Exception {
+  void test_notExistingContractpartner_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID);
     this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
   }
 
   @Test
-  public void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
+  void test_BookingdateAfterContractpartnerValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER3_ID);
@@ -228,7 +228,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
+  void test_BookingdateBeforeContractpartnerValidity_ValidityAdjusted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
@@ -248,14 +248,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullAmount_Error() throws Exception {
+  void test_nullAmount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setAmount(null);
     this.testError(transport, ErrorCode.AMOUNT_IS_ZERO);
   }
 
   @Test
-  public void test_zeroAmount_Error() throws Exception {
+  void test_zeroAmount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setAmount(BigDecimal.ZERO);
     this.testError(transport, ErrorCode.AMOUNT_IS_ZERO);
@@ -263,28 +263,28 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 
   // make sure it 0 is compared with compareTo not with equals
   @Test
-  public void test_0_00Amount_Error() throws Exception {
+  void test_0_00Amount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setAmount(new BigDecimal("0.00000"));
     this.testError(transport, ErrorCode.AMOUNT_IS_ZERO);
   }
 
   @Test
-  public void test_nullPostingAccount_Error() throws Exception {
+  void test_nullPostingAccount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setPostingaccountid(null);
     this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
   }
 
   @Test
-  public void test_nullBookingDate_Error() throws Exception {
+  void test_nullBookingDate_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setBookingdate(null);
     this.testError(transport, ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
   }
 
   @Test
-  public void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
+  void test_BookingDateBeforeGroupAssignment_Error() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -314,7 +314,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BookingDateAfterGroupAssignment_Error() throws Exception {
+  void test_BookingDateAfterGroupAssignment_Error() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -344,14 +344,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingPostingAccount_Error() throws Exception {
+  void test_notExistingPostingAccount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
     this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
   }
 
   @Test
-  public void test_oneNewMoneyflowWithoutInvoiceDate_CreationDone() throws Exception {
+  void test_oneNewMoneyflowWithoutInvoiceDate_CreationDone() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
@@ -378,7 +378,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_oneNewMoneyflowSaveAsPreDefMoneyflow_Saved() throws Exception {
+  void test_oneNewMoneyflowSaveAsPreDefMoneyflow_Saved() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
@@ -411,15 +411,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
     Assertions.assertEquals(preDefMoneyflow.getComment(), moneyflow.getComment());
     Assertions.assertEquals(preDefMoneyflow.getContractpartner().getId(),
         moneyflow.getContractpartner().getId());
-    Assertions.assertEquals(preDefMoneyflow.isOnceAMonth(), false);
+    Assertions.assertFalse(preDefMoneyflow.isOnceAMonth());
     Assertions.assertEquals(preDefMoneyflow.getPostingAccount().getId(),
         moneyflow.getPostingAccount().getId());
     Assertions.assertEquals(preDefMoneyflow.getLastUsedDate(), LocalDate.now());
   }
 
   @Test
-  public void test_preDefMoneyflowSelected_LastUsedUpdatedAndOnceAMonthRespected()
-      throws Exception {
+  void test_preDefMoneyflowSelected_LastUsedUpdatedAndOnceAMonthRespected() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
@@ -442,14 +441,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
     Assertions.assertEquals(preDefMoneyflow.getComment(), preDefMoneyflowOrig.getComment());
     Assertions.assertEquals(preDefMoneyflow.getContractpartner().getId(),
         preDefMoneyflowOrig.getContractpartner().getId());
-    Assertions.assertEquals(preDefMoneyflow.isOnceAMonth(), true);
+    Assertions.assertTrue(preDefMoneyflow.isOnceAMonth());
     Assertions.assertEquals(preDefMoneyflow.getPostingAccount().getId(),
         preDefMoneyflowOrig.getPostingAccount().getId());
     Assertions.assertEquals(preDefMoneyflow.getLastUsedDate(), LocalDate.now());
   }
 
   @Test
-  public void test_preDefMoneyflowSelectedAndUpdated_UpdateDoneLastUsedDateSet() throws Exception {
+  void test_preDefMoneyflowSelectedAndUpdated_UpdateDoneLastUsedDateSet() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
@@ -472,14 +471,14 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
     Assertions.assertEquals(preDefMoneyflow.getComment(), transport.getComment());
     Assertions.assertEquals(preDefMoneyflow.getContractpartner().getId().getId(),
         transport.getContractpartnerid());
-    Assertions.assertEquals(preDefMoneyflow.isOnceAMonth(), true);
+    Assertions.assertTrue(preDefMoneyflow.isOnceAMonth());
     Assertions.assertEquals(preDefMoneyflow.getPostingAccount().getId().getId(),
         transport.getPostingaccountid());
     Assertions.assertEquals(preDefMoneyflow.getLastUsedDate(), LocalDate.now());
   }
 
   @Test
-  public void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
+  void test_NotGroupUseableCapitalsourceUsed_Error() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
@@ -488,7 +487,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Successfull() throws Exception {
+  void test_SplitEntries_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
     final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
@@ -524,7 +523,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
+  void test_SplitEntries_SumNotMatchingOverallAmount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(transport.getAmount());
@@ -534,7 +533,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
+  void test_Splitentries_CommentAndPostingAccountForMainNotSpecified_TakenFromFirstSplitEntryBooking()
       throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.NEXT_ID);
@@ -555,7 +554,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
+  void test_SplitEntries_Insert_emptyComment_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment("");
@@ -568,7 +567,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
+  void test_SplitEntries_Insert_zeroAmount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(BigDecimal.ZERO);
@@ -583,7 +582,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 
   // make sure it 0 is compared with compareTo not with equals
   @Test
-  public void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
+  void test_SplitEntries_Insert_0_00Amount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(new BigDecimal("0.00000"));
@@ -597,7 +596,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullComment_Error() throws Exception {
+  void test_SplitEntries_Insert_nullComment_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setComment(null);
@@ -610,7 +609,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
+  void test_SplitEntries_Insert_nullAmount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setAmount(null);
@@ -624,7 +623,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
+  void test_SplitEntries_Insert_nullPostingAccount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(null);
@@ -637,7 +636,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
+  void test_SplitEntries_Insert_notExistingPostingAccount_Error() throws Exception {
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
     final MoneyflowSplitEntryTransport mseTransport1 = this.getMseTransport1(transport);
     mseTransport1.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
@@ -650,7 +649,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -659,7 +658,7 @@ public class CreateMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();

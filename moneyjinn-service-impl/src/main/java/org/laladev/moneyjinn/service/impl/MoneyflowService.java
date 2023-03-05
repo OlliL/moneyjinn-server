@@ -85,6 +85,9 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowService extends AbstractService implements IMoneyflowService {
+  private static final String DATE_TIL_MUST_NOT_BE_NULL = "dateTil must not be null!";
+  private static final String DATE_FROM_MUST_NOT_BE_NULL = "dateFrom must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final IUserService userService;
   private final ICapitalsourceService capitalsourceService;
   private final IContractpartnerService contractpartnerService;
@@ -256,7 +259,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   @Cacheable(value = CacheNames.MONEYFLOW_BY_ID)
   public Moneyflow getMoneyflowById(final UserID userId, final MoneyflowID moneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowId, "moneyflowId must not be null!");
     final MoneyflowData moneyflowData = this.moneyflowDao.getMoneyflowById(userId.getId(),
         moneyflowId.getId());
@@ -293,7 +296,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
   @Override
   public void deleteMoneyflow(final UserID userId, final MoneyflowID moneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowId, "moneyflowId must not be null!");
     this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
     this.evictMoneyflowCache(userId, moneyflowId);
@@ -330,13 +333,13 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   @Cacheable(value = CacheNames.MONEYFLOW_YEARS)
   public List<Integer> getAllYears(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.moneyflowDao.getAllYears(userId.getId());
   }
 
   @Override
   public List<Month> getAllMonth(final UserID userId, final Integer year) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(year, "year must not be null!");
     final Cache cache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
     @SuppressWarnings("unchecked")
@@ -361,9 +364,9 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(final UserID userId,
       final LocalDate dateFrom, final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(dateFrom, "dateFrom must not be null!");
-    Assert.notNull(dateTil, "dateTil must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(dateFrom, DATE_FROM_MUST_NOT_BE_NULL);
+    Assert.notNull(dateTil, DATE_TIL_MUST_NOT_BE_NULL);
     final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
         .getAllMoneyflowsByDateRangeIncludingPrivate(userId.getId(), dateFrom, dateTil);
     return this.mapMoneyflowDataList(moneyflowDatas);
@@ -371,7 +374,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
   @Override
   public boolean monthHasMoneyflows(final UserID userId, final Integer year, final Month month) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(year, "year must not be null!");
     Assert.notNull(month, "month must not be null!");
     final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
@@ -383,9 +386,9 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final UserID userId,
       final LocalDate dateFrom, final LocalDate dateTil,
       final List<CapitalsourceID> capitalsourceIds) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(dateFrom, "dateFrom must not be null!");
-    Assert.notNull(dateTil, "dateTil must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(dateFrom, DATE_FROM_MUST_NOT_BE_NULL);
+    Assert.notNull(dateTil, DATE_TIL_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
@@ -395,26 +398,26 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
   @Override
   public LocalDate getMinMoneyflowDate(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.moneyflowDao.getMinMoneyflowDate(userId.getId());
   }
 
   @Override
   public LocalDate getMaxMoneyflowDate(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
   }
 
   @Override
   public LocalDate getPreviousMoneyflowDate(final UserID userId, final LocalDate date) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(date, "Date must not be null!");
     return this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), date);
   }
 
   @Override
   public LocalDate getNextMoneyflowDate(final UserID userId, final LocalDate date) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(date, "Date must not be null!");
     return this.moneyflowDao.getNextMoneyflowDate(userId.getId(), date);
   }
@@ -423,7 +426,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
       final UserID userId, final List<PostingAccountID> postingAccountIds, final LocalDate dateFrom,
       final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(dateFrom, "DateFrom must not be null!");
     Assert.notNull(dateTil, "DateTil must not be null!");
     Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
@@ -439,7 +442,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
       final UserID userId, final List<PostingAccountID> postingAccountIds, final LocalDate dateFrom,
       final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(dateFrom, "DateFrom must not be null!");
     Assert.notNull(dateTil, "DateTil must not be null!");
     Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
@@ -454,7 +457,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   public List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(final UserID userId,
       final BigDecimal amount, final LocalDate dateFrom, final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(dateFrom, "fromDate must not be null!");
     Assert.notNull(amount, "amount must not be null!");
     Assert.notNull(dateTil, "toDate must not be null!");
@@ -466,7 +469,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   public List<Moneyflow> searchMoneyflowsByAmountDate(final UserID userId,
       final LocalDate bookingDate, final BigDecimal amount, final Period searchPeriod) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(bookingDate, "bookingDate must not be null!");
     Assert.notNull(amount, "amount must not be null!");
     Assert.notNull(searchPeriod, "searchPeriod must not be null!");
@@ -488,7 +491,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   public List<Moneyflow> searchMoneyflows(final UserID userId,
       final MoneyflowSearchParams moneyflowSearchParams) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowSearchParams, "moneyflowSearchParams must not be null!");
     if (moneyflowSearchParams.getStartDate() == null) {
       moneyflowSearchParams.setStartDate(LocalDate.of(0, Month.JANUARY, 1));
@@ -506,9 +509,9 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   @Override
   public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(final UserID userId,
       final LocalDate dateFrom, final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(dateFrom, "dateFrom must not be null!");
-    Assert.notNull(dateTil, "dateTil must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(dateFrom, DATE_FROM_MUST_NOT_BE_NULL);
+    Assert.notNull(dateTil, DATE_TIL_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceId, "capitalsourceId must not be null!");
     final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
         .getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil,

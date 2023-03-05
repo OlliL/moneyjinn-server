@@ -334,16 +334,13 @@ public class ImportedMoneyflowController extends AbstractController
     final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();
     this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
     final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
-    if (validationResult.isValid()) {
-      if (!moneyflowSplitEntries.isEmpty()) {
-        moneyflowSplitEntries.stream().forEach(mse -> {
-          validationResult.mergeValidationResult(
-              this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse));
-        });
-        if (validationResult.isValid()) {
-          validationResult
-              .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
-        }
+
+    if (validationResult.isValid() && !moneyflowSplitEntries.isEmpty()) {
+      moneyflowSplitEntries.stream().forEach(mse -> validationResult
+          .mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse)));
+      if (validationResult.isValid()) {
+        validationResult
+            .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
       }
     }
 

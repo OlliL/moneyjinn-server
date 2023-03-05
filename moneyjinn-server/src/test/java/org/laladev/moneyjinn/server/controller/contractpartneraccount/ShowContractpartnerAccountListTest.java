@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowContractpartnerAccountListResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
+class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -52,7 +52,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+   void test_default_FullResponseObject() throws Exception {
     final ShowContractpartnerAccountListResponse expected = this.getCompleteResponse();
     final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
         ShowContractpartnerAccountListResponse.class,
@@ -62,7 +62,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_contractpartnerWithNoAccounts_responseWithNoAccounts() throws Exception {
+   void test_contractpartnerWithNoAccounts_responseWithNoAccounts() throws Exception {
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
     final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
         ShowContractpartnerAccountListResponse.class,
@@ -71,7 +71,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notExistingContractpartner_emptyResponseObject() throws Exception {
+   void test_notExistingContractpartner_emptyResponseObject() throws Exception {
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();
     final ShowContractpartnerAccountListResponse actual = super.callUsecaseExpect200(
         ShowContractpartnerAccountListResponse.class,
@@ -80,7 +80,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -89,7 +89,7 @@ public class ShowContractpartnerAccountListTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowContractpartnerAccountListResponse expected = new ShowContractpartnerAccountListResponse();

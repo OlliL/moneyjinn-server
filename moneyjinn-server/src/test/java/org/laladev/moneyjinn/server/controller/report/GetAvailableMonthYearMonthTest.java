@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
+class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -55,7 +55,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidMonth_defaultsResponse() throws Exception {
+   void test_invalidMonth_defaultsResponse() throws Exception {
     final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
     expected.setYear(2010);
     expected.setAllYears(ALL_YEARS);
@@ -76,7 +76,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberFirstMonthAtAllSettledAndAlsoPreviousMonthSettled_completeResponse()
+   void test_DecemberFirstMonthAtAllSettledAndAlsoPreviousMonthSettled_completeResponse()
       throws Exception {
     final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
     expected.setYear(2008);
@@ -94,7 +94,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_JanuarySettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
+   void test_JanuarySettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
     expected.setYear(2009);
     expected.setAllYears(ALL_YEARS);
@@ -114,7 +114,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
+   void test_DecemberSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
     expected.setYear(2009);
     expected.setAllYears(ALL_YEARS);
@@ -134,7 +134,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberAndNoMoneyflowsNextMonth_completeResponse() throws Exception {
+   void test_DecemberAndNoMoneyflowsNextMonth_completeResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW14_ID);
     this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
@@ -157,7 +157,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_03_Error() throws Exception {
+   void test_AuthorizationRequired_03_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -166,7 +166,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

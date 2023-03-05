@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.ShowEditMoneyflowResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowEditMoneyflowTest extends AbstractControllerTest {
+class ShowEditMoneyflowTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -41,7 +41,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownMoneyflow_emptyResponseObject() throws Exception {
+   void test_unknownMoneyflow_emptyResponseObject() throws Exception {
     final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
 
     final ShowEditMoneyflowResponse actual = super.callUsecaseExpect200(
@@ -51,7 +51,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MoneyflowOwnedBySomeoneElse_emptyResponseObject() throws Exception {
+   void test_MoneyflowOwnedBySomeoneElse_emptyResponseObject() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
@@ -63,7 +63,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Moneyflow1_completeResponseObject() throws Exception {
+   void test_Moneyflow1_completeResponseObject() throws Exception {
     final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
     expected.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
     final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -90,7 +90,7 @@ public class ShowEditMoneyflowTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();

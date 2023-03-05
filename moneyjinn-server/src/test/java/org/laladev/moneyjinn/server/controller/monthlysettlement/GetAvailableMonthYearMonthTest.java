@@ -11,7 +11,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
+class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -44,32 +44,30 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
     return expected;
   }
 
-  @Test
-  public void test_withYearAndInvalidMonth_FullResponseObject() throws Exception {
+  private void invalidMonth(final int year, final int month) throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class, 2010, 10);
+        GetAvailableMonthlySettlementMonthResponse.class, year, month);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth13_FullResponseObject() throws Exception {
-    final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
-    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class, 1, 13);
-    Assertions.assertEquals(expected, actual);
+  void test_withYearAndInvalidMonth_FullResponseObject() throws Exception {
+    this.invalidMonth(2010, 10);
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth0_FullResponseObject() throws Exception {
-    final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
-    final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableMonthlySettlementMonthResponse.class, 1, 0);
-    Assertions.assertEquals(expected, actual);
+  void test_withInvalidYearAndInvalidMonth13_FullResponseObject() throws Exception {
+    this.invalidMonth(1, 13);
   }
 
   @Test
-  public void test_withYearAndMonth_FullResponseObject() throws Exception {
+  void test_withInvalidYearAndInvalidMonth0_FullResponseObject() throws Exception {
+    this.invalidMonth(1, 0);
+  }
+
+  @Test
+  void test_withYearAndMonth_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();
     expected.setAllMonth(Arrays.asList(11, 12));
     expected.setAllYears(Arrays.asList(2008, 2009, 2010));
@@ -81,7 +79,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_3_Error() throws Exception {
+  void test_AuthorizationRequired_3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -90,7 +88,7 @@ public class GetAvailableMonthYearMonthTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();

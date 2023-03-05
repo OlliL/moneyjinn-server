@@ -17,12 +17,12 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 
-public class ContractpartnerServiceTest extends AbstractTest {
+class ContractpartnerServiceTest extends AbstractTest {
   @Inject
   private IContractpartnerService contractpartnerService;
 
   @Test
-  public void test_validateNullUser_raisesException() {
+   void test_validateNullUser_raisesException() {
     final Contractpartner contractpartner = new Contractpartner();
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
       this.contractpartnerService.validateContractpartner(contractpartner);
@@ -30,7 +30,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+   void test_createWithInvalidEntity_raisesException() {
     final Contractpartner contractpartner = new Contractpartner();
     contractpartner.setUser(new User(new UserID(1L)));
     contractpartner.setAccess(new Group(new GroupID(1L)));
@@ -40,7 +40,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+   void test_updateWithInvalidEntity_raisesException() {
     final Contractpartner contractpartner = new Contractpartner();
     contractpartner.setUser(new User(new UserID(1L)));
     contractpartner.setAccess(new Group(new GroupID(1L)));
@@ -50,7 +50,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
+   void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     // this caches
@@ -70,7 +70,7 @@ public class ContractpartnerServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_userAaddsAContractpartner_userBsameGroupSeessItTooBecauseCacheWasReset() {
+   void test_userAaddsAContractpartner_userBsameGroupSeessItTooBecauseCacheWasReset() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     // this caches

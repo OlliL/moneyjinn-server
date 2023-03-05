@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class LoginTest extends AbstractControllerTest {
+class LoginTest extends AbstractControllerTest {
   @Inject
   JwtTokenProvider jwtTokenProvider;
 
@@ -44,7 +44,7 @@ public class LoginTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_RegularUser_Successfull() throws Exception {
+   void test_RegularUser_Successfull() throws Exception {
     final String username = UserTransportBuilder.USER1_NAME;
     final String password = UserTransportBuilder.USER1_PASSWORD;
 
@@ -65,7 +65,7 @@ public class LoginTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_LockedUser_ErrorResponse() throws Exception {
+   void test_LockedUser_ErrorResponse() throws Exception {
     final String username = UserTransportBuilder.USER2_NAME;
     final String password = UserTransportBuilder.USER2_PASSWORD;
 
@@ -79,7 +79,7 @@ public class LoginTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_WrongPassword_ErrorResponse() throws Exception {
+   void test_WrongPassword_ErrorResponse() throws Exception {
     final String username = UserTransportBuilder.USER2_NAME;
     final String password = "wrong password";
 
@@ -93,7 +93,7 @@ public class LoginTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

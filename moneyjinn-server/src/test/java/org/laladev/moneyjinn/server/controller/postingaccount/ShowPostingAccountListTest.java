@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowPostingAccountListTest extends AbstractControllerTest {
+class ShowPostingAccountListTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
 
@@ -55,7 +55,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+   void test_default_FullResponseObject() throws Exception {
     final ShowPostingAccountListResponse expected = this.getCompleteResponse();
 
     final ShowPostingAccountListResponse actual = super.callUsecaseExpect200(
@@ -65,7 +65,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired1_Error() throws Exception {
+   void test_AuthorizationRequired1_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -74,7 +74,7 @@ public class ShowPostingAccountListTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowPostingAccountListResponse expected = new ShowPostingAccountListResponse();

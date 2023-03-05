@@ -32,8 +32,8 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
+import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -66,10 +66,9 @@ public interface ImportedMonthlySettlementTransportMapper
   @AfterMapping
   default ImportedMonthlySettlement doAfterMapping(
       @MappingTarget final ImportedMonthlySettlement entity) {
-    if (entity != null) {
-      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
-        entity.setCapitalsource(null);
-      }
+    if (entity != null && entity.getCapitalsource() != null
+        && entity.getCapitalsource().getId() == null) {
+      entity.setCapitalsource(null);
     }
     return entity;
   }

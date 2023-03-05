@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.server.model.ShowReportingFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowReportingFormTest extends AbstractControllerTest {
+class ShowReportingFormTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
 
@@ -55,7 +55,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noSetting_defaultsResponse() throws Exception {
+   void test_noSetting_defaultsResponse() throws Exception {
     final ShowReportingFormResponse expected = this.getDefaultResponse();
     final ShowReportingFormResponse actual = super.callUsecaseExpect200(
         ShowReportingFormResponse.class);
@@ -63,7 +63,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_witDefaultSelection_defaultsResponse() throws Exception {
+   void test_witDefaultSelection_defaultsResponse() throws Exception {
     final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
         Arrays.asList(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID),
             new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)));
@@ -78,7 +78,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -87,7 +87,7 @@ public class ShowReportingFormTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

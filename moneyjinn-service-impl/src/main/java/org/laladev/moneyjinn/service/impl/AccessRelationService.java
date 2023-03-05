@@ -62,6 +62,8 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
+  private static final String ACCESS_RELATION_ID_MUST_NOT_BE_NULL = "AccessRelationId must not be null!";
+  private static final String ACCESS_RELATION_MUST_NOT_BE_NULL = "AccessRelation must not be null!";
   private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
   private final AccessRelationDao accessRelationDao;
   private final IGroupService groupService;
@@ -81,7 +83,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   @Override
   public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
-    Assert.notNull(accessRelation, "AccessRelation must not be null!");
+    Assert.notNull(accessRelation, ACCESS_RELATION_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = new ValidationResult();
     if (accessRelation.getParentAccessRelation() == null) {
       validationResult.addValidationResultItem(
@@ -107,9 +109,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
     for (final AccessRelation accessRelation : accessRelations) {
       if (!(date.isBefore(accessRelation.getValidFrom())
           || date.isAfter(accessRelation.getValidTil()))) {
-        final Group groupById = this.groupService
+        return this.groupService
             .getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
-        return groupById;
       }
     }
     return null;
@@ -132,7 +133,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   @Override
   public ValidationResult setAccessRelationForExistingUser(final AccessRelation accessRelation) {
-    Assert.notNull(accessRelation, "AccessRelation must not be null!");
+    Assert.notNull(accessRelation, ACCESS_RELATION_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
     if (accessRelation.getValidFrom().isBefore(this.now())) {
       validationResult.addValidationResultItem(new ValidationResultItem(accessRelation.getId(),
@@ -146,7 +147,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   @Override
   public ValidationResult setAccessRelationForNewUser(final AccessRelation accessRelation) {
-    Assert.notNull(accessRelation, "AccessRelation must not be null!");
+    Assert.notNull(accessRelation, ACCESS_RELATION_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
     if (validationResult.isValid()) {
       this.setAccessRelation(accessRelation);
@@ -156,14 +157,14 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   @Override
   public AccessRelation getAccessRelationById(final AccessID accessRelationId) {
-    Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
+    Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
     return this.getAccessRelationById(accessRelationId, this.now());
   }
 
   @Override
   public AccessRelation getAccessRelationById(final AccessID accessRelationId,
       final LocalDate date) {
-    Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
+    Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
     Assert.notNull(date, "Date must not be null!");
     final AccessRelationData accessRelationData = this.accessRelationDao
         .getAccessRelationById(accessRelationId.getId(), date);
@@ -172,7 +173,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
   @Override
   public void deleteAllAccessRelation(final AccessID accessRelationId) {
-    Assert.notNull(accessRelationId, "AccessRelationId must not be null!");
+    Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
     this.evictAccessRelationCache(accessRelationId);
     this.accessRelationDao.deleteAllAccessFlattened(accessRelationId.getId());
     this.accessRelationDao.deleteAllAccessRelation(accessRelationId.getId());

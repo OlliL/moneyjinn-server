@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
+class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -47,7 +47,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchSingleFlowPositiveAmount_successfull() throws Exception {
+   void test_searchSingleFlowPositiveAmount_successfull() throws Exception {
     final SearchMoneyflowsByAmountResponse expected = new SearchMoneyflowsByAmountResponse();
     final ArrayList<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow1().build());
@@ -66,7 +66,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchNegativeAmount_negativeAndPositiveAmountAreFound() throws Exception {
+   void test_searchNegativeAmount_negativeAndPositiveAmountAreFound() throws Exception {
     final SearchMoneyflowsByAmountResponse expected = new SearchMoneyflowsByAmountResponse();
     final ArrayList<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
     moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow13().build());
@@ -81,7 +81,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchSingleFlowOwnedBySomeoneElseAndPrivate_notIncluded() throws Exception {
+   void test_searchSingleFlowOwnedBySomeoneElseAndPrivate_notIncluded() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final SearchMoneyflowsByAmountResponse expected = new SearchMoneyflowsByAmountResponse();
@@ -96,7 +96,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -105,7 +105,7 @@ public class SearchMoneyflowsByAmountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IGroupService;
 
-public class DeleteGroupByIdTest extends AbstractControllerTest {
+class DeleteGroupByIdTest extends AbstractControllerTest {
   @Inject
   private IGroupService groupService;
 
@@ -44,7 +44,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularGroupNoData_SuccessfullNoContent() throws Exception {
+   void test_regularGroupNoData_SuccessfullNoContent() throws Exception {
     Group group = this.groupService.getGroupById(new GroupID(GroupTransportBuilder.GROUP3_ID));
     Assertions.assertNotNull(group);
 
@@ -55,7 +55,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingGroup_SuccessfullNoContent() throws Exception {
+   void test_nonExistingGroup_SuccessfullNoContent() throws Exception {
     Group group = this.groupService
         .getGroupById(new GroupID(GroupTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(group);
@@ -67,7 +67,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularGroupWithData_ErrorResponse() throws Exception {
+   void test_regularGroupWithData_ErrorResponse() throws Exception {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.GROUP_IN_USE.getErrorCode());
     expected.setMessage("You may not delete a group while there where/are users assigned to it!");
@@ -83,7 +83,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -91,7 +91,7 @@ public class DeleteGroupByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

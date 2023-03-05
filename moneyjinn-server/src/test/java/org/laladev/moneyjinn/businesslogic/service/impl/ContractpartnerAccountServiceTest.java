@@ -16,30 +16,32 @@ import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 
-public class ContractpartnerAccountServiceTest extends AbstractTest {
+class ContractpartnerAccountServiceTest extends AbstractTest {
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+  void test_createWithInvalidEntity_raisesException() {
     final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
+    final UserID userId = new UserID(1l);
     Assertions.assertThrows(BusinessException.class, () -> {
-      this.contractpartnerAccountService.createContractpartnerAccount(new UserID(1l),
+      this.contractpartnerAccountService.createContractpartnerAccount(userId,
           contractpartnerAccount);
     });
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+  void test_updateWithInvalidEntity_raisesException() {
     final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
+    final UserID userId = new UserID(1l);
     Assertions.assertThrows(BusinessException.class, () -> {
-      this.contractpartnerAccountService.updateContractpartnerAccount(new UserID(1l),
+      this.contractpartnerAccountService.updateContractpartnerAccount(userId,
           contractpartnerAccount);
     });
   }
 
   @Test
-  public void test_userAeditsContractpartnerAccount_userBsameGroupSeesCachedChange() {
+  void test_userAeditsContractpartnerAccount_userBsameGroupSeesCachedChange() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     // this caches
@@ -62,7 +64,7 @@ public class ContractpartnerAccountServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_userAaddsAContractpartnerAccount_userBsameGroupSeessItTooBecauseCacheWasReset() {
+  void test_userAaddsAContractpartnerAccount_userBsameGroupSeessItTooBecauseCacheWasReset() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(

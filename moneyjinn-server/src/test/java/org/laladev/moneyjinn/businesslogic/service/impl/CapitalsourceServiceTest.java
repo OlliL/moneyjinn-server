@@ -18,12 +18,12 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 
-public class CapitalsourceServiceTest extends AbstractTest {
+class CapitalsourceServiceTest extends AbstractTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
 
   @Test
-  public void test_validateNullUser_raisesException() {
+  void test_validateNullUser_raisesException() {
     final Capitalsource capitalsource = new Capitalsource();
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
       this.capitalsourceService.validateCapitalsource(capitalsource);
@@ -31,7 +31,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_validateNullAccess_raisesException() {
+  void test_validateNullAccess_raisesException() {
     final Capitalsource capitalsource = new Capitalsource();
     capitalsource.setUser(new User(new UserID(1l)));
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -40,7 +40,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+  void test_createWithInvalidEntity_raisesException() {
     final Capitalsource capitalsource = new Capitalsource();
     capitalsource.setUser(new User(new UserID(1L)));
     capitalsource.setAccess(new Group(new GroupID(1L)));
@@ -50,7 +50,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+  void test_updateWithInvalidEntity_raisesException() {
     final Capitalsource capitalsource = new Capitalsource();
     capitalsource.setUser(new User(new UserID(1l)));
     capitalsource.setAccess(new Group(new GroupID(1L)));
@@ -60,7 +60,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_userAeditsCapitalsource_userBsameGroupSeesCachedChange() {
+  void test_userAeditsCapitalsource_userBsameGroupSeesCachedChange() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -81,7 +81,7 @@ public class CapitalsourceServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_userAaddsACapitalsource_userBsameGroupSeessItTooBecauseCacheWasReset() {
+  void test_userAaddsACapitalsource_userBsameGroupSeessItTooBecauseCacheWasReset() {
     final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
     final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);

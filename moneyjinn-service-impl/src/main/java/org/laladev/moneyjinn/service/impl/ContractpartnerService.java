@@ -70,6 +70,8 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
+  private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
   private final ContractpartnerDao contractpartnerDao;
   private final IUserService userService;
@@ -127,7 +129,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
   @Override
   public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, "contractpartner must not be null!");
+    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
     Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
     Assert.notNull(contractpartner.getUser().getId(),
         "contractpartner.getUser().getId() must not be null!");
@@ -184,7 +186,7 @@ public class ContractpartnerService extends AbstractService implements IContract
   @Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
   public Contractpartner getContractpartnerById(final UserID userId,
       final ContractpartnerID contractpartnerId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
     final ContractpartnerData contractpartnerData = this.contractpartnerDao
         .getContractpartnerById(userId.getId(), contractpartnerId.getId());
@@ -194,7 +196,7 @@ public class ContractpartnerService extends AbstractService implements IContract
   @Override
   @Cacheable(CacheNames.ALL_CONTRACTPARTNER)
   public List<Contractpartner> getAllContractpartners(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
         .getAllContractpartners(userId.getId());
     return this.mapContractpartnerDataList(contractpartnerDataList);
@@ -202,7 +204,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
   @Override
   public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(name, "name must not be null!");
     final ContractpartnerData contractpartnerData = this.contractpartnerDao
         .getContractpartnerByName(userId.getId(), name);
@@ -211,7 +213,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
   @Override
   public void updateContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, "contractpartner must not be null!");
+    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validateContractpartner(contractpartner);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
       final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
@@ -230,7 +232,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
   @Override
   public ContractpartnerID createContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, "contractpartner must not be null!");
+    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
     contractpartner.setId(null);
     final ValidationResult validationResult = this.validateContractpartner(contractpartner);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -259,7 +261,7 @@ public class ContractpartnerService extends AbstractService implements IContract
   @Override
   public void deleteContractpartner(final UserID userId, final GroupID groupId,
       final ContractpartnerID contractpartnerId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(groupId, "groupId must not be null!");
     Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
 

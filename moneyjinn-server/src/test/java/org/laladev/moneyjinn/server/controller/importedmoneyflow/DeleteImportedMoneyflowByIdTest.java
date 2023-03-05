@@ -19,7 +19,7 @@ import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerAp
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
+class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
 
@@ -48,7 +48,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_emptyResponse() throws Exception {
+   void test_standardRequest_emptyResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -76,7 +76,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -86,7 +86,7 @@ public class DeleteImportedMoneyflowByIdTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -12,12 +12,12 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
 
-public class ImportedMonthlySettlementDataMapperTest extends AbstractTest {
+class ImportedMonthlySettlementDataMapperTest extends AbstractTest {
   @Inject
   private ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
 
   @Test
-  public void testWithNullId() {
+   void testWithNullId() {
     final ImportedMonthlySettlement importedMonthlySettlement = new ImportedMonthlySettlement();
     importedMonthlySettlement.setMonth(Month.JANUARY);
     importedMonthlySettlement.setCapitalsource(new Capitalsource(new CapitalsourceID(1L)));

@@ -25,7 +25,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateContractpartnerAccountTest extends AbstractControllerTest {
+class CreateContractpartnerAccountTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
 
@@ -68,7 +68,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ToLongAccountnumber_Error() throws Exception {
+   void test_ToLongAccountnumber_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
     transport.setAccountNumber("12345678901234567890123456789012345");
@@ -76,7 +76,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ToLongBankcode_Error() throws Exception {
+   void test_ToLongBankcode_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
     transport.setBankCode("123456789012");
@@ -84,7 +84,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccountnumberInvalidChar_Error() throws Exception {
+   void test_AccountnumberInvalidChar_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
     transport.setAccountNumber("+");
@@ -92,7 +92,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BankcodeInvalidChar_Error() throws Exception {
+   void test_BankcodeInvalidChar_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
     transport.setBankCode("+");
@@ -100,14 +100,14 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyContractpartner_Error() throws Exception {
+   void test_emptyContractpartner_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().withContractpartnerid(null).build();
     this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
   }
 
   @Test
-  public void test_nonExistingContractpartner_Error() throws Exception {
+   void test_nonExistingContractpartner_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount()
         .withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID).build();
@@ -115,7 +115,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_SuccessfullNewIdReturned() throws Exception {
+   void test_standardRequest_SuccessfullNewIdReturned() throws Exception {
     final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
@@ -134,7 +134,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+   void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
     final CreateContractpartnerAccountRequest request = new CreateContractpartnerAccountRequest();
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forNewContractpartnerAccount().build();
@@ -156,7 +156,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -165,7 +165,7 @@ public class CreateContractpartnerAccountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()

@@ -81,25 +81,16 @@ public interface UserDataMapper extends IMapper<User, UserData> {
 
   @Named("mapUserAttributeIsNewToData")
   default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
-    if (a != null && a.contains(UserAttribute.IS_NEW)) {
-      return true;
-    }
-    return false;
+    return (a != null && a.contains(UserAttribute.IS_NEW));
   }
 
   @Named("mapUserPermissionAdminToData")
   default boolean mapUserPermissionAdminToData(final Collection<UserPermission> a) {
-    if (a != null && a.contains(UserPermission.ADMIN)) {
-      return true;
-    }
-    return false;
+    return (a != null && a.contains(UserPermission.ADMIN));
   }
 
   @Named("mapUserPermissionLoginToData")
   default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
-    if (a != null && a.contains(UserPermission.LOGIN)) {
-      return true;
-    }
-    return false;
+    return (a != null && a.contains(UserPermission.LOGIN));
   }
 }

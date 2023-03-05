@@ -55,6 +55,8 @@ import org.springframework.util.Assert;
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowService extends AbstractService implements IImportedMoneyflowService {
+  private static final String IMPORTED_MONEYFLOW_ID_MUST_NOT_BE_NULL = "importedMoneyflowId must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final ImportedMoneyflowDao importedMoneyflowDao;
   private final ICapitalsourceService capitalsourceService;
   private final IAccessRelationService accessRelationService;
@@ -99,21 +101,21 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   @Override
   public ImportedMoneyflow getImportedMoneyflowById(final UserID userId,
       final ImportedMoneyflowID importedMoneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(importedMoneyflowId, IMPORTED_MONEYFLOW_ID_MUST_NOT_BE_NULL);
     final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDao
-        .getImportedMoneyflowById(userId.getId(), importedMoneyflowId.getId());
+        .getImportedMoneyflowById(importedMoneyflowId.getId());
     return this.mapImportedMoneyflowData(userId, importedMoneyflowData);
   }
 
   @Override
   public Integer countImportedMoneyflows(final UserID userId,
       final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
-    return this.importedMoneyflowDao.countImportedMoneyflows(userId.getId(), capitalsourceIdLongs,
+    return this.importedMoneyflowDao.countImportedMoneyflows(capitalsourceIdLongs,
         ImportedMoneyflowStatusMapper.map(status));
   }
 
@@ -135,7 +137,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
       final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
       final LocalDate dateFrom, final LocalDate dateTil) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
     final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(userId);
@@ -160,7 +162,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
     final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
-        .getAllImportedMoneyflowsByCapitalsourceIds(userId.getId(), capitalsourceIdLongs,
+        .getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs,
             ImportedMoneyflowStatusMapper.map(status), firewalledDateFrom, firewalledDateTil);
     return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
   }
@@ -184,19 +186,18 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   @Override
   public void updateImportedMoneyflowStatus(final UserID userId,
       final ImportedMoneyflowID importedMoneyflowId, final ImportedMoneyflowStatus status) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(importedMoneyflowId, IMPORTED_MONEYFLOW_ID_MUST_NOT_BE_NULL);
     Assert.notNull(status, "status must not be null!");
-    this.importedMoneyflowDao.updateImportedMoneyflowStatus(userId.getId(),
-        importedMoneyflowId.getId(), ImportedMoneyflowStatusMapper.map(status));
+    this.importedMoneyflowDao.updateImportedMoneyflowStatus(importedMoneyflowId.getId(),
+        ImportedMoneyflowStatusMapper.map(status));
   }
 
   @Override
   public void deleteImportedMoneyflowById(final UserID userId,
       final ImportedMoneyflowID importedMoneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(importedMoneyflowId, "importedMoneyflowId must not be null!");
-    this.importedMoneyflowDao.deleteImportedMoneyflowById(userId.getId(),
-        importedMoneyflowId.getId());
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(importedMoneyflowId, IMPORTED_MONEYFLOW_ID_MUST_NOT_BE_NULL);
+    this.importedMoneyflowDao.deleteImportedMoneyflowById(importedMoneyflowId.getId());
   }
 }

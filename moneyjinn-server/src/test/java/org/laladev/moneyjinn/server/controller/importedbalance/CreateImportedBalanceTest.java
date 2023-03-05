@@ -27,7 +27,7 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateImportedBalanceTest extends AbstractControllerTest {
+class CreateImportedBalanceTest extends AbstractControllerTest {
   @Inject
   private IImportedBalanceService importedBalanceService;
   @Inject
@@ -49,7 +49,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
+  void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();
@@ -70,7 +70,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
+  void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forImportedBalance1().withBalance(BigDecimal.TEN).build();
@@ -97,8 +97,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent()
-      throws Exception {
+  void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forOnlyBalanceImportedBalance().build();
@@ -119,7 +118,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
+  void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();
@@ -137,7 +136,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownAccountNumber_errorResponse() throws Exception {
+  void test_unknownAccountNumber_errorResponse() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();
@@ -153,7 +152,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownBankCode_errorResponse() throws Exception {
+  void test_unknownBankCode_errorResponse() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();
@@ -170,7 +169,7 @@ public class CreateImportedBalanceTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
     final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder()
         .forNewImportedBalance().build();

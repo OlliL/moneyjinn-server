@@ -29,7 +29,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-public class CreateUserTest extends AbstractControllerTest {
+class CreateUserTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
   @Inject
@@ -76,28 +76,28 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_UsernameAlreadyExisting_Error() throws Exception {
+   void test_UsernameAlreadyExisting_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     transport.setUserName(UserTransportBuilder.USER2_NAME);
     this.testError(transport, null, ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS);
   }
 
   @Test
-  public void test_emptyUsername_Error() throws Exception {
+   void test_emptyUsername_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     transport.setUserName("");
     this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
   }
 
   @Test
-  public void test_nullUsername_Error() throws Exception {
+   void test_nullUsername_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     transport.setUserName(null);
     this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
   }
 
   @Test
-  public void test_AccessRelationAndPasswordEmpty_Successfull() throws Exception {
+   void test_AccessRelationAndPasswordEmpty_Successfull() throws Exception {
     final CreateUserRequest request = new CreateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     /*
@@ -117,7 +117,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccessRelationEmpty_Successfull() throws Exception {
+   void test_AccessRelationEmpty_Successfull() throws Exception {
     final CreateUserRequest request = new CreateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     transport.setUserPassword("123");
@@ -142,7 +142,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccessRelationEmptyValidTil_Successfull() throws Exception {
+   void test_AccessRelationEmptyValidTil_Successfull() throws Exception {
     final CreateUserRequest request = new CreateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     request.setUserTransport(transport);
@@ -165,7 +165,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccessRelationWithValidTil_Successfull() throws Exception {
+   void test_AccessRelationWithValidTil_Successfull() throws Exception {
     final CreateUserRequest request = new CreateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     request.setUserTransport(transport);
@@ -186,7 +186,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NoValidFromForAccessRelation_Error() throws Exception {
+   void test_NoValidFromForAccessRelation_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forNewUser_2000_01_01().build();
@@ -195,7 +195,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NoGroupForAccessRelation_Error() throws Exception {
+   void test_NoGroupForAccessRelation_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forNewUser().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forNewUser_2000_01_01().build();
@@ -205,7 +205,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -213,7 +213,7 @@ public class CreateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

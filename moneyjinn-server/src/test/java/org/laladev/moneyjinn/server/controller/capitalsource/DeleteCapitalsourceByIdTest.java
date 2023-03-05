@@ -19,7 +19,7 @@ import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
+class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
 
@@ -48,7 +48,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularCapitalsourceNoData_SuccessfullNoContent() throws Exception {
+   void test_regularCapitalsourceNoData_SuccessfullNoContent() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -67,7 +67,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingCapitalsource_SuccessfullNoContent() throws Exception {
+   void test_nonExistingCapitalsource_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -84,7 +84,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularCapitalsourceWithData_ErrorResponse() throws Exception {
+   void test_regularCapitalsourceWithData_ErrorResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -107,7 +107,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_deleteCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
+   void test_deleteCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -124,7 +124,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -133,7 +133,7 @@ public class DeleteCapitalsourceByIdTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

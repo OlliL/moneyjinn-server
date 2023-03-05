@@ -23,7 +23,7 @@ import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowCompareDataFormTest extends AbstractControllerTest {
+class ShowCompareDataFormTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
 
@@ -69,7 +69,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noSetting_defaultsResponse() throws Exception {
+   void test_noSetting_defaultsResponse() throws Exception {
     final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 
     final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false,
@@ -79,7 +79,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_witDefaultSelection_defaultsResponse() throws Exception {
+   void test_witDefaultSelection_defaultsResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
         new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -102,7 +102,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -111,7 +111,7 @@ public class ShowCompareDataFormTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthTest extends AbstractControllerTest {
+class GetAvailableMonthTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -52,7 +52,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
+   void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
     final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
     expected.setYear(2010);
     expected.setAllYears(ALL_YEARS);
@@ -65,7 +65,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_01_Error() throws Exception {
+   void test_AuthorizationRequired_01_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -74,7 +74,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

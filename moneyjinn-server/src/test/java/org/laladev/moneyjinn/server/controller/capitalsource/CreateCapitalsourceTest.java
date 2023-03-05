@@ -29,7 +29,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateCapitalsourceTest extends AbstractControllerTest {
+class CreateCapitalsourceTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
 
@@ -74,7 +74,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_CapitalsourcenameAlreadyExisting_Error() throws Exception {
+   void test_CapitalsourcenameAlreadyExisting_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setComment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
@@ -82,7 +82,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyCapitalsourcename_Error() throws Exception {
+   void test_emptyCapitalsourcename_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setComment("");
@@ -90,7 +90,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullCapitalsourcename_Error() throws Exception {
+   void test_nullCapitalsourcename_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setComment(null);
@@ -98,7 +98,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ToLongAccountnumber_Error() throws Exception {
+   void test_ToLongAccountnumber_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setAccountNumber("12345678901234567890123456789012345");
@@ -106,7 +106,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ToLongBankcode_Error() throws Exception {
+   void test_ToLongBankcode_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setBankCode("123456789012");
@@ -114,7 +114,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccountnumberInvalidChar_Error() throws Exception {
+   void test_AccountnumberInvalidChar_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setAccountNumber("+");
@@ -122,7 +122,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BankcodeInvalidChar_Error() throws Exception {
+   void test_BankcodeInvalidChar_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
     transport.setBankCode("+");
@@ -130,7 +130,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
@@ -154,7 +154,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+   void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
     final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
@@ -181,7 +181,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
+   void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
     final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
@@ -206,7 +206,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_checkDefaults_Successfull() throws Exception {
+   void test_checkDefaults_Successfull() throws Exception {
     final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder()
         .forNewCapitalsource().build();
@@ -241,7 +241,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -250,7 +250,7 @@ public class CreateCapitalsourceTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final CreateCapitalsourceRequest request = new CreateCapitalsourceRequest();

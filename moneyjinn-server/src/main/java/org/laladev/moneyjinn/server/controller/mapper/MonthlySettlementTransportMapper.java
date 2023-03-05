@@ -33,8 +33,8 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
+import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -62,11 +62,11 @@ public interface MonthlySettlementTransportMapper
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
   default MonthlySettlement doAfterMapping(@MappingTarget final MonthlySettlement entity) {
-    if (entity != null) {
-      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
-        entity.setCapitalsource(null);
-      }
+    if (entity != null && entity.getCapitalsource() != null
+        && entity.getCapitalsource().getId() == null) {
+      entity.setCapitalsource(null);
     }
+
     return entity;
   }
 }

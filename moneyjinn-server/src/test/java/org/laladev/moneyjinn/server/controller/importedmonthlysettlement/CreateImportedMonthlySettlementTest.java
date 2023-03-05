@@ -21,7 +21,7 @@ import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
+class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
   @Inject
   IImportedMonthlySettlementService importedMonthlySettlementService;
 
@@ -42,7 +42,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
+   void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();
@@ -63,7 +63,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
+   void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forImportedMonthlySettlement1().build();
@@ -96,7 +96,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent()
+   void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent()
       throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
@@ -117,7 +117,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
+   void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();
@@ -133,7 +133,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_unknownAccountNumber_errorResponse() throws Exception {
+   void test_unknownAccountNumber_errorResponse() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();
@@ -147,7 +147,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_unknownBankCode_errorResponse() throws Exception {
+   void test_unknownBankCode_errorResponse() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();
@@ -162,7 +162,7 @@ public class CreateImportedMonthlySettlementTest extends AbstractControllerTest 
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
     final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
         .forNewImportedMonthlySettlement().build();

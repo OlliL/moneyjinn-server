@@ -20,7 +20,7 @@ import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteContractpartnerTest extends AbstractControllerTest {
+class DeleteContractpartnerTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerService contractpartnerService;
   @Inject
@@ -51,7 +51,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerWitPreDefMoneyflows_ErrorResponse() throws Exception {
+   void test_regularContractpartnerWitPreDefMoneyflows_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -73,7 +73,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerNoData_SuccessfullNoContent() throws Exception {
+   void test_regularContractpartnerNoData_SuccessfullNoContent() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -90,7 +90,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerWith1Account_AccountsDeleted() throws Exception {
+   void test_regularContractpartnerWith1Account_AccountsDeleted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
@@ -111,7 +111,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerWith2Accounts_AccountsDeleted() throws Exception {
+   void test_regularContractpartnerWith2Accounts_AccountsDeleted() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
@@ -137,7 +137,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingContractpartner_SuccessfullNoContent() throws Exception {
+   void test_nonExistingContractpartner_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.NON_EXISTING_ID);
@@ -152,7 +152,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerWithData_ErrorResponse() throws Exception {
+   void test_regularContractpartnerWithData_ErrorResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
@@ -176,7 +176,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerFromSameGroupButNotMe_SuccessfullNoContent() throws Exception {
+   void test_ContractpartnerFromSameGroupButNotMe_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
@@ -191,7 +191,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerFromDifferentGroup_notSuccessfull() throws Exception {
+   void test_ContractpartnerFromDifferentGroup_notSuccessfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
     final ContractpartnerID contractpartnerId = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER5_ID);
@@ -206,7 +206,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -215,7 +215,7 @@ public class DeleteContractpartnerTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -66,7 +66,7 @@ public class SecurityConfig {
   @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
   private List<String> allowedOrigins;
 
-  private static String[] OPEN_ENDPOINTS = { "/moneyflow/server/user/login",
+  private static final String[] OPEN_ENDPOINTS = { "/moneyflow/server/user/login",
       "/moneyflow/server/importedbalance/createImportedBalance",
       "/moneyflow/server/importedmoneyflow/createImportedMoneyflow",
       "/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement" };

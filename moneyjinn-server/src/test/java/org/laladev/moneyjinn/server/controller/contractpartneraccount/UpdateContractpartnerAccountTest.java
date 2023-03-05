@@ -26,7 +26,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
+class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
   private String userName;
@@ -74,7 +74,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerAccountNullBankaccount_Error() throws Exception {
+   void test_ContractpartnerAccountNullBankaccount_Error() throws Exception {
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
         .forContractpartnerAccount2().build();
     transport.setAccountNumber(null);
@@ -84,7 +84,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerAccountAlreadyExisting_Error() throws Exception {
+   void test_ContractpartnerAccountAlreadyExisting_Error() throws Exception {
     final ContractpartnerAccountTransport transport1 = new ContractpartnerAccountTransportBuilder()
         .forContractpartnerAccount1().build();
     final ContractpartnerAccountTransport transport2 = new ContractpartnerAccountTransportBuilder()
@@ -96,7 +96,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccountNumberAlreadyUsedButNotBankCode_Successfull() throws Exception {
+   void test_AccountNumberAlreadyUsedButNotBankCode_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID);
@@ -121,7 +121,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_BankCodeAlreadyUsedButNotAccountNumber_Successfull() throws Exception {
+   void test_BankCodeAlreadyUsedButNotAccountNumber_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID);
@@ -146,7 +146,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
@@ -168,7 +168,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+   void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
@@ -191,7 +191,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestChangingContractpartner_SuccessfullNoContent() throws Exception {
+   void test_standardRequestChangingContractpartner_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerID contractpartner1Id = new ContractpartnerID(
         ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
@@ -220,7 +220,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_editContractpartnerAccountOwnedBySomeoneElse_notSuccessfull() throws Exception {
+   void test_editContractpartnerAccountOwnedBySomeoneElse_notSuccessfull() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()
@@ -231,7 +231,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -240,7 +240,7 @@ public class UpdateContractpartnerAccountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ContractpartnerAccountTransport transport = new ContractpartnerAccountTransportBuilder()

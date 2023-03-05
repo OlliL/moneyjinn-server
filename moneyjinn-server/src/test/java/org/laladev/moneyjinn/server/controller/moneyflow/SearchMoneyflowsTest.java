@@ -27,7 +27,7 @@ import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class SearchMoneyflowsTest extends AbstractControllerTest {
+class SearchMoneyflowsTest extends AbstractControllerTest {
   private static final Integer SHORT_1 = 1;
   private String userName;
   private String userPassword;
@@ -113,7 +113,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchString_successfull() throws Exception {
+   void test_searchString_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("ENERATED");
@@ -128,7 +128,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchStringDateRange_successfull() throws Exception {
+   void test_searchStringDateRange_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("ENERATED");
@@ -153,7 +153,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_caseSensitive_noMatches() throws Exception {
+   void test_caseSensitive_noMatches() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("ENERATED");
@@ -168,7 +168,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_caseSensitive_successfull() throws Exception {
+   void test_caseSensitive_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("enerated");
@@ -184,7 +184,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regexp_successfull() throws Exception {
+   void test_regexp_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("[E][N][E][R][A][T][E][D]");
@@ -200,7 +200,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regexpCaseSensitive_noMatches() throws Exception {
+   void test_regexpCaseSensitive_noMatches() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("[E][N][E][R][A][T][E][D]");
@@ -216,7 +216,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regexpCaseSensitive_successfull() throws Exception {
+   void test_regexpCaseSensitive_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("[e][n][e][r][a][t][e][d]");
@@ -233,7 +233,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_equals_successfull() throws Exception {
+   void test_equals_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("GENERATED");
@@ -249,7 +249,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_equals_noMatches() throws Exception {
+   void test_equals_noMatches() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("ENERATED");
@@ -264,7 +264,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_equalsCaseSensitive_noMatches() throws Exception {
+   void test_equalsCaseSensitive_noMatches() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("GENERATED");
@@ -280,7 +280,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_equalsCaseSensitive_successfull() throws Exception {
+   void test_equalsCaseSensitive_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("generated");
@@ -297,7 +297,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_onlyMinusAmounts_successfull() throws Exception {
+   void test_onlyMinusAmounts_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setSearchString("generated");
@@ -323,7 +323,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_postingAccount_successfull() throws Exception {
+   void test_postingAccount_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setPostingAccountId(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
@@ -346,7 +346,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_contractpartner_successfull() throws Exception {
+   void test_contractpartner_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setContractpartnerId(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
@@ -391,7 +391,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_searchStringContractpartnerPostingAccount_successfull() throws Exception {
+   void test_searchStringContractpartnerPostingAccount_successfull() throws Exception {
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
     final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
     transport.setPostingAccountId(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
@@ -433,7 +433,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -441,7 +441,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noTransport_ErrorResponse() throws Exception {
+   void test_noTransport_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
@@ -460,7 +460,7 @@ public class SearchMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();

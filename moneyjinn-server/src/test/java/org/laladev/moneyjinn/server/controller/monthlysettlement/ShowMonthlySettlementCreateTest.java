@@ -19,7 +19,7 @@ import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
+class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -50,7 +50,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
+   void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
       throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -70,7 +70,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nextUnsettledMonthWithImportedData_FullContentWithCalculatedAmount()
+   void test_nextUnsettledMonthWithImportedData_FullContentWithCalculatedAmount()
       throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
@@ -95,7 +95,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -104,7 +104,7 @@ public class ShowMonthlySettlementCreateTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();

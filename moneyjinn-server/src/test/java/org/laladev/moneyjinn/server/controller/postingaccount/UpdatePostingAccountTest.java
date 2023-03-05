@@ -22,7 +22,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class UpdatePostingAccountTest extends AbstractControllerTest {
+class UpdatePostingAccountTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
 
@@ -67,7 +67,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
+   void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forPostingAccount2().build();
     transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
@@ -75,7 +75,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_EmptyPostingAccountname_Error() throws Exception {
+   void test_EmptyPostingAccountname_Error() throws Exception {
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forPostingAccount2().build();
     transport.setName("");
@@ -83,7 +83,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forPostingAccount1().build();
@@ -100,7 +100,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -108,7 +108,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -117,7 +117,7 @@ public class UpdatePostingAccountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();

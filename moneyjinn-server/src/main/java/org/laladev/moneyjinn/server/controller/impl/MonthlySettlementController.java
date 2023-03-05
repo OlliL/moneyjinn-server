@@ -119,7 +119,7 @@ public class MonthlySettlementController extends AbstractController
       }
       allMonth = this.monthlySettlementService.getAllMonth(userId, year);
       if (allMonth != null && !allMonth.isEmpty()) {
-        response.setAllMonth(allMonth.stream().map(m -> m.getValue())
+        response.setAllMonth(allMonth.stream().map(Month::getValue)
             .collect(Collectors.toCollection(ArrayList::new)));
         if (month != null && allMonth.contains(month)) {
           response.setMonth(month.getValue());

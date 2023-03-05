@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class RefreshTokenTest extends AbstractControllerTest {
+class RefreshTokenTest extends AbstractControllerTest {
   @Inject
   private JwtTokenProvider jwtTokenProvider;
   @Inject
@@ -78,7 +78,7 @@ public class RefreshTokenTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_RegularUser_Successfull() throws Exception {
+   void test_RegularUser_Successfull() throws Exception {
 
     final LoginResponse response = super.callUsecaseExpect200(LoginResponse.class);
 
@@ -89,7 +89,7 @@ public class RefreshTokenTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_LockedUser_ErrorResponse() throws Exception {
+   void test_LockedUser_ErrorResponse() throws Exception {
     final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
     user.setPermissions(Collections.singletonList(UserPermission.NONE));
     this.userService.updateUser(user);

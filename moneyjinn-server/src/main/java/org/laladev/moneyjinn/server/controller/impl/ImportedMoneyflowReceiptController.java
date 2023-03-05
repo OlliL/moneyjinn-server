@@ -102,7 +102,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
     this.throwValidationExceptionIfInvalid(validationResult);
 
     importedMoneyflowReceipts.stream()
-        .forEach(imr -> this.importedMoneyflowReceiptService.createImportedMoneyflowReceipt(imr));
+        .forEach(this.importedMoneyflowReceiptService::createImportedMoneyflowReceipt);
 
     return ResponseEntity.noContent().build();
   }

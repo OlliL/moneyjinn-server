@@ -104,7 +104,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
     final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
-        .getAllImportedBalancesByCapitalsourceIds(userId.getId(), capitalsourceIdLongs);
+        .getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
     return this.mapImportedBalanceDataList(userId, importedBalanceDataList);
   }
 

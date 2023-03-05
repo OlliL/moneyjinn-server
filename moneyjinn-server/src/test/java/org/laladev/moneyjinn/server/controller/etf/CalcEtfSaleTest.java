@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CalcEtfSaleTest extends AbstractControllerTest {
+class CalcEtfSaleTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -47,7 +47,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_FullResponseObject() throws Exception {
+  void test_standardRequest_FullResponseObject() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -76,7 +76,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_sellTooMuchPieces_ValidationError() throws Exception {
+  void test_sellTooMuchPieces_ValidationError() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -94,7 +94,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_negativeInput_AbsoluteValuesAreUsed() throws Exception {
+  void test_negativeInput_AbsoluteValuesAreUsed() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE.negate());
@@ -123,7 +123,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidIsinWithPieces_emptyResponse() throws Exception {
+  void test_invalidIsinWithPieces_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -141,7 +141,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_askPriceNotSet_emptyResponse() throws Exception {
+  void test_askPriceNotSet_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setBidPrice(SETTING_SALE_BID_PRICE);
@@ -157,7 +157,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bidPriceNotSet_emptyResponse() throws Exception {
+  void test_bidPriceNotSet_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -173,7 +173,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_isinNotSet_emptyResponse() throws Exception {
+  void test_isinNotSet_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -189,7 +189,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_piecesNotSet_emptyResponse() throws Exception {
+  void test_piecesNotSet_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -205,7 +205,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_transactionCostsNotSet_emptyResponse() throws Exception {
+  void test_transactionCostsNotSet_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -221,7 +221,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidIsinWith0Pieces_emptyResponse() throws Exception {
+  void test_invalidIsinWith0Pieces_emptyResponse() throws Exception {
 
     final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
     request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -239,7 +239,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -248,7 +248,7 @@ public class CalcEtfSaleTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

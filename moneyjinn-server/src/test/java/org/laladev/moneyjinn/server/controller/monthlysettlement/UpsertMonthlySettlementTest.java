@@ -26,7 +26,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class UpsertMonthlySettlementTest extends AbstractControllerTest {
+class UpsertMonthlySettlementTest extends AbstractControllerTest {
   @Inject
   private IMonthlySettlementService monthlySettlementService;
 
@@ -69,7 +69,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularMonthlySettlementInsert_SuccessfullNoContent() throws Exception {
+   void test_regularMonthlySettlementInsert_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
@@ -88,7 +88,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MonthlySettlementForOtherUserUpdate_Error() throws Exception {
+   void test_MonthlySettlementForOtherUserUpdate_Error() throws Exception {
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
         .forMonthlySettlement3().build();
     this.testError(Arrays.asList(monthlySettlementTransport),
@@ -96,7 +96,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_notOwnedCapitalsource_Error() throws Exception {
+   void test_notOwnedCapitalsource_Error() throws Exception {
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
         .forMonthlySettlement1().build();
     monthlySettlementTransport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
@@ -105,7 +105,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AmountToBig_Error() throws Exception {
+   void test_AmountToBig_Error() throws Exception {
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
         .forMonthlySettlement1().build();
     monthlySettlementTransport.setAmount(new BigDecimal(9999999));
@@ -113,7 +113,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
+   void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -139,7 +139,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -148,7 +148,7 @@ public class UpsertMonthlySettlementTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()

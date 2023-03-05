@@ -95,7 +95,8 @@ public abstract class AbstractMapperSupport {
         method = this.mapperMethods.get(clazz).get(args.getClass());
         obj = this.mapperClasses.get(clazz).get(args.getClass());
       } catch (final NullPointerException e) {
-        LOG.log(Level.SEVERE, e.toString() + "on mapping " + args + " to " + clazz);
+        LOG.log(Level.SEVERE, "{} on mapping {} to {}",
+            new Object[] { e.getMessage(), args, clazz });
         throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
       }
       if (method == null) {
@@ -106,17 +107,13 @@ public abstract class AbstractMapperSupport {
         if (clazz.isInstance(result)) {
           return clazz.cast(result);
         }
-      } catch (final IllegalAccessException e) {
+      } catch (final IllegalAccessException | IllegalArgumentException e) {
         e.printStackTrace();
-        LOG.log(Level.SEVERE, e.toString());
-        throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
-      } catch (final IllegalArgumentException e) {
-        e.printStackTrace();
-        LOG.log(Level.SEVERE, e.toString());
+        LOG.log(Level.SEVERE, e.getMessage());
         throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
       } catch (final InvocationTargetException e) {
         e.printStackTrace();
-        LOG.log(Level.SEVERE, e.toString());
+        LOG.log(Level.SEVERE, e.getMessage());
         if (e.getTargetException() instanceof MoneyjinnException) {
           throw (MoneyjinnException) e.getCause();
         }

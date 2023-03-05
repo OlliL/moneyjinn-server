@@ -26,7 +26,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateContractpartnerTest extends AbstractControllerTest {
+class CreateContractpartnerTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerService contractpartnerService;
 
@@ -69,7 +69,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
+   void test_ContractpartnernameAlreadyExisting_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
     transport.setName(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
@@ -77,7 +77,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyContractpartnername_Error() throws Exception {
+   void test_emptyContractpartnername_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
     transport.setName("");
@@ -85,7 +85,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidPostingAccount_Error() throws Exception {
+   void test_invalidPostingAccount_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
     transport.setPostingAccountId(PostingAccountTransportBuilder.NON_EXISTING_ID);
@@ -93,7 +93,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullContractpartnername_Error() throws Exception {
+   void test_nullContractpartnername_Error() throws Exception {
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
     transport.setName(null);
@@ -101,7 +101,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_SuccessfullNoContent() throws Exception {
+   void test_standardRequest_SuccessfullNoContent() throws Exception {
     final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
@@ -123,7 +123,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
+   void test_differentUserIdSet_ButIgnoredAndAlwaysCreatedWithOwnUserId() throws Exception {
     final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
@@ -146,7 +146,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_checkDefaults_SuccessfullNoContent() throws Exception {
+   void test_checkDefaults_SuccessfullNoContent() throws Exception {
     final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
@@ -172,7 +172,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_optionalFields_SuccessfullNoContent() throws Exception {
+   void test_optionalFields_SuccessfullNoContent() throws Exception {
     final CreateContractpartnerRequest request = new CreateContractpartnerRequest();
     final ContractpartnerTransport transport = new ContractpartnerTransportBuilder()
         .forNewContractpartner().build();
@@ -206,7 +206,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -215,7 +215,7 @@ public class CreateContractpartnerTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final CreateContractpartnerRequest request = new CreateContractpartnerRequest();

@@ -9,12 +9,12 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-public class UserServiceTest extends AbstractTest {
+class UserServiceTest extends AbstractTest {
   @Inject
   private IUserService userService;
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+   void test_createWithInvalidEntity_raisesException() {
     final User user = new User();
     Assertions.assertThrows(BusinessException.class, () -> {
       this.userService.createUser(user);
@@ -22,7 +22,7 @@ public class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+   void test_updateWithInvalidEntity_raisesException() {
     final User user = new User();
     Assertions.assertThrows(BusinessException.class, () -> {
       this.userService.updateUser(user);

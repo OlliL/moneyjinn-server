@@ -55,6 +55,7 @@ public class MoneyflowReceiptController extends AbstractController
   @Override
   @PostConstruct
   protected void addBeanMapper() {
+    // No mapper needed.
   }
 
   @Override

@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateEtfFlowTest extends AbstractControllerTest {
+class CreateEtfFlowTest extends AbstractControllerTest {
   @Inject
   IEtfService etfService;
 
@@ -47,7 +47,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_emptyResponse() throws Exception {
+   void test_standardRequest_emptyResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     request.setEtfFlowTransport(transport);
@@ -62,7 +62,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noEtfSpecified_errorResponse() throws Exception {
+   void test_noEtfSpecified_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setIsin(null);
@@ -77,7 +77,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidEtfSpecified_errorResponse() throws Exception {
+   void test_invalidEtfSpecified_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setIsin("NOTEXISTING");
@@ -92,7 +92,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_priceNotSet_errorResponse() throws Exception {
+   void test_priceNotSet_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setPrice(null);
@@ -107,7 +107,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_priceIsZero_errorResponse() throws Exception {
+   void test_priceIsZero_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setPrice(BigDecimal.ZERO);
@@ -121,7 +121,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_amountNotSet_errorResponse() throws Exception {
+   void test_amountNotSet_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setAmount(null);
@@ -135,7 +135,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_amountIsZero_errorResponse() throws Exception {
+   void test_amountIsZero_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setAmount(BigDecimal.ZERO);
@@ -149,7 +149,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_timeIsNull_errorResponse() throws Exception {
+   void test_timeIsNull_errorResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setTimestamp(null);
@@ -163,7 +163,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nanosecondsNotSet_emptyResponse() throws Exception {
+   void test_nanosecondsNotSet_emptyResponse() throws Exception {
     final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
     final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
     transport.setNanoseconds(null);
@@ -179,7 +179,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -188,7 +188,7 @@ public class CreateEtfFlowTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

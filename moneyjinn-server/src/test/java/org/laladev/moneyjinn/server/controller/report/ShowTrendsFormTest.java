@@ -20,7 +20,7 @@ import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowTrendsFormTest extends AbstractControllerTest {
+class ShowTrendsFormTest extends AbstractControllerTest {
   @Inject
   private ISettingService settingService;
   @Inject
@@ -59,7 +59,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_TestLastSettlementInDecemberButFlowsInNextYear_nextYearIncludedInAllYears()
+   void test_TestLastSettlementInDecemberButFlowsInNextYear_nextYearIncludedInAllYears()
       throws Exception {
     final UserID userId1 = new UserID(UserTransportBuilder.USER1_ID);
     final UserID userId3 = new UserID(UserTransportBuilder.USER3_ID);
@@ -77,14 +77,14 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noSetting_defaultsResponse() throws Exception {
+   void test_noSetting_defaultsResponse() throws Exception {
     final ShowTrendsFormResponse expected = this.getDefaultResponse();
     final ShowTrendsFormResponse actual = super.callUsecaseExpect200(ShowTrendsFormResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_witDefaultSelection_defaultsResponse() throws Exception {
+   void test_witDefaultSelection_defaultsResponse() throws Exception {
     final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
         Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID),
             new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID),
@@ -103,7 +103,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -112,7 +112,7 @@ public class ShowTrendsFormTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -9,9 +9,9 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessFlattenedDataMapper;
 
-public class AccessFlattenedDataMapperTest {
+class AccessFlattenedDataMapperTest {
   @Test
-  public void testAccessRelationToData() {
+  void testAccessRelationToData() {
     final LocalDate validFrom = LocalDate.parse("2015-01-01");
     final LocalDate validTil = LocalDate.parse("2015-12-01");
     final AccessRelation accessRelationMain = new AccessRelation(new AccessID(0l));
@@ -40,7 +40,7 @@ public class AccessFlattenedDataMapperTest {
   }
 
   @Test
-  public void testAccessFlattenedDataToModel() {
+  void testAccessFlattenedDataToModel() {
     final LocalDate validFrom = LocalDate.parse("2015-01-01");
     final LocalDate validTil = LocalDate.parse("2015-12-01");
     final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
@@ -69,7 +69,7 @@ public class AccessFlattenedDataMapperTest {
   }
 
   @Test
-  public void testEmptyAccessRelationToData() {
+  void testEmptyAccessRelationToData() {
     final LocalDate validFrom = LocalDate.parse("2015-01-01");
     final LocalDate validTil = LocalDate.parse("2015-12-01");
     final AccessRelation accessRelationMain = new AccessRelation(new AccessID(0l));
@@ -88,7 +88,7 @@ public class AccessFlattenedDataMapperTest {
   }
 
   @Test
-  public void testEmptyAccessFlattenedDataToModel() {
+  void testEmptyAccessFlattenedDataToModel() {
     final LocalDate validFrom = LocalDate.parse("2015-01-01");
     final LocalDate validTil = LocalDate.parse("2015-12-01");
     final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();

@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteMonthlySettlementTest extends AbstractControllerTest {
+class DeleteMonthlySettlementTest extends AbstractControllerTest {
   @Inject
   private IMonthlySettlementService monthlySettlementService;
 
@@ -45,7 +45,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularMonthlySettlement_SuccessfullNoContent() throws Exception {
+   void test_regularMonthlySettlement_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, 2008, Month.DECEMBER);
@@ -61,7 +61,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingMonthlySettlement_SuccessfullNoContent() throws Exception {
+   void test_nonExistingMonthlySettlement_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, 1970, Month.OCTOBER);
@@ -75,7 +75,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MonthlySettlementFromDifferentGroup_notSuccessfull() throws Exception {
+   void test_MonthlySettlementFromDifferentGroup_notSuccessfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.ADMIN_ID);
     List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, 2008, Month.DECEMBER);
@@ -91,7 +91,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -100,7 +100,7 @@ public class DeleteMonthlySettlementTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

@@ -60,6 +60,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryService extends AbstractService
     implements IMoneyflowSplitEntryService {
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final IPostingAccountService postingAccountService;
   private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
   private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
@@ -135,7 +136,7 @@ public class MoneyflowSplitEntryService extends AbstractService
   @Override
   public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(final UserID userId,
       final List<MoneyflowID> moneyflowIds) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
     final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
         .collect(Collectors.toCollection(ArrayList::new));
@@ -195,7 +196,7 @@ public class MoneyflowSplitEntryService extends AbstractService
   @Override
   public void deleteMoneyflowSplitEntry(final UserID userId, final MoneyflowID moneyflowId,
       final MoneyflowSplitEntryID moneyflowSplitEntryId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowSplitEntryId, "moneyflowSplitEntryId must not be null!");
     this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(),
         moneyflowSplitEntryId.getId());
@@ -203,7 +204,7 @@ public class MoneyflowSplitEntryService extends AbstractService
 
   @Override
   public void deleteMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowId, "moneyflowId must not be null!");
     this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
   }

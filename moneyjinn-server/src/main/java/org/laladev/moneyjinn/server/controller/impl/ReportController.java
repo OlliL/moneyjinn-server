@@ -417,8 +417,8 @@ public class ReportController extends AbstractController implements ReportContro
       response.setAllYears(allYears);
     }
     if (allMonth != null && !allMonth.isEmpty()) {
-      response.setAllMonth(allMonth.stream().map(m -> m.getValue())
-          .collect(Collectors.toCollection(ArrayList::new)));
+      response.setAllMonth(
+          allMonth.stream().map(Month::getValue).collect(Collectors.toCollection(ArrayList::new)));
     }
     if (nextMonthHasMoneyflows) {
       response.setNextMonthHasMoneyflows(1);
@@ -451,7 +451,7 @@ public class ReportController extends AbstractController implements ReportContro
     Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = new HashMap<>();
     List<MoneyflowID> moneyflowIdsWithReceipts = new ArrayList<>();
     final Integer year = requestYear;
-    Month month = this.getMonth(requestMonth);
+    final Month month = this.getMonth(requestMonth);
     if (month != null) {
       final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
       final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
@@ -488,7 +488,7 @@ public class ReportController extends AbstractController implements ReportContro
             }
           }
           final List<CapitalsourceID> capitalsourceIds = validCapitalsources.stream()
-              .filter((mcs) -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
+              .filter(mcs -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
               .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
           final List<ImportedBalance> importedBalances = this.importedBalanceService
               .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
@@ -523,7 +523,7 @@ public class ReportController extends AbstractController implements ReportContro
               }
             } else if (today.compareTo(beginOfMonth) >= 0 && today.compareTo(endOfMonth) <= 0) {
               // show imported balances only for the current month
-              this.addCurrentAmount(userId, lastSettlementCapitalsource, beginOfMonth,
+              this.addCurrentAmount(lastSettlementCapitalsource, beginOfMonth,
                   lastSettlement.getAmount(), turnoverCapitalsource, moneyflows, importedBalances);
             }
             final BigDecimal movementCalculated = this.getMovementForCapitalsourceAndDateRange(
@@ -572,7 +572,7 @@ public class ReportController extends AbstractController implements ReportContro
                   this.getMovementForCapitalsourceAndDateRange(moneyflows, capitalsource.getId(),
                       beginOfMonth, endOfMonth));
               if (!nextMonthHasMoneyflows) {
-                this.addCurrentAmount(userId, capitalsource, beginOfMonth, BigDecimal.ZERO,
+                this.addCurrentAmount(capitalsource, beginOfMonth, BigDecimal.ZERO,
                     turnoverCapitalsource, moneyflows, importedBalances);
               }
               turnoverCapitalsources.add(turnoverCapitalsource);
@@ -613,9 +613,8 @@ public class ReportController extends AbstractController implements ReportContro
         }
       }
       response.setMonth(month.getValue());
-    } else {
-      month = null;
     }
+
     response.setYear(year);
     if (turnoverCapitalsources != null && !turnoverCapitalsources.isEmpty()) {
       response.setReportTurnoverCapitalsourceTransports(turnoverCapitalsources);
@@ -671,8 +670,8 @@ public class ReportController extends AbstractController implements ReportContro
         : null;
   }
 
-  private void addCurrentAmount(final UserID userId, final Capitalsource capitalsource,
-      final LocalDate startOfMonth, final BigDecimal startAmount,
+  private void addCurrentAmount(final Capitalsource capitalsource, final LocalDate startOfMonth,
+      final BigDecimal startAmount,
       final ReportTurnoverCapitalsourceTransport turnoverCapitalsource,
       final List<Moneyflow> moneyflows, final List<ImportedBalance> importedBalances) {
     final LocalDate today = LocalDate.now();

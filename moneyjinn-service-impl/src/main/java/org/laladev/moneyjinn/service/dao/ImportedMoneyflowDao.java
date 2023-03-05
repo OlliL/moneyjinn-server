@@ -39,28 +39,27 @@ import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper;
 public class ImportedMoneyflowDao {
   private final IImportedMoneyflowDaoMapper mapper;
 
-  public Integer countImportedMoneyflows(final Long userId, final List<Long> capitalsourceIdLongs,
+  public Integer countImportedMoneyflows(final List<Long> capitalsourceIdLongs,
       final Integer status) {
     return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
   }
 
-  public ImportedMoneyflowData getImportedMoneyflowById(final Long userId, final Long id) {
+  public ImportedMoneyflowData getImportedMoneyflowById(final Long id) {
     return this.mapper.getImportedMoneyflowById(id);
   }
 
-  public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final Long userId,
+  public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
       final List<Long> capitalsourceIdLongs, final Integer status, final LocalDate dateFrom,
       final LocalDate dateTil) {
     return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status,
         dateFrom, dateTil);
   }
 
-  public void updateImportedMoneyflowStatus(final Long userId, final Long importedMoneyflowId,
-      final Integer status) {
+  public void updateImportedMoneyflowStatus(final Long importedMoneyflowId, final Integer status) {
     this.mapper.updateImportedMoneyflowStatus(importedMoneyflowId, status);
   }
 
-  public void deleteImportedMoneyflowById(final Long userId, final Long importedMoneyflowId) {
+  public void deleteImportedMoneyflowById(final Long importedMoneyflowId) {
     this.mapper.deleteImportedMoneyflowById(importedMoneyflowId);
   }
 

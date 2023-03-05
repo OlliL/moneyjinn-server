@@ -72,6 +72,9 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowService extends AbstractService implements IPreDefMoneyflowService {
+  private static final String PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL = "preDefMoneyflowId must not be null!";
+  private static final String PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL = "preDefMoneyflow must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final IUserService userService;
   private final ICapitalsourceService capitalsourceService;
   private final IContractpartnerService contractpartnerService;
@@ -128,7 +131,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
   @Override
   public ValidationResult validatePreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
-    Assert.notNull(preDefMoneyflow, "preDefMoneyflow must not be null!");
+    Assert.notNull(preDefMoneyflow, PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL);
     Assert.notNull(preDefMoneyflow.getUser(), "preDefMoneyflow.getUser() must not be null!");
     Assert.notNull(preDefMoneyflow.getUser().getId(),
         "preDefMoneyflow.getUser().getId() must not be null!");
@@ -203,8 +206,8 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
   @Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
   public PreDefMoneyflow getPreDefMoneyflowById(final UserID userId,
       final PreDefMoneyflowID preDefMoneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(preDefMoneyflowId, "preDefMoneyflowId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(preDefMoneyflowId, PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL);
     final PreDefMoneyflowData preDefMoneyflowData = this.preDefMoneyflowDao
         .getPreDefMoneyflowById(userId.getId(), preDefMoneyflowId.getId());
     return this.mapPreDefMoneyflowData(preDefMoneyflowData);
@@ -213,7 +216,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
   @Override
   @Cacheable(CacheNames.ALL_PRE_DEF_MONEYFLOWS)
   public List<PreDefMoneyflow> getAllPreDefMoneyflows(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     final List<PreDefMoneyflowData> preDefMoneyflowDataList = this.preDefMoneyflowDao
         .getAllPreDefMoneyflows(userId.getId());
     return this.mapPreDefMoneyflowDataList(preDefMoneyflowDataList);
@@ -221,7 +224,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
   @Override
   public void updatePreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
-    Assert.notNull(preDefMoneyflow, "preDefMoneyflow must not be null!");
+    Assert.notNull(preDefMoneyflow, PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validatePreDefMoneyflow(preDefMoneyflow);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
       final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
@@ -237,7 +240,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
   @Override
   public PreDefMoneyflowID createPreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
-    Assert.notNull(preDefMoneyflow, "preDefMoneyflow must not be null!");
+    Assert.notNull(preDefMoneyflow, PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL);
     preDefMoneyflow.setId(null);
     final ValidationResult validationResult = this.validatePreDefMoneyflow(preDefMoneyflow);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -258,16 +261,16 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
   @Override
   public void deletePreDefMoneyflow(final UserID userId,
       final PreDefMoneyflowID preDefMoneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(preDefMoneyflowId, "preDefMoneyflowId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(preDefMoneyflowId, PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL);
     this.preDefMoneyflowDao.deletePreDefMoneyflow(userId.getId(), preDefMoneyflowId.getId());
     this.evictPreDefMoneyflowCache(userId, preDefMoneyflowId);
   }
 
   @Override
   public void setLastUsedDate(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(preDefMoneyflowId, "preDefMoneyflowId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(preDefMoneyflowId, PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL);
     this.preDefMoneyflowDao.setLastUsed(userId.getId(), preDefMoneyflowId.getId());
     this.evictPreDefMoneyflowCache(userId, preDefMoneyflowId);
   }

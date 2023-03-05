@@ -9,12 +9,12 @@ import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 
-public class PostingAccountServiceTest extends AbstractTest {
+class PostingAccountServiceTest extends AbstractTest {
   @Inject
   private IPostingAccountService postingAccountService;
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+   void test_createWithInvalidEntity_raisesException() {
     final PostingAccount postingAccount = new PostingAccount();
     Assertions.assertThrows(BusinessException.class, () -> {
       this.postingAccountService.createPostingAccount(postingAccount);
@@ -22,7 +22,7 @@ public class PostingAccountServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+   void test_updateWithInvalidEntity_raisesException() {
     final PostingAccount postingAccount = new PostingAccount();
     Assertions.assertThrows(BusinessException.class, () -> {
       this.postingAccountService.updatePostingAccount(postingAccount);

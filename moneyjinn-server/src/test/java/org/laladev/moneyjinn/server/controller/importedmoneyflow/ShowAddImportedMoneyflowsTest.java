@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.server.model.ShowAddImportedMoneyflowsResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
+class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
 
@@ -47,7 +47,7 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();
     final List<ImportedMoneyflowTransport> importedMoneyflowTransports = new ArrayList<>();
     importedMoneyflowTransports
@@ -63,7 +63,7 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noImportedData_emptyResponse() throws Exception {
+   void test_noImportedData_emptyResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     this.importedMoneyflowService.deleteImportedMoneyflowById(userId,
         new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
@@ -78,7 +78,7 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -87,7 +87,7 @@ public class ShowAddImportedMoneyflowsTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();

@@ -9,12 +9,12 @@ import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
 
-public class BankAccountDataMapperTest extends AbstractTest {
+class BankAccountDataMapperTest extends AbstractTest {
   @Inject
   private BankAccountDataMapper bankAccountDataMapper;
 
   @Test
-  public void testBankAccountMapping() {
+  void testBankAccountMapping() {
     final BankAccountData bankAccountData = new BankAccountData();
     bankAccountData.setAccountNumber("1234");
     bankAccountData.setBankCode("ABCD");

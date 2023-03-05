@@ -40,7 +40,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class SqlExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(SqlExceptionControllerAdvice.class);
+  private static final Logger MY_LOGGER = LoggerFactory
+      .getLogger(SqlExceptionControllerAdvice.class);
 
   @ExceptionHandler(SQLException.class)
   @ResponseBody
@@ -49,7 +50,7 @@ public class SqlExceptionControllerAdvice extends ResponseEntityExceptionHandler
     errorResponse.setCode(ErrorCode.UNKNOWN.getErrorCode());
     errorResponse.setMessage(ex.getMessage());
 
-    LOGGER.error(ex.getMessage(), ex);
+    MY_LOGGER.error(ex.getMessage(), ex);
     return ResponseEntity.internalServerError().body(errorResponse);
   }
 }

@@ -18,7 +18,7 @@ import org.laladev.moneyjinn.server.model.ShowUserListResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-public class ShowUserListTest extends AbstractControllerTest {
+class ShowUserListTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
 
@@ -71,14 +71,14 @@ public class ShowUserListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+   void test_default_FullResponseObject() throws Exception {
     final ShowUserListResponse expected = this.getCompleteResponse();
     final ShowUserListResponse actual = super.callUsecaseExpect200(ShowUserListResponse.class);
     Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -86,7 +86,7 @@ public class ShowUserListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

@@ -44,7 +44,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ValidationExceptionControllerAdvice extends ResponseEntityExceptionHandler {
   private final ValidationItemTransportMapper mapper;
 
-  private static Logger LOGGER = LoggerFactory.getLogger(ValidationExceptionControllerAdvice.class);
+  private static final Logger MY_LOGGER = LoggerFactory
+      .getLogger(ValidationExceptionControllerAdvice.class);
 
   @ExceptionHandler(ValidationException.class)
   @ResponseBody
@@ -56,7 +57,7 @@ public class ValidationExceptionControllerAdvice extends ResponseEntityException
     response.setValidationItemTransports(
         result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
 
-    LOGGER.error("Validation error", ex);
+    MY_LOGGER.error("Validation error", ex);
     return ResponseEntity.unprocessableEntity().body(response);
   }
 }

@@ -30,7 +30,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.util.FileCopyUtils;
 
-public class CompareDataTest extends AbstractControllerTest {
+class CompareDataTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
   @Value("classpath:comparedata/postbank_online.csv")
@@ -66,7 +66,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_bookedWithWrongCapitalsource_Successfull() throws Exception {
+   void test_bookedWithWrongCapitalsource_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -93,7 +93,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_privateFlowProcessedButNotShown_bookedWithWrongCapitalsource_Successfull()
+   void test_privateFlowProcessedButNotShown_bookedWithWrongCapitalsource_Successfull()
       throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
@@ -116,7 +116,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_privateFlowProcessedButNotShown_notInFile_Successfull() throws Exception {
+   void test_privateFlowProcessedButNotShown_notInFile_Successfull() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
@@ -133,7 +133,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_privateFlowProcessedButNotShown_matching_Successfull() throws Exception {
+   void test_privateFlowProcessedButNotShown_matching_Successfull() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();
@@ -156,7 +156,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_noDataForThisMonth_FileContentIsFilteredAllMoneyflowsMissing() throws Exception {
+   void test_noDataForThisMonth_FileContentIsFilteredAllMoneyflowsMissing() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-03-01"));
@@ -178,7 +178,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_onePossibleMatch_matchIsTakenNoRatingInvolved() throws Exception {
+   void test_onePossibleMatch_matchIsTakenNoRatingInvolved() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-02-01"));
@@ -202,7 +202,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_moneyflowIsOutOfSearchFrame_missingReported() throws Exception {
+   void test_moneyflowIsOutOfSearchFrame_missingReported() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-01-01"));
@@ -228,7 +228,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidFileFormat_Exception() throws Exception {
+   void test_invalidFileFormat_Exception() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-01-01"));
@@ -246,7 +246,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_SpardaBank_Successfull() throws Exception {
+   void test_standardRequest_SpardaBank_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -280,7 +280,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_PostbankOnline_Successfull() throws Exception {
+   void test_standardRequest_PostbankOnline_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -315,7 +315,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Sparkasse_Successfull() throws Exception {
+   void test_standardRequest_Sparkasse_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -350,7 +350,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Volksbank_Successfull() throws Exception {
+   void test_standardRequest_Volksbank_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -386,7 +386,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Camt_Successfull() throws Exception {
+   void test_standardRequest_Camt_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -421,7 +421,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Import_Successfull() throws Exception {
+   void test_standardRequest_Import_Successfull() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
     request.setStartDate(LocalDate.parse("2010-05-01"));
@@ -456,7 +456,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_accessesImportedMoneyflowsBeforeGroupAssignemnts_dataNotShown()
+   void test_accessesImportedMoneyflowsBeforeGroupAssignemnts_dataNotShown()
       throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
@@ -471,7 +471,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_accessesImportedMoneyflowsAfterGroupAssignemnts_dataNotShown() throws Exception {
+   void test_accessesImportedMoneyflowsAfterGroupAssignemnts_dataNotShown() throws Exception {
     final CompareDataRequest request = new CompareDataRequest();
     request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
     request.setStartDate(LocalDate.parse("2600-01-01"));
@@ -503,7 +503,7 @@ public class CompareDataTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -512,7 +512,7 @@ public class CompareDataTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final CompareDataRequest request = new CompareDataRequest();

@@ -11,12 +11,12 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 
-public class PreDefMoneyflowServiceTest extends AbstractTest {
+class PreDefMoneyflowServiceTest extends AbstractTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
 
   @Test
-  public void test_validateNullUser_raisesException() {
+   void test_validateNullUser_raisesException() {
     final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
       this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
@@ -24,7 +24,7 @@ public class PreDefMoneyflowServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_createWithInvalidEntity_raisesException() {
+   void test_createWithInvalidEntity_raisesException() {
     final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
     preDefMoneyflow.setUser(new User(new UserID(1l)));
     Assertions.assertThrows(BusinessException.class, () -> {
@@ -33,7 +33,7 @@ public class PreDefMoneyflowServiceTest extends AbstractTest {
   }
 
   @Test
-  public void test_updateWithInvalidEntity_raisesException() {
+   void test_updateWithInvalidEntity_raisesException() {
     final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
     preDefMoneyflow.setUser(new User(new UserID(1l)));
     Assertions.assertThrows(BusinessException.class, () -> {

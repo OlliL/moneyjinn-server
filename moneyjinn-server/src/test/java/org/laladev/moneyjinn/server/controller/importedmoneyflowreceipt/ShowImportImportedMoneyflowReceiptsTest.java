@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerTest {
+class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -41,7 +41,7 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
   }
 
   @Test
-  public void test_standardRequest_emptyResponse() throws Exception {
+   void test_standardRequest_emptyResponse() throws Exception {
     final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
     final ArrayList<ImportedMoneyflowReceiptTransport> transporter = new ArrayList<>();
     transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build());
@@ -55,7 +55,7 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -64,7 +64,7 @@ public class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerT
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

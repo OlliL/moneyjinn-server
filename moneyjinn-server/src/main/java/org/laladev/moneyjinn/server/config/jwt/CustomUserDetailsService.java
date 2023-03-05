@@ -57,8 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     final List<? extends GrantedAuthority> grantedAuthorities = user.getPermissions().stream()
         .map(p -> new SimpleGrantedAuthority(p.name())).toList();
 
-    final org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-        user.getName(), password, grantedAuthorities);
-    return userDetails;
+    return new org.springframework.security.core.userdetails.User(user.getName(), password,
+        grantedAuthorities);
   }
 }

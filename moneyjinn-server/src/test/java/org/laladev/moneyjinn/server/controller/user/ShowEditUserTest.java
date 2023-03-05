@@ -13,7 +13,7 @@ import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
 
-public class ShowEditUserTest extends AbstractControllerTest {
+class ShowEditUserTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -39,7 +39,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownUser_emptyResponseObject() throws Exception {
+   void test_unknownUser_emptyResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
 
     final ShowEditUserResponse actual = super.callUsecaseExpect200(ShowEditUserResponse.class,
@@ -49,7 +49,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_User1_completeResponseObject() throws Exception {
+   void test_User1_completeResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports
@@ -69,7 +69,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_User2_completeResponseObject() throws Exception {
+   void test_User2_completeResponseObject() throws Exception {
     final ShowEditUserResponse expected = new ShowEditUserResponse();
     final List<AccessRelationTransport> accessRelationTransports = new ArrayList<>();
     accessRelationTransports
@@ -83,7 +83,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -91,7 +91,7 @@ public class ShowEditUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

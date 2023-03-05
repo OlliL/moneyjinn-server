@@ -11,7 +11,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthTest extends AbstractControllerTest {
+class GetAvailableMonthTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -45,7 +45,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_default_FullResponseObject() throws Exception {
+   void test_default_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
         GetAvailableMonthlySettlementMonthResponse.class);
@@ -53,7 +53,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_1_Error() throws Exception {
+   void test_AuthorizationRequired_1_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -62,7 +62,7 @@ public class GetAvailableMonthTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();

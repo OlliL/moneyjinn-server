@@ -70,6 +70,7 @@ import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.sepa.camt.mapper.BankToCustomerAccountReportMapper;
 import org.laladev.moneyjinn.sepa.camt.model.BankToCustomerAccountReport;
+import org.laladev.moneyjinn.sepa.camt.model.CreditDebitCode;
 import org.laladev.moneyjinn.sepa.camt.model.Entry;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
@@ -245,11 +246,10 @@ public class CompareDataService extends AbstractService implements ICompareDataS
       final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
           .getAllContractpartnerByAccounts(userId,
               Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
-      if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
-        if (contractpartnerAccounts.get(0).getContractpartner().getId()
-            .equals(moneyflow.getContractpartner().getId())) {
-          rating += 50;
-        }
+      if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()
+          && contractpartnerAccounts.get(0).getContractpartner().getId()
+              .equals(moneyflow.getContractpartner().getId())) {
+        rating += 50;
       }
     }
     // does our input-file contain contractpartner information?
@@ -281,8 +281,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
   private LocalDate calendarToLocalDate(final Calendar source) {
     ZonedDateTime zonedDateTime;
-    if (source instanceof GregorianCalendar) {
-      zonedDateTime = ((GregorianCalendar) source).toZonedDateTime();
+    if (source instanceof final GregorianCalendar calendar) {
+      zonedDateTime = calendar.toZonedDateTime();
     } else {
       zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(source.getTimeInMillis()),
           source.getTimeZone().toZoneId());
@@ -300,17 +300,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
       for (final Entry entry : bankToCustomerAccountReport.getReport().getEntries()) {
         final CompareDataDataset data = new CompareDataDataset();
         data.setBookingDate(this.calendarToLocalDate(entry.getBookingDate()));
-        switch (entry.getCreditDebitIndicator()) {
-          case Credit:
-            data.setAmount(entry.getAmount().getValue());
-            data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties()
-                .getDebtor().getName());
-            break;
-          default:
-            data.setAmount(entry.getAmount().getValue().negate());
-            data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties()
-                .getCreditor().getName());
-            break;
+        if (entry.getCreditDebitIndicator() == CreditDebitCode.Credit) {
+          data.setAmount(entry.getAmount().getValue());
+          data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties()
+              .getDebtor().getName());
+        } else {
+          data.setAmount(entry.getAmount().getValue().negate());
+          data.setPartner(entry.getEntryDetails().getTransactionDetails().getRelatedParties()
+              .getCreditor().getName());
         }
         data.setComment(String.join(" ", entry.getEntryDetails().getTransactionDetails()
             .getRemittanceInformation().getUnstructured()));

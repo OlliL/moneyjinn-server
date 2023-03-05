@@ -16,7 +16,7 @@ import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeletePostingAccountByIdTest extends AbstractControllerTest {
+class DeletePostingAccountByIdTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
 
@@ -45,7 +45,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularPostingAccountNoData_SuccessfullNoContent() throws Exception {
+   void test_regularPostingAccountNoData_SuccessfullNoContent() throws Exception {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
     Assertions.assertNotNull(postingAccount);
@@ -58,7 +58,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingPostingAccount_SuccessfullNoContent() throws Exception {
+   void test_nonExistingPostingAccount_SuccessfullNoContent() throws Exception {
     PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
         new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(postingAccount);
@@ -71,7 +71,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularPostingAccountWithData_SuccessfullNoContent() throws Exception {
+   void test_regularPostingAccountWithData_SuccessfullNoContent() throws Exception {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.POSTINGACCOUNT_STILL_REFERENCED.getErrorCode());
     expected.setMessage(
@@ -90,7 +90,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -98,7 +98,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -107,7 +107,7 @@ public class DeletePostingAccountByIdTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

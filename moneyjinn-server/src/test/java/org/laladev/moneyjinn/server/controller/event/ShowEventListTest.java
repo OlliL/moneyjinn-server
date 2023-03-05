@@ -28,7 +28,7 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowEventListTest extends AbstractControllerTest {
+class ShowEventListTest extends AbstractControllerTest {
   @Inject
   private IMonthlySettlementService monthlySettlementService;
   @Inject
@@ -59,7 +59,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_previousMonthIsNotSettled_completeResponseObject() throws Exception {
+   void test_previousMonthIsNotSettled_completeResponseObject() throws Exception {
     final ShowEventListResponse expected = new ShowEventListResponse();
     final LocalDate lastMonth = LocalDate.now().minusMonths(1l);
     expected.setMonthlySettlementMissing(true);
@@ -73,7 +73,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_previousMonthIsSettled_completeResponseObject() throws Exception {
+   void test_previousMonthIsSettled_completeResponseObject() throws Exception {
     final ShowEventListResponse expected = new ShowEventListResponse();
     final LocalDate lastMonth = LocalDate.now().minusMonths(1l);
     final MonthlySettlement monthlySettlement = new MonthlySettlement();
@@ -96,7 +96,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_deletedImportedMoneyflow_isIgnored() throws Exception {
+   void test_deletedImportedMoneyflow_isIgnored() throws Exception {
 
     ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
@@ -111,7 +111,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_importedImportedMoneyflow_isIgnored() throws Exception {
+   void test_importedImportedMoneyflow_isIgnored() throws Exception {
 
     ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
@@ -128,7 +128,7 @@ public class ShowEventListTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -137,7 +137,7 @@ public class ShowEventListTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

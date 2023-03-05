@@ -44,7 +44,7 @@ public interface EtfFlowTransportMapper extends IMapper<EtfFlow, EtfFlowTranspor
   @Override
   @Mapping(target = "id", source = "etfflowid")
   @Mapping(target = "time", source = "timestamp")
-  EtfFlow mapBToA(EtfFlowTransport EtfFlowTransport);
+  EtfFlow mapBToA(EtfFlowTransport etfFlowTransport);
 
   @Override
   @Mapping(target = "etfflowid", source = "id")

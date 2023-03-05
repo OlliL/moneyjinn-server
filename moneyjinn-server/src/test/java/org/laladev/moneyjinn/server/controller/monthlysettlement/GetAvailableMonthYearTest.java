@@ -11,7 +11,7 @@ import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerAp
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class GetAvailableMonthYearTest extends AbstractControllerTest {
+class GetAvailableMonthYearTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -45,7 +45,7 @@ public class GetAvailableMonthYearTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withYear_FullResponseObject() throws Exception {
+   void test_withYear_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
         GetAvailableMonthlySettlementMonthResponse.class, 2010);
@@ -53,7 +53,7 @@ public class GetAvailableMonthYearTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withInvalidYear_FullResponseObject() throws Exception {
+   void test_withInvalidYear_FullResponseObject() throws Exception {
     final GetAvailableMonthlySettlementMonthResponse expected = this.getDefaultResponse();
     final GetAvailableMonthlySettlementMonthResponse actual = super.callUsecaseExpect200(
         GetAvailableMonthlySettlementMonthResponse.class, 1972);
@@ -61,7 +61,7 @@ public class GetAvailableMonthYearTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_2_Error() throws Exception {
+   void test_AuthorizationRequired_2_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -70,7 +70,7 @@ public class GetAvailableMonthYearTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final GetAvailableMonthlySettlementMonthResponse expected = new GetAvailableMonthlySettlementMonthResponse();

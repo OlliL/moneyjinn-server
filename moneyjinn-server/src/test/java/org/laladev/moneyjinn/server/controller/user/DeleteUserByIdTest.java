@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-public class DeleteUserByIdTest extends AbstractControllerTest {
+class DeleteUserByIdTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
 
@@ -43,7 +43,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularUserNoData_SuccessfullNoContent() throws Exception {
+   void test_regularUserNoData_SuccessfullNoContent() throws Exception {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER2_ID));
     Assertions.assertNotNull(user);
 
@@ -54,7 +54,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingUser_SuccessfullNoContent() throws Exception {
+   void test_nonExistingUser_SuccessfullNoContent() throws Exception {
     User user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
     Assertions.assertNull(user);
 
@@ -65,7 +65,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularUserWithData_SuccessfullNoContent() throws Exception {
+   void test_regularUserWithData_SuccessfullNoContent() throws Exception {
     final ErrorResponse expected = new ErrorResponse();
     expected.setCode(ErrorCode.USER_HAS_DATA.getErrorCode());
     expected.setMessage("This user has already entered data and may therefore not be deleted!");
@@ -81,7 +81,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -89,7 +89,7 @@ public class DeleteUserByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

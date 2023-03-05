@@ -28,7 +28,7 @@ import org.laladev.moneyjinn.server.model.TrendsSettledTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowTrendsGraphTest extends AbstractControllerTest {
+class ShowTrendsGraphTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
 
@@ -57,7 +57,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_maxDateRange_response() throws Exception {
+   void test_maxDateRange_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -114,7 +114,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_only2009_response() throws Exception {
+   void test_only2009_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("2009-01-01"));
     request.setEndDate(LocalDate.parse("2009-12-31"));
@@ -155,7 +155,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_onlyOneUnsettledMonth_response() throws Exception {
+   void test_onlyOneUnsettledMonth_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("2010-05-01"));
     request.setEndDate(LocalDate.parse("2010-12-31"));
@@ -174,7 +174,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_validtyPeriodOfCapitalsource_response() throws Exception {
+   void test_validtyPeriodOfCapitalsource_response() throws Exception {
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -198,7 +198,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -207,7 +207,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
@@ -217,7 +217,7 @@ public class ShowTrendsGraphTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabaseFakeRequestData_noException() throws Exception {
+  void test_emptyDatabaseFakeRequestData_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();

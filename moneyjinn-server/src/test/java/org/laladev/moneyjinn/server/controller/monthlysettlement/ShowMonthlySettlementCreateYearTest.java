@@ -24,7 +24,7 @@ import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest {
+class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
   @Inject
@@ -55,7 +55,7 @@ public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_alreadySettledMonth_FullContent() throws Exception {
+   void test_alreadySettledMonth_FullContent() throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
     monthlySettlementTransports
@@ -74,7 +74,7 @@ public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_alreadySettledMonthWithNewCapitalsourceCreatedAfterwardsAndValid_FullContent()
+   void test_alreadySettledMonthWithNewCapitalsourceCreatedAfterwardsAndValid_FullContent()
       throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -105,7 +105,7 @@ public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
+   void test_nextUnsettledMonthExplicitlyAndByDefault_FullContentWithCalculatedAmount()
       throws Exception {
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -125,7 +125,7 @@ public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -134,7 +134,7 @@ public class ShowMonthlySettlementCreateYearTest extends AbstractControllerTest 
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementCreateResponse expected = new ShowMonthlySettlementCreateResponse();

@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
+class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   @Inject
   IMoneyflowReceiptService moneyflowReceiptService;
 
@@ -44,19 +44,19 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownMoneyflowId_NoContent() throws Exception {
+  void test_unknownMoneyflowId_NoContent() throws Exception {
     super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.NON_EXISTING_ID);
   }
 
   @Test
-  public void test_MoneyflowId1_SuccessfullNoContent() throws Exception {
+  void test_MoneyflowId1_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
     MoneyflowReceipt receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId,
         moneyflowId);
     Assertions.assertNotNull(receipt);
-    Assertions.assertEquals(receipt.getId().getId(), 1L);
+    Assertions.assertEquals(1L, receipt.getId().getId());
 
     super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
@@ -65,7 +65,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -74,7 +74,7 @@ public class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

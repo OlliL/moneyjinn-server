@@ -17,7 +17,7 @@ import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptContr
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTest {
+class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTest {
   @Inject
   IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
 
@@ -47,7 +47,7 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
   }
 
   @Test
-  public void test_standardRequest_emptyResponse() throws Exception {
+   void test_standardRequest_emptyResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(
@@ -65,12 +65,12 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
   }
 
   @Test
-  public void test_DeleteNotExistingId_emptyResponse() throws Exception {
+   void test_DeleteNotExistingId_emptyResponse() throws Exception {
     super.callUsecaseExpect204WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.NEXT_ID);
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -79,7 +79,7 @@ public class DeleteImportedMoneyflowReceiptByIdTest extends AbstractControllerTe
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

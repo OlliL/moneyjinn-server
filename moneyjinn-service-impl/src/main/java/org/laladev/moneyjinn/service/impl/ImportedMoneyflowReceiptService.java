@@ -53,6 +53,8 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptService extends AbstractService
     implements IImportedMoneyflowReceiptService {
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
+  private static final String GROUP_ID_MUST_NOT_BE_NULL = "GroupId must not be null!";
   private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
   private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
   private static final List<String> SUPPORTED_MEDIA_TYPES = Arrays
@@ -103,8 +105,8 @@ public class ImportedMoneyflowReceiptService extends AbstractService
   @Override
   public List<ImportedMoneyflowReceipt> getAllImportedMoneyflowReceipts(final UserID userId,
       final GroupID groupId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(groupId, "GroupId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(groupId, GROUP_ID_MUST_NOT_BE_NULL);
     final List<ImportedMoneyflowReceiptData> importedMoneyflowReceipts = this.importedMoneyflowReceiptDao
         .getAllImportedMoneyflowReceipts(groupId.getId());
     return super.mapList(importedMoneyflowReceipts, ImportedMoneyflowReceipt.class);
@@ -126,16 +128,14 @@ public class ImportedMoneyflowReceiptService extends AbstractService
     final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = super.map(
         importedMoneyflowReceipt, ImportedMoneyflowReceiptData.class);
     this.importedMoneyflowReceiptDao.createImportedMoneyflowReceipt(importedMoneyflowReceiptData);
-    final ImportedMoneyflowReceiptID id = new ImportedMoneyflowReceiptID(
-        importedMoneyflowReceiptData.getId());
-    return id;
+    return new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId());
   }
 
   @Override
   public void deleteImportedMoneyflowReceipt(final UserID userId, final GroupID groupId,
       final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(groupId, "GroupId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(groupId, GROUP_ID_MUST_NOT_BE_NULL);
     Assert.notNull(importedMoneyflowReceiptId, "ImportedMoneyflowReceiptID must not be null!");
     this.importedMoneyflowReceiptDao.deleteImportedMoneyflowReceipt(groupId.getId(),
         importedMoneyflowReceiptId.getId());
@@ -144,8 +144,8 @@ public class ImportedMoneyflowReceiptService extends AbstractService
   @Override
   public ImportedMoneyflowReceipt getImportedMoneyflowReceiptById(final UserID userId,
       final GroupID groupId, final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(groupId, "GroupId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(groupId, GROUP_ID_MUST_NOT_BE_NULL);
     Assert.notNull(importedMoneyflowReceiptId, "ImportedMoneyflowReceiptID must not be null!");
     final ImportedMoneyflowReceiptData importedMoneyflowReceipt = this.importedMoneyflowReceiptDao
         .getImportedMoneyflowReceiptById(groupId.getId(), importedMoneyflowReceiptId.getId());

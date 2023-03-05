@@ -34,9 +34,9 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
+import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -59,7 +59,7 @@ public interface ImportedMoneyflowTransportMapper
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "group", ignore = true)
   @Mapping(target = "status", ignore = true)
-  ImportedMoneyflow mapBToA(ImportedMoneyflowTransport ImportedMoneyflowTransport);
+  ImportedMoneyflow mapBToA(ImportedMoneyflowTransport importedMoneyflowTransport);
 
   @Override
   @Mapping(target = "accountNumber", source = "bankAccount.accountNumber", defaultValue = "")

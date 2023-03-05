@@ -42,7 +42,7 @@ public class ImportedBalanceDao {
     this.mapper.upsertImportedBalance(importedBalanceData);
   }
 
-  public List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(final Long userId,
+  public List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(
       final List<Long> capitalsourceIdLongs) {
     return this.mapper.getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
   }

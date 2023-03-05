@@ -30,7 +30,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-public class UpdateUserTest extends AbstractControllerTest {
+class UpdateUserTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
   @Inject
@@ -94,21 +94,21 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_UsernameAlreadyExisting_Error() throws Exception {
+   void test_UsernameAlreadyExisting_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserName(UserTransportBuilder.USER2_NAME);
     this.testError(transport, null, ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS);
   }
 
   @Test
-  public void test_EmptyUsername_Error() throws Exception {
+   void test_EmptyUsername_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserName("");
     this.testError(transport, null, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
   }
 
   @Test
-  public void test_AccessRelationAndPasswordEmpty_SuccessfullPasswordNotChanged() throws Exception {
+   void test_AccessRelationAndPasswordEmpty_SuccessfullPasswordNotChanged() throws Exception {
     final UpdateUserRequest request = new UpdateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserIsNew(0);
@@ -122,7 +122,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AccessRelationEmpty_Successfull() throws Exception {
+   void test_AccessRelationEmpty_Successfull() throws Exception {
     final UpdateUserRequest request = new UpdateUserRequest();
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     transport.setUserPassword("123");
@@ -148,7 +148,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NoValidFromForAccessRelation_Error() throws Exception {
+   void test_NoValidFromForAccessRelation_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forUser1_2000_01_01().build();
@@ -157,7 +157,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ValidFromToEarlyForAccessRelation_Error() throws Exception {
+   void test_ValidFromToEarlyForAccessRelation_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forUser1_2000_01_01().build();
@@ -166,7 +166,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_NoGroupForAccessRelation_Error() throws Exception {
+   void test_NoGroupForAccessRelation_Error() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransportBuilder()
         .forUser1_2000_01_01().build();
@@ -192,7 +192,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseA() throws Exception {
+   void test_AR_caseA() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser2().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER2_ID);
@@ -210,7 +210,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseB() throws Exception {
+   void test_AR_caseB() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -231,7 +231,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseC() throws Exception {
+   void test_AR_caseC() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -249,7 +249,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseD() throws Exception {
+   void test_AR_caseD() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -267,7 +267,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseE() throws Exception {
+   void test_AR_caseE() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -285,7 +285,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseF() throws Exception {
+   void test_AR_caseF() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -305,7 +305,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseG() throws Exception {
+   void test_AR_caseG() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -325,7 +325,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseH() throws Exception {
+   void test_AR_caseH() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -342,7 +342,7 @@ public class UpdateUserTest extends AbstractControllerTest {
    * see Javadoc in AccessRelationService.setAccessRelation() for the cases
    */
   @Test
-  public void test_AR_caseI() throws Exception {
+   void test_AR_caseI() throws Exception {
     final UserTransport transport = new UserTransportBuilder().forUser1().build();
     final AccessRelationTransport accessRelationTransport = new AccessRelationTransport();
     accessRelationTransport.setId(UserTransportBuilder.USER1_ID);
@@ -358,7 +358,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -366,7 +366,7 @@ public class UpdateUserTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementListResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
+class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -40,7 +40,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withYearAndInvalidMonth_EmptyResponseObject() throws Exception {
+   void test_withYearAndInvalidMonth_EmptyResponseObject() throws Exception {
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     expected.setMonthlySettlementTransports(new ArrayList<>());
     final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200(
@@ -49,7 +49,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth13_EmptyResponseObject() throws Exception {
+   void test_withInvalidYearAndInvalidMonth13_EmptyResponseObject() throws Exception {
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200(
         ShowMonthlySettlementListResponse.class, 1, 13);
@@ -57,7 +57,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withInvalidYearAndInvalidMonth0_EmptyResponseObject() throws Exception {
+   void test_withInvalidYearAndInvalidMonth0_EmptyResponseObject() throws Exception {
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
     final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200(
         ShowMonthlySettlementListResponse.class, 1, 0);
@@ -65,7 +65,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_withYearAndMonth_FullResponseObject() throws Exception {
+   void test_withYearAndMonth_FullResponseObject() throws Exception {
     final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
     monthlySettlementTransports
         .add(new MonthlySettlementTransportBuilder().forMonthlySettlement1().build());
@@ -83,7 +83,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_3_Error() throws Exception {
+   void test_AuthorizationRequired_3_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -92,7 +92,7 @@ public class ShowMonthlySettlementListV2Test extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();

@@ -39,8 +39,8 @@ public abstract class AbstractController extends AbstractMapperSupport {
   protected UserID getUserId() {
     final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     final Object authenticationDetails = authentication.getDetails();
-    if (authenticationDetails != null && authenticationDetails instanceof Long) {
-      return new UserID((Long) authenticationDetails);
+    if (authenticationDetails instanceof final Long userId) {
+      return new UserID(userId);
     }
 
     throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);

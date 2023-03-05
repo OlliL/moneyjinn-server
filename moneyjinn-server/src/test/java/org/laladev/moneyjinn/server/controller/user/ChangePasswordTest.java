@@ -17,7 +17,7 @@ import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ChangePasswordTest extends AbstractControllerTest {
+class ChangePasswordTest extends AbstractControllerTest {
   @Inject
   private IUserService userService;
   @Inject
@@ -48,7 +48,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OldPasswordMatchingNewPasswordProvided_Successfull() throws Exception {
+  void test_OldPasswordMatchingNewPasswordProvided_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final String newPassword = this.userPassword + "new";
 
@@ -69,7 +69,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OldPasswordMatchingNewPasswordEmptyButUserNew_errorRaised() throws Exception {
+  void test_OldPasswordMatchingNewPasswordEmptyButUserNew_errorRaised() throws Exception {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword(this.userPassword);
     request.setPassword("");
@@ -81,7 +81,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OldPasswordMatchingNewPasswordEmpty_passwordGotNotChanged() throws Exception {
+  void test_OldPasswordMatchingNewPasswordEmpty_passwordGotNotChanged() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
 
@@ -104,7 +104,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OldPasswordNotMatching_errorRaised() throws Exception {
+  void test_OldPasswordNotMatching_errorRaised() throws Exception {
     final ChangePasswordRequest request = new ChangePasswordRequest();
     request.setOldPassword("wrongPassword");
 
@@ -115,7 +115,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -124,7 +124,7 @@ public class ChangePasswordTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

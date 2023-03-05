@@ -7,21 +7,22 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceStateMapper;
 
-public class CapitalsourceStateMapperTest {
+class CapitalsourceStateMapperTest {
   @Test
-  public void testNullInteger() {
+  void testNullInteger() {
     Assertions.assertNull(CapitalsourceStateMapper.map((Integer) null));
   }
 
   @Test
-  public void testNullEnum() {
+  void testNullEnum() {
     Assertions.assertNull(CapitalsourceStateMapper.map((CapitalsourceState) null));
   }
 
   @Test
-  public void test_unknownCapitalsourceState_exception() {
+  void test_unknownCapitalsourceState_exception() {
+    final Integer state = Integer.valueOf("66");
     Assertions.assertThrows(TechnicalException.class, () -> {
-      Assertions.assertNull(CapitalsourceStateMapper.map(Integer.valueOf("66")));
+      final CapitalsourceState stateMapped = CapitalsourceStateMapper.map(state);
     });
   }
 }

@@ -22,7 +22,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreatePostingAccountTest extends AbstractControllerTest {
+class CreatePostingAccountTest extends AbstractControllerTest {
   @Inject
   private IPostingAccountService postingAccountService;
 
@@ -67,7 +67,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
+   void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forNewPostingAccount().build();
     transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
@@ -75,7 +75,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyPostingAccountname_Error() throws Exception {
+   void test_emptyPostingAccountname_Error() throws Exception {
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forNewPostingAccount().build();
     transport.setName("");
@@ -83,7 +83,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nullPostingAccountname_Error() throws Exception {
+   void test_nullPostingAccountname_Error() throws Exception {
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forNewPostingAccount().build();
     transport.setName(null);
@@ -91,7 +91,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_SuccessfullNoContent() throws Exception {
+   void test_standardRequest_SuccessfullNoContent() throws Exception {
     final CreatePostingAccountRequest request = new CreatePostingAccountRequest();
     final PostingAccountTransport transport = new PostingAccountTransportBuilder()
         .forNewPostingAccount().build();
@@ -113,7 +113,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
     this.userName = UserTransportBuilder.USER1_NAME;
     this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
@@ -121,7 +121,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -130,7 +130,7 @@ public class CreatePostingAccountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final CreatePostingAccountRequest request = new CreatePostingAccountRequest();

@@ -1,6 +1,8 @@
 
 package org.laladev.moneyjinn.model.validation;
 
+import java.io.Serializable;
+
 //Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
@@ -28,13 +30,14 @@ package org.laladev.moneyjinn.model.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidationResult {
+public class ValidationResult implements Serializable {
+  private static final long serialVersionUID = 1L;
   private boolean result;
   private final List<ValidationResultItem> validationResultItems;
 
   public ValidationResult() {
     this.result = true;
-    this.validationResultItems = new ArrayList<ValidationResultItem>();
+    this.validationResultItems = new ArrayList<>();
   }
 
   public boolean isValid() {

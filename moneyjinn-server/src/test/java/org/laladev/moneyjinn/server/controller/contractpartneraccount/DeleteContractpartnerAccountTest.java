@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.controller.api.ContractpartnerAccountControl
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
+class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   @Inject
   private IContractpartnerAccountService contractpartnerAccountService;
 
@@ -44,7 +44,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularContractpartnerAccountNoData_SuccessfullNoContent() throws Exception {
+   void test_regularContractpartnerAccountNoData_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT2_ID);
@@ -61,7 +61,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingContractpartnerAccount_SuccessfullNoContent() throws Exception {
+   void test_nonExistingContractpartnerAccount_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
         ContractpartnerAccountTransportBuilder.NON_EXISTING_ID);
@@ -78,7 +78,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerAccountFromSameGroupButNotMe_SuccessfullNoContent()
+   void test_ContractpartnerAccountFromSameGroupButNotMe_SuccessfullNoContent()
       throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
@@ -100,7 +100,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ContractpartnerAccountFromDifferentGroup_notSuccessfull() throws Exception {
+   void test_ContractpartnerAccountFromDifferentGroup_notSuccessfull() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -121,7 +121,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -131,7 +131,7 @@ public class DeleteContractpartnerAccountTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

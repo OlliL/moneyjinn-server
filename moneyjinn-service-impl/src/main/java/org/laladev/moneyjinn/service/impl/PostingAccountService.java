@@ -55,6 +55,7 @@ import org.springframework.util.Assert;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
+  private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
   private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
   private final PostingAccountDao postingAccountDao;
   private final PostingAccountDataMapper postingAccountDataMapper;
@@ -67,7 +68,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
   @Override
   public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, "postingAccount must not be null!");
+    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = new ValidationResult();
     if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
       validationResult.addValidationResultItem(
@@ -112,7 +113,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
   @Override
   public void updatePostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, "postingAccount must not be null!");
+    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
     final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
       final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
@@ -131,7 +132,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
   @Override
   public PostingAccountID createPostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, "postingAccount must not be null!");
+    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
     postingAccount.setId(null);
     final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {

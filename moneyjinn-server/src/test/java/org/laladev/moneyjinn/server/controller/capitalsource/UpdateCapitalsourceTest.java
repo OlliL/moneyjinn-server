@@ -27,7 +27,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class UpdateCapitalsourceTest extends AbstractControllerTest {
+class UpdateCapitalsourceTest extends AbstractControllerTest {
   @Inject
   private ICapitalsourceService capitalsourceService;
 
@@ -72,7 +72,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_CapitalsourcenameAlreadyExisting_Error() throws Exception {
+   void test_CapitalsourcenameAlreadyExisting_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
     transport.setComment(CapitalsourceTransportBuilder.CAPITALSOURCE1_COMMENT);
@@ -80,7 +80,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_EmptyCapitalsourcename_Error() throws Exception {
+   void test_EmptyCapitalsourcename_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
     transport.setComment("");
@@ -88,7 +88,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ValidTilBeforeValidFrom_Error() throws Exception {
+   void test_ValidTilBeforeValidFrom_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource2()
         .build();
     transport.setValidTil(LocalDate.parse("2000-01-01"));
@@ -97,7 +97,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ValidityPeriodOutOfUsage_Error() throws Exception {
+   void test_ValidityPeriodOutOfUsage_Error() throws Exception {
     final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forCapitalsource1()
         .build();
     transport.setValidFrom(LocalDate.parse("2010-01-01"));
@@ -105,7 +105,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_Successfull() throws Exception {
+   void test_standardRequest_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -126,7 +126,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestWithCredit_SuccessfullNoContent() throws Exception {
+   void test_standardRequestWithCredit_SuccessfullNoContent() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -149,7 +149,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+   void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -173,7 +173,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_setImportAllowedAll_Successfull() throws Exception {
+   void test_setImportAllowedAll_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -194,7 +194,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_setImportAllowedOnlyBalance_Successfull() throws Exception {
+   void test_setImportAllowedOnlyBalance_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -215,7 +215,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_setImportAllowedNotAllowed_Successfull() throws Exception {
+   void test_setImportAllowedNotAllowed_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -236,7 +236,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ProvisionAsset_Successfull() throws Exception {
+   void test_ProvisionAsset_Successfull() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
@@ -259,7 +259,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_LongTermAsset_Successfull() throws Exception {
+   void test_LongTermAsset_Successfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -280,7 +280,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_editCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
+   void test_editCapitalsourceOwnedBySomeoneElse_notSuccessfull() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
@@ -302,7 +302,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -311,7 +311,7 @@ public class UpdateCapitalsourceTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
     final UpdateCapitalsourceRequest request = new UpdateCapitalsourceRequest();

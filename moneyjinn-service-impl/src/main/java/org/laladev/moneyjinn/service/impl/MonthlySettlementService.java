@@ -59,6 +59,9 @@ import org.springframework.util.Assert;
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MonthlySettlementService extends AbstractService implements IMonthlySettlementService {
+  private static final String YEAR_MUST_NOT_BE_NULL = "year must not be null!";
+  private static final String MONTH_MUST_NOT_BE_NULL = "month must not be null!";
+  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
   private final MonthlySettlementDao monthlySettlementDao;
   private final IUserService userService;
   private final ICapitalsourceService capitalsourceService;
@@ -140,14 +143,14 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
   @Override
   public List<Integer> getAllYears(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.monthlySettlementDao.getAllYears(userId.getId());
   }
 
   @Override
   public List<Month> getAllMonth(final UserID userId, final Integer year) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(year, "year must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(year, YEAR_MUST_NOT_BE_NULL);
     final List<Integer> allMonths = this.monthlySettlementDao.getAllMonth(userId.getId(), year);
     if (allMonths != null) {
       return allMonths.stream().map(m -> Month.of(m.intValue()))
@@ -159,9 +162,9 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
   @Override
   public List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(final UserID userId,
       final Integer year, final Month month) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(year, "year must not be null!");
-    Assert.notNull(month, "month must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(year, YEAR_MUST_NOT_BE_NULL);
+    Assert.notNull(month, MONTH_MUST_NOT_BE_NULL);
     final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
         .getAllMonthlySettlementsByYearMonth(userId.getId(), year, month.getValue());
     return this.mapMonthlySettlementDataList(monthlySettlementDatas);
@@ -169,22 +172,22 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
   @Override
   public LocalDate getMaxSettlementDate(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
   }
 
   @Override
   public LocalDate getMinSettlementDate(final UserID userId) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     return this.monthlySettlementDao.getMinSettlementDate(userId.getId());
   }
 
   @Override
   public boolean checkMonthlySettlementsExists(final UserID userId, final Integer year,
       final Month month) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(year, "year must not be null!");
-    Assert.notNull(month, "month must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(year, YEAR_MUST_NOT_BE_NULL);
+    Assert.notNull(month, MONTH_MUST_NOT_BE_NULL);
     return this.monthlySettlementDao.checkMonthlySettlementsExists(userId.getId(), year,
         month.getValue());
   }
@@ -199,16 +202,16 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
     if (validationResult.isValid()) {
       final List<MonthlySettlementData> monthlySettlementDatas = super.mapList(monthlySettlements,
           MonthlySettlementData.class);
-      monthlySettlementDatas.forEach(msd -> this.monthlySettlementDao.upsertMonthlySettlement(msd));
+      monthlySettlementDatas.forEach(this.monthlySettlementDao::upsertMonthlySettlement);
     }
     return validationResult;
   }
 
   @Override
   public void deleteMonthlySettlement(final UserID userId, final Integer year, final Month month) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(year, "year must not be null!");
-    Assert.notNull(month, "month must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+    Assert.notNull(year, YEAR_MUST_NOT_BE_NULL);
+    Assert.notNull(month, MONTH_MUST_NOT_BE_NULL);
     this.monthlySettlementDao.deleteMonthlySettlement(userId.getId(), year, month.getValue());
   }
 
@@ -216,7 +219,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
   public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(
       final UserID userId, final LocalDate begin, final LocalDate end,
       final List<CapitalsourceID> capitalsourceIds) {
-    Assert.notNull(userId, "UserId must not be null!");
+    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(begin, "begin must not be null!");
     Assert.notNull(end, "end must not be null!");
     Assert.notEmpty(capitalsourceIds, "CapitalsourceIds must not be empty!");

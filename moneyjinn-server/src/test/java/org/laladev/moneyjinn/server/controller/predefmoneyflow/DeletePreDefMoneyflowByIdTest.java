@@ -15,7 +15,7 @@ import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
+class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   @Inject
   private IPreDefMoneyflowService preDefMoneyflowService;
 
@@ -44,7 +44,7 @@ public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_regularPreDefMoneyflow_SuccessfullNoContent() throws Exception {
+   void test_regularPreDefMoneyflow_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW1_ID);
@@ -60,7 +60,7 @@ public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_nonExistingPreDefMoneyflow_SuccessfullNoContent() throws Exception {
+   void test_nonExistingPreDefMoneyflow_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.NON_EXISTING_ID);
@@ -75,7 +75,7 @@ public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_PreDefMoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
+   void test_PreDefMoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
     final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(
         PreDefMoneyflowTransportBuilder.PRE_DEF_MONEYFLOW2_ID);
@@ -91,7 +91,7 @@ public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -101,7 +101,7 @@ public class DeletePreDefMoneyflowByIdTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

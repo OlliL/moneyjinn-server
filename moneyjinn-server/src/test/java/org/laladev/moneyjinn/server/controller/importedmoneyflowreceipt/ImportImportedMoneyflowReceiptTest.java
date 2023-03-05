@@ -24,7 +24,7 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
+class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   @Inject
   IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
   @Inject
@@ -80,19 +80,19 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardJpegRequest_emptyResponse() throws Exception {
+   void test_standardJpegRequest_emptyResponse() throws Exception {
     this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
         MoneyflowReceiptType.JPEG);
   }
 
   @Test
-  public void test_standardPdfRequest_emptyResponse() throws Exception {
+   void test_standardPdfRequest_emptyResponse() throws Exception {
     this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_2ID,
         MoneyflowReceiptType.PDF);
   }
 
   @Test
-  public void test_MoneyflowHasReceiptAlready_errorResponse() throws Exception {
+   void test_MoneyflowHasReceiptAlready_errorResponse() throws Exception {
     final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(
         ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
@@ -105,7 +105,7 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -115,7 +115,7 @@ public class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

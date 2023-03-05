@@ -41,7 +41,7 @@ import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ListReportsV2Test extends AbstractControllerTest {
+class ListReportsV2Test extends AbstractControllerTest {
   @Inject
   private IImportedBalanceService importedBalanceService;
   @Inject
@@ -122,7 +122,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_invalidMonth_defaultsResponse() throws Exception {
+   void test_invalidMonth_defaultsResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
     ListReportsResponse actual = super.callUsecaseExpect200(ListReportsResponse.class, 2010, 13);
@@ -135,7 +135,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberFirstMonthAtAllSettledAndAlsoPreviousMonthSettled_completeResponse()
+   void test_DecemberFirstMonthAtAllSettledAndAlsoPreviousMonthSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2008);
@@ -164,7 +164,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_JanuarySettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
+   void test_JanuarySettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2009);
     expected.setMonth(1);
@@ -198,7 +198,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
+   void test_DecemberSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2009);
     expected.setMonth(12);
@@ -225,7 +225,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_DecemberAndNoMoneyflowsNextMonth_completeResponse() throws Exception {
+   void test_DecemberAndNoMoneyflowsNextMonth_completeResponse() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW14_ID);
     this.moneyflowService.deleteMoneyflow(userId, moneyflowId);
@@ -255,7 +255,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_JanuarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettled_completeResponse()
+   void test_JanuarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
@@ -283,7 +283,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MoneyflowOfDifferentGroupMember_shownTurnoverSortingCorrect() throws Exception {
+   void test_MoneyflowOfDifferentGroupMember_shownTurnoverSortingCorrect() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ListReportsResponse expected = new ListReportsResponse();
@@ -312,7 +312,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_FebruarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
+   void test_FebruarySettledButOneSourceNotSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
@@ -340,7 +340,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MarchSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
+   void test_MarchSettledAndAlsoPreviousMonthSettledButOneSourceNotSettled_completeResponse()
       throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
@@ -368,7 +368,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MayNotSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
+   void test_MayNotSettledAndAlsoPreviousMonthSettled_completeResponse() throws Exception {
     final ListReportsResponse expected = new ListReportsResponse();
     expected.setYear(2010);
     expected.setMonth(5);
@@ -408,7 +408,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_MaywithPrivateMoneyflows_privateMoneyflowNotShown() throws Exception {
+   void test_MaywithPrivateMoneyflows_privateMoneyflowNotShown() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ListReportsResponse expected = new ListReportsResponse();
@@ -450,7 +450,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_ValidityPeriodOfCapitalsourceEndedLastMonth_capitalsourceNotIncludedInTurnover()
+   void test_ValidityPeriodOfCapitalsourceEndedLastMonth_capitalsourceNotIncludedInTurnover()
       throws Exception {
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
@@ -485,7 +485,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -494,7 +494,7 @@ public class ListReportsV2Test extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

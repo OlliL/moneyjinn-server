@@ -163,7 +163,7 @@ public class EtfService extends AbstractService implements IEtfService {
   public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
     Collections.sort(etfFlows, new EtfFlowComparator());
     final List<EtfFlow> etfSalesFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) == -1)
+        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0)
         .collect(Collectors.toCollection(ArrayList::new));
     final List<EtfFlow> etfBuyFlows = etfFlows.stream()
         .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)

@@ -20,7 +20,7 @@ import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
 import org.springframework.test.context.jdbc.Sql;
 
-public class ListEtfOverviewTest extends AbstractControllerTest {
+class ListEtfOverviewTest extends AbstractControllerTest {
   private String userName;
   private String userPassword;
 
@@ -46,7 +46,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequest_FullResponseObject() throws Exception {
+   void test_standardRequest_FullResponseObject() throws Exception {
     final EtfTransport etf = new EtfTransportBuilder().forEtf1().build();
     final EtfEffectiveFlowTransport flow1 = new EtfEffectiveFlowTransportBuilder().forFlow1()
         .build();
@@ -80,7 +80,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -89,7 +89,7 @@ public class ListEtfOverviewTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

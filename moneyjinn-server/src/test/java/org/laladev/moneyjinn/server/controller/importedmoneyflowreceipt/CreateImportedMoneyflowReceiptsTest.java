@@ -24,7 +24,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest {
+class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest {
   @Inject
   IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
 
@@ -77,21 +77,21 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_standardJpegRequest_emptyResponse() throws Exception {
+   void test_standardJpegRequest_emptyResponse() throws Exception {
     this.test_supportedFile_CreatedAndEmptyResponse(
         new ImportedMoneyflowReceiptTransportBuilder().forJpegReceipt().build(),
         UserTransportBuilder.USER1_ID, GroupTransportBuilder.GROUP1_ID);
   }
 
   @Test
-  public void test_standardPdfRequest_emptyResponse() throws Exception {
+   void test_standardPdfRequest_emptyResponse() throws Exception {
     this.test_supportedFile_CreatedAndEmptyResponse(
         new ImportedMoneyflowReceiptTransportBuilder().forPdfReceipt().build(),
         UserTransportBuilder.USER1_ID, GroupTransportBuilder.GROUP1_ID);
   }
 
   @Test
-  public void test_standardPngRequest_errorResponse() throws Exception {
+   void test_standardPngRequest_errorResponse() throws Exception {
     final CreateImportedMoneyflowReceiptsRequest request = new CreateImportedMoneyflowReceiptsRequest();
     request.setImportedMoneyflowReceiptTransports(Collections
         .singletonList(new ImportedMoneyflowReceiptTransportBuilder().forPngReceipt().build()));
@@ -103,7 +103,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_invalidBase64Request_errorResponse() throws Exception {
+   void test_invalidBase64Request_errorResponse() throws Exception {
     final CreateImportedMoneyflowReceiptsRequest request = new CreateImportedMoneyflowReceiptsRequest();
     final ImportedMoneyflowReceiptTransport transport = new ImportedMoneyflowReceiptTransportBuilder()
         .forPngReceipt().build();
@@ -116,7 +116,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
   }
 
   @Test
-  public void test_AuthorizationRequired_Error() throws Exception {
+   void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 
@@ -125,7 +125,7 @@ public class CreateImportedMoneyflowReceiptsTest extends AbstractControllerTest 
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     this.userName = UserTransportBuilder.ADMIN_NAME;
     this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 

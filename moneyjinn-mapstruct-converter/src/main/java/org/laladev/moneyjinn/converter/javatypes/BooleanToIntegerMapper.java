@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
 public abstract class BooleanToIntegerMapper {
-  private static Integer TRUE = 1;
+  private static final Integer TRUE = 1;
 
   public boolean mapBToA(final Integer b) {
     if (b == null) {

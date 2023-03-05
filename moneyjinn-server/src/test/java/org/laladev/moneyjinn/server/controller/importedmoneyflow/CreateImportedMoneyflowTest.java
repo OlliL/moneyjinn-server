@@ -22,7 +22,7 @@ import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
-public class CreateImportedMoneyflowTest extends AbstractControllerTest {
+class CreateImportedMoneyflowTest extends AbstractControllerTest {
   @Inject
   private IImportedMoneyflowService importedMoneyflowService;
 
@@ -42,7 +42,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
+   void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -69,7 +69,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_insertwithDuplicateExternalId_NotSuccessfullButIgnored() throws Exception {
+   void test_insertwithDuplicateExternalId_NotSuccessfullButIgnored() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -90,7 +90,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
+   void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -120,7 +120,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_emptyContractpartnerBankAccount_SuccessfullNoContent() throws Exception {
+   void test_emptyContractpartnerBankAccount_SuccessfullNoContent() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
@@ -149,7 +149,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
+   void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
@@ -167,7 +167,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_capitalsourceAllowsOnlyBalancesToBeImported_errorResponse() throws Exception {
+   void test_capitalsourceAllowsOnlyBalancesToBeImported_errorResponse() throws Exception {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
@@ -185,7 +185,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownAccountNumber_errorResponse() throws Exception {
+   void test_unknownAccountNumber_errorResponse() throws Exception {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
@@ -201,7 +201,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
   }
 
   @Test
-  public void test_unknownBankCode_errorResponse() throws Exception {
+   void test_unknownBankCode_errorResponse() throws Exception {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
@@ -218,7 +218,7 @@ public class CreateImportedMoneyflowTest extends AbstractControllerTest {
 
   @Test
   @Sql("classpath:h2defaults.sql")
-  public void test_emptyDatabase_noException() throws Exception {
+  void test_emptyDatabase_noException() throws Exception {
     final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forNewImportedMoneyflow().build();
