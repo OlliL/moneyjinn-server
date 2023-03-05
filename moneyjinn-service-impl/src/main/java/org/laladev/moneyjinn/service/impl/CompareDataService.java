@@ -326,9 +326,10 @@ public class CompareDataService extends AbstractService implements ICompareDataS
     final List<CompareDataDataset> compareDataDatasets = new ArrayList<>();
     final CSVParser parser = new CSVParserBuilder().withSeparator(compareDataFormat.getDelimiter())
         .build();
-    final CSVReader cvsReader = new CSVReaderBuilder(new StringReader(fileContents))
-        .withCSVParser(parser).build();
-    try {
+
+    try (final CSVReader cvsReader = new CSVReaderBuilder(new StringReader(fileContents))
+        .withCSVParser(parser).build();) {
+
       final List<String[]> cvsLines = cvsReader.readAll();
       boolean match = false;
       final DateTimeFormatter dateFormat = compareDataFormat.getFormatDate();
@@ -336,6 +337,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
       final Pattern partnerAlternativeIndicator = compareDataFormat
           .getPartnerAlternativeIndicator();
       final Pattern creditIndicator = compareDataFormat.getCreditIndicator();
+
       for (final String[] cmpDataRaw : cvsLines) {
         if (cmpDataRaw.length >= 3) {
           final List<String> startLine = Arrays.asList(cmpDataRaw[0], cmpDataRaw[1], cmpDataRaw[2]);
@@ -406,12 +408,6 @@ public class CompareDataService extends AbstractService implements ICompareDataS
       }
     } catch (final IOException | CsvException e) {
       throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
-    } finally {
-      try {
-        cvsReader.close();
-      } catch (final IOException e) {
-        throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
-      }
     }
     return compareDataDatasets;
   }
