@@ -34,8 +34,8 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -54,7 +54,7 @@ public interface MoneyflowTransportMapper extends IMapper<Moneyflow, MoneyflowTr
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "group", ignore = true)
   @Mapping(target = "moneyflowSplitEntries", ignore = true)
-  Moneyflow mapBToA(MoneyflowTransport MoneyflowTransport);
+  Moneyflow mapBToA(MoneyflowTransport moneyflowTransport);
 
   @Override
   @Mapping(target = "bookingdate", source = "bookingDate")
