@@ -1,25 +1,18 @@
 {
-	"allOf": [
-		{
-			"$ref": "ErrorResponse.json"
+	"type": "object",
+	"required": [
+		"result",
+		"validationItemTransports"
+	],
+	"properties": {
+		"result": {
+			"type": "boolean"
 		},
-		{
-			"type": "object",
-			"required": [
-				"result",
-				"validationItemTransports"
-			],
-			"properties": {
-				"result": {
-					"type": "boolean"
-				},
-				"validationItemTransports": {
-					"type": "array",
-					"items": {
-						"$ref": "../transport/ValidationItemTransport.json"
-					}
-				}
+		"validationItemTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../transport/ValidationItemTransport.json"
 			}
 		}
-	]
+	}
 }

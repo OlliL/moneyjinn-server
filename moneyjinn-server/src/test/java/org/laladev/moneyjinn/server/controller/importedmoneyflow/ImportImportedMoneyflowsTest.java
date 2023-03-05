@@ -104,8 +104,6 @@ public class ImportImportedMoneyflowsTest extends AbstractControllerTest {
 
     final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-    Assertions.assertEquals(expected.getCode(), actual.getCode());
-    Assertions.assertEquals(expected.getMessage(), actual.getMessage());
     Assertions.assertEquals(expected.getResult(), actual.getResult());
     Assertions.assertEquals(expected, actual);
   }
