@@ -55,7 +55,7 @@ public class WebSocketSecurityConfig {
    * {@link org.springframework.security.config.annotation.web.socket.WebSocketMessageBrokerSecurityConfiguration#CSRF_CHANNEL_INTERCEPTOR_BEAN_NAME}
    * on how its applied.
    *
-   * @return
+   * @return CsrfChannelInterceptor
    */
   @Bean
   public ChannelInterceptor csrfChannelInterceptor() {
