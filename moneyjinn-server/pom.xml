@@ -180,6 +180,16 @@
 				</executions>
 				<configuration>
 					<mainClass>${start-class}</mainClass>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+						<exclude>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct</artifactId>
+						</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
