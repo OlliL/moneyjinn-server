@@ -85,7 +85,7 @@ public final class LalaHBCI {
    * @throws IOException
    */
   private void process(final String passport, final EntityManager entityManager,
-      final List<PropertyChangeListener> observerList) throws IOException {
+      final List<PropertyChangeListener> observerList) {
 
     ((LalaHBCICallback) HBCIUtilsInternal.getCallback())
         .setPassportPassword(this.getPassword(passport));
