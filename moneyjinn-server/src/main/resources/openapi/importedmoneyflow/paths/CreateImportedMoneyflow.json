@@ -6,7 +6,7 @@
 		"operationId": "createImportedMoneyflow",
 		"requestBody": {
 			"content": {
-				"application/json": {
+				"application/json; charset=UTF-8": {
 					"schema": {
 						"$ref": "../schemas/CreateImportedMoneyflowRequest.json"
 					}
