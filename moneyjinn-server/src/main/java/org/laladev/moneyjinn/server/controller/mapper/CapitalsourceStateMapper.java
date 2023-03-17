@@ -31,36 +31,32 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceStateMapper {
-  private static final Integer NON_CACHE_SHORT = 1;
-  private static final Integer CACHE_SHORT = 2;
+  private static final int NON_CACHE_INT = 1;
+  private static final int CACHE_INT = 2;
 
   private CapitalsourceStateMapper() {
   }
 
   public static CapitalsourceState map(final Integer state) {
     if (state != null) {
-      switch (state) {
-        case 1:
-          return CapitalsourceState.NON_CACHE;
-        case 2:
-          return CapitalsourceState.CACHE;
-        default:
+      return switch (state) {
+        case NON_CACHE_INT -> CapitalsourceState.NON_CACHE;
+        case CACHE_INT -> CapitalsourceState.CACHE;
+        default ->
           throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }
 
   public static Integer map(final CapitalsourceState state) {
     if (state != null) {
-      switch (state) {
-        case NON_CACHE:
-          return NON_CACHE_SHORT;
-        case CACHE:
-          return CACHE_SHORT;
-        default:
+      return switch (state) {
+        case NON_CACHE -> NON_CACHE_INT;
+        case CACHE -> CACHE_INT;
+        default ->
           throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }

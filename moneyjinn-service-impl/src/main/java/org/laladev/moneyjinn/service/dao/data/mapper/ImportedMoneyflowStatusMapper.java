@@ -31,41 +31,35 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 
 public class ImportedMoneyflowStatusMapper {
-  private static final Integer CREATED = 0;
-  private static final Integer PROCESSED = 1;
-  private static final Integer IGNORED = 2;
+  private static final int CREATED_INT = 0;
+  private static final int PROCESSED_INT = 1;
+  private static final int IGNORED_INT = 2;
 
   private ImportedMoneyflowStatusMapper() {
   }
 
   public static ImportedMoneyflowStatus map(final Integer type) {
     if (type != null) {
-      switch (type) {
-        case 0:
-          return ImportedMoneyflowStatus.CREATED;
-        case 1:
-          return ImportedMoneyflowStatus.PROCESSED;
-        case 2:
-          return ImportedMoneyflowStatus.IGNORED;
-        default:
+      return switch (type) {
+        case CREATED_INT -> ImportedMoneyflowStatus.CREATED;
+        case PROCESSED_INT -> ImportedMoneyflowStatus.PROCESSED;
+        case IGNORED_INT -> ImportedMoneyflowStatus.IGNORED;
+        default ->
           throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }
 
   public static Integer map(final ImportedMoneyflowStatus type) {
     if (type != null) {
-      switch (type) {
-        case CREATED:
-          return CREATED;
-        case PROCESSED:
-          return PROCESSED;
-        case IGNORED:
-          return IGNORED;
-        default:
+      return switch (type) {
+        case CREATED -> CREATED_INT;
+        case PROCESSED -> PROCESSED_INT;
+        case IGNORED -> IGNORED_INT;
+        default ->
           throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }

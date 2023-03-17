@@ -31,36 +31,32 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
 public class MoneyflowReceiptTypeMapper {
-  private static final Integer JPEG = 1;
-  private static final Integer PDF = 2;
+  private static final int JPEG_INT = 1;
+  private static final int PDF_INT = 2;
 
   private MoneyflowReceiptTypeMapper() {
   }
 
   public static MoneyflowReceiptType map(final Integer type) {
     if (type != null) {
-      switch (type) {
-        case 1:
-          return MoneyflowReceiptType.JPEG;
-        case 2:
-          return MoneyflowReceiptType.PDF;
-        default:
+      return switch (type) {
+        case JPEG_INT -> MoneyflowReceiptType.JPEG;
+        case PDF_INT -> MoneyflowReceiptType.PDF;
+        default ->
           throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }
 
   public static Integer map(final MoneyflowReceiptType type) {
     if (type != null) {
-      switch (type) {
-        case JPEG:
-          return JPEG;
-        case PDF:
-          return PDF;
-        default:
+      return switch (type) {
+        case JPEG -> JPEG_INT;
+        case PDF -> PDF_INT;
+        default ->
           throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      }
+      };
     }
     return null;
   }
