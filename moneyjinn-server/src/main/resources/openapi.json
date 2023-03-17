@@ -11,6 +11,24 @@
 		}
 	],
 	"paths": {
+		"/moneyflow/server/capitalsources": {
+			"$ref": "openapi/capitalsource/paths/CrudCapitalsource.json"
+		},
+		"/moneyflow/server/capitalsources/{id}": {
+			"$ref": "openapi/capitalsource/paths/CrudCapitalsourceId.json"
+		},
+		"/moneyflow/server/contractpartners": {
+			"$ref": "openapi/contractpartner/paths/CrudContractpartner.json"
+		},
+		"/moneyflow/server/contractpartners/{id}": {
+			"$ref": "openapi/contractpartner/paths/CrudContractpartnerId.json"
+		},
+		"/moneyflow/server/contractpartneraccounts": {
+			"$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccount.json"
+		},
+		"/moneyflow/server/contractpartneraccounts/{id}": {
+			"$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccountId.json"
+		},
 		"/moneyflow/server/user/changePassword": {
 			"$ref": "openapi/user/paths/ChangePassword.json"
 		},

@@ -8,6 +8,13 @@ import jakarta.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
@@ -33,6 +40,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class AbstractControllerTest extends AbstractTest {
+  protected static final String HEADER_PREFER = "Prefer";
+  private static final String HEADER_PREFERENCE_APPLIED = "Preference-Applied";
+  private static final String RETURN = "return=";
+  private static final String RETURN_MINIMAL = RETURN + "minimal";
+  private static final String RETURN_REPRESENTATION = RETURN + "representation";
+
+  private static final HttpHeaders HEADER_RETURN_MINIMAL = new HttpHeaders();
+  private static final HttpHeaders HEADER_RETURN_REPRESENTATION = new HttpHeaders();
+
   @Inject
   private ObjectMapper objectMapper;
   @Inject
@@ -43,12 +59,33 @@ public abstract class AbstractControllerTest extends AbstractTest {
   private JwtCache jwtCache;
   private String overrideJwtToken;
   private Method method = null;
+  private String userName;
+  private String userPassword;
 
-  protected abstract String getUsername();
-
-  protected abstract String getPassword();
+  {
+    HEADER_RETURN_MINIMAL.add(HEADER_PREFER, RETURN_MINIMAL);
+    HEADER_RETURN_REPRESENTATION.add(HEADER_PREFER, RETURN_REPRESENTATION);
+  }
 
   protected abstract void loadMethod();
+
+  // TODO: make private after refactoring done
+  protected String getUsername() {
+    return this.userName;
+  }
+
+  // TODO: make private after refactoring done
+  protected String getPassword() {
+    return this.userPassword;
+  }
+
+  protected void setUsername(final String userName) {
+    this.userName = userName;
+  }
+
+  protected void setPassword(final String password) {
+    this.userPassword = password;
+  }
 
   protected void setOverrideJwtToken(final String overrideJwtToken) {
     this.overrideJwtToken = overrideJwtToken;
@@ -120,13 +157,22 @@ public abstract class AbstractControllerTest extends AbstractTest {
         .with(SecurityMockMvcRequestPostProcessors.csrf()).accept(MediaType.APPLICATION_JSON)
         .characterEncoding(StandardCharsets.UTF_8.name())).andReturn();
 
+    final String returnHeaderValue = this.getReturnFromPreferHeader(result);
+    final String returnHeaderAppliedValue = this.getReturnFromPreferenceAppliedHeader(result);
+
+    if (RETURN_REPRESENTATION.equals(returnHeaderValue)
+        || RETURN_MINIMAL.equals(returnHeaderValue)) {
+      Assertions.assertEquals(returnHeaderValue, returnHeaderAppliedValue);
+    }
+
     final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
     Assertions.assertNotNull(content);
+
     Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
 
     if (clazz != null) {
       Assertions.assertTrue(content.length() > 0,
-          "Response is empty, but 'noResult' was not specified!");
+          "Response is empty, but a deserialisation class was specified!");
       final T actual = this.objectMapper.readValue(content, clazz);
       return actual;
     }
@@ -135,60 +181,93 @@ public abstract class AbstractControllerTest extends AbstractTest {
     return null;
   }
 
+  private String getReturnFromPreferenceAppliedHeader(final MvcResult result) {
+    final List<String> headerPreferenceApplied = result.getResponse()
+        .getHeaders(HEADER_PREFERENCE_APPLIED);
+    final String returnHeaderAppliedValue = Optional.ofNullable(headerPreferenceApplied)
+        .orElse(Collections.emptyList()).stream().map(String::toLowerCase)
+        .filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
+    return returnHeaderAppliedValue;
+  }
+
+  private String getReturnFromPreferHeader(final MvcResult result) {
+    final Enumeration<String> headerPrefer = result.getRequest().getHeaders(HEADER_PREFER);
+    final String returnHeaderValue = StreamSupport
+        .stream(Spliterators.spliteratorUnknownSize(
+            Optional.ofNullable(headerPrefer).orElse(Collections.emptyEnumeration()).asIterator(),
+            Spliterator.ORDERED), false)
+        .map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
+    return returnHeaderValue;
+  }
+
   protected <T> T callUsecaseExpect200(final Object body, final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(body, clazz, HttpStatus.OK);
+    return this.callUsecaseNew(body, clazz, HttpStatus.OK, null);
+  }
+
+  protected <T> T callUsecaseExpect200Representation(final Object body, final Class<T> clazz)
+      throws Exception {
+    return this.callUsecaseNew(body, clazz, HttpStatus.OK, HEADER_RETURN_REPRESENTATION);
   }
 
   protected <T> T callUsecaseExpect200(final Class<T> clazz, final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, clazz, HttpStatus.OK, uriVariables);
+    return this.callUsecaseNew(null, clazz, HttpStatus.OK, null, uriVariables);
   }
 
   protected <T> T callUsecaseExpect204(final Object body) throws Exception {
-    return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT);
+    return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, null);
+  }
+
+  protected <T> T callUsecaseExpect204Minimal(final Object body) throws Exception {
+    return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, HEADER_RETURN_MINIMAL);
   }
 
   protected <T> T callUsecaseExpect204WithUriVariables(final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, null, HttpStatus.NO_CONTENT, uriVariables);
+    return this.callUsecaseNew(null, null, HttpStatus.NO_CONTENT, null, uriVariables);
   }
 
   protected <T> T callUsecaseExpect400(final Object body, final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(body, clazz, HttpStatus.BAD_REQUEST);
+    return this.callUsecaseNew(body, clazz, HttpStatus.BAD_REQUEST, null);
   }
 
   protected <T> T callUsecaseExpect400(final Class<T> clazz, final Object... uriVariables)
       throws Exception {
-    return this.callUsecaseNew(null, clazz, HttpStatus.BAD_REQUEST, uriVariables);
+    return this.callUsecaseNew(null, clazz, HttpStatus.BAD_REQUEST, null, uriVariables);
   }
 
   protected void callUsecaseExpect403() throws Exception {
-    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN);
+    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN, null);
   }
 
   protected void callUsecaseExpect403WithUriVariables(final Object... uriVariables)
       throws Exception {
-    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN, uriVariables);
+    this.callUsecaseNew(null, null, HttpStatus.FORBIDDEN, null, uriVariables);
   }
 
   protected <T> T callUsecaseExpect403(final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(null, clazz, HttpStatus.FORBIDDEN);
+    return this.callUsecaseNew(null, clazz, HttpStatus.FORBIDDEN, null);
   }
 
   protected void callUsecaseExpect403(final Object body) throws Exception {
-    this.callUsecaseNew(body, null, HttpStatus.FORBIDDEN);
+    this.callUsecaseNew(body, null, HttpStatus.FORBIDDEN, null);
   }
 
   protected <T> T callUsecaseExpect403(final Object body, final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(body, clazz, HttpStatus.FORBIDDEN);
+    return this.callUsecaseNew(body, clazz, HttpStatus.FORBIDDEN, null);
+  }
+
+  protected void callUsecaseExpect404(final Object... uriVariables) throws Exception {
+    this.callUsecaseNew(null, null, HttpStatus.NOT_FOUND, null, uriVariables);
   }
 
   protected <T> T callUsecaseExpect422(final Object body, final Class<T> clazz) throws Exception {
-    return this.callUsecaseNew(body, clazz, HttpStatus.UNPROCESSABLE_ENTITY);
+    return this.callUsecaseNew(body, clazz, HttpStatus.UNPROCESSABLE_ENTITY, null);
   }
 
   private <T> T callUsecaseNew(final Object body, final Class<T> responseClazz,
-      final HttpStatus expectedHttpStatus, final Object... uriVariables) throws Exception {
+      final HttpStatus expectedHttpStatus, final HttpHeaders httpHeaders,
+      final Object... uriVariables) throws Exception {
 
     if (this.method == null) {
       this.loadMethod();
@@ -196,6 +275,10 @@ public abstract class AbstractControllerTest extends AbstractTest {
 
     final MockHttpServletRequestBuilder builder = this
         .createMockHttpServletRequestBuilder(this.method, body, uriVariables);
+
+    if (httpHeaders != null) {
+      builder.headers(httpHeaders);
+    }
 
     return this.executeCall(responseClazz, expectedHttpStatus, builder);
   }

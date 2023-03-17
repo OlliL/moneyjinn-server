@@ -24,16 +24,27 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
+import org.laladev.moneyjinn.model.AbstractEntity;
+import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.exception.ValidationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AbstractController extends AbstractMapperSupport {
+  protected static final String HEADER_PREFER = "Prefer";
+  private static final String HEADER_PREFERENCE_APPLIED = "Preference-Applied";
+  private static final String RETURN = "return=";
+  private static final String RETURN_MINIMAL = RETURN + "minimal";
+  private static final String RETURN_REPRESENTATION = RETURN + "representation";
   protected static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
 
   protected UserID getUserId() {
@@ -49,6 +60,23 @@ public abstract class AbstractController extends AbstractMapperSupport {
   protected void throwValidationExceptionIfInvalid(final ValidationResult validationResult) {
     if (!validationResult.isValid()) {
       throw new ValidationException(validationResult);
+    }
+  }
+
+  protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer,
+      final AbstractEntity<? extends AbstractEntityID<?>> model, final Class<T> transportClass) {
+
+    final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList())
+        .stream().map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
+
+    switch (returnHeaderValue) {
+      case RETURN_REPRESENTATION:
+        return ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
+            .body(super.map(model, transportClass));
+      case RETURN_MINIMAL:
+        return ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
+      default:
+        return ResponseEntity.noContent().build();
     }
   }
 }

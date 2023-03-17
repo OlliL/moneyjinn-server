@@ -179,6 +179,7 @@ public class ContractpartnerAccountService extends AbstractService
     Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
     contractpartnerAccount.setId(null);
+
     final ValidationResult validationResult = this.validateContractpartnerAccount(userId,
         contractpartnerAccount);
     if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -187,14 +188,18 @@ public class ContractpartnerAccountService extends AbstractService
       throw new BusinessException("ContractpartnerAccount creation failed!",
           validationResultItem.getError());
     }
+
     final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
         ContractpartnerAccountData.class);
     final Long contractpartnerAccountId = this.contractpartnerAccountDao
         .createContractpartnerAccount(contractpartnerAccountData);
-    this.evictContractpartnerAccountCache(userId,
-        new ContractpartnerAccountID(contractpartnerAccountId),
+    final ContractpartnerAccountID id = new ContractpartnerAccountID(contractpartnerAccountId);
+
+    this.evictContractpartnerAccountCache(userId, id,
         contractpartnerAccount.getContractpartner().getId());
-    return new ContractpartnerAccountID(contractpartnerAccountId);
+
+    contractpartnerAccount.setId(id);
+    return id;
   }
 
   @Override
