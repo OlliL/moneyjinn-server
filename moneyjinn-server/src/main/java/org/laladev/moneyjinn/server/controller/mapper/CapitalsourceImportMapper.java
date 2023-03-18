@@ -54,7 +54,7 @@ public class CapitalsourceImportMapper {
   public static Integer map(final CapitalsourceImport capitalsourceImport) {
     if (capitalsourceImport != null) {
       return switch (capitalsourceImport) {
-        case NOT_ALLOWED -> NOT_ALLOWED_INT;
+        case NOT_ALLOWED -> null;
         case ALL_ALLOWED -> ALL_ALLOWED_INT;
         case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
         default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
