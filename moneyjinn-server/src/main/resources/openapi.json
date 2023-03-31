@@ -53,47 +53,11 @@
 		"/moneyflow/server/user/updateUser": {
 			"$ref": "openapi/user/paths/UpdateUser.json"
 		},
-		"/moneyflow/server/capitalsource/createCapitalsource": {
-			"$ref": "openapi/capitalsource/paths/CreateCapitalsource.json"
-		},
-		"/moneyflow/server/capitalsource/deleteCapitalsourceById/{id}": {
-			"$ref": "openapi/capitalsource/paths/DeleteCapitalsourceById.json"
-		},
-		"/moneyflow/server/capitalsource/showCapitalsourceList": {
-			"$ref": "openapi/capitalsource/paths/ShowCapitalsourceList.json"
-		},
-		"/moneyflow/server/capitalsource/updateCapitalsource": {
-			"$ref": "openapi/capitalsource/paths/UpdateCapitalsource.json"
-		},
 		"/moneyflow/server/comparedata/compareData": {
 			"$ref": "openapi/comparedata/paths/CompareData.json"
 		},
 		"/moneyflow/server/comparedata/showCompareDataForm": {
 			"$ref": "openapi/comparedata/paths/ShowCompareDataForm.json"
-		},
-		"/moneyflow/server/contractpartner/updateContractpartner": {
-			"$ref": "openapi/contractpartner/paths/UpdateContractpartner.json"
-		},
-		"/moneyflow/server/contractpartner/createContractpartner": {
-			"$ref": "openapi/contractpartner/paths/CreateContractpartner.json"
-		},
-		"/moneyflow/server/contractpartner/showContractpartnerList": {
-			"$ref": "openapi/contractpartner/paths/ShowContractpartnerList.json"
-		},
-		"/moneyflow/server/contractpartner/deleteContractpartner/{id}": {
-			"$ref": "openapi/contractpartner/paths/DeleteContractpartner.json"
-		},
-		"/moneyflow/server/contractpartneraccount/createContractpartnerAccount": {
-			"$ref": "openapi/contractpartneraccount/paths/CreateContractpartnerAccount.json"
-		},
-		"/moneyflow/server/contractpartneraccount/deleteContractpartnerAccount/{id}": {
-			"$ref": "openapi/contractpartneraccount/paths/DeleteContractpartnerAccount.json"
-		},
-		"/moneyflow/server/contractpartneraccount/showContractpartnerAccountList/{id}": {
-			"$ref": "openapi/contractpartneraccount/paths/ShowContractpartnerAccountList.json"
-		},
-		"/moneyflow/server/contractpartneraccount/updateContractpartnerAccount": {
-			"$ref": "openapi/contractpartneraccount/paths/UpdateContractpartnerAccount.json"
 		},
 		"/moneyflow/server/etf/calcEtfSale": {
 			"$ref": "openapi/etf/paths/CalcEtfSale.json"
