@@ -4,10 +4,10 @@
 			"crud-contractpartner-account-controller"
 		],
 		"operationId": "readAll",
-		"description": "Returns all contractpartneraccounts for the given contractpartnerId.",
+		"description": "Returns all contractpartneraccounts for the given id of the contractpartner.",
 		"parameters": [
 			{
-				"name": "contractpartnerId",
+				"name": "id",
 				"in": "path",
 				"required": true,
 				"schema": {
