@@ -41,6 +41,7 @@ import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -83,8 +84,8 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(this.allowedOrigins);
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
     configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(
-        Arrays.asList("Authorization", "Content-Type", "x-csrf-token", "x-xsrf-token"));
+    configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION,
+        HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/moneyflow/server/**", configuration);
     return source;

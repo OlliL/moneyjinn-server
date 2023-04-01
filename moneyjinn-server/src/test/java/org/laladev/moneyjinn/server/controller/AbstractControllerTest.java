@@ -102,7 +102,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
     final HttpHeaders httpHeaders = new HttpHeaders();
 
     if (this.overrideJwtToken != null) {
-      httpHeaders.add("Authorization", "Bearer " + this.overrideJwtToken);
+      httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + this.overrideJwtToken);
       return httpHeaders;
     }
 
@@ -143,7 +143,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
       jwtToken = actual.getToken();
       this.jwtCache.putJwt(loginRequest, jwtToken);
     }
-    httpHeaders.add("Authorization", "Bearer " + jwtToken);
+    httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
     return httpHeaders;
   }
 

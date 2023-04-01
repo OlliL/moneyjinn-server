@@ -44,6 +44,7 @@ import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -142,7 +143,7 @@ public class JwtTokenProvider {
   }
 
   public String resolveToken(final HttpServletRequest req) {
-    final String bearerToken = req.getHeader("Authorization");
+    final String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
     if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
       return bearerToken.substring(7, bearerToken.length());
     }
