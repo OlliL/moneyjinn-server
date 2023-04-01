@@ -1,4 +1,4 @@
-//Copyright (c) 2018-2023 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,31 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.server.config;
+package org.laladev.moneyjinn.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
+import org.springframework.security.web.firewall.RequestRejectedHandler;
 
-public class MyObjectMapper extends ObjectMapper {
-  private static final long serialVersionUID = 1L;
+@SuppressWarnings("deprecation")
+@Configuration
+public class TestBeanProducer {
 
-  public MyObjectMapper() {
-    super();
-    super.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    super.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    super.registerModule(new JavaTimeModule());
+  @Bean
+  public PasswordEncoder getPasswordEncoder() {
+    return NoOpPasswordEncoder.getInstance();
+  }
+
+  /**
+   * Send HTTP Status Code 400 in case of a Rejected URL.
+   *
+   * @return RequestRejectedHandler
+   */
+  @Bean
+  public RequestRejectedHandler requestRejectedHandler() {
+    return new HttpStatusRequestRejectedHandler();
   }
 }

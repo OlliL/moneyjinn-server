@@ -18,6 +18,5 @@ public class MockConfiguration {
   public MockMvc mockMvc() {
     return MockMvcBuilders.webAppContextSetup(this.applicationContext)
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
-    // .addFilter(new BufferFilter(), "/moneyflow/*").build();
   }
 }

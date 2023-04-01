@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
-import org.laladev.moneyjinn.server.config.JwtCache;
+import org.laladev.moneyjinn.config.JwtCache;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;

@@ -22,24 +22,22 @@
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-package org.laladev.moneyjinn.server.config;
+package org.laladev.moneyjinn.config;
 
+import org.laladev.moneyjinn.server.config.BeanProducer;
+import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
 import org.laladev.moneyjinn.server.main.MoneyJinnServer;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 
-@SpringBootConfiguration
 @Configuration
-@ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
-    "org.laladev.moneyjinn.server" }, excludeFilters = {
+@ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.config",
+    "org.laladev.moneyjinn.service", "org.laladev.moneyjinn.server" }, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = BeanProducer.class),
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyJinnServer.class) })
-@EnableAspectJAutoProxy
 @EnableAutoConfiguration
 public class MoneyjinnTestConfiguration {
 }

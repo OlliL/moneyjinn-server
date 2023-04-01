@@ -24,17 +24,13 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@SpringBootConfiguration
 @Configuration
 @ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
     "org.laladev.moneyjinn.server" })
-@EnableAspectJAutoProxy
 @EnableAutoConfiguration
 public class MoneyjinnConfiguration {
 }

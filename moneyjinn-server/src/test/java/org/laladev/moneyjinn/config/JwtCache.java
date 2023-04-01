@@ -1,5 +1,5 @@
 
-package org.laladev.moneyjinn.server.config;
+package org.laladev.moneyjinn.config;
 
 import java.util.concurrent.ConcurrentHashMap;
 import org.laladev.moneyjinn.server.model.LoginRequest;
