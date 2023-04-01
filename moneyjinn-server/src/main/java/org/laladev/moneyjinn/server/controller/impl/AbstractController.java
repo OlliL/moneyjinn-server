@@ -69,14 +69,13 @@ public abstract class AbstractController extends AbstractMapperSupport {
     final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList())
         .stream().map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
 
-    switch (returnHeaderValue) {
-      case RETURN_REPRESENTATION:
-        return ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
+    return switch (returnHeaderValue) {
+      case RETURN_REPRESENTATION ->
+        ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
             .body(super.map(model, transportClass));
-      case RETURN_MINIMAL:
-        return ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
-      default:
-        return ResponseEntity.noContent().build();
-    }
+      case RETURN_MINIMAL ->
+        ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
+      default -> ResponseEntity.noContent().build();
+    };
   }
 }
