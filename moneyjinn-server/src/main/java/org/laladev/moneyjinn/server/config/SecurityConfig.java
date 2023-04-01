@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -67,10 +68,12 @@ public class SecurityConfig {
   @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
   private List<String> allowedOrigins;
 
-  private static final String[] OPEN_ENDPOINTS = { "/moneyflow/server/user/login",
-      "/moneyflow/server/importedbalance/createImportedBalance",
-      "/moneyflow/server/importedmoneyflow/createImportedMoneyflow",
-      "/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement" };
+  private static final String API_ROOT = "/moneyflow/server";
+
+  private static final String[] OPEN_ENDPOINTS = { API_ROOT + "/user/login",
+      API_ROOT + "/importedbalance/createImportedBalance",
+      API_ROOT + "/importedmoneyflow/createImportedMoneyflow",
+      API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement" };
 
   @Bean
   public AuthenticationManager authenticationManager(
@@ -82,12 +85,13 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     final CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(this.allowedOrigins);
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name(),
+        HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
     configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION,
         HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/moneyflow/server/**", configuration);
+    source.registerCorsConfiguration(API_ROOT + "/**", configuration);
     return source;
   }
 
@@ -95,7 +99,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     //@formatter:off
     http.logout()
-          .logoutUrl("/moneyflow/server/logout")
+          .logoutUrl(API_ROOT + "/logout")
           .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))).and()
         .httpBasic().disable()
         .cors().and()
@@ -109,8 +113,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
-            .requestMatchers("/moneyflow/server/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers("/moneyflow/server/**").hasAuthority("LOGIN")
+            .requestMatchers(API_ROOT + "/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+            .requestMatchers(API_ROOT + "/**").hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
             .anyRequest().authenticated()
