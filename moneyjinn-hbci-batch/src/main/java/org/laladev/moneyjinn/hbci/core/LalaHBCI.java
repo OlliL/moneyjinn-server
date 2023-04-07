@@ -116,6 +116,20 @@ public final class LalaHBCI {
       final Konto[] accounts = hbciPassport.getAccounts();
 
       for (final Konto account : accounts) {
+
+        if (account.bic == null && account.iban == null && account.number != null
+            && account.blz != null) {
+          account.iban = HBCIUtils.getIBANForKonto(account);
+        }
+
+        if (account.bic == null && account.iban != null) {
+          final String blz = account.iban.substring(4, 12);
+          final BankInfo bankInfo = HBCIUtils.getBankInfo(blz);
+          if (bankInfo != null) {
+            account.bic = bankInfo.getBic();
+          }
+        }
+
         final AccountMovementCollector accountMovementCollector = new AccountMovementCollector();
         final BalanceDailyCollector balanceDailyCollector = new BalanceDailyCollector();
 
