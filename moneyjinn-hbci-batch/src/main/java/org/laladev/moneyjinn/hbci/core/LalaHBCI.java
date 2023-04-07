@@ -35,6 +35,7 @@ import java.util.Properties;
 import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.kapott.hbci.manager.BankInfo;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.manager.HBCIUtilsInternal;
@@ -197,6 +198,30 @@ public final class LalaHBCI {
         System.out.println("2===> MyBic: " + accountEntity.getMyBic());
       }
     }
+
+    if (accountEntity instanceof final AccountMovement accountMovement) {
+      System.out.println("3===> OtherIban: " + accountMovement.getOtherIban());
+      System.out.println("3===> OtherBic: " + accountMovement.getOtherBic());
+      System.out.println("3===> OtherAccountnumber: " + accountMovement.getOtherAccountnumber());
+      System.out.println("3===> OtherBankcode: " + accountMovement.getOtherBankcode());
+      if (accountMovement.getOtherIban() != null) {
+        String bic = accountMovement.getOtherBic();
+        if (bic.length() < 6) {
+          final String blz = accountMovement.getOtherIban().substring(4, 12);
+          final BankInfo bankInfo = HBCIUtils.getBankInfo(blz);
+          if (bankInfo != null) {
+            bic = bankInfo.getBic();
+            System.out.println("4===> OtherBic: " + bic);
+          } else {
+            final String propertyBic = this.getProperty("hbci.mapping.blz." + blz);
+            bic = propertyBic != null ? propertyBic : "XXXXXXXXXXX";
+            System.out.println("5===> OtherBic: " + bic);
+          }
+          accountMovement.setOtherBic(bic);
+        }
+      }
+    }
+
     System.out.println("==========================");
 
   }
