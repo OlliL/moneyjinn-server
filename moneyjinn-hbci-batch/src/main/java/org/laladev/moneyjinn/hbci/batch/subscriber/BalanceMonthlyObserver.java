@@ -60,7 +60,7 @@ public class BalanceMonthlyObserver implements PropertyChangeListener {
     try {
       new ImportedMonthlySettlementControllerApi().createImportedMonthlySettlement(request);
     } catch (final ApiException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
     }
 
   }

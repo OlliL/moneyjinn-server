@@ -57,7 +57,7 @@ public class BalanceDailyObserver implements PropertyChangeListener {
     try {
       new ImportedBalanceControllerApi().createImportedBalance(request);
     } catch (final ApiException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
     }
   }
 

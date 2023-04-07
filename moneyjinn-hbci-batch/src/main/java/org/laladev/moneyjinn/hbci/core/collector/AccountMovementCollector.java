@@ -29,40 +29,50 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
+import org.kapott.hbci.manager.BankInfo;
 import org.kapott.hbci.manager.HBCIHandler;
+import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.mapper.AccountMovementMapper;
 
 public class AccountMovementCollector {
-	public List<AccountMovement> collect(final HBCIHandler hbciHandler, final Konto account) {
-		final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
-		final List<AccountMovement> accountMovements = new ArrayList<>();
+  public List<AccountMovement> collect(final HBCIHandler hbciHandler, final Konto account) {
+    final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
+    final List<AccountMovement> accountMovements = new ArrayList<>();
 
-		final HBCIJob hbciJob = hbciHandler.newJob("KUmsAll");
-		hbciJob.setParam("my", account);
-		hbciJob.setParam("startdate", LocalDate.now().minusDays(40).format(DateTimeFormatter.ISO_DATE));
-		hbciJob.addToQueue();
+    final HBCIJob hbciJob = hbciHandler.newJob("KUmsAll");
 
-		final HBCIExecStatus ret = hbciHandler.execute();
-		final GVRKUms result = (GVRKUms) hbciJob.getJobResult();
+    if (account.bic == null && account.iban != null) {
+      final String blz = account.iban.substring(4, 12);
+      final BankInfo bankInfo = HBCIUtils.getBankInfo(blz);
+      if (bankInfo != null) {
+        account.bic = bankInfo.getBic();
+      }
+    }
 
-		if (result.isOK()) {
+    hbciJob.setParam("my", account);
+    hbciJob.setParam("startdate", LocalDate.now().minusDays(40).format(DateTimeFormatter.ISO_DATE));
+    hbciJob.addToQueue();
 
-			for (final UmsLine entry : result.getFlatData()) {
-				accountMovements.add(accountMovementMapper.map(entry, account));
-			}
-		} else {
-			System.out.println("Job-Error");
-			System.out.println(result.getJobStatus().getErrorString());
-			System.out.println("Global Error");
-			System.out.println(ret.getErrorString());
-		}
-		return accountMovements;
-	}
+    final HBCIExecStatus ret = hbciHandler.execute();
+    final GVRKUms result = (GVRKUms) hbciJob.getJobResult();
+
+    if (result.isOK()) {
+
+      for (final UmsLine entry : result.getFlatData()) {
+        accountMovements.add(accountMovementMapper.map(entry, account));
+      }
+    } else {
+      System.out.println("Job-Error");
+      System.out.println(result.getJobStatus().getErrorString());
+      System.out.println("Global Error");
+      System.out.println(ret.getErrorString());
+    }
+    return accountMovements;
+  }
 }

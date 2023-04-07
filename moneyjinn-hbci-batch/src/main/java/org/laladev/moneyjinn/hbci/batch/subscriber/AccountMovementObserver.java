@@ -83,7 +83,7 @@ public class AccountMovementObserver implements PropertyChangeListener {
     try {
       new ImportedMoneyflowControllerApi().createImportedMoneyflow(request);
     } catch (final ApiException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
     }
 
   }
