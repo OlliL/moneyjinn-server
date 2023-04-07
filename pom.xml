@@ -34,10 +34,10 @@
 		<lombok.version>1.18.26</lombok.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
 		<swagger.version>2.2.8</swagger.version>
-		<openapi-generator.version>6.4.0</openapi-generator.version>
+		<openapi-generator.version>6.5.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.1.7.Final</hibernate-core.version>
+		<hibernate-core.version>6.2.0.Final</hibernate-core.version>
 		<hbci4java.version>4.0.0</hbci4java.version>
 		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
 		<httpclient.version>5.2.1</httpclient.version>
