@@ -234,6 +234,32 @@ class AccountMovementMapperTest {
   }
 
   @Test
+  void test_InvoiceTimestampGermanOneLine106() {
+    this.expectedCalendar.set(Calendar.SECOND, 22);
+    this.expectedCalendar.set(Calendar.YEAR, 2015);
+
+    final List<String> usage = new ArrayList<>();
+    final String usageLine = "BLAH BLAH 10-06-2015T01:03:22 BLAH";
+    usage.add(usageLine);
+
+    this.testInvoiceDate(usage, "106");
+  }
+
+  @Test
+  void test_InvoiceTimestampGermanMultipleLines106() {
+    this.expectedCalendar.set(Calendar.SECOND, 22);
+    this.expectedCalendar.set(Calendar.YEAR, 2015);
+
+    final List<String> usage = new ArrayList<>();
+    usage.add("BLAH");
+    usage.add("BLAH BLAH 10-06-20");
+    usage.add("15T01:03:22 BLAH");
+    usage.add("BLAH");
+
+    this.testInvoiceDate(usage, "106");
+  }
+
+  @Test
   @Disabled
   void test_InvoiceTimestamp96Kontouebertrag() {
     final List<String> usage = new ArrayList<>();
