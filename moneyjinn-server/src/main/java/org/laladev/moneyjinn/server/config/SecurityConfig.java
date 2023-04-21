@@ -112,6 +112,7 @@ public class SecurityConfig {
         .and()
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
+            .requestMatchers("/actuator/**").permitAll()
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
             .requestMatchers(API_ROOT + "/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
             .requestMatchers(API_ROOT + "/**").hasAuthority("LOGIN")
