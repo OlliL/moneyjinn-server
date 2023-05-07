@@ -212,6 +212,7 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<openApiNullable>false</openApiNullable>
 								<useTags>true</useTags>
+								<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
 							</configOptions>
 						</configuration>
 					</execution>
