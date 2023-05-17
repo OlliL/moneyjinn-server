@@ -34,7 +34,7 @@
 		<lombok.version>1.18.26</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<swagger.version>2.2.9</swagger.version>
-		<openapi-generator.version>6.5.0</openapi-generator.version>
+		<openapi-generator.version>6.6.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hibernate-core.version>6.2.2.Final</hibernate-core.version>
@@ -44,7 +44,8 @@
 
 		<maven-compiler-plugin>3.11.0</maven-compiler-plugin>
 		
-		<junit.version>5.9.3</junit.version>
+		<junit.version>5.10.0-M1</junit.version>
+		<mockito.version>5.3.1</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.7.1</opencsv.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,6 +58,14 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+    				<groupId>org.junit</groupId>
+    				<artifactId>junit-bom</artifactId>
+    				<version>${junit.version}</version>
+    				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
 			<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
@@ -187,10 +196,16 @@
 
 			<!-- TEST SCOPE -->
 			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-engine</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
+    				<groupId>org.mockito</groupId>
+    				<artifactId>mockito-core</artifactId>
+    				<version>${mockito.version}</version>
+    				<scope>test</scope>
+			</dependency>
+			<dependency>
+    				<groupId>org.mockito</groupId>
+    				<artifactId>mockito-junit-jupiter</artifactId>
+    				<version>${mockito.version}</version>
+    				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.github.albfernandez</groupId>
