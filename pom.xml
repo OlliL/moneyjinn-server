@@ -24,20 +24,20 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
 	
-		<spring.boot.version>3.0.6</spring.boot.version>
+		<spring.boot.version>3.1.0</spring.boot.version>
 		<mybatis.version>3.5.13</mybatis.version>
-		<mybatis-spring.version>3.0.1</mybatis-spring.version>
+		<mybatis-spring.version>3.0.2</mybatis-spring.version>
 		<commons.io.version>2.11.0</commons.io.version>
 		<commons.codec.version>1.15</commons.codec.version>
 		<apache.tika.version>2.7.0</apache.tika.version>
 		<jjwt.version>0.11.5</jjwt.version>
-		<lombok.version>1.18.26</lombok.version>
+		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<swagger.version>2.2.9</swagger.version>
+		<swagger.version>2.2.10</swagger.version>
 		<openapi-generator.version>6.6.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.2.2.Final</hibernate-core.version>
+		<hibernate-core.version>6.2.3.Final</hibernate-core.version>
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
 		<httpclient.version>5.2.1</httpclient.version>
