@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.access.AccessID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class AccessIdMapper extends AbstractEntityIdMapper<AccessID, Long> {
+public interface AccessIdMapper extends EntityIdMapper<AccessID, Long> {
 }

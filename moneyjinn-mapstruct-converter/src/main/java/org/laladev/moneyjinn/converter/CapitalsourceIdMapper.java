@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class CapitalsourceIdMapper extends AbstractEntityIdMapper<CapitalsourceID, Long> {
+public interface CapitalsourceIdMapper extends EntityIdMapper<CapitalsourceID, Long> {
 }

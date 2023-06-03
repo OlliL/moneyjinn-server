@@ -5,12 +5,12 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public abstract class MonthToIntegerMapper {
-  public Month mapBToA(final Integer b) {
+public interface MonthToIntegerMapper {
+  public default Month mapBToA(final Integer b) {
     return b == null ? null : Month.of(b);
   }
 
-  public Integer mapAToB(final Month a) {
+  public default Integer mapAToB(final Month a) {
     return a == null ? null : a.getValue();
   }
 }

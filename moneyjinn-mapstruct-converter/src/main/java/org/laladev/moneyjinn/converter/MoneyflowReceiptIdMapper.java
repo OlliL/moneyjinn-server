@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class MoneyflowReceiptIdMapper extends AbstractEntityIdMapper<MoneyflowReceiptID, Long> {
+public interface MoneyflowReceiptIdMapper extends EntityIdMapper<MoneyflowReceiptID, Long> {
 }

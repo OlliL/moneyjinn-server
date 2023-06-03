@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class EtfFlowIdMapper extends AbstractEntityIdMapper<EtfFlowID, Long> {
+public interface EtfFlowIdMapper extends EntityIdMapper<EtfFlowID, Long> {
 }

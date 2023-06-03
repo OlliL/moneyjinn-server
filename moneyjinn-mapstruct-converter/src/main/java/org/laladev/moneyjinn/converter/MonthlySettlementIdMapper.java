@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlementID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class MonthlySettlementIdMapper extends AbstractEntityIdMapper<MonthlySettlementID, Long> {
+public interface MonthlySettlementIdMapper extends EntityIdMapper<MonthlySettlementID, Long> {
 }

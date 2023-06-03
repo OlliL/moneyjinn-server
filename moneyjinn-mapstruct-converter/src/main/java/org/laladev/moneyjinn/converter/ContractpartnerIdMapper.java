@@ -5,5 +5,5 @@ import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public class ContractpartnerIdMapper extends AbstractEntityIdMapper<ContractpartnerID, Long> {
+public interface ContractpartnerIdMapper extends EntityIdMapper<ContractpartnerID, Long> {
 }
