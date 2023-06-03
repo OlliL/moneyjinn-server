@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import jakarta.inject.Named;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -64,7 +63,7 @@ public class CompareDataFormatDataMapper
       compareDataFormat.setPositionComment(compareDataFormatData.getPosComment());
       final String dateFormat = compareDataFormatData.getFmtDate().replace("DD", "dd")
           .replace("YYYY", "yyyy");
-      compareDataFormat.setFormatDate(DateTimeFormatter.ofPattern(dateFormat));
+      compareDataFormat.setFormatDate(dateFormat);
       final String fmtAmountDecimal = compareDataFormatData.getFmtAmountDecimal();
       if (fmtAmountDecimal != null) {
         compareDataFormat.setFormatAmountDecimal(fmtAmountDecimal.charAt(0));

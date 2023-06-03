@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
@@ -204,13 +203,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
     final List<AccessRelation> updateAccessRelationItems = new ArrayList<>();
     final List<AccessRelation> deleteAccessRelationItems = new ArrayList<>();
     AccessRelation previousCurrentAccessRelation = null;
-    AccessRelation insertAccessRelation;
-    try {
-      insertAccessRelation = accessRelation.clone();
-    } catch (final CloneNotSupportedException e) {
-      LOG.error(e);
-      throw new TechnicalException("Clone Not Supported", ErrorCode.UNKNOWN);
-    }
+    final AccessRelation insertAccessRelation = new AccessRelation(accessRelation);
+
     // new user, no existing relations
     boolean addAccessRelation = true;
     if (!currentAccessRelations.isEmpty()) {
@@ -299,15 +293,12 @@ public class AccessRelationService extends AbstractService implements IAccessRel
           // different
           if (!currentAccessRelation.getParentAccessRelation().getId()
               .equals(accessRelation.getParentAccessRelation().getId())) {
+
             AccessRelation updateAccessRelationItem;
-            try {
-              updateAccessRelationItem = currentAccessRelation.clone();
-              updateAccessRelationItem.setValidTil(previousValidTil);
-              updateAccessRelationItems.add(updateAccessRelationItem);
-            } catch (final CloneNotSupportedException e) {
-              LOG.error(e);
-              throw new TechnicalException("Clone Not Supported", ErrorCode.UNKNOWN);
-            }
+            updateAccessRelationItem = new AccessRelation(currentAccessRelation);
+            updateAccessRelationItem.setValidTil(previousValidTil);
+            updateAccessRelationItems.add(updateAccessRelationItem);
+
             insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
             addAccessRelation = true;
           }

@@ -332,7 +332,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
       final List<String[]> cvsLines = cvsReader.readAll();
       boolean match = false;
-      final DateTimeFormatter dateFormat = compareDataFormat.getFormatDate();
+      final DateTimeFormatter dateFormat = DateTimeFormatter
+          .ofPattern(compareDataFormat.getFormatDate());
       final List<String> startTrigger = compareDataFormat.getStartTrigger();
       final Pattern partnerAlternativeIndicator = compareDataFormat
           .getPartnerAlternativeIndicator();

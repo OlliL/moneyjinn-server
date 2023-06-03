@@ -37,7 +37,7 @@ import org.laladev.moneyjinn.model.AbstractEntity;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class AccessRelation extends AbstractEntity<AccessID> implements Cloneable {
+public class AccessRelation extends AbstractEntity<AccessID> {
   private static final long serialVersionUID = 1L;
   private AccessRelation parentAccessRelation;
   private LocalDate validFrom;
@@ -60,13 +60,10 @@ public class AccessRelation extends AbstractEntity<AccessID> implements Cloneabl
     this.parentAccessRelation = parentAccessRelation;
   }
 
-  @Override
-  public AccessRelation clone() throws CloneNotSupportedException {
-    final AccessRelation accessRelation = (AccessRelation) super.clone();
-    accessRelation.setId(this.getId().clone());
-    if (this.getParentAccessRelation() != null) {
-      accessRelation.setParentAccessRelation(this.getParentAccessRelation().clone());
-    }
-    return accessRelation;
+  public AccessRelation(final AccessRelation accessRelation) {
+    this.setId(new AccessID(accessRelation.getId().getId()));
+    this.setValidFrom(accessRelation.getValidFrom());
+    this.setValidTil(accessRelation.getValidTil());
+    this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
   }
 }

@@ -26,7 +26,6 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.Data;
@@ -47,7 +46,7 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
   private Integer positionPartner;
   private Integer positionAmount;
   private Integer positionComment;
-  private DateTimeFormatter formatDate;
+  private String formatDate;
   private Character formatAmountDecimal;
   private Character formatAmountThousand;
   private Integer positionPartnerAlternative;
