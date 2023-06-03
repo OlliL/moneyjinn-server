@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.server.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import jakarta.inject.Inject;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,6 +50,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -61,6 +65,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableMethodSecurity
+@EnableWebSecurity
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
@@ -98,18 +103,14 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     //@formatter:off
-    http.logout()
-          .logoutUrl(API_ROOT + "/logout")
-          .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))).and()
-        .httpBasic().disable()
-        .cors().and()
+    http.logout(logout -> {logout.logoutUrl(API_ROOT + "/logout"); logout.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));})
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .cors(withDefaults())
         .csrf(configurer -> {
           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
           configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
           configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
         })
-        .apply(new JwtConfigurer(this.jwtTokenProvider))
-        .and()
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/websocket").permitAll()
             .requestMatchers("/actuator/**").permitAll()
@@ -119,7 +120,10 @@ public class SecurityConfig {
             // Whatever else you trying: deny
             .requestMatchers("/**").denyAll()
             .anyRequest().authenticated()
-        ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+
+        )
+        .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+        .apply(new JwtConfigurer(this.jwtTokenProvider));
     //@formatter:on
     return http.build();
   }
