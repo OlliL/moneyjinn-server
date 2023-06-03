@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
+import java.util.logging.Level;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.exception.ValidationException;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,11 +41,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @RequiredArgsConstructor
+@Log
 public class ValidationExceptionControllerAdvice extends ResponseEntityExceptionHandler {
   private final ValidationItemTransportMapper mapper;
-
-  private static final Logger MY_LOGGER = LoggerFactory
-      .getLogger(ValidationExceptionControllerAdvice.class);
 
   @ExceptionHandler(ValidationException.class)
   @ResponseBody
@@ -57,7 +55,7 @@ public class ValidationExceptionControllerAdvice extends ResponseEntityException
     response.setValidationItemTransports(
         result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
 
-    MY_LOGGER.error("Validation error", ex);
+    log.log(Level.SEVERE, "Validation error", ex);
     return ResponseEntity.unprocessableEntity().body(response);
   }
 }

@@ -26,11 +26,11 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
+import java.util.logging.Level;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,10 +39,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
+@Log
 public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHandler {
-
-  private static final Logger MY_LOGGER = LoggerFactory
-      .getLogger(BusinessExceptionControllerAdvice.class);
 
   @ExceptionHandler(BusinessException.class)
   @ResponseBody
@@ -58,7 +56,7 @@ public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHa
       httpStatus = HttpStatus.BAD_REQUEST;
     }
 
-    MY_LOGGER.error(ex.getErrorMessage(), ex);
+    log.log(Level.SEVERE, ex.getErrorMessage(), ex);
     return new ResponseEntity<>(errorResponse, httpStatus);
   }
 }

@@ -34,12 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.error.MoneyjinnException;
 
+@Log
 public abstract class AbstractMapperSupport {
-  private static final Logger LOG = Logger.getLogger(AbstractMapperSupport.class.getName());
   private static final String MAPPER_UNDEFINED = "Mapper undefined!";
   // -----returnTyp---------parameter- Method of Object to execute
   private final Map<Class<?>, Map<Class<?>, Method>> mapperMethods = new HashMap<>();
@@ -95,7 +95,7 @@ public abstract class AbstractMapperSupport {
         method = this.mapperMethods.get(clazz).get(args.getClass());
         obj = this.mapperClasses.get(clazz).get(args.getClass());
       } catch (final NullPointerException e) {
-        LOG.log(Level.SEVERE, "{} on mapping {} to {}",
+        log.log(Level.SEVERE, "{} on mapping {} to {}",
             new Object[] { e.getMessage(), args, clazz });
         throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
       }
@@ -109,11 +109,11 @@ public abstract class AbstractMapperSupport {
         }
       } catch (final IllegalAccessException | IllegalArgumentException e) {
         e.printStackTrace();
-        LOG.log(Level.SEVERE, e.getMessage());
+        log.log(Level.SEVERE, e.getMessage());
         throw new MoneyjinnException(MAPPER_UNDEFINED, ErrorCode.MAPPER_UNDEFINED);
       } catch (final InvocationTargetException e) {
         e.printStackTrace();
-        LOG.log(Level.SEVERE, e.getMessage());
+        log.log(Level.SEVERE, e.getMessage());
         if (e.getTargetException() instanceof MoneyjinnException) {
           throw (MoneyjinnException) e.getCause();
         }

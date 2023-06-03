@@ -27,10 +27,10 @@
 package org.laladev.moneyjinn.server.controller.advice;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,10 +38,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
+@Log
 public class SqlExceptionControllerAdvice extends ResponseEntityExceptionHandler {
-
-  private static final Logger MY_LOGGER = LoggerFactory
-      .getLogger(SqlExceptionControllerAdvice.class);
 
   @ExceptionHandler(SQLException.class)
   @ResponseBody
@@ -50,7 +48,7 @@ public class SqlExceptionControllerAdvice extends ResponseEntityExceptionHandler
     errorResponse.setCode(ErrorCode.UNKNOWN.getErrorCode());
     errorResponse.setMessage(ex.getMessage());
 
-    MY_LOGGER.error(ex.getMessage(), ex);
+    log.log(Level.SEVERE, ex.getMessage(), ex);
     return ResponseEntity.internalServerError().body(errorResponse);
   }
 }

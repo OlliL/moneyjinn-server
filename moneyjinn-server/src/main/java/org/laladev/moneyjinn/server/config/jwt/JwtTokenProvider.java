@@ -40,9 +40,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.crypto.SecretKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -52,6 +52,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component;
 
 @Component
+@Log
 public class JwtTokenProvider {
   private static final String CLAIM_USERID = "uid";
   private static final String CLAIM_ROLES = "roles";
@@ -60,7 +61,6 @@ public class JwtTokenProvider {
   private long validityInMilliseconds;
   @Value("${security.jwt.token.refresh-expiration-time-in-ms}")
   private long refreshValidityInMilliseconds;
-  Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
   public String createToken(final String username, final List<String> roles, final Long userId) {
     final Claims claims = Jwts.claims().setSubject(username);
@@ -155,13 +155,13 @@ public class JwtTokenProvider {
       Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(authToken);
       return true;
     } catch (final MalformedJwtException e) {
-      this.logger.error("Invalid JWT token: {}", e.getMessage());
+      log.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
     } catch (final ExpiredJwtException e) {
-      this.logger.error("JWT token is expired: {}", e.getMessage());
+      log.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
     } catch (final UnsupportedJwtException e) {
-      this.logger.error("JWT token is unsupported: {}", e.getMessage());
+      log.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
     } catch (final IllegalArgumentException e) {
-      this.logger.error("JWT claims string is empty: {}", e.getMessage());
+      log.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
     }
     return false;
   }
