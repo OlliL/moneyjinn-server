@@ -1,6 +1,8 @@
 
 package org.laladev.moneyjinn.model.setting;
 
+import lombok.NoArgsConstructor;
+
 /**
  * <p>
  * This Setting describes if the selected source the default is file or import.
@@ -9,13 +11,9 @@ package org.laladev.moneyjinn.model.setting;
  * @author olivleh1
  *
  */
+@NoArgsConstructor
 public class ClientCompareDataSelectedSourceIsFile extends AbstractSetting<Boolean> {
   public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
     super.setSetting(setting);
-  }
-
-  @Override
-  public SettingType getType() {
-    return SettingType.CLIENT_COMPARE_DATA_SELECTED_SOURCE_IS_FILE;
   }
 }

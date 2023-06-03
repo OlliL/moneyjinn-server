@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.PostingAccountID;
 
 /**
@@ -35,14 +36,10 @@ import org.laladev.moneyjinn.model.PostingAccountID;
  * @author olivleh1
  *
  */
+@NoArgsConstructor
 public class ClientReportingUnselectedPostingAccountIdsSetting
     extends AbstractSetting<List<PostingAccountID>> {
   public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
     super.setSetting(setting);
-  }
-
-  @Override
-  public SettingType getType() {
-    return SettingType.CLIENT_REPORTING_UNSELECTED_POSTINGACCOUNTIDS;
   }
 }

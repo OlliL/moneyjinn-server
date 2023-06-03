@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
 /**
@@ -35,13 +36,9 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
  * @author olivleh1
  *
  */
+@NoArgsConstructor
 public class ClientTrendCapitalsourceIDsSetting extends AbstractSetting<List<CapitalsourceID>> {
   public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
     super.setSetting(setting);
-  }
-
-  @Override
-  public SettingType getType() {
-    return SettingType.CLIENT_TREND_CAPITALSOURCEIDS;
   }
 }

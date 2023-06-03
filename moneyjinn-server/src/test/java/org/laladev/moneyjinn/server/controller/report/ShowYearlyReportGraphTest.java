@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ class ShowYearlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_maxDateRange_response() throws Exception {
+  void test_maxDateRange_response() throws Exception {
     final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -77,7 +78,7 @@ class ShowYearlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
+  void test_empty_PostingAccountIdsYes_nullResponseNoError() throws Exception {
     final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -88,7 +89,7 @@ class ShowYearlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
+  void test_withUnselectedPostingAccountIDs_idsSaved() throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
@@ -98,20 +99,20 @@ class ShowYearlyReportGraphTest extends AbstractControllerTest {
             PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
     request
         .setPostingAccountIdsNo(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
-    ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
+    Optional<ClientReportingUnselectedPostingAccountIdsSetting> setting = this.settingService
         .getClientReportingUnselectedPostingAccountIdsSetting(userId);
-    Assertions.assertNull(setting);
+    Assertions.assertFalse(setting.isPresent());
     super.callUsecaseExpect200(request, ShowYearlyReportGraphResponse.class);
     setting = this.settingService.getClientReportingUnselectedPostingAccountIdsSetting(userId);
-    Assertions.assertNotNull(setting);
-    Assertions.assertNotNull(setting.getSetting());
-    Assertions.assertEquals(1, setting.getSetting().size());
+    Assertions.assertTrue(setting.isPresent());
+    Assertions.assertNotNull(setting.get().getSetting());
+    Assertions.assertEquals(1, setting.get().getSetting().size());
     Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID,
-        setting.getSetting().get(0).getId());
+        setting.get().getSetting().get(0).getId());
   }
 
   @Test
-   void test_privateMoneyflows_ignored() throws Exception {
+  void test_privateMoneyflows_ignored() throws Exception {
     this.userName = UserTransportBuilder.USER3_NAME;
     this.userPassword = UserTransportBuilder.USER3_PASSWORD;
     final ShowYearlyReportGraphRequest request = new ShowYearlyReportGraphRequest();
@@ -139,7 +140,7 @@ class ShowYearlyReportGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

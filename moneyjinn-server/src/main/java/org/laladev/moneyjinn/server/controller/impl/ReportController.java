@@ -118,8 +118,6 @@ public class ReportController extends AbstractController implements ReportContro
   public ResponseEntity<ShowReportingFormResponse> showReportingForm() {
     final UserID userId = super.getUserId();
     final ShowReportingFormResponse response = new ShowReportingFormResponse();
-    final ClientReportingUnselectedPostingAccountIdsSetting setting = this.settingService
-        .getClientReportingUnselectedPostingAccountIdsSetting(userId);
     final LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
     final LocalDate minMoneyflowDate = this.moneyflowService.getMinMoneyflowDate(userId);
     if (maxMoneyflowDate != null) {
@@ -128,11 +126,11 @@ public class ReportController extends AbstractController implements ReportContro
     if (minMoneyflowDate != null) {
       response.setMinDate(minMoneyflowDate);
     }
-    if (setting != null && setting.getSetting() != null && !setting.getSetting().isEmpty()) {
-      final List<Long> postingAccountIds = setting.getSetting().stream()
-          .map(PostingAccountID::getId).collect(Collectors.toCollection(ArrayList::new));
-      response.setPostingAccountIds(postingAccountIds);
-    }
+
+    this.settingService.getClientReportingUnselectedPostingAccountIdsSetting(userId)
+        .ifPresent(s -> response
+            .setPostingAccountIds(s.getSetting().stream().map(PostingAccountID::getId).toList()));
+
     return ResponseEntity.ok(response);
   }
 
@@ -208,15 +206,11 @@ public class ReportController extends AbstractController implements ReportContro
     if (minMonthlysettlementwDate != null) {
       response.setMinDate(minMonthlysettlementwDate);
     }
-    final ClientTrendCapitalsourceIDsSetting clientTrendCapitalsourceIDsSetting = this.settingService
-        .getClientTrendCapitalsourceIDsSetting(userId);
-    if (clientTrendCapitalsourceIDsSetting != null
-        && clientTrendCapitalsourceIDsSetting.getSetting() != null
-        && !clientTrendCapitalsourceIDsSetting.getSetting().isEmpty()) {
-      final List<Long> capitalsourceIds = clientTrendCapitalsourceIDsSetting.getSetting().stream()
-          .map(CapitalsourceID::getId).collect(Collectors.toCollection(ArrayList::new));
-      response.setSettingTrendCapitalsourceIds(capitalsourceIds);
-    }
+
+    this.settingService.getClientTrendCapitalsourceIDsSetting(userId)
+        .ifPresent(s -> response.setSettingTrendCapitalsourceIds(
+            s.getSetting().stream().map(CapitalsourceID::getId).toList()));
+
     return ResponseEntity.ok(response);
   }
 

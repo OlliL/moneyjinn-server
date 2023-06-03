@@ -24,12 +24,6 @@ insert into access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_lev
 insert into access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) values (4,'2000-01-01','2999-12-31',4,6,0);
 insert into access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) values (5,'2000-01-01','2999-12-31',5,6,0);
 
-INSERT INTO settings (SELECT 3,name,`value` FROM settings WHERE mac_id=0);
-INSERT INTO settings (SELECT 4,name,`value` FROM settings WHERE mac_id=0);
-INSERT INTO settings (SELECT 5,name,`value` FROM settings WHERE mac_id=0);
-
-UPDATE settings set `value` = '1' where mac_id=3 and name = 'max_rows';
-
 INSERT INTO postingaccounts (postingaccountname) VALUES ('postingaccount1');
 INSERT INTO postingaccounts (postingaccountname) VALUES ('postingaccount2');
 INSERT INTO postingaccounts (postingaccountname) VALUES ('xostingaccount3');

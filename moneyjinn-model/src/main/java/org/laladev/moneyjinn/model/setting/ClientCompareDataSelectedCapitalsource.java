@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.model.setting;
 
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
 /**
@@ -11,13 +12,9 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
  * @author olivleh1
  *
  */
+@NoArgsConstructor
 public class ClientCompareDataSelectedCapitalsource extends AbstractSetting<CapitalsourceID> {
   public ClientCompareDataSelectedCapitalsource(final CapitalsourceID setting) {
     super.setSetting(setting);
-  }
-
-  @Override
-  public SettingType getType() {
-    return SettingType.CLIENT_COMPARE_DATA_SELECTED_CAPITALSOURCE;
   }
 }

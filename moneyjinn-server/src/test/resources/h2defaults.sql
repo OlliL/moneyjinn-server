@@ -54,5 +54,3 @@ UPDATE access SET id=2 WHERE name='admin';
 INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'2000-01-01','2999-12-31');
 INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (2,1,'2000-01-01','2999-12-31');
 INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) VALUES (2,'2000-01-01','2999-12-31',2,1,0);
-INSERT INTO settings VALUES (0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
-INSERT INTO settings (SELECT 2,name,`value` FROM settings WHERE mac_id=0);

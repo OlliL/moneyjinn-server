@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
@@ -77,6 +78,7 @@ public class CompareDataController extends AbstractController implements Compare
   private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
   private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
   private final MoneyflowTransportMapper moneyflowTransportMapper;
+  private final BooleanToIntegerMapper booleanToIntegerMapper;
 
   @Override
   @PostConstruct
@@ -97,22 +99,14 @@ public class CompareDataController extends AbstractController implements Compare
       final List<CompareDataFormatTransport> responseCompareDataFormats = super.mapList(
           compareDataFormats, CompareDataFormatTransport.class);
       response.setCompareDataFormatTransports(responseCompareDataFormats);
-      final ClientCompareDataSelectedFormat selectedDataFormat = this.settingService
-          .getClientCompareDataSelectedFormat(userId);
-      if (selectedDataFormat != null) {
-        response.setSelectedDataFormat(selectedDataFormat.getSetting().getId());
-      }
-      final ClientCompareDataSelectedSourceIsFile selectedSourceIsFile = this.settingService
-          .getClientCompareDataSelectedSourceIsFile(userId);
-      if (selectedSourceIsFile != null && selectedSourceIsFile.getSetting().equals(Boolean.TRUE)) {
-        response.setSelectedSourceIsFile(1);
-      }
 
-      final ClientCompareDataSelectedCapitalsource selectedCapitalsource = this.settingService
-          .getClientCompareDataSelectedCapitalsource(userId);
-      if (selectedCapitalsource != null) {
-        response.setSelectedCapitalsourceId(selectedCapitalsource.getSetting().getId());
-      }
+      this.settingService.getClientCompareDataSelectedFormat(userId)
+          .ifPresent(s -> response.setSelectedDataFormat(s.getSetting().getId()));
+      this.settingService.getClientCompareDataSelectedSourceIsFile(userId).ifPresent(s -> response
+          .setSelectedSourceIsFile(this.booleanToIntegerMapper.mapAToB(s.getSetting())));
+      this.settingService.getClientCompareDataSelectedCapitalsource(userId)
+          .ifPresent(s -> response.setSelectedCapitalsourceId(s.getSetting().getId()));
+
     }
     return ResponseEntity.ok(response);
   }

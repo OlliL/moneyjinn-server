@@ -29,6 +29,4 @@ import lombok.Data;
 @Data
 public abstract class AbstractSetting<T> {
   private T setting;
-
-  public abstract SettingType getType();
 }

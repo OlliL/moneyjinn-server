@@ -59,6 +59,14 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
  *
  */
 public interface ISettingService {
+
+  /**
+   * Deletes all settings for the given {@link UserID}.
+   *
+   * @param userId
+   */
+  void deleteSettings(final UserID userId);
+
   /**
    * This Service returns the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the
    * given {@link UserID}.
@@ -67,7 +75,7 @@ public interface ISettingService {
    *                   or groupID {@link AccessID}
    * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
    */
-  ClientReportingUnselectedPostingAccountIdsSetting getClientReportingUnselectedPostingAccountIdsSetting(
+  Optional<ClientReportingUnselectedPostingAccountIdsSetting> getClientReportingUnselectedPostingAccountIdsSetting(
       AccessID accessId);
 
   /**
@@ -90,7 +98,8 @@ public interface ISettingService {
    *                   or groupID {@link AccessID}
    * @return {@link ClientTrendCapitalsourceIDsSetting}
    */
-  ClientTrendCapitalsourceIDsSetting getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
+  Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(
+      final AccessID accessId);
 
   /**
    * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}.
@@ -102,13 +111,6 @@ public interface ISettingService {
    */
   void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
       final ClientTrendCapitalsourceIDsSetting setting);
-
-  /**
-   * Deletes all settings for the given {@link UserID}.
-   *
-   * @param userId
-   */
-  void deleteSettings(final UserID userId);
 
   /**
    * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the given
@@ -130,7 +132,7 @@ public interface ISettingService {
    *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedCapitalsource}
    */
-  ClientCompareDataSelectedCapitalsource getClientCompareDataSelectedCapitalsource(
+  Optional<ClientCompareDataSelectedCapitalsource> getClientCompareDataSelectedCapitalsource(
       AccessID accessId);
 
   /**
@@ -151,7 +153,7 @@ public interface ISettingService {
    *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedFormat}
    */
-  ClientCompareDataSelectedFormat getClientCompareDataSelectedFormat(AccessID accessId);
+  Optional<ClientCompareDataSelectedFormat> getClientCompareDataSelectedFormat(AccessID accessId);
 
   /**
    * This Service sets the {@link ClientCompareDataSelectedSourceIsFile} for the given
@@ -173,7 +175,8 @@ public interface ISettingService {
    *                   or groupID {@link AccessID}
    * @return {@link ClientCompareDataSelectedSourceIsFile}
    */
-  ClientCompareDataSelectedSourceIsFile getClientCompareDataSelectedSourceIsFile(AccessID accessId);
+  Optional<ClientCompareDataSelectedSourceIsFile> getClientCompareDataSelectedSourceIsFile(
+      AccessID accessId);
 
   void setClientCalcEtfSaleIsin(AccessID accessId, ClientCalcEtfSaleIsin setting);
 
