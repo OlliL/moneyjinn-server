@@ -61,9 +61,11 @@ public class AccessRelation extends AbstractEntity<AccessID> {
   }
 
   public AccessRelation(final AccessRelation accessRelation) {
-    this.setId(new AccessID(accessRelation.getId().getId()));
-    this.setValidFrom(accessRelation.getValidFrom());
-    this.setValidTil(accessRelation.getValidTil());
-    this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
+    if (accessRelation != null) {
+      this.setId(new AccessID(accessRelation.getId().getId()));
+      this.setValidFrom(accessRelation.getValidFrom());
+      this.setValidTil(accessRelation.getValidTil());
+      this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
+    }
   }
 }
