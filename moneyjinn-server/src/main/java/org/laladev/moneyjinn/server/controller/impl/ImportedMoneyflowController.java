@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -120,7 +121,8 @@ public class ImportedMoneyflowController extends AbstractController
     final ValidationResult validationResult = new ValidationResult();
     if (!moneyflowSplitEntries.isEmpty()) {
       final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
-          .map(MoneyflowSplitEntry::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+          .map(MoneyflowSplitEntry::getAmount).filter(Objects::nonNull)
+          .reduce(BigDecimal.ZERO, BigDecimal::add);
       if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
         validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
             ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
@@ -335,13 +337,11 @@ public class ImportedMoneyflowController extends AbstractController
     this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
     final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
-    if (validationResult.isValid() && !moneyflowSplitEntries.isEmpty()) {
+    if (!moneyflowSplitEntries.isEmpty()) {
       moneyflowSplitEntries.stream().forEach(mse -> validationResult
           .mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse)));
-      if (validationResult.isValid()) {
-        validationResult
-            .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
-      }
+      validationResult
+          .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
     }
 
     for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
