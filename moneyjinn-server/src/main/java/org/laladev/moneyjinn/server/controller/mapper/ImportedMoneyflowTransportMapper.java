@@ -81,24 +81,28 @@ public interface ImportedMoneyflowTransportMapper
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
   default ImportedMoneyflow doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
-    if (entity != null) {
-      final BankAccount bankAccount = entity.getBankAccount();
-      if (bankAccount != null && (bankAccount.getAccountNumber() == null
-          || bankAccount.getAccountNumber().trim().isEmpty()
-              && (entity.getBankAccount().getBankCode() == null
-                  || bankAccount.getBankCode().trim().isEmpty()))) {
-        entity.setBankAccount(null);
-      }
-      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
-        entity.setCapitalsource(null);
-      }
-      if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
-        entity.setContractpartner(null);
-      }
-      if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
-        entity.setPostingAccount(null);
-      }
+
+    if (entity == null) {
+      return entity;
     }
+
+    final BankAccount bankAccount = entity.getBankAccount();
+    if (bankAccount != null && (bankAccount.getAccountNumber() == null
+        || bankAccount.getAccountNumber().trim().isEmpty()
+            && (entity.getBankAccount().getBankCode() == null
+                || bankAccount.getBankCode().trim().isEmpty()))) {
+      entity.setBankAccount(null);
+    }
+    if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
+      entity.setCapitalsource(null);
+    }
+    if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
+      entity.setContractpartner(null);
+    }
+    if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
+      entity.setPostingAccount(null);
+    }
+
     return entity;
   }
 }
