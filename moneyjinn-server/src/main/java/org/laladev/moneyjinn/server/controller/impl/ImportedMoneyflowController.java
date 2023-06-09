@@ -136,35 +136,38 @@ public class ImportedMoneyflowController extends AbstractController
     final LocalDate today = LocalDate.now();
     final List<Capitalsource> capitalsources = this.capitalsourceService
         .getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-    if (capitalsources != null && !capitalsources.isEmpty()) {
+    if (!capitalsources.isEmpty()) {
       final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
           .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
       final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
           .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
               ImportedMoneyflowStatus.CREATED);
-      if (importedMoneyflows != null && !importedMoneyflows.isEmpty()) {
+      if (!importedMoneyflows.isEmpty()) {
 
         final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
             .map(ImportedMoneyflow::getBankAccount)
             .collect(Collectors.toCollection(ArrayList::new));
+
         final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
             .getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
-        final Map<BankAccount, Contractpartner> bankAccountToContractpartner = new HashMap<>();
-        if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
+
+        if (!contractpartnerAccounts.isEmpty()) {
+          final Map<BankAccount, Contractpartner> bankAccountToContractpartner = new HashMap<>();
+
           for (final ContractpartnerAccount contractpartnerAccount : contractpartnerAccounts) {
             bankAccountToContractpartner.put(contractpartnerAccount.getBankAccount(),
                 contractpartnerAccount.getContractpartner());
           }
-        }
-        // match IBAN/BIC from the imported moneyflows to contractpartners via the
-        // contractpartneraccounts
-        for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
-          final Contractpartner contractpartner = bankAccountToContractpartner
-              .get(importedMoneyflow.getBankAccount());
-          if (contractpartner != null) {
+
+          // match IBAN/BIC from the imported moneyflows to contractpartners via the
+          // contractpartneraccounts
+          for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
+            final Contractpartner contractpartner = bankAccountToContractpartner
+                .get(importedMoneyflow.getBankAccount());
             importedMoneyflow.setContractpartner(contractpartner);
           }
         }
+
         response.setImportedMoneyflowTransports(
             super.mapList(importedMoneyflows, ImportedMoneyflowTransport.class));
       }
