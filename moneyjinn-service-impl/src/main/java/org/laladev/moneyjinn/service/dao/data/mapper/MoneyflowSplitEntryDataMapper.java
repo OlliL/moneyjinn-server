@@ -36,8 +36,8 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class, PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { MoneyflowSplitEntryIdMapper.class,
+    MoneyflowIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSplitEntryDataMapper
     extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryData> {
   @Override

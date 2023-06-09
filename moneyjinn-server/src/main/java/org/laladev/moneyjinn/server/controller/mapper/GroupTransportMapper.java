@@ -29,8 +29,8 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = GroupIdMapper.class)

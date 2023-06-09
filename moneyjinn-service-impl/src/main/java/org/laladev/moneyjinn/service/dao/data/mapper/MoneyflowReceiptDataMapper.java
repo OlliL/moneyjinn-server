@@ -35,8 +35,8 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    MoneyflowReceiptIdMapper.class, MoneyflowReceiptTypeMapper.class, MoneyflowIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { MoneyflowReceiptIdMapper.class,
+    MoneyflowReceiptTypeMapper.class, MoneyflowIdMapper.class })
 public interface MoneyflowReceiptDataMapper
     extends IMapper<MoneyflowReceipt, MoneyflowReceiptData> {
   @Override

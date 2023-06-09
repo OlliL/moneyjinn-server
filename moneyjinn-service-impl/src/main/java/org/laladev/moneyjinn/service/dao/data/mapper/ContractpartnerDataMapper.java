@@ -39,9 +39,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
-    PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
+    GroupIdMapper.class, PostingAccountIdMapper.class })
 public interface ContractpartnerDataMapper extends IMapper<Contractpartner, ContractpartnerData> {
   @Override
   @Mapping(target = "user.id", source = "macIdCreator")

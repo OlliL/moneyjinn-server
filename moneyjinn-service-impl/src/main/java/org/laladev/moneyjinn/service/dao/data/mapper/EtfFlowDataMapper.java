@@ -35,8 +35,7 @@ import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    EtfIsinMapper.class, EtfFlowIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
 public interface EtfFlowDataMapper extends IMapper<EtfFlow, EtfFlowData> {
   @Override
   @Mapping(target = "id", source = "etfflowid")

@@ -35,8 +35,8 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    MonthToIntegerMapper.class, ContractpartnerIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { MonthToIntegerMapper.class,
+    ContractpartnerIdMapper.class })
 public interface MoneyflowSearchResultDataMapper
     extends IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
   @Override

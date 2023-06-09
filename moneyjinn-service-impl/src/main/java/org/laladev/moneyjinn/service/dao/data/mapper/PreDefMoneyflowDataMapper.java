@@ -38,9 +38,9 @@ import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    PreDefMoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
-    PostingAccountIdMapper.class, UserIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { PreDefMoneyflowIdMapper.class,
+    CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, PostingAccountIdMapper.class,
+    UserIdMapper.class })
 public interface PreDefMoneyflowDataMapper extends IMapper<PreDefMoneyflow, PreDefMoneyflowData> {
   @Override
   @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")

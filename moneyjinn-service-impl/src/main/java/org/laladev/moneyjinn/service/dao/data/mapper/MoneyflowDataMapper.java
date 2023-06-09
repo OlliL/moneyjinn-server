@@ -39,9 +39,9 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    MoneyflowIdMapper.class, CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
-    PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { MoneyflowIdMapper.class,
+    CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, PostingAccountIdMapper.class,
+    UserIdMapper.class, GroupIdMapper.class })
 public interface MoneyflowDataMapper extends IMapper<Moneyflow, MoneyflowData> {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")

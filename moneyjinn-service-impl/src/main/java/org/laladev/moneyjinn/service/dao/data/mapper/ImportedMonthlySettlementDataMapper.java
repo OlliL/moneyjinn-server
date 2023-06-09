@@ -36,8 +36,8 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    ImportedMonthlySettlementIdMapper.class, MonthToIntegerMapper.class, CapitalsourceIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { ImportedMonthlySettlementIdMapper.class,
+    MonthToIntegerMapper.class, CapitalsourceIdMapper.class })
 public interface ImportedMonthlySettlementDataMapper
     extends IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {
   @Override

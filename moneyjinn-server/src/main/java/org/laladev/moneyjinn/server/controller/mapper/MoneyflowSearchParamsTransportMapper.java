@@ -31,8 +31,8 @@ import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
+import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class,

@@ -52,7 +52,8 @@ public class EtfDao {
     return this.mapper.getEtfById(isin);
   }
 
-  public EtfValueData getEtfValueForMonth(final String isin, final Integer year, final Month month) {
+  public EtfValueData getEtfValueForMonth(final String isin, final Integer year,
+      final Month month) {
     final LocalDate startDate = LocalDate.of(year.intValue(), month, 1);
     final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
     return this.mapper.getEtfValueForMonth(isin, startDate, endDate);

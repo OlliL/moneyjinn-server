@@ -37,8 +37,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = {
-    ContractpartnerAccountIdMapper.class, ContractpartnerIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class,
+    ContractpartnerIdMapper.class })
 public interface ContractpartnerAccountDataMapper
     extends IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
 
