@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
@@ -224,7 +223,7 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate startDate = request.getStartDate();
       final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
       final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
-          .map(CapitalsourceID::new).collect(Collectors.toList());
+          .map(CapitalsourceID::new).toList();
       final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
           capitalsourceIds);
       // Save the selection for the next time the form is shown
@@ -272,13 +271,14 @@ public class ReportController extends AbstractController implements ReportContro
         if (maxMoneyflowDate != null) {
           maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
           while (!endOfMonth.isAfter(maxMoneyflowDate)) {
-            this.filterByValidity(capitalsourceIds, validTilCapitalsourceIdMap, beginOfMonth);
-            if (capitalsourceIds.isEmpty()) {
+            final List<CapitalsourceID> filteredCapitalsourceIds = this
+                .filterByValidity(capitalsourceIds, validTilCapitalsourceIdMap, beginOfMonth);
+            if (filteredCapitalsourceIds.isEmpty()) {
               break;
             }
             final BigDecimal amount = this.moneyflowService
                 .getSumAmountByDateRangeForCapitalsourceIds(userId, beginOfMonth, endOfMonth,
-                    capitalsourceIds);
+                    filteredCapitalsourceIds);
             lastAmount = lastAmount.add(amount);
             final Month month = endOfMonth.getMonth();
             final Integer year = endOfMonth.getYear();
@@ -327,10 +327,11 @@ public class ReportController extends AbstractController implements ReportContro
     return ResponseEntity.ok(response);
   }
 
-  private void filterByValidity(final List<CapitalsourceID> capitalsourceIds,
+  private List<CapitalsourceID> filterByValidity(final List<CapitalsourceID> capitalsourceIds,
       final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap,
       final LocalDate beginOfMonth) {
-    capitalsourceIds.removeIf(csi -> validTilCapitalsourceIdMap.get(csi).isBefore(beginOfMonth));
+    return capitalsourceIds.stream()
+        .filter(csi -> !validTilCapitalsourceIdMap.get(csi).isBefore(beginOfMonth)).toList();
   }
 
   @Override
