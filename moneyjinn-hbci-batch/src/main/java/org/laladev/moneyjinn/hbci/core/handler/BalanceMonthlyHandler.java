@@ -25,18 +25,17 @@
 //
 package org.laladev.moneyjinn.hbci.core.handler;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
@@ -80,9 +79,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
     if (accountMovements != null && accountMovements.size() > 0) {
 
       // First step - remove all AccountMovements which are in the future
-      final ArrayList<AccountMovement> movementsUntilToday = accountMovements.stream()
-          .filter(am -> am.getBalanceDate().isBefore(LocalDate.now()))
-          .collect(Collectors.toCollection(ArrayList::new));
+      final List<AccountMovement> movementsUntilToday = accountMovements.stream()
+          .filter(am -> am.getBalanceDate().isBefore(LocalDate.now())).toList();
 
       // Now generate BalanceMonthly entries for each AccountMovement
       final Iterator<AccountMovement> movementsIterator = movementsUntilToday.iterator();

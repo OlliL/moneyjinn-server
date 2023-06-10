@@ -33,7 +33,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
@@ -119,8 +118,7 @@ public class MonthlySettlementController extends AbstractController
       }
       allMonth = this.monthlySettlementService.getAllMonth(userId, year);
       if (allMonth != null && !allMonth.isEmpty()) {
-        response.setAllMonth(allMonth.stream().map(Month::getValue)
-            .collect(Collectors.toCollection(ArrayList::new)));
+        response.setAllMonth(allMonth.stream().map(Month::getValue).toList());
         if (month != null && allMonth.contains(month)) {
           response.setMonth(month.getValue());
         }
@@ -233,8 +231,7 @@ public class MonthlySettlementController extends AbstractController
          * To make it possible to create a settlement for this new source, add it here.
          */
         final List<CapitalsourceID> capitalsourceIds = monthlySettlements.stream()
-            .map(ms -> ms.getCapitalsource().getId())
-            .collect(Collectors.toCollection(ArrayList::new));
+            .map(ms -> ms.getCapitalsource().getId()).toList();
         for (final Capitalsource capitalsource : capitalsources) {
           if (capitalsource.getUser().getId().equals(userId)
               && !capitalsourceIds.contains(capitalsource.getId())) {
@@ -378,8 +375,7 @@ public class MonthlySettlementController extends AbstractController
     final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
         .getAllMonthlySettlementsByYearMonth(userId, year, month);
     if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
-      return monthlySettlements.stream().filter(ms -> ms.getUser().getId().equals(userId))
-          .collect(Collectors.toCollection(ArrayList::new));
+      return monthlySettlements.stream().filter(ms -> ms.getUser().getId().equals(userId)).toList();
     }
     return new ArrayList<>();
   }

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessRelation;
@@ -124,8 +123,7 @@ public class UserController extends AbstractController implements UserController
       if (!user.getPermissions().contains(UserPermission.LOGIN)) {
         throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
       }
-      final List<String> permissions = user.getPermissions().stream().map(Enum::name)
-          .collect(Collectors.toCollection(ArrayList::new));
+      final List<String> permissions = user.getPermissions().stream().map(Enum::name).toList();
       final String token = this.jwtTokenProvider.createToken(user.getName(), permissions,
           user.getId().getId());
       final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(),

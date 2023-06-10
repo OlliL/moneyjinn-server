@@ -29,13 +29,11 @@ import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
@@ -138,15 +136,14 @@ public class ImportedMoneyflowController extends AbstractController
         .getGroupBookableCapitalsourcesByDateRange(userId, today, today);
     if (!capitalsources.isEmpty()) {
       final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
-          .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
+          .map(Capitalsource::getId).toList();
       final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
           .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
               ImportedMoneyflowStatus.CREATED);
       if (!importedMoneyflows.isEmpty()) {
 
         final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
-            .map(ImportedMoneyflow::getBankAccount)
-            .collect(Collectors.toCollection(ArrayList::new));
+            .map(ImportedMoneyflow::getBankAccount).toList();
 
         final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
             .getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);

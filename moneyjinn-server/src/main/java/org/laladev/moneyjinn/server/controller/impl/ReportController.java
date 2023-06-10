@@ -145,10 +145,10 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate startDate = request.getStartDate();
       final LocalDate endDate = request.getEndDate();
       final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
-          .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
+          .map(PostingAccountID::new).toList();
       if (request.getPostingAccountIdsNo() != null) {
         final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
-            .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
+            .map(PostingAccountID::new).toList();
         final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
             postingAccountIdsNo);
         this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
@@ -174,10 +174,10 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate startDate = request.getStartDate();
       final LocalDate endDate = request.getEndDate();
       final List<PostingAccountID> postingAccountIdsYes = request.getPostingAccountIdsYes().stream()
-          .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
+          .map(PostingAccountID::new).toList();
       if (request.getPostingAccountIdsNo() != null) {
         final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
-            .map(PostingAccountID::new).collect(Collectors.toCollection(ArrayList::new));
+            .map(PostingAccountID::new).toList();
         final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
             postingAccountIdsNo);
         this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
@@ -224,7 +224,7 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate startDate = request.getStartDate();
       final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
       final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
-          .map(CapitalsourceID::new).collect(Collectors.toCollection(ArrayList::new));
+          .map(CapitalsourceID::new).collect(Collectors.toList());
       final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
           capitalsourceIds);
       // Save the selection for the next time the form is shown
@@ -411,8 +411,7 @@ public class ReportController extends AbstractController implements ReportContro
       response.setAllYears(allYears);
     }
     if (allMonth != null && !allMonth.isEmpty()) {
-      response.setAllMonth(
-          allMonth.stream().map(Month::getValue).collect(Collectors.toCollection(ArrayList::new)));
+      response.setAllMonth(allMonth.stream().map(Month::getValue).toList());
     }
     if (nextMonthHasMoneyflows) {
       response.setNextMonthHasMoneyflows(1);
@@ -459,7 +458,7 @@ public class ReportController extends AbstractController implements ReportContro
       if (moneyflows != null && !moneyflows.isEmpty()) {
         final List<MoneyflowID> relevantMoneyflowIds = moneyflows.stream()
             .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-            .map(Moneyflow::getId).collect(Collectors.toCollection(ArrayList::new));
+            .map(Moneyflow::getId).toList();
         moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId,
             relevantMoneyflowIds);
         moneyflowIdsWithReceipts = this.moneyflowReceiptService.getMoneyflowIdsWithReceipt(userId,
@@ -483,7 +482,7 @@ public class ReportController extends AbstractController implements ReportContro
           }
           final List<CapitalsourceID> capitalsourceIds = validCapitalsources.stream()
               .filter(mcs -> mcs.getImportAllowed() != CapitalsourceImport.NOT_ALLOWED)
-              .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
+              .map(Capitalsource::getId).toList();
           final List<ImportedBalance> importedBalances = this.importedBalanceService
               .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
           // this will hold all capitalsources which will be removed later if they where
@@ -575,7 +574,7 @@ public class ReportController extends AbstractController implements ReportContro
           // Sort turnover Capitalsources in the same way all valid Capitalsources where
           // sorted.
           final List<String> validCapitalsourceComments = validCapitalsources.stream()
-              .map(Capitalsource::getComment).collect(Collectors.toCollection(ArrayList::new));
+              .map(Capitalsource::getComment).toList();
           final Comparator<String> orderingComparator = Comparator
               .comparingInt(validCapitalsourceComments::indexOf);
           turnoverCapitalsources.sort((final ReportTurnoverCapitalsourceTransport left,
@@ -585,8 +584,7 @@ public class ReportController extends AbstractController implements ReportContro
           final List<Capitalsource> yearlyValidCapitalsources = this.capitalsourceService
               .getAllCapitalsourcesByDateRange(userId, beginOfYear, endOfMonth);
           final List<CapitalsourceID> yearlyAssetCapitalsourceIds = yearlyValidCapitalsources
-              .stream().filter(Capitalsource::isAsset).map(Capitalsource::getId)
-              .collect(Collectors.toCollection(ArrayList::new));
+              .stream().filter(Capitalsource::isAsset).map(Capitalsource::getId).toList();
           if (!yearlyAssetCapitalsourceIds.isEmpty()) {
             turnoverEndOfYearCalculated = this.moneyflowService
                 .getSumAmountByDateRangeForCapitalsourceIds(userId, beginOfYear, endOfMonth,
@@ -616,19 +614,17 @@ public class ReportController extends AbstractController implements ReportContro
     if (moneyflows != null && !moneyflows.isEmpty()) {
       final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
           .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-          .map(mf -> super.map(mf, MoneyflowTransport.class))
-          .collect(Collectors.toCollection(ArrayList::new));
+          .map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
       response.setMoneyflowTransports(moneyflowTransports);
       if (!moneyflowSplitEntries.isEmpty()) {
-        final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries
-            .values().stream().flatMap(List::stream)
-            .collect(Collectors.toCollection(ArrayList::new));
+        final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values()
+            .stream().flatMap(List::stream).toList();
         response.setMoneyflowSplitEntryTransports(
             super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
       }
       if (!moneyflowIdsWithReceipts.isEmpty()) {
         final List<Long> moneyflowIdLongs = moneyflowIdsWithReceipts.stream()
-            .map(MoneyflowID::getId).collect(Collectors.toCollection(ArrayList::new));
+            .map(MoneyflowID::getId).toList();
         response.setMoneyflowsWithReceipt(moneyflowIdLongs);
       }
       response.setTurnoverEndOfYearCalculated(turnoverEndOfYearCalculated);

@@ -29,12 +29,10 @@ import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -255,8 +253,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
     if (moneyflows != null && !moneyflows.isEmpty()) {
       final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
           .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-          .map(mf -> super.map(mf, MoneyflowTransport.class))
-          .collect(Collectors.toCollection(ArrayList::new));
+          .map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
       response.setMoneyflowTransports(moneyflowTransports);
     }
 
@@ -358,7 +355,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
     List<MoneyflowSplitEntryID> deleteMoneyflowSplitEntryIds = null;
     if (request.getDeleteMoneyflowSplitEntryIds() != null) {
       deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream()
-          .map(MoneyflowSplitEntryID::new).collect(Collectors.toCollection(ArrayList::new));
+          .map(MoneyflowSplitEntryID::new).toList();
     }
     final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
     moneyflow.setUser(user);
@@ -485,21 +482,18 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         .searchMoneyflowsByAbsoluteAmountDate(userId, amount, dateFrom, dateTil);
     if (moneyflows != null && !moneyflows.isEmpty()) {
       final List<Moneyflow> relevantMoneyflows = moneyflows.stream()
-          .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
-          .collect(Collectors.toCollection(ArrayList::new));
+          .filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId)).toList();
       if (relevantMoneyflows != null && !relevantMoneyflows.isEmpty()) {
         final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream()
-            .map(Moneyflow::getId).collect(Collectors.toCollection(ArrayList::new));
+            .map(Moneyflow::getId).toList();
         final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
             .getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
         final List<MoneyflowTransport> moneyflowTransports = relevantMoneyflows.stream()
-            .map(mf -> super.map(mf, MoneyflowTransport.class))
-            .collect(Collectors.toCollection(ArrayList::new));
+            .map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
         response.setMoneyflowTransports(moneyflowTransports);
         if (!moneyflowSplitEntries.isEmpty()) {
-          final ArrayList<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries
-              .values().stream().flatMap(List::stream)
-              .collect(Collectors.toCollection(ArrayList::new));
+          final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values()
+              .stream().flatMap(List::stream).toList();
           response.setMoneyflowSplitEntryTransports(
               super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
         }

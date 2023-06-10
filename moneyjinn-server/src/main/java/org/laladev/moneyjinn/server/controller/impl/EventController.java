@@ -28,9 +28,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -76,7 +74,7 @@ public class EventController extends AbstractController implements EventControll
         .getGroupCapitalsourcesByDateRange(userId, today, today);
     if (capitalsources != null && !capitalsources.isEmpty()) {
       final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
-          .map(Capitalsource::getId).collect(Collectors.toCollection(ArrayList::new));
+          .map(Capitalsource::getId).toList();
       final Integer numberOfImportedMoneyflows = this.importedMoneyflowService
           .countImportedMoneyflows(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
       response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
