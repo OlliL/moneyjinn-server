@@ -461,8 +461,7 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
       final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
       final LocalDate beginOfPrevMonth = beginOfMonth.minusMonths(1L);
-      // TODO: Do not hardcode "previous" month for determine the last recorded
-      // settlement.
+
       final Month prevMonthSettlement = beginOfPrevMonth.getMonth();
       final Integer prevYearSettlement = beginOfPrevMonth.getYear();
       moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId,
