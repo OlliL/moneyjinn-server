@@ -225,9 +225,9 @@ public class MonthlySettlementController extends AbstractController
     List<MonthlySettlementTransport> importedMonthlySettlementTransports = new ArrayList<>();
     List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
     if (capitalsources != null && !capitalsources.isEmpty()) {
-      List<MonthlySettlement> monthlySettlements = new ArrayList<>();
+      final List<MonthlySettlement> monthlySettlements = new ArrayList<>();
       if (selectedMonthDoesExist) {
-        monthlySettlements = this.getMyEditableMonthlySettlements(userId, year, month);
+        monthlySettlements.addAll(this.getMyEditableMonthlySettlements(userId, year, month));
         /*
          * I could be, that for an already fixed month, a "new" capitalsource gets valid afterwards.
          * To make it possible to create a settlement for this new source, add it here.
@@ -262,14 +262,16 @@ public class MonthlySettlementController extends AbstractController
           }
         }
         if (selectedMonthIsNextSettlementMonth && previousSettlementExists) {
-          final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-              .getImportedMonthlySettlementsByMonth(userId, year, month);
+          final List<ImportedMonthlySettlement> importedMonthlySettlements = new ArrayList<>(
+              this.importedMonthlySettlementService.getImportedMonthlySettlementsByMonth(userId,
+                  year, month));
           final List<MonthlySettlement> relevantImportedMonthlySettlements = new ArrayList<>();
           // prefill Amount if the selected month is the next one
           final Integer lastYear = lastDate.getYear();
           final Month lastMonth = lastDate.getMonth();
-          final List<MonthlySettlement> lastMonthlySettlements = this.monthlySettlementService
-              .getAllMonthlySettlementsByYearMonth(userId, lastYear, lastMonth);
+          final List<MonthlySettlement> lastMonthlySettlements = new ArrayList<>(
+              this.monthlySettlementService.getAllMonthlySettlementsByYearMonth(userId, lastYear,
+                  lastMonth));
           final Iterator<MonthlySettlement> iteratorMonthlySettlements = monthlySettlements
               .iterator();
           while (iteratorMonthlySettlements.hasNext()) {

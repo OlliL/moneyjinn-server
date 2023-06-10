@@ -150,8 +150,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
         final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(),
             LocalDateTime.now());
         transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
-        final List<EtfFlow> etfEffectiveFlows = this.etfService
-            .calculateEffectiveEtfFlows(etfFlows);
+        final List<EtfFlow> etfEffectiveFlows = new ArrayList<>(
+            this.etfService.calculateEffectiveEtfFlows(etfFlows));
         Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
         effectiveTransports
             .addAll(super.mapList(etfEffectiveFlows, EtfEffectiveFlowTransport.class));

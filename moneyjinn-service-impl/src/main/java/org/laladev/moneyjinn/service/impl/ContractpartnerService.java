@@ -30,10 +30,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,8 +105,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
   private List<Contractpartner> mapContractpartnerDataList(
       final List<ContractpartnerData> contractpartnerDataList) {
-    return contractpartnerDataList.stream().map(this::mapContractpartnerData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return contractpartnerDataList.stream().map(this::mapContractpartnerData).toList();
   }
 
   /**

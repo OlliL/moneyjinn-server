@@ -32,9 +32,7 @@ import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -89,8 +87,7 @@ public class ImportedMonthlySettlementService extends AbstractService
   private List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
       final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList) {
     return importedMonthlySettlementDataList.stream()
-        .map(element -> this.mapImportedMonthlySettlementData(userId, element))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .map(element -> this.mapImportedMonthlySettlementData(userId, element)).toList();
   }
 
   @Override

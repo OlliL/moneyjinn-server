@@ -22,7 +22,7 @@ class CapitalsourceStateMapperTest {
   void test_unknownCapitalsourceState_exception() {
     final Integer state = Integer.valueOf("66");
     Assertions.assertThrows(TechnicalException.class, () -> {
-      final CapitalsourceState stateMapped = CapitalsourceStateMapper.map(state);
+      CapitalsourceStateMapper.map(state);
     });
   }
 }

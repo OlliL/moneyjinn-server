@@ -29,11 +29,9 @@ package org.laladev.moneyjinn.service.impl;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
@@ -137,8 +135,7 @@ public class ContractpartnerAccountService extends AbstractService
   private List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
       final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
     return contractpartnerAccountDataList.stream()
-        .map(element -> this.mapContractpartnerAccountData(userId, element))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .map(element -> this.mapContractpartnerAccountData(userId, element)).toList();
   }
 
   private ContractpartnerAccount getContractpartnerAccountByBankAccount(final UserID userId,

@@ -30,10 +30,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,8 +98,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
   private List<Capitalsource> mapCapitalsourceDataList(
       final List<CapitalsourceData> capitalsourceDataList) {
-    return capitalsourceDataList.stream().map(this::mapCapitalsourceData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return capitalsourceDataList.stream().map(this::mapCapitalsourceData).toList();
   }
 
   /**
@@ -293,7 +290,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
     final List<Capitalsource> capitalsources = this.getGroupCapitalsourcesByDateRange(userId,
         validFrom, validTil);
     return capitalsources.stream().filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
   }
 
   @SuppressWarnings("unchecked")

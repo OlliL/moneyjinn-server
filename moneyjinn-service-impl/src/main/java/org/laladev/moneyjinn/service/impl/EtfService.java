@@ -32,11 +32,9 @@ import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
@@ -163,11 +161,9 @@ public class EtfService extends AbstractService implements IEtfService {
   public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
     Collections.sort(etfFlows, new EtfFlowComparator());
     final List<EtfFlow> etfSalesFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).toList();
     final List<EtfFlow> etfBuyFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1).toList();
     for (final EtfFlow etfSalesFlow : etfSalesFlows) {
       BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
       final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();

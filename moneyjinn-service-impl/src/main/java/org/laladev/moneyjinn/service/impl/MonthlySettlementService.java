@@ -35,7 +35,6 @@ import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
@@ -137,8 +136,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
   private List<MonthlySettlement> mapMonthlySettlementDataList(
       final List<MonthlySettlementData> monthlySettlementDataList) {
-    return monthlySettlementDataList.stream().map(this::mapMonthlySettlementData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return monthlySettlementDataList.stream().map(this::mapMonthlySettlementData).toList();
   }
 
   @Override
@@ -153,8 +151,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
     Assert.notNull(year, YEAR_MUST_NOT_BE_NULL);
     final List<Integer> allMonths = this.monthlySettlementDao.getAllMonth(userId.getId(), year);
     if (allMonths != null) {
-      return allMonths.stream().map(m -> Month.of(m.intValue()))
-          .collect(Collectors.toCollection(ArrayList::new));
+      return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
     }
     return new ArrayList<>();
   }
@@ -224,7 +221,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
     Assert.notNull(end, "end must not be null!");
     Assert.notEmpty(capitalsourceIds, "CapitalsourceIds must not be empty!");
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
         .getAllMonthlySettlementsByRangeAndCapitalsource(userId.getId(), begin.getYear(),
             begin.getMonthValue(), end.getYear(), end.getMonthValue(), capitalsourceIdLongs);

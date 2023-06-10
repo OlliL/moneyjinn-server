@@ -31,9 +31,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -125,8 +123,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
   private List<PreDefMoneyflow> mapPreDefMoneyflowDataList(
       final List<PreDefMoneyflowData> preDefMoneyflowDataList) {
-    return preDefMoneyflowDataList.stream().map(this::mapPreDefMoneyflowData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return preDefMoneyflowDataList.stream().map(this::mapPreDefMoneyflowData).toList();
   }
 
   @Override

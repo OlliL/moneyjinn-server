@@ -168,8 +168,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
     final CompareDataResult result = new CompareDataResult();
     final Period searchFrame = Period.ofDays(5);
     // gather all recorded moneyflows in the given period of time to work on for comparision
-    final List<Moneyflow> allMoneyflows = this.moneyflowService
-        .getAllMoneyflowsByDateRangeIncludingPrivate(userId, startDate, endDate);
+    final List<Moneyflow> allMoneyflows = new ArrayList<>(this.moneyflowService
+        .getAllMoneyflowsByDateRangeIncludingPrivate(userId, startDate, endDate));
     if (compareDataDatasets != null) {
       for (final CompareDataDataset compareDataDataset : compareDataDatasets) {
         final LocalDate bookingDate = compareDataDataset.getBookingDate();

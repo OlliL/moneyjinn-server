@@ -30,9 +30,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
@@ -89,8 +87,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
   private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
       final List<ImportedMoneyflowData> importedMoneyflowDataList) {
     return importedMoneyflowDataList.stream()
-        .map(element -> this.mapImportedMoneyflowData(userId, element))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .map(element -> this.mapImportedMoneyflowData(userId, element)).toList();
   }
 
   @Override
@@ -114,7 +111,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
     Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     return this.importedMoneyflowDao.countImportedMoneyflows(capitalsourceIdLongs,
         ImportedMoneyflowStatusMapper.map(status));
   }
@@ -160,7 +157,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
     }
 
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
         .getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs,
             ImportedMoneyflowStatusMapper.map(status), firewalledDateFrom, firewalledDateTil);

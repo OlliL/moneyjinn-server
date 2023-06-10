@@ -31,7 +31,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
@@ -79,13 +78,11 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
       final List<MoneyflowID> moneyflowIds) {
     Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
-    final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+    final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
     final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
         .getMoneyflowIdsWithReceipt(moneyflowIdLongs);
     if (moneyflowIdsWithReceipt != null) {
-      return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new)
-          .collect(Collectors.toCollection(ArrayList::new));
+      return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new).toList();
     } else {
       return new ArrayList<>();
     }

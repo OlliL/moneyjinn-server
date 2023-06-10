@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -144,8 +143,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
   }
 
   private List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
-    return moneyflowDataList.stream().map(this::mapMoneyflowData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return moneyflowDataList.stream().map(this::mapMoneyflowData).toList();
   }
 
   private List<PostingAccountAmount> mapPostingAccountAmountDataList(
@@ -354,8 +352,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     if (allMonths == null || allMonths.isEmpty()) {
       months = new ArrayList<>();
     } else {
-      months = allMonths.stream().map(m -> Month.of(m.intValue()))
-          .collect(Collectors.toCollection(ArrayList::new));
+      months = allMonths.stream().map(m -> Month.of(m.intValue())).toList();
     }
     cache.put(year, months);
     return months;
@@ -391,7 +388,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     Assert.notNull(dateTil, DATE_TIL_MUST_NOT_BE_NULL);
     Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom,
         dateTil, capitalsourceIdLongs);
   }
@@ -431,7 +428,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     Assert.notNull(dateTil, "DateTil must not be null!");
     Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
     final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
         .getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(),
             postingAccountIdLongs, dateFrom, dateTil);
@@ -447,7 +444,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     Assert.notNull(dateTil, "DateTil must not be null!");
     Assert.notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
     final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
         .getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(),
             postingAccountIdLongs, dateFrom, dateTil);

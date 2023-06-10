@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -89,8 +88,7 @@ public class MoneyflowSplitEntryService extends AbstractService
 
   private List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(
       final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
-    return moneyflowSplitEntryDataList.stream().map(this::mapMoneyflowSplitEntryData)
-        .collect(Collectors.toCollection(ArrayList::new));
+    return moneyflowSplitEntryDataList.stream().map(this::mapMoneyflowSplitEntryData).toList();
   }
 
   @Override
@@ -138,8 +136,7 @@ public class MoneyflowSplitEntryService extends AbstractService
       final List<MoneyflowID> moneyflowIds) {
     Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
     Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
-    final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+    final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
     final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao
         .getMoneyflowSplitEntries(moneyflowIdLongs);
     final List<MoneyflowSplitEntry> mapMoneyflowSplitEntries = this

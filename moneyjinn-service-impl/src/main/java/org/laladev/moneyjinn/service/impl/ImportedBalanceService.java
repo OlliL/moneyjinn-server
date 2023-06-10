@@ -31,7 +31,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.Group;
@@ -82,8 +81,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
   private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
       final List<ImportedBalanceData> importedBalanceDataList) {
     return importedBalanceDataList.stream()
-        .map(element -> this.mapImportedBalanceData(userId, element))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .map(element -> this.mapImportedBalanceData(userId, element)).toList();
   }
 
   @Override
@@ -102,7 +100,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
     }
 
     final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .collect(Collectors.toCollection(ArrayList::new));
+        .toList();
     final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
         .getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
     return this.mapImportedBalanceDataList(userId, importedBalanceDataList);

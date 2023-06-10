@@ -22,7 +22,7 @@ class CapitalsourceTypeMapperTest {
   void test_unknownCapitalsourceType_exception() {
     final Integer type = Integer.valueOf("66");
     Assertions.assertThrows(TechnicalException.class, () -> {
-      final CapitalsourceType typeMapped = CapitalsourceTypeMapper.map(type);
+      CapitalsourceTypeMapper.map(type);
     });
   }
 }
