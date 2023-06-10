@@ -16,15 +16,13 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
-import org.laladev.moneyjinn.server.builder.TrendsCalculatedTransportBuilder;
-import org.laladev.moneyjinn.server.builder.TrendsSettledTransportBuilder;
+import org.laladev.moneyjinn.server.builder.TrendsTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphResponse;
-import org.laladev.moneyjinn.server.model.TrendsCalculatedTransport;
-import org.laladev.moneyjinn.server.model.TrendsSettledTransport;
+import org.laladev.moneyjinn.server.model.TrendsTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -57,7 +55,7 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_maxDateRange_response() throws Exception {
+  void test_maxDateRange_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("1970-01-01"));
     request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -66,47 +64,47 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
-    final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2008).withMonth(11)
-        .withAmount("1099.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2008).withMonth(12)
-        .withAmount("1110.00").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(1)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(2)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(3)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(4)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(5)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(6)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(7)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(8)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(9)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(10)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(11)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(12)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(1)
-        .withAmount("108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(2)
-        .withAmount("118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(3)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(4)
-        .withAmount("1110.00").build());
+    final List<TrendsTransport> trendsSettledTransports = new ArrayList<>();
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2008).withMonth(11).withAmount("1099.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2008).withMonth(12).withAmount("1110.00").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(1).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(2).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(3).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(4).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(5).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(6).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(7).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(8).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(9).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(10).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(11).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(12).withAmount("1118.90").build());
+    trendsSettledTransports
+        .add(new TrendsTransportBuilder().withYear(2010).withMonth(1).withAmount("108.90").build());
+    trendsSettledTransports
+        .add(new TrendsTransportBuilder().withYear(2010).withMonth(2).withAmount("118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2010).withMonth(3).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2010).withMonth(4).withAmount("1110.00").build());
     expected.setTrendsSettledTransports(trendsSettledTransports);
-    final List<TrendsCalculatedTransport> trendsCalculatedTransports = new ArrayList<>();
-    trendsCalculatedTransports.add(new TrendsCalculatedTransportBuilder().withYear(2010)
-        .withMonth(5).withAmount("1100.00").build());
+    final List<TrendsTransport> trendsCalculatedTransports = new ArrayList<>();
+    trendsCalculatedTransports.add(
+        new TrendsTransportBuilder().withYear(2010).withMonth(5).withAmount("1100.00").build());
     expected.setTrendsCalculatedTransports(trendsCalculatedTransports);
     final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
@@ -114,7 +112,7 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_only2009_response() throws Exception {
+  void test_only2009_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("2009-01-01"));
     request.setEndDate(LocalDate.parse("2009-12-31"));
@@ -123,31 +121,31 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
-    final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(1)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(2)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(3)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(4)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(5)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(6)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(7)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(8)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(9)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(10)
-        .withAmount("1118.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(11)
-        .withAmount("1108.90").build());
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2009).withMonth(12)
-        .withAmount("1118.90").build());
+    final List<TrendsTransport> trendsSettledTransports = new ArrayList<>();
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(1).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(2).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(3).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(4).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(5).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(6).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(7).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(8).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(9).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(10).withAmount("1118.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(11).withAmount("1108.90").build());
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2009).withMonth(12).withAmount("1118.90").build());
     expected.setTrendsSettledTransports(trendsSettledTransports);
     final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
@@ -155,7 +153,7 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_onlyOneUnsettledMonth_response() throws Exception {
+  void test_onlyOneUnsettledMonth_response() throws Exception {
     final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
     request.setStartDate(LocalDate.parse("2010-05-01"));
     request.setEndDate(LocalDate.parse("2010-12-31"));
@@ -164,9 +162,9 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
         CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
-    final List<TrendsCalculatedTransport> trendsCalculatedTransports = new ArrayList<>();
-    trendsCalculatedTransports.add(new TrendsCalculatedTransportBuilder().withYear(2010)
-        .withMonth(5).withAmount("-10.00").build());
+    final List<TrendsTransport> trendsCalculatedTransports = new ArrayList<>();
+    trendsCalculatedTransports
+        .add(new TrendsTransportBuilder().withYear(2010).withMonth(5).withAmount("-10.00").build());
     expected.setTrendsCalculatedTransports(trendsCalculatedTransports);
     final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
@@ -174,7 +172,7 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_validtyPeriodOfCapitalsource_response() throws Exception {
+  void test_validtyPeriodOfCapitalsource_response() throws Exception {
     final CapitalsourceID capitalsourceId = new CapitalsourceID(
         CapitalsourceTransportBuilder.CAPITALSOURCE4_ID);
     final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
@@ -188,9 +186,9 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
     request.setEndDate(LocalDate.parse("2010-12-31"));
     request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
     final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
-    final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
-    trendsSettledTransports.add(new TrendsSettledTransportBuilder().withYear(2010).withMonth(4)
-        .withAmount("1000.00").build());
+    final List<TrendsTransport> trendsSettledTransports = new ArrayList<>();
+    trendsSettledTransports.add(
+        new TrendsTransportBuilder().withYear(2010).withMonth(4).withAmount("1000.00").build());
     expected.setTrendsSettledTransports(trendsSettledTransports);
     final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request,
         ShowTrendsGraphResponse.class);
@@ -198,7 +196,7 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
   }
 
   @Test
-   void test_AuthorizationRequired_Error() throws Exception {
+  void test_AuthorizationRequired_Error() throws Exception {
     this.userName = null;
     this.userPassword = null;
 

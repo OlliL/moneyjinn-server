@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
@@ -73,8 +74,7 @@ import org.laladev.moneyjinn.server.model.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphResponse;
-import org.laladev.moneyjinn.server.model.TrendsCalculatedTransport;
-import org.laladev.moneyjinn.server.model.TrendsSettledTransport;
+import org.laladev.moneyjinn.server.model.TrendsTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
@@ -224,107 +224,118 @@ public class ReportController extends AbstractController implements ReportContro
       final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
       final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
           .map(CapitalsourceID::new).toList();
+
       final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(
           capitalsourceIds);
       // Save the selection for the next time the form is shown
       this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
-      final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-          .getAllMonthlySettlementsByRangeAndCapitalsource(userId, startDate, endDate,
-              capitalsourceIds);
-      final List<Capitalsource> capitalsources = this.capitalsourceService
-          .getAllCapitalsources(userId);
-      final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap = new HashMap<>();
-      for (final Capitalsource capitalsource : capitalsources) {
-        validTilCapitalsourceIdMap.put(capitalsource.getId(), capitalsource.getValidTil());
-      }
-      final SortedMap<Integer, SortedMap<Month, BigDecimal>> settlementAmounts = new TreeMap<>();
-      final SortedMap<Integer, SortedMap<Month, BigDecimal>> moneyflowAmounts = new TreeMap<>();
-      Month lastMonth = null;
-      Integer lastYear = null;
-      BigDecimal lastAmount = BigDecimal.ZERO;
-      LocalDate lastSettledDay;
-      if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
-        for (final MonthlySettlement monthlySettlement : monthlySettlements) {
-          lastMonth = monthlySettlement.getMonth();
-          lastYear = monthlySettlement.getYear();
-          SortedMap<Month, BigDecimal> settlementAmountMap = settlementAmounts.get(lastYear);
-          if (settlementAmountMap == null) {
-            settlementAmountMap = new TreeMap<>();
-          }
-          lastAmount = settlementAmountMap.get(lastMonth);
-          if (lastAmount == null) {
-            lastAmount = BigDecimal.ZERO;
-          }
-          lastAmount = lastAmount.add(monthlySettlement.getAmount());
-          settlementAmountMap.put(lastMonth, lastAmount);
-          settlementAmounts.put(lastYear, settlementAmountMap);
-        }
-        lastSettledDay = LocalDate.of(lastYear.intValue(), lastMonth, 1)
-            .with(TemporalAdjusters.lastDayOfMonth());
-      } else {
-        lastSettledDay = startDate.minusMonths(1L).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      if (endDate.isAfter(lastSettledDay)) {
-        LocalDate beginOfMonth = lastSettledDay.plusDays(1L);
-        LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-        LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
-        if (maxMoneyflowDate != null) {
-          maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
-          while (!endOfMonth.isAfter(maxMoneyflowDate)) {
-            final List<CapitalsourceID> filteredCapitalsourceIds = this
-                .filterByValidity(capitalsourceIds, validTilCapitalsourceIdMap, beginOfMonth);
-            if (filteredCapitalsourceIds.isEmpty()) {
-              break;
-            }
-            final BigDecimal amount = this.moneyflowService
-                .getSumAmountByDateRangeForCapitalsourceIds(userId, beginOfMonth, endOfMonth,
-                    filteredCapitalsourceIds);
-            lastAmount = lastAmount.add(amount);
-            final Month month = endOfMonth.getMonth();
-            final Integer year = endOfMonth.getYear();
-            SortedMap<Month, BigDecimal> moneyflowAmountMap = moneyflowAmounts.get(year);
-            if (moneyflowAmountMap == null) {
-              moneyflowAmountMap = new TreeMap<>();
-            }
-            moneyflowAmountMap.put(month, lastAmount);
-            moneyflowAmounts.put(year, moneyflowAmountMap);
-            beginOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth()).plusDays(1L);
-            endOfMonth = endOfMonth.plusDays(1L).with(TemporalAdjusters.lastDayOfMonth());
-          }
-        }
-      }
-      final List<TrendsSettledTransport> trendsSettledTransports = new ArrayList<>();
-      for (final Entry<Integer, SortedMap<Month, BigDecimal>> yearEntry : settlementAmounts
-          .entrySet()) {
-        final Integer year = yearEntry.getKey();
-        for (final Entry<Month, BigDecimal> monthEntry : yearEntry.getValue().entrySet()) {
-          final TrendsSettledTransport trendsSettledTransport = new TrendsSettledTransport();
-          trendsSettledTransport.setYear(year);
-          trendsSettledTransport.setMonth(monthEntry.getKey().getValue());
-          trendsSettledTransport.setAmount(monthEntry.getValue());
-          trendsSettledTransports.add(trendsSettledTransport);
-        }
-      }
-      final List<TrendsCalculatedTransport> trendsCalculatedTransports = new ArrayList<>();
-      for (final Entry<Integer, SortedMap<Month, BigDecimal>> yearEntry : moneyflowAmounts
-          .entrySet()) {
-        final Integer year = yearEntry.getKey();
-        for (final Entry<Month, BigDecimal> monthEntry : yearEntry.getValue().entrySet()) {
-          final TrendsCalculatedTransport trendsCalculatedTransport = new TrendsCalculatedTransport();
-          trendsCalculatedTransport.setYear(year);
-          trendsCalculatedTransport.setMonth(monthEntry.getKey().getValue());
-          trendsCalculatedTransport.setAmount(monthEntry.getValue());
-          trendsCalculatedTransports.add(trendsCalculatedTransport);
-        }
-      }
+
+      final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId,
+          startDate, endDate, capitalsourceIds);
       if (!trendsSettledTransports.isEmpty()) {
         response.setTrendsSettledTransports(trendsSettledTransports);
       }
+
+      LocalDate lastSettledDay;
+      BigDecimal lastAmount;
+      if (trendsSettledTransports.isEmpty()) {
+        lastSettledDay = startDate.minusMonths(1L).with(TemporalAdjusters.lastDayOfMonth());
+        lastAmount = BigDecimal.ZERO;
+      } else {
+        final TrendsTransport transport = trendsSettledTransports
+            .get(trendsSettledTransports.size() - 1);
+        lastSettledDay = LocalDate.of(transport.getYear(), transport.getMonth(), 1)
+            .with(TemporalAdjusters.lastDayOfMonth());
+        lastAmount = transport.getAmount();
+      }
+
+      final List<TrendsTransport> trendsCalculatedTransports = this.prepareCalculatedTrends(userId,
+          lastSettledDay, endDate, capitalsourceIds, lastAmount);
       if (!trendsCalculatedTransports.isEmpty()) {
         response.setTrendsCalculatedTransports(trendsCalculatedTransports);
       }
     }
     return ResponseEntity.ok(response);
+  }
+
+  private List<TrendsTransport> prepareCalculatedTrends(final UserID userId,
+      final LocalDate startDate, LocalDate endDate, final List<CapitalsourceID> capitalsourceIds,
+      final BigDecimal lastAmount) {
+
+    if (!endDate.isAfter(startDate)) {
+      return new ArrayList<>();
+    }
+
+    LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
+    if (maxMoneyflowDate == null) {
+      return new ArrayList<>();
+    }
+
+    maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
+    if (endDate.isAfter(maxMoneyflowDate)) {
+      endDate = maxMoneyflowDate;
+    }
+
+    final List<Capitalsource> capitalsources = this.capitalsourceService
+        .getAllCapitalsources(userId);
+    final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap = capitalsources.stream()
+        .collect(Collectors.toMap(Capitalsource::getId, Capitalsource::getValidTil));
+
+    LocalDate beginOfMonth = startDate.plusDays(1L);
+    LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+    final SortedMap<LocalDate, BigDecimal> moneyflowAmounts = new TreeMap<>();
+
+    while (!endOfMonth.isAfter(endDate)) {
+      final List<CapitalsourceID> filteredCapitalsourceIds = this.filterByValidity(capitalsourceIds,
+          validTilCapitalsourceIdMap, beginOfMonth);
+      if (filteredCapitalsourceIds.isEmpty()) {
+        break;
+      }
+
+      final BigDecimal amount = this.moneyflowService.getSumAmountByDateRangeForCapitalsourceIds(
+          userId, beginOfMonth, endOfMonth, filteredCapitalsourceIds);
+
+      moneyflowAmounts.put(beginOfMonth, lastAmount.add(amount));
+
+      beginOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth()).plusDays(1L);
+      endOfMonth = endOfMonth.plusDays(1L).with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    return this.mapTrendsTransports(moneyflowAmounts);
+  }
+
+  private List<TrendsTransport> prepareSettledTrends(final UserID userId, final LocalDate startDate,
+      final LocalDate endDate, final List<CapitalsourceID> capitalsourceIds) {
+    final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
+        .getAllMonthlySettlementsByRangeAndCapitalsource(userId, startDate, endDate,
+            capitalsourceIds);
+
+    final SortedMap<LocalDate, BigDecimal> settlementAmounts = new TreeMap<>();
+
+    for (final MonthlySettlement monthlySettlement : monthlySettlements) {
+      final LocalDate date = LocalDate.of(monthlySettlement.getYear(), monthlySettlement.getMonth(),
+          1);
+      final BigDecimal settlementAmount = settlementAmounts.get(date);
+
+      settlementAmounts.put(date, monthlySettlement.getAmount()
+          .add(settlementAmount == null ? BigDecimal.ZERO : settlementAmount));
+    }
+
+    return this.mapTrendsTransports(settlementAmounts);
+  }
+
+  private List<TrendsTransport> mapTrendsTransports(
+      final SortedMap<LocalDate, BigDecimal> moneyflowAmounts) {
+    final List<TrendsTransport> trendsCalculatedTransports = new ArrayList<>();
+    for (final Entry<LocalDate, BigDecimal> monthEntry : moneyflowAmounts.entrySet()) {
+      final TrendsTransport trendsCalculatedTransport = new TrendsTransport();
+      trendsCalculatedTransport.setYear(monthEntry.getKey().getYear());
+      trendsCalculatedTransport.setMonth(monthEntry.getKey().getMonthValue());
+      trendsCalculatedTransport.setAmount(monthEntry.getValue());
+      trendsCalculatedTransports.add(trendsCalculatedTransport);
+    }
+
+    return trendsCalculatedTransports;
   }
 
   private List<CapitalsourceID> filterByValidity(final List<CapitalsourceID> capitalsourceIds,

@@ -4,13 +4,13 @@
 		"trendsSettledTransports": {
 			"type": "array",
 			"items": {
-				"$ref": "../../transport/TrendsSettledTransport.json"
+				"$ref": "../../transport/TrendsTransport.json"
 			}
 		},
 		"trendsCalculatedTransports": {
 			"type": "array",
 			"items": {
-				"$ref": "../../transport/TrendsCalculatedTransport.json"
+				"$ref": "../../transport/TrendsTransport.json"
 			}
 		}
 	}
