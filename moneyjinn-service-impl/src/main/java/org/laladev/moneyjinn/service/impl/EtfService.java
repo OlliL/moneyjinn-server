@@ -35,6 +35,7 @@ import java.time.Month;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
@@ -163,13 +164,14 @@ public class EtfService extends AbstractService implements IEtfService {
     final List<EtfFlow> etfSalesFlows = etfFlows.stream()
         .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).toList();
     final List<EtfFlow> etfBuyFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1).toList();
+        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1).collect(Collectors.toList());
     for (final EtfFlow etfSalesFlow : etfSalesFlows) {
       BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
       final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();
       while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
         final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
         if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
+          // FIXME: if-branch is uncovered by Unit-Tests!
           etfBuyFlowsIterator.remove();
           salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
         } else {
