@@ -24,7 +24,7 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
 	
-		<spring.boot.version>3.1.0</spring.boot.version>
+		<spring.boot.version>3.1.1</spring.boot.version>
 		<mybatis.version>3.5.13</mybatis.version>
 		<mybatis-spring.version>3.0.2</mybatis-spring.version>
 		<commons.io.version>2.12.0</commons.io.version>
@@ -33,7 +33,7 @@
 		<jjwt.version>0.11.5</jjwt.version>
 		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<swagger.version>2.2.10</swagger.version>
+		<swagger.version>2.2.12</swagger.version>
 		<openapi-generator.version>6.6.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
@@ -43,13 +43,13 @@
 		<httpclient.version>5.2.1</httpclient.version>
 
 		<maven-compiler-plugin>3.11.0</maven-compiler-plugin>
-		
+
 		<junit.version>5.10.0-M1</junit.version>
-		<mockito.version>5.3.1</mockito.version>
+		<mockito.version>5.4.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.7.1</opencsv.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	
+
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -111,6 +111,12 @@
 				<groupId>com.opencsv</groupId>
 				<artifactId>opencsv</artifactId>
 				<version>${opencsv.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
