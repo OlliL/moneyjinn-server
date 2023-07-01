@@ -27,17 +27,17 @@
 		<spring.boot.version>3.1.1</spring.boot.version>
 		<mybatis.version>3.5.13</mybatis.version>
 		<mybatis-spring.version>3.0.2</mybatis-spring.version>
-		<commons.io.version>2.12.0</commons.io.version>
-		<commons.codec.version>1.15</commons.codec.version>
+		<commons.io.version>2.13.0</commons.io.version>
+		<commons.codec.version>1.16.0</commons.codec.version>
 		<apache.tika.version>2.8.0</apache.tika.version>
 		<jjwt.version>0.11.5</jjwt.version>
 		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<swagger.version>2.2.12</swagger.version>
+		<swagger.version>2.2.14</swagger.version>
 		<openapi-generator.version>6.6.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.2.4.Final</hibernate-core.version>
+		<hibernate-core.version>6.2.5.Final</hibernate-core.version>
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
 		<httpclient.version>5.2.1</httpclient.version>
