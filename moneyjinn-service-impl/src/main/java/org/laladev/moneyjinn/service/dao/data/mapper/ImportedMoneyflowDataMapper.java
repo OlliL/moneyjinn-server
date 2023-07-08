@@ -67,12 +67,11 @@ public interface ImportedMoneyflowDataMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default ImportedMoneyflow doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
+  default void doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
     if (entity != null && entity.getBankAccount() != null
         && entity.getBankAccount().getAccountNumber() == null
         && entity.getBankAccount().getBankCode() == null) {
       entity.setBankAccount(null);
     }
-    return entity;
   }
 }

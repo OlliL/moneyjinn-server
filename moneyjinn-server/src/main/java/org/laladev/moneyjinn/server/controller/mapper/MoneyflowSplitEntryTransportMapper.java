@@ -55,12 +55,10 @@ public interface MoneyflowSplitEntryTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default MoneyflowSplitEntry doAfterMapping(@MappingTarget final MoneyflowSplitEntry entity) {
+  default void doAfterMapping(@MappingTarget final MoneyflowSplitEntry entity) {
     if (entity != null && entity.getPostingAccount() != null
         && entity.getPostingAccount().getId() == null) {
       entity.setPostingAccount(null);
     }
-
-    return entity;
   }
 }

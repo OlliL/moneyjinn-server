@@ -69,7 +69,7 @@ public interface PreDefMoneyflowTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default PreDefMoneyflow doAfterMapping(@MappingTarget final PreDefMoneyflow entity) {
+  default void doAfterMapping(@MappingTarget final PreDefMoneyflow entity) {
     if (entity != null) {
       if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
         entity.setCapitalsource(null);
@@ -81,6 +81,5 @@ public interface PreDefMoneyflowTransportMapper
         entity.setPostingAccount(null);
       }
     }
-    return entity;
   }
 }

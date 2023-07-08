@@ -55,12 +55,11 @@ public interface EtfEffectiveFlowTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default EtfFlow doAfterMapping(final EtfEffectiveFlowTransport source,
+  default void doAfterMapping(final EtfEffectiveFlowTransport source,
       @MappingTarget final EtfFlow entity) {
     if (entity != null && source != null && entity.getTime() != null) {
       final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
       entity.setTime(entity.getTime().withNano(nanos));
     }
-    return entity;
   }
 }

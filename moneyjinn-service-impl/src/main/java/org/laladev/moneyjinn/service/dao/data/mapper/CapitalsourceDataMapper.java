@@ -60,12 +60,11 @@ public interface CapitalsourceDataMapper extends IMapper<Capitalsource, Capitals
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default Capitalsource doAfterMapping(@MappingTarget final Capitalsource entity) {
+  default void doAfterMapping(@MappingTarget final Capitalsource entity) {
     if (entity != null && entity.getBankAccount() != null
         && entity.getBankAccount().getAccountNumber() == null
         && entity.getBankAccount().getBankCode() == null) {
       entity.setBankAccount(null);
     }
-    return entity;
   }
 }

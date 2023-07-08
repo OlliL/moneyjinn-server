@@ -54,12 +54,10 @@ public interface EtfFlowTransportMapper extends IMapper<EtfFlow, EtfFlowTranspor
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default EtfFlow doAfterMapping(final EtfFlowTransport source,
-      @MappingTarget final EtfFlow entity) {
+  default void doAfterMapping(final EtfFlowTransport source, @MappingTarget final EtfFlow entity) {
     if (entity != null && source != null && entity.getTime() != null) {
       final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
       entity.setTime(entity.getTime().withNano(nanos));
     }
-    return entity;
   }
 }

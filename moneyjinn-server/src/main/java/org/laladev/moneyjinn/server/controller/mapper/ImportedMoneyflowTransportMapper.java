@@ -80,10 +80,10 @@ public interface ImportedMoneyflowTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default ImportedMoneyflow doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
+  default void doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
 
     if (entity == null) {
-      return entity;
+      return;
     }
 
     final BankAccount bankAccount = entity.getBankAccount();
@@ -102,7 +102,5 @@ public interface ImportedMoneyflowTransportMapper
     if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
       entity.setPostingAccount(null);
     }
-
-    return entity;
   }
 }

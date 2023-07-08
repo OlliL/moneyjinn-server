@@ -53,11 +53,10 @@ public interface AccessRelationTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default AccessRelation doAfterMapping(@MappingTarget final AccessRelation entity) {
+  default void doAfterMapping(@MappingTarget final AccessRelation entity) {
     if (entity != null && entity.getParentAccessRelation() != null
         && entity.getParentAccessRelation().getId() == null) {
       entity.setParentAccessRelation(null);
     }
-    return entity;
   }
 }

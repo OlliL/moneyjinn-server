@@ -59,7 +59,7 @@ public interface CapitalsourceTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default Capitalsource doAfterMapping(@MappingTarget final Capitalsource entity) {
+  default void doAfterMapping(@MappingTarget final Capitalsource entity) {
     if (entity != null) {
       if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
           && entity.getBankAccount().getBankCode() == null) {
@@ -69,6 +69,5 @@ public interface CapitalsourceTransportMapper
         entity.setUser(null);
       }
     }
-    return entity;
   }
 }

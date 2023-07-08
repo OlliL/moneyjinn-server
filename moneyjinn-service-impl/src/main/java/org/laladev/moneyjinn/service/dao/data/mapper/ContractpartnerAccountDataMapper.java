@@ -55,13 +55,11 @@ public interface ContractpartnerAccountDataMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default ContractpartnerAccount doAfterMapping(
-      @MappingTarget final ContractpartnerAccount entity) {
+  default void doAfterMapping(@MappingTarget final ContractpartnerAccount entity) {
     if (entity != null && entity.getBankAccount() != null
         && entity.getBankAccount().getAccountNumber() == null
         && entity.getBankAccount().getBankCode() == null) {
       entity.setBankAccount(null);
     }
-    return entity;
   }
 }

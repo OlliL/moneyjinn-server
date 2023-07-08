@@ -57,7 +57,7 @@ public interface ContractpartnerTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default Contractpartner doAfterMapping(@MappingTarget final Contractpartner entity) {
+  default void doAfterMapping(@MappingTarget final Contractpartner entity) {
     if (entity != null) {
       if (entity.getUser() != null && entity.getUser().getId() == null) {
         entity.setUser(null);
@@ -66,6 +66,5 @@ public interface ContractpartnerTransportMapper
         entity.setPostingAccount(null);
       }
     }
-    return entity;
   }
 }

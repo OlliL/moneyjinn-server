@@ -58,11 +58,10 @@ public interface ContractpartnerDataMapper extends IMapper<Contractpartner, Cont
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default Contractpartner doAfterMapping(@MappingTarget final Contractpartner entity) {
+  default void doAfterMapping(@MappingTarget final Contractpartner entity) {
     if (entity != null && entity.getPostingAccount() != null
         && entity.getPostingAccount().getId() == null) {
       entity.setPostingAccount(null);
     }
-    return entity;
   }
 }

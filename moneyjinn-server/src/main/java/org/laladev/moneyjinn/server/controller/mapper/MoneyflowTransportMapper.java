@@ -70,7 +70,7 @@ public interface MoneyflowTransportMapper extends IMapper<Moneyflow, MoneyflowTr
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default Moneyflow doAfterMapping(@MappingTarget final Moneyflow entity) {
+  default void doAfterMapping(@MappingTarget final Moneyflow entity) {
     if (entity != null) {
       if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
         entity.setCapitalsource(null);
@@ -82,6 +82,5 @@ public interface MoneyflowTransportMapper extends IMapper<Moneyflow, MoneyflowTr
         entity.setPostingAccount(null);
       }
     }
-    return entity;
   }
 }

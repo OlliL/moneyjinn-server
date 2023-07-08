@@ -61,12 +61,10 @@ public interface MonthlySettlementTransportMapper
 
   // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
-  default MonthlySettlement doAfterMapping(@MappingTarget final MonthlySettlement entity) {
+  default void doAfterMapping(@MappingTarget final MonthlySettlement entity) {
     if (entity != null && entity.getCapitalsource() != null
         && entity.getCapitalsource().getId() == null) {
       entity.setCapitalsource(null);
     }
-
-    return entity;
   }
 }
