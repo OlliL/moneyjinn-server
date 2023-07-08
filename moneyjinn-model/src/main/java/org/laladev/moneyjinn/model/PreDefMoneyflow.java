@@ -56,7 +56,8 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID> {
+public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID>
+    implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
   private static final long serialVersionUID = 1L;
   private User user;
   private BigDecimal amount;

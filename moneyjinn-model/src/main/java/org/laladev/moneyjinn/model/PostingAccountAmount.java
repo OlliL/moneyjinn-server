@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class PostingAccountAmount {
+public class PostingAccountAmount implements IHasPostingAccount {
   private PostingAccount postingAccount;
   private LocalDate date;
   private BigDecimal amount;

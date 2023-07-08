@@ -53,7 +53,6 @@ public interface EtfEffectiveFlowTransportMapper
   @Mapping(target = "timestamp", source = "time")
   EtfEffectiveFlowTransport mapAToB(EtfFlow etfFlow);
 
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
   default void doAfterMapping(final EtfEffectiveFlowTransport source,
       @MappingTarget final EtfFlow entity) {

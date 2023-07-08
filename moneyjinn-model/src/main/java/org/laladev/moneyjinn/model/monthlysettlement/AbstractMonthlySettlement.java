@@ -31,6 +31,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.AbstractEntityID;
+import org.laladev.moneyjinn.model.IHasCapitalsource;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -39,7 +41,7 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class AbstractMonthlySettlement<I extends AbstractEntityID<?>>
-    extends AbstractEntity<I> {
+    extends AbstractEntity<I> implements IHasCapitalsource, IHasUser {
   private static final long serialVersionUID = 1L;
   private User user;
   private Group group;

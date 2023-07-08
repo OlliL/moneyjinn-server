@@ -32,7 +32,7 @@ import lombok.Data;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
 @Data
-public class ImportedBalance {
+public class ImportedBalance implements IHasCapitalsource {
   private Capitalsource capitalsource;
   private LocalDateTime date;
   private BigDecimal balance;

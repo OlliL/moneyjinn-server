@@ -31,12 +31,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.laladev.moneyjinn.model.AbstractEntity;
+import org.laladev.moneyjinn.model.IHasPostingAccount;
 import org.laladev.moneyjinn.model.PostingAccount;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class MoneyflowSplitEntry extends AbstractEntity<MoneyflowSplitEntryID> {
+public class MoneyflowSplitEntry extends AbstractEntity<MoneyflowSplitEntryID>
+    implements IHasPostingAccount {
   private static final long serialVersionUID = 1L;
   private MoneyflowID moneyflowId;
   private BigDecimal amount;

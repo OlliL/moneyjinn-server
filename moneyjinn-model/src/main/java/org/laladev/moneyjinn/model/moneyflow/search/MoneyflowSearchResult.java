@@ -30,9 +30,10 @@ import java.math.BigDecimal;
 import java.time.Month;
 import lombok.Data;
 import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.IHasContractpartner;
 
 @Data
-public class MoneyflowSearchResult {
+public class MoneyflowSearchResult implements IHasContractpartner {
   private Integer year;
   private Month month;
   private BigDecimal amount;

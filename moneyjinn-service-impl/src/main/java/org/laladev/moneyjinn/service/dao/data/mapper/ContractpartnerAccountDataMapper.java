@@ -29,18 +29,17 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class,
     ContractpartnerIdMapper.class })
 public interface ContractpartnerAccountDataMapper
-    extends IMapper<ContractpartnerAccount, ContractpartnerAccountData> {
+    extends IMapper<ContractpartnerAccount, ContractpartnerAccountData>, IFixHasBankAccount {
 
   @Override
   @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
@@ -52,14 +51,4 @@ public interface ContractpartnerAccountDataMapper
   @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
   @Mapping(target = ".", source = "bankAccount")
   ContractpartnerAccountData mapAToB(final ContractpartnerAccount a);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final ContractpartnerAccount entity) {
-    if (entity != null && entity.getBankAccount() != null
-        && entity.getBankAccount().getAccountNumber() == null
-        && entity.getBankAccount().getBankCode() == null) {
-      entity.setBankAccount(null);
-    }
-  }
 }

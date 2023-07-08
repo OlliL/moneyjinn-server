@@ -31,17 +31,17 @@ import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
     GroupIdMapper.class, PostingAccountIdMapper.class })
-public interface ContractpartnerDataMapper extends IMapper<Contractpartner, ContractpartnerData> {
+public interface ContractpartnerDataMapper
+    extends IMapper<Contractpartner, ContractpartnerData>, IFixHasPostingAccount {
   @Override
   @Mapping(target = "user.id", source = "macIdCreator")
   @Mapping(target = "access.id", source = "macIdAccessor")
@@ -55,13 +55,4 @@ public interface ContractpartnerDataMapper extends IMapper<Contractpartner, Cont
   @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
   @Mapping(target = "mmfComment", source = "moneyflowComment")
   ContractpartnerData mapAToB(Contractpartner contractpartner);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final Contractpartner entity) {
-    if (entity != null && entity.getPostingAccount() != null
-        && entity.getPostingAccount().getId() == null) {
-      entity.setPostingAccount(null);
-    }
-  }
 }

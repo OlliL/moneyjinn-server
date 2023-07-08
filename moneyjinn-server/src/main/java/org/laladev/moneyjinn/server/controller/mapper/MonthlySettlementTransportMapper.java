@@ -30,21 +30,20 @@ import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { MonthlySettlementIdMapper.class,
     MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
     CapitalsourceTypeMapper.class, BooleanToIntegerMapper.class })
 public interface MonthlySettlementTransportMapper
-    extends IMapper<MonthlySettlement, MonthlySettlementTransport> {
+    extends IMapper<MonthlySettlement, MonthlySettlementTransport>, IFixHasCapitalsource {
   @Override
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "group", ignore = true)
@@ -58,13 +57,4 @@ public interface MonthlySettlementTransportMapper
   @Mapping(target = "capitalsourcegroupuse", source = "capitalsource.groupUse")
   @Mapping(target = "capitalsourcetype", source = "capitalsource.type")
   MonthlySettlementTransport mapAToB(MonthlySettlement monthlySettlement);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final MonthlySettlement entity) {
-    if (entity != null && entity.getCapitalsource() != null
-        && entity.getCapitalsource().getId() == null) {
-      entity.setCapitalsource(null);
-    }
-  }
 }

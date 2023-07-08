@@ -30,18 +30,18 @@ import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
     UserIdMapper.class, GroupIdMapper.class })
-public interface CapitalsourceDataMapper extends IMapper<Capitalsource, CapitalsourceData> {
+public interface CapitalsourceDataMapper
+    extends IMapper<Capitalsource, CapitalsourceData>, IFixHasBankAccount {
 
   @Override
   @Mapping(target = "groupUse", source = "attGroupUse")
@@ -57,14 +57,4 @@ public interface CapitalsourceDataMapper extends IMapper<Capitalsource, Capitals
   @Mapping(target = "macIdCreator", source = "user.id")
   @Mapping(target = "macIdAccessor", source = "access.id")
   CapitalsourceData mapAToB(final Capitalsource a);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final Capitalsource entity) {
-    if (entity != null && entity.getBankAccount() != null
-        && entity.getBankAccount().getAccountNumber() == null
-        && entity.getBankAccount().getBankCode() == null) {
-      entity.setBankAccount(null);
-    }
-  }
 }

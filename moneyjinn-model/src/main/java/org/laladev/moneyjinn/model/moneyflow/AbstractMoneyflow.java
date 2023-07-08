@@ -34,6 +34,10 @@ import lombok.ToString;
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.IHasCapitalsource;
+import org.laladev.moneyjinn.model.IHasContractpartner;
+import org.laladev.moneyjinn.model.IHasPostingAccount;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
@@ -42,7 +46,8 @@ import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I> {
+public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I>
+    implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
   private static final long serialVersionUID = 1L;
   private User user;
   private Group group;

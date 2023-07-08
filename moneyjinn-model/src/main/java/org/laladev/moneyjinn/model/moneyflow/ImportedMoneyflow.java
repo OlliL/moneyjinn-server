@@ -30,11 +30,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.IHasBankAccount;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> {
+public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID>
+    implements IHasBankAccount {
   private static final long serialVersionUID = 1L;
   private String externalId;
   private String name;

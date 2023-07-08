@@ -29,18 +29,19 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
+import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class,
     ContractpartnerIdMapper.class })
 public interface ContractpartnerAccountTransportMapper
-    extends IMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
+    extends IMapper<ContractpartnerAccount, ContractpartnerAccountTransport>, IFixHasBankAccount,
+    IFixHasContractpartner {
 
   @Override
   @Mapping(target = "contractpartner.id", source = "contractpartnerid")
@@ -52,18 +53,4 @@ public interface ContractpartnerAccountTransportMapper
   @Mapping(target = "contractpartnerid", source = "contractpartner.id")
   @Mapping(target = ".", source = "bankAccount")
   ContractpartnerAccountTransport mapAToB(final ContractpartnerAccount a);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final ContractpartnerAccount entity) {
-    if (entity != null) {
-      if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
-          && entity.getBankAccount().getBankCode() == null) {
-        entity.setBankAccount(null);
-      }
-      if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
-        entity.setContractpartner(null);
-      }
-    }
-  }
 }

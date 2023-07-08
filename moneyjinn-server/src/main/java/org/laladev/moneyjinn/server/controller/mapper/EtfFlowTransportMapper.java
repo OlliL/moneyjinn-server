@@ -52,7 +52,6 @@ public interface EtfFlowTransportMapper extends IMapper<EtfFlow, EtfFlowTranspor
   @Mapping(target = "timestamp", source = "time")
   EtfFlowTransport mapAToB(EtfFlow etfFlow);
 
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
   @AfterMapping
   default void doAfterMapping(final EtfFlowTransport source, @MappingTarget final EtfFlow entity) {
     if (entity != null && source != null && entity.getTime() != null) {

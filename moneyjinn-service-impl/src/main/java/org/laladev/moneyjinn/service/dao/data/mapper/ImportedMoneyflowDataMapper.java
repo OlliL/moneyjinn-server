@@ -29,18 +29,17 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     ImportedMoneyflowStatusMapper.class, ImportedMoneyflowIdMapper.class })
 public interface ImportedMoneyflowDataMapper
-    extends IMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+    extends IMapper<ImportedMoneyflow, ImportedMoneyflowData>, IFixHasBankAccount {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")
   @Mapping(target = "invoiceDate", source = "invoicedate")
@@ -64,14 +63,4 @@ public interface ImportedMoneyflowDataMapper
   @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
   @Mapping(target = "comment", source = "usage")
   ImportedMoneyflowData mapAToB(ImportedMoneyflow importedMoneyflow);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
-    if (entity != null && entity.getBankAccount() != null
-        && entity.getBankAccount().getAccountNumber() == null
-        && entity.getBankAccount().getBankCode() == null) {
-      entity.setBankAccount(null);
-    }
-  }
 }

@@ -30,20 +30,20 @@ import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
+import org.laladev.moneyjinn.converter.fixes.IFixHasUser;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
     UserIdMapper.class, GroupIdMapper.class, BooleanToIntegerMapper.class })
 public interface CapitalsourceTransportMapper
-    extends IMapper<Capitalsource, CapitalsourceTransport> {
+    extends IMapper<Capitalsource, CapitalsourceTransport>, IFixHasBankAccount, IFixHasUser {
 
   @Override
   @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
@@ -56,18 +56,4 @@ public interface CapitalsourceTransportMapper
   @Mapping(target = ".", source = "bankAccount")
   @Mapping(target = "userid", source = "user.id")
   CapitalsourceTransport mapAToB(final Capitalsource a);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final Capitalsource entity) {
-    if (entity != null) {
-      if (entity.getBankAccount() != null && entity.getBankAccount().getAccountNumber() == null
-          && entity.getBankAccount().getBankCode() == null) {
-        entity.setBankAccount(null);
-      }
-      if (entity.getUser() != null && entity.getUser().getId() == null) {
-        entity.setUser(null);
-      }
-    }
-  }
 }

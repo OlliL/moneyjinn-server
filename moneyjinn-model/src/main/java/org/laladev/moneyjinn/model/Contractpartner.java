@@ -38,7 +38,8 @@ import org.laladev.moneyjinn.model.access.User;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class Contractpartner extends AbstractEntity<ContractpartnerID> {
+public class Contractpartner extends AbstractEntity<ContractpartnerID>
+    implements IHasPostingAccount, IHasUser {
   private static final long serialVersionUID = 1L;
   private User user;
   private Group access;

@@ -32,21 +32,23 @@ import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
+import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
+import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
+import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
-import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class, ImportedMoneyflowIdMapper.class,
     BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface ImportedMoneyflowTransportMapper
-    extends IMapper<ImportedMoneyflow, ImportedMoneyflowTransport> {
+    extends IMapper<ImportedMoneyflow, ImportedMoneyflowTransport>, IFixHasBankAccount,
+    IFixHasContractpartner, IFixHasPostingAccount, IFixHasCapitalsource {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")
   @Mapping(target = "invoiceDate", source = "invoicedate")
@@ -77,30 +79,4 @@ public interface ImportedMoneyflowTransportMapper
   @Mapping(target = "bankCodeCapitalsource", ignore = true)
   @Mapping(target = "externalid", source = "externalId")
   ImportedMoneyflowTransport mapAToB(ImportedMoneyflow importedMoneyflow);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final ImportedMoneyflow entity) {
-
-    if (entity == null) {
-      return;
-    }
-
-    final BankAccount bankAccount = entity.getBankAccount();
-    if (bankAccount != null && (bankAccount.getAccountNumber() == null
-        || bankAccount.getAccountNumber().trim().isEmpty()
-            && (entity.getBankAccount().getBankCode() == null
-                || bankAccount.getBankCode().trim().isEmpty()))) {
-      entity.setBankAccount(null);
-    }
-    if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
-      entity.setCapitalsource(null);
-    }
-    if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
-      entity.setContractpartner(null);
-    }
-    if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
-      entity.setPostingAccount(null);
-    }
-  }
 }

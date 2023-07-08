@@ -30,18 +30,17 @@ import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.MoneyflowSplitEntryIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { MoneyflowSplitEntryIdMapper.class,
     MoneyflowIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSplitEntryTransportMapper
-    extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
+    extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport>, IFixHasPostingAccount {
   @Override
   @Mapping(target = "moneyflowId", source = "moneyflowid")
   @Mapping(target = "postingAccount.id", source = "postingaccountid")
@@ -52,13 +51,4 @@ public interface MoneyflowSplitEntryTransportMapper
   @Mapping(target = "postingaccountid", source = "postingAccount.id")
   @Mapping(target = "postingaccountname", source = "postingAccount.name")
   MoneyflowSplitEntryTransport mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final MoneyflowSplitEntry entity) {
-    if (entity != null && entity.getPostingAccount() != null
-        && entity.getPostingAccount().getId() == null) {
-      entity.setPostingAccount(null);
-    }
-  }
 }

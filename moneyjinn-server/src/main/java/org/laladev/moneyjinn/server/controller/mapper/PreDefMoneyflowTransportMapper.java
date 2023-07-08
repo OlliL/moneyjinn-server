@@ -32,20 +32,22 @@ import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.PreDefMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
+import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
+import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class, PreDefMoneyflowIdMapper.class,
     BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface PreDefMoneyflowTransportMapper
-    extends IMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
+    extends IMapper<PreDefMoneyflow, PreDefMoneyflowTransport>, IFixHasCapitalsource,
+    IFixHasContractpartner, IFixHasPostingAccount {
   @Override
   @Mapping(target = "capitalsource.id", source = "capitalsourceid")
   @Mapping(target = "contractpartner.id", source = "contractpartnerid")
@@ -66,20 +68,4 @@ public interface PreDefMoneyflowTransportMapper
   @Mapping(target = "lastUsed", source = "lastUsedDate")
   @Mapping(target = "userid", source = "user.id")
   PreDefMoneyflowTransport mapAToB(PreDefMoneyflow preDefMoneyflow);
-
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final PreDefMoneyflow entity) {
-    if (entity != null) {
-      if (entity.getCapitalsource() != null && entity.getCapitalsource().getId() == null) {
-        entity.setCapitalsource(null);
-      }
-      if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
-        entity.setContractpartner(null);
-      }
-      if (entity.getPostingAccount() != null && entity.getPostingAccount().getId() == null) {
-        entity.setPostingAccount(null);
-      }
-    }
-  }
 }
