@@ -28,11 +28,10 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.mapstruct.Mapper;
@@ -41,7 +40,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
     GroupIdMapper.class, PostingAccountIdMapper.class })
 public interface ContractpartnerDataMapper
-    extends IMapper<Contractpartner, ContractpartnerData>, IFixHasPostingAccount {
+    extends IMapstructMapper<Contractpartner, ContractpartnerData> {
   @Override
   @Mapping(target = "user.id", source = "macIdCreator")
   @Mapping(target = "access.id", source = "macIdAccessor")

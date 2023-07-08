@@ -26,12 +26,12 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
-public interface BankAccountDataMapper extends IMapper<BankAccount, BankAccountData> {
+public interface BankAccountDataMapper extends IMapstructMapper<BankAccount, BankAccountData> {
 }

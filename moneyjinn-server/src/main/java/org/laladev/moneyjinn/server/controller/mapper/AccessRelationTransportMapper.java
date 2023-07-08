@@ -27,8 +27,8 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.AccessIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.mapstruct.AfterMapping;
@@ -38,7 +38,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
 public interface AccessRelationTransportMapper
-    extends IMapper<AccessRelation, AccessRelationTransport> {
+    extends IMapstructMapper<AccessRelation, AccessRelationTransport> {
   @Override
   @Mapping(target = "validFrom", source = "validfrom")
   @Mapping(target = "validTil", source = "validtil")

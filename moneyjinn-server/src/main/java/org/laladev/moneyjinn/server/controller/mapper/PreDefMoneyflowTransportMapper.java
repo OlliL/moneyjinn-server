@@ -28,15 +28,12 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.PreDefMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
-import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
-import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.mapstruct.Mapper;
@@ -46,8 +43,7 @@ import org.mapstruct.Mapping;
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class, PreDefMoneyflowIdMapper.class,
     BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface PreDefMoneyflowTransportMapper
-    extends IMapper<PreDefMoneyflow, PreDefMoneyflowTransport>, IFixHasCapitalsource,
-    IFixHasContractpartner, IFixHasPostingAccount {
+    extends IMapstructMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
   @Override
   @Mapping(target = "capitalsource.id", source = "capitalsourceid")
   @Mapping(target = "contractpartner.id", source = "contractpartnerid")

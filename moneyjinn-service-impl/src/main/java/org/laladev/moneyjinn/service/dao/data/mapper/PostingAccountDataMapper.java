@@ -26,13 +26,14 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
-public interface PostingAccountDataMapper extends IMapper<PostingAccount, PostingAccountData> {
+public interface PostingAccountDataMapper
+    extends IMapstructMapper<PostingAccount, PostingAccountData> {
 }

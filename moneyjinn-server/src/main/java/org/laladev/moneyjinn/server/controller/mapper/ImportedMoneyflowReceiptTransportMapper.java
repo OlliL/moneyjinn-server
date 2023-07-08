@@ -27,11 +27,11 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.Base64;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowReceiptIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
@@ -42,7 +42,7 @@ import org.mapstruct.Named;
 @Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class,
     UserIdMapper.class })
 public interface ImportedMoneyflowReceiptTransportMapper
-    extends IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
+    extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
   @Override
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "access", ignore = true)

@@ -27,10 +27,10 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowReceiptIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.mapstruct.Mapper;
@@ -39,7 +39,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class,
     UserIdMapper.class, GroupIdMapper.class, MoneyflowReceiptTypeMapper.class })
 public interface ImportedMoneyflowReceiptDataMapper
-    extends IMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
+    extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
   @Override
   @Mapping(target = "user.id", source = "macIdCreator")
   @Mapping(target = "access.id", source = "macIdAccessor")

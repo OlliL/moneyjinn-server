@@ -27,15 +27,16 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = CapitalsourceIdMapper.class)
-public interface ImportedBalanceDataMapper extends IMapper<ImportedBalance, ImportedBalanceData> {
+public interface ImportedBalanceDataMapper
+    extends IMapstructMapper<ImportedBalance, ImportedBalanceData> {
   @Override
   @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
   @Mapping(target = "date", source = "changedate")

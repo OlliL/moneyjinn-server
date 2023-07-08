@@ -26,12 +26,11 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.MoneyflowSplitEntryIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.mapstruct.Mapper;
@@ -40,7 +39,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { MoneyflowSplitEntryIdMapper.class,
     MoneyflowIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSplitEntryTransportMapper
-    extends IMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport>, IFixHasPostingAccount {
+    extends IMapstructMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
   @Override
   @Mapping(target = "moneyflowId", source = "moneyflowid")
   @Mapping(target = "postingAccount.id", source = "postingaccountid")

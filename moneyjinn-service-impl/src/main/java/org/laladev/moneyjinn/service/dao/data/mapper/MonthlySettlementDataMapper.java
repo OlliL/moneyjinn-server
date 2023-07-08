@@ -28,11 +28,11 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.mapstruct.Mapper;
@@ -42,7 +42,7 @@ import org.mapstruct.Mapping;
     MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
     GroupIdMapper.class })
 public interface MonthlySettlementDataMapper
-    extends IMapper<MonthlySettlement, MonthlySettlementData> {
+    extends IMapstructMapper<MonthlySettlement, MonthlySettlementData> {
   @Override
   @Mapping(target = "user.id", source = "macIdCreator")
   @Mapping(target = "group.id", source = "macIdAccessor")

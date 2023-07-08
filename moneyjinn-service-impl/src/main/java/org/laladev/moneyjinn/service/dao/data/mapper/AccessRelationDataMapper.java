@@ -27,8 +27,8 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.AccessIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
@@ -37,7 +37,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
-public interface AccessRelationDataMapper extends IMapper<AccessRelation, AccessRelationData> {
+public interface AccessRelationDataMapper
+    extends IMapstructMapper<AccessRelation, AccessRelationData> {
   @Override
   @Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")
   AccessRelation mapBToA(AccessRelationData accessRelationData);

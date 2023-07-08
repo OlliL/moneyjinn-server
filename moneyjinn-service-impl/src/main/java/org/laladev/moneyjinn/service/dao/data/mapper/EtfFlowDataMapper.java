@@ -28,15 +28,15 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
-public interface EtfFlowDataMapper extends IMapper<EtfFlow, EtfFlowData> {
+public interface EtfFlowDataMapper extends IMapstructMapper<EtfFlow, EtfFlowData> {
   @Override
   @Mapping(target = "id", source = "etfflowid")
   @Mapping(target = "time", source = "flowdate")

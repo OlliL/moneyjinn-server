@@ -27,8 +27,8 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.time.LocalDateTime;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.server.model.ImportedBalanceTransport;
 import org.mapstruct.Mapper;
@@ -36,7 +36,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, imports = { LocalDateTime.class })
 public interface ImportedBalanceTransportMapper
-    extends IMapper<ImportedBalance, ImportedBalanceTransport> {
+    extends IMapstructMapper<ImportedBalance, ImportedBalanceTransport> {
   @Override
   @Mapping(target = "capitalsource", ignore = true)
   @Mapping(target = "date", expression = "java(LocalDateTime.now())")

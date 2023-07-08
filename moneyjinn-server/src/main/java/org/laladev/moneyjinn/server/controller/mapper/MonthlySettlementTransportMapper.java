@@ -27,13 +27,12 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.MonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.mapstruct.Mapper;
@@ -43,7 +42,7 @@ import org.mapstruct.Mapping;
     MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
     CapitalsourceTypeMapper.class, BooleanToIntegerMapper.class })
 public interface MonthlySettlementTransportMapper
-    extends IMapper<MonthlySettlement, MonthlySettlementTransport>, IFixHasCapitalsource {
+    extends IMapstructMapper<MonthlySettlement, MonthlySettlementTransport> {
   @Override
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "group", ignore = true)

@@ -28,12 +28,10 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
-import org.laladev.moneyjinn.converter.fixes.IFixHasUser;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.mapstruct.Mapper;
@@ -43,7 +41,7 @@ import org.mapstruct.Mapping;
     CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
     UserIdMapper.class, GroupIdMapper.class, BooleanToIntegerMapper.class })
 public interface CapitalsourceTransportMapper
-    extends IMapper<Capitalsource, CapitalsourceTransport>, IFixHasBankAccount, IFixHasUser {
+    extends IMapstructMapper<Capitalsource, CapitalsourceTransport> {
 
   @Override
   @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")

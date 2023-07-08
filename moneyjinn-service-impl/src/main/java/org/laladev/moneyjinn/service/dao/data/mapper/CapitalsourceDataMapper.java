@@ -28,10 +28,9 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.mapstruct.Mapper;
@@ -41,7 +40,7 @@ import org.mapstruct.Mapping;
     CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
     UserIdMapper.class, GroupIdMapper.class })
 public interface CapitalsourceDataMapper
-    extends IMapper<Capitalsource, CapitalsourceData>, IFixHasBankAccount {
+    extends IMapstructMapper<Capitalsource, CapitalsourceData> {
 
   @Override
   @Mapping(target = "groupUse", source = "attGroupUse")

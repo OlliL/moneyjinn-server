@@ -28,10 +28,8 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerAccountIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
-import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.mapstruct.Mapper;
@@ -40,8 +38,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class,
     ContractpartnerIdMapper.class })
 public interface ContractpartnerAccountTransportMapper
-    extends IMapper<ContractpartnerAccount, ContractpartnerAccountTransport>, IFixHasBankAccount,
-    IFixHasContractpartner {
+    extends IMapstructMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
 
   @Override
   @Mapping(target = "contractpartner.id", source = "contractpartnerid")

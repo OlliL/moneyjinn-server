@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
 public interface PostingAccountTransportMapper
-    extends IMapper<PostingAccount, PostingAccountTransport> {
+    extends IMapstructMapper<PostingAccount, PostingAccountTransport> {
 }

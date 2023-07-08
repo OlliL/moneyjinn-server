@@ -27,8 +27,8 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.io.Serializable;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
@@ -38,7 +38,7 @@ import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class)
 public interface ValidationItemTransportMapper
-    extends IMapper<ValidationItemTransport, ValidationResultItem> {
+    extends IMapstructMapper<ValidationItemTransport, ValidationResultItem> {
   @Override
   default ValidationResultItem mapAToB(final ValidationItemTransport a) {
     throw new UnsupportedOperationException("Mapping not supported!");

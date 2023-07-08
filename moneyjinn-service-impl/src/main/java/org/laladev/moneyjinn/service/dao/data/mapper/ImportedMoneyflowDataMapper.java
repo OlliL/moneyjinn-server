@@ -27,10 +27,9 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.mapstruct.Mapper;
@@ -39,7 +38,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
     ImportedMoneyflowStatusMapper.class, ImportedMoneyflowIdMapper.class })
 public interface ImportedMoneyflowDataMapper
-    extends IMapper<ImportedMoneyflow, ImportedMoneyflowData>, IFixHasBankAccount {
+    extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowData> {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")
   @Mapping(target = "invoiceDate", source = "invoicedate")

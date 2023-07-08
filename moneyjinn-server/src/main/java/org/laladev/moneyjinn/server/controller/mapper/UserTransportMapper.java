@@ -28,9 +28,9 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserPermission;
@@ -40,7 +40,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
-public interface UserTransportMapper extends IMapper<User, UserTransport> {
+public interface UserTransportMapper extends IMapstructMapper<User, UserTransport> {
   @Override
   @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
   @Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")

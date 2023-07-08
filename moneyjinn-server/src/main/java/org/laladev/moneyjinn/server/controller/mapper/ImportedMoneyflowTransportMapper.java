@@ -28,16 +28,12 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowIdMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasBankAccount;
-import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
-import org.laladev.moneyjinn.converter.fixes.IFixHasContractpartner;
-import org.laladev.moneyjinn.converter.fixes.IFixHasPostingAccount;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
 import org.mapstruct.Mapper;
@@ -47,8 +43,7 @@ import org.mapstruct.Mapping;
     ContractpartnerIdMapper.class, PostingAccountIdMapper.class, ImportedMoneyflowIdMapper.class,
     BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface ImportedMoneyflowTransportMapper
-    extends IMapper<ImportedMoneyflow, ImportedMoneyflowTransport>, IFixHasBankAccount,
-    IFixHasContractpartner, IFixHasPostingAccount, IFixHasCapitalsource {
+    extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowTransport> {
   @Override
   @Mapping(target = "bookingDate", source = "bookingdate")
   @Mapping(target = "invoiceDate", source = "invoicedate")

@@ -27,12 +27,11 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMonthlySettlementIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.fixes.IFixHasCapitalsource;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.mapstruct.Mapper;
@@ -40,8 +39,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = { ImportedMonthlySettlementIdMapper.class,
     MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class })
-public interface ImportedMonthlySettlementTransportMapper extends
-    IMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport>, IFixHasCapitalsource {
+public interface ImportedMonthlySettlementTransportMapper
+    extends IMapstructMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
   @Override
   @Mapping(target = "capitalsource.id", source = "capitalsourceid")
   @Mapping(target = "externalId", source = "externalid")

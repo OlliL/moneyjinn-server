@@ -27,12 +27,12 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.GroupIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = GroupIdMapper.class)
-public interface GroupDataMapper extends IMapper<Group, GroupData> {
+public interface GroupDataMapper extends IMapstructMapper<Group, GroupData> {
 }

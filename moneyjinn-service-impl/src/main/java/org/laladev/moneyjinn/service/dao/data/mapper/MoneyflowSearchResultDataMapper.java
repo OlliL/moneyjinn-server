@@ -27,9 +27,9 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
-import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchResult;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchResultData;
 import org.mapstruct.Mapper;
@@ -38,7 +38,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = { MonthToIntegerMapper.class,
     ContractpartnerIdMapper.class })
 public interface MoneyflowSearchResultDataMapper
-    extends IMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
+    extends IMapstructMapper<MoneyflowSearchResult, MoneyflowSearchResultData> {
   @Override
   @Mapping(target = "contractpartner.id", source = "contractpartnerid")
   MoneyflowSearchResult mapBToA(MoneyflowSearchResultData moneyflowSearchResultData);
