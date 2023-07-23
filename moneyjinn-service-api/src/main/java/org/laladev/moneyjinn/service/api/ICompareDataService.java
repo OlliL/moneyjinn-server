@@ -100,5 +100,5 @@ public interface ICompareDataService {
    * @return
    */
   CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId,
-      LocalDate startDate, LocalDate endDate);
+      LocalDate startDate, LocalDate endDate, List<ImportedMoneyflow> importedMoneyflows);
 }

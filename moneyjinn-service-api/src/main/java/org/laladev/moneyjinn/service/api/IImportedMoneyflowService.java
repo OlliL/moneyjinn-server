@@ -37,8 +37,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * ImportedMoneyflowService is the Core Service handling everything around an
- * {@link ImportedMoneyflow}.
+ * ImportedMoneyflowService is the Service handling everything around an {@link ImportedMoneyflow}.
  * </p>
  *
  * <p>

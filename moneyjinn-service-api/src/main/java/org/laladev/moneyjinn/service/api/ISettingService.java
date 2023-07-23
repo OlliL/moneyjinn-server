@@ -43,12 +43,12 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 
 /**
  * <p>
- * SettingService is the Core Service handling everything around a {@link AbstractSetting}.
+ * SettingService is the Service handling everything around a {@link AbstractSetting}.
  * </p>
  *
  * <p>
- * SettingService is the Core Service handling operations around an {@link AbstractSetting} like
- * getting, creating, updating, deleting.
+ * SettingService is the Service handling operations around an {@link AbstractSetting} like getting,
+ * creating, updating, deleting.
  * </p>
  * <p>
  * The main datasource is the Table <code>settings</code>.

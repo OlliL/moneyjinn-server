@@ -74,7 +74,6 @@ import org.laladev.moneyjinn.sepa.camt.model.CreditDebitCode;
 import org.laladev.moneyjinn.sepa.camt.model.Entry;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
-import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.dao.CompareDataFormatDao;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
@@ -87,7 +86,6 @@ public class CompareDataService extends AbstractService implements ICompareDataS
   private static final String WRONG_FILE_FORMAT_TEXT = "The specified file is not parseable! Maybe you've selected the wrong format or file?";
   private final CompareDataFormatDao compareDataFormatDao;
   private final IMoneyflowService moneyflowService;
-  private final IImportedMoneyflowService importedMoneyflowService;
   private final IContractpartnerAccountService contractpartnerAccountService;
   private final CompareDataFormatDataMapper compareDataFormatDataMapper;
 
@@ -135,11 +133,9 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
   @Override
   public CompareDataResult compareDataImport(final UserID userId,
-      final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate) {
+      final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate,
+      final List<ImportedMoneyflow> importedMoneyflows) {
     List<CompareDataDataset> compareDataDatasets = null;
-    final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-        .getAllImportedMoneyflowsByCapitalsourceIds(userId,
-            Collections.singletonList(capitalsourceId), startDate, endDate);
     if (importedMoneyflows != null) {
       compareDataDatasets = this.mapImportedMoneyflows(importedMoneyflows);
     }

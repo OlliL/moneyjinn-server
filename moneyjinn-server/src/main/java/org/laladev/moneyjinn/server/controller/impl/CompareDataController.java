@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
@@ -42,6 +43,7 @@ import org.laladev.moneyjinn.model.comparedata.CompareDataNotInDatabase;
 import org.laladev.moneyjinn.model.comparedata.CompareDataNotInFile;
 import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
 import org.laladev.moneyjinn.model.comparedata.CompareDataWrongCapitalsource;
+import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -61,6 +63,7 @@ import org.laladev.moneyjinn.server.model.CompareDataWrongCapitalsourceTransport
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
+import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
@@ -74,6 +77,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompareDataController extends AbstractController implements CompareDataControllerApi {
   private final ISettingService settingService;
   private final ICompareDataService compareDataService;
+  private final IImportedMoneyflowService importedMoneyflowService;
+
   private final CapitalsourceTransportMapper capitalsourceTransportMapper;
   private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
   private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
@@ -137,8 +142,11 @@ public class CompareDataController extends AbstractController implements Compare
         this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
             new ClientCompareDataSelectedSourceIsFile(Boolean.FALSE));
       } else if (useImportedData) {
+        final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+            .getAllImportedMoneyflowsByCapitalsourceIds(userId,
+                Collections.singletonList(capitalsourceId), startDate, endDate);
         compareDataResult = this.compareDataService.compareDataImport(userId, capitalsourceId,
-            startDate, endDate);
+            startDate, endDate, importedMoneyflows);
         this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
             new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE));
       }

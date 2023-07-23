@@ -36,8 +36,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * MonthlySettlementService is the Core Service handling everything around an
- * {@link MonthlySettlement}.
+ * MonthlySettlementService is the Service handling everything around an {@link MonthlySettlement}.
  * </p>
  *
  * <p>

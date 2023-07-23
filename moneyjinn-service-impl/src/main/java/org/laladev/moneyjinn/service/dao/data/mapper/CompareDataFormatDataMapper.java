@@ -61,8 +61,8 @@ public class CompareDataFormatDataMapper
       compareDataFormat.setPositionPartner(compareDataFormatData.getPosPartner());
       compareDataFormat.setPositionAmount(compareDataFormatData.getPosAmount());
       compareDataFormat.setPositionComment(compareDataFormatData.getPosComment());
-      final String dateFormat = compareDataFormatData.getFmtDate().replace("DD", "dd")
-          .replace("YYYY", "yyyy");
+      final String dateFormat = compareDataFormatData.getFmtDate().replace("D", "d").replace("YYYY",
+          "yyyy");
       compareDataFormat.setFormatDate(dateFormat);
       final String fmtAmountDecimal = compareDataFormatData.getFmtAmountDecimal();
       if (fmtAmountDecimal != null) {

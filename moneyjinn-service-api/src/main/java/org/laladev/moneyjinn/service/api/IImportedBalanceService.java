@@ -34,7 +34,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * ImportedBalanceService is the Core Service handling everything around an {@link ImportedBalance}.
+ * ImportedBalanceService is the Service handling everything around an {@link ImportedBalance}.
  * </p>
  *
  * <p>
