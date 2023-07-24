@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
@@ -63,7 +61,6 @@ import org.springframework.util.Assert;
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
   private static final String ACCESS_RELATION_ID_MUST_NOT_BE_NULL = "AccessRelationId must not be null!";
   private static final String ACCESS_RELATION_MUST_NOT_BE_NULL = "AccessRelation must not be null!";
-  private static final Log LOG = LogFactory.getLog(AccessRelationService.class);
   private final AccessRelationDao accessRelationDao;
   private final IGroupService groupService;
   private final AccessRelationDataMapper accessRelationDataMapper;
