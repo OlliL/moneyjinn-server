@@ -58,6 +58,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -75,10 +76,12 @@ public class SecurityConfig {
 
   private static final String API_ROOT = "/moneyflow/server";
 
-  private static final String[] OPEN_ENDPOINTS = { API_ROOT + "/user/login",
-      API_ROOT + "/importedbalance/createImportedBalance",
-      API_ROOT + "/importedmoneyflow/createImportedMoneyflow",
-      API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement" };
+  private static final AntPathRequestMatcher[] OPEN_ENDPOINTS = {
+      new AntPathRequestMatcher(API_ROOT + "/user/login"),
+      new AntPathRequestMatcher(API_ROOT + "/importedbalance/createImportedBalance"),
+      new AntPathRequestMatcher(API_ROOT + "/importedmoneyflow/createImportedMoneyflow"),
+      new AntPathRequestMatcher(
+          API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement") };
 
   @Bean
   public AuthenticationManager authenticationManager(
@@ -112,13 +115,13 @@ public class SecurityConfig {
           configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
         })
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/websocket").permitAll()
-            .requestMatchers("/actuator/**").permitAll()
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
-            .requestMatchers(API_ROOT + "/user/refreshToken").hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers(API_ROOT + "/**").hasAuthority("LOGIN")
+            .requestMatchers(new AntPathRequestMatcher("/websocket")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+            .requestMatchers(new AntPathRequestMatcher(API_ROOT + "/**")).hasAuthority("LOGIN")
             // Whatever else you trying: deny
-            .requestMatchers("/**").denyAll()
+            .requestMatchers(new AntPathRequestMatcher("/**")).denyAll()
             .anyRequest().authenticated()
 
         )
