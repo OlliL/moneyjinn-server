@@ -43,6 +43,7 @@ import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -58,11 +59,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableMethodSecurity
@@ -103,8 +106,15 @@ public class SecurityConfig {
     return source;
   }
 
+  @Scope("prototype")
   @Bean
-  public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+  MvcRequestMatcher.Builder mvc(final HandlerMappingIntrospector introspector) {
+    return new MvcRequestMatcher.Builder(introspector);
+  }
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(final HttpSecurity http,
+      final MvcRequestMatcher.Builder mvc) throws Exception {
     //@formatter:off
     http.logout(logout -> {logout.logoutUrl(API_ROOT + "/logout"); logout.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));})
         .httpBasic(AbstractHttpConfigurer::disable)
@@ -116,12 +126,12 @@ public class SecurityConfig {
         })
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(OPEN_ENDPOINTS).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/websocket")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers(new AntPathRequestMatcher(API_ROOT + "/**")).hasAuthority("LOGIN")
+            .requestMatchers(mvc.pattern("/websocket")).permitAll()
+            .requestMatchers(mvc.pattern("/actuator/**")).permitAll()
+            .requestMatchers(mvc.pattern(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+            .requestMatchers(mvc.pattern(API_ROOT + "/**")).hasAuthority("LOGIN")
             // Whatever else you trying: deny
-            .requestMatchers(new AntPathRequestMatcher("/**")).denyAll()
+            .requestMatchers(mvc.pattern("/**")).denyAll()
             .anyRequest().authenticated()
 
         )
