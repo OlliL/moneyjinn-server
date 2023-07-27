@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -59,13 +58,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableMethodSecurity
@@ -79,12 +77,10 @@ public class SecurityConfig {
 
   private static final String API_ROOT = "/moneyflow/server";
 
-  private static final AntPathRequestMatcher[] OPEN_ENDPOINTS = {
-      new AntPathRequestMatcher(API_ROOT + "/user/login"),
-      new AntPathRequestMatcher(API_ROOT + "/importedbalance/createImportedBalance"),
-      new AntPathRequestMatcher(API_ROOT + "/importedmoneyflow/createImportedMoneyflow"),
-      new AntPathRequestMatcher(
-          API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement") };
+  private static final String[] OPEN_ENDPOINTS = { API_ROOT + "/user/login",
+      API_ROOT + "/importedbalance/createImportedBalance",
+      API_ROOT + "/importedmoneyflow/createImportedMoneyflow",
+      API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement" };
 
   @Bean
   public AuthenticationManager authenticationManager(
@@ -106,15 +102,16 @@ public class SecurityConfig {
     return source;
   }
 
-  @Scope("prototype")
-  @Bean
-  MvcRequestMatcher.Builder mvc(final HandlerMappingIntrospector introspector) {
-    return new MvcRequestMatcher.Builder(introspector);
+  static RequestMatcher[] antMatchers(final String... antPatterns) {
+    final RequestMatcher[] matchers = new RequestMatcher[antPatterns.length];
+    for (int index = 0; index < antPatterns.length; index++) {
+      matchers[index] = new AntPathRequestMatcher(antPatterns[index]);
+    }
+    return matchers;
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(final HttpSecurity http,
-      final MvcRequestMatcher.Builder mvc) throws Exception {
+  public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     //@formatter:off
     http.logout(logout -> {logout.logoutUrl(API_ROOT + "/logout"); logout.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));})
         .httpBasic(AbstractHttpConfigurer::disable)
@@ -122,16 +119,16 @@ public class SecurityConfig {
         .csrf(configurer -> {
           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
           configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-          configurer.ignoringRequestMatchers(OPEN_ENDPOINTS);
+          configurer.ignoringRequestMatchers(antMatchers(OPEN_ENDPOINTS));
         })
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(OPEN_ENDPOINTS).permitAll()
-            .requestMatchers(mvc.pattern("/websocket")).permitAll()
-            .requestMatchers(mvc.pattern("/actuator/**")).permitAll()
-            .requestMatchers(mvc.pattern(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers(mvc.pattern(API_ROOT + "/**")).hasAuthority("LOGIN")
+            .requestMatchers(antMatchers(OPEN_ENDPOINTS)).permitAll()
+            .requestMatchers(antMatchers("/websocket")).permitAll()
+            .requestMatchers(antMatchers("/actuator/**")).permitAll()
+            .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAuthority("LOGIN")
             // Whatever else you trying: deny
-            .requestMatchers(mvc.pattern("/**")).denyAll()
+            .requestMatchers(antMatchers("/**")).denyAll()
             .anyRequest().authenticated()
 
         )
