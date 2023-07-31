@@ -9,8 +9,10 @@ public interface IFixHasBankAccount {
   @AfterMapping
   default void fixHasBankAccount(@MappingTarget final IHasBankAccount entity) {
     if (entity != null && entity.getBankAccount() != null
-        && entity.getBankAccount().getAccountNumber() == null
-        && entity.getBankAccount().getBankCode() == null) {
+        && (entity.getBankAccount().getAccountNumber() == null
+            || entity.getBankAccount().getAccountNumber().isBlank())
+        && (entity.getBankAccount().getBankCode() == null
+            || entity.getBankAccount().getBankCode().isBlank())) {
       entity.setBankAccount(null);
     }
   }
