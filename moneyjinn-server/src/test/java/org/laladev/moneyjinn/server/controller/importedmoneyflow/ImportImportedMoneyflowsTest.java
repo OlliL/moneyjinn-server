@@ -188,15 +188,29 @@ class ImportImportedMoneyflowsTest extends AbstractControllerTest {
   }
 
   @Test
+  void test_nullBankAccount_Successfull() throws Exception {
+    this.testBankAccount(null, null);
+  }
+
+  @Test
   void test_emptyBankAccount_Successfull() throws Exception {
+    this.testBankAccount("", "");
+  }
+
+  @Test
+  void test_blankBankAccount_Successfull() throws Exception {
+    this.testBankAccount("  ", "  ");
+  }
+
+  private void testBankAccount(final String accountNumber, final String bankCode) throws Exception {
     final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
     final List<CapitalsourceID> capitalsourceIds = Arrays
         .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
     final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
     final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
         .forImportedMoneyflow1ToImport().build();
-    transport.setBankCode(null);
-    transport.setAccountNumber(null);
+    transport.setBankCode(bankCode);
+    transport.setAccountNumber(accountNumber);
     request.setImportedMoneyflowTransport(transport);
     List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
         .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
