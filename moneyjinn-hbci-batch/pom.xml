@@ -7,6 +7,7 @@
 	</parent>
 	<artifactId>moneyjinn-hbci-batch</artifactId>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -52,19 +53,6 @@
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents.client5</groupId>
-			<artifactId>httpclient5</artifactId>
-		</dependency>
-<!--		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -83,10 +71,9 @@
 							<modelPackage>org.laladev.moneyjinn.hbci.backend.model</modelPackage>
 							<skipOperationExample>true</skipOperationExample>
 							<configOptions>
-								<library>apache-httpclient</library>
+								<library>native</library>
 								<sourceFolder>src/gen/java/main</sourceFolder>
 								<useJakartaEe>true</useJakartaEe>
-								<!--								<useSpringBoot3>true</useSpringBoot3>-->
 								<openApiNullable>false</openApiNullable>
 								<useTags>true</useTags>
 							</configOptions>
@@ -114,7 +101,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -128,7 +114,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.3</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>

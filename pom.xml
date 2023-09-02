@@ -39,13 +39,13 @@
 		<!--for hbci-batch only-->
 		<hibernate-core.version>6.3.0.Final</hibernate-core.version>
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
-		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
-		<httpclient.version>5.2.1</httpclient.version>
 
 		<!-- Maven Plugins -->
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
 		<versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
@@ -199,11 +199,6 @@
 				<artifactId>hbci4j-core</artifactId>
 				<version>${hbci4j-core.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents.client5</groupId>
-				<artifactId>httpclient5</artifactId>
-				<version>${httpclient.version}</version>
-			</dependency>
 
 			<!-- TEST SCOPE -->
 			<dependency>
@@ -249,6 +244,16 @@
 					<groupId>org.openapitools</groupId>
 					<artifactId>openapi-generator-maven-plugin</artifactId>
 					<version>${openapi-generator.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven-assembly-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
