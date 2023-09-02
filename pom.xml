@@ -29,20 +29,23 @@
 		<mybatis-spring.version>3.0.2</mybatis-spring.version>
 		<commons.io.version>2.13.0</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
-		<apache.tika.version>2.8.0</apache.tika.version>
+		<apache.tika.version>2.9.0</apache.tika.version>
 		<jjwt.version>0.11.5</jjwt.version>
 		<lombok.version>1.18.28</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<swagger.version>2.2.15</swagger.version>
-		<openapi-generator.version>6.4.0</openapi-generator.version>
+		<openapi-generator.version>7.0.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.3.0.CR1</hibernate-core.version>
+		<hibernate-core.version>6.3.0.Final</hibernate-core.version>
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
 		<httpclient.version>5.2.1</httpclient.version>
 
-		<maven-compiler-plugin>3.11.0</maven-compiler-plugin>
+		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+		<versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 
 		<junit.version>5.10.0</junit.version>
 		<mockito.version>5.5.0</mockito.version>
@@ -228,7 +231,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven-compiler-plugin}</version>
+					<version>${maven-compiler-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
@@ -238,7 +241,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.1.2</version>
+					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.openapitools</groupId>
@@ -251,9 +254,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>${maven-release-plugin.version}</version>
+			</plugin>
+			<plugin>
+  				<groupId>org.codehaus.mojo</groupId>
+  				<artifactId>versions-maven-plugin</artifactId>
+	  			<version>${versions-maven-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
