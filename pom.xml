@@ -42,21 +42,23 @@
 		<!-- use until native client is fixed - see https://github.com/OpenAPITools/openapi-generator/issues/13968 -->
 		<httpclient.version>5.2.1</httpclient.version>
 
+		<!-- Maven Plugins -->
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 
+		<!-- Test Scope -->
 		<junit.version>5.10.0</junit.version>
 		<mockito.version>5.5.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.8</opencsv.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencyManagement>
