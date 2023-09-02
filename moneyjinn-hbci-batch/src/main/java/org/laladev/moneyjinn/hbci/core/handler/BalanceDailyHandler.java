@@ -29,56 +29,60 @@ package org.laladev.moneyjinn.hbci.core.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy_;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily_;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
-import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
 
 public class BalanceDailyHandler extends AbstractHandler {
-  private final EntityManager entityManager;
-  private final BalanceDaily balanceDaily;
+	private final EntityManager entityManager;
+	private final BalanceDaily balanceDaily;
 
-  public BalanceDailyHandler(final EntityManager entityManager, final BalanceDaily balanceDaily) {
-    this.entityManager = entityManager;
-    this.balanceDaily = balanceDaily;
-  }
+	public BalanceDailyHandler(final EntityManager entityManager, final BalanceDaily balanceDaily) {
+		this.entityManager = entityManager;
+		this.balanceDaily = balanceDaily;
+	}
 
-  @Override
-  public void handle() {
-    final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
-    if (this.balanceDaily != null) {
-      final BalanceDaily oldBalance = this.searchEntityInDB(this.balanceDaily);
-      if (oldBalance != null) {
-        this.entityManager
-            .merge(balanceDailyMapper.mergeBalanceDaily(oldBalance, this.balanceDaily));
-      } else {
-        this.entityManager.persist(this.balanceDaily);
-      }
-      this.notifyObservers(this.balanceDaily);
-    }
-  }
+	@Override
+	public void handle() {
+		final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
+		if (this.balanceDaily != null) {
+			final BalanceDaily oldBalance = this.searchEntityInDB(this.balanceDaily);
+			if (oldBalance != null) {
+				this.entityManager.merge(balanceDailyMapper.mergeBalanceDaily(oldBalance, this.balanceDaily));
+			} else {
+				this.entityManager.persist(this.balanceDaily);
+			}
+			this.notifyObservers(this.balanceDaily);
+		}
+	}
 
-  private BalanceDaily searchEntityInDB(final BalanceDaily balanceDaily) {
-    final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-    final CriteriaQuery<BalanceDaily> query = builder.createQuery(BalanceDaily.class);
-    final Root<BalanceDaily> root = query.from(BalanceDaily.class);
+	private BalanceDaily searchEntityInDB(final BalanceDaily balanceDaily) {
+		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		final CriteriaQuery<BalanceDaily> query = builder.createQuery(BalanceDaily.class);
+		final Root<BalanceDaily> root = query.from(BalanceDaily.class);
 
-    final List<Predicate> predicates = new ArrayList<>();
-    predicates.add(builder.equal(root.get("myIban"), balanceDaily.getMyIban()));
-    predicates.add(builder.equal(root.get("myBic"), balanceDaily.getMyBic()));
-    predicates.add(builder.equal(root.get("myAccountnumber"), balanceDaily.getMyAccountnumber()));
-    predicates.add(builder.equal(root.get("myBankcode"), balanceDaily.getMyBankcode()));
-    predicates.add(builder.equal(root.get("balanceDate"), balanceDaily.getBalanceDate()));
+		final List<Predicate> predicates = new ArrayList<>();
+		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myIban), balanceDaily.getMyIban()));
+		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myBic), balanceDaily.getMyBic()));
+		predicates.add(
+				builder.equal(root.get(AbstractAccountEntitiy_.myAccountnumber), balanceDaily.getMyAccountnumber()));
+		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myBankcode), balanceDaily.getMyBankcode()));
+		predicates.add(builder.equal(root.get(BalanceDaily_.balanceDate), balanceDaily.getBalanceDate()));
 
-    query.select(root).where(predicates.toArray(new Predicate[] {}));
+		query.select(root).where(predicates.toArray(new Predicate[] {}));
 
-    final List<BalanceDaily> results = this.entityManager.createQuery(query).getResultList();
-    if (results.isEmpty()) {
-      return null;
-    }
-    return results.iterator().next();
-  }
+		final List<BalanceDaily> results = this.entityManager.createQuery(query).getResultList();
+		if (results.isEmpty()) {
+			return null;
+		}
+		return results.iterator().next();
+	}
 }
