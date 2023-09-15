@@ -1,11 +1,12 @@
 
 package org.laladev.moneyjinn.server.controller.importedmonthlysettlement;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -21,157 +22,167 @@ import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
-  @Inject
-  IImportedMonthlySettlementService importedMonthlySettlementService;
+	@Inject
+	IImportedMonthlySettlementService importedMonthlySettlementService;
 
-  @Override
-  protected String getUsername() {
-    return null;
-  }
+	private String userName;
+	private String userPassword;
 
-  @Override
-  protected String getPassword() {
-    return null;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(ImportedMonthlySettlementControllerApi.class)
-        .createImportedMonthlySettlement(null);
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Test
-   void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forNewImportedMonthlySettlement().build();
-    request.setImportedMonthlySettlementTransport(transport);
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-    super.callUsecaseExpect204(request);
+	@Override
+	protected void loadMethod() {
+		super.getMock(ImportedMonthlySettlementControllerApi.class).createImportedMonthlySettlement(null);
+	}
 
-    final UserID userId = new UserID(transport.getUserid());
-    final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
-            Month.of(transport.getMonth()));
-    Assertions.assertNotNull(importedMonthlySettlements);
-    Assertions.assertEquals(1, importedMonthlySettlements.size());
-    Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
-        importedMonthlySettlements.get(0).getId().getId());
-    Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
-        importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
-  }
+	@Test
+	void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forNewImportedMonthlySettlement().build();
+		request.setImportedMonthlySettlementTransport(transport);
 
-  @Test
-   void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forImportedMonthlySettlement1().build();
-    transport.setAmount(BigDecimal.TEN);
-    request.setImportedMonthlySettlementTransport(transport);
-    final UserID userId = new UserID(transport.getUserid());
-    List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
-            Month.of(transport.getMonth()));
-    Assertions.assertNotNull(importedMonthlySettlements);
-    Assertions.assertEquals(1, importedMonthlySettlements.size());
-    Assertions.assertEquals(
-        ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
-        importedMonthlySettlements.get(0).getId().getId());
-    Assertions.assertTrue(
-        BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+		super.callUsecaseExpect204(request);
 
-    super.callUsecaseExpect204(request);
+		final UserID userId = new UserID(transport.getUserid());
+		final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
+				.getImportedMonthlySettlementsByMonth(userId, transport.getYear(), Month.of(transport.getMonth()));
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
+				importedMonthlySettlements.get(0).getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
+				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
+	}
 
-    importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId, transport.getYear(),
-            Month.of(transport.getMonth()));
-    Assertions.assertNotNull(importedMonthlySettlements);
-    Assertions.assertEquals(1, importedMonthlySettlements.size());
-    Assertions.assertEquals(
-        ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
-        importedMonthlySettlements.get(0).getId().getId());
-    Assertions
-        .assertTrue(BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
-  }
+	@Test
+	void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forImportedMonthlySettlement1().build();
+		transport.setAmount(BigDecimal.TEN);
+		request.setImportedMonthlySettlementTransport(transport);
+		final UserID userId = new UserID(transport.getUserid());
+		List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
+				.getImportedMonthlySettlementsByMonth(userId, transport.getYear(), Month.of(transport.getMonth()));
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
+				importedMonthlySettlements.get(0).getId().getId());
+		Assertions.assertTrue(BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
 
-  @Test
-   void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent()
-      throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forOnlyBalanceImportedMonthlySettlement().build();
-    request.setImportedMonthlySettlementTransport(transport);
+		super.callUsecaseExpect204(request);
 
-    super.callUsecaseExpect204(request);
+		importedMonthlySettlements = this.importedMonthlySettlementService.getImportedMonthlySettlementsByMonth(userId,
+				transport.getYear(), Month.of(transport.getMonth()));
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
+				importedMonthlySettlements.get(0).getId().getId());
+		Assertions.assertTrue(BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+	}
 
-    final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
-    final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
-        .getImportedMonthlySettlementsByMonth(userId, 2015, Month.FEBRUARY);
-    Assertions.assertNotNull(importedMonthlySettlements);
-    Assertions.assertEquals(1, importedMonthlySettlements.size());
-    Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
-        importedMonthlySettlements.get(0).getId().getId());
-    Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
-        importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
-  }
+	@Test
+	void test_onlyBalanceImportAllowedCapitalsourceInsert_SuccessfullNoContent() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forOnlyBalanceImportedMonthlySettlement().build();
+		request.setImportedMonthlySettlementTransport(transport);
 
-  @Test
-   void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forNewImportedMonthlySettlement().build();
-    transport
-        .setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_ACCOUNTNUMBER);
-    transport.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_BANKCODE);
-    request.setImportedMonthlySettlementTransport(transport);
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
-    expected.setMessage("Import of this capitalsource is not allowed!");
-    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
+		super.callUsecaseExpect204(request);
 
-  @Test
-   void test_unknownAccountNumber_errorResponse() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forNewImportedMonthlySettlement().build();
-    transport.setAccountNumberCapitalsource("1");
-    request.setImportedMonthlySettlementTransport(transport);
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
-    expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
+		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
+		final List<ImportedMonthlySettlement> importedMonthlySettlements = this.importedMonthlySettlementService
+				.getImportedMonthlySettlementsByMonth(userId, 2015, Month.FEBRUARY);
+		Assertions.assertNotNull(importedMonthlySettlements);
+		Assertions.assertEquals(1, importedMonthlySettlements.size());
+		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
+				importedMonthlySettlements.get(0).getId().getId());
+		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
+				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
+	}
 
-  @Test
-   void test_unknownBankCode_errorResponse() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forNewImportedMonthlySettlement().build();
-    transport.setBankCodeCapitalsource("1");
-    request.setImportedMonthlySettlementTransport(transport);
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
-    expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
+	@Test
+	void test_capitalsourceNotAllowedToBeImported_errorResponse() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forNewImportedMonthlySettlement().build();
+		transport.setAccountNumberCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_ACCOUNTNUMBER);
+		transport.setBankCodeCapitalsource(CapitalsourceTransportBuilder.CAPITALSOURCE2_BANKCODE);
+		request.setImportedMonthlySettlementTransport(transport);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED.getErrorCode());
+		expected.setMessage("Import of this capitalsource is not allowed!");
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-    final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
-        .forNewImportedMonthlySettlement().build();
-    transport.setBankCodeCapitalsource("1");
-    request.setImportedMonthlySettlementTransport(transport);
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
-    expected.setMessage("No matching capitalsource found!");
-    final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-    Assertions.assertEquals(expected, actual);
-  }
+	@Test
+	void test_unknownAccountNumber_errorResponse() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forNewImportedMonthlySettlement().build();
+		transport.setAccountNumberCapitalsource("1");
+		request.setImportedMonthlySettlementTransport(transport);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
+		expected.setMessage("No matching capitalsource found!");
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	void test_unknownBankCode_errorResponse() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forNewImportedMonthlySettlement().build();
+		transport.setBankCodeCapitalsource("1");
+		request.setImportedMonthlySettlementTransport(transport);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
+		expected.setMessage("No matching capitalsource found!");
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
+				.forNewImportedMonthlySettlement().build();
+		transport.setBankCodeCapitalsource("1");
+		request.setImportedMonthlySettlementTransport(transport);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
+		expected.setMessage("No matching capitalsource found!");
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
+
+		super.callUsecaseExpect403();
+	}
+
 }
