@@ -28,15 +28,10 @@ package org.laladev.moneyjinn.server.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import jakarta.inject.Inject;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
@@ -65,67 +60,76 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import jakarta.inject.Inject;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SecurityConfig {
-  private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
-  @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
-  private List<String> allowedOrigins;
+	@Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
+	private List<String> allowedOrigins;
 
-  private static final String API_ROOT = "/moneyflow/server";
+	private static final String API_ROOT = "/moneyflow/server";
 
-  private static final String[] OPEN_ENDPOINTS = { API_ROOT + "/user/login",
-      API_ROOT + "/importedbalance/createImportedBalance",
-      API_ROOT + "/importedmoneyflow/createImportedMoneyflow",
-      API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement" };
+	private static final String LOGIN_ENDPOINT = API_ROOT + "/user/login";
 
-  @Bean
-  public AuthenticationManager authenticationManager(
-      final AuthenticationConfiguration authenticationConfiguration) throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
-  }
+	private static final String[] IMPORT_ENDPOINTS = { API_ROOT + "/importedbalance/createImportedBalance",
+			API_ROOT + "/importedmoneyflow/createImportedMoneyflow",
+			API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement" };
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    final CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(this.allowedOrigins);
-    configuration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name(),
-        HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
-    configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION,
-        HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration(API_ROOT + "/**", configuration);
-    return source;
-  }
+	@Bean
+	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-  static RequestMatcher[] antMatchers(final String... antPatterns) {
-    final RequestMatcher[] matchers = new RequestMatcher[antPatterns.length];
-    for (int index = 0; index < antPatterns.length; index++) {
-      matchers[index] = new AntPathRequestMatcher(antPatterns[index]);
-    }
-    return matchers;
-  }
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		final CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(this.allowedOrigins);
+		configuration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name(),
+				HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
+		configuration.setAllowCredentials(true);
+		configuration.setAllowedHeaders(
+				Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration(API_ROOT + "/**", configuration);
+		return source;
+	}
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
-    //@formatter:off
+	static RequestMatcher[] antMatchers(final String... antPatterns) {
+		final RequestMatcher[] matchers = new RequestMatcher[antPatterns.length];
+		for (int index = 0; index < antPatterns.length; index++) {
+			matchers[index] = new AntPathRequestMatcher(antPatterns[index]);
+		}
+		return matchers;
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+	//@formatter:off
     http.logout(logout -> {logout.logoutUrl(API_ROOT + "/logout"); logout.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));})
         .httpBasic(AbstractHttpConfigurer::disable)
         .cors(withDefaults())
         .csrf(configurer -> {
           configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
           configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-          configurer.ignoringRequestMatchers(antMatchers(OPEN_ENDPOINTS));
+          configurer.ignoringRequestMatchers(antMatchers(LOGIN_ENDPOINT));
         })
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(antMatchers(OPEN_ENDPOINTS)).permitAll()
+            .requestMatchers(antMatchers(LOGIN_ENDPOINT)).permitAll()
             .requestMatchers(antMatchers("/websocket")).permitAll()
             .requestMatchers(antMatchers("/actuator/**")).permitAll()
             .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+            .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAuthority("LOGIN")
             .requestMatchers(antMatchers(API_ROOT + "/**")).hasAuthority("LOGIN")
             // Whatever else you trying: deny
             .requestMatchers(antMatchers("/**")).denyAll()
@@ -135,21 +139,20 @@ public class SecurityConfig {
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
         .apply(new JwtConfigurer(this.jwtTokenProvider));
     //@formatter:on
-    return http.build();
-  }
+		return http.build();
+	}
 
-  private static final class CsrfCookieFilter extends OncePerRequestFilter {
+	private static final class CsrfCookieFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(final HttpServletRequest request,
-        final HttpServletResponse response, final FilterChain filterChain)
-        throws ServletException, IOException {
-      final CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-      // Render the token value to a cookie by causing the deferred token to be loaded
-      csrfToken.getToken();
+		@Override
+		protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+				final FilterChain filterChain) throws ServletException, IOException {
+			final CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+			// Render the token value to a cookie by causing the deferred token to be loaded
+			csrfToken.getToken();
 
-      filterChain.doFilter(request, response);
-    }
+			filterChain.doFilter(request, response);
+		}
 
-  }
+	}
 }
