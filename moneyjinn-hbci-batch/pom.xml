@@ -89,6 +89,13 @@
 					<compilerVersion>${java.version}</compilerVersion>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<annotationProcessorPaths>
+                        <path>
+                        	<groupId>org.hibernate.orm</groupId>
+                        	<artifactId>hibernate-jpamodelgen</artifactId>
+                        	<version>${hibernate-core.version}</version>
+                    	</path>
+                	</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -136,6 +143,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+   				<groupId>org.codehaus.mojo</groupId>
+    			<artifactId>build-helper-maven-plugin</artifactId>
+    			<executions>
+        			<execution>
+            			<id>add-source</id>
+            			<phase>generate-sources</phase>
+            			<goals>
+                			<goal>add-source</goal>
+            			</goals>
+            			<configuration>
+                			<sources>
+                    			<source>${project.build.directory}/generated-sources/annotations</source>
+                			</sources>
+            			</configuration>
+        			</execution>
+    			</executions>
+ 			</plugin>
 		</plugins>
 	</build>
 </project>

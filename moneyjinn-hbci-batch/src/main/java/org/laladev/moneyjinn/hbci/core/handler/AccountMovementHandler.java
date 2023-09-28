@@ -28,7 +28,9 @@ package org.laladev.moneyjinn.hbci.core.handler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy_;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement_;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -55,20 +57,26 @@ public class AccountMovementHandler extends AbstractHandler {
 			final Root<AccountMovement> root = query.from(AccountMovement.class);
 			final List<Predicate> predicates = new ArrayList<>();
 
-			predicates.add(builder.equal(root.get("myIban"), accountMovement.getMyIban()));
-			predicates.add(builder.equal(root.get("myBic"), accountMovement.getMyBic()));
-			predicates.add(builder.equal(root.get("myAccountnumber"), accountMovement.getMyAccountnumber()));
-			predicates.add(builder.equal(root.get("myBankcode"), accountMovement.getMyBankcode()));
-			predicates.add(builder.equal(root.get("bookingDate"), accountMovement.getBookingDate()));
-			predicates.add(builder.equal(root.get("valueDate"), accountMovement.getValueDate()));
-			predicates.add(builder.equal(root.get("movementValue"), accountMovement.getMovementValue()));
-			predicates.add(builder.equal(root.get("movementCurrency"), accountMovement.getMovementCurrency()));
-			predicates.add(builder.equal(root.get("movementTypeCode"), accountMovement.getMovementTypeCode()));
-			predicates.add(builder.equal(root.get("customerReference"), accountMovement.getCustomerReference()));
-			predicates.add(builder.equal(root.get("cancellation"), accountMovement.getCancellation()));
-			predicates.add(builder.equal(root.get("balanceDate"), accountMovement.getBalanceDate()));
-			predicates.add(builder.equal(root.get("balanceValue"), accountMovement.getBalanceValue()));
-			predicates.add(builder.equal(root.get("balanceCurrency"), accountMovement.getBalanceCurrency()));
+			predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myIban), accountMovement.getMyIban()));
+			predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myBic), accountMovement.getMyBic()));
+			predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myAccountnumber),
+					accountMovement.getMyAccountnumber()));
+			predicates
+					.add(builder.equal(root.get(AbstractAccountEntitiy_.myBankcode), accountMovement.getMyBankcode()));
+			predicates.add(builder.equal(root.get(AccountMovement_.bookingDate), accountMovement.getBookingDate()));
+			predicates.add(builder.equal(root.get(AccountMovement_.valueDate), accountMovement.getValueDate()));
+			predicates.add(builder.equal(root.get(AccountMovement_.movementValue), accountMovement.getMovementValue()));
+			predicates.add(
+					builder.equal(root.get(AccountMovement_.movementCurrency), accountMovement.getMovementCurrency()));
+			predicates.add(
+					builder.equal(root.get(AccountMovement_.movementTypeCode), accountMovement.getMovementTypeCode()));
+			predicates.add(builder.equal(root.get(AccountMovement_.customerReference),
+					accountMovement.getCustomerReference()));
+			predicates.add(builder.equal(root.get(AccountMovement_.cancellation), accountMovement.getCancellation()));
+			predicates.add(builder.equal(root.get(AccountMovement_.balanceDate), accountMovement.getBalanceDate()));
+			predicates.add(builder.equal(root.get(AccountMovement_.balanceValue), accountMovement.getBalanceValue()));
+			predicates.add(
+					builder.equal(root.get(AccountMovement_.balanceCurrency), accountMovement.getBalanceCurrency()));
 
 			query.select(root).where(predicates.toArray(new Predicate[] {}));
 

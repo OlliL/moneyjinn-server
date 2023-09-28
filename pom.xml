@@ -46,6 +46,7 @@
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+		<build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
@@ -268,6 +269,11 @@
   				<artifactId>versions-maven-plugin</artifactId>
 	  			<version>${versions-maven-plugin.version}</version>
 			</plugin>
+			<plugin>
+   				<groupId>org.codehaus.mojo</groupId>
+    			<artifactId>build-helper-maven-plugin</artifactId>
+	  			<version>${build-helper-maven-plugin.version}</version>
+    		</plugin>
 		</plugins>
 	</build>
 </project>
