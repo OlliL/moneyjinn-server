@@ -29,63 +29,64 @@ package org.laladev.moneyjinn.hbci.batch.subscriber;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedMoneyflowControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.hbci.backend.model.ImportedMoneyflowTransport;
+import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnApiClient;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
 public class AccountMovementObserver implements PropertyChangeListener {
 
-  @Override
-  public void propertyChange(final PropertyChangeEvent event) {
-    if (event.getNewValue() instanceof AccountMovement) {
-      this.notify((AccountMovement) event.getNewValue());
-    }
+	@Override
+	public void propertyChange(final PropertyChangeEvent event) {
+		if (event.getNewValue() instanceof AccountMovement) {
+			this.notify((AccountMovement) event.getNewValue());
+		}
 
-  }
+	}
 
-  private void notify(final AccountMovement transaction) {
-    final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransport();
-    transport.setAccountNumberCapitalsource(transaction.getMyIban());
-    transport.setBankCodeCapitalsource(transaction.getMyBic());
-    transport.setExternalid(transaction.getId().toString());
-    transport.setBookingdate(transaction.getValueDate());
-    if (transaction.getInvoiceTimestamp() == null) {
-      transport.setInvoicedate(transaction.getBookingDate());
-    } else {
-      transport.setInvoicedate(transaction.getInvoiceTimestamp().toLocalDate());
-    }
-    transport.setName(transaction.getOtherName());
-    transport
-        .setAccountNumber(transaction.getOtherAccountnumber() == null ? transaction.getOtherIban()
-            : transaction.getOtherAccountnumber().toString());
-    transport.setBankCode(transaction.getOtherBankcode() == null ? transaction.getOtherBic()
-        : transaction.getOtherBankcode().toString());
-    transport.setUsage(transaction.getMovementReason());
-    transport.setAmount(transaction.getMovementValue());
+	private void notify(final AccountMovement transaction) {
+		final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransport();
+		transport.setAccountNumberCapitalsource(transaction.getMyIban());
+		transport.setBankCodeCapitalsource(transaction.getMyBic());
+		transport.setExternalid(transaction.getId().toString());
+		transport.setBookingdate(transaction.getValueDate());
+		if (transaction.getInvoiceTimestamp() == null) {
+			transport.setInvoicedate(transaction.getBookingDate());
+		} else {
+			transport.setInvoicedate(transaction.getInvoiceTimestamp().toLocalDate());
+		}
+		transport.setName(transaction.getOtherName());
+		transport.setAccountNumber(transaction.getOtherAccountnumber() == null ? transaction.getOtherIban()
+				: transaction.getOtherAccountnumber().toString());
+		transport.setBankCode(transaction.getOtherBankcode() == null ? transaction.getOtherBic()
+				: transaction.getOtherBankcode().toString());
+		transport.setUsage(transaction.getMovementReason());
+		transport.setAmount(transaction.getMovementValue());
 
-    if (transport.getName() == null) {
-      transport.setName(" ");
-    }
+		if (transport.getName() == null) {
+			transport.setName(" ");
+		}
 
-    if (transport.getAccountNumber() == null) {
-      transport.setAccountNumber(" ");
-    }
+		if (transport.getAccountNumber() == null) {
+			transport.setAccountNumber(" ");
+		}
 
-    if (transport.getBankCode() == null) {
-      transport.setBankCode(" ");
-    }
+		if (transport.getBankCode() == null) {
+			transport.setBankCode(" ");
+		}
 
-    final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-    request.setImportedMoneyflowTransport(transport);
+		final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
+		request.setImportedMoneyflowTransport(transport);
 
-    try {
-      new ImportedMoneyflowControllerApi().createImportedMoneyflow(request);
-    } catch (final ApiException e) {
-      e.printStackTrace();
-    }
+		try {
+			new ImportedMoneyflowControllerApi(MoneyjinnApiClient.getApiClient()).createImportedMoneyflow(request);
+		} catch (final ApiException e) {
+			e.printStackTrace();
+		}
 
-  }
+	}
 
 }

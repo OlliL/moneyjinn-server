@@ -26,14 +26,18 @@
 
 package org.laladev.moneyjinn.core.error;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public class MoneyjinnException extends RuntimeException {
-  private static final long serialVersionUID = 1L;
-  private final String errorMessage;
-  private final ErrorCode errorCode;
+	private static final long serialVersionUID = 1L;
+	private final String errorMessage;
+	private final ErrorCode errorCode;
+
+	public MoneyjinnException(final String errorMessage, final ErrorCode errorCode) {
+		super(errorMessage);
+		this.errorMessage = errorMessage;
+		this.errorCode = errorCode;
+	}
 
 }
