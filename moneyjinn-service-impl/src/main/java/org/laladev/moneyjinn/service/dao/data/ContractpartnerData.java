@@ -27,20 +27,21 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class ContractpartnerData {
-  private Long id;
-  private Long macIdCreator;
-  private Long macIdAccessor;
-  private String name;
-  private String street;
-  private Integer postcode;
-  private String town;
-  private String country;
-  private LocalDate validTil;
-  private LocalDate validFrom;
-  private String mmfComment;
-  private Long mpaPostingAccountId;
+	private Long id;
+	private Long macIdCreator;
+	private Long macIdAccessor;
+	private String name;
+	private String street;
+	private Integer postcode;
+	private String town;
+	private String country;
+	private LocalDate validTil;
+	private LocalDate validFrom;
+	private String mmfComment;
+	private Long mpaPostingAccountId;
 }

@@ -30,15 +30,15 @@ import java.beans.PropertyChangeSupport;
 
 public abstract class AbstractHandler {
 
-  protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-  public abstract void handle();
+	public abstract void handle();
 
-  public void addObserver(final PropertyChangeListener l) {
-    this.pcs.addPropertyChangeListener(l);
-  }
+	public void addObserver(final PropertyChangeListener l) {
+		this.pcs.addPropertyChangeListener(l);
+	}
 
-  public void notifyObservers(final Object object) {
-    this.pcs.firePropertyChange(null, null, object);
-  }
+	public void notifyObservers(final Object object) {
+		this.pcs.firePropertyChange(null, null, object);
+	}
 }

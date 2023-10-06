@@ -28,11 +28,12 @@ package org.laladev.moneyjinn.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class PostingAccountAmount implements IHasPostingAccount {
-  private PostingAccount postingAccount;
-  private LocalDate date;
-  private BigDecimal amount;
+	private PostingAccount postingAccount;
+	private LocalDate date;
+	private BigDecimal amount;
 }

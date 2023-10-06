@@ -27,11 +27,12 @@
 
 package org.laladev.moneyjinn.server.model.wsevent;
 
-import lombok.Data;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+
+import lombok.Data;
 
 @Data
 public class CapitalsourceChangedEventTransport {
-  private String eventType;
-  private CapitalsourceTransport capitalsourceTransport;
+	private String eventType;
+	private CapitalsourceTransport capitalsourceTransport;
 }

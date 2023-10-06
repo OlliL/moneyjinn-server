@@ -26,40 +26,42 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupDao {
-  private final IGroupDaoMapper mapper;
+	private final IGroupDaoMapper mapper;
 
-  public List<GroupData> getAllGroups() {
-    return this.mapper.getAllGroups();
-  }
+	public List<GroupData> getAllGroups() {
+		return this.mapper.getAllGroups();
+	}
 
-  public GroupData getGroupById(final Long id) {
-    return this.mapper.getGroupById(id);
-  }
+	public GroupData getGroupById(final Long id) {
+		return this.mapper.getGroupById(id);
+	}
 
-  public GroupData getGroupByName(final String name) {
-    return this.mapper.getGroupByName(name);
-  }
+	public GroupData getGroupByName(final String name) {
+		return this.mapper.getGroupByName(name);
+	}
 
-  public Long createGroup(final GroupData groupData) {
-    this.mapper.createGroup(groupData);
-    return groupData.getId();
-  }
+	public Long createGroup(final GroupData groupData) {
+		this.mapper.createGroup(groupData);
+		return groupData.getId();
+	}
 
-  public void updateGroup(final GroupData groupData) {
-    this.mapper.updateGroup(groupData);
-  }
+	public void updateGroup(final GroupData groupData) {
+		this.mapper.updateGroup(groupData);
+	}
 
-  public void deleteGroup(final Long id) {
-    this.mapper.deleteGroup(id);
-  }
+	public void deleteGroup(final Long id) {
+		this.mapper.deleteGroup(id);
+	}
 }

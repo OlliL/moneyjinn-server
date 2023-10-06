@@ -26,22 +26,24 @@ import java.io.Serializable;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.AbstractEntityID;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor
 public class ValidationResultItem implements Serializable {
-  private static final long serialVersionUID = 1L;
-  private AbstractEntityID<? extends Serializable> key;
-  private ErrorCode error;
-  private List<String> variableArray;
+	private static final long serialVersionUID = 1L;
+	private AbstractEntityID<? extends Serializable> key;
+	private ErrorCode error;
+	private List<String> variableArray;
 
-  public ValidationResultItem(final AbstractEntityID<?> key, final ErrorCode error) {
-    super();
-    this.key = key;
-    this.error = error;
-  }
+	public ValidationResultItem(final AbstractEntityID<?> key, final ErrorCode error) {
+		super();
+		this.key = key;
+		this.error = error;
+	}
 }

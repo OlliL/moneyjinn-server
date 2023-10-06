@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.util.Base64;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
@@ -43,52 +41,54 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class MoneyflowReceiptController extends AbstractController
-    implements MoneyflowReceiptControllerApi {
-  private final IMoneyflowService moneyflowService;
-  private final IMoneyflowReceiptService moneyflowReceiptService;
+public class MoneyflowReceiptController extends AbstractController implements MoneyflowReceiptControllerApi {
+	private final IMoneyflowService moneyflowService;
+	private final IMoneyflowReceiptService moneyflowReceiptService;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    // No mapper needed.
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		// No mapper needed.
+	}
 
-  @Override
-  public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(
-      @PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final MoneyflowID moneyflowId = new MoneyflowID(id);
-    final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
+	@Override
+	public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(
+			@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final MoneyflowID moneyflowId = new MoneyflowID(id);
+		final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
 
-    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-    if (moneyflow != null) {
-      final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService
-          .getMoneyflowReceipt(userId, moneyflowId);
-      if (moneyflowReceipt != null) {
-        response.setReceipt(Base64.getEncoder().encodeToString(moneyflowReceipt.getReceipt()));
-        response.setReceiptType(
-            MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
-      }
-    }
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+		if (moneyflow != null) {
+			final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId,
+					moneyflowId);
+			if (moneyflowReceipt != null) {
+				response.setReceipt(Base64.getEncoder().encodeToString(moneyflowReceipt.getReceipt()));
+				response.setReceiptType(MoneyflowReceiptTypeMapper.map(moneyflowReceipt.getMoneyflowReceiptType()));
+			}
+		}
 
-    return ResponseEntity.ok(response);
-  }
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final MoneyflowID moneyflowId = new MoneyflowID(id);
+	@Override
+	public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final MoneyflowID moneyflowId = new MoneyflowID(id);
 
-    final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
-    if (moneyflow != null) {
-      this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
-    }
+		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
+		if (moneyflow != null) {
+			this.moneyflowReceiptService.deleteMoneyflowReceipt(userId, moneyflowId);
+		}
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.Optional;
+
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
@@ -43,12 +44,13 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 
 /**
  * <p>
- * SettingService is the Service handling everything around a {@link AbstractSetting}.
+ * SettingService is the Service handling everything around a
+ * {@link AbstractSetting}.
  * </p>
  *
  * <p>
- * SettingService is the Service handling operations around an {@link AbstractSetting} like getting,
- * creating, updating, deleting.
+ * SettingService is the Service handling operations around an
+ * {@link AbstractSetting} like getting, creating, updating, deleting.
  * </p>
  * <p>
  * The main datasource is the Table <code>settings</code>.
@@ -60,143 +62,125 @@ import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
  */
 public interface ISettingService {
 
-  /**
-   * Deletes all settings for the given {@link UserID}.
-   *
-   * @param userId
-   */
-  void deleteSettings(final UserID userId);
+	/**
+	 * Deletes all settings for the given {@link UserID}.
+	 *
+	 * @param userId
+	 */
+	void deleteSettings(final UserID userId);
 
-  /**
-   * This Service returns the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the
-   * given {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
-   */
-  Optional<ClientReportingUnselectedPostingAccountIdsSetting> getClientReportingUnselectedPostingAccountIdsSetting(
-      AccessID accessId);
+	/**
+	 * This Service returns the
+	 * {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @return {@link ClientReportingUnselectedPostingAccountIdsSetting}
+	 */
+	Optional<ClientReportingUnselectedPostingAccountIdsSetting> getClientReportingUnselectedPostingAccountIdsSetting(
+			AccessID accessId);
 
-  /**
-   * This Service sets the {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @param setting
-   *                   the {@link ClientReportingUnselectedPostingAccountIdsSetting}
-   */
-  void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId,
-      ClientReportingUnselectedPostingAccountIdsSetting setting);
+	/**
+	 * This Service sets the
+	 * {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @param setting  the {@link ClientReportingUnselectedPostingAccountIdsSetting}
+	 */
+	void setClientReportingUnselectedPostingAccountIdsSetting(AccessID accessId,
+			ClientReportingUnselectedPostingAccountIdsSetting setting);
 
-  /**
-   * This Service returns the {@link ClientTrendCapitalsourceIDsSetting} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @return {@link ClientTrendCapitalsourceIDsSetting}
-   */
-  Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(
-      final AccessID accessId);
+	/**
+	 * This Service returns the {@link ClientTrendCapitalsourceIDsSetting} for the
+	 * given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @return {@link ClientTrendCapitalsourceIDsSetting}
+	 */
+	Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(final AccessID accessId);
 
-  /**
-   * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the given {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @param setting
-   *                   the {@link ClientTrendCapitalsourceIDsSetting}
-   */
-  void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
-      final ClientTrendCapitalsourceIDsSetting setting);
+	/**
+	 * This Service sets the {@link ClientTrendCapitalsourceIDsSetting} for the
+	 * given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @param setting  the {@link ClientTrendCapitalsourceIDsSetting}
+	 */
+	void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+			final ClientTrendCapitalsourceIDsSetting setting);
 
-  /**
-   * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @param setting
-   *                   the {@link ClientCompareDataSelectedCapitalsource}
-   */
-  void setClientCompareDataSelectedCapitalsource(AccessID accessId,
-      ClientCompareDataSelectedCapitalsource setting);
+	/**
+	 * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the
+	 * given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @param setting  the {@link ClientCompareDataSelectedCapitalsource}
+	 */
+	void setClientCompareDataSelectedCapitalsource(AccessID accessId, ClientCompareDataSelectedCapitalsource setting);
 
-  /**
-   * This Service returns the {@link ClientCompareDataSelectedCapitalsource} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @return {@link ClientCompareDataSelectedCapitalsource}
-   */
-  Optional<ClientCompareDataSelectedCapitalsource> getClientCompareDataSelectedCapitalsource(
-      AccessID accessId);
+	/**
+	 * This Service returns the {@link ClientCompareDataSelectedCapitalsource} for
+	 * the given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @return {@link ClientCompareDataSelectedCapitalsource}
+	 */
+	Optional<ClientCompareDataSelectedCapitalsource> getClientCompareDataSelectedCapitalsource(AccessID accessId);
 
-  /**
-   * This Service sets the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @param setting
-   *                   the {@link ClientCompareDataSelectedFormat}
-   */
-  void setClientCompareDataSelectedFormat(AccessID accessId,
-      ClientCompareDataSelectedFormat setting);
+	/**
+	 * This Service sets the {@link ClientCompareDataSelectedFormat} for the given
+	 * {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @param setting  the {@link ClientCompareDataSelectedFormat}
+	 */
+	void setClientCompareDataSelectedFormat(AccessID accessId, ClientCompareDataSelectedFormat setting);
 
-  /**
-   * This Service returns the {@link ClientCompareDataSelectedFormat} for the given {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @return {@link ClientCompareDataSelectedFormat}
-   */
-  Optional<ClientCompareDataSelectedFormat> getClientCompareDataSelectedFormat(AccessID accessId);
+	/**
+	 * This Service returns the {@link ClientCompareDataSelectedFormat} for the
+	 * given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @return {@link ClientCompareDataSelectedFormat}
+	 */
+	Optional<ClientCompareDataSelectedFormat> getClientCompareDataSelectedFormat(AccessID accessId);
 
-  /**
-   * This Service sets the {@link ClientCompareDataSelectedSourceIsFile} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @param setting
-   *                   the {@link ClientCompareDataSelectedSourceIsFile}
-   */
-  void setClientCompareDataSelectedSourceIsFile(AccessID accessId,
-      ClientCompareDataSelectedSourceIsFile setting);
+	/**
+	 * This Service sets the {@link ClientCompareDataSelectedSourceIsFile} for the
+	 * given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @param setting  the {@link ClientCompareDataSelectedSourceIsFile}
+	 */
+	void setClientCompareDataSelectedSourceIsFile(AccessID accessId, ClientCompareDataSelectedSourceIsFile setting);
 
-  /**
-   * This Service returns the {@link ClientCompareDataSelectedSourceIsFile} for the given
-   * {@link UserID}.
-   *
-   * @param accessId
-   *                   or groupID {@link AccessID}
-   * @return {@link ClientCompareDataSelectedSourceIsFile}
-   */
-  Optional<ClientCompareDataSelectedSourceIsFile> getClientCompareDataSelectedSourceIsFile(
-      AccessID accessId);
+	/**
+	 * This Service returns the {@link ClientCompareDataSelectedSourceIsFile} for
+	 * the given {@link UserID}.
+	 *
+	 * @param accessId or groupID {@link AccessID}
+	 * @return {@link ClientCompareDataSelectedSourceIsFile}
+	 */
+	Optional<ClientCompareDataSelectedSourceIsFile> getClientCompareDataSelectedSourceIsFile(AccessID accessId);
 
-  void setClientCalcEtfSaleIsin(AccessID accessId, ClientCalcEtfSaleIsin setting);
+	void setClientCalcEtfSaleIsin(AccessID accessId, ClientCalcEtfSaleIsin setting);
 
-  Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(AccessID accessId);
+	Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(AccessID accessId);
 
-  void setClientCalcEtfSaleAskPrice(AccessID accessId, ClientCalcEtfSaleAskPrice setting);
+	void setClientCalcEtfSaleAskPrice(AccessID accessId, ClientCalcEtfSaleAskPrice setting);
 
-  Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(AccessID accessId);
+	Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(AccessID accessId);
 
-  void setClientCalcEtfSaleBidPrice(AccessID accessId, ClientCalcEtfSaleBidPrice setting);
+	void setClientCalcEtfSaleBidPrice(AccessID accessId, ClientCalcEtfSaleBidPrice setting);
 
-  Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(AccessID accessId);
+	Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(AccessID accessId);
 
-  void setClientCalcEtfSalePieces(AccessID accessId, ClientCalcEtfSalePieces setting);
+	void setClientCalcEtfSalePieces(AccessID accessId, ClientCalcEtfSalePieces setting);
 
-  Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(AccessID accessId);
+	Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(AccessID accessId);
 
-  void setClientCalcEtfSaleTransactionCosts(AccessID accessId,
-      ClientCalcEtfSaleTransactionCosts setting);
+	void setClientCalcEtfSaleTransactionCosts(AccessID accessId, ClientCalcEtfSaleTransactionCosts setting);
 
-  Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(
-      AccessID accessId);
+	Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(AccessID accessId);
 }

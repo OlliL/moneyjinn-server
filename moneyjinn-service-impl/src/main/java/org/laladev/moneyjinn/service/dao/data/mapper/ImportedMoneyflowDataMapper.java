@@ -35,31 +35,30 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
-    ImportedMoneyflowStatusMapper.class, ImportedMoneyflowIdMapper.class })
-public interface ImportedMoneyflowDataMapper
-    extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowData> {
-  @Override
-  @Mapping(target = "bookingDate", source = "bookingdate")
-  @Mapping(target = "invoiceDate", source = "invoicedate")
-  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-  @Mapping(target = "usage", source = "comment")
-  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
-  @Mapping(target = "user", ignore = true)
-  @Mapping(target = "group", ignore = true)
-  @Mapping(target = "contractpartner", ignore = true)
-  @Mapping(target = "postingAccount", ignore = true)
-  @Mapping(target = "privat", ignore = true)
-  @Mapping(target = "comment", ignore = true)
-  ImportedMoneyflow mapBToA(ImportedMoneyflowData importedMoneyflowData);
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, ImportedMoneyflowStatusMapper.class,
+		ImportedMoneyflowIdMapper.class })
+public interface ImportedMoneyflowDataMapper extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+	@Override
+	@Mapping(target = "bookingDate", source = "bookingdate")
+	@Mapping(target = "invoiceDate", source = "invoicedate")
+	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+	@Mapping(target = "usage", source = "comment")
+	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "group", ignore = true)
+	@Mapping(target = "contractpartner", ignore = true)
+	@Mapping(target = "postingAccount", ignore = true)
+	@Mapping(target = "privat", ignore = true)
+	@Mapping(target = "comment", ignore = true)
+	ImportedMoneyflow mapBToA(ImportedMoneyflowData importedMoneyflowData);
 
-  @Override
-  @Mapping(target = "accountNumber", source = "bankAccount.accountNumber", defaultValue = "")
-  @Mapping(target = "bankCode", source = "bankAccount.bankCode", defaultValue = "")
-  @Mapping(target = "bookingdate", source = "bookingDate")
-  @Mapping(target = "invoicedate", source = "invoiceDate")
-  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-  @Mapping(target = "comment", source = "usage")
-  ImportedMoneyflowData mapAToB(ImportedMoneyflow importedMoneyflow);
+	@Override
+	@Mapping(target = "accountNumber", source = "bankAccount.accountNumber", defaultValue = "")
+	@Mapping(target = "bankCode", source = "bankAccount.bankCode", defaultValue = "")
+	@Mapping(target = "bookingdate", source = "bookingDate")
+	@Mapping(target = "invoicedate", source = "invoiceDate")
+	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+	@Mapping(target = "comment", source = "usage")
+	ImportedMoneyflowData mapAToB(ImportedMoneyflow importedMoneyflow);
 }

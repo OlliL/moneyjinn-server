@@ -36,24 +36,22 @@ import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
-    CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
-    UserIdMapper.class, GroupIdMapper.class })
-public interface CapitalsourceDataMapper
-    extends IMapstructMapper<Capitalsource, CapitalsourceData> {
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class,
+		CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class })
+public interface CapitalsourceDataMapper extends IMapstructMapper<Capitalsource, CapitalsourceData> {
 
-  @Override
-  @Mapping(target = "groupUse", source = "attGroupUse")
-  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
-  @Mapping(target = "user.id", source = "macIdCreator")
-  @Mapping(target = "access.id", source = "macIdAccessor")
-  Capitalsource mapBToA(final CapitalsourceData b);
+	@Override
+	@Mapping(target = "groupUse", source = "attGroupUse")
+	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
+	@Mapping(target = "user.id", source = "macIdCreator")
+	@Mapping(target = "access.id", source = "macIdAccessor")
+	Capitalsource mapBToA(final CapitalsourceData b);
 
-  @Override
-  @Mapping(target = "attGroupUse", source = "groupUse")
-  @Mapping(target = ".", source = "bankAccount")
-  @Mapping(target = "macIdCreator", source = "user.id")
-  @Mapping(target = "macIdAccessor", source = "access.id")
-  CapitalsourceData mapAToB(final Capitalsource a);
+	@Override
+	@Mapping(target = "attGroupUse", source = "groupUse")
+	@Mapping(target = ".", source = "bankAccount")
+	@Mapping(target = "macIdCreator", source = "user.id")
+	@Mapping(target = "macIdAccessor", source = "access.id")
+	CapitalsourceData mapAToB(final Capitalsource a);
 }

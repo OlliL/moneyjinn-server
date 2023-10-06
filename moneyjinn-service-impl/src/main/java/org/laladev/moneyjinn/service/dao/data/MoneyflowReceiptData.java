@@ -30,8 +30,8 @@ import lombok.Data;
 
 @Data
 public class MoneyflowReceiptData {
-  private Long id;
-  private Long mmfMoneyflowId;
-  private byte[] receipt;
-  private Integer receiptType;
+	private Long id;
+	private Long mmfMoneyflowId;
+	private byte[] receipt;
+	private Integer receiptType;
 }

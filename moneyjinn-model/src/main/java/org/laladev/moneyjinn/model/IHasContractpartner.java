@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.model;
 
 public interface IHasContractpartner {
-  Contractpartner getContractpartner();
+	Contractpartner getContractpartner();
 
-  void setContractpartner(Contractpartner contractpartner);
+	void setContractpartner(Contractpartner contractpartner);
 }

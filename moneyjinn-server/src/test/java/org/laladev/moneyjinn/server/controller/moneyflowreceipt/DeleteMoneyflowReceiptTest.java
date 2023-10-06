@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.moneyflowreceipt;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,69 +14,70 @@ import org.laladev.moneyjinn.server.controller.api.MoneyflowReceiptControllerApi
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class DeleteMoneyflowReceiptTest extends AbstractControllerTest {
-  @Inject
-  IMoneyflowReceiptService moneyflowReceiptService;
+	@Inject
+	IMoneyflowReceiptService moneyflowReceiptService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(MoneyflowReceiptControllerApi.class).deleteMoneyflowReceipt(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(MoneyflowReceiptControllerApi.class).deleteMoneyflowReceipt(null);
+	}
 
-  @Test
-  void test_unknownMoneyflowId_NoContent() throws Exception {
-    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.NON_EXISTING_ID);
-  }
+	@Test
+	void test_unknownMoneyflowId_NoContent() throws Exception {
+		super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.NON_EXISTING_ID);
+	}
 
-  @Test
-  void test_MoneyflowId1_SuccessfullNoContent() throws Exception {
-    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-    final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+	@Test
+	void test_MoneyflowId1_SuccessfullNoContent() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-    MoneyflowReceipt receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId,
-        moneyflowId);
-    Assertions.assertNotNull(receipt);
-    Assertions.assertEquals(1L, receipt.getId().getId());
+		MoneyflowReceipt receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
+		Assertions.assertNotNull(receipt);
+		Assertions.assertEquals(1L, receipt.getId().getId());
 
-    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+		super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-    receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
-    Assertions.assertNull(receipt);
-  }
+		receipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
+		Assertions.assertNull(receipt);
+	}
 
-  @Test
-  void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
-  }
+		super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+	}
 }

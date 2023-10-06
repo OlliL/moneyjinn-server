@@ -37,19 +37,18 @@ import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
-    GroupIdMapper.class, PostingAccountIdMapper.class })
-public interface ContractpartnerTransportMapper
-    extends IMapstructMapper<Contractpartner, ContractpartnerTransport> {
-  @Override
-  @Mapping(target = "user.id", source = "userid")
-  @Mapping(target = "access", ignore = true)
-  @Mapping(target = "postingAccount.id", source = "postingAccountId")
-  Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+		PostingAccountIdMapper.class })
+public interface ContractpartnerTransportMapper extends IMapstructMapper<Contractpartner, ContractpartnerTransport> {
+	@Override
+	@Mapping(target = "user.id", source = "userid")
+	@Mapping(target = "access", ignore = true)
+	@Mapping(target = "postingAccount.id", source = "postingAccountId")
+	Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
 
-  @Override
-  @Mapping(target = "userid", source = "user.id")
-  @Mapping(target = "postingAccountId", source = "postingAccount.id")
-  @Mapping(target = "postingAccountName", source = "postingAccount.name")
-  ContractpartnerTransport mapAToB(Contractpartner contractpartner);
+	@Override
+	@Mapping(target = "userid", source = "user.id")
+	@Mapping(target = "postingAccountId", source = "postingAccount.id")
+	@Mapping(target = "postingAccountName", source = "postingAccount.name")
+	ContractpartnerTransport mapAToB(Contractpartner contractpartner);
 }

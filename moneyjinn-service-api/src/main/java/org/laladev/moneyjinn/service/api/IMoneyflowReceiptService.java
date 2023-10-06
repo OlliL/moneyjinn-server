@@ -27,19 +27,22 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
+
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 
 /**
  * <p>
- * MoneyflowReceiptService is the Service handling everything around an {@link MoneyflowReceipt}.
+ * MoneyflowReceiptService is the Service handling everything around an
+ * {@link MoneyflowReceipt}.
  * </p>
  *
  * <p>
- * MoneyflowReceiptService is the Service handling operations around an {@link MoneyflowReceipt}
- * like getting, creating, updating, deleting. Before a {@link MoneyflowReceipt} is created or
- * updated, the {@link MoneyflowReceipt} is validated for correctness.
+ * MoneyflowReceiptService is the Service handling operations around an
+ * {@link MoneyflowReceipt} like getting, creating, updating, deleting. Before a
+ * {@link MoneyflowReceipt} is created or updated, the {@link MoneyflowReceipt}
+ * is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>moneyflowreceipts</code>.
@@ -50,36 +53,31 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
  *
  */
 public interface IMoneyflowReceiptService {
-  /**
-   * This service retrieve a {@link MoneyflowReceipt} for a given {@link MoneyflowID} from the
-   * system.
-   *
-   * @param userId
-   *                      {@link UserID}
-   * @param moneyflowId
-   *                      The {@link MoneyflowID} of the {@link MoneyflowReceipt}
-   */
-  MoneyflowReceipt getMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
+	/**
+	 * This service retrieve a {@link MoneyflowReceipt} for a given
+	 * {@link MoneyflowID} from the system.
+	 *
+	 * @param userId      {@link UserID}
+	 * @param moneyflowId The {@link MoneyflowID} of the {@link MoneyflowReceipt}
+	 */
+	MoneyflowReceipt getMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
 
-  /**
-   * Returns a list of {@link MoneyflowID}s which have a Receipt in the DB.
-   *
-   * @param userId
-   *                 {@link UserID}
-   * @return
-   */
-  List<MoneyflowID> getMoneyflowIdsWithReceipt(UserID userId, List<MoneyflowID> moneyflowIds);
+	/**
+	 * Returns a list of {@link MoneyflowID}s which have a Receipt in the DB.
+	 *
+	 * @param userId {@link UserID}
+	 * @return
+	 */
+	List<MoneyflowID> getMoneyflowIdsWithReceipt(UserID userId, List<MoneyflowID> moneyflowIds);
 
-  /**
-   * Deletes the {@link MoneyflowReceipt}.
-   *
-   * @param userId
-   *                      {@link UserID}
-   * @param moneyflowId
-   *                      {@link MoneyflowReceipt}
-   * @return
-   */
-  void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
+	/**
+	 * Deletes the {@link MoneyflowReceipt}.
+	 *
+	 * @param userId      {@link UserID}
+	 * @param moneyflowId {@link MoneyflowReceipt}
+	 * @return
+	 */
+	void deleteMoneyflowReceipt(UserID userId, MoneyflowID moneyflowId);
 
-  void createMoneyflowReceipt(UserID userId, MoneyflowReceipt moneyflowReceipt);
+	void createMoneyflowReceipt(UserID userId, MoneyflowReceipt moneyflowReceipt);
 }

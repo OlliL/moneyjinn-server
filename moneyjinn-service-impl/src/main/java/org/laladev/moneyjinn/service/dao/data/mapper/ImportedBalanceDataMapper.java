@@ -35,15 +35,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = CapitalsourceIdMapper.class)
-public interface ImportedBalanceDataMapper
-    extends IMapstructMapper<ImportedBalance, ImportedBalanceData> {
-  @Override
-  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-  @Mapping(target = "date", source = "changedate")
-  ImportedBalance mapBToA(ImportedBalanceData importedBalanceData);
+public interface ImportedBalanceDataMapper extends IMapstructMapper<ImportedBalance, ImportedBalanceData> {
+	@Override
+	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+	@Mapping(target = "date", source = "changedate")
+	ImportedBalance mapBToA(ImportedBalanceData importedBalanceData);
 
-  @Override
-  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-  @Mapping(target = "changedate", source = "date")
-  ImportedBalanceData mapAToB(ImportedBalance importedBalance);
+	@Override
+	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+	@Mapping(target = "changedate", source = "date")
+	ImportedBalanceData mapAToB(ImportedBalance importedBalance);
 }

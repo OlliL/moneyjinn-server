@@ -3,6 +3,7 @@ package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,65 +16,64 @@ import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsRes
 import org.springframework.test.context.jdbc.Sql;
 
 class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerTest {
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(ImportedMoneyflowReceiptControllerApi.class)
-        .showImportImportedMoneyflowReceipts();
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(ImportedMoneyflowReceiptControllerApi.class).showImportImportedMoneyflowReceipts();
+	}
 
-  @Test
-   void test_standardRequest_emptyResponse() throws Exception {
-    final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
-    final ArrayList<ImportedMoneyflowReceiptTransport> transporter = new ArrayList<>();
-    transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build());
-    transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt2().build());
-    expected.setImportedMoneyflowReceiptTransports(transporter);
+	@Test
+	void test_standardRequest_emptyResponse() throws Exception {
+		final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
+		final ArrayList<ImportedMoneyflowReceiptTransport> transporter = new ArrayList<>();
+		transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build());
+		transporter.add(new ImportedMoneyflowReceiptTransportBuilder().forReceipt2().build());
+		expected.setImportedMoneyflowReceiptTransports(transporter);
 
-    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
-        ShowImportImportedMoneyflowReceiptsResponse.class);
+		final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
+				ShowImportImportedMoneyflowReceiptsResponse.class);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403();
-  }
+		super.callUsecaseExpect403();
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
-    expected.setImportedMoneyflowReceiptTransports(Collections.emptyList());
+		final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
+		expected.setImportedMoneyflowReceiptTransports(Collections.emptyList());
 
-    final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
-        ShowImportImportedMoneyflowReceiptsResponse.class);
+		final ShowImportImportedMoneyflowReceiptsResponse actual = super.callUsecaseExpect200(
+				ShowImportImportedMoneyflowReceiptsResponse.class);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 }

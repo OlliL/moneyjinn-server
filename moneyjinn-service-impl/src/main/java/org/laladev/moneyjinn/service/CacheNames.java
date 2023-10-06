@@ -27,26 +27,26 @@
 package org.laladev.moneyjinn.service;
 
 public class CacheNames {
-  public static final String USER_BY_ID = "userById";
-  public static final String USER_BY_NAME = "userByName";
-  public static final String ALL_ACCESS_RELATIONS_BY_USER_ID = "allAccessRelationsByUserId";
-  public static final String ALL_GROUPS = "allGroups";
-  public static final String GROUP_BY_ID = "groupById";
-  public static final String ALL_POSTINGACCOUNTS = "allPostingAccounts";
-  public static final String POSTINGACCOUNT_BY_ID = "postingAccountById";
-  public static final String ALL_CAPITALSOURCES = "allCapitalsources";
-  public static final String GROUP_CAPITALSOURCES_BY_DATE = "groupCapitalsourcesByDate";
-  public static final String CAPITALSOURCE_BY_ID = "capitalsourceById";
-  public static final String ALL_CONTRACTPARTNER = "allContractpartner";
-  public static final String ALL_CONTRACTPARTNER_BY_DATE = "allContractpartnerByDate";
-  public static final String CONTRACTPARTNER_BY_ID = "contractpartnerById";
-  public static final String ALL_PRE_DEF_MONEYFLOWS = "allPreDefMoneyflows";
-  public static final String MONEYFLOW_BY_ID = "moneyflowById";
-  public static final String MONEYFLOW_YEARS = "moneyflowYears";
-  public static final String MONEYFLOW_MONTH = "moneyflowMonths";
-  public static final String CONTRACTPARTNER_ACCOUNT_BY_ID = "contractpartnerAccountById";
-  public static final String CONTRACTPARTNER_ACCOUNTS_BY_PARTNER = "contractpartnerAccountsByPartner";
+	public static final String USER_BY_ID = "userById";
+	public static final String USER_BY_NAME = "userByName";
+	public static final String ALL_ACCESS_RELATIONS_BY_USER_ID = "allAccessRelationsByUserId";
+	public static final String ALL_GROUPS = "allGroups";
+	public static final String GROUP_BY_ID = "groupById";
+	public static final String ALL_POSTINGACCOUNTS = "allPostingAccounts";
+	public static final String POSTINGACCOUNT_BY_ID = "postingAccountById";
+	public static final String ALL_CAPITALSOURCES = "allCapitalsources";
+	public static final String GROUP_CAPITALSOURCES_BY_DATE = "groupCapitalsourcesByDate";
+	public static final String CAPITALSOURCE_BY_ID = "capitalsourceById";
+	public static final String ALL_CONTRACTPARTNER = "allContractpartner";
+	public static final String ALL_CONTRACTPARTNER_BY_DATE = "allContractpartnerByDate";
+	public static final String CONTRACTPARTNER_BY_ID = "contractpartnerById";
+	public static final String ALL_PRE_DEF_MONEYFLOWS = "allPreDefMoneyflows";
+	public static final String MONEYFLOW_BY_ID = "moneyflowById";
+	public static final String MONEYFLOW_YEARS = "moneyflowYears";
+	public static final String MONEYFLOW_MONTH = "moneyflowMonths";
+	public static final String CONTRACTPARTNER_ACCOUNT_BY_ID = "contractpartnerAccountById";
+	public static final String CONTRACTPARTNER_ACCOUNTS_BY_PARTNER = "contractpartnerAccountsByPartner";
 
-  private CacheNames() {
-  }
+	private CacheNames() {
+	}
 }

@@ -28,19 +28,20 @@ package org.laladev.moneyjinn.service.dao.data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class ImportedMoneyflowData {
-  private Long id;
-  private String externalId;
-  private Long mcsCapitalsourceId;
-  private LocalDate bookingdate;
-  private LocalDate invoicedate;
-  private String name;
-  private String accountNumber;
-  private String bankCode;
-  private String comment;
-  private BigDecimal amount;
-  private Integer status;
+	private Long id;
+	private String externalId;
+	private Long mcsCapitalsourceId;
+	private LocalDate bookingdate;
+	private LocalDate invoicedate;
+	private String name;
+	private String accountNumber;
+	private String bankCode;
+	private String comment;
+	private BigDecimal amount;
+	private Integer status;
 }

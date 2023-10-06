@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.config.jwt;
 
 import java.util.List;
+
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,24 +41,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
-  @Autowired
-  private IUserService userService;
-  @Autowired
-  private PasswordEncoder encoder;
+	@Autowired
+	private IUserService userService;
+	@Autowired
+	private PasswordEncoder encoder;
 
-  @Override
-  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-    final User user = this.userService.getUserByName(username);
+	@Override
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		final User user = this.userService.getUserByName(username);
 
-    if (user == null) {
-      return null;
-    }
+		if (user == null) {
+			return null;
+		}
 
-    final String password = this.encoder.encode(user.getPassword());
-    final List<? extends GrantedAuthority> grantedAuthorities = user.getPermissions().stream()
-        .map(p -> new SimpleGrantedAuthority(p.name())).toList();
+		final String password = this.encoder.encode(user.getPassword());
+		final List<? extends GrantedAuthority> grantedAuthorities = user.getPermissions().stream()
+				.map(p -> new SimpleGrantedAuthority(p.name())).toList();
 
-    return new org.springframework.security.core.userdetails.User(user.getName(), password,
-        grantedAuthorities);
-  }
+		return new org.springframework.security.core.userdetails.User(user.getName(), password, grantedAuthorities);
+	}
 }

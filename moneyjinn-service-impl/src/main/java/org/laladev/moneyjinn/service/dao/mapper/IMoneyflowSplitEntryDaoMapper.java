@@ -27,19 +27,18 @@
 package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 
 public interface IMoneyflowSplitEntryDaoMapper {
-  public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(
-      @Param("moneyflowIds") List<Long> moneyflowIds);
+	public List<MoneyflowSplitEntryData> getMoneyflowSplitEntries(@Param("moneyflowIds") List<Long> moneyflowIds);
 
-  public void createMoneyflowSplitEntry(MoneyflowSplitEntryData moneyflowSplitEntryData);
+	public void createMoneyflowSplitEntry(MoneyflowSplitEntryData moneyflowSplitEntryData);
 
-  public void updateMoneyflowSplitEntry(MoneyflowSplitEntryData moneyflowSplitEntryData);
+	public void updateMoneyflowSplitEntry(MoneyflowSplitEntryData moneyflowSplitEntryData);
 
-  public void deleteMoneyflowSplitEntry(@Param("moneyflowId") Long moneyflowId,
-      @Param("id") Long id);
+	public void deleteMoneyflowSplitEntry(@Param("moneyflowId") Long moneyflowId, @Param("id") Long id);
 
-  public void deleteMoneyflowSplitEntries(@Param("id") Long id);
+	public void deleteMoneyflowSplitEntries(@Param("id") Long id);
 }

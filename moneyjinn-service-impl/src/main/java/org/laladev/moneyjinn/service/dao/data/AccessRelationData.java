@@ -27,12 +27,13 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class AccessRelationData {
-  private Long id;
-  private Long refId;
-  private LocalDate validFrom;
-  private LocalDate validTil;
+	private Long id;
+	private Long refId;
+	private LocalDate validFrom;
+	private LocalDate validTil;
 }

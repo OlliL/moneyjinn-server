@@ -30,8 +30,8 @@ import lombok.Data;
 
 @Data
 public class ContractpartnerAccountData {
-  private Long id;
-  private Long mcpContractpartnerId;
-  private String accountNumber;
-  private String bankCode;
+	private Long id;
+	private Long mcpContractpartnerId;
+	private String accountNumber;
+	private String bankCode;
 }

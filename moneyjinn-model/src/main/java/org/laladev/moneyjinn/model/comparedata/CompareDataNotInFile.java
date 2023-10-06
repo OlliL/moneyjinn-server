@@ -26,10 +26,11 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
-import lombok.Data;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+
+import lombok.Data;
 
 @Data
 public class CompareDataNotInFile {
-  private final Moneyflow moneyflow;
+	private final Moneyflow moneyflow;
 }

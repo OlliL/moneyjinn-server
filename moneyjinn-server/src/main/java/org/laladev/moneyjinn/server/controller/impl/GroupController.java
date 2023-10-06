@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -48,71 +46,74 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupController extends AbstractController implements GroupControllerApi {
-  private final IGroupService groupService;
-  private final GroupTransportMapper groupTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+	private final IGroupService groupService;
+	private final GroupTransportMapper groupTransportMapper;
+	private final ValidationItemTransportMapper validationItemTransportMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    this.registerBeanMapper(this.groupTransportMapper);
-    this.registerBeanMapper(this.validationItemTransportMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		this.registerBeanMapper(this.groupTransportMapper);
+		this.registerBeanMapper(this.validationItemTransportMapper);
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<ShowGroupListResponse> showGroupList() {
-    final List<Group> groups = this.groupService.getAllGroups();
-    final ShowGroupListResponse response = new ShowGroupListResponse();
-    if (groups != null && !groups.isEmpty()) {
-      response.setGroupTransports(super.mapList(groups, GroupTransport.class));
-    }
-    return ResponseEntity.ok(response);
-  }
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<ShowGroupListResponse> showGroupList() {
+		final List<Group> groups = this.groupService.getAllGroups();
+		final ShowGroupListResponse response = new ShowGroupListResponse();
+		if (groups != null && !groups.isEmpty()) {
+			response.setGroupTransports(super.mapList(groups, GroupTransport.class));
+		}
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<CreateGroupResponse> createGroup(
-      @RequestBody final CreateGroupRequest request) {
-    final Group group = super.map(request.getGroupTransport(), Group.class);
-    group.setId(null);
-    final ValidationResult validationResult = this.groupService.validateGroup(group);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<CreateGroupResponse> createGroup(@RequestBody final CreateGroupRequest request) {
+		final Group group = super.map(request.getGroupTransport(), Group.class);
+		group.setId(null);
+		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    final GroupID groupId = this.groupService.createGroup(group);
+		final GroupID groupId = this.groupService.createGroup(group);
 
-    final CreateGroupResponse response = new CreateGroupResponse();
-    response.setGroupId(groupId.getId());
-    return ResponseEntity.ok(response);
-  }
+		final CreateGroupResponse response = new CreateGroupResponse();
+		response.setGroupId(groupId.getId());
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> updateGroup(@RequestBody final UpdateGroupRequest request) {
-    final Group group = super.map(request.getGroupTransport(), Group.class);
-    final ValidationResult validationResult = this.groupService.validateGroup(group);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<Void> updateGroup(@RequestBody final UpdateGroupRequest request) {
+		final Group group = super.map(request.getGroupTransport(), Group.class);
+		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    this.groupService.updateGroup(group);
+		this.groupService.updateGroup(group);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
-    final GroupID groupId = new GroupID(id);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
+		final GroupID groupId = new GroupID(id);
 
-    this.groupService.deleteGroup(groupId);
+		this.groupService.deleteGroup(groupId);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 
 }

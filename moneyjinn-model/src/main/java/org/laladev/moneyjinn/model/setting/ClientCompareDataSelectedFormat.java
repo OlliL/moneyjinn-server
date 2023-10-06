@@ -1,20 +1,22 @@
 
 package org.laladev.moneyjinn.model.setting;
 
-import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * This Setting describes the default selected data format when comparing external data files.
+ * This Setting describes the default selected data format when comparing
+ * external data files.
  * </p>
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
 public class ClientCompareDataSelectedFormat extends AbstractSetting<CompareDataFormatID> {
-  public ClientCompareDataSelectedFormat(final CompareDataFormatID setting) {
-    super.setSetting(setting);
-  }
+	public ClientCompareDataSelectedFormat(final CompareDataFormatID setting) {
+		super.setSetting(setting);
+	}
 }

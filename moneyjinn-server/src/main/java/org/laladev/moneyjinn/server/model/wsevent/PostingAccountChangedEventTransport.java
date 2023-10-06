@@ -27,11 +27,12 @@
 
 package org.laladev.moneyjinn.server.model.wsevent;
 
-import lombok.Data;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
+
+import lombok.Data;
 
 @Data
 public class PostingAccountChangedEventTransport {
-  private String eventType;
-  private PostingAccountTransport postingAccountTransport;
+	private String eventType;
+	private PostingAccountTransport postingAccountTransport;
 }

@@ -34,10 +34,10 @@ import org.springframework.context.annotation.FilterType;
 
 @Configuration
 @ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.config",
-    "org.laladev.moneyjinn.service", "org.laladev.moneyjinn.server" }, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = BeanProducer.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyJinnServer.class) })
+		"org.laladev.moneyjinn.service", "org.laladev.moneyjinn.server" }, excludeFilters = {
+				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
+				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = BeanProducer.class),
+				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyJinnServer.class) })
 @EnableAutoConfiguration
 public class MoneyjinnTestConfiguration {
 }

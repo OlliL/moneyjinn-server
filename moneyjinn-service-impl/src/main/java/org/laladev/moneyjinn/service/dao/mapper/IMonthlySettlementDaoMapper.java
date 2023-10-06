@@ -28,32 +28,31 @@ package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 
 public interface IMonthlySettlementDaoMapper {
-  public List<Integer> getAllYears(Long userId);
+	public List<Integer> getAllYears(Long userId);
 
-  public List<Integer> getAllMonth(@Param("userId") Long userId, @Param("year") Integer year);
+	public List<Integer> getAllMonth(@Param("userId") Long userId, @Param("year") Integer year);
 
-  public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(
-      @Param("userId") Long userId, @Param("year") Integer year, @Param("month") Integer month);
+	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(@Param("userId") Long userId,
+			@Param("year") Integer year, @Param("month") Integer month);
 
-  public LocalDate getMaxSettlementDate(Long userId);
+	public LocalDate getMaxSettlementDate(Long userId);
 
-  public LocalDate getMinSettlementDate(Long userId);
+	public LocalDate getMinSettlementDate(Long userId);
 
-  public Integer checkMonthlySettlementsExists(@Param("userId") Long userId,
-      @Param("year") Integer year, @Param("month") Integer month);
+	public Integer checkMonthlySettlementsExists(@Param("userId") Long userId, @Param("year") Integer year,
+			@Param("month") Integer month);
 
-  public void upsertMonthlySettlement(MonthlySettlementData monthlySettlementData);
+	public void upsertMonthlySettlement(MonthlySettlementData monthlySettlementData);
 
-  public void deleteMonthlySettlement(@Param("userId") Long userId, @Param("year") Integer year,
-      @Param("month") Integer month);
+	public void deleteMonthlySettlement(@Param("userId") Long userId, @Param("year") Integer year,
+			@Param("month") Integer month);
 
-  public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(
-      @Param("userId") Long user, @Param("startYear") int startYear,
-      @Param("startMonth") int startMonth, @Param("endYear") int endYear,
-      @Param("endMonth") int endMonth,
-      @Param("mcsCapitalsourceIds") List<Long> capitalsourceIdLongs);
+	public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(@Param("userId") Long user,
+			@Param("startYear") int startYear, @Param("startMonth") int startMonth, @Param("endYear") int endYear,
+			@Param("endMonth") int endMonth, @Param("mcsCapitalsourceIds") List<Long> capitalsourceIdLongs);
 }

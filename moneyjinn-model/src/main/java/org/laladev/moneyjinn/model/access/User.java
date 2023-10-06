@@ -27,16 +27,17 @@
 package org.laladev.moneyjinn.model.access;
 
 import java.util.Collection;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Describes a User in the System, its ID, name, password, {@link UserAttribute}s and
- * {@link UserPermission}s.
+ * Describes a User in the System, its ID, name, password,
+ * {@link UserAttribute}s and {@link UserPermission}s.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @Data
@@ -44,20 +45,20 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractAccess<UserID> {
-  private static final long serialVersionUID = 1L;
-  private String password;
-  private Collection<UserAttribute> attributes;
-  private Collection<UserPermission> permissions;
+	private static final long serialVersionUID = 1L;
+	private String password;
+	private Collection<UserAttribute> attributes;
+	private Collection<UserPermission> permissions;
 
-  public User(final UserID id) {
-    super(id);
-  }
+	public User(final UserID id) {
+		super(id);
+	}
 
-  public User(final UserID id, final String name, final String password,
-      final Collection<UserAttribute> attributes, final Collection<UserPermission> permissions) {
-    super(id, name);
-    this.password = password;
-    this.attributes = attributes;
-    this.permissions = permissions;
-  }
+	public User(final UserID id, final String name, final String password, final Collection<UserAttribute> attributes,
+			final Collection<UserPermission> permissions) {
+		super(id, name);
+		this.password = password;
+		this.attributes = attributes;
+		this.permissions = permissions;
+	}
 }

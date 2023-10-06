@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -38,13 +39,15 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * CapitalsourceService is the Core Service handling everything around an {@link Capitalsource}.
+ * CapitalsourceService is the Core Service handling everything around an
+ * {@link Capitalsource}.
  * </p>
  *
  * <p>
- * CapitalsourceService is the Core Service handling operations around an {@link Capitalsource} like
- * getting, creating, updating, deleting. Before a {@link Capitalsource} is created or updated, the
- * {@link Capitalsource} is validated for correctness.
+ * CapitalsourceService is the Core Service handling operations around an
+ * {@link Capitalsource} like getting, creating, updating, deleting. Before a
+ * {@link Capitalsource} is created or updated, the {@link Capitalsource} is
+ * validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>capitalsources</code>.
@@ -55,145 +58,124 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface ICapitalsourceService {
-  /**
-   * This method validates a given {@link Capitalsource} for correctness.
-   * <ul>
-   * <li>check that the given valid-from is before the given valid-til</li>
-   * <li>check that the specified comment is unique and not already used by a different
-   * <code>Capitalsource</code></li>
-   * <li>check that when there are no recorded <code>Moneyflow</code>s outside the new validty
-   * period changing an existing <code>Capitalsource</code></li>
-   * <li>check that the given account number is nummeric</li>
-   * <li>check that the given bank code is nummeric</li>
-   * <li>check that the comment of the <code>Capitalsource</code> is not empty</li>
-   * </ul>
-   *
-   * @param capitalsource
-   *                        the {@link Capitalsource} to validate
-   * @return ValidationResult
-   */
-  ValidationResult validateCapitalsource(Capitalsource capitalsource);
+	/**
+	 * This method validates a given {@link Capitalsource} for correctness.
+	 * <ul>
+	 * <li>check that the given valid-from is before the given valid-til</li>
+	 * <li>check that the specified comment is unique and not already used by a
+	 * different <code>Capitalsource</code></li>
+	 * <li>check that when there are no recorded <code>Moneyflow</code>s outside the
+	 * new validty period changing an existing <code>Capitalsource</code></li>
+	 * <li>check that the given account number is nummeric</li>
+	 * <li>check that the given bank code is nummeric</li>
+	 * <li>check that the comment of the <code>Capitalsource</code> is not
+	 * empty</li>
+	 * </ul>
+	 *
+	 * @param capitalsource the {@link Capitalsource} to validate
+	 * @return ValidationResult
+	 */
+	ValidationResult validateCapitalsource(Capitalsource capitalsource);
 
-  /**
-   * This service returns the {@link Capitalsource} specified by its Id.
-   *
-   * @param userId
-   *                          {@link UserID}
-   * @param groupId
-   *                          {@link GroupID}
-   * @param capitalsourceId
-   *                          {@link CapitalsourceID}
-   * @return {@link Capitalsource}
-   */
-  Capitalsource getCapitalsourceById(UserID userId, GroupID groupId,
-      CapitalsourceID capitalsourceId);
+	/**
+	 * This service returns the {@link Capitalsource} specified by its Id.
+	 *
+	 * @param userId          {@link UserID}
+	 * @param groupId         {@link GroupID}
+	 * @param capitalsourceId {@link CapitalsourceID}
+	 * @return {@link Capitalsource}
+	 */
+	Capitalsource getCapitalsourceById(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
 
-  /**
-   * This service returns all {@link Capitalsource}s where the given user has reading permissions.
-   *
-   * @param userId
-   *                 {@link UserID}
-   * @return a list of {@link Capitalsource}s
-   */
-  List<Capitalsource> getAllCapitalsources(UserID userId);
+	/**
+	 * This service returns all {@link Capitalsource}s where the given user has
+	 * reading permissions.
+	 *
+	 * @param userId {@link UserID}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	List<Capitalsource> getAllCapitalsources(UserID userId);
 
-  /**
-   * This service returns all {@link Capitalsource}s where the given user has reading permissions
-   * valid between the given Dates.
-   *
-   * @param userId
-   *                    {@link UserID}
-   * @param validFrom
-   *                    {@link LocalDate}
-   * @param validTil
-   *                    {@link LocalDate}
-   * @return a list of {@link Capitalsource}s
-   */
-  List<Capitalsource> getAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
-      LocalDate validTil);
+	/**
+	 * This service returns all {@link Capitalsource}s where the given user has
+	 * reading permissions valid between the given Dates.
+	 *
+	 * @param userId    {@link UserID}
+	 * @param validFrom {@link LocalDate}
+	 * @param validTil  {@link LocalDate}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	List<Capitalsource> getAllCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
-  /**
-   * This method look the {@link Capitalsource} up which is valid on the given date and has the
-   * specified comment.
-   *
-   * @param userId
-   *                  {@link UserID}
-   * @param comment
-   *                  The comment to look fo
-   * @param date
-   *                  The date where the {@link Capitalsource} must have been valid at
-   * @return {@link Capitalsource}
-   */
-  Capitalsource getCapitalsourceByComment(UserID userId, String comment, LocalDate date);
+	/**
+	 * This method look the {@link Capitalsource} up which is valid on the given
+	 * date and has the specified comment.
+	 *
+	 * @param userId  {@link UserID}
+	 * @param comment The comment to look fo
+	 * @param date    The date where the {@link Capitalsource} must have been valid
+	 *                at
+	 * @return {@link Capitalsource}
+	 */
+	Capitalsource getCapitalsourceByComment(UserID userId, String comment, LocalDate date);
 
-  /**
-   * This method persists (updates) the given {@link Capitalsource}.
-   *
-   * @param capitalsource
-   *                        updateCapitalsource
-   */
-  void updateCapitalsource(Capitalsource capitalsource);
+	/**
+	 * This method persists (updates) the given {@link Capitalsource}.
+	 *
+	 * @param capitalsource updateCapitalsource
+	 */
+	void updateCapitalsource(Capitalsource capitalsource);
 
-  /**
-   * This method persists (creates) the given {@link Capitalsource}.
-   *
-   * @param capitalsource
-   *                        updateCapitalsource
-   * @return The created {@link CapitalsourceID}
-   */
-  CapitalsourceID createCapitalsource(Capitalsource capitalsource);
+	/**
+	 * This method persists (creates) the given {@link Capitalsource}.
+	 *
+	 * @param capitalsource updateCapitalsource
+	 * @return The created {@link CapitalsourceID}
+	 */
+	CapitalsourceID createCapitalsource(Capitalsource capitalsource);
 
-  /**
-   * This method deletes the {@link Capitalsource} specified by its Id.
-   *
-   * @param userId
-   *                          {@link UserID}
-   * @param groupId
-   *                          {@link GroupID}
-   * @param capitalsourceId
-   *                          {@link CapitalsourceID}
-   */
-  void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
+	/**
+	 * This method deletes the {@link Capitalsource} specified by its Id.
+	 *
+	 * @param userId          {@link UserID}
+	 * @param groupId         {@link GroupID}
+	 * @param capitalsourceId {@link CapitalsourceID}
+	 */
+	void deleteCapitalsource(UserID userId, GroupID groupId, CapitalsourceID capitalsourceId);
 
-  /**
-   * This service returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
-   * like creating a {@link Moneyflow} and which valid between the given Dates.
-   *
-   * @param userId
-   *                    {@link UserID}
-   * @param validFrom
-   *                    {@link LocalDate}
-   * @param validTil
-   *                    {@link LocalDate}
-   * @return a list of {@link Capitalsource}s
-   */
-  List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
-      LocalDate validTil);
+	/**
+	 * This service returns all {@link Capitalsource}s where the {@link UserID} has
+	 * usage permissions like creating a {@link Moneyflow} and which valid between
+	 * the given Dates.
+	 *
+	 * @param userId    {@link UserID}
+	 * @param validFrom {@link LocalDate}
+	 * @param validTil  {@link LocalDate}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	List<Capitalsource> getGroupCapitalsourcesByDateRange(UserID userId, LocalDate validFrom, LocalDate validTil);
 
-  /**
-   * Determines the {@link Capitalsource} by the given {@link BankAccount}.
-   *
-   * @param bankAccount
-   *                      The {@link BankAccount}
-   * @param date
-   *                      The date to wich the {@link Capitalsource} must have been valid at
-   * @return The matching {@link Capitalsource}
-   */
-  Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
+	/**
+	 * Determines the {@link Capitalsource} by the given {@link BankAccount}.
+	 *
+	 * @param bankAccount The {@link BankAccount}
+	 * @param date        The date to wich the {@link Capitalsource} must have been
+	 *                    valid at
+	 * @return The matching {@link Capitalsource}
+	 */
+	Capitalsource getCapitalsourceByAccount(UserID userId, BankAccount bankAccount, LocalDate date);
 
-  /**
-   * This service returns all {@link Capitalsource}s where the {@link UserID} has usage permissions
-   * for creating a {@link Moneyflow} and which valid between the given Dates.
-   * {@link Capitalsource}s for which no {@link Moneyflow} must be created, are filtered out.
-   *
-   * @param userId
-   *                    {@link UserID}
-   * @param validFrom
-   *                    {@link LocalDate}
-   * @param validTil
-   *                    {@link LocalDate}
-   * @return a list of {@link Capitalsource}s
-   */
-  List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
-      LocalDate validTil);
+	/**
+	 * This service returns all {@link Capitalsource}s where the {@link UserID} has
+	 * usage permissions for creating a {@link Moneyflow} and which valid between
+	 * the given Dates. {@link Capitalsource}s for which no {@link Moneyflow} must
+	 * be created, are filtered out.
+	 *
+	 * @param userId    {@link UserID}
+	 * @param validFrom {@link LocalDate}
+	 * @param validTil  {@link LocalDate}
+	 * @return a list of {@link Capitalsource}s
+	 */
+	List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
+			LocalDate validTil);
 }

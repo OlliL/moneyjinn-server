@@ -36,12 +36,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
 public interface PostingAccountAmountDataMapper
-    extends IMapstructMapper<PostingAccountAmount, PostingAccountAmountData> {
-  @Override
-  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-  PostingAccountAmount mapBToA(PostingAccountAmountData postingAccountAmountData);
+		extends IMapstructMapper<PostingAccountAmount, PostingAccountAmountData> {
+	@Override
+	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+	PostingAccountAmount mapBToA(PostingAccountAmountData postingAccountAmountData);
 
-  @Override
-  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-  PostingAccountAmountData mapAToB(PostingAccountAmount postingAccountAmount);
+	@Override
+	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+	PostingAccountAmountData mapAToB(PostingAccountAmount postingAccountAmount);
 }

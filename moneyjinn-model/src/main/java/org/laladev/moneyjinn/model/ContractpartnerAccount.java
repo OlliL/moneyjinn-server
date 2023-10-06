@@ -36,16 +36,16 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class ContractpartnerAccount extends AbstractEntity<ContractpartnerAccountID>
-    implements IHasBankAccount, IHasContractpartner {
-  private static final long serialVersionUID = 1L;
-  private Contractpartner contractpartner;
-  private BankAccount bankAccount;
+		implements IHasBankAccount, IHasContractpartner {
+	private static final long serialVersionUID = 1L;
+	private Contractpartner contractpartner;
+	private BankAccount bankAccount;
 
-  public ContractpartnerAccount(final ContractpartnerAccountID contractpartnerAccountId,
-      final Contractpartner contractpartner, final BankAccount bankAccount) {
-    super();
-    super.setId(contractpartnerAccountId);
-    this.contractpartner = contractpartner;
-    this.bankAccount = bankAccount;
-  }
+	public ContractpartnerAccount(final ContractpartnerAccountID contractpartnerAccountId,
+			final Contractpartner contractpartner, final BankAccount bankAccount) {
+		super();
+		super.setId(contractpartnerAccountId);
+		this.contractpartner = contractpartner;
+		this.bankAccount = bankAccount;
+	}
 }

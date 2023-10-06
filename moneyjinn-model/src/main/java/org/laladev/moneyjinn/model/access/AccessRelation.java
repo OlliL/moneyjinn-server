@@ -27,45 +27,47 @@
 package org.laladev.moneyjinn.model.access;
 
 import java.time.LocalDate;
+
+import org.laladev.moneyjinn.model.AbstractEntity;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.laladev.moneyjinn.model.AbstractEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class AccessRelation extends AbstractEntity<AccessID> {
-  private static final long serialVersionUID = 1L;
-  private AccessRelation parentAccessRelation;
-  private LocalDate validFrom;
-  private LocalDate validTil;
+	private static final long serialVersionUID = 1L;
+	private AccessRelation parentAccessRelation;
+	private LocalDate validFrom;
+	private LocalDate validTil;
 
-  public AccessRelation(final AccessID id) {
-    super.setId(id);
-  }
+	public AccessRelation(final AccessID id) {
+		super.setId(id);
+	}
 
-  public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation,
-      final LocalDate validFrom, final LocalDate validTil) {
-    super.setId(id);
-    this.parentAccessRelation = parentAccessRelation;
-    this.validFrom = validFrom;
-    this.validTil = validTil;
-  }
+	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation, final LocalDate validFrom,
+			final LocalDate validTil) {
+		super.setId(id);
+		this.parentAccessRelation = parentAccessRelation;
+		this.validFrom = validFrom;
+		this.validTil = validTil;
+	}
 
-  public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation) {
-    super.setId(id);
-    this.parentAccessRelation = parentAccessRelation;
-  }
+	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation) {
+		super.setId(id);
+		this.parentAccessRelation = parentAccessRelation;
+	}
 
-  public AccessRelation(final AccessRelation accessRelation) {
-    if (accessRelation != null) {
-      this.setId(new AccessID(accessRelation.getId().getId()));
-      this.setValidFrom(accessRelation.getValidFrom());
-      this.setValidTil(accessRelation.getValidTil());
-      this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
-    }
-  }
+	public AccessRelation(final AccessRelation accessRelation) {
+		if (accessRelation != null) {
+			this.setId(new AccessID(accessRelation.getId().getId()));
+			this.setValidFrom(accessRelation.getValidFrom());
+			this.setValidTil(accessRelation.getValidTil());
+			this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
+		}
+	}
 }

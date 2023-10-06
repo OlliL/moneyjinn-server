@@ -7,13 +7,13 @@ import org.laladev.moneyjinn.server.controller.api.CrudCapitalsourceControllerAp
 
 abstract class AbstractCapitalsourceTest extends AbstractControllerTest {
 
-  @BeforeEach
-  public void setUp() {
-    super.setUsername(UserTransportBuilder.USER1_NAME);
-    super.setPassword(UserTransportBuilder.USER1_PASSWORD);
-  }
+	@BeforeEach
+	public void setUp() {
+		super.setUsername(UserTransportBuilder.USER1_NAME);
+		super.setPassword(UserTransportBuilder.USER1_PASSWORD);
+	}
 
-  protected CrudCapitalsourceControllerApi getMock() {
-    return super.getMock(CrudCapitalsourceControllerApi.class);
-  }
+	protected CrudCapitalsourceControllerApi getMock() {
+		return super.getMock(CrudCapitalsourceControllerApi.class);
+	}
 }

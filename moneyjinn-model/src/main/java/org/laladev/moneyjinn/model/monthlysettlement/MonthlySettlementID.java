@@ -29,13 +29,13 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
 /**
  * The unique ID of a {@link MonthlySettlement}.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 public class MonthlySettlementID extends AbstractEntityID<Long> {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public MonthlySettlementID(final Long id) {
-    super(id);
-  }
+	public MonthlySettlementID(final Long id) {
+		super(id);
+	}
 }

@@ -34,6 +34,5 @@ import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
-public interface PostingAccountDataMapper
-    extends IMapstructMapper<PostingAccount, PostingAccountData> {
+public interface PostingAccountDataMapper extends IMapstructMapper<PostingAccount, PostingAccountData> {
 }

@@ -26,57 +26,58 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfDao {
-  private final IEtfDaoMapper mapper;
+	private final IEtfDaoMapper mapper;
 
-  public List<EtfData> getAllEtf() {
-    return this.mapper.getAllEtf();
-  }
+	public List<EtfData> getAllEtf() {
+		return this.mapper.getAllEtf();
+	}
 
-  public EtfData getEtfById(final String isin) {
-    return this.mapper.getEtfById(isin);
-  }
+	public EtfData getEtfById(final String isin) {
+		return this.mapper.getEtfById(isin);
+	}
 
-  public EtfValueData getEtfValueForMonth(final String isin, final Integer year,
-      final Month month) {
-    final LocalDate startDate = LocalDate.of(year.intValue(), month, 1);
-    final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-    return this.mapper.getEtfValueForMonth(isin, startDate, endDate);
-  }
+	public EtfValueData getEtfValueForMonth(final String isin, final Integer year, final Month month) {
+		final LocalDate startDate = LocalDate.of(year.intValue(), month, 1);
+		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+		return this.mapper.getEtfValueForMonth(isin, startDate, endDate);
+	}
 
-  public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDateTime timeUntil) {
-    return this.mapper.getAllFlowsUntil(isin, timeUntil);
-  }
+	public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDateTime timeUntil) {
+		return this.mapper.getAllFlowsUntil(isin, timeUntil);
+	}
 
-  public EtfFlowData getEtfFowById(final Long etfFlowId) {
-    return this.mapper.getEtfFlowById(etfFlowId);
-  }
+	public EtfFlowData getEtfFowById(final Long etfFlowId) {
+		return this.mapper.getEtfFlowById(etfFlowId);
+	}
 
-  public Long createEtfFlow(final EtfFlowData etfFlowData) {
-    this.mapper.createEtfFlow(etfFlowData);
-    return etfFlowData.getEtfflowid();
-  }
+	public Long createEtfFlow(final EtfFlowData etfFlowData) {
+		this.mapper.createEtfFlow(etfFlowData);
+		return etfFlowData.getEtfflowid();
+	}
 
-  public void updateEtfFlow(final EtfFlowData etfFlowData) {
-    this.mapper.updateEtfFlow(etfFlowData);
-  }
+	public void updateEtfFlow(final EtfFlowData etfFlowData) {
+		this.mapper.updateEtfFlow(etfFlowData);
+	}
 
-  public void deleteEtfFlow(final Long etfFlowId) {
-    this.mapper.deleteEtfFlow(etfFlowId);
-  }
+	public void deleteEtfFlow(final Long etfFlowId) {
+		this.mapper.deleteEtfFlow(etfFlowId);
+	}
 }

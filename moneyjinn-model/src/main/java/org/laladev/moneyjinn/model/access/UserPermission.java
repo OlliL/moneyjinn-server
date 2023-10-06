@@ -29,11 +29,11 @@ package org.laladev.moneyjinn.model.access;
 /**
  * A list of Permissions a {@link User} can have.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 public enum UserPermission {
-  NONE,
-  LOGIN,
-  ADMIN;
+	NONE,
+	LOGIN,
+	ADMIN;
 }

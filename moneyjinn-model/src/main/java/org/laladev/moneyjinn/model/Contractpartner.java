@@ -27,33 +27,34 @@
 package org.laladev.moneyjinn.model;
 
 import java.time.LocalDate;
+
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.User;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class Contractpartner extends AbstractEntity<ContractpartnerID>
-    implements IHasPostingAccount, IHasUser {
-  private static final long serialVersionUID = 1L;
-  private User user;
-  private Group access;
-  private String name;
-  private String street;
-  private Integer postcode;
-  private String town;
-  private String country;
-  private String moneyflowComment;
-  private PostingAccount postingAccount;
-  private LocalDate validTil;
-  private LocalDate validFrom;
+public class Contractpartner extends AbstractEntity<ContractpartnerID> implements IHasPostingAccount, IHasUser {
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private Group access;
+	private String name;
+	private String street;
+	private Integer postcode;
+	private String town;
+	private String country;
+	private String moneyflowComment;
+	private PostingAccount postingAccount;
+	private LocalDate validTil;
+	private LocalDate validFrom;
 
-  public Contractpartner(final ContractpartnerID contractpartnerID) {
-    super.setId(contractpartnerID);
-  }
+	public Contractpartner(final ContractpartnerID contractpartnerID) {
+		super.setId(contractpartnerID);
+	}
 }

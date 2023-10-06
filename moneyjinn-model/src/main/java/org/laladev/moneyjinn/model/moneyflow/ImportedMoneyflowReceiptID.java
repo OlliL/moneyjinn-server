@@ -35,9 +35,9 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
  *
  */
 public class ImportedMoneyflowReceiptID extends AbstractEntityID<Long> {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public ImportedMoneyflowReceiptID(final Long id) {
-    super(id);
-  }
+	public ImportedMoneyflowReceiptID(final Long id) {
+		super(id);
+	}
 }

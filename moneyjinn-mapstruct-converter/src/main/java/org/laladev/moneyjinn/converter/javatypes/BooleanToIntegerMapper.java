@@ -5,16 +5,16 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class)
 public abstract class BooleanToIntegerMapper {
-  private static final Integer TRUE = 1;
+	private static final Integer TRUE = 1;
 
-  public boolean mapBToA(final Integer b) {
-    if (b == null) {
-      return false;
-    }
-    return TRUE.equals(b);
-  }
+	public boolean mapBToA(final Integer b) {
+		if (b == null) {
+			return false;
+		}
+		return TRUE.equals(b);
+	}
 
-  public Integer mapAToB(final boolean a) {
-    return a ? TRUE : null;
-  }
+	public Integer mapAToB(final boolean a) {
+		return a ? TRUE : null;
+	}
 }

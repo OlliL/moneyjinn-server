@@ -28,18 +28,20 @@ package org.laladev.moneyjinn.model.etf;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import org.laladev.moneyjinn.model.AbstractEntity;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.model.AbstractEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class EtfFlow extends AbstractEntity<EtfFlowID> {
-  private static final long serialVersionUID = 1L;
-  private EtfIsin isin;
-  private LocalDateTime time;
-  private BigDecimal amount;
-  private BigDecimal price;
+	private static final long serialVersionUID = 1L;
+	private EtfIsin isin;
+	private LocalDateTime time;
+	private BigDecimal amount;
+	private BigDecimal price;
 }

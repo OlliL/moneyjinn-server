@@ -35,11 +35,10 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class,
-    PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, PostingAccountIdMapper.class })
 public interface MoneyflowSearchParamsDataMapper
-    extends IMapstructMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {
-  @Override
-  @Mapping(target = "userId", ignore = true)
-  MoneyflowSearchParamsData mapAToB(MoneyflowSearchParams moneyflowSearchParams);
+		extends IMapstructMapper<MoneyflowSearchParams, MoneyflowSearchParamsData> {
+	@Override
+	@Mapping(target = "userId", ignore = true)
+	MoneyflowSearchParamsData mapAToB(MoneyflowSearchParams moneyflowSearchParams);
 }

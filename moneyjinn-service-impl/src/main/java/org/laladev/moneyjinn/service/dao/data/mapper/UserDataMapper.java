@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -41,56 +42,56 @@ import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserDataMapper extends IMapstructMapper<User, UserData> {
-  @Override
-  @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-  @Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
-  User mapBToA(UserData b);
+	@Override
+	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
+	@Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
+	User mapBToA(UserData b);
 
-  @Named("mapUserAttributesToEntity")
-  default Collection<UserAttribute> mapUserAttributesToEntity(final UserData b) {
-    final Collection<UserAttribute> attributes = new ArrayList<>();
-    if (b.isAttChangePassword()) {
-      attributes.add(UserAttribute.IS_NEW);
-    }
-    if (attributes.isEmpty()) {
-      attributes.add(UserAttribute.NONE);
-    }
-    return attributes;
-  }
+	@Named("mapUserAttributesToEntity")
+	default Collection<UserAttribute> mapUserAttributesToEntity(final UserData b) {
+		final Collection<UserAttribute> attributes = new ArrayList<>();
+		if (b.isAttChangePassword()) {
+			attributes.add(UserAttribute.IS_NEW);
+		}
+		if (attributes.isEmpty()) {
+			attributes.add(UserAttribute.NONE);
+		}
+		return attributes;
+	}
 
-  @Named("mapUserPermissionsToEntity")
-  default Collection<UserPermission> mapUserPermissionsToEntity(final UserData b) {
-    final Collection<UserPermission> permissions = new ArrayList<>();
-    if (b.isPermAdmin()) {
-      permissions.add(UserPermission.ADMIN);
-    }
-    if (b.isPermLogin()) {
-      permissions.add(UserPermission.LOGIN);
-    }
-    if (permissions.isEmpty()) {
-      permissions.add(UserPermission.NONE);
-    }
-    return permissions;
-  }
+	@Named("mapUserPermissionsToEntity")
+	default Collection<UserPermission> mapUserPermissionsToEntity(final UserData b) {
+		final Collection<UserPermission> permissions = new ArrayList<>();
+		if (b.isPermAdmin()) {
+			permissions.add(UserPermission.ADMIN);
+		}
+		if (b.isPermLogin()) {
+			permissions.add(UserPermission.LOGIN);
+		}
+		if (permissions.isEmpty()) {
+			permissions.add(UserPermission.NONE);
+		}
+		return permissions;
+	}
 
-  @Override
-  @Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
-  @Mapping(target = "permLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToData")
-  @Mapping(target = "permAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToData")
-  UserData mapAToB(User a);
+	@Override
+	@Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
+	@Mapping(target = "permLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToData")
+	@Mapping(target = "permAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToData")
+	UserData mapAToB(User a);
 
-  @Named("mapUserAttributeIsNewToData")
-  default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
-    return (a != null && a.contains(UserAttribute.IS_NEW));
-  }
+	@Named("mapUserAttributeIsNewToData")
+	default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
+		return (a != null && a.contains(UserAttribute.IS_NEW));
+	}
 
-  @Named("mapUserPermissionAdminToData")
-  default boolean mapUserPermissionAdminToData(final Collection<UserPermission> a) {
-    return (a != null && a.contains(UserPermission.ADMIN));
-  }
+	@Named("mapUserPermissionAdminToData")
+	default boolean mapUserPermissionAdminToData(final Collection<UserPermission> a) {
+		return (a != null && a.contains(UserPermission.ADMIN));
+	}
 
-  @Named("mapUserPermissionLoginToData")
-  default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
-    return (a != null && a.contains(UserPermission.LOGIN));
-  }
+	@Named("mapUserPermissionLoginToData")
+	default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
+		return (a != null && a.contains(UserPermission.LOGIN));
+	}
 }

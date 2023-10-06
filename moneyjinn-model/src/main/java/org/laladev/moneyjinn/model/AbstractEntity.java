@@ -27,10 +27,11 @@
 package org.laladev.moneyjinn.model;
 
 import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
 public abstract class AbstractEntity<I extends AbstractEntityID<?>> implements Serializable {
-  private static final long serialVersionUID = 1L;
-  private I id;
+	private static final long serialVersionUID = 1L;
+	private I id;
 }

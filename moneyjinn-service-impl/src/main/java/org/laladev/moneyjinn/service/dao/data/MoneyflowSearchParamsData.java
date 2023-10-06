@@ -27,18 +27,19 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class MoneyflowSearchParamsData {
-  private Long userId;
-  private LocalDate startDate;
-  private LocalDate endDate;
-  private String searchString;
-  private boolean featureEqual;
-  private boolean featureRegexp;
-  private boolean featureCaseSensitive;
-  private boolean featureOnlyMinusAmounts;
-  private Long contractpartnerId;
-  private Long postingAccountId;
+	private Long userId;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private String searchString;
+	private boolean featureEqual;
+	private boolean featureRegexp;
+	private boolean featureCaseSensitive;
+	private boolean featureOnlyMinusAmounts;
+	private Long contractpartnerId;
+	private Long postingAccountId;
 }

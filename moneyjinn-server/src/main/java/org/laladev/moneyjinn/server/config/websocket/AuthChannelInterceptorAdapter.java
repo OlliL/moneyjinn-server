@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.server.config.websocket;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.Message;
@@ -40,29 +38,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
-  private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
-  @Override
-  public Message<?> preSend(final Message<?> message, final MessageChannel channel)
-      throws AuthenticationException {
+	@Override
+	public Message<?> preSend(final Message<?> message, final MessageChannel channel) throws AuthenticationException {
 
-    final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message,
-        StompHeaderAccessor.class);
+		final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-    if (accessor != null && StompCommand.CONNECT == accessor.getCommand()) {
-      String token = null;
-      final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
-      if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-        token = bearerToken.substring(7, bearerToken.length());
-      }
-      if (token != null && this.jwtTokenProvider.validateToken(token)) {
-        final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
-        accessor.setUser(auth);
-      }
-    }
-    return message;
-  }
+		if (accessor != null && StompCommand.CONNECT == accessor.getCommand()) {
+			String token = null;
+			final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+			if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+				token = bearerToken.substring(7, bearerToken.length());
+			}
+			if (token != null && this.jwtTokenProvider.validateToken(token)) {
+				final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
+				accessor.setUser(auth);
+			}
+		}
+		return message;
+	}
 }

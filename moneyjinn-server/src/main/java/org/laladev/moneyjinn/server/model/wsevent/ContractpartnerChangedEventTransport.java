@@ -27,11 +27,12 @@
 
 package org.laladev.moneyjinn.server.model.wsevent;
 
-import lombok.Data;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
+
+import lombok.Data;
 
 @Data
 public class ContractpartnerChangedEventTransport {
-  private String eventType;
-  private ContractpartnerTransport contractpartnerTransport;
+	private String eventType;
+	private ContractpartnerTransport contractpartnerTransport;
 }

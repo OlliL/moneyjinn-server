@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -48,76 +46,72 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PostingAccountController extends AbstractController
-    implements PostingAccountControllerApi {
-  private final IPostingAccountService postingAccountService;
-  private final PostingAccountTransportMapper postingAccountTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+public class PostingAccountController extends AbstractController implements PostingAccountControllerApi {
+	private final IPostingAccountService postingAccountService;
+	private final PostingAccountTransportMapper postingAccountTransportMapper;
+	private final ValidationItemTransportMapper validationItemTransportMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    this.registerBeanMapper(this.postingAccountTransportMapper);
-    this.registerBeanMapper(this.validationItemTransportMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		this.registerBeanMapper(this.postingAccountTransportMapper);
+		this.registerBeanMapper(this.validationItemTransportMapper);
+	}
 
-  @Override
-  public ResponseEntity<ShowPostingAccountListResponse> showPostingAccountList() {
-    final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
-    final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
-    if (postingAccounts != null && !postingAccounts.isEmpty()) {
-      response.setPostingAccountTransports(
-          super.mapList(postingAccounts, PostingAccountTransport.class));
-    }
-    return ResponseEntity.ok(response);
-  }
+	@Override
+	public ResponseEntity<ShowPostingAccountListResponse> showPostingAccountList() {
+		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
+		final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
+		if (postingAccounts != null && !postingAccounts.isEmpty()) {
+			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+		}
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<CreatePostingAccountResponse> createPostingAccount(
-      @RequestBody final CreatePostingAccountRequest request) {
-    final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
-        PostingAccount.class);
-    postingAccount.setId(null);
-    final ValidationResult validationResult = this.postingAccountService
-        .validatePostingAccount(postingAccount);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<CreatePostingAccountResponse> createPostingAccount(
+			@RequestBody final CreatePostingAccountRequest request) {
+		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
+		postingAccount.setId(null);
+		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    final PostingAccountID postingAccountId = this.postingAccountService
-        .createPostingAccount(postingAccount);
+		final PostingAccountID postingAccountId = this.postingAccountService.createPostingAccount(postingAccount);
 
-    final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
-    response.setPostingAccountId(postingAccountId.getId());
+		final CreatePostingAccountResponse response = new CreatePostingAccountResponse();
+		response.setPostingAccountId(postingAccountId.getId());
 
-    return ResponseEntity.ok(response);
-  }
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> updatePostingAccount(
-      @RequestBody final UpdatePostingAccountRequest request) {
-    final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(),
-        PostingAccount.class);
-    final ValidationResult validationResult = this.postingAccountService
-        .validatePostingAccount(postingAccount);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<Void> updatePostingAccount(@RequestBody final UpdatePostingAccountRequest request) {
+		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
+		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    this.postingAccountService.updatePostingAccount(postingAccount);
+		this.postingAccountService.updatePostingAccount(postingAccount);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 
-  @Override
-  @PreAuthorize(HAS_AUTHORITY_ADMIN)
-  public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
-    final PostingAccountID postingAccountId = new PostingAccountID(id);
-    this.postingAccountService.deletePostingAccount(postingAccountId);
+	@Override
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
+		final PostingAccountID postingAccountId = new PostingAccountID(id);
+		this.postingAccountService.deletePostingAccount(postingAccountId);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 }

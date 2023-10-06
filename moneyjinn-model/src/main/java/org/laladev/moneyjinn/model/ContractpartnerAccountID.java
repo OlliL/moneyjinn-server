@@ -29,13 +29,13 @@ package org.laladev.moneyjinn.model;
 /**
  * The unique ID of a {@link Contractpartner}.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 public class ContractpartnerAccountID extends AbstractEntityID<Long> {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public ContractpartnerAccountID(final Long id) {
-    super(id);
-  }
+	public ContractpartnerAccountID(final Long id) {
+		super(id);
+	}
 }

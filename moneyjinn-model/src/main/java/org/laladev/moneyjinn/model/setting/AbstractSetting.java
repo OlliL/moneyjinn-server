@@ -28,5 +28,5 @@ import lombok.Data;
 //SUCH DAMAGE.
 @Data
 public abstract class AbstractSetting<T> {
-  private T setting;
+	private T setting;
 }

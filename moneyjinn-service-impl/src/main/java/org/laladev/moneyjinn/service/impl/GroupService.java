@@ -26,11 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -49,116 +46,117 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupService extends AbstractService implements IGroupService {
-  private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
-  private static final Log LOG = LogFactory.getLog(GroupService.class);
-  private final GroupDao groupDao;
-  private final GroupDataMapper croupDataMapper;
+	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
+	private static final Log LOG = LogFactory.getLog(GroupService.class);
+	private final GroupDao groupDao;
+	private final GroupDataMapper croupDataMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    super.registerBeanMapper(this.croupDataMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.croupDataMapper);
+	}
 
-  @Override
-  public ValidationResult validateGroup(final Group group) {
-    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
-    final ValidationResult validationResult = new ValidationResult();
-    if (group.getName() == null || group.getName().trim().isEmpty()) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(group.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
-    } else {
-      final Group checkGroup = this.getGroupByName(group.getName());
-      // Update OR Create
-      if (checkGroup != null
-          && (group.getId() == null || !checkGroup.getId().equals(group.getId()))) {
-        validationResult.addValidationResultItem(
-            new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
-      }
-    }
-    return validationResult;
-  }
+	@Override
+	public ValidationResult validateGroup(final Group group) {
+		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = new ValidationResult();
+		if (group.getName() == null || group.getName().trim().isEmpty()) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(group.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		} else {
+			final Group checkGroup = this.getGroupByName(group.getName());
+			// Update OR Create
+			if (checkGroup != null && (group.getId() == null || !checkGroup.getId().equals(group.getId()))) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(group.getId(), ErrorCode.GROUP_WITH_SAME_NAME_ALREADY_EXISTS));
+			}
+		}
+		return validationResult;
+	}
 
-  @Override
-  @Cacheable(CacheNames.GROUP_BY_ID)
-  public Group getGroupById(final GroupID groupId) {
-    Assert.notNull(groupId, "groupId must not be null!");
-    final GroupData groupData = this.groupDao.getGroupById(groupId.getId());
-    return super.map(groupData, Group.class);
-  }
+	@Override
+	@Cacheable(CacheNames.GROUP_BY_ID)
+	public Group getGroupById(final GroupID groupId) {
+		Assert.notNull(groupId, "groupId must not be null!");
+		final GroupData groupData = this.groupDao.getGroupById(groupId.getId());
+		return super.map(groupData, Group.class);
+	}
 
-  @Override
-  @Cacheable(CacheNames.ALL_GROUPS)
-  public List<Group> getAllGroups() {
-    final List<GroupData> groupDataList = this.groupDao.getAllGroups();
-    return super.mapList(groupDataList, Group.class);
-  }
+	@Override
+	@Cacheable(CacheNames.ALL_GROUPS)
+	public List<Group> getAllGroups() {
+		final List<GroupData> groupDataList = this.groupDao.getAllGroups();
+		return super.mapList(groupDataList, Group.class);
+	}
 
-  @Override
-  public Group getGroupByName(final String name) {
-    Assert.notNull(name, "name must not be null!");
-    final GroupData groupData = this.groupDao.getGroupByName(name);
-    return super.map(groupData, Group.class);
-  }
+	@Override
+	public Group getGroupByName(final String name) {
+		Assert.notNull(name, "name must not be null!");
+		final GroupData groupData = this.groupDao.getGroupByName(name);
+		return super.map(groupData, Group.class);
+	}
 
-  @Override
-  public void updateGroup(final Group group) {
-    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
-    final ValidationResult validationResult = this.validateGroup(group);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("Group update failed!", validationResultItem.getError());
-    }
-    final GroupData groupData = super.map(group, GroupData.class);
-    this.groupDao.updateGroup(groupData);
-    this.evictGroupCache(group.getId());
-  }
+	@Override
+	public void updateGroup(final Group group) {
+		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = this.validateGroup(group);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Group update failed!", validationResultItem.getError());
+		}
+		final GroupData groupData = super.map(group, GroupData.class);
+		this.groupDao.updateGroup(groupData);
+		this.evictGroupCache(group.getId());
+	}
 
-  @Override
-  public GroupID createGroup(final Group group) {
-    Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
-    group.setId(null);
-    final ValidationResult validationResult = this.validateGroup(group);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("Group creation failed!", validationResultItem.getError());
-    }
-    final GroupData groupData = super.map(group, GroupData.class);
-    final Long groupId = this.groupDao.createGroup(groupData);
-    this.evictGroupCache(new GroupID(groupId));
-    return new GroupID(groupId);
-  }
+	@Override
+	public GroupID createGroup(final Group group) {
+		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
+		group.setId(null);
+		final ValidationResult validationResult = this.validateGroup(group);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Group creation failed!", validationResultItem.getError());
+		}
+		final GroupData groupData = super.map(group, GroupData.class);
+		final Long groupId = this.groupDao.createGroup(groupData);
+		this.evictGroupCache(new GroupID(groupId));
+		return new GroupID(groupId);
+	}
 
-  @Override
-  public void deleteGroup(final GroupID groupId) {
-    Assert.notNull(groupId, "groupId must not be null!");
-    try {
-      this.groupDao.deleteGroup(groupId.getId());
-      this.evictGroupCache(groupId);
-    } catch (final Exception e) {
-      LOG.info(e);
-      throw new BusinessException(
-          "You may not delete a group while there where/are users assigned to it!",
-          ErrorCode.GROUP_IN_USE);
-    }
-  }
+	@Override
+	public void deleteGroup(final GroupID groupId) {
+		Assert.notNull(groupId, "groupId must not be null!");
+		try {
+			this.groupDao.deleteGroup(groupId.getId());
+			this.evictGroupCache(groupId);
+		} catch (final Exception e) {
+			LOG.info(e);
+			throw new BusinessException("You may not delete a group while there where/are users assigned to it!",
+					ErrorCode.GROUP_IN_USE);
+		}
+	}
 
-  private void evictGroupCache(final GroupID groupId) {
-    if (groupId != null) {
-      final Cache allGroupsCache = super.getCache(CacheNames.ALL_GROUPS);
-      final Cache groupByIdCache = super.getCache(CacheNames.GROUP_BY_ID);
-      if (allGroupsCache != null) {
-        allGroupsCache.clear();
-      }
-      if (groupByIdCache != null) {
-        groupByIdCache.evict(groupId);
-      }
-    }
-  }
+	private void evictGroupCache(final GroupID groupId) {
+		if (groupId != null) {
+			final Cache allGroupsCache = super.getCache(CacheNames.ALL_GROUPS);
+			final Cache groupByIdCache = super.getCache(CacheNames.GROUP_BY_ID);
+			if (allGroupsCache != null) {
+				allGroupsCache.clear();
+			}
+			if (groupByIdCache != null) {
+				groupByIdCache.evict(groupId);
+			}
+		}
+	}
 }

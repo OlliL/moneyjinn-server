@@ -26,20 +26,21 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
-import lombok.NoArgsConstructor;
+
 import org.laladev.moneyjinn.model.PostingAccountID;
 
+import lombok.NoArgsConstructor;
+
 /**
- * returns a List of {@link PostingAccountID}s the user had chosen the last time when using the
- * <code>Reporting</code> functionality.
+ * returns a List of {@link PostingAccountID}s the user had chosen the last time
+ * when using the <code>Reporting</code> functionality.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
-public class ClientReportingUnselectedPostingAccountIdsSetting
-    extends AbstractSetting<List<PostingAccountID>> {
-  public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
-    super.setSetting(setting);
-  }
+public class ClientReportingUnselectedPostingAccountIdsSetting extends AbstractSetting<List<PostingAccountID>> {
+	public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
+		super.setSetting(setting);
+	}
 }

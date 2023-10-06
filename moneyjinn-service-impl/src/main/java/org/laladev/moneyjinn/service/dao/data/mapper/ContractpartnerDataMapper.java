@@ -37,21 +37,20 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class,
-    GroupIdMapper.class, PostingAccountIdMapper.class })
-public interface ContractpartnerDataMapper
-    extends IMapstructMapper<Contractpartner, ContractpartnerData> {
-  @Override
-  @Mapping(target = "user.id", source = "macIdCreator")
-  @Mapping(target = "access.id", source = "macIdAccessor")
-  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-  @Mapping(target = "moneyflowComment", source = "mmfComment")
-  Contractpartner mapBToA(ContractpartnerData contractpartnerData);
+@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+		PostingAccountIdMapper.class })
+public interface ContractpartnerDataMapper extends IMapstructMapper<Contractpartner, ContractpartnerData> {
+	@Override
+	@Mapping(target = "user.id", source = "macIdCreator")
+	@Mapping(target = "access.id", source = "macIdAccessor")
+	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+	@Mapping(target = "moneyflowComment", source = "mmfComment")
+	Contractpartner mapBToA(ContractpartnerData contractpartnerData);
 
-  @Override
-  @Mapping(target = "macIdCreator", source = "user.id")
-  @Mapping(target = "macIdAccessor", source = "access.id")
-  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-  @Mapping(target = "mmfComment", source = "moneyflowComment")
-  ContractpartnerData mapAToB(Contractpartner contractpartner);
+	@Override
+	@Mapping(target = "macIdCreator", source = "user.id")
+	@Mapping(target = "macIdAccessor", source = "access.id")
+	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+	@Mapping(target = "mmfComment", source = "moneyflowComment")
+	ContractpartnerData mapAToB(Contractpartner contractpartner);
 }

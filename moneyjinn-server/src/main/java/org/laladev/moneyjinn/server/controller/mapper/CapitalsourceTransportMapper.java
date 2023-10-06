@@ -37,21 +37,20 @@ import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
-    CapitalsourceTypeMapper.class, CapitalsourceStateMapper.class, CapitalsourceImportMapper.class,
-    UserIdMapper.class, GroupIdMapper.class, BooleanToIntegerMapper.class })
-public interface CapitalsourceTransportMapper
-    extends IMapstructMapper<Capitalsource, CapitalsourceTransport> {
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class,
+		CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class,
+		BooleanToIntegerMapper.class })
+public interface CapitalsourceTransportMapper extends IMapstructMapper<Capitalsource, CapitalsourceTransport> {
 
-  @Override
-  @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-  @Mapping(target = "bankAccount.bankCode", source = "bankCode")
-  @Mapping(target = "user.id", source = "userid")
-  @Mapping(target = "access", ignore = true)
-  Capitalsource mapBToA(final CapitalsourceTransport b);
+	@Override
+	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
+	@Mapping(target = "user.id", source = "userid")
+	@Mapping(target = "access", ignore = true)
+	Capitalsource mapBToA(final CapitalsourceTransport b);
 
-  @Override
-  @Mapping(target = ".", source = "bankAccount")
-  @Mapping(target = "userid", source = "user.id")
-  CapitalsourceTransport mapAToB(final Capitalsource a);
+	@Override
+	@Mapping(target = ".", source = "bankAccount")
+	@Mapping(target = "userid", source = "user.id")
+	CapitalsourceTransport mapAToB(final Capitalsource a);
 }

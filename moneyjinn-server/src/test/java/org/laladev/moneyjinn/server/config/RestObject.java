@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class RestObject {
-  private String attribute1;
-  private Long attribute2;
+	private String attribute1;
+	private Long attribute2;
 }

@@ -37,13 +37,13 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
 public interface EtfFlowDataMapper extends IMapstructMapper<EtfFlow, EtfFlowData> {
-  @Override
-  @Mapping(target = "id", source = "etfflowid")
-  @Mapping(target = "time", source = "flowdate")
-  EtfFlow mapBToA(EtfFlowData a);
+	@Override
+	@Mapping(target = "id", source = "etfflowid")
+	@Mapping(target = "time", source = "flowdate")
+	EtfFlow mapBToA(EtfFlowData a);
 
-  @Override
-  @Mapping(target = "etfflowid", source = "id")
-  @Mapping(target = "flowdate", source = "time")
-  EtfFlowData mapAToB(EtfFlow b);
+	@Override
+	@Mapping(target = "etfflowid", source = "id")
+	@Mapping(target = "flowdate", source = "time")
+	EtfFlowData mapAToB(EtfFlow b);
 }

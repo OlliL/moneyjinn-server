@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
+
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -38,9 +39,9 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  * </p>
  *
  * <p>
- * UserService is the Core Service handling operations around an {@link User} like getting,
- * creating, updating, deleting. Before an {@link User} is created or updated, the {@link User} is
- * validated for correctness.
+ * UserService is the Core Service handling operations around an {@link User}
+ * like getting, creating, updating, deleting. Before an {@link User} is created
+ * or updated, the {@link User} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>access</code>.
@@ -51,99 +52,88 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface IUserService {
-  /**
-   * Checks the validity of the given {@link User}.
-   *
-   * @param user
-   *               the {@link User}
-   * @return {@link ValidationResult}
-   */
-  ValidationResult validateUser(final User user);
+	/**
+	 * Checks the validity of the given {@link User}.
+	 *
+	 * @param user the {@link User}
+	 * @return {@link ValidationResult}
+	 */
+	ValidationResult validateUser(final User user);
 
-  /**
-   * This Service returns the {@link User} for the given {@link UserID}.
-   *
-   * @param userId
-   *                 the {@link UserID}
-   * @return User
-   */
-  User getUserById(final UserID userId);
+	/**
+	 * This Service returns the {@link User} for the given {@link UserID}.
+	 *
+	 * @param userId the {@link UserID}
+	 * @return User
+	 */
+	User getUserById(final UserID userId);
 
-  /**
-   * This Service returns all existing {@link User}s.
-   *
-   * @return list of all {@link User}s
-   */
-  List<User> getAllUsers();
+	/**
+	 * This Service returns all existing {@link User}s.
+	 *
+	 * @return list of all {@link User}s
+	 */
+	List<User> getAllUsers();
 
-  /**
-   * This Service returns the {@link User} for the specified name.
-   *
-   * @param name
-   *               the User-Name
-   * @return {@link User}
-   */
-  User getUserByName(final String name);
+	/**
+	 * This Service returns the {@link User} for the specified name.
+	 *
+	 * @param name the User-Name
+	 * @return {@link User}
+	 */
+	User getUserByName(final String name);
 
-  /**
-   * This service creates a {@link User}. Before the {@link User} is created it is validated for
-   * correctness.
-   *
-   * @param user
-   *               the {@link User} to be created
-   * @return {@link UserID} of the created {@link User}
-   * @throws BusinessException
-   *                             If the validation of the given {@link User} failed.
-   */
-  UserID createUser(final User user);
+	/**
+	 * This service creates a {@link User}. Before the {@link User} is created it is
+	 * validated for correctness.
+	 *
+	 * @param user the {@link User} to be created
+	 * @return {@link UserID} of the created {@link User}
+	 * @throws BusinessException If the validation of the given {@link User} failed.
+	 */
+	UserID createUser(final User user);
 
-  /**
-   * This service changes a {@link User}. Before the {@link User} is changed, the new values are
-   * validated for correctness. Attention: If given, the password is ignored and _not_ updated by
-   * this Service.
-   *
-   * @param user
-   *               the new {@link User} attributes
-   * @throws BusinessException
-   *                             If the validation of the given {@link User} failed.
-   */
-  void updateUser(final User user);
+	/**
+	 * This service changes a {@link User}. Before the {@link User} is changed, the
+	 * new values are validated for correctness. Attention: If given, the password
+	 * is ignored and _not_ updated by this Service.
+	 *
+	 * @param user the new {@link User} attributes
+	 * @throws BusinessException If the validation of the given {@link User} failed.
+	 */
+	void updateUser(final User user);
 
-  /**
-   * This service sets a new User-Password for the given User-Id. The password has to be given in
-   * clear-text to this service! This service should be used when the user itself changes his
-   * password as it also disables the "user has to change his password flag"
-   *
-   * @param userId
-   *                   The {@link UserID} for which the password has to be set
-   * @param password
-   *                   The new User-Password
-   */
-  void setPassword(final UserID userId, final String password);
+	/**
+	 * This service sets a new User-Password for the given User-Id. The password has
+	 * to be given in clear-text to this service! This service should be used when
+	 * the user itself changes his password as it also disables the "user has to
+	 * change his password flag"
+	 *
+	 * @param userId   The {@link UserID} for which the password has to be set
+	 * @param password The new User-Password
+	 */
+	void setPassword(final UserID userId, final String password);
 
-  /**
-   * This service sets a new User-Password for the given User-Id. The password has to be given in
-   * clear-text to this service! This service should be used when an admin changes the password as
-   * it also sets the "user has to change his password flag"
-   *
-   * @param userId
-   *                   The {@link UserID} for which the password has to be set
-   * @param password
-   *                   The new User-Password
-   */
-  void resetPassword(final UserID userId, final String password);
+	/**
+	 * This service sets a new User-Password for the given User-Id. The password has
+	 * to be given in clear-text to this service! This service should be used when
+	 * an admin changes the password as it also sets the "user has to change his
+	 * password flag"
+	 *
+	 * @param userId   The {@link UserID} for which the password has to be set
+	 * @param password The new User-Password
+	 */
+	void resetPassword(final UserID userId, final String password);
 
-  /**
-   * This service deletes a {@link User} from the system.
-   *
-   * @param userId
-   *                 The {@link UserID} of the to-be-deleted {@link User}
-   * @throws BusinessException
-   *                             If the deletion fails an error is throws. It is always assumed that
-   *                             it fails because of a Foreign Key Constraint Violation on the DB
-   *                             level
-   */
-  void deleteUser(final UserID userId);
+	/**
+	 * This service deletes a {@link User} from the system.
+	 *
+	 * @param userId The {@link UserID} of the to-be-deleted {@link User}
+	 * @throws BusinessException If the deletion fails an error is throws. It is
+	 *                           always assumed that it fails because of a Foreign
+	 *                           Key Constraint Violation on the DB level
+	 */
+	void deleteUser(final UserID userId);
 
-  String cryptPassword(final String password);
+	String cryptPassword(final String password);
 }

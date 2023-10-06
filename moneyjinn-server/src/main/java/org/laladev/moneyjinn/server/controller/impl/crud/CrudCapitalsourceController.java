@@ -1,9 +1,7 @@
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -26,101 +24,100 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class CrudCapitalsourceController extends AbstractController
-    implements CrudCapitalsourceControllerApi {
-  private final IAccessRelationService accessRelationService;
-  private final ICapitalsourceService capitalsourceService;
-  private final IUserService userService;
-  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+public class CrudCapitalsourceController extends AbstractController implements CrudCapitalsourceControllerApi {
+	private final IAccessRelationService accessRelationService;
+	private final ICapitalsourceService capitalsourceService;
+	private final IUserService userService;
+	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+	private final ValidationItemTransportMapper validationItemTransportMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    this.registerBeanMapper(this.capitalsourceTransportMapper);
-    this.registerBeanMapper(this.validationItemTransportMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		this.registerBeanMapper(this.capitalsourceTransportMapper);
+		this.registerBeanMapper(this.validationItemTransportMapper);
+	}
 
-  @Override
-  public ResponseEntity<List<CapitalsourceTransport>> readAll() {
-    final UserID userId = super.getUserId();
-    final List<Capitalsource> capitalsources = this.capitalsourceService
-        .getAllCapitalsources(userId);
+	@Override
+	public ResponseEntity<List<CapitalsourceTransport>> readAll() {
+		final UserID userId = super.getUserId();
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
 
-    return ResponseEntity.ok(super.mapList(capitalsources, CapitalsourceTransport.class));
-  }
+		return ResponseEntity.ok(super.mapList(capitalsources, CapitalsourceTransport.class));
+	}
 
-  @Override
-  public ResponseEntity<CapitalsourceTransport> readOne(@PathVariable("id") final Long id) {
-    final UserID userId = super.getUserId();
-    final Group group = this.accessRelationService.getAccessor(userId);
-    final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
-    final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-        group.getId(), capitalsourceId);
+	@Override
+	public ResponseEntity<CapitalsourceTransport> readOne(@PathVariable("id") final Long id) {
+		final UserID userId = super.getUserId();
+		final Group group = this.accessRelationService.getAccessor(userId);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
+				capitalsourceId);
 
-    if (capitalsource == null) {
-      return ResponseEntity.notFound().build();
-    }
+		if (capitalsource == null) {
+			return ResponseEntity.notFound().build();
+		}
 
-    return ResponseEntity.ok(super.map(capitalsource, CapitalsourceTransport.class));
-  }
+		return ResponseEntity.ok(super.map(capitalsource, CapitalsourceTransport.class));
+	}
 
-  @Override
-  public ResponseEntity<CapitalsourceTransport> create(
-      @RequestBody final CapitalsourceTransport capitalsourceTransport,
-      @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-    final UserID userId = super.getUserId();
-    final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
-    final User user = this.userService.getUserById(userId);
-    final Group accessor = this.accessRelationService.getAccessor(userId);
-    capitalsource.setId(null);
-    capitalsource.setUser(user);
-    capitalsource.setAccess(accessor);
-    final ValidationResult validationResult = this.capitalsourceService
-        .validateCapitalsource(capitalsource);
+	@Override
+	public ResponseEntity<CapitalsourceTransport> create(
+			@RequestBody final CapitalsourceTransport capitalsourceTransport,
+			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final UserID userId = super.getUserId();
+		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
+		final User user = this.userService.getUserById(userId);
+		final Group accessor = this.accessRelationService.getAccessor(userId);
+		capitalsource.setId(null);
+		capitalsource.setUser(user);
+		capitalsource.setAccess(accessor);
+		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    final CapitalsourceID capitalsourceId = this.capitalsourceService
-        .createCapitalsource(capitalsource);
+		final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
 
-    capitalsource.setId(capitalsourceId);
+		capitalsource.setId(capitalsourceId);
 
-    return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
+		return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
 
-  }
+	}
 
-  @Override
-  public ResponseEntity<CapitalsourceTransport> update(
-      @RequestBody final CapitalsourceTransport capitalsourceTransport,
-      @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-    final UserID userId = super.getUserId();
-    final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
-    final User user = this.userService.getUserById(userId);
-    final Group accessor = this.accessRelationService.getAccessor(userId);
-    capitalsource.setUser(user);
-    capitalsource.setAccess(accessor);
-    final ValidationResult validationResult = this.capitalsourceService
-        .validateCapitalsource(capitalsource);
+	@Override
+	public ResponseEntity<CapitalsourceTransport> update(
+			@RequestBody final CapitalsourceTransport capitalsourceTransport,
+			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final UserID userId = super.getUserId();
+		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
+		final User user = this.userService.getUserById(userId);
+		final Group accessor = this.accessRelationService.getAccessor(userId);
+		capitalsource.setUser(user);
+		capitalsource.setAccess(accessor);
+		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    this.capitalsourceService.updateCapitalsource(capitalsource);
+		this.capitalsourceService.updateCapitalsource(capitalsource);
 
-    return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
-  }
+		return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
+	}
 
-  @Override
-  public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
-    final UserID userId = super.getUserId();
-    final Group accessor = this.accessRelationService.getAccessor(userId);
-    final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
+	@Override
+	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
+		final UserID userId = super.getUserId();
+		final Group accessor = this.accessRelationService.getAccessor(userId);
+		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 
-    this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);
+		this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 }

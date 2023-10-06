@@ -34,6 +34,5 @@ import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
-public interface PostingAccountTransportMapper
-    extends IMapstructMapper<PostingAccount, PostingAccountTransport> {
+public interface PostingAccountTransportMapper extends IMapstructMapper<PostingAccount, PostingAccountTransport> {
 }

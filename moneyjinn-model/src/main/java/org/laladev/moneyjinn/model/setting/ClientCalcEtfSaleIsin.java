@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
  * This Setting holds the last selected ISIN for calculating etf sales.
  * </p>
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
 public class ClientCalcEtfSaleIsin extends AbstractSetting<String> {
-  public ClientCalcEtfSaleIsin(final String setting) {
-    super.setSetting(setting);
-  }
+	public ClientCalcEtfSaleIsin(final String setting) {
+		super.setSetting(setting);
+	}
 }

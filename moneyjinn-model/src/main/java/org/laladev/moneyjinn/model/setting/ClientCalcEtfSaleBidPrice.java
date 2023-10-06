@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.model.setting;
 
 import java.math.BigDecimal;
+
 import lombok.NoArgsConstructor;
 
 /**
@@ -9,12 +10,12 @@ import lombok.NoArgsConstructor;
  * This Setting holds the last selected Bid Price for calculating etf sales.
  * </p>
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
 public class ClientCalcEtfSaleBidPrice extends AbstractSetting<BigDecimal> {
-  public ClientCalcEtfSaleBidPrice(final BigDecimal setting) {
-    super.setSetting(setting);
-  }
+	public ClientCalcEtfSaleBidPrice(final BigDecimal setting) {
+		super.setSetting(setting);
+	}
 }

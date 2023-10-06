@@ -36,13 +36,13 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = CompareDataFormatIdMapper.class)
 public interface CompareDataFormatTransportMapper
-    extends IMapstructMapper<CompareDataFormat, CompareDataFormatTransport> {
-  @Override
-  default CompareDataFormat mapBToA(final CompareDataFormatTransport compareDataFormatTransport) {
-    throw new UnsupportedOperationException("Mapping not supported!");
-  }
+		extends IMapstructMapper<CompareDataFormat, CompareDataFormatTransport> {
+	@Override
+	default CompareDataFormat mapBToA(final CompareDataFormatTransport compareDataFormatTransport) {
+		throw new UnsupportedOperationException("Mapping not supported!");
+	}
 
-  @Override
-  @Mapping(target = "formatId", source = "id")
-  CompareDataFormatTransport mapAToB(CompareDataFormat compareDataFormat);
+	@Override
+	@Mapping(target = "formatId", source = "id")
+	CompareDataFormatTransport mapAToB(CompareDataFormat compareDataFormat);
 }

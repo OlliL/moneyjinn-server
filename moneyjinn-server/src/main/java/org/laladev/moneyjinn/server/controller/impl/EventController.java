@@ -24,12 +24,10 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
@@ -44,44 +42,47 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EventController extends AbstractController implements EventControllerApi {
-  private final IMonthlySettlementService monthlySettlementService;
-  private final ICapitalsourceService capitalsourceService;
-  private final IImportedMoneyflowService importedMoneyflowService;
+	private final IMonthlySettlementService monthlySettlementService;
+	private final ICapitalsourceService capitalsourceService;
+	private final IImportedMoneyflowService importedMoneyflowService;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    // No Mapping needed.
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		// No Mapping needed.
+	}
 
-  @Override
-  public ResponseEntity<ShowEventListResponse> showEventList() {
-    final UserID userId = super.getUserId();
-    final ShowEventListResponse response = new ShowEventListResponse();
-    // missing monthly settlements from last month?
-    final LocalDate beginOfPreviousMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
-    final Month month = beginOfPreviousMonth.getMonth();
-    final Integer year = beginOfPreviousMonth.getYear();
-    final boolean monthlySettlementExists = this.monthlySettlementService
-        .checkMonthlySettlementsExists(userId, year, month);
+	@Override
+	public ResponseEntity<ShowEventListResponse> showEventList() {
+		final UserID userId = super.getUserId();
+		final ShowEventListResponse response = new ShowEventListResponse();
+		// missing monthly settlements from last month?
+		final LocalDate beginOfPreviousMonth = LocalDate.now().minusMonths(1L).withDayOfMonth(1);
+		final Month month = beginOfPreviousMonth.getMonth();
+		final Integer year = beginOfPreviousMonth.getYear();
+		final boolean monthlySettlementExists = this.monthlySettlementService.checkMonthlySettlementsExists(userId,
+				year, month);
 
-    final LocalDate today = LocalDate.now();
-    final List<Capitalsource> capitalsources = this.capitalsourceService
-        .getGroupCapitalsourcesByDateRange(userId, today, today);
-    if (capitalsources != null && !capitalsources.isEmpty()) {
-      final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
-          .map(Capitalsource::getId).toList();
-      final Integer numberOfImportedMoneyflows = this.importedMoneyflowService
-          .countImportedMoneyflows(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
-      response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
-    }
-    response.setMonthlySettlementMissing(!monthlySettlementExists);
-    response.setMonthlySettlementMonth(month.getValue());
-    response.setMonthlySettlementYear(year);
-    return ResponseEntity.ok(response);
-  }
+		final LocalDate today = LocalDate.now();
+		final List<Capitalsource> capitalsources = this.capitalsourceService.getGroupCapitalsourcesByDateRange(userId,
+				today, today);
+		if (capitalsources != null && !capitalsources.isEmpty()) {
+			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(Capitalsource::getId).toList();
+			final Integer numberOfImportedMoneyflows = this.importedMoneyflowService.countImportedMoneyflows(userId,
+					capitalsourceIds, ImportedMoneyflowStatus.CREATED);
+			response.setNumberOfImportedMoneyflows(numberOfImportedMoneyflows);
+		}
+		response.setMonthlySettlementMissing(!monthlySettlementExists);
+		response.setMonthlySettlementMonth(month.getValue());
+		response.setMonthlySettlementYear(year);
+		return ResponseEntity.ok(response);
+	}
 }

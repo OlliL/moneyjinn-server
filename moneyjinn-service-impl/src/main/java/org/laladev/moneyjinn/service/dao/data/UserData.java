@@ -30,10 +30,10 @@ import lombok.Data;
 
 @Data
 public class UserData {
-  private Long id;
-  private String name;
-  private String password;
-  private boolean permLogin;
-  private boolean permAdmin;
-  private boolean attChangePassword;
+	private Long id;
+	private String name;
+	private String password;
+	private boolean permLogin;
+	private boolean permAdmin;
+	private boolean attChangePassword;
 }

@@ -1,9 +1,9 @@
 
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,109 +22,105 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class UpdatePostingAccountTest extends AbstractControllerTest {
-  @Inject
-  private IPostingAccountService postingAccountService;
+	@Inject
+	private IPostingAccountService postingAccountService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(PostingAccountControllerApi.class).updatePostingAccount(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(PostingAccountControllerApi.class).updatePostingAccount(null);
+	}
 
-  private void testError(final PostingAccountTransport transport, final ErrorCode errorCode)
-      throws Exception {
-    final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
-    request.setPostingAccountTransport(transport);
-    final List<ValidationItemTransport> validationItems = new ArrayList<>();
-    validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().toString())
-        .withError(errorCode.getErrorCode()).build());
-    final ValidationResponse expected = new ValidationResponse();
-    expected.setValidationItemTransports(validationItems);
-    expected.setResult(Boolean.FALSE);
+	private void testError(final PostingAccountTransport transport, final ErrorCode errorCode) throws Exception {
+		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
+		request.setPostingAccountTransport(transport);
+		final List<ValidationItemTransport> validationItems = new ArrayList<>();
+		validationItems.add(new ValidationItemTransportBuilder().withKey(transport.getId().toString())
+				.withError(errorCode.getErrorCode()).build());
+		final ValidationResponse expected = new ValidationResponse();
+		expected.setValidationItemTransports(validationItems);
+		expected.setResult(Boolean.FALSE);
 
-    final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
+		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
-    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
-        .forPostingAccount2().build();
-    transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
-    this.testError(transport, ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS);
-  }
+	@Test
+	void test_PostingAccountnameAlreadyExisting_Error() throws Exception {
+		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount2().build();
+		transport.setName(PostingAccountTransportBuilder.POSTING_ACCOUNT1_NAME);
+		this.testError(transport, ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS);
+	}
 
-  @Test
-   void test_EmptyPostingAccountname_Error() throws Exception {
-    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
-        .forPostingAccount2().build();
-    transport.setName("");
-    this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-  }
+	@Test
+	void test_EmptyPostingAccountname_Error() throws Exception {
+		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount2().build();
+		transport.setName("");
+		this.testError(transport, ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+	}
 
-  @Test
-   void test_standardRequest_Successfull() throws Exception {
-    final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
-    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
-        .forPostingAccount1().build();
-    transport.setName("hugo");
-    request.setPostingAccountTransport(transport);
+	@Test
+	void test_standardRequest_Successfull() throws Exception {
+		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
+		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount1().build();
+		transport.setName("hugo");
+		request.setPostingAccountTransport(transport);
 
-    super.callUsecaseExpect204(request);
+		super.callUsecaseExpect204(request);
 
-    final PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
-    Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
-        postingAccount.getId().getId());
-    Assertions.assertEquals("hugo", postingAccount.getName());
-  }
+		final PostingAccount postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
+		Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID, postingAccount.getId().getId());
+		Assertions.assertEquals("hugo", postingAccount.getName());
+	}
 
-  @Test
-   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	@Test
+	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403(new UpdatePostingAccountRequest());
-  }
+		super.callUsecaseExpect403(new UpdatePostingAccountRequest());
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403(new UpdatePostingAccountRequest());
-  }
+		super.callUsecaseExpect403(new UpdatePostingAccountRequest());
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-    final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
-    final PostingAccountTransport transport = new PostingAccountTransportBuilder()
-        .forPostingAccount1().build();
-    request.setPostingAccountTransport(transport);
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
+		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount1().build();
+		request.setPostingAccountTransport(transport);
 
-    super.callUsecaseExpect204(request);
-  }
+		super.callUsecaseExpect204(request);
+	}
 }

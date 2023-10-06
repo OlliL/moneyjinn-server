@@ -27,13 +27,14 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.math.BigDecimal;
+
 import lombok.Data;
 
 @Data
 public class MoneyflowSplitEntryData {
-  private Long id;
-  private Long mmfMoneyflowId;
-  private BigDecimal amount;
-  private String comment;
-  private Long mpaPostingAccountId;
+	private Long id;
+	private Long mmfMoneyflowId;
+	private BigDecimal amount;
+	private String comment;
+	private Long mpaPostingAccountId;
 }

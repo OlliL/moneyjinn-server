@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
  * This Setting describes if the selected source the default is file or import.
  * </p>
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
 public class ClientCompareDataSelectedSourceIsFile extends AbstractSetting<Boolean> {
-  public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
-    super.setSetting(setting);
-  }
+	public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
+		super.setSetting(setting);
+	}
 }

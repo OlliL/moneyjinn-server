@@ -26,11 +26,12 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
-import lombok.Data;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
+
+import lombok.Data;
 
 @Data
 public class CompareDataWrongCapitalsource {
-  private final Moneyflow moneyflow;
-  private final CompareDataDataset compareDataDataset;
+	private final Moneyflow moneyflow;
+	private final CompareDataDataset compareDataDataset;
 }

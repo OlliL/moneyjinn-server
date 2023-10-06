@@ -38,20 +38,18 @@ import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MonthlySettlementIdMapper.class,
-    MonthToIntegerMapper.class, CapitalsourceIdMapper.class, UserIdMapper.class,
-    GroupIdMapper.class })
-public interface MonthlySettlementDataMapper
-    extends IMapstructMapper<MonthlySettlement, MonthlySettlementData> {
-  @Override
-  @Mapping(target = "user.id", source = "macIdCreator")
-  @Mapping(target = "group.id", source = "macIdAccessor")
-  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-  MonthlySettlement mapBToA(MonthlySettlementData monthlySettlementData);
+@Mapper(config = MapStructConfig.class, uses = { MonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
+		CapitalsourceIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
+public interface MonthlySettlementDataMapper extends IMapstructMapper<MonthlySettlement, MonthlySettlementData> {
+	@Override
+	@Mapping(target = "user.id", source = "macIdCreator")
+	@Mapping(target = "group.id", source = "macIdAccessor")
+	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+	MonthlySettlement mapBToA(MonthlySettlementData monthlySettlementData);
 
-  @Override
-  @Mapping(target = "macIdCreator", source = "user.id")
-  @Mapping(target = "macIdAccessor", source = "group.id")
-  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-  MonthlySettlementData mapAToB(MonthlySettlement monthlySettlement);
+	@Override
+	@Mapping(target = "macIdCreator", source = "user.id")
+	@Mapping(target = "macIdAccessor", source = "group.id")
+	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+	MonthlySettlementData mapAToB(MonthlySettlement monthlySettlement);
 }

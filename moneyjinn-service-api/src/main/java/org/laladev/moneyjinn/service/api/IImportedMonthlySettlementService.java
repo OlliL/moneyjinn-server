@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.time.Month;
 import java.util.List;
+
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -39,10 +40,10 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  * </p>
  *
  * <p>
- * ImportedMonthlySettlementService is the Domain Service handling operations around an
- * {@link ImportedMonthlySettlement} like getting, creating, updating, deleting. Before a
- * {@link ImportedMonthlySettlement} is created or updated, the {@link ImportedMonthlySettlement} is
- * validated for correctness.
+ * ImportedMonthlySettlementService is the Domain Service handling operations
+ * around an {@link ImportedMonthlySettlement} like getting, creating, updating,
+ * deleting. Before a {@link ImportedMonthlySettlement} is created or updated,
+ * the {@link ImportedMonthlySettlement} is validated for correctness.
  * </p>
  * <p>
  * The main datasource is the Table <code>impmonthlysettlements</code>.
@@ -53,35 +54,28 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface IImportedMonthlySettlementService {
-  /**
-   * Retrieves all the imported monthly settlements for the given year and month.
-   *
-   * @param userId
-   *                 The {@link UserID}
-   * @param year
-   *                 The year of the Settlement
-   * @param month
-   *                 The month of the Settlement
-   * @return All matching {@link ImportedMonthlySettlement}
-   */
-  List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(UserID userId, Integer year,
-      Month month);
+	/**
+	 * Retrieves all the imported monthly settlements for the given year and month.
+	 *
+	 * @param userId The {@link UserID}
+	 * @param year   The year of the Settlement
+	 * @param month  The month of the Settlement
+	 * @return All matching {@link ImportedMonthlySettlement}
+	 */
+	List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(UserID userId, Integer year, Month month);
 
-  /**
-   * Persists the given {@link ImportedMonthlySettlement}.
-   *
-   * @param importedMonthlySettlement
-   *                                    The {@link ImportedMonthlySettlement}
-   */
-  void upsertImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
+	/**
+	 * Persists the given {@link ImportedMonthlySettlement}.
+	 *
+	 * @param importedMonthlySettlement The {@link ImportedMonthlySettlement}
+	 */
+	void upsertImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
 
-  /**
-   * Validates the given {@link ImportedMonthlySettlement} for correctness.
-   *
-   * @param importedMonthlySettlement
-   *                                    The {@link ImportedMonthlySettlement}
-   * @return The {@link ValidationResult}
-   */
-  ValidationResult validateImportedMonthlySettlement(
-      ImportedMonthlySettlement importedMonthlySettlement);
+	/**
+	 * Validates the given {@link ImportedMonthlySettlement} for correctness.
+	 *
+	 * @param importedMonthlySettlement The {@link ImportedMonthlySettlement}
+	 * @return The {@link ValidationResult}
+	 */
+	ValidationResult validateImportedMonthlySettlement(ImportedMonthlySettlement importedMonthlySettlement);
 }

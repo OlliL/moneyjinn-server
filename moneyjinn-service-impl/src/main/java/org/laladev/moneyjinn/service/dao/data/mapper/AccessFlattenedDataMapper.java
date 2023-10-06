@@ -26,75 +26,76 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import jakarta.inject.Named;
 import org.laladev.moneyjinn.core.mapper.IMapper;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 
+import jakarta.inject.Named;
+
 @Named
 public class AccessFlattenedDataMapper implements IMapper<AccessRelation, AccessFlattenedData> {
-  @Override
-  public AccessRelation mapBToA(final AccessFlattenedData accessFlattenedData) {
-    final AccessID accessId = new AccessID(accessFlattenedData.getId());
-    AccessRelation parentAccessRelation = null;
-    AccessRelation parentAccessRelationTmp = null;
-    if (accessFlattenedData.getIdLevel5() != null) {
-      parentAccessRelation = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel5()));
-    }
-    if (accessFlattenedData.getIdLevel4() != null) {
-      parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel4()));
-      if (parentAccessRelation != null) {
-        parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
-      }
-      parentAccessRelation = parentAccessRelationTmp;
-    }
-    if (accessFlattenedData.getIdLevel3() != null) {
-      parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel3()));
-      if (parentAccessRelation != null) {
-        parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
-      }
-      parentAccessRelation = parentAccessRelationTmp;
-    }
-    if (accessFlattenedData.getIdLevel2() != null) {
-      parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel2()));
-      if (parentAccessRelation != null) {
-        parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
-      }
-      parentAccessRelation = parentAccessRelationTmp;
-    }
-    final AccessRelation accessRelation = new AccessRelation(accessId, null,
-        accessFlattenedData.getValidFrom(), accessFlattenedData.getValidTil());
-    if (parentAccessRelation != null) {
-      accessRelation.setParentAccessRelation(parentAccessRelation);
-    }
-    return accessRelation;
-  }
+	@Override
+	public AccessRelation mapBToA(final AccessFlattenedData accessFlattenedData) {
+		final AccessID accessId = new AccessID(accessFlattenedData.getId());
+		AccessRelation parentAccessRelation = null;
+		AccessRelation parentAccessRelationTmp = null;
+		if (accessFlattenedData.getIdLevel5() != null) {
+			parentAccessRelation = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel5()));
+		}
+		if (accessFlattenedData.getIdLevel4() != null) {
+			parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel4()));
+			if (parentAccessRelation != null) {
+				parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
+			}
+			parentAccessRelation = parentAccessRelationTmp;
+		}
+		if (accessFlattenedData.getIdLevel3() != null) {
+			parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel3()));
+			if (parentAccessRelation != null) {
+				parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
+			}
+			parentAccessRelation = parentAccessRelationTmp;
+		}
+		if (accessFlattenedData.getIdLevel2() != null) {
+			parentAccessRelationTmp = new AccessRelation(new AccessID(accessFlattenedData.getIdLevel2()));
+			if (parentAccessRelation != null) {
+				parentAccessRelationTmp.setParentAccessRelation(parentAccessRelation);
+			}
+			parentAccessRelation = parentAccessRelationTmp;
+		}
+		final AccessRelation accessRelation = new AccessRelation(accessId, null, accessFlattenedData.getValidFrom(),
+				accessFlattenedData.getValidTil());
+		if (parentAccessRelation != null) {
+			accessRelation.setParentAccessRelation(parentAccessRelation);
+		}
+		return accessRelation;
+	}
 
-  @Override
-  public AccessFlattenedData mapAToB(final AccessRelation accessRelation) {
-    final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
-    accessFlattenedData.setId(accessRelation.getId().getId());
-    accessFlattenedData.setValidFrom(accessRelation.getValidFrom());
-    accessFlattenedData.setValidTil(accessRelation.getValidTil());
-    AccessRelation parentAccessRelation = accessRelation;
-    accessFlattenedData.setIdLevel1(parentAccessRelation.getId().getId());
-    parentAccessRelation = parentAccessRelation.getParentAccessRelation();
-    if (parentAccessRelation != null) {
-      accessFlattenedData.setIdLevel2(parentAccessRelation.getId().getId());
-      parentAccessRelation = parentAccessRelation.getParentAccessRelation();
-    }
-    if (parentAccessRelation != null) {
-      accessFlattenedData.setIdLevel3(parentAccessRelation.getId().getId());
-      parentAccessRelation = parentAccessRelation.getParentAccessRelation();
-    }
-    if (parentAccessRelation != null) {
-      accessFlattenedData.setIdLevel4(parentAccessRelation.getId().getId());
-      parentAccessRelation = parentAccessRelation.getParentAccessRelation();
-    }
-    if (parentAccessRelation != null) {
-      accessFlattenedData.setIdLevel5(parentAccessRelation.getId().getId());
-    }
-    return accessFlattenedData;
-  }
+	@Override
+	public AccessFlattenedData mapAToB(final AccessRelation accessRelation) {
+		final AccessFlattenedData accessFlattenedData = new AccessFlattenedData();
+		accessFlattenedData.setId(accessRelation.getId().getId());
+		accessFlattenedData.setValidFrom(accessRelation.getValidFrom());
+		accessFlattenedData.setValidTil(accessRelation.getValidTil());
+		AccessRelation parentAccessRelation = accessRelation;
+		accessFlattenedData.setIdLevel1(parentAccessRelation.getId().getId());
+		parentAccessRelation = parentAccessRelation.getParentAccessRelation();
+		if (parentAccessRelation != null) {
+			accessFlattenedData.setIdLevel2(parentAccessRelation.getId().getId());
+			parentAccessRelation = parentAccessRelation.getParentAccessRelation();
+		}
+		if (parentAccessRelation != null) {
+			accessFlattenedData.setIdLevel3(parentAccessRelation.getId().getId());
+			parentAccessRelation = parentAccessRelation.getParentAccessRelation();
+		}
+		if (parentAccessRelation != null) {
+			accessFlattenedData.setIdLevel4(parentAccessRelation.getId().getId());
+			parentAccessRelation = parentAccessRelation.getParentAccessRelation();
+		}
+		if (parentAccessRelation != null) {
+			accessFlattenedData.setIdLevel5(parentAccessRelation.getId().getId());
+		}
+		return accessFlattenedData;
+	}
 }

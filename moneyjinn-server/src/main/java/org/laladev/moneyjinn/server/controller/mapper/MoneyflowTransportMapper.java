@@ -39,30 +39,29 @@ import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class,
-    ContractpartnerIdMapper.class, PostingAccountIdMapper.class, MoneyflowIdMapper.class,
-    BooleanToIntegerMapper.class, UserIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
+		PostingAccountIdMapper.class, MoneyflowIdMapper.class, BooleanToIntegerMapper.class, UserIdMapper.class })
 public interface MoneyflowTransportMapper extends IMapstructMapper<Moneyflow, MoneyflowTransport> {
-  @Override
-  @Mapping(target = "bookingDate", source = "bookingdate")
-  @Mapping(target = "invoiceDate", source = "invoicedate")
-  @Mapping(target = "capitalsource.id", source = "capitalsourceid")
-  @Mapping(target = "contractpartner.id", source = "contractpartnerid")
-  @Mapping(target = "postingAccount.id", source = "postingaccountid")
-  @Mapping(target = "user", ignore = true)
-  @Mapping(target = "group", ignore = true)
-  @Mapping(target = "moneyflowSplitEntries", ignore = true)
-  Moneyflow mapBToA(MoneyflowTransport moneyflowTransport);
+	@Override
+	@Mapping(target = "bookingDate", source = "bookingdate")
+	@Mapping(target = "invoiceDate", source = "invoicedate")
+	@Mapping(target = "capitalsource.id", source = "capitalsourceid")
+	@Mapping(target = "contractpartner.id", source = "contractpartnerid")
+	@Mapping(target = "postingAccount.id", source = "postingaccountid")
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "group", ignore = true)
+	@Mapping(target = "moneyflowSplitEntries", ignore = true)
+	Moneyflow mapBToA(MoneyflowTransport moneyflowTransport);
 
-  @Override
-  @Mapping(target = "bookingdate", source = "bookingDate")
-  @Mapping(target = "invoicedate", source = "invoiceDate")
-  @Mapping(target = "capitalsourceid", source = "capitalsource.id")
-  @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
-  @Mapping(target = "contractpartnerid", source = "contractpartner.id")
-  @Mapping(target = "contractpartnername", source = "contractpartner.name")
-  @Mapping(target = "postingaccountid", source = "postingAccount.id")
-  @Mapping(target = "postingaccountname", source = "postingAccount.name")
-  @Mapping(target = "userid", source = "user.id")
-  MoneyflowTransport mapAToB(Moneyflow importedMoneyflow);
+	@Override
+	@Mapping(target = "bookingdate", source = "bookingDate")
+	@Mapping(target = "invoicedate", source = "invoiceDate")
+	@Mapping(target = "capitalsourceid", source = "capitalsource.id")
+	@Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+	@Mapping(target = "contractpartnerid", source = "contractpartner.id")
+	@Mapping(target = "contractpartnername", source = "contractpartner.name")
+	@Mapping(target = "postingaccountid", source = "postingAccount.id")
+	@Mapping(target = "postingaccountname", source = "postingAccount.name")
+	@Mapping(target = "userid", source = "user.id")
+	MoneyflowTransport mapAToB(Moneyflow importedMoneyflow);
 }

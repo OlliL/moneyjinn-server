@@ -36,12 +36,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = EtfIsinMapper.class)
 public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
-  @Override
-  @Mapping(target = "id", source = "isin")
-  Etf mapBToA(EtfData b);
+	@Override
+	@Mapping(target = "id", source = "isin")
+	Etf mapBToA(EtfData b);
 
-  @Override
-  @Mapping(target = "isin", source = "id")
-  EtfData mapAToB(Etf a);
+	@Override
+	@Mapping(target = "isin", source = "id")
+	EtfData mapAToB(Etf a);
 
 }

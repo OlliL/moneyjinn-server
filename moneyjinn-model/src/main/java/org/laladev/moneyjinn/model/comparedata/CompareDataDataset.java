@@ -28,16 +28,18 @@ package org.laladev.moneyjinn.model.comparedata;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import lombok.Data;
+
 import org.laladev.moneyjinn.model.BankAccount;
+
+import lombok.Data;
 
 @Data
 public class CompareDataDataset {
-  private LocalDate bookingDate;
-  private LocalDate invoiceDate;
-  private BigDecimal amount;
-  private String partner;
-  private String comment;
-  private BankAccount partnerBankAccount;
+	private LocalDate bookingDate;
+	private LocalDate invoiceDate;
+	private BigDecimal amount;
+	private String partner;
+	private String comment;
+	private BankAccount partnerBankAccount;
 
 }

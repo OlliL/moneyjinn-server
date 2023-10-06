@@ -26,64 +26,64 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.mapper.IAccessRelationDaoMapper;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationDao {
-  private final IAccessRelationDaoMapper mapper;
+	private final IAccessRelationDaoMapper mapper;
 
-  public AccessRelationData getAccessRelationById(final Long id, final LocalDate date) {
-    return this.mapper.getAccessRelationById(id, date);
-  }
+	public AccessRelationData getAccessRelationById(final Long id, final LocalDate date) {
+		return this.mapper.getAccessRelationById(id, date);
+	}
 
-  public List<AccessRelationData> getAllAccessRelationsById(final Long id) {
-    return this.mapper.getAllAccessRelationsById(id);
-  }
+	public List<AccessRelationData> getAllAccessRelationsById(final Long id) {
+		return this.mapper.getAllAccessRelationsById(id);
+	}
 
-  public List<AccessRelationData> getAllAccessRelationsByIdDate(final Long id,
-      final LocalDate date) {
-    return this.mapper.getAllAccessRelationsByIdDate(id, date);
-  }
+	public List<AccessRelationData> getAllAccessRelationsByIdDate(final Long id, final LocalDate date) {
+		return this.mapper.getAllAccessRelationsByIdDate(id, date);
+	}
 
-  public void deleteAllAccessRelation(final Long id) {
-    this.mapper.deleteAllAccessRelation(id);
-  }
+	public void deleteAllAccessRelation(final Long id) {
+		this.mapper.deleteAllAccessRelation(id);
+	}
 
-  public void deleteAccessRelationByDate(final Long id, final LocalDate date) {
-    this.mapper.deleteAccessRelationByDate(id, date);
-  }
+	public void deleteAccessRelationByDate(final Long id, final LocalDate date) {
+		this.mapper.deleteAccessRelationByDate(id, date);
+	}
 
-  public void updateAccessRelation(final Long id, final LocalDate date,
-      final AccessRelationData accessRelationData) {
-    this.mapper.updateAccessRelation(id, date, accessRelationData);
-  }
+	public void updateAccessRelation(final Long id, final LocalDate date, final AccessRelationData accessRelationData) {
+		this.mapper.updateAccessRelation(id, date, accessRelationData);
+	}
 
-  public void createAccessRelation(final AccessRelationData accessRelationData) {
-    this.mapper.createAccessRelation(accessRelationData);
-  }
+	public void createAccessRelation(final AccessRelationData accessRelationData) {
+		this.mapper.createAccessRelation(accessRelationData);
+	}
 
-  public void deleteAllAccessFlattened(final Long id) {
-    this.mapper.deleteAllAccessFlattened(id);
-  }
+	public void deleteAllAccessFlattened(final Long id) {
+		this.mapper.deleteAllAccessFlattened(id);
+	}
 
-  public void deleteAccessFlattenedAfter(final Long id, final LocalDate date) {
-    this.mapper.deleteAccessFlattenedAfter(id, date);
-  }
+	public void deleteAccessFlattenedAfter(final Long id, final LocalDate date) {
+		this.mapper.deleteAccessFlattenedAfter(id, date);
+	}
 
-  public void createAccessFlattened(final AccessFlattenedData accessFlattenedData) {
-    this.mapper.createAccessFlattened(accessFlattenedData);
-  }
+	public void createAccessFlattened(final AccessFlattenedData accessFlattenedData) {
+		this.mapper.createAccessFlattened(accessFlattenedData);
+	}
 
-  public Set<Long> getAllUserWithSameGroup(final Long id) {
-    return this.mapper.getAllUserWithSameGroup(id);
-  }
+	public Set<Long> getAllUserWithSameGroup(final Long id) {
+		return this.mapper.getAllUserWithSameGroup(id);
+	}
 }

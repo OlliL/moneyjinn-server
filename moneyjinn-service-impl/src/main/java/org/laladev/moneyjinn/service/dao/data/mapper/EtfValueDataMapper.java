@@ -36,11 +36,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = EtfIsinMapper.class)
 public interface EtfValueDataMapper extends IMapstructMapper<EtfValue, EtfValueData> {
-  @Override
-  @Mapping(target = "changeDate", source = "changedate")
-  EtfValue mapBToA(EtfValueData a);
+	@Override
+	@Mapping(target = "changeDate", source = "changedate")
+	EtfValue mapBToA(EtfValueData a);
 
-  @Override
-  @Mapping(target = "changedate", source = "changeDate")
-  EtfValueData mapAToB(EtfValue b);
+	@Override
+	@Mapping(target = "changedate", source = "changeDate")
+	EtfValueData mapAToB(EtfValue b);
 }

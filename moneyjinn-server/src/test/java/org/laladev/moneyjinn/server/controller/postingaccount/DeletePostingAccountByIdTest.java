@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.postingaccount;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,101 +15,103 @@ import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class DeletePostingAccountByIdTest extends AbstractControllerTest {
-  @Inject
-  private IPostingAccountService postingAccountService;
+	@Inject
+	private IPostingAccountService postingAccountService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(PostingAccountControllerApi.class).deletePostingAccountById(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(PostingAccountControllerApi.class).deletePostingAccountById(null);
+	}
 
-  @Test
-   void test_regularPostingAccountNoData_SuccessfullNoContent() throws Exception {
-    PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
-    Assertions.assertNotNull(postingAccount);
+	@Test
+	void test_regularPostingAccountNoData_SuccessfullNoContent() throws Exception {
+		PostingAccount postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
+		Assertions.assertNotNull(postingAccount);
 
-    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
+		super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
 
-    postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
-    Assertions.assertNull(postingAccount);
-  }
+		postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
+		Assertions.assertNull(postingAccount);
+	}
 
-  @Test
-   void test_nonExistingPostingAccount_SuccessfullNoContent() throws Exception {
-    PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
-    Assertions.assertNull(postingAccount);
+	@Test
+	void test_nonExistingPostingAccount_SuccessfullNoContent() throws Exception {
+		PostingAccount postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
+		Assertions.assertNull(postingAccount);
 
-    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.NON_EXISTING_ID);
+		super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.NON_EXISTING_ID);
 
-    postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
-    Assertions.assertNull(postingAccount);
-  }
+		postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.NON_EXISTING_ID));
+		Assertions.assertNull(postingAccount);
+	}
 
-  @Test
-   void test_regularPostingAccountWithData_SuccessfullNoContent() throws Exception {
-    final ErrorResponse expected = new ErrorResponse();
-    expected.setCode(ErrorCode.POSTINGACCOUNT_STILL_REFERENCED.getErrorCode());
-    expected.setMessage(
-        "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!");
-    PostingAccount postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
-    Assertions.assertNotNull(postingAccount);
+	@Test
+	void test_regularPostingAccountWithData_SuccessfullNoContent() throws Exception {
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.POSTINGACCOUNT_STILL_REFERENCED.getErrorCode());
+		expected.setMessage(
+				"The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!");
+		PostingAccount postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
+		Assertions.assertNotNull(postingAccount);
 
-    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
-        PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+		final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class,
+				PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
 
-    postingAccount = this.postingAccountService.getPostingAccountById(
-        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
-    Assertions.assertNotNull(postingAccount);
-    Assertions.assertEquals(expected, actual);
-  }
+		postingAccount = this.postingAccountService
+				.getPostingAccountById(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID));
+		Assertions.assertNotNull(postingAccount);
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	@Test
+	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
 
-    super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
-  }
+		super.callUsecaseExpect204WithUriVariables(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
+	}
 }

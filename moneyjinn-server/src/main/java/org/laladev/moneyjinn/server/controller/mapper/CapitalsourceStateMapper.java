@@ -31,33 +31,31 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceStateMapper {
-  private static final int NON_CACHE_INT = 1;
-  private static final int CACHE_INT = 2;
+	private static final int NON_CACHE_INT = 1;
+	private static final int CACHE_INT = 2;
 
-  private CapitalsourceStateMapper() {
-  }
+	private CapitalsourceStateMapper() {
+	}
 
-  public static CapitalsourceState map(final Integer state) {
-    if (state != null) {
-      return switch (state) {
-        case NON_CACHE_INT -> CapitalsourceState.NON_CACHE;
-        case CACHE_INT -> CapitalsourceState.CACHE;
-        default ->
-          throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
-      };
-    }
-    return null;
-  }
+	public static CapitalsourceState map(final Integer state) {
+		if (state != null) {
+			return switch (state) {
+			case NON_CACHE_INT -> CapitalsourceState.NON_CACHE;
+			case CACHE_INT -> CapitalsourceState.CACHE;
+			default -> throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
+			};
+		}
+		return null;
+	}
 
-  public static Integer map(final CapitalsourceState state) {
-    if (state != null) {
-      return switch (state) {
-        case NON_CACHE -> NON_CACHE_INT;
-        case CACHE -> CACHE_INT;
-        default ->
-          throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
-      };
-    }
-    return null;
-  }
+	public static Integer map(final CapitalsourceState state) {
+		if (state != null) {
+			return switch (state) {
+			case NON_CACHE -> NON_CACHE_INT;
+			case CACHE -> CACHE_INT;
+			default -> throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
+			};
+		}
+		return null;
+	}
 }

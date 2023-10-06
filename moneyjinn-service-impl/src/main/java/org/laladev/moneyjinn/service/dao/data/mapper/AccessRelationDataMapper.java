@@ -37,24 +37,23 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
-public interface AccessRelationDataMapper
-    extends IMapstructMapper<AccessRelation, AccessRelationData> {
-  @Override
-  @Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")
-  AccessRelation mapBToA(AccessRelationData accessRelationData);
+public interface AccessRelationDataMapper extends IMapstructMapper<AccessRelation, AccessRelationData> {
+	@Override
+	@Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")
+	AccessRelation mapBToA(AccessRelationData accessRelationData);
 
-  @Override
-  @Mapping(target = "refId", source = "parentAccessRelation.id")
-  AccessRelationData mapAToB(AccessRelation accessRelation);
+	@Override
+	@Mapping(target = "refId", source = "parentAccessRelation.id")
+	AccessRelationData mapAToB(AccessRelation accessRelation);
 
-  @Named("createParentAccessRelation")
-  default AccessRelation createParentAccessRelation(final Long refId) {
-    if (refId == null) {
-      return null;
-    }
+	@Named("createParentAccessRelation")
+	default AccessRelation createParentAccessRelation(final Long refId) {
+		if (refId == null) {
+			return null;
+		}
 
-    final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(refId));
-    parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
-    return parentAccessRelation;
-  }
+		final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(refId));
+		parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
+		return parentAccessRelation;
+	}
 }

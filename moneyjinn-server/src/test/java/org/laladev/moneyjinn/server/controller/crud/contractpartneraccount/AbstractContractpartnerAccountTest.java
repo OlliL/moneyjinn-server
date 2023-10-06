@@ -7,13 +7,13 @@ import org.laladev.moneyjinn.server.controller.api.CrudContractpartnerAccountCon
 
 abstract class AbstractContractpartnerAccountTest extends AbstractControllerTest {
 
-  @BeforeEach
-  public void setUp() {
-    super.setUsername(UserTransportBuilder.USER1_NAME);
-    super.setPassword(UserTransportBuilder.USER1_PASSWORD);
-  }
+	@BeforeEach
+	public void setUp() {
+		super.setUsername(UserTransportBuilder.USER1_NAME);
+		super.setPassword(UserTransportBuilder.USER1_PASSWORD);
+	}
 
-  protected CrudContractpartnerAccountControllerApi getMock() {
-    return super.getMock(CrudContractpartnerAccountControllerApi.class);
-  }
+	protected CrudContractpartnerAccountControllerApi getMock() {
+		return super.getMock(CrudContractpartnerAccountControllerApi.class);
+	}
 }

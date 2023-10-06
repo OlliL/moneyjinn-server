@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.model;
 
 public interface IHasBankAccount {
-  BankAccount getBankAccount();
+	BankAccount getBankAccount();
 
-  void setBankAccount(BankAccount bankAccount);
+	void setBankAccount(BankAccount bankAccount);
 }

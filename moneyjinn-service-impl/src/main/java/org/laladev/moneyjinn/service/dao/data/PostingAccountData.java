@@ -30,6 +30,6 @@ import lombok.Data;
 
 @Data
 public class PostingAccountData {
-  private Long id;
-  private String name;
+	private Long id;
+	private String name;
 }

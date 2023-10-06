@@ -39,24 +39,24 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class,
-    LocalDateTimeToOffsetDateTimeMapper.class })
+		LocalDateTimeToOffsetDateTimeMapper.class })
 public interface EtfFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfFlowTransport> {
-  @Override
-  @Mapping(target = "id", source = "etfflowid")
-  @Mapping(target = "time", source = "timestamp")
-  EtfFlow mapBToA(EtfFlowTransport etfFlowTransport);
+	@Override
+	@Mapping(target = "id", source = "etfflowid")
+	@Mapping(target = "time", source = "timestamp")
+	EtfFlow mapBToA(EtfFlowTransport etfFlowTransport);
 
-  @Override
-  @Mapping(target = "etfflowid", source = "id")
-  @Mapping(target = "nanoseconds", source = "time.nano")
-  @Mapping(target = "timestamp", source = "time")
-  EtfFlowTransport mapAToB(EtfFlow etfFlow);
+	@Override
+	@Mapping(target = "etfflowid", source = "id")
+	@Mapping(target = "nanoseconds", source = "time.nano")
+	@Mapping(target = "timestamp", source = "time")
+	EtfFlowTransport mapAToB(EtfFlow etfFlow);
 
-  @AfterMapping
-  default void doAfterMapping(final EtfFlowTransport source, @MappingTarget final EtfFlow entity) {
-    if (entity != null && source != null && entity.getTime() != null) {
-      final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
-      entity.setTime(entity.getTime().withNano(nanos));
-    }
-  }
+	@AfterMapping
+	default void doAfterMapping(final EtfFlowTransport source, @MappingTarget final EtfFlow entity) {
+		if (entity != null && source != null && entity.getTime() != null) {
+			final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
+			entity.setTime(entity.getTime().withNano(nanos));
+		}
+	}
 }

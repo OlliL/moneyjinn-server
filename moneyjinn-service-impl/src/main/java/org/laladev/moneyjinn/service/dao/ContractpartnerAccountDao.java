@@ -26,54 +26,53 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerAccountDaoMapper;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountDao {
-  private final IContractpartnerAccountDaoMapper mapper;
+	private final IContractpartnerAccountDaoMapper mapper;
 
-  public ContractpartnerAccountData getContractpartnerAccountByBankAccount(final String bankCode,
-      final String accountNumber) {
-    return this.mapper.getContractpartnerAccountByBankAccount(bankCode, accountNumber);
-  }
+	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(final String bankCode,
+			final String accountNumber) {
+		return this.mapper.getContractpartnerAccountByBankAccount(bankCode, accountNumber);
+	}
 
-  public ContractpartnerAccountData getContractpartnerAccountById(
-      final Long contractpartnerAccountId) {
-    return this.mapper.getContractpartnerAccountById(contractpartnerAccountId);
-  }
+	public ContractpartnerAccountData getContractpartnerAccountById(final Long contractpartnerAccountId) {
+		return this.mapper.getContractpartnerAccountById(contractpartnerAccountId);
+	}
 
-  public List<ContractpartnerAccountData> getContractpartnerAccounts(final Long contractpartnerId) {
-    return this.mapper.getContractpartnerAccounts(contractpartnerId);
-  }
+	public List<ContractpartnerAccountData> getContractpartnerAccounts(final Long contractpartnerId) {
+		return this.mapper.getContractpartnerAccounts(contractpartnerId);
+	}
 
-  public Long createContractpartnerAccount(
-      final ContractpartnerAccountData contractpartnerAccountData) {
-    this.mapper.createContractpartnerAccount(contractpartnerAccountData);
-    return contractpartnerAccountData.getId();
-  }
+	public Long createContractpartnerAccount(final ContractpartnerAccountData contractpartnerAccountData) {
+		this.mapper.createContractpartnerAccount(contractpartnerAccountData);
+		return contractpartnerAccountData.getId();
+	}
 
-  public void updateContractpartnerAccount(
-      final ContractpartnerAccountData contractpartnerAccountData) {
-    this.mapper.updateContractpartnerAccount(contractpartnerAccountData);
-  }
+	public void updateContractpartnerAccount(final ContractpartnerAccountData contractpartnerAccountData) {
+		this.mapper.updateContractpartnerAccount(contractpartnerAccountData);
+	}
 
-  public void deleteContractpartnerAccount(final Long contractpartnerAccountId) {
-    this.mapper.deleteContractpartnerAccount(contractpartnerAccountId);
-  }
+	public void deleteContractpartnerAccount(final Long contractpartnerAccountId) {
+		this.mapper.deleteContractpartnerAccount(contractpartnerAccountId);
+	}
 
-  public void deleteContractpartnerAccounts(final Long contractpartnerId) {
-    this.mapper.deleteContractpartnerAccounts(contractpartnerId);
-  }
+	public void deleteContractpartnerAccounts(final Long contractpartnerId) {
+		this.mapper.deleteContractpartnerAccounts(contractpartnerId);
+	}
 
-  public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(
-      final List<BankAccountData> bankAccountDatas) {
-    return this.mapper.getAllContractpartnerByAccounts(bankAccountDatas);
-  }
+	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(
+			final List<BankAccountData> bankAccountDatas) {
+		return this.mapper.getAllContractpartnerByAccounts(bankAccountDatas);
+	}
 }

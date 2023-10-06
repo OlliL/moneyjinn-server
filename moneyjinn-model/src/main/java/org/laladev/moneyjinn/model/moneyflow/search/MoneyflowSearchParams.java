@@ -27,19 +27,21 @@
 package org.laladev.moneyjinn.model.moneyflow.search;
 
 import java.time.LocalDate;
-import lombok.Data;
+
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.PostingAccountID;
 
+import lombok.Data;
+
 @Data
 public class MoneyflowSearchParams {
-  private LocalDate startDate;
-  private LocalDate endDate;
-  private String searchString;
-  private boolean featureEqual;
-  private boolean featureRegexp;
-  private boolean featureCaseSensitive;
-  private boolean featureOnlyMinusAmounts;
-  private ContractpartnerID contractpartnerId;
-  private PostingAccountID postingAccountId;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private String searchString;
+	private boolean featureEqual;
+	private boolean featureRegexp;
+	private boolean featureCaseSensitive;
+	private boolean featureOnlyMinusAmounts;
+	private ContractpartnerID contractpartnerId;
+	private PostingAccountID postingAccountId;
 }

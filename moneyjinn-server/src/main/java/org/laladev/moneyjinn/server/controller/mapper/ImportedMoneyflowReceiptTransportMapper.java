@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.Base64;
+
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.ImportedMoneyflowReceiptIdMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
@@ -39,32 +40,30 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class,
-    UserIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class, UserIdMapper.class })
 public interface ImportedMoneyflowReceiptTransportMapper
-    extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
-  @Override
-  @Mapping(target = "user", ignore = true)
-  @Mapping(target = "access", ignore = true)
-  @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
-  ImportedMoneyflowReceipt mapBToA(
-      ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport);
+		extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
+	@Override
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "access", ignore = true)
+	@Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
+	ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport);
 
-  @Override
-  @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
-  ImportedMoneyflowReceiptTransport mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
+	@Override
+	@Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
+	ImportedMoneyflowReceiptTransport mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
 
-  @Named("mapReceiptToModel")
-  default byte[] mapReceiptToModel(final String receipt) {
-    try {
-      return Base64.getDecoder().decode(receipt);
-    } catch (final IllegalArgumentException e) {
-      throw new BusinessException("Unsupported file format!", ErrorCode.WRONG_FILE_FORMAT);
-    }
-  }
+	@Named("mapReceiptToModel")
+	default byte[] mapReceiptToModel(final String receipt) {
+		try {
+			return Base64.getDecoder().decode(receipt);
+		} catch (final IllegalArgumentException e) {
+			throw new BusinessException("Unsupported file format!", ErrorCode.WRONG_FILE_FORMAT);
+		}
+	}
 
-  @Named("mapReceiptToModel")
-  default String mapReceiptToModel(final byte[] receipt) {
-    return Base64.getEncoder().encodeToString(receipt);
-  }
+	@Named("mapReceiptToModel")
+	default String mapReceiptToModel(final byte[] receipt) {
+		return Base64.getEncoder().encodeToString(receipt);
+	}
 }

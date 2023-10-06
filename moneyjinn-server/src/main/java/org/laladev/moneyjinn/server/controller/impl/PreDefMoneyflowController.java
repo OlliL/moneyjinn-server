@@ -24,10 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.User;
@@ -49,80 +47,75 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PreDefMoneyflowController extends AbstractController
-    implements PreDefMoneyflowControllerApi {
-  private final IPreDefMoneyflowService preDefMoneyflowService;
-  private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+public class PreDefMoneyflowController extends AbstractController implements PreDefMoneyflowControllerApi {
+	private final IPreDefMoneyflowService preDefMoneyflowService;
+	private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
+	private final ValidationItemTransportMapper validationItemTransportMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    this.registerBeanMapper(this.preDefMoneyflowTransportMapper);
-    this.registerBeanMapper(this.validationItemTransportMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		this.registerBeanMapper(this.preDefMoneyflowTransportMapper);
+		this.registerBeanMapper(this.validationItemTransportMapper);
+	}
 
-  @Override
-  public ResponseEntity<ShowPreDefMoneyflowListResponse> showPreDefMoneyflowList() {
-    final UserID userId = super.getUserId();
-    final List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService
-        .getAllPreDefMoneyflows(userId);
-    final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
-    if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-      response.setPreDefMoneyflowTransports(
-          super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
-    }
-    return ResponseEntity.ok(response);
-  }
+	@Override
+	public ResponseEntity<ShowPreDefMoneyflowListResponse> showPreDefMoneyflowList() {
+		final UserID userId = super.getUserId();
+		final List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
+		final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
+		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
+			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
+		}
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  public ResponseEntity<CreatePreDefMoneyflowResponse> createPreDefMoneyflow(
-      @RequestBody final CreatePreDefMoneyflowRequest request) {
-    final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
-        PreDefMoneyflow.class);
-    final UserID userId = super.getUserId();
-    preDefMoneyflow.setId(null);
-    preDefMoneyflow.setUser(new User(userId));
-    final ValidationResult validationResult = this.preDefMoneyflowService
-        .validatePreDefMoneyflow(preDefMoneyflow);
-    final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
+	@Override
+	public ResponseEntity<CreatePreDefMoneyflowResponse> createPreDefMoneyflow(
+			@RequestBody final CreatePreDefMoneyflowRequest request) {
+		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
+		final UserID userId = super.getUserId();
+		preDefMoneyflow.setId(null);
+		preDefMoneyflow.setUser(new User(userId));
+		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
+		final CreatePreDefMoneyflowResponse response = new CreatePreDefMoneyflowResponse();
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService
-        .createPreDefMoneyflow(preDefMoneyflow);
-    response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
-    return ResponseEntity.ok(response);
-  }
+		final PreDefMoneyflowID preDefMoneyflowId = this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow);
+		response.setPreDefMoneyflowId(preDefMoneyflowId.getId());
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  public ResponseEntity<Void> updatePreDefMoneyflow(
-      @RequestBody final UpdatePreDefMoneyflowRequest request) {
-    final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(),
-        PreDefMoneyflow.class);
-    final UserID userId = super.getUserId();
-    preDefMoneyflow.setUser(new User(userId));
-    final ValidationResult validationResult = this.preDefMoneyflowService
-        .validatePreDefMoneyflow(preDefMoneyflow);
+	@Override
+	public ResponseEntity<Void> updatePreDefMoneyflow(@RequestBody final UpdatePreDefMoneyflowRequest request) {
+		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
+		final UserID userId = super.getUserId();
+		preDefMoneyflow.setUser(new User(userId));
+		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
+		this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 
-  @Override
-  public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
+	@Override
+	public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
 
-    this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
+		this.preDefMoneyflowService.deletePreDefMoneyflow(userId, preDefMoneyflowId);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 
 }

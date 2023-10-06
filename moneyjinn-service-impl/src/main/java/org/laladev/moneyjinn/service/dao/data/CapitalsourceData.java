@@ -27,20 +27,21 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class CapitalsourceData {
-  private Long id;
-  private Long macIdCreator;
-  private Long macIdAccessor;
-  private Integer type;
-  private Integer state;
-  private String accountNumber;
-  private String bankCode;
-  private String comment;
-  private LocalDate validTil;
-  private LocalDate validFrom;
-  private boolean attGroupUse;
-  private Integer importAllowed;
+	private Long id;
+	private Long macIdCreator;
+	private Long macIdAccessor;
+	private Integer type;
+	private Integer state;
+	private String accountNumber;
+	private String bankCode;
+	private String comment;
+	private LocalDate validTil;
+	private LocalDate validFrom;
+	private boolean attGroupUse;
+	private Integer importAllowed;
 }

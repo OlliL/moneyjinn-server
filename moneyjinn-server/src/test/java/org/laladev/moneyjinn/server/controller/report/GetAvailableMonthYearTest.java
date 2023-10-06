@@ -1,9 +1,9 @@
 
 package org.laladev.moneyjinn.server.controller.report;
 
-import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,67 +15,69 @@ import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class GetAvailableMonthYearTest extends AbstractControllerTest {
-  @Inject
-  private ICapitalsourceService capitalsourceService;
-  @Inject
-  private IMoneyflowService moneyflowService;
+	@Inject
+	private ICapitalsourceService capitalsourceService;
+	@Inject
+	private IMoneyflowService moneyflowService;
 
-  private static final List<Integer> ALL_YEARS = Arrays.asList(2008, 2009, 2010);
-  private String userName;
-  private String userPassword;
+	private static final List<Integer> ALL_YEARS = Arrays.asList(2008, 2009, 2010);
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(ReportControllerApi.class).getAvailableMonthYear(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(ReportControllerApi.class).getAvailableMonthYear(null);
+	}
 
-  private void assertEquals(final GetAvailableReportMonthResponse expected,
-      final GetAvailableReportMonthResponse actual) {
-    Assertions.assertEquals(expected, actual);
-  }
+	private void assertEquals(final GetAvailableReportMonthResponse expected,
+			final GetAvailableReportMonthResponse actual) {
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
-    final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
-    expected.setYear(2010);
-    expected.setAllYears(ALL_YEARS);
-    expected.setAllMonth(Arrays.asList(1, 2, 3, 4, 5));
-    final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200(
-        GetAvailableReportMonthResponse.class, 2010);
-    this.assertEquals(expected, actual);
-  }
+	@Test
+	void test_noArgumentOrOnlyYear_defaultsResponse() throws Exception {
+		final GetAvailableReportMonthResponse expected = new GetAvailableReportMonthResponse();
+		expected.setYear(2010);
+		expected.setAllYears(ALL_YEARS);
+		expected.setAllMonth(Arrays.asList(1, 2, 3, 4, 5));
+		final GetAvailableReportMonthResponse actual = super.callUsecaseExpect200(GetAvailableReportMonthResponse.class,
+				2010);
+		this.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_AuthorizationRequired_02_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_02_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403WithUriVariables(2010);
-  }
+		super.callUsecaseExpect403WithUriVariables(2010);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(GetAvailableReportMonthResponse.class, 2010);
-  }
+		super.callUsecaseExpect200(GetAvailableReportMonthResponse.class, 2010);
+	}
 }

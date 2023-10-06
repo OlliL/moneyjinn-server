@@ -39,28 +39,27 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MoneyflowIdMapper.class,
-    CapitalsourceIdMapper.class, ContractpartnerIdMapper.class, PostingAccountIdMapper.class,
-    UserIdMapper.class, GroupIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { MoneyflowIdMapper.class, CapitalsourceIdMapper.class,
+		ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
 public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, MoneyflowData> {
-  @Override
-  @Mapping(target = "bookingDate", source = "bookingdate")
-  @Mapping(target = "invoiceDate", source = "invoicedate")
-  @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-  @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
-  @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-  @Mapping(target = "user.id", source = "macIdCreator")
-  @Mapping(target = "group.id", source = "macIdAccessor")
-  @Mapping(target = "moneyflowSplitEntries", ignore = true)
-  Moneyflow mapBToA(MoneyflowData moneyflowData);
+	@Override
+	@Mapping(target = "bookingDate", source = "bookingdate")
+	@Mapping(target = "invoiceDate", source = "invoicedate")
+	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+	@Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+	@Mapping(target = "user.id", source = "macIdCreator")
+	@Mapping(target = "group.id", source = "macIdAccessor")
+	@Mapping(target = "moneyflowSplitEntries", ignore = true)
+	Moneyflow mapBToA(MoneyflowData moneyflowData);
 
-  @Override
-  @Mapping(target = "bookingdate", source = "bookingDate")
-  @Mapping(target = "invoicedate", source = "invoiceDate")
-  @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-  @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
-  @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-  @Mapping(target = "macIdCreator", source = "user.id")
-  @Mapping(target = "macIdAccessor", source = "group.id")
-  public MoneyflowData mapAToB(Moneyflow moneyflow);
+	@Override
+	@Mapping(target = "bookingdate", source = "bookingDate")
+	@Mapping(target = "invoicedate", source = "invoiceDate")
+	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+	@Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+	@Mapping(target = "macIdCreator", source = "user.id")
+	@Mapping(target = "macIdAccessor", source = "group.id")
+	public MoneyflowData mapAToB(Moneyflow moneyflow);
 }

@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.etf;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,66 +13,68 @@ import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class DeleteEtfFlowTest extends AbstractControllerTest {
-  @Inject
-  IEtfService etfService;
+	@Inject
+	IEtfService etfService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(EtfControllerApi.class).deleteEtfFlow(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(EtfControllerApi.class).deleteEtfFlow(null);
+	}
 
-  @Test
-   void test_standardRequest_emptyResponse() throws Exception {
-    final EtfFlowID etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID);
+	@Test
+	void test_standardRequest_emptyResponse() throws Exception {
+		final EtfFlowID etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID);
 
-    EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
-    Assertions.assertNotNull(etfFlow);
+		EtfFlow etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		Assertions.assertNotNull(etfFlow);
 
-    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
+		super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
 
-    etfFlow = this.etfService.getEtfFlowById(etfFlowId);
-    Assertions.assertNull(etfFlow);
-  }
+		etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		Assertions.assertNull(etfFlow);
+	}
 
-  @Test
-   void test_DeleteNotExistingId_emptyResponse() throws Exception {
-    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.NEXT_ID);
-  }
+	@Test
+	void test_DeleteNotExistingId_emptyResponse() throws Exception {
+		super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.NEXT_ID);
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
-  }
+		super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_1ID);
+	}
 }

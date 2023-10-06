@@ -26,23 +26,23 @@
 
 package org.laladev.moneyjinn.model.moneyflow;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ImportedMoneyflowReceipt extends AbstractEntity<ImportedMoneyflowReceiptID>
-    implements IHasUser {
-  private static final long serialVersionUID = 1L;
-  private User user;
-  private Group access;
-  private byte[] receipt;
-  private String filename;
-  private String mediaType;
+public class ImportedMoneyflowReceipt extends AbstractEntity<ImportedMoneyflowReceiptID> implements IHasUser {
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private Group access;
+	private byte[] receipt;
+	private String filename;
+	private String mediaType;
 }

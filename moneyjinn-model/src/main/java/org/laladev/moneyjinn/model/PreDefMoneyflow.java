@@ -28,25 +28,30 @@ package org.laladev.moneyjinn.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
- * A pre defined Moneyflow is a Moneyflow where certain attributes are predefined. <br>
+ * A pre defined Moneyflow is a Moneyflow where certain attributes are
+ * predefined. <br>
  * <br>
- * For example - every month you give your mother 100 EUR with the {@link PostingAccount} "gift" and
- * the comment "I love you so much". Every month you would have to enter the same data again and
- * again. With a pre defined Moneyflow, you can predefine this data once and just "quickadd" this
+ * For example - every month you give your mother 100 EUR with the
+ * {@link PostingAccount} "gift" and the comment "I love you so much". Every
+ * month you would have to enter the same data again and again. With a pre
+ * defined Moneyflow, you can predefine this data once and just "quickadd" this
  * {@link Moneyflow} whenever you spend the money.<br>
  * <br>
- * The pre defined data is meant to be a adjustable before the {@link Moneyflow} is added (client
- * logic). So you could also create placeholders where for example the amount varies from booking to
- * booking (for example credit card billing), but the {@link Contractpartner},
- * {@link PostingAccount}, {@link Capitalsource} and Comment are always the same.<br>
+ * The pre defined data is meant to be a adjustable before the {@link Moneyflow}
+ * is added (client logic). So you could also create placeholders where for
+ * example the amount varies from booking to booking (for example credit card
+ * billing), but the {@link Contractpartner}, {@link PostingAccount},
+ * {@link Capitalsource} and Comment are always the same.<br>
  * <br>
  * It is meant to ease the adding of reoccuring {@link Moneyflow}s.
  *
@@ -57,15 +62,15 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID>
-    implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
-  private static final long serialVersionUID = 1L;
-  private User user;
-  private BigDecimal amount;
-  private Capitalsource capitalsource;
-  private Contractpartner contractpartner;
-  private String comment;
-  private LocalDate creationDate;
-  private boolean onceAMonth;
-  private LocalDate lastUsedDate;
-  private PostingAccount postingAccount;
+		implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private BigDecimal amount;
+	private Capitalsource capitalsource;
+	private Contractpartner contractpartner;
+	private String comment;
+	private LocalDate creationDate;
+	private boolean onceAMonth;
+	private LocalDate lastUsedDate;
+	private PostingAccount postingAccount;
 }

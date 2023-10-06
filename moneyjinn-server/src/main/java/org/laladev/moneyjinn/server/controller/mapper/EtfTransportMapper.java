@@ -36,11 +36,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = EtfIsinMapper.class)
 public interface EtfTransportMapper extends IMapstructMapper<Etf, EtfTransport> {
-  @Override
-  @Mapping(target = "id", source = "isin")
-  Etf mapBToA(EtfTransport b);
+	@Override
+	@Mapping(target = "id", source = "isin")
+	Etf mapBToA(EtfTransport b);
 
-  @Override
-  @Mapping(target = "isin", source = "id")
-  EtfTransport mapAToB(Etf a);
+	@Override
+	@Mapping(target = "isin", source = "id")
+	EtfTransport mapAToB(Etf a);
 }

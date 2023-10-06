@@ -26,12 +26,9 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -46,71 +43,70 @@ import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 import org.springframework.util.Assert;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
-  private final ImportedBalanceDao importedBalanceDao;
-  private final ICapitalsourceService capitalsourceService;
-  private final IAccessRelationService accessRelationService;
-  private final ImportedBalanceDataMapper importedBalanceDataMapper;
+	private final ImportedBalanceDao importedBalanceDao;
+	private final ICapitalsourceService capitalsourceService;
+	private final IAccessRelationService accessRelationService;
+	private final ImportedBalanceDataMapper importedBalanceDataMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    super.registerBeanMapper(this.importedBalanceDataMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.importedBalanceDataMapper);
+	}
 
-  private ImportedBalance mapImportedBalanceData(final UserID userId,
-      final ImportedBalanceData importedBalanceData) {
-    if (importedBalanceData != null) {
-      final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
-      final Group group = this.accessRelationService.getAccessor(userId,
-          importedBalance.getDate().toLocalDate());
-      Capitalsource capitalsource = importedBalance.getCapitalsource();
-      if (capitalsource != null) {
-        final CapitalsourceID capitalsourceId = capitalsource.getId();
-        capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
-            capitalsourceId);
-        importedBalance.setCapitalsource(capitalsource);
-      }
-      return importedBalance;
-    }
-    return null;
-  }
+	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
+		if (importedBalanceData != null) {
+			final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
+			final Group group = this.accessRelationService.getAccessor(userId, importedBalance.getDate().toLocalDate());
+			Capitalsource capitalsource = importedBalance.getCapitalsource();
+			if (capitalsource != null) {
+				final CapitalsourceID capitalsourceId = capitalsource.getId();
+				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+				importedBalance.setCapitalsource(capitalsource);
+			}
+			return importedBalance;
+		}
+		return null;
+	}
 
-  private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
-      final List<ImportedBalanceData> importedBalanceDataList) {
-    return importedBalanceDataList.stream()
-        .map(element -> this.mapImportedBalanceData(userId, element)).toList();
-  }
+	private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
+			final List<ImportedBalanceData> importedBalanceDataList) {
+		return importedBalanceDataList.stream().map(element -> this.mapImportedBalanceData(userId, element)).toList();
+	}
 
-  @Override
-  public ValidationResult validateImportedBalance(final ImportedBalance importedBalance) {
-    return new ValidationResult();
-  }
+	@Override
+	public ValidationResult validateImportedBalance(final ImportedBalance importedBalance) {
+		return new ValidationResult();
+	}
 
-  @Override
-  public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(final UserID userId,
-      final List<CapitalsourceID> capitalsourceIds) {
-    Assert.notNull(userId, "UserId must not be null!");
-    Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
+	@Override
+	public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(final UserID userId,
+			final List<CapitalsourceID> capitalsourceIds) {
+		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
-    if (capitalsourceIds.isEmpty()) {
-      return new ArrayList<>();
-    }
+		if (capitalsourceIds.isEmpty()) {
+			return new ArrayList<>();
+		}
 
-    final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId)
-        .toList();
-    final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
-        .getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
-    return this.mapImportedBalanceDataList(userId, importedBalanceDataList);
-  }
+		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
+		final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
+				.getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
+		return this.mapImportedBalanceDataList(userId, importedBalanceDataList);
+	}
 
-  @Override
-  public void upsertImportedBalance(final ImportedBalance importedBalance) {
-    Assert.notNull(importedBalance, "importedBalance must not be null!");
-    final ImportedBalanceData importedBalanceData = super.map(importedBalance,
-        ImportedBalanceData.class);
-    this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
-  }
+	@Override
+	public void upsertImportedBalance(final ImportedBalance importedBalance) {
+		Assert.notNull(importedBalance, "importedBalance must not be null!");
+		final ImportedBalanceData importedBalanceData = super.map(importedBalance, ImportedBalanceData.class);
+		this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
+	}
 }

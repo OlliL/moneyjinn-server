@@ -35,18 +35,18 @@ import org.springframework.security.web.firewall.RequestRejectedHandler;
 @Configuration
 public class TestBeanProducer {
 
-  @Bean
-  public PasswordEncoder getPasswordEncoder() {
-    return NoOpPasswordEncoder.getInstance();
-  }
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
 
-  /**
-   * Send HTTP Status Code 400 in case of a Rejected URL.
-   *
-   * @return RequestRejectedHandler
-   */
-  @Bean
-  public RequestRejectedHandler requestRejectedHandler() {
-    return new HttpStatusRequestRejectedHandler();
-  }
+	/**
+	 * Send HTTP Status Code 400 in case of a Rejected URL.
+	 *
+	 * @return RequestRejectedHandler
+	 */
+	@Bean
+	public RequestRejectedHandler requestRejectedHandler() {
+		return new HttpStatusRequestRejectedHandler();
+	}
 }

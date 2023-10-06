@@ -30,10 +30,10 @@ import lombok.Data;
 
 @Data
 public class ImportedMoneyflowReceiptData {
-  private Long id;
-  private Long macIdCreator;
-  private Long macIdAccessor;
-  private byte[] receipt;
-  private String filename;
-  private String mediaType;
+	private Long id;
+	private Long macIdCreator;
+	private Long macIdAccessor;
+	private byte[] receipt;
+	private String filename;
+	private String mediaType;
 }

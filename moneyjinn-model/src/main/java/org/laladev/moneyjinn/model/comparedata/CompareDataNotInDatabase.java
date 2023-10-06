@@ -30,5 +30,5 @@ import lombok.Data;
 
 @Data
 public class CompareDataNotInDatabase {
-  private final CompareDataDataset compareDataDataset;
+	private final CompareDataDataset compareDataDataset;
 }

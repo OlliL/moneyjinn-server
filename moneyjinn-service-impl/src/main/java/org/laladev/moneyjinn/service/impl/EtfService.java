@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -36,7 +33,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
@@ -57,130 +54,133 @@ import org.laladev.moneyjinn.service.dao.data.mapper.EtfFlowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 import org.springframework.util.Assert;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfService extends AbstractService implements IEtfService {
-  private final EtfDao etfDao;
-  private final EtfFlowDataMapper etfFlowDataMapper;
-  private final EtfValueDataMapper etfValueDataMapper;
-  private final EtfDataMapper etfDataMapper;
+	private final EtfDao etfDao;
+	private final EtfFlowDataMapper etfFlowDataMapper;
+	private final EtfValueDataMapper etfValueDataMapper;
+	private final EtfDataMapper etfDataMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    super.registerBeanMapper(this.etfFlowDataMapper);
-    super.registerBeanMapper(this.etfValueDataMapper);
-    super.registerBeanMapper(this.etfDataMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.etfFlowDataMapper);
+		super.registerBeanMapper(this.etfValueDataMapper);
+		super.registerBeanMapper(this.etfDataMapper);
+	}
 
-  @Override
-  public List<Etf> getAllEtf() {
-    final List<EtfData> etfData = this.etfDao.getAllEtf();
-    return super.mapList(etfData, Etf.class);
-  }
+	@Override
+	public List<Etf> getAllEtf() {
+		final List<EtfData> etfData = this.etfDao.getAllEtf();
+		return super.mapList(etfData, Etf.class);
+	}
 
-  @Override
-  public List<EtfFlow> getAllEtfFlowsUntil(final EtfIsin isin, final LocalDateTime timeUntil) {
-    final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(isin.getId(), timeUntil);
-    return super.mapList(etfFlowData, EtfFlow.class);
-  }
+	@Override
+	public List<EtfFlow> getAllEtfFlowsUntil(final EtfIsin isin, final LocalDateTime timeUntil) {
+		final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(isin.getId(), timeUntil);
+		return super.mapList(etfFlowData, EtfFlow.class);
+	}
 
-  @Override
-  public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Integer year, final Month month) {
-    final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
-    return super.map(etfValueData, EtfValue.class);
-  }
+	@Override
+	public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Integer year, final Month month) {
+		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
+		return super.map(etfValueData, EtfValue.class);
+	}
 
-  @Override
-  public ValidationResult validateEtfFlow(final EtfFlow etfFlow) {
-    Assert.notNull(etfFlow, "etfFlow must not be null!");
-    final ValidationResult validationResult = new ValidationResult();
-    if (etfFlow.getTime() == null) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(etfFlow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
-    }
-    if (etfFlow.getAmount() == null || etfFlow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(etfFlow.getId(), ErrorCode.PIECES_NOT_SET));
-    }
-    if (etfFlow.getPrice() == null || etfFlow.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(etfFlow.getId(), ErrorCode.PRICE_NOT_SET));
-    }
-    if (etfFlow.getIsin() == null || etfFlow.getIsin().getId().trim().isEmpty()) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
-    } else {
-      final EtfData etfData = this.etfDao.getEtfById(etfFlow.getIsin().getId());
-      if (etfData == null) {
-        validationResult.addValidationResultItem(
-            new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
-      }
-    }
-    return validationResult;
-  }
+	@Override
+	public ValidationResult validateEtfFlow(final EtfFlow etfFlow) {
+		Assert.notNull(etfFlow, "etfFlow must not be null!");
+		final ValidationResult validationResult = new ValidationResult();
+		if (etfFlow.getTime() == null) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(etfFlow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
+		}
+		if (etfFlow.getAmount() == null || etfFlow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.PIECES_NOT_SET));
+		}
+		if (etfFlow.getPrice() == null || etfFlow.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.PRICE_NOT_SET));
+		}
+		if (etfFlow.getIsin() == null || etfFlow.getIsin().getId().trim().isEmpty()) {
+			validationResult
+					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
+		} else {
+			final EtfData etfData = this.etfDao.getEtfById(etfFlow.getIsin().getId());
+			if (etfData == null) {
+				validationResult
+						.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
+			}
+		}
+		return validationResult;
+	}
 
-  @Override
-  public EtfFlow getEtfFlowById(final EtfFlowID etfFlowId) {
-    Assert.notNull(etfFlowId, "etfFlowId must not be null!");
-    final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
-    return super.map(etfFlowData, EtfFlow.class);
-  }
+	@Override
+	public EtfFlow getEtfFlowById(final EtfFlowID etfFlowId) {
+		Assert.notNull(etfFlowId, "etfFlowId must not be null!");
+		final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
+		return super.map(etfFlowData, EtfFlow.class);
+	}
 
-  @Override
-  public EtfFlowID createEtfFlow(final EtfFlow etfFlow) {
-    final ValidationResult validationResult = this.validateEtfFlow(etfFlow);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
-    }
-    final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
-    final Long etfFlowId = this.etfDao.createEtfFlow(etfFlowData);
-    return new EtfFlowID(etfFlowId);
-  }
+	@Override
+	public EtfFlowID createEtfFlow(final EtfFlow etfFlow) {
+		final ValidationResult validationResult = this.validateEtfFlow(etfFlow);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
+		}
+		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
+		final Long etfFlowId = this.etfDao.createEtfFlow(etfFlowData);
+		return new EtfFlowID(etfFlowId);
+	}
 
-  @Override
-  public void updateEtfFlow(final EtfFlow etfFlow) {
-    final ValidationResult validationResult = this.validateEtfFlow(etfFlow);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
-    }
-    final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
-    this.etfDao.updateEtfFlow(etfFlowData);
-  }
+	@Override
+	public void updateEtfFlow(final EtfFlow etfFlow) {
+		final ValidationResult validationResult = this.validateEtfFlow(etfFlow);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
+		}
+		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
+		this.etfDao.updateEtfFlow(etfFlowData);
+	}
 
-  @Override
-  public void deleteEtfFlow(final EtfFlowID etfFlowId) {
-    Assert.notNull(etfFlowId, "etfFlowId must not be null!");
-    this.etfDao.deleteEtfFlow(etfFlowId.getId());
-  }
+	@Override
+	public void deleteEtfFlow(final EtfFlowID etfFlowId) {
+		Assert.notNull(etfFlowId, "etfFlowId must not be null!");
+		this.etfDao.deleteEtfFlow(etfFlowId.getId());
+	}
 
-  @Override
-  public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
-    Collections.sort(etfFlows, new EtfFlowComparator());
-    final List<EtfFlow> etfSalesFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).toList();
-    final List<EtfFlow> etfBuyFlows = etfFlows.stream()
-        .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1).collect(Collectors.toList());
-    for (final EtfFlow etfSalesFlow : etfSalesFlows) {
-      BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
-      final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();
-      while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
-        final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
-        if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
-          // FIXME: if-branch is uncovered by Unit-Tests!
-          etfBuyFlowsIterator.remove();
-          salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
-        } else {
-          final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
-          etfBuyFlow.setAmount(newAmount);
-          salesAmount = BigDecimal.ZERO;
-        }
-      }
-    }
-    return etfBuyFlows;
-  }
+	@Override
+	public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
+		Collections.sort(etfFlows, new EtfFlowComparator());
+		final List<EtfFlow> etfSalesFlows = etfFlows.stream()
+				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).toList();
+		final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
+				.collect(Collectors.toList());
+		for (final EtfFlow etfSalesFlow : etfSalesFlows) {
+			BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
+			final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();
+			while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
+				final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
+				if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
+					// FIXME: if-branch is uncovered by Unit-Tests!
+					etfBuyFlowsIterator.remove();
+					salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
+				} else {
+					final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
+					etfBuyFlow.setAmount(newAmount);
+					salesAmount = BigDecimal.ZERO;
+				}
+			}
+		}
+		return etfBuyFlows;
+	}
 }

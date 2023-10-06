@@ -27,10 +27,11 @@
 package org.laladev.moneyjinn.service.dao.mapper;
 
 import java.util.List;
+
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 
 public interface IImportedBalanceDaoMapper {
-  void upsertImportedBalance(ImportedBalanceData importedBalanceData);
+	void upsertImportedBalance(ImportedBalanceData importedBalanceData);
 
-  List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(List<Long> capitalsourceIds);
+	List<ImportedBalanceData> getAllImportedBalancesByCapitalsourceIds(List<Long> capitalsourceIds);
 }

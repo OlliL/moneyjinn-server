@@ -26,11 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -51,144 +48,138 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
-  private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
-  private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
-  private final PostingAccountDao postingAccountDao;
-  private final PostingAccountDataMapper postingAccountDataMapper;
+	private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
+	private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
+	private final PostingAccountDao postingAccountDao;
+	private final PostingAccountDataMapper postingAccountDataMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    super.registerBeanMapper(this.postingAccountDataMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.postingAccountDataMapper);
+	}
 
-  @Override
-  public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
-    final ValidationResult validationResult = new ValidationResult();
-    if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(postingAccount.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
-    } else {
-      final PostingAccount checkPostingAccount = this
-          .getPostingAccountByName(postingAccount.getName());
-      // Update OR Create
-      if (checkPostingAccount != null && (postingAccount.getId() == null
-          || !checkPostingAccount.getId().equals(postingAccount.getId()))) {
-        validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
-            ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
-      }
-    }
-    return validationResult;
-  }
+	@Override
+	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
+		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = new ValidationResult();
+		if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(postingAccount.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		} else {
+			final PostingAccount checkPostingAccount = this.getPostingAccountByName(postingAccount.getName());
+			// Update OR Create
+			if (checkPostingAccount != null && (postingAccount.getId() == null
+					|| !checkPostingAccount.getId().equals(postingAccount.getId()))) {
+				validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
+						ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
+			}
+		}
+		return validationResult;
+	}
 
-  @Override
-  @Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
-  public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
-    Assert.notNull(postingAccountId, "postingAccountId must not be null!");
-    final PostingAccountData postingAccountData = this.postingAccountDao
-        .getPostingAccountById(postingAccountId.getId());
-    return super.map(postingAccountData, PostingAccount.class);
-  }
+	@Override
+	@Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
+	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
+		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
+		final PostingAccountData postingAccountData = this.postingAccountDao
+				.getPostingAccountById(postingAccountId.getId());
+		return super.map(postingAccountData, PostingAccount.class);
+	}
 
-  @Override
-  @Cacheable(CacheNames.ALL_POSTINGACCOUNTS)
-  public List<PostingAccount> getAllPostingAccounts() {
-    final List<PostingAccountData> postingAccountDataList = this.postingAccountDao
-        .getAllPostingAccounts();
-    return super.mapList(postingAccountDataList, PostingAccount.class);
-  }
+	@Override
+	@Cacheable(CacheNames.ALL_POSTINGACCOUNTS)
+	public List<PostingAccount> getAllPostingAccounts() {
+		final List<PostingAccountData> postingAccountDataList = this.postingAccountDao.getAllPostingAccounts();
+		return super.mapList(postingAccountDataList, PostingAccount.class);
+	}
 
-  @Override
-  public PostingAccount getPostingAccountByName(final String name) {
-    Assert.notNull(name, "name must not be null!");
-    final PostingAccountData postingAccountData = this.postingAccountDao
-        .getPostingAccountByName(name);
-    return super.map(postingAccountData, PostingAccount.class);
-  }
+	@Override
+	public PostingAccount getPostingAccountByName(final String name) {
+		Assert.notNull(name, "name must not be null!");
+		final PostingAccountData postingAccountData = this.postingAccountDao.getPostingAccountByName(name);
+		return super.map(postingAccountData, PostingAccount.class);
+	}
 
-  @Override
-  public void updatePostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
-    final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("PostingAccount update failed!", validationResultItem.getError());
-    }
-    final PostingAccountData postingAccountData = super.map(postingAccount,
-        PostingAccountData.class);
-    this.postingAccountDao.updatePostingAccount(postingAccountData);
-    this.evictPostingAccountCache(postingAccount.getId());
+	@Override
+	public void updatePostingAccount(final PostingAccount postingAccount) {
+		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("PostingAccount update failed!", validationResultItem.getError());
+		}
+		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
+		this.postingAccountDao.updatePostingAccount(postingAccountData);
+		this.evictPostingAccountCache(postingAccount.getId());
 
-    final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.UPDATE,
-        postingAccount);
-    super.publishEvent(event);
-  }
+		final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.UPDATE, postingAccount);
+		super.publishEvent(event);
+	}
 
-  @Override
-  public PostingAccountID createPostingAccount(final PostingAccount postingAccount) {
-    Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
-    postingAccount.setId(null);
-    final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("PostingAccount creation failed!",
-          validationResultItem.getError());
-    }
-    final PostingAccountData postingAccountData = super.map(postingAccount,
-        PostingAccountData.class);
-    final Long postingAccountIdLong = this.postingAccountDao
-        .createPostingAccount(postingAccountData);
-    final PostingAccountID postingAccountId = new PostingAccountID(postingAccountIdLong);
-    postingAccount.setId(postingAccountId);
+	@Override
+	public PostingAccountID createPostingAccount(final PostingAccount postingAccount) {
+		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+		postingAccount.setId(null);
+		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("PostingAccount creation failed!", validationResultItem.getError());
+		}
+		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
+		final Long postingAccountIdLong = this.postingAccountDao.createPostingAccount(postingAccountData);
+		final PostingAccountID postingAccountId = new PostingAccountID(postingAccountIdLong);
+		postingAccount.setId(postingAccountId);
 
-    this.evictPostingAccountCache(postingAccountId);
+		this.evictPostingAccountCache(postingAccountId);
 
-    final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.CREATE,
-        postingAccount);
-    super.publishEvent(event);
+		final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.CREATE, postingAccount);
+		super.publishEvent(event);
 
-    return postingAccountId;
-  }
+		return postingAccountId;
+	}
 
-  @Override
-  public void deletePostingAccount(final PostingAccountID postingAccountId) {
-    Assert.notNull(postingAccountId, "postingAccountId must not be null!");
-    final PostingAccount postingAccount = this.getPostingAccountById(postingAccountId);
-    if (postingAccount != null) {
-      try {
-        this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
+	@Override
+	public void deletePostingAccount(final PostingAccountID postingAccountId) {
+		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
+		final PostingAccount postingAccount = this.getPostingAccountById(postingAccountId);
+		if (postingAccount != null) {
+			try {
+				this.postingAccountDao.deletePostingAccount(postingAccountId.getId());
 
-        this.evictPostingAccountCache(postingAccountId);
+				this.evictPostingAccountCache(postingAccountId);
 
-        final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this,
-            EventType.DELETE, postingAccount);
-        super.publishEvent(event);
-      } catch (final Exception e) {
-        LOG.info(e);
-        throw new BusinessException(
-            "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
-            ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
-      }
-    }
-  }
+				final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.DELETE,
+						postingAccount);
+				super.publishEvent(event);
+			} catch (final Exception e) {
+				LOG.info(e);
+				throw new BusinessException(
+						"The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
+						ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
+			}
+		}
+	}
 
-  private void evictPostingAccountCache(final PostingAccountID postingAccountId) {
-    if (postingAccountId != null) {
-      final Cache allPostingAccountsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
-      final Cache postingAccountByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
-      if (allPostingAccountsCache != null) {
-        allPostingAccountsCache.clear();
-      }
-      if (postingAccountByIdCache != null) {
-        postingAccountByIdCache.evict(postingAccountId);
-      }
-    }
-  }
+	private void evictPostingAccountCache(final PostingAccountID postingAccountId) {
+		if (postingAccountId != null) {
+			final Cache allPostingAccountsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
+			final Cache postingAccountByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
+			if (allPostingAccountsCache != null) {
+				allPostingAccountsCache.clear();
+			}
+			if (postingAccountByIdCache != null) {
+				postingAccountByIdCache.evict(postingAccountId);
+			}
+		}
+	}
 }

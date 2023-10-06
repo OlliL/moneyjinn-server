@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.io.Serializable;
+
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.AbstractEntityID;
@@ -37,24 +38,23 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class)
-public interface ValidationItemTransportMapper
-    extends IMapstructMapper<ValidationItemTransport, ValidationResultItem> {
-  @Override
-  default ValidationResultItem mapAToB(final ValidationItemTransport a) {
-    throw new UnsupportedOperationException("Mapping not supported!");
-  }
+public interface ValidationItemTransportMapper extends IMapstructMapper<ValidationItemTransport, ValidationResultItem> {
+	@Override
+	default ValidationResultItem mapAToB(final ValidationItemTransport a) {
+		throw new UnsupportedOperationException("Mapping not supported!");
+	}
 
-  @Override
-  @Mapping(target = "error", source = "error.errorCode")
-  @Mapping(target = "key", source = "key", qualifiedByName = "mapKeyToTransport")
-  ValidationItemTransport mapBToA(ValidationResultItem b);
+	@Override
+	@Mapping(target = "error", source = "error.errorCode")
+	@Mapping(target = "key", source = "key", qualifiedByName = "mapKeyToTransport")
+	ValidationItemTransport mapBToA(ValidationResultItem b);
 
-  @Named("mapKeyToTransport")
-  default String mapKeyToTransport(final AbstractEntityID<? extends Serializable> idModel) {
-    if (idModel != null) {
-      return idModel.getId().toString();
-    }
-    return null;
-  }
+	@Named("mapKeyToTransport")
+	default String mapKeyToTransport(final AbstractEntityID<? extends Serializable> idModel) {
+		if (idModel != null) {
+			return idModel.getId().toString();
+		}
+		return null;
+	}
 
 }

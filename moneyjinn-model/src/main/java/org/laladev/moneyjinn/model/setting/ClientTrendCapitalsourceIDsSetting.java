@@ -26,19 +26,21 @@ package org.laladev.moneyjinn.model.setting;
 //SUCH DAMAGE.
 
 import java.util.List;
-import lombok.NoArgsConstructor;
+
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 
+import lombok.NoArgsConstructor;
+
 /**
- * returns a List of {@link CapitalsourceID}s the user had chosen the last time when using the
- * <code>Trends</code> functionality.
+ * returns a List of {@link CapitalsourceID}s the user had chosen the last time
+ * when using the <code>Trends</code> functionality.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
 public class ClientTrendCapitalsourceIDsSetting extends AbstractSetting<List<CapitalsourceID>> {
-  public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
-    super.setSetting(setting);
-  }
+	public ClientTrendCapitalsourceIDsSetting(final List<CapitalsourceID> setting) {
+		super.setSetting(setting);
+	}
 }

@@ -31,42 +31,40 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceTypeMapper {
-  private static final int CURRENT_ASSET_INT = 1;
-  private static final int LONG_TERM_ASSET_INT = 2;
-  private static final int RESERVE_ASSET_INT = 3;
-  private static final int PROVISION_ASSET_INT = 4;
-  private static final int CREDIT_INT = 5;
+	private static final int CURRENT_ASSET_INT = 1;
+	private static final int LONG_TERM_ASSET_INT = 2;
+	private static final int RESERVE_ASSET_INT = 3;
+	private static final int PROVISION_ASSET_INT = 4;
+	private static final int CREDIT_INT = 5;
 
-  private CapitalsourceTypeMapper() {
-  }
+	private CapitalsourceTypeMapper() {
+	}
 
-  public static CapitalsourceType map(final Integer type) {
-    if (type != null) {
-      return switch (type) {
-        case CURRENT_ASSET_INT -> CapitalsourceType.CURRENT_ASSET;
-        case LONG_TERM_ASSET_INT -> CapitalsourceType.LONG_TERM_ASSET;
-        case RESERVE_ASSET_INT -> CapitalsourceType.RESERVE_ASSET;
-        case PROVISION_ASSET_INT -> CapitalsourceType.PROVISION_ASSET;
-        case CREDIT_INT -> CapitalsourceType.CREDIT;
-        default ->
-          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      };
-    }
-    return null;
-  }
+	public static CapitalsourceType map(final Integer type) {
+		if (type != null) {
+			return switch (type) {
+			case CURRENT_ASSET_INT -> CapitalsourceType.CURRENT_ASSET;
+			case LONG_TERM_ASSET_INT -> CapitalsourceType.LONG_TERM_ASSET;
+			case RESERVE_ASSET_INT -> CapitalsourceType.RESERVE_ASSET;
+			case PROVISION_ASSET_INT -> CapitalsourceType.PROVISION_ASSET;
+			case CREDIT_INT -> CapitalsourceType.CREDIT;
+			default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+			};
+		}
+		return null;
+	}
 
-  public static Integer map(final CapitalsourceType type) {
-    if (type != null) {
-      return switch (type) {
-        case CURRENT_ASSET -> CURRENT_ASSET_INT;
-        case LONG_TERM_ASSET -> LONG_TERM_ASSET_INT;
-        case RESERVE_ASSET -> RESERVE_ASSET_INT;
-        case PROVISION_ASSET -> PROVISION_ASSET_INT;
-        case CREDIT -> CREDIT_INT;
-        default ->
-          throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-      };
-    }
-    return null;
-  }
+	public static Integer map(final CapitalsourceType type) {
+		if (type != null) {
+			return switch (type) {
+			case CURRENT_ASSET -> CURRENT_ASSET_INT;
+			case LONG_TERM_ASSET -> LONG_TERM_ASSET_INT;
+			case RESERVE_ASSET -> RESERVE_ASSET_INT;
+			case PROVISION_ASSET -> PROVISION_ASSET_INT;
+			case CREDIT -> CREDIT_INT;
+			default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+			};
+		}
+		return null;
+	}
 }

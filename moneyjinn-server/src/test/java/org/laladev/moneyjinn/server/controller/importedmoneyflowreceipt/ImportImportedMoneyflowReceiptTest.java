@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,103 +23,99 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
-  @Inject
-  IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
-  @Inject
-  IMoneyflowReceiptService moneyflowReceiptService;
+	@Inject
+	IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
+	@Inject
+	IMoneyflowReceiptService moneyflowReceiptService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(ImportedMoneyflowReceiptControllerApi.class).importImportedMoneyflowReceipt(null,
-        null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(ImportedMoneyflowReceiptControllerApi.class).importImportedMoneyflowReceipt(null, null);
+	}
 
-  private void test_import(final Long receiptIdLong, final MoneyflowReceiptType mediaType)
-      throws Exception {
-    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-    final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
-    final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(receiptIdLong);
-    final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW3_ID);
+	private void test_import(final Long receiptIdLong, final MoneyflowReceiptType mediaType) throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
+		final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(receiptIdLong);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW3_ID);
 
-    ImportedMoneyflowReceipt receipt = this.importedMoneyflowReceiptService
-        .getImportedMoneyflowReceiptById(userId, groupId, receiptId);
-    Assertions.assertNotNull(receipt);
+		ImportedMoneyflowReceipt receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId,
+				groupId, receiptId);
+		Assertions.assertNotNull(receipt);
 
-    super.callUsecaseExpect204WithUriVariables(receiptId.getId(), moneyflowId.getId());
+		super.callUsecaseExpect204WithUriVariables(receiptId.getId(), moneyflowId.getId());
 
-    receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId,
-        receiptId);
-    Assertions.assertNull(receipt);
-    final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService
-        .getMoneyflowReceipt(userId, moneyflowId);
+		receipt = this.importedMoneyflowReceiptService.getImportedMoneyflowReceiptById(userId, groupId, receiptId);
+		Assertions.assertNull(receipt);
+		final MoneyflowReceipt moneyflowReceipt = this.moneyflowReceiptService.getMoneyflowReceipt(userId, moneyflowId);
 
-    Assertions.assertNotNull(moneyflowReceipt);
-    Assertions.assertEquals(mediaType, moneyflowReceipt.getMoneyflowReceiptType());
+		Assertions.assertNotNull(moneyflowReceipt);
+		Assertions.assertEquals(mediaType, moneyflowReceipt.getMoneyflowReceiptType());
 
-  }
+	}
 
-  @Test
-   void test_standardJpegRequest_emptyResponse() throws Exception {
-    this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
-        MoneyflowReceiptType.JPEG);
-  }
+	@Test
+	void test_standardJpegRequest_emptyResponse() throws Exception {
+		this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID, MoneyflowReceiptType.JPEG);
+	}
 
-  @Test
-   void test_standardPdfRequest_emptyResponse() throws Exception {
-    this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_2ID,
-        MoneyflowReceiptType.PDF);
-  }
+	@Test
+	void test_standardPdfRequest_emptyResponse() throws Exception {
+		this.test_import(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_2ID, MoneyflowReceiptType.PDF);
+	}
 
-  @Test
-   void test_MoneyflowHasReceiptAlready_errorResponse() throws Exception {
-    final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(
-        ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
-    final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
+	@Test
+	void test_MoneyflowHasReceiptAlready_errorResponse() throws Exception {
+		final ImportedMoneyflowReceiptID receiptId = new ImportedMoneyflowReceiptID(
+				ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID);
+		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-    final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class, receiptId.getId(),
-        moneyflowId.getId());
+		final ErrorResponse actual = super.callUsecaseExpect400(ErrorResponse.class, receiptId.getId(),
+				moneyflowId.getId());
 
-    Assertions.assertEquals(ErrorCode.RECEIPT_ALREADY_EXISTS.getErrorCode(), actual.getCode());
+		Assertions.assertEquals(ErrorCode.RECEIPT_ALREADY_EXISTS.getErrorCode(), actual.getCode());
 
-  }
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
-        MoneyflowTransportBuilder.MONEYFLOW1_ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
+				MoneyflowTransportBuilder.MONEYFLOW1_ID);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect204WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
-        MoneyflowTransportBuilder.MONEYFLOW1_ID);
+		super.callUsecaseExpect204WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
+				MoneyflowTransportBuilder.MONEYFLOW1_ID);
 
-  }
+	}
 }

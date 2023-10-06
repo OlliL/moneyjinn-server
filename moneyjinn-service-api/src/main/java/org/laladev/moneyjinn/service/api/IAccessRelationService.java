@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.api;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
@@ -38,17 +39,19 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 /**
  * <p>
- * AccessRelationService is the Core Service handling everything around an {@link AccessRelation}.
+ * AccessRelationService is the Core Service handling everything around an
+ * {@link AccessRelation}.
  * </p>
  *
  * <p>
- * AccessRelationService is the Core Service handling operations around an {@link AccessRelation}
- * like getting, creating, updating, deleting. Before an {@link AccessRelation} is created or
- * updated, the {@link AccessRelation} is validated for correctness.
+ * AccessRelationService is the Core Service handling operations around an
+ * {@link AccessRelation} like getting, creating, updating, deleting. Before an
+ * {@link AccessRelation} is created or updated, the {@link AccessRelation} is
+ * validated for correctness.
  * </p>
  * <p>
- * The main datasource are the Tables <code>access_relation</code> and <code>access_flattened</code>
- * .
+ * The main datasource are the Tables <code>access_relation</code> and
+ * <code>access_flattened</code> .
  * </p>
  *
  * @author Oliver Lehmann
@@ -56,98 +59,87 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  */
 public interface IAccessRelationService {
-  /**
-   * Checks the validity of the given {@link AccessRelation}.
-   *
-   * @param accessRelation
-   *                         the {@link AccessRelation}
-   * @return {@link ValidationResult}
-   */
-  ValidationResult validateAccessRelation(final AccessRelation accessRelation);
+	/**
+	 * Checks the validity of the given {@link AccessRelation}.
+	 *
+	 * @param accessRelation the {@link AccessRelation}
+	 * @return {@link ValidationResult}
+	 */
+	ValidationResult validateAccessRelation(final AccessRelation accessRelation);
 
-  /**
-   * Returns all {@link AccessRelation}s for the given user.
-   *
-   * @param userId
-   *                 the {@link UserID}
-   * @return The found {@link AccessRelation}
-   */
-  List<AccessRelation> getAllAccessRelationsById(AccessID userId);
+	/**
+	 * Returns all {@link AccessRelation}s for the given user.
+	 *
+	 * @param userId the {@link UserID}
+	 * @return The found {@link AccessRelation}
+	 */
+	List<AccessRelation> getAllAccessRelationsById(AccessID userId);
 
-  /**
-   * Persists the given {@link AccessRelation} for an existing User.
-   *
-   * @param accessRelation
-   *                         the {@link AccessRelation}.
-   * @return {@link ValidationResult} if the given Object was not valid
-   */
-  ValidationResult setAccessRelationForExistingUser(AccessRelation accessRelation);
+	/**
+	 * Persists the given {@link AccessRelation} for an existing User.
+	 *
+	 * @param accessRelation the {@link AccessRelation}.
+	 * @return {@link ValidationResult} if the given Object was not valid
+	 */
+	ValidationResult setAccessRelationForExistingUser(AccessRelation accessRelation);
 
-  /**
-   * Persists the given {@link AccessRelation} for a new User.
-   *
-   * @param accessRelation
-   *                         the {@link AccessRelation}.
-   * @return {@link ValidationResult} if the given Object was not valid
-   */
-  ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
+	/**
+	 * Persists the given {@link AccessRelation} for a new User.
+	 *
+	 * @param accessRelation the {@link AccessRelation}.
+	 * @return {@link ValidationResult} if the given Object was not valid
+	 */
+	ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
 
-  /**
-   * Gets the currently valid {@link AccessRelation} for the given {@link UserID} or
-   * {@link GroupID}.
-   *
-   * @param accessRelationID
-   *                           The {@link AccessID}
-   * @return The found {@link AccessRelation}
-   */
-  AccessRelation getAccessRelationById(final AccessID accessRelationID);
+	/**
+	 * Gets the currently valid {@link AccessRelation} for the given {@link UserID}
+	 * or {@link GroupID}.
+	 *
+	 * @param accessRelationID The {@link AccessID}
+	 * @return The found {@link AccessRelation}
+	 */
+	AccessRelation getAccessRelationById(final AccessID accessRelationID);
 
-  /**
-   * The valid {@link AccessRelation} for the given {@link UserID} or {@link GroupID} at the given
-   * {@link LocalDate}.
-   *
-   * @param accessRelationID
-   *                           The {@link AccessID}
-   * @param date
-   *                           The date when the Relation must have been valid
-   * @return The found {@link AccessRelation}
-   */
-  AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
+	/**
+	 * The valid {@link AccessRelation} for the given {@link UserID} or
+	 * {@link GroupID} at the given {@link LocalDate}.
+	 *
+	 * @param accessRelationID The {@link AccessID}
+	 * @param date             The date when the Relation must have been valid
+	 * @return The found {@link AccessRelation}
+	 */
+	AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
 
-  /**
-   * Delets all relations to the given AccessID.
-   *
-   * @param accessRelationID
-   *                           The {@link AccessID}
-   */
-  void deleteAllAccessRelation(AccessID accessRelationID);
+	/**
+	 * Delets all relations to the given AccessID.
+	 *
+	 * @param accessRelationID The {@link AccessID}
+	 */
+	void deleteAllAccessRelation(AccessID accessRelationID);
 
-  /**
-   * Gives the Group the {@link AccessID} is attached to.
-   *
-   * @param userId
-   *                 The {@link UserID}
-   * @param date
-   *                 The date of the {@link Group} assignment
-   * @return The found {@link Group}
-   */
-  Group getAccessor(AccessID userId, LocalDate date);
+	/**
+	 * Gives the Group the {@link AccessID} is attached to.
+	 *
+	 * @param userId The {@link UserID}
+	 * @param date   The date of the {@link Group} assignment
+	 * @return The found {@link Group}
+	 */
+	Group getAccessor(AccessID userId, LocalDate date);
 
-  /**
-   * Gives the Group the {@link AccessID} is attached to.
-   *
-   * @param userId
-   *                 The {@link UserID}
-   * @return The found {@link Group}
-   */
-  Group getAccessor(AccessID userId);
+	/**
+	 * Gives the Group the {@link AccessID} is attached to.
+	 *
+	 * @param userId The {@link UserID}
+	 * @return The found {@link Group}
+	 */
+	Group getAccessor(AccessID userId);
 
-  /**
-   * Gives all {@link UserID}s who are or where in the same group the given user is or was.
-   *
-   * @param userID
-   *                 The {@link UserID}
-   * @return The found List of {@link UserID}
-   */
-  Set<UserID> getAllUserWithSameGroup(AccessID userID);
+	/**
+	 * Gives all {@link UserID}s who are or where in the same group the given user
+	 * is or was.
+	 *
+	 * @param userID The {@link UserID}
+	 * @return The found List of {@link UserID}
+	 */
+	Set<UserID> getAllUserWithSameGroup(AccessID userID);
 }

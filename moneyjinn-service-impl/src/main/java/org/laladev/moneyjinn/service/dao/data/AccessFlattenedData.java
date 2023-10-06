@@ -27,16 +27,17 @@
 package org.laladev.moneyjinn.service.dao.data;
 
 import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
 public class AccessFlattenedData {
-  private Long id;
-  private LocalDate validFrom;
-  private LocalDate validTil;
-  private Long idLevel1;
-  private Long idLevel2;
-  private Long idLevel3;
-  private Long idLevel4;
-  private Long idLevel5;
+	private Long id;
+	private LocalDate validFrom;
+	private LocalDate validTil;
+	private Long idLevel1;
+	private Long idLevel2;
+	private Long idLevel3;
+	private Long idLevel4;
+	private Long idLevel5;
 }

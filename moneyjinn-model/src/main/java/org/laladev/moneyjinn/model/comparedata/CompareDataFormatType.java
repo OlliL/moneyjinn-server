@@ -27,6 +27,6 @@
 package org.laladev.moneyjinn.model.comparedata;
 
 public enum CompareDataFormatType {
-  CVS,
-  XML;
+	CVS,
+	XML;
 }

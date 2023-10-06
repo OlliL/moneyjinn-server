@@ -28,9 +28,7 @@ package org.laladev.moneyjinn.model.moneyflow;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -43,20 +41,24 @@ import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I>
-    implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
-  private static final long serialVersionUID = 1L;
-  private User user;
-  private Group group;
-  private LocalDate bookingDate;
-  private LocalDate invoiceDate;
-  private BigDecimal amount;
-  private Capitalsource capitalsource;
-  private Contractpartner contractpartner;
-  private String comment;
-  private boolean privat;
-  private PostingAccount postingAccount;
+		implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private Group group;
+	private LocalDate bookingDate;
+	private LocalDate invoiceDate;
+	private BigDecimal amount;
+	private Capitalsource capitalsource;
+	private Contractpartner contractpartner;
+	private String comment;
+	private boolean privat;
+	private PostingAccount postingAccount;
 }

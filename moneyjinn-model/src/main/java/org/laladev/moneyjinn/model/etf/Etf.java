@@ -26,18 +26,19 @@
 
 package org.laladev.moneyjinn.model.etf;
 
+import org.laladev.moneyjinn.model.AbstractEntity;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.laladev.moneyjinn.model.AbstractEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Etf extends AbstractEntity<EtfIsin> {
-  private static final long serialVersionUID = 1L;
-  private String name;
-  private String wkn;
-  private String ticker;
-  private String chartUrl;
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private String wkn;
+	private String ticker;
+	private String chartUrl;
 }

@@ -1,9 +1,9 @@
 
 package org.laladev.moneyjinn.server.controller.comparedata;
 
-import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,98 +23,93 @@ import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.test.context.jdbc.Sql;
 
+import jakarta.inject.Inject;
+
 class ShowCompareDataFormTest extends AbstractControllerTest {
-  @Inject
-  private ISettingService settingService;
+	@Inject
+	private ISettingService settingService;
 
-  private String userName;
-  private String userPassword;
+	private String userName;
+	private String userPassword;
 
-  @BeforeEach
-  public void setUp() {
-    this.userName = UserTransportBuilder.USER1_NAME;
-    this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-  }
+	@BeforeEach
+	public void setUp() {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+	}
 
-  @Override
-  protected String getUsername() {
-    return this.userName;
-  }
+	@Override
+	protected String getUsername() {
+		return this.userName;
+	}
 
-  @Override
-  protected String getPassword() {
-    return this.userPassword;
-  }
+	@Override
+	protected String getPassword() {
+		return this.userPassword;
+	}
 
-  @Override
-  protected void loadMethod() {
-    super.getMock(CompareDataControllerApi.class).showCompareDataForm();
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock(CompareDataControllerApi.class).showCompareDataForm();
+	}
 
-  private ShowCompareDataFormResponse getDefaultResponse() {
-    final ShowCompareDataFormResponse expected = new ShowCompareDataFormResponse();
-    final List<CompareDataFormatTransport> compareDataFormatTransports = new ArrayList<>();
-    compareDataFormatTransports
-        .add(new CompareDataFormatTransportBuilder().forCompareDataFormat2().build());
-    compareDataFormatTransports
-        .add(new CompareDataFormatTransportBuilder().forCompareDataFormat3().build());
-    compareDataFormatTransports
-        .add(new CompareDataFormatTransportBuilder().forCompareDataFormat4().build());
-    compareDataFormatTransports
-        .add(new CompareDataFormatTransportBuilder().forCompareDataFormat5().build());
-    compareDataFormatTransports
-        .add(new CompareDataFormatTransportBuilder().forCompareDataFormat6().build());
-    expected.setCompareDataFormatTransports(compareDataFormatTransports);
-    return expected;
-  }
+	private ShowCompareDataFormResponse getDefaultResponse() {
+		final ShowCompareDataFormResponse expected = new ShowCompareDataFormResponse();
+		final List<CompareDataFormatTransport> compareDataFormatTransports = new ArrayList<>();
+		compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat2().build());
+		compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat3().build());
+		compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat4().build());
+		compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat5().build());
+		compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat6().build());
+		expected.setCompareDataFormatTransports(compareDataFormatTransports);
+		return expected;
+	}
 
-  @Test
-   void test_noSetting_defaultsResponse() throws Exception {
-    final ShowCompareDataFormResponse expected = this.getDefaultResponse();
+	@Test
+	void test_noSetting_defaultsResponse() throws Exception {
+		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
 
-    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false,
-        ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false, ShowCompareDataFormResponse.class);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_witDefaultSelection_defaultsResponse() throws Exception {
-    final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-    final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
-        new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-    this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
-    final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
-        new CompareDataFormatID(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID));
-    this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
-    final ClientCompareDataSelectedSourceIsFile settingSource = new ClientCompareDataSelectedSourceIsFile(
-        Boolean.TRUE);
-    this.settingService.setClientCompareDataSelectedSourceIsFile(userId, settingSource);
-    final ShowCompareDataFormResponse expected = this.getDefaultResponse();
-    expected.setSelectedCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
-    expected.setSelectedDataFormat(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
-    expected.setSelectedSourceIsFile(1);
+	@Test
+	void test_witDefaultSelection_defaultsResponse() throws Exception {
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
+				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+		this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
+		final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
+				new CompareDataFormatID(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID));
+		this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
+		final ClientCompareDataSelectedSourceIsFile settingSource = new ClientCompareDataSelectedSourceIsFile(
+				Boolean.TRUE);
+		this.settingService.setClientCompareDataSelectedSourceIsFile(userId, settingSource);
+		final ShowCompareDataFormResponse expected = this.getDefaultResponse();
+		expected.setSelectedCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+		expected.setSelectedDataFormat(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT2_ID);
+		expected.setSelectedSourceIsFile(1);
 
-    final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false,
-        ShowCompareDataFormResponse.class);
+		final ShowCompareDataFormResponse actual = super.callUsecaseExpect200(false, ShowCompareDataFormResponse.class);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-   void test_AuthorizationRequired_Error() throws Exception {
-    this.userName = null;
-    this.userPassword = null;
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		this.userName = null;
+		this.userPassword = null;
 
-    super.callUsecaseExpect403();
-  }
+		super.callUsecaseExpect403();
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    this.userName = UserTransportBuilder.ADMIN_NAME;
-    this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		this.userName = UserTransportBuilder.ADMIN_NAME;
+		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
 
-    super.callUsecaseExpect200(ShowCompareDataFormResponse.class);
-  }
+		super.callUsecaseExpect200(ShowCompareDataFormResponse.class);
+	}
 }

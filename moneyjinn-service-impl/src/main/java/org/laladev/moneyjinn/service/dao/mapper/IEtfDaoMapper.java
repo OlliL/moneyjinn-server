@@ -29,27 +29,27 @@ package org.laladev.moneyjinn.service.dao.mapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
 public interface IEtfDaoMapper {
-  public List<EtfData> getAllEtf();
+	public List<EtfData> getAllEtf();
 
-  public EtfData getEtfById(@Param("isin") String isin);
+	public EtfData getEtfById(@Param("isin") String isin);
 
-  public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin,
-      @Param("dateUntil") LocalDateTime timeUntil);
+	public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin, @Param("dateUntil") LocalDateTime timeUntil);
 
-  public EtfValueData getEtfValueForMonth(@Param("isin") String isin,
-      @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("startDate") LocalDate startDate,
+			@Param("endDate") LocalDate endDate);
 
-  public EtfFlowData getEtfFlowById(@Param("id") Long id);
+	public EtfFlowData getEtfFlowById(@Param("id") Long id);
 
-  public Long createEtfFlow(EtfFlowData data);
+	public Long createEtfFlow(EtfFlowData data);
 
-  public void updateEtfFlow(EtfFlowData data);
+	public void updateEtfFlow(EtfFlowData data);
 
-  public void deleteEtfFlow(@Param("id") Long id);
+	public void deleteEtfFlow(@Param("id") Long id);
 }

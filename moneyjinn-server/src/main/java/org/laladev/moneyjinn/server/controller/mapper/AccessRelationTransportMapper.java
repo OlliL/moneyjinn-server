@@ -37,26 +37,25 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
-public interface AccessRelationTransportMapper
-    extends IMapstructMapper<AccessRelation, AccessRelationTransport> {
-  @Override
-  @Mapping(target = "validFrom", source = "validfrom")
-  @Mapping(target = "validTil", source = "validtil")
-  @Mapping(target = "parentAccessRelation.id", source = "refId")
-  AccessRelation mapBToA(AccessRelationTransport accessRelationTransport);
+public interface AccessRelationTransportMapper extends IMapstructMapper<AccessRelation, AccessRelationTransport> {
+	@Override
+	@Mapping(target = "validFrom", source = "validfrom")
+	@Mapping(target = "validTil", source = "validtil")
+	@Mapping(target = "parentAccessRelation.id", source = "refId")
+	AccessRelation mapBToA(AccessRelationTransport accessRelationTransport);
 
-  @Override
-  @Mapping(target = "validfrom", source = "validFrom")
-  @Mapping(target = "validtil", source = "validTil")
-  @Mapping(target = "refId", source = "parentAccessRelation.id")
-  AccessRelationTransport mapAToB(AccessRelation accessRelation);
+	@Override
+	@Mapping(target = "validfrom", source = "validFrom")
+	@Mapping(target = "validtil", source = "validTil")
+	@Mapping(target = "refId", source = "parentAccessRelation.id")
+	AccessRelationTransport mapAToB(AccessRelation accessRelation);
 
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void doAfterMapping(@MappingTarget final AccessRelation entity) {
-    if (entity != null && entity.getParentAccessRelation() != null
-        && entity.getParentAccessRelation().getId() == null) {
-      entity.setParentAccessRelation(null);
-    }
-  }
+	// work around https://github.com/mapstruct/mapstruct/issues/1166
+	@AfterMapping
+	default void doAfterMapping(@MappingTarget final AccessRelation entity) {
+		if (entity != null && entity.getParentAccessRelation() != null
+				&& entity.getParentAccessRelation().getId() == null) {
+			entity.setParentAccessRelation(null);
+		}
+	}
 }

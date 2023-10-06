@@ -24,8 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import lombok.RequiredArgsConstructor;
+
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -82,315 +80,307 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ImportedMoneyflowController extends AbstractController
-    implements ImportedMoneyflowControllerApi {
-  private final IUserService userService;
-  private final IAccessRelationService accessRelationService;
-  private final ICapitalsourceService capitalsourceService;
-  private final IContractpartnerService contractpartnerService;
-  private final IContractpartnerAccountService contractpartnerAccountService;
-  private final IMoneyflowService moneyflowService;
-  private final IImportedMoneyflowService importedMoneyflowService;
-  private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
-  private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-  private final ContractpartnerTransportMapper contractpartnerTransportMapper;
-  private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
-  private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
-  private final PostingAccountTransportMapper postingAccountTransportMapper;
-  private final ValidationItemTransportMapper validationItemTransportMapper;
+public class ImportedMoneyflowController extends AbstractController implements ImportedMoneyflowControllerApi {
+	private final IUserService userService;
+	private final IAccessRelationService accessRelationService;
+	private final ICapitalsourceService capitalsourceService;
+	private final IContractpartnerService contractpartnerService;
+	private final IContractpartnerAccountService contractpartnerAccountService;
+	private final IMoneyflowService moneyflowService;
+	private final IImportedMoneyflowService importedMoneyflowService;
+	private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
+	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+	private final ContractpartnerTransportMapper contractpartnerTransportMapper;
+	private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
+	private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
+	private final PostingAccountTransportMapper postingAccountTransportMapper;
+	private final ValidationItemTransportMapper validationItemTransportMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    this.registerBeanMapper(this.capitalsourceTransportMapper);
-    this.registerBeanMapper(this.contractpartnerTransportMapper);
-    this.registerBeanMapper(this.postingAccountTransportMapper);
-    this.registerBeanMapper(this.importedMoneyflowTransportMapper);
-    this.registerBeanMapper(this.validationItemTransportMapper);
-    super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		this.registerBeanMapper(this.capitalsourceTransportMapper);
+		this.registerBeanMapper(this.contractpartnerTransportMapper);
+		this.registerBeanMapper(this.postingAccountTransportMapper);
+		this.registerBeanMapper(this.importedMoneyflowTransportMapper);
+		this.registerBeanMapper(this.validationItemTransportMapper);
+		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
+	}
 
-  private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,
-      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-    final ValidationResult validationResult = new ValidationResult();
-    if (!moneyflowSplitEntries.isEmpty()) {
-      final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
-          .map(MoneyflowSplitEntry::getAmount).filter(Objects::nonNull)
-          .reduce(BigDecimal.ZERO, BigDecimal::add);
-      if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
-        validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
-            ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
-      }
-    }
-    return validationResult;
-  }
+	private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+		final ValidationResult validationResult = new ValidationResult();
+		if (!moneyflowSplitEntries.isEmpty()) {
+			final BigDecimal sumOfSplitEntriesAmount = moneyflowSplitEntries.stream()
+					.map(MoneyflowSplitEntry::getAmount).filter(Objects::nonNull)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			if (sumOfSplitEntriesAmount.compareTo(moneyflow.getAmount()) != 0) {
+				validationResult.addValidationResultItem(new ValidationResultItem(moneyflow.getId(),
+						ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT));
+			}
+		}
+		return validationResult;
+	}
 
-  private void fillShowAddImportedMoneyflowsResponse(final UserID userId,
-      final ShowAddImportedMoneyflowsResponse response) {
-    final LocalDate today = LocalDate.now();
-    final List<Capitalsource> capitalsources = this.capitalsourceService
-        .getGroupBookableCapitalsourcesByDateRange(userId, today, today);
-    if (!capitalsources.isEmpty()) {
-      final List<CapitalsourceID> capitalsourceIds = capitalsources.stream()
-          .map(Capitalsource::getId).toList();
-      final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-          .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
-              ImportedMoneyflowStatus.CREATED);
-      if (!importedMoneyflows.isEmpty()) {
+	private void fillShowAddImportedMoneyflowsResponse(final UserID userId,
+			final ShowAddImportedMoneyflowsResponse response) {
+		final LocalDate today = LocalDate.now();
+		final List<Capitalsource> capitalsources = this.capitalsourceService
+				.getGroupBookableCapitalsourcesByDateRange(userId, today, today);
+		if (!capitalsources.isEmpty()) {
+			final List<CapitalsourceID> capitalsourceIds = capitalsources.stream().map(Capitalsource::getId).toList();
+			final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
+					.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
+							ImportedMoneyflowStatus.CREATED);
+			if (!importedMoneyflows.isEmpty()) {
 
-        final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
-            .map(ImportedMoneyflow::getBankAccount).toList();
+				final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
+						.map(ImportedMoneyflow::getBankAccount).toList();
 
-        final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-            .getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
+				final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+						.getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
 
-        if (!contractpartnerAccounts.isEmpty()) {
-          final Map<BankAccount, Contractpartner> bankAccountToContractpartner = new HashMap<>();
+				if (!contractpartnerAccounts.isEmpty()) {
+					final Map<BankAccount, Contractpartner> bankAccountToContractpartner = new HashMap<>();
 
-          for (final ContractpartnerAccount contractpartnerAccount : contractpartnerAccounts) {
-            bankAccountToContractpartner.put(contractpartnerAccount.getBankAccount(),
-                contractpartnerAccount.getContractpartner());
-          }
+					for (final ContractpartnerAccount contractpartnerAccount : contractpartnerAccounts) {
+						bankAccountToContractpartner.put(contractpartnerAccount.getBankAccount(),
+								contractpartnerAccount.getContractpartner());
+					}
 
-          // match IBAN/BIC from the imported moneyflows to contractpartners via the
-          // contractpartneraccounts
-          for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
-            final Contractpartner contractpartner = bankAccountToContractpartner
-                .get(importedMoneyflow.getBankAccount());
-            importedMoneyflow.setContractpartner(contractpartner);
-          }
-        }
+					// match IBAN/BIC from the imported moneyflows to contractpartners via the
+					// contractpartneraccounts
+					for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
+						final Contractpartner contractpartner = bankAccountToContractpartner
+								.get(importedMoneyflow.getBankAccount());
+						importedMoneyflow.setContractpartner(contractpartner);
+					}
+				}
 
-        response.setImportedMoneyflowTransports(
-            super.mapList(importedMoneyflows, ImportedMoneyflowTransport.class));
-      }
-    }
-  }
+				response.setImportedMoneyflowTransports(
+						super.mapList(importedMoneyflows, ImportedMoneyflowTransport.class));
+			}
+		}
+	}
 
-  @Override
-  public ResponseEntity<ShowAddImportedMoneyflowsResponse> showAddImportedMoneyflows() {
-    final UserID userId = super.getUserId();
-    final ShowAddImportedMoneyflowsResponse response = new ShowAddImportedMoneyflowsResponse();
-    this.fillShowAddImportedMoneyflowsResponse(userId, response);
-    return ResponseEntity.ok(response);
-  }
+	@Override
+	public ResponseEntity<ShowAddImportedMoneyflowsResponse> showAddImportedMoneyflows() {
+		final UserID userId = super.getUserId();
+		final ShowAddImportedMoneyflowsResponse response = new ShowAddImportedMoneyflowsResponse();
+		this.fillShowAddImportedMoneyflowsResponse(userId, response);
+		return ResponseEntity.ok(response);
+	}
 
-  @Override
-  public ResponseEntity<Void> createImportedMoneyflow(
-      @RequestBody final CreateImportedMoneyflowRequest request) {
-    final ImportedMoneyflowTransport importedMoneyflowTransport = request
-        .getImportedMoneyflowTransport();
-    final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowTransport,
-        ImportedMoneyflow.class);
-    final BankAccount bankAccount = new BankAccount(
-        importedMoneyflowTransport.getAccountNumberCapitalsource(),
-        importedMoneyflowTransport.getBankCodeCapitalsource());
-    final LocalDateTime now = LocalDateTime.now();
-    final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null,
-        bankAccount, now.toLocalDate());
-    if (capitalsource != null) {
-      if (capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED) {
-        throw new BusinessException("Import of this capitalsource is not allowed!",
-            ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED);
-      }
-      importedMoneyflow.setCapitalsource(capitalsource);
-      final ValidationResult validationResult = this.importedMoneyflowService
-          .validateImportedMoneyflow(importedMoneyflow);
+	@Override
+	public ResponseEntity<Void> createImportedMoneyflow(@RequestBody final CreateImportedMoneyflowRequest request) {
+		final ImportedMoneyflowTransport importedMoneyflowTransport = request.getImportedMoneyflowTransport();
+		final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowTransport, ImportedMoneyflow.class);
+		final BankAccount bankAccount = new BankAccount(importedMoneyflowTransport.getAccountNumberCapitalsource(),
+				importedMoneyflowTransport.getBankCodeCapitalsource());
+		final LocalDateTime now = LocalDateTime.now();
+		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
+				now.toLocalDate());
+		if (capitalsource != null) {
+			if (capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED) {
+				throw new BusinessException("Import of this capitalsource is not allowed!",
+						ErrorCode.CAPITALSOURCE_IMPORT_NOT_ALLOWED);
+			}
+			importedMoneyflow.setCapitalsource(capitalsource);
+			final ValidationResult validationResult = this.importedMoneyflowService
+					.validateImportedMoneyflow(importedMoneyflow);
 
-      this.throwValidationExceptionIfInvalid(validationResult);
+			this.throwValidationExceptionIfInvalid(validationResult);
 
-      this.importedMoneyflowService.createImportedMoneyflow(importedMoneyflow);
+			this.importedMoneyflowService.createImportedMoneyflow(importedMoneyflow);
 
-      return ResponseEntity.noContent().build();
-    } else {
-      throw new BusinessException("No matching capitalsource found!",
-          ErrorCode.CAPITALSOURCE_NOT_FOUND);
-    }
-  }
+			return ResponseEntity.noContent().build();
+		} else {
+			throw new BusinessException("No matching capitalsource found!", ErrorCode.CAPITALSOURCE_NOT_FOUND);
+		}
+	}
 
-  @Override
-  public ResponseEntity<Void> deleteImportedMoneyflowById(
-      @PathVariable(value = "id") final Long id) {
-    final UserID userId = super.getUserId();
-    final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
+	@Override
+	public ResponseEntity<Void> deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
+		final UserID userId = super.getUserId();
+		final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
 
-    this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflowId,
-        ImportedMoneyflowStatus.IGNORED);
+		this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflowId,
+				ImportedMoneyflowStatus.IGNORED);
 
-    return ResponseEntity.noContent().build();
+		return ResponseEntity.noContent().build();
 
-  }
+	}
 
-  /**
-   * Checks if capitalsource and contractparter are valid on bookingdate - otherwise the validity is
-   * modified. Also fills comment and postingaccount if it is empty and MoneyflowSplitEntries where
-   * provided with data from the first MoneyflowSplitEntry.
-   *
-   * @param moneyflow
-   *                                Moneyflow
-   * @param moneyflowSplitEntries
-   *                                MoneyflowSplitEntries
-   */
-  private void prepareForValidityCheck(final Moneyflow moneyflow,
-      final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-    final LocalDate bookingDate = moneyflow.getBookingDate();
-    final UserID userId = moneyflow.getUser().getId();
-    final Group group = moneyflow.getGroup();
-    if (bookingDate != null) {
-      final AccessRelation accessRelation = this.accessRelationService
-          .getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
-      // Only modify Capitalsources or Contractpartner if the Bookingdate is within the
-      // current group assignment validity period
-      if (!bookingDate.isBefore(accessRelation.getValidFrom())
-          && !bookingDate.isAfter(accessRelation.getValidTil())) {
-        // Check if used Capitalsource is valid at bookingDate - if not, change its
-        // validity so it fits.
-        if (moneyflow.getCapitalsource() != null) {
-          final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-              group.getId(), moneyflow.getCapitalsource().getId());
-          if (capitalsource != null) {
-            final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
-                .equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
-            if (userMayUseCapitalsource) {
-              final boolean bookingDateIsBeforeValidity = bookingDate
-                  .isBefore(capitalsource.getValidFrom());
-              final boolean bookingDateIsAfterValidity = bookingDate
-                  .isAfter(capitalsource.getValidTil());
-              if (bookingDateIsBeforeValidity) {
-                capitalsource.setValidFrom(bookingDate);
-              }
-              if (bookingDateIsAfterValidity) {
-                capitalsource.setValidTil(bookingDate);
-              }
-              if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-                this.capitalsourceService.updateCapitalsource(capitalsource);
-              }
-            }
-          }
-        }
-        // Check if used Contractpartner is valid at bookingDate - if not, change its
-        // validity so it fits.
-        if (moneyflow.getContractpartner() != null) {
-          final Contractpartner contractpartner = this.contractpartnerService
-              .getContractpartnerById(userId, moneyflow.getContractpartner().getId());
-          if (contractpartner != null) {
-            final boolean bookingDateIsBeforeValidity = bookingDate
-                .isBefore(contractpartner.getValidFrom());
-            final boolean bookingDateIsAfterValidity = bookingDate
-                .isAfter(contractpartner.getValidTil());
-            if (bookingDateIsBeforeValidity) {
-              contractpartner.setValidFrom(bookingDate);
-            }
-            if (bookingDateIsAfterValidity) {
-              contractpartner.setValidTil(bookingDate);
-            }
-            if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-              this.contractpartnerService.updateContractpartner(contractpartner);
-            }
-          }
-        }
-      }
-    }
-    // use the comment and postingaccount of the 1st split booking for the main booking if
-    // nothing is specified
-    if (!moneyflowSplitEntries.isEmpty()) {
-      final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
-      if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
-        moneyflow.setComment(moneyflowSplitEntry.getComment());
-      }
-      if (moneyflow.getPostingAccount() == null) {
-        moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
-      }
-    }
-  }
+	/**
+	 * Checks if capitalsource and contractparter are valid on bookingdate -
+	 * otherwise the validity is modified. Also fills comment and postingaccount if
+	 * it is empty and MoneyflowSplitEntries where provided with data from the first
+	 * MoneyflowSplitEntry.
+	 *
+	 * @param moneyflow             Moneyflow
+	 * @param moneyflowSplitEntries MoneyflowSplitEntries
+	 */
+	private void prepareForValidityCheck(final Moneyflow moneyflow,
+			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+		final LocalDate bookingDate = moneyflow.getBookingDate();
+		final UserID userId = moneyflow.getUser().getId();
+		final Group group = moneyflow.getGroup();
+		if (bookingDate != null) {
+			final AccessRelation accessRelation = this.accessRelationService
+					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+			// Only modify Capitalsources or Contractpartner if the Bookingdate is within
+			// the
+			// current group assignment validity period
+			if (!bookingDate.isBefore(accessRelation.getValidFrom())
+					&& !bookingDate.isAfter(accessRelation.getValidTil())) {
+				// Check if used Capitalsource is valid at bookingDate - if not, change its
+				// validity so it fits.
+				if (moneyflow.getCapitalsource() != null) {
+					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+							group.getId(), moneyflow.getCapitalsource().getId());
+					if (capitalsource != null) {
+						final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
+								.equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
+						if (userMayUseCapitalsource) {
+							final boolean bookingDateIsBeforeValidity = bookingDate
+									.isBefore(capitalsource.getValidFrom());
+							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
+							if (bookingDateIsBeforeValidity) {
+								capitalsource.setValidFrom(bookingDate);
+							}
+							if (bookingDateIsAfterValidity) {
+								capitalsource.setValidTil(bookingDate);
+							}
+							if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+								this.capitalsourceService.updateCapitalsource(capitalsource);
+							}
+						}
+					}
+				}
+				// Check if used Contractpartner is valid at bookingDate - if not, change its
+				// validity so it fits.
+				if (moneyflow.getContractpartner() != null) {
+					final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+							moneyflow.getContractpartner().getId());
+					if (contractpartner != null) {
+						final boolean bookingDateIsBeforeValidity = bookingDate
+								.isBefore(contractpartner.getValidFrom());
+						final boolean bookingDateIsAfterValidity = bookingDate.isAfter(contractpartner.getValidTil());
+						if (bookingDateIsBeforeValidity) {
+							contractpartner.setValidFrom(bookingDate);
+						}
+						if (bookingDateIsAfterValidity) {
+							contractpartner.setValidTil(bookingDate);
+						}
+						if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+							this.contractpartnerService.updateContractpartner(contractpartner);
+						}
+					}
+				}
+			}
+		}
+		// use the comment and postingaccount of the 1st split booking for the main
+		// booking if
+		// nothing is specified
+		if (!moneyflowSplitEntries.isEmpty()) {
+			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
+			if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
+				moneyflow.setComment(moneyflowSplitEntry.getComment());
+			}
+			if (moneyflow.getPostingAccount() == null) {
+				moneyflow.setPostingAccount(moneyflowSplitEntry.getPostingAccount());
+			}
+		}
+	}
 
-  @Override
-  public ResponseEntity<Void> importImportedMoneyflows(
-      @RequestBody final ImportImportedMoneyflowRequest request) {
-    final UserID userId = super.getUserId();
-    final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
-        ImportedMoneyflow.class);
-    final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
-        request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+	@Override
+	public ResponseEntity<Void> importImportedMoneyflows(@RequestBody final ImportImportedMoneyflowRequest request) {
+		final UserID userId = super.getUserId();
+		final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
+				ImportedMoneyflow.class);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
+				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 
-    if (importedMoneyflow.getId() == null) {
-      return ResponseEntity.noContent().build();
-    }
+		if (importedMoneyflow.getId() == null) {
+			return ResponseEntity.noContent().build();
+		}
 
-    final ImportedMoneyflow existingImportedMoneyflow = this.importedMoneyflowService
-        .getImportedMoneyflowById(userId, importedMoneyflow.getId());
+		final ImportedMoneyflow existingImportedMoneyflow = this.importedMoneyflowService
+				.getImportedMoneyflowById(userId, importedMoneyflow.getId());
 
-    if (existingImportedMoneyflow == null
-        || !ImportedMoneyflowStatus.CREATED.equals(existingImportedMoneyflow.getStatus())) {
-      return ResponseEntity.noContent().build();
-    }
+		if (existingImportedMoneyflow == null
+				|| !ImportedMoneyflowStatus.CREATED.equals(existingImportedMoneyflow.getStatus())) {
+			return ResponseEntity.noContent().build();
+		}
 
-    final User user = this.userService.getUserById(userId);
-    final Group group = this.accessRelationService.getAccessor(userId);
-    importedMoneyflow.setUser(user);
-    importedMoneyflow.setGroup(group);
-    final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();
-    this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
-    final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
+		final User user = this.userService.getUserById(userId);
+		final Group group = this.accessRelationService.getAccessor(userId);
+		importedMoneyflow.setUser(user);
+		importedMoneyflow.setGroup(group);
+		final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();
+		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
+		final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
 
-    if (!moneyflowSplitEntries.isEmpty()) {
-      moneyflowSplitEntries.stream().forEach(mse -> validationResult
-          .mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse)));
-      validationResult
-          .mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
-    }
+		if (!moneyflowSplitEntries.isEmpty()) {
+			moneyflowSplitEntries.stream().forEach(mse -> validationResult
+					.mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse)));
+			validationResult.mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
+		}
 
-    for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
-      item.setKey(importedMoneyflow.getId());
-    }
+		for (final ValidationResultItem item : validationResult.getValidationResultItems()) {
+			item.setKey(importedMoneyflow.getId());
+		}
 
-    this.throwValidationExceptionIfInvalid(validationResult);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-    final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
-    if (!moneyflowSplitEntries.isEmpty()) {
-      moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
-      this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
-    }
-    /*
-     * Add the BankAccount information to the selected contractpartner so it can be preselected the
-     * next time something is imported with the same BankAccount. Additionally, create a counter
-     * booking if the BankAccount is also a capitalsource in our system which does not support
-     * importing moneyflows. For example if a moneyflow from Capitalsource 1 to Capitalsource 2
-     * happend. Importing is only allowed for Capitalsource 2. Then the matching booking for
-     * Capitalsource 1 will be created here automatically.
-     */
-    if (importedMoneyflow.getBankAccount() != null) {
-      final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
-      contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
-      contractpartnerAccount.setContractpartner(importedMoneyflow.getContractpartner());
-      final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-          .getAllContractpartnerByAccounts(userId,
-              Collections.singletonList(importedMoneyflow.getBankAccount()));
-      if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
-        this.contractpartnerAccountService.createContractpartnerAccount(userId,
-            contractpartnerAccount);
-      }
-      // if the IBAN/BIC of the booking matches one of our own capitalsource which
-      // must not be imported (because it has no HBCI access for example), create a
-      // counterbooking for it automatically. Do not do it for a credit type
-      // capitalsource at this just makes no sense
-      final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(
-          userId, importedMoneyflow.getBankAccount(), importedMoneyflow.getBookingDate());
-      if (capitalsource != null
-          && capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED
-          && capitalsource.getType() != CapitalsourceType.CREDIT) {
-        importedMoneyflow.setCapitalsource(capitalsource);
-        importedMoneyflow.setAmount(importedMoneyflow.getAmount().negate());
-        this.moneyflowService.createMoneyflow(importedMoneyflow.getMoneyflow());
-      }
-    }
-    this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
-        ImportedMoneyflowStatus.PROCESSED);
+		final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
+		if (!moneyflowSplitEntries.isEmpty()) {
+			moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+			this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
+		}
+		/*
+		 * Add the BankAccount information to the selected contractpartner so it can be
+		 * preselected the next time something is imported with the same BankAccount.
+		 * Additionally, create a counter booking if the BankAccount is also a
+		 * capitalsource in our system which does not support importing moneyflows. For
+		 * example if a moneyflow from Capitalsource 1 to Capitalsource 2 happend.
+		 * Importing is only allowed for Capitalsource 2. Then the matching booking for
+		 * Capitalsource 1 will be created here automatically.
+		 */
+		if (importedMoneyflow.getBankAccount() != null) {
+			final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
+			contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
+			contractpartnerAccount.setContractpartner(importedMoneyflow.getContractpartner());
+			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
+					.getAllContractpartnerByAccounts(userId,
+							Collections.singletonList(importedMoneyflow.getBankAccount()));
+			if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
+				this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
+			}
+			// if the IBAN/BIC of the booking matches one of our own capitalsource which
+			// must not be imported (because it has no HBCI access for example), create a
+			// counterbooking for it automatically. Do not do it for a credit type
+			// capitalsource at this just makes no sense
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(userId,
+					importedMoneyflow.getBankAccount(), importedMoneyflow.getBookingDate());
+			if (capitalsource != null && capitalsource.getImportAllowed() != CapitalsourceImport.ALL_ALLOWED
+					&& capitalsource.getType() != CapitalsourceType.CREDIT) {
+				importedMoneyflow.setCapitalsource(capitalsource);
+				importedMoneyflow.setAmount(importedMoneyflow.getAmount().negate());
+				this.moneyflowService.createMoneyflow(importedMoneyflow.getMoneyflow());
+			}
+		}
+		this.importedMoneyflowService.updateImportedMoneyflowStatus(userId, importedMoneyflow.getId(),
+				ImportedMoneyflowStatus.PROCESSED);
 
-    return ResponseEntity.noContent().build();
-  }
+		return ResponseEntity.noContent().build();
+	}
 }

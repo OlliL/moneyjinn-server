@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
@@ -39,15 +40,17 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
 /**
  * <p>
- * CompareDataService is the Core Service handling everything around an {@link CompareDataResult}
- * and {@link CompareDataFormat}.
+ * CompareDataService is the Core Service handling everything around an
+ * {@link CompareDataResult} and {@link CompareDataFormat}.
  * </p>
  *
  * <p>
- * CompareDataService is the Core Service handling operations around an {@link CompareDataResult}
- * and {@link CompareDataFormat}. It mainly processes an input file and compares it with the data
- * stored in the database to validate it for correctness. How to check it is defined in
- * {@link CompareDataFormat} and the check results are given back with a {@link CompareDataResult}.
+ * CompareDataService is the Core Service handling operations around an
+ * {@link CompareDataResult} and {@link CompareDataFormat}. It mainly processes
+ * an input file and compares it with the data stored in the database to
+ * validate it for correctness. How to check it is defined in
+ * {@link CompareDataFormat} and the check results are given back with a
+ * {@link CompareDataResult}.
  * </p>
  * <p>
  * The main datasource is the Table <code>cmp_data_formats</code>.
@@ -58,47 +61,50 @@ import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
  *
  */
 public interface ICompareDataService {
-  /**
-   * Returns the {@link CompareDataFormat} specified by the given {@link CompareDataFormatID}.
-   *
-   * @param compareDataFormatId
-   * @return
-   */
-  CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
+	/**
+	 * Returns the {@link CompareDataFormat} specified by the given
+	 * {@link CompareDataFormatID}.
+	 *
+	 * @param compareDataFormatId
+	 * @return
+	 */
+	CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
 
-  /**
-   * Returns all existing {@link CompareDataFormat}s.
-   *
-   * @return
-   */
-  List<CompareDataFormat> getAllCompareDataFormats();
+	/**
+	 * Returns all existing {@link CompareDataFormat}s.
+	 *
+	 * @return
+	 */
+	List<CompareDataFormat> getAllCompareDataFormats();
 
-  /**
-   * Parses the given fileContens based on the also given {@link CompareDataFormatID} and tries to
-   * match the extracted {@link CompareDataDataset}s to stored {@link Moneyflow}s during the
-   * specified timeframe. The response object contains the comparison results.
-   *
-   * @param userId
-   * @param compareDataFormatId
-   * @param capitalsourceId
-   * @param startDate
-   * @param endDate
-   * @param fileContents
-   * @return
-   */
-  CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
-      CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
+	/**
+	 * Parses the given fileContens based on the also given
+	 * {@link CompareDataFormatID} and tries to match the extracted
+	 * {@link CompareDataDataset}s to stored {@link Moneyflow}s during the specified
+	 * timeframe. The response object contains the comparison results.
+	 *
+	 * @param userId
+	 * @param compareDataFormatId
+	 * @param capitalsourceId
+	 * @param startDate
+	 * @param endDate
+	 * @param fileContents
+	 * @return
+	 */
+	CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
+			CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
 
-  /**
-   * Loads all {@link ImportedMoneyflow}s and tries to match them to stored {@link Moneyflow}s
-   * during the specified timeframe. The response object contains the comparison results.
-   *
-   * @param userId
-   * @param capitalsourceId
-   * @param startDate
-   * @param endDate
-   * @return
-   */
-  CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId,
-      LocalDate startDate, LocalDate endDate, List<ImportedMoneyflow> importedMoneyflows);
+	/**
+	 * Loads all {@link ImportedMoneyflow}s and tries to match them to stored
+	 * {@link Moneyflow}s during the specified timeframe. The response object
+	 * contains the comparison results.
+	 *
+	 * @param userId
+	 * @param capitalsourceId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId, LocalDate startDate,
+			LocalDate endDate, List<ImportedMoneyflow> importedMoneyflows);
 }

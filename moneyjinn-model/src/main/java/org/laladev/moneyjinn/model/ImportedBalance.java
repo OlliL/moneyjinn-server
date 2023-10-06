@@ -28,12 +28,14 @@ package org.laladev.moneyjinn.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import lombok.Data;
+
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
+
+import lombok.Data;
 
 @Data
 public class ImportedBalance implements IHasCapitalsource {
-  private Capitalsource capitalsource;
-  private LocalDateTime date;
-  private BigDecimal balance;
+	private Capitalsource capitalsource;
+	private LocalDateTime date;
+	private BigDecimal balance;
 }

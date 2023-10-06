@@ -26,9 +26,7 @@ package org.laladev.moneyjinn.model.monthlysettlement;
 
 import java.math.BigDecimal;
 import java.time.Month;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.IHasCapitalsource;
@@ -37,16 +35,20 @@ import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class AbstractMonthlySettlement<I extends AbstractEntityID<?>>
-    extends AbstractEntity<I> implements IHasCapitalsource, IHasUser {
-  private static final long serialVersionUID = 1L;
-  private User user;
-  private Group group;
-  private Integer year;
-  private Month month;
-  private Capitalsource capitalsource;
-  private BigDecimal amount;
+public abstract class AbstractMonthlySettlement<I extends AbstractEntityID<?>> extends AbstractEntity<I>
+		implements IHasCapitalsource, IHasUser {
+	private static final long serialVersionUID = 1L;
+	private User user;
+	private Group group;
+	private Integer year;
+	private Month month;
+	private Capitalsource capitalsource;
+	private BigDecimal amount;
 }

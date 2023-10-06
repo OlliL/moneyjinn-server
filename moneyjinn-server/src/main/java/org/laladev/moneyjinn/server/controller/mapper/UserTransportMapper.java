@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -41,73 +42,73 @@ import org.mapstruct.Named;
 
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserTransportMapper extends IMapstructMapper<User, UserTransport> {
-  @Override
-  @Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-  @Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
-  @Mapping(target = "name", source = "userName")
-  @Mapping(target = "password", source = "userPassword")
-  User mapBToA(UserTransport b);
+	@Override
+	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
+	@Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
+	@Mapping(target = "name", source = "userName")
+	@Mapping(target = "password", source = "userPassword")
+	User mapBToA(UserTransport b);
 
-  default boolean isTrue(final Integer property) {
-    return property != null && property.equals(1);
-  }
+	default boolean isTrue(final Integer property) {
+		return property != null && property.equals(1);
+	}
 
-  @Named("mapUserAttributesToEntity")
-  default Collection<UserAttribute> mapUserAttributesToEntity(final UserTransport b) {
-    final Collection<UserAttribute> attributes = new ArrayList<>();
-    if (this.isTrue(b.getUserIsNew())) {
-      attributes.add(UserAttribute.IS_NEW);
-    }
-    if (attributes.isEmpty()) {
-      attributes.add(UserAttribute.NONE);
-    }
-    return attributes;
-  }
+	@Named("mapUserAttributesToEntity")
+	default Collection<UserAttribute> mapUserAttributesToEntity(final UserTransport b) {
+		final Collection<UserAttribute> attributes = new ArrayList<>();
+		if (this.isTrue(b.getUserIsNew())) {
+			attributes.add(UserAttribute.IS_NEW);
+		}
+		if (attributes.isEmpty()) {
+			attributes.add(UserAttribute.NONE);
+		}
+		return attributes;
+	}
 
-  @Named("mapUserPermissionsToEntity")
-  default Collection<UserPermission> mapUserPermissionsToEntity(final UserTransport b) {
-    final Collection<UserPermission> permissions = new ArrayList<>();
-    if (this.isTrue(b.getUserIsAdmin())) {
-      permissions.add(UserPermission.ADMIN);
-    }
-    if (this.isTrue(b.getUserCanLogin())) {
-      permissions.add(UserPermission.LOGIN);
-    }
-    if (permissions.isEmpty()) {
-      permissions.add(UserPermission.NONE);
-    }
-    return permissions;
-  }
+	@Named("mapUserPermissionsToEntity")
+	default Collection<UserPermission> mapUserPermissionsToEntity(final UserTransport b) {
+		final Collection<UserPermission> permissions = new ArrayList<>();
+		if (this.isTrue(b.getUserIsAdmin())) {
+			permissions.add(UserPermission.ADMIN);
+		}
+		if (this.isTrue(b.getUserCanLogin())) {
+			permissions.add(UserPermission.LOGIN);
+		}
+		if (permissions.isEmpty()) {
+			permissions.add(UserPermission.NONE);
+		}
+		return permissions;
+	}
 
-  @Override
-  @Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
-  @Mapping(target = "userCanLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToTransport")
-  @Mapping(target = "userIsAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToTransport")
-  @Mapping(target = "userName", source = "name")
-  @Mapping(target = "userPassword", ignore = true)
-  UserTransport mapAToB(User a);
+	@Override
+	@Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
+	@Mapping(target = "userCanLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToTransport")
+	@Mapping(target = "userIsAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToTransport")
+	@Mapping(target = "userName", source = "name")
+	@Mapping(target = "userPassword", ignore = true)
+	UserTransport mapAToB(User a);
 
-  @Named("mapUserAttributeIsNewToTransport")
-  default Integer mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
-    if (a != null && a.contains(UserAttribute.IS_NEW)) {
-      return 1;
-    }
-    return null;
-  }
+	@Named("mapUserAttributeIsNewToTransport")
+	default Integer mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
+		if (a != null && a.contains(UserAttribute.IS_NEW)) {
+			return 1;
+		}
+		return null;
+	}
 
-  @Named("mapUserPermissionAdminToTransport")
-  default Integer mapUserPermissionAdminToTransport(final Collection<UserPermission> a) {
-    if (a != null && a.contains(UserPermission.ADMIN)) {
-      return 1;
-    }
-    return null;
-  }
+	@Named("mapUserPermissionAdminToTransport")
+	default Integer mapUserPermissionAdminToTransport(final Collection<UserPermission> a) {
+		if (a != null && a.contains(UserPermission.ADMIN)) {
+			return 1;
+		}
+		return null;
+	}
 
-  @Named("mapUserPermissionLoginToTransport")
-  default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
-    if (a != null && a.contains(UserPermission.LOGIN)) {
-      return 1;
-    }
-    return null;
-  }
+	@Named("mapUserPermissionLoginToTransport")
+	default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
+		if (a != null && a.contains(UserPermission.LOGIN)) {
+			return 1;
+		}
+		return null;
+	}
 }

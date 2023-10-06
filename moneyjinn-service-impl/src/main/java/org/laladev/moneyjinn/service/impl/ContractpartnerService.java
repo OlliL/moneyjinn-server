@@ -26,13 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -64,242 +61,233 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+
 @Named
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
-  private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
-  private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
-  private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
-  private final ContractpartnerDao contractpartnerDao;
-  private final IUserService userService;
-  private final IGroupService groupService;
-  private final IPostingAccountService postingAccountService;
-  private final IAccessRelationService accessRelationService;
-  private final ContractpartnerDataMapper contractpartnerDataMapper;
+	private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
+	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
+	private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
+	private final ContractpartnerDao contractpartnerDao;
+	private final IUserService userService;
+	private final IGroupService groupService;
+	private final IPostingAccountService postingAccountService;
+	private final IAccessRelationService accessRelationService;
+	private final ContractpartnerDataMapper contractpartnerDataMapper;
 
-  @Override
-  @PostConstruct
-  protected void addBeanMapper() {
-    super.registerBeanMapper(this.contractpartnerDataMapper);
-  }
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.contractpartnerDataMapper);
+	}
 
-  private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
-    if (contractpartnerData != null) {
-      final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
-      final UserID userId = contractpartner.getUser().getId();
-      final User user = this.userService.getUserById(userId);
-      final Group group = this.groupService.getGroupById(contractpartner.getAccess().getId());
-      contractpartner.setUser(user);
-      contractpartner.setAccess(group);
-      PostingAccount postingAccount = contractpartner.getPostingAccount();
-      if (postingAccount != null) {
-        final PostingAccountID postingAccountId = postingAccount.getId();
-        postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-        contractpartner.setPostingAccount(postingAccount);
-      }
-      return contractpartner;
-    }
-    return null;
-  }
+	private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
+		if (contractpartnerData != null) {
+			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
+			final UserID userId = contractpartner.getUser().getId();
+			final User user = this.userService.getUserById(userId);
+			final Group group = this.groupService.getGroupById(contractpartner.getAccess().getId());
+			contractpartner.setUser(user);
+			contractpartner.setAccess(group);
+			PostingAccount postingAccount = contractpartner.getPostingAccount();
+			if (postingAccount != null) {
+				final PostingAccountID postingAccountId = postingAccount.getId();
+				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
+				contractpartner.setPostingAccount(postingAccount);
+			}
+			return contractpartner;
+		}
+		return null;
+	}
 
-  private List<Contractpartner> mapContractpartnerDataList(
-      final List<ContractpartnerData> contractpartnerDataList) {
-    return contractpartnerDataList.stream().map(this::mapContractpartnerData).toList();
-  }
+	private List<Contractpartner> mapContractpartnerDataList(final List<ContractpartnerData> contractpartnerDataList) {
+		return contractpartnerDataList.stream().map(this::mapContractpartnerData).toList();
+	}
 
-  /**
-   * This method takes a Contractpartner as argument and sets the properties validFrom and validTil
-   * if they are NULL to default values.
-   *
-   * @param contractpartner
-   *                          {@link Contractpartner}
-   */
-  private void prepareContractpartner(final Contractpartner contractpartner) {
-    if (contractpartner.getValidFrom() == null) {
-      contractpartner.setValidFrom(LocalDate.now());
-    }
-    if (contractpartner.getValidTil() == null) {
-      contractpartner.setValidTil(MAX_DATE);
-    }
-  }
+	/**
+	 * This method takes a Contractpartner as argument and sets the properties
+	 * validFrom and validTil if they are NULL to default values.
+	 *
+	 * @param contractpartner {@link Contractpartner}
+	 */
+	private void prepareContractpartner(final Contractpartner contractpartner) {
+		if (contractpartner.getValidFrom() == null) {
+			contractpartner.setValidFrom(LocalDate.now());
+		}
+		if (contractpartner.getValidTil() == null) {
+			contractpartner.setValidTil(MAX_DATE);
+		}
+	}
 
-  @Override
-  public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
-    Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
-    Assert.notNull(contractpartner.getUser().getId(),
-        "contractpartner.getUser().getId() must not be null!");
-    Assert.notNull(contractpartner.getAccess(), "contractpartner.getAccess() must not be null!");
-    Assert.notNull(contractpartner.getAccess().getId(),
-        "contractpartner.getAccess().getId() must not be null!");
+	@Override
+	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
+		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
+		Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
+		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.getUser().getId() must not be null!");
+		Assert.notNull(contractpartner.getAccess(), "contractpartner.getAccess() must not be null!");
+		Assert.notNull(contractpartner.getAccess().getId(), "contractpartner.getAccess().getId() must not be null!");
 
-    this.prepareContractpartner(contractpartner);
+		this.prepareContractpartner(contractpartner);
 
-    final ValidationResult validationResult = new ValidationResult();
+		final ValidationResult validationResult = new ValidationResult();
 
-    if (contractpartner.getValidTil().isBefore(contractpartner.getValidFrom())) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
-    } else if (contractpartner.getId() != null
-        && this.contractpartnerDao.checkContractpartnerInUseOutOfDate(
-            contractpartner.getUser().getId().getId(), contractpartner.getId().getId(),
-            contractpartner.getValidFrom(), contractpartner.getValidTil())) {
-      // update existing Contractpartner
-      validationResult.addValidationResultItem(new ValidationResultItem(contractpartner.getId(),
-          ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
-    }
+		if (contractpartner.getValidTil().isBefore(contractpartner.getValidFrom())) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
+		} else if (contractpartner.getId() != null && this.contractpartnerDao.checkContractpartnerInUseOutOfDate(
+				contractpartner.getUser().getId().getId(), contractpartner.getId().getId(),
+				contractpartner.getValidFrom(), contractpartner.getValidTil())) {
+			// update existing Contractpartner
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(contractpartner.getId(), ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
+		}
 
-    if (contractpartner.getName() == null || contractpartner.getName().trim().isEmpty()) {
-      validationResult.addValidationResultItem(
-          new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
-    } else {
-      final Contractpartner checkContractpartner = this
-          .getContractpartnerByName(contractpartner.getUser().getId(), contractpartner.getName());
-      if (checkContractpartner != null && (contractpartner.getId() == null
-          || !checkContractpartner.getId().equals(contractpartner.getId()))) {
-        // new Contractpartner || update existing Contractpartner
-        validationResult.addValidationResultItem(
-            new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
-      }
-    }
+		if (contractpartner.getName() == null || contractpartner.getName().trim().isEmpty()) {
+			validationResult.addValidationResultItem(
+					new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		} else {
+			final Contractpartner checkContractpartner = this
+					.getContractpartnerByName(contractpartner.getUser().getId(), contractpartner.getName());
+			if (checkContractpartner != null && (contractpartner.getId() == null
+					|| !checkContractpartner.getId().equals(contractpartner.getId()))) {
+				// new Contractpartner || update existing Contractpartner
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
+			}
+		}
 
-    if (contractpartner.getPostingAccount() != null) {
-      final PostingAccount postingAccount = this.postingAccountService
-          .getPostingAccountById(contractpartner.getPostingAccount().getId());
-      if (postingAccount == null) {
-        validationResult.addValidationResultItem(new ValidationResultItem(contractpartner.getId(),
-            ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
-      } else {
-        // Replace by full object to send postingAccountComment via the event later.
-        contractpartner.setPostingAccount(postingAccount);
-      }
-    }
+		if (contractpartner.getPostingAccount() != null) {
+			final PostingAccount postingAccount = this.postingAccountService
+					.getPostingAccountById(contractpartner.getPostingAccount().getId());
+			if (postingAccount == null) {
+				validationResult.addValidationResultItem(
+						new ValidationResultItem(contractpartner.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			} else {
+				// Replace by full object to send postingAccountComment via the event later.
+				contractpartner.setPostingAccount(postingAccount);
+			}
+		}
 
-    return validationResult;
-  }
+		return validationResult;
+	}
 
-  @Override
-  @Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
-  public Contractpartner getContractpartnerById(final UserID userId,
-      final ContractpartnerID contractpartnerId) {
-    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-    Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
-    final ContractpartnerData contractpartnerData = this.contractpartnerDao
-        .getContractpartnerById(userId.getId(), contractpartnerId.getId());
-    return this.mapContractpartnerData(contractpartnerData);
-  }
+	@Override
+	@Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
+	public Contractpartner getContractpartnerById(final UserID userId, final ContractpartnerID contractpartnerId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
+		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerById(userId.getId(),
+				contractpartnerId.getId());
+		return this.mapContractpartnerData(contractpartnerData);
+	}
 
-  @Override
-  @Cacheable(CacheNames.ALL_CONTRACTPARTNER)
-  public List<Contractpartner> getAllContractpartners(final UserID userId) {
-    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-    final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-        .getAllContractpartners(userId.getId());
-    return this.mapContractpartnerDataList(contractpartnerDataList);
-  }
+	@Override
+	@Cacheable(CacheNames.ALL_CONTRACTPARTNER)
+	public List<Contractpartner> getAllContractpartners(final UserID userId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
+				.getAllContractpartners(userId.getId());
+		return this.mapContractpartnerDataList(contractpartnerDataList);
+	}
 
-  @Override
-  public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
-    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-    Assert.notNull(name, "name must not be null!");
-    final ContractpartnerData contractpartnerData = this.contractpartnerDao
-        .getContractpartnerByName(userId.getId(), name);
-    return this.mapContractpartnerData(contractpartnerData);
-  }
+	@Override
+	public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(name, "name must not be null!");
+		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerByName(userId.getId(),
+				name);
+		return this.mapContractpartnerData(contractpartnerData);
+	}
 
-  @Override
-  public void updateContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
-    final ValidationResult validationResult = this.validateContractpartner(contractpartner);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("Contractpartner update failed!",
-          validationResultItem.getError());
-    }
-    final ContractpartnerData contractpartnerData = super.map(contractpartner,
-        ContractpartnerData.class);
-    this.contractpartnerDao.updateContractpartner(contractpartnerData);
-    this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartner.getId());
-    final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
-        EventType.UPDATE, contractpartner);
-    super.publishEvent(event);
-  }
+	@Override
+	public void updateContractpartner(final Contractpartner contractpartner) {
+		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Contractpartner update failed!", validationResultItem.getError());
+		}
+		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
+		this.contractpartnerDao.updateContractpartner(contractpartnerData);
+		this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartner.getId());
+		final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.UPDATE,
+				contractpartner);
+		super.publishEvent(event);
+	}
 
-  @Override
-  public ContractpartnerID createContractpartner(final Contractpartner contractpartner) {
-    Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
-    contractpartner.setId(null);
-    final ValidationResult validationResult = this.validateContractpartner(contractpartner);
-    if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-      final ValidationResultItem validationResultItem = validationResult.getValidationResultItems()
-          .get(0);
-      throw new BusinessException("Contractpartner creation failed!",
-          validationResultItem.getError());
-    }
-    final ContractpartnerData contractpartnerData = super.map(contractpartner,
-        ContractpartnerData.class);
+	@Override
+	public ContractpartnerID createContractpartner(final Contractpartner contractpartner) {
+		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
+		contractpartner.setId(null);
+		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Contractpartner creation failed!", validationResultItem.getError());
+		}
+		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
 
-    final Long contractpartnerIdLong = this.contractpartnerDao
-        .createContractpartner(contractpartnerData);
-    final ContractpartnerID contractpartnerId = new ContractpartnerID(contractpartnerIdLong);
-    contractpartner.setId(contractpartnerId);
+		final Long contractpartnerIdLong = this.contractpartnerDao.createContractpartner(contractpartnerData);
+		final ContractpartnerID contractpartnerId = new ContractpartnerID(contractpartnerIdLong);
+		contractpartner.setId(contractpartnerId);
 
-    this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartnerId);
+		this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartnerId);
 
-    final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
-        EventType.CREATE, contractpartner);
-    super.publishEvent(event);
+		final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.CREATE,
+				contractpartner);
+		super.publishEvent(event);
 
-    return contractpartnerId;
-  }
+		return contractpartnerId;
+	}
 
-  @Override
-  public void deleteContractpartner(final UserID userId, final GroupID groupId,
-      final ContractpartnerID contractpartnerId) {
-    Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-    Assert.notNull(groupId, "groupId must not be null!");
-    Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
+	@Override
+	public void deleteContractpartner(final UserID userId, final GroupID groupId,
+			final ContractpartnerID contractpartnerId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(groupId, "groupId must not be null!");
+		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
 
-    final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
-    if (contractpartner != null) {
-      try {
-        this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
+		final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
+		if (contractpartner != null) {
+			try {
+				this.contractpartnerDao.deleteContractpartner(groupId.getId(), contractpartnerId.getId());
 
-        this.evictContractpartnerCache(userId, contractpartnerId);
+				this.evictContractpartnerCache(userId, contractpartnerId);
 
-        final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this,
-            EventType.DELETE, contractpartner);
-        super.publishEvent(event);
-      } catch (final Exception e) {
-        LOG.info(e);
-        throw new BusinessException(
-            "You may not delete a contractual partner who is still referenced by a flow of money!",
-            ErrorCode.CONTRACTPARTNER_IN_USE);
-      }
-    }
-  }
+				final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.DELETE,
+						contractpartner);
+				super.publishEvent(event);
+			} catch (final Exception e) {
+				LOG.info(e);
+				throw new BusinessException(
+						"You may not delete a contractual partner who is still referenced by a flow of money!",
+						ErrorCode.CONTRACTPARTNER_IN_USE);
+			}
+		}
+	}
 
-  private void evictContractpartnerCache(final UserID userId,
-      final ContractpartnerID contractpartnerId) {
-    if (contractpartnerId != null) {
-      final Cache allContractpartnersCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER);
-      final Cache contractpartnerByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
-      final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
-      for (final UserID evictingUserId : userIds) {
-        final Cache allContractpartnerByCDateCache = super.getCache(
-            CacheNames.ALL_CONTRACTPARTNER_BY_DATE, evictingUserId.getId().toString());
-        if (allContractpartnersCache != null) {
-          allContractpartnersCache.evict(evictingUserId);
-        }
-        if (contractpartnerByIdCache != null) {
-          contractpartnerByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
-        }
-        if (allContractpartnerByCDateCache != null) {
-          allContractpartnerByCDateCache.clear();
-        }
-      }
-    }
-  }
+	private void evictContractpartnerCache(final UserID userId, final ContractpartnerID contractpartnerId) {
+		if (contractpartnerId != null) {
+			final Cache allContractpartnersCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER);
+			final Cache contractpartnerByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
+			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
+			for (final UserID evictingUserId : userIds) {
+				final Cache allContractpartnerByCDateCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
+						evictingUserId.getId().toString());
+				if (allContractpartnersCache != null) {
+					allContractpartnersCache.evict(evictingUserId);
+				}
+				if (contractpartnerByIdCache != null) {
+					contractpartnerByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
+				}
+				if (allContractpartnerByCDateCache != null) {
+					allContractpartnerByCDateCache.clear();
+				}
+			}
+		}
+	}
 }

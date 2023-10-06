@@ -5,11 +5,11 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
 
 public interface IFixHasContractpartner {
-  // work around https://github.com/mapstruct/mapstruct/issues/1166
-  @AfterMapping
-  default void fixHasContractpartner(@MappingTarget final IHasContractpartner entity) {
-    if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
-      entity.setContractpartner(null);
-    }
-  }
+	// work around https://github.com/mapstruct/mapstruct/issues/1166
+	@AfterMapping
+	default void fixHasContractpartner(@MappingTarget final IHasContractpartner entity) {
+		if (entity.getContractpartner() != null && entity.getContractpartner().getId() == null) {
+			entity.setContractpartner(null);
+		}
+	}
 }

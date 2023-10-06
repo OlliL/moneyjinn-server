@@ -10,41 +10,40 @@ import org.springframework.test.context.jdbc.Sql;
 
 class ReadOneCapitalsourceTest extends AbstractCapitalsourceTest {
 
-  @Override
-  protected void loadMethod() {
-    super.getMock().readOne(null);
-  }
+	@Override
+	protected void loadMethod() {
+		super.getMock().readOne(null);
+	}
 
-  @Test
-  void test_HappyCase_ResponseObject() throws Exception {
-    final CapitalsourceTransport expected = new CapitalsourceTransportBuilder().forCapitalsource1()
-        .build();
+	@Test
+	void test_HappyCase_ResponseObject() throws Exception {
+		final CapitalsourceTransport expected = new CapitalsourceTransportBuilder().forCapitalsource1().build();
 
-    final CapitalsourceTransport actual = super.callUsecaseExpect200(CapitalsourceTransport.class,
-        CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
+		final CapitalsourceTransport actual = super.callUsecaseExpect200(CapitalsourceTransport.class,
+				CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 
-    Assertions.assertEquals(expected, actual);
-  }
+		Assertions.assertEquals(expected, actual);
+	}
 
-  @Test
-  void test_notExisting_NotFoundRaised() throws Exception {
-    super.callUsecaseExpect404(CapitalsourceTransportBuilder.NON_EXISTING_ID);
-  }
+	@Test
+	void test_notExisting_NotFoundRaised() throws Exception {
+		super.callUsecaseExpect404(CapitalsourceTransportBuilder.NON_EXISTING_ID);
+	}
 
-  @Test
-  void test_AuthorizationRequired_Error() throws Exception {
-    super.setUsername(null);
-    super.setPassword(null);
+	@Test
+	void test_AuthorizationRequired_Error() throws Exception {
+		super.setUsername(null);
+		super.setPassword(null);
 
-    super.callUsecaseExpect403WithUriVariables(CapitalsourceTransportBuilder.NON_EXISTING_ID);
-  }
+		super.callUsecaseExpect403WithUriVariables(CapitalsourceTransportBuilder.NON_EXISTING_ID);
+	}
 
-  @Test
-  @Sql("classpath:h2defaults.sql")
-  void test_emptyDatabase_noException() throws Exception {
-    super.setUsername(UserTransportBuilder.ADMIN_NAME);
-    super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+	@Test
+	@Sql("classpath:h2defaults.sql")
+	void test_emptyDatabase_noException() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
 
-    super.callUsecaseExpect404(CapitalsourceTransportBuilder.NON_EXISTING_ID);
-  }
+		super.callUsecaseExpect404(CapitalsourceTransportBuilder.NON_EXISTING_ID);
+	}
 }

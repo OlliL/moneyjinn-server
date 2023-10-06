@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.model.capitalsource;
 
-import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 //Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -27,19 +26,21 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
+import lombok.NoArgsConstructor;
+
 /**
  * The unique ID of {@link Capitalsource}.
  *
- * @author olivleh1
+ * @author Oliver Lehmann
  *
  */
 // Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
 // Mapper).
 @NoArgsConstructor
 public class CapitalsourceID extends AbstractEntityID<Long> {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public CapitalsourceID(final Long id) {
-    super(id);
-  }
+	public CapitalsourceID(final Long id) {
+		super(id);
+	}
 }
