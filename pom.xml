@@ -30,7 +30,7 @@
 		<commons.io.version>2.14.0</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
 		<apache.tika.version>2.9.0</apache.tika.version>
-		<jjwt.version>0.11.5</jjwt.version>
+		<jjwt.version>0.12.2</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<swagger.version>2.2.16</swagger.version>
@@ -51,7 +51,7 @@
 
 		<!-- Test Scope -->
 		<junit.version>5.10.0</junit.version>
-		<mockito.version>5.5.0</mockito.version>
+		<mockito.version>5.6.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.8</opencsv.version>
 
