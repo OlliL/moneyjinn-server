@@ -48,11 +48,11 @@ import org.laladev.moneyjinn.hbci.core.LalaHBCI;
 public final class Main {
 	public static void main(final String[] args) throws Exception {
 
-		final FileInputStream propertyFile = new FileInputStream(
-				System.getProperty("user.home") + File.separator + "hbci_pass.properties");
 		final Properties properties = new Properties();
-		properties.load(propertyFile);
-		propertyFile.close();
+		try (final FileInputStream propertyFile = new FileInputStream(
+				System.getProperty("user.home") + File.separator + "hbci_pass.properties")) {
+			properties.load(propertyFile);
+		}
 
 		final List<PropertyChangeListener> observers = new ArrayList<PropertyChangeListener>(1);
 		observers.add(new AccountMovementObserver());
@@ -72,7 +72,6 @@ public final class Main {
 
 			lalaHBCI.main(passports, observers);
 		}
-
 	}
 
 	private static Connection connectToDatabase(final String url, final String username, final String password)
