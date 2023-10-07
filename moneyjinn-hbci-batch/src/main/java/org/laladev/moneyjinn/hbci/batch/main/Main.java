@@ -66,11 +66,12 @@ public final class Main {
 			passports.add(System.getProperty("user.home") + File.separator + passportFile);
 		}
 
-		final Connection con = connectToDatabase(properties.getProperty("hbci.database.url"),
-				properties.getProperty("hbci.database.username"), properties.getProperty("hbci.database.password"));
-		login(properties.getProperty("hbci.server.username"), properties.getProperty("hbci.server.password"));
+		try (final Connection con = connectToDatabase(properties.getProperty("hbci.database.url"),
+				properties.getProperty("hbci.database.username"), properties.getProperty("hbci.database.password"))) {
+			login(properties.getProperty("hbci.server.username"), properties.getProperty("hbci.server.password"));
 
-		lalaHBCI.main(passports, observers);
+			lalaHBCI.main(passports, observers);
+		}
 
 	}
 
