@@ -20,7 +20,7 @@ public class BalanceMonthlyTest {
 
 	@BeforeEach
 	public void setupHandler() {
-		this.balanceMonthlyHandler = new BalanceMonthlyHandler(null, null, null);
+		this.balanceMonthlyHandler = new BalanceMonthlyHandler(null, null);
 	}
 
 	private AccountMovement getBaseAccountMovement(final LocalDate date, final BigDecimal amount) {

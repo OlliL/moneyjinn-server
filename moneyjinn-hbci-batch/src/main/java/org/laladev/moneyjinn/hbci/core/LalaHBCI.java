@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014-2016 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2014-2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,6 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
+
 package org.laladev.moneyjinn.hbci.core;
 
 import java.beans.PropertyChangeListener;
@@ -32,8 +33,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.kapott.hbci.manager.BankInfo;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
@@ -51,9 +50,6 @@ import org.laladev.moneyjinn.hbci.core.handler.AccountMovementHandler;
 import org.laladev.moneyjinn.hbci.core.handler.BalanceDailyHandler;
 import org.laladev.moneyjinn.hbci.core.handler.BalanceMonthlyHandler;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-
 public final class LalaHBCI {
 	private final Properties properties;
 
@@ -65,15 +61,11 @@ public final class LalaHBCI {
 
 		HBCIUtils.init(this.getHbciProperties(), new LalaHBCICallback());
 
-		final SessionFactory sf = this.getSessionFactory();
-		final EntityManager entityManager = sf.createEntityManager();
 		try {
 			for (final String passport : passports) {
-				this.process(passport, entityManager, observerList);
+				this.process(passport, observerList);
 			}
 		} finally {
-			entityManager.close();
-			sf.close();
 			HBCIUtils.done();
 		}
 	}
@@ -86,8 +78,7 @@ public final class LalaHBCI {
 	 * @param observerList
 	 * @throws IOException
 	 */
-	private void process(final String passport, final EntityManager entityManager,
-			final List<PropertyChangeListener> observerList) {
+	private void process(final String passport, final List<PropertyChangeListener> observerList) {
 
 		((LalaHBCICallback) HBCIUtilsInternal.getCallback()).setPassportPassword(this.getPassword(passport));
 
@@ -105,8 +96,6 @@ public final class LalaHBCI {
 
 		HBCIUtils.setParam("client.errors.ignoreWrongJobDataErrors", "yes");
 
-		final EntityTransaction tx = entityManager.getTransaction();
-		tx.begin();
 		final HBCIPassport hbciPassport = AbstractHBCIPassport.getInstance(type);
 
 		HBCIHandler hbciHandler = null;
@@ -147,10 +136,9 @@ public final class LalaHBCI {
 					this.addIbanBic(balanceDaily);
 				}
 
-				this.executeHandler(new AccountMovementHandler(entityManager, accountMovements), observerList);
-				this.executeHandler(new BalanceDailyHandler(entityManager, balanceDaily), observerList);
-				this.executeHandler(new BalanceMonthlyHandler(entityManager, balanceDaily, accountMovements),
-						observerList);
+				this.executeHandler(new AccountMovementHandler(accountMovements), observerList);
+				this.executeHandler(new BalanceDailyHandler(balanceDaily), observerList);
+				this.executeHandler(new BalanceMonthlyHandler(balanceDaily, accountMovements), observerList);
 			}
 
 		} finally {
@@ -160,9 +148,6 @@ public final class LalaHBCI {
 				hbciPassport.close();
 			}
 		}
-
-		tx.commit();
-
 	}
 
 	/**
@@ -329,14 +314,5 @@ public final class LalaHBCI {
 		hbciProperties.setProperty("log.loglevel.default", "0");
 		hbciProperties.setProperty("log.filter", "3");
 		return hbciProperties;
-	}
-
-	/**
-	 * creates and returns the Hibernate {@link SessionFactory} lalaHBCI works with
-	 *
-	 * @return {@link SessionFactory}
-	 */
-	private SessionFactory getSessionFactory() {
-		return new Configuration().configure().buildSessionFactory();
 	}
 }

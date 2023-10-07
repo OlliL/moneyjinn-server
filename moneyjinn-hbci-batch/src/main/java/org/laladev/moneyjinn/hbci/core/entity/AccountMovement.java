@@ -1,28 +1,29 @@
 //
-//Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
-//All rights reserved.
+// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
+// All rights reserved.
 //
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-//notice, this list of conditions and the following disclaimer
-//2. Redistributions in binary form must reproduce the above copyright
-//notice, this list of conditions and the following disclaimer in the
-//documentation and/or other materials provided with the distribution.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
 //
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
 //
+
 package org.laladev.moneyjinn.hbci.core.entity;
 
 import java.io.Serializable;
@@ -30,12 +31,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "account_movements")
 public class AccountMovement extends AbstractAccountEntitiy implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -67,7 +62,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 	private BigDecimal balanceValue;
 	private String balanceCurrency;
 
-	@Column(name = "creation_time")
 	public final LocalDateTime getCreationTime() {
 		return this.creationTime;
 	}
@@ -76,7 +70,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.creationTime = creationTime;
 	}
 
-	@Column(name = "booking_date")
 	public final LocalDate getBookingDate() {
 		return this.bookingDate;
 	}
@@ -85,7 +78,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.bookingDate = bookingDate;
 	}
 
-	@Column(name = "value_date")
 	public final LocalDate getValueDate() {
 		return this.valueDate;
 	}
@@ -94,7 +86,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.valueDate = valueDate;
 	}
 
-	@Column(name = "invoice_timestamp")
 	public final LocalDateTime getInvoiceTimestamp() {
 		return this.invoiceTimestamp;
 	}
@@ -103,7 +94,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.invoiceTimestamp = invoiceTimestamp;
 	}
 
-	@Column(name = "other_iban")
 	public final String getOtherIban() {
 		return this.otherIban;
 	}
@@ -112,7 +102,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.otherIban = otherIban;
 	}
 
-	@Column(name = "other_bic")
 	public final String getOtherBic() {
 		return this.otherBic;
 	}
@@ -121,7 +110,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.otherBic = otherBic;
 	}
 
-	@Column(name = "other_accountnumber")
 	public final Long getOtherAccountnumber() {
 		return this.otherAccountnumber;
 	}
@@ -130,7 +118,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.otherAccountnumber = otherAccountnumber;
 	}
 
-	@Column(name = "other_bankcode")
 	public final Integer getOtherBankcode() {
 		return this.otherBankcode;
 	}
@@ -139,7 +126,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.otherBankcode = otherBankcode;
 	}
 
-	@Column(name = "other_name")
 	public final String getOtherName() {
 		return this.otherName;
 	}
@@ -148,7 +134,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.otherName = otherName;
 	}
 
-	@Column(name = "charge_value")
 	public final BigDecimal getChargeValue() {
 		return this.chargeValue;
 	}
@@ -157,7 +142,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.chargeValue = chargeValue;
 	}
 
-	@Column(name = "charge_currency")
 	public final String getChargeCurrency() {
 		return this.chargeCurrency;
 	}
@@ -166,7 +150,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.chargeCurrency = chargeCurrency;
 	}
 
-	@Column(name = "original_value")
 	public final BigDecimal getOriginalValue() {
 		return this.originalValue;
 	}
@@ -175,7 +158,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.originalValue = originalValue;
 	}
 
-	@Column(name = "original_currency")
 	public final String getOriginalCurrency() {
 		return this.originalCurrency;
 	}
@@ -184,7 +166,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.originalCurrency = originalCurrency;
 	}
 
-	@Column(name = "movement_value")
 	public final BigDecimal getMovementValue() {
 		return this.movementValue;
 	}
@@ -193,7 +174,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.movementValue = movementValue;
 	}
 
-	@Column(name = "movement_currency")
 	public final String getMovementCurrency() {
 		return this.movementCurrency;
 	}
@@ -202,7 +182,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.movementCurrency = movementCurrency;
 	}
 
-	@Column(name = "movement_reason")
 	public final String getMovementReason() {
 		return this.movementReason;
 	}
@@ -211,7 +190,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.movementReason = movementReason;
 	}
 
-	@Column(name = "movement_type_code")
 	public final Short getMovementTypeCode() {
 		return this.movementTypeCode;
 	}
@@ -220,7 +198,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.movementTypeCode = movementTypeCode;
 	}
 
-	@Column(name = "movement_type_text")
 	public final String getMovementTypeText() {
 		return this.movementTypeText;
 	}
@@ -229,7 +206,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.movementTypeText = movementTypeText;
 	}
 
-	@Column(name = "customer_reference")
 	public final String getCustomerReference() {
 		return this.customerReference;
 	}
@@ -238,7 +214,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.customerReference = customerReference;
 	}
 
-	@Column(name = "bank_reference")
 	public final String getBankReference() {
 		return this.bankReference;
 	}
@@ -247,7 +222,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.bankReference = bankReference;
 	}
 
-	@Column(name = "cancellation")
 	public final Boolean getCancellation() {
 		return this.cancellation;
 	}
@@ -256,7 +230,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.cancellation = cancellation;
 	}
 
-	@Column(name = "additional_information")
 	public final String getAdditionalInformation() {
 		return this.additionalInformation;
 	}
@@ -265,7 +238,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.additionalInformation = additionalInformation;
 	}
 
-	@Column(name = "additional_key")
 	public final Short getAdditionalKey() {
 		return this.additionalKey;
 	}
@@ -274,7 +246,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.additionalKey = additionalKey;
 	}
 
-	@Column(name = "prima_nota")
 	public final String getPrimaNota() {
 		return this.primaNota;
 	}
@@ -283,7 +254,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.primaNota = primaNota;
 	}
 
-	@Column(name = "balance_date")
 	public final LocalDate getBalanceDate() {
 		return this.balanceDate;
 	}
@@ -292,7 +262,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.balanceDate = blanceDate;
 	}
 
-	@Column(name = "balance_value")
 	public final BigDecimal getBalanceValue() {
 		return this.balanceValue;
 	}
@@ -301,7 +270,6 @@ public class AccountMovement extends AbstractAccountEntitiy implements Serializa
 		this.balanceValue = balanceValue;
 	}
 
-	@Column(name = "balance_currency")
 	public final String getBalanceCurrency() {
 		return this.balanceCurrency;
 	}

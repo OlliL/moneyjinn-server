@@ -1,30 +1,34 @@
 //
-//Copyright (c) 2015-2017 Oliver Lehmann <lehmann@ans-netz.de>
-//All rights reserved.
+// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
+// All rights reserved.
 //
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-//notice, this list of conditions and the following disclaimer
-//2. Redistributions in binary form must reproduce the above copyright
-//notice, this list of conditions and the following disclaimer in the
-//documentation and/or other materials provided with the distribution.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
 //
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
 //
+
 package org.laladev.moneyjinn.hbci.core.handler;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -32,18 +36,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy_;
+import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnConnectionHolder;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
-import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly_;
 import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 
 /**
  * This Handler determines the monthly balance of all previous month. This is
@@ -56,14 +53,40 @@ import jakarta.persistence.criteria.Root;
  *
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
-	private final EntityManager entityManager;
+	// @formatter:off
+	private final static String STATEMENT =
+			"   INSERT "
+			+ "   INTO balance_monthly "
+			+ "      ( my_iban "
+			+ "      , my_bic "
+			+ "      , my_accountnumber "
+			+ "      , my_bankcode "
+			+ "      , balance_year "
+			+ "      , balance_month "
+			+ "      , balance_value "
+			+ "      , balance_currency "
+			+ "      ) "
+			+ " VALUES "
+			+ "      ( ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      , ? "
+			+ "      ) "
+			+ " ON DUPLICATE KEY UPDATE "
+                       // if the balance_value is the same, trigger a Column-cannot-be-NULL error and execute
+			           // no update at all - to prevent notifying any Observers
+			+ "        balance_value  = IF(VALUES(balance_value) = balance_value, NULL, VALUES(balance_value)) ";
+	// @formatter:on
+
 	private final BalanceDaily balanceDaily;
 	private final List<AccountMovement> accountMovements;
 	private final BalanceMonthlyMapper mapper;
 
-	public BalanceMonthlyHandler(final EntityManager entityManager, final BalanceDaily balanceDaily,
-			final List<AccountMovement> accountMovements) {
-		this.entityManager = entityManager;
+	public BalanceMonthlyHandler(final BalanceDaily balanceDaily, final List<AccountMovement> accountMovements) {
 		this.accountMovements = accountMovements;
 		this.balanceDaily = balanceDaily;
 		this.mapper = new BalanceMonthlyMapper();
@@ -161,39 +184,25 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 	}
 
 	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
-		final BalanceMonthly oldBalance = this.searchEntityInDB(balanceMonthly);
-		if (oldBalance != null) {
-			if (oldBalance.getBalanceValue().compareTo(balanceMonthly.getBalanceValue()) != 0) {
-				final BalanceMonthly mergeBalanceMonthly = this.mapper.mergeBalanceMonthly(oldBalance, balanceMonthly);
-				this.entityManager.merge(mergeBalanceMonthly);
-				this.notifyObservers(mergeBalanceMonthly);
-			}
-		} else {
-			this.entityManager.persist(balanceMonthly);
+		final Connection con = MoneyjinnConnectionHolder.getConnection();
+		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT)) {
+			stmt.setString(1, balanceMonthly.getMyIban());
+			stmt.setString(2, balanceMonthly.getMyBic());
+			stmt.setLong(3, balanceMonthly.getMyAccountnumber());
+			stmt.setInt(4, balanceMonthly.getMyBankcode());
+			stmt.setInt(5, balanceMonthly.getBalanceYear());
+			stmt.setInt(6, balanceMonthly.getBalanceMonth());
+			stmt.setBigDecimal(7, balanceMonthly.getBalanceValue());
+			stmt.setString(8, balanceMonthly.getBalanceCurrency());
+
+			stmt.executeUpdate();
+			con.commit();
+
 			this.notifyObservers(balanceMonthly);
+		} catch (final SQLException e) {
+			// ignore: Column 'balance_value' cannot be null
+			if (e.getErrorCode() != 1048)
+				e.printStackTrace();
 		}
-	}
-
-	private BalanceMonthly searchEntityInDB(final BalanceMonthly balanceMonthly) {
-		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-		final CriteriaQuery<BalanceMonthly> query = builder.createQuery(BalanceMonthly.class);
-		final Root<BalanceMonthly> root = query.from(BalanceMonthly.class);
-
-		final List<Predicate> predicates = new ArrayList<>();
-		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myIban), balanceMonthly.getMyIban()));
-		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myBic), balanceMonthly.getMyBic()));
-		predicates.add(
-				builder.equal(root.get(AbstractAccountEntitiy_.myAccountnumber), balanceMonthly.getMyAccountnumber()));
-		predicates.add(builder.equal(root.get(AbstractAccountEntitiy_.myBankcode), balanceMonthly.getMyBankcode()));
-		predicates.add(builder.equal(root.get(BalanceMonthly_.balanceYear), balanceMonthly.getBalanceYear()));
-		predicates.add(builder.equal(root.get(BalanceMonthly_.balanceMonth), balanceMonthly.getBalanceMonth()));
-
-		query.select(root).where(predicates.toArray(new Predicate[] {}));
-
-		final List<BalanceMonthly> results = this.entityManager.createQuery(query).getResultList();
-		if (results.isEmpty()) {
-			return null;
-		}
-		return results.iterator().next();
 	}
 }

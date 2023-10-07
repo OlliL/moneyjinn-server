@@ -37,7 +37,6 @@
 		<openapi-generator.version>7.0.1</openapi-generator.version>
 
 		<!--for hbci-batch only-->
-		<hibernate-core.version>6.3.1.Final</hibernate-core.version>
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 
 		<!-- Maven Plugins -->
@@ -187,12 +186,6 @@
 				<groupId>io.swagger.core.v3</groupId>
 				<artifactId>swagger-core</artifactId>
 				<version>${swagger.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate.orm</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate-core.version}</version>
 			</dependency>
 
 			<dependency>

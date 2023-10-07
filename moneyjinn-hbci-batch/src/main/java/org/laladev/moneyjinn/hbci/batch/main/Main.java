@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2014-2023 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,13 +23,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: Main.java,v 1.20 2015/10/01 17:56:26 olivleh1 Exp $
-//
+
 package org.laladev.moneyjinn.hbci.batch.main;
 
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -64,10 +66,24 @@ public final class Main {
 			passports.add(System.getProperty("user.home") + File.separator + passportFile);
 		}
 
+		final Connection con = connectToDatabase(properties.getProperty("hbci.database.url"),
+				properties.getProperty("hbci.database.username"), properties.getProperty("hbci.database.password"));
 		login(properties.getProperty("hbci.server.username"), properties.getProperty("hbci.server.password"));
 
 		lalaHBCI.main(passports, observers);
 
+	}
+
+	private static Connection connectToDatabase(final String url, final String username, final String password)
+			throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+		final Connection con = DriverManager.getConnection(url, username, password);
+		con.setAutoCommit(false);
+
+		MoneyjinnConnectionHolder.setConnection(con);
+
+		return con;
 	}
 
 	private static void login(final String username, final String password) throws ApiException {
