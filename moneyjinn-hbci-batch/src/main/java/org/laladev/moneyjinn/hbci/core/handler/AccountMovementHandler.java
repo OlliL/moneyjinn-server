@@ -120,8 +120,8 @@ public class AccountMovementHandler extends AbstractHandler {
 	@Override
 	public void handle() {
 		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		for (final AccountMovement accountMovement : this.accountMovements) {
-			try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
+		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
+			for (final AccountMovement accountMovement : this.accountMovements) {
 				stmt.setTimestamp(1, Timestamp.valueOf(accountMovement.getCreationTime()));
 				stmt.setString(2, accountMovement.getMyIban());
 				stmt.setString(3, accountMovement.getMyBic());
@@ -179,21 +179,25 @@ public class AccountMovementHandler extends AbstractHandler {
 				stmt.setBigDecimal(30, accountMovement.getBalanceValue());
 				stmt.setString(31, accountMovement.getBalanceCurrency());
 
-				final int rowCount = stmt.executeUpdate();
-				if (rowCount == 1) {
-					final ResultSet rs = stmt.getGeneratedKeys();
-					if (rs.next()) {
-						accountMovement.setId(rs.getInt(1));
+				try {
+					final int rowCount = stmt.executeUpdate();
+					if (rowCount == 1) {
+						final ResultSet rs = stmt.getGeneratedKeys();
+						if (rs.next()) {
+							accountMovement.setId(rs.getInt(1));
+						}
 					}
-				}
-				con.commit();
+					con.commit();
 
-				this.notifyObservers(accountMovement);
-			} catch (final SQLException e) {
-				// ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
-				if (e.getErrorCode() != 1062)
-					e.printStackTrace();
+					this.notifyObservers(accountMovement);
+				} catch (final SQLException e) {
+					// ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
+					if (e.getErrorCode() != 1062)
+						e.printStackTrace();
+				}
 			}
+		} catch (final SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 }
