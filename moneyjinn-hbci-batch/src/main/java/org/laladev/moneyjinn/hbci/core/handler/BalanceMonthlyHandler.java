@@ -28,7 +28,9 @@ package org.laladev.moneyjinn.hbci.core.handler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -185,7 +187,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
 		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT)) {
+		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, balanceMonthly.getMyIban());
 			stmt.setString(2, balanceMonthly.getMyBic());
 			stmt.setLong(3, balanceMonthly.getMyAccountnumber());
@@ -195,7 +197,13 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			stmt.setBigDecimal(7, balanceMonthly.getBalanceValue());
 			stmt.setString(8, balanceMonthly.getBalanceCurrency());
 
-			stmt.executeUpdate();
+			final int rowCount = stmt.executeUpdate();
+			if (rowCount == 1) {
+				final ResultSet rs = stmt.getGeneratedKeys();
+				if (rs.next()) {
+					balanceMonthly.setId(rs.getInt(1));
+				}
+			}
 			con.commit();
 
 			this.notifyObservers(balanceMonthly);
