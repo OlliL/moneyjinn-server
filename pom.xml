@@ -30,10 +30,10 @@
 		<commons.io.version>2.14.0</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
 		<apache.tika.version>2.9.0</apache.tika.version>
-		<jjwt.version>0.12.2</jjwt.version>
+		<jjwt.version>0.12.3</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<swagger.version>2.2.16</swagger.version>
+		<swagger.version>2.2.17</swagger.version>
 		<openapi-generator.version>7.0.1</openapi-generator.version>
 
 		<!--for hbci-batch only-->
