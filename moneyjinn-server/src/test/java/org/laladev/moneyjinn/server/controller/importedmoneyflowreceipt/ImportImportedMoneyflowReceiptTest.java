@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.importedmoneyflowreceipt;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -16,39 +15,19 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
+class ImportImportedMoneyflowReceiptTest extends AbstractWebUserControllerTest {
 	@Inject
-	IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
+	private IImportedMoneyflowReceiptService importedMoneyflowReceiptService;
 	@Inject
-	IMoneyflowReceiptService moneyflowReceiptService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+	private IMoneyflowReceiptService moneyflowReceiptService;
 
 	@Override
 	protected void loadMethod() {
@@ -99,32 +78,15 @@ class ImportImportedMoneyflowReceiptTest extends AbstractControllerTest {
 
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
 				MoneyflowTransportBuilder.MONEYFLOW1_ID);
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
-				MoneyflowTransportBuilder.MONEYFLOW1_ID);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		super.callUsecaseExpect204WithUriVariables(ImportedMoneyflowReceiptTransportBuilder.RECEIPT_1ID,
 				MoneyflowTransportBuilder.MONEYFLOW1_ID);
-
 	}
 }

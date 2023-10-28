@@ -5,47 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractAdminUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class UpdatePostingAccountTest extends AbstractControllerTest {
+class UpdatePostingAccountTest extends AbstractAdminUserControllerTest {
 	@Inject
 	private IPostingAccountService postingAccountService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -96,35 +74,13 @@ class UpdatePostingAccountTest extends AbstractControllerTest {
 		Assertions.assertEquals("hugo", postingAccount.getName());
 	}
 
-	@Test
-	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new UpdatePostingAccountRequest());
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
-		super.callUsecaseExpect403(new UpdatePostingAccountRequest());
-	}
-
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new UpdatePostingAccountRequest());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final UpdatePostingAccountRequest request = new UpdatePostingAccountRequest();
 		final PostingAccountTransport transport = new PostingAccountTransportBuilder().forPostingAccount1().build();
 		request.setPostingAccountTransport(transport);

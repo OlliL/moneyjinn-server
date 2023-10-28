@@ -39,14 +39,10 @@ class RefreshTokenTest extends AbstractControllerTest {
 	@Inject
 	private IUserService userService;
 
-	@Override
-	protected String getUsername() {
-		return null;
-	}
-
-	@Override
-	protected String getPassword() {
-		return null;
+	@BeforeEach
+	public void setUp() {
+		super.setUsername(null);
+		super.setPassword(null);
 	}
 
 	@Override

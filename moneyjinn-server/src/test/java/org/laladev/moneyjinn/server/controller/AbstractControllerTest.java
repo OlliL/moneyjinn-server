@@ -72,16 +72,6 @@ public abstract class AbstractControllerTest extends AbstractTest {
 
 	protected abstract void loadMethod();
 
-	// TODO: make private after refactoring done
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	// TODO: make private after refactoring done
-	protected String getPassword() {
-		return this.userPassword;
-	}
-
 	protected void setUsername(final String userName) {
 		this.userName = userName;
 	}
@@ -108,15 +98,13 @@ public abstract class AbstractControllerTest extends AbstractTest {
 			return httpHeaders;
 		}
 
-		final String username = this.getUsername();
-		final String password = this.getPassword();
-		if (username == null || password == null) {
+		if (this.userName == null || this.userPassword == null) {
 			return httpHeaders;
 		}
 
 		final LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setUserName(username);
-		loginRequest.setUserPassword(password);
+		loginRequest.setUserName(this.userName);
+		loginRequest.setUserPassword(this.userPassword);
 
 		String jwtToken = this.jwtCache.getJwt(loginRequest);
 

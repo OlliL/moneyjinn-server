@@ -6,7 +6,6 @@ import java.time.Month;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -14,38 +13,18 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ImportedMonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractImportUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ImportedMonthlySettlementControllerApi;
 import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
+class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTest {
 	@Inject
-	IImportedMonthlySettlementService importedMonthlySettlementService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+	private IImportedMonthlySettlementService importedMonthlySettlementService;
 
 	@Override
 	protected void loadMethod() {
@@ -162,9 +141,13 @@ class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
+		super.callUsecaseExpect403();
+	}
+
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
 		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransportBuilder()
 				.forNewImportedMonthlySettlement().build();
@@ -176,21 +159,4 @@ class CreateImportedMonthlySettlementTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
 		Assertions.assertEquals(expected, actual);
 	}
-
-	@Test
-	void test_OnlyImportRoleAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
-		super.callUsecaseExpect403();
-	}
-
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403();
-	}
-
 }

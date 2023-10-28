@@ -4,44 +4,23 @@ package org.laladev.moneyjinn.server.controller.etf;
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
+import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowResponse;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IEtfService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class CreateEtfFlowTest extends AbstractControllerTest {
+class CreateEtfFlowTest extends AbstractWebUserControllerTest {
 	@Inject
-	IEtfService etfService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
+	private IEtfService etfService;
 
 	@Override
 	protected void loadMethod() {
@@ -178,30 +157,13 @@ class CreateEtfFlowTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new CreateEtfFlowRequest());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new CreateEtfFlowRequest());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
-		final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
-
-		super.callUsecaseExpect200(request, CreateEtfFlowResponse.class);
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
+		super.callUsecaseExpect200(new CreateEtfFlowRequest(), CalcEtfSaleResponse.class);
 	}
 }

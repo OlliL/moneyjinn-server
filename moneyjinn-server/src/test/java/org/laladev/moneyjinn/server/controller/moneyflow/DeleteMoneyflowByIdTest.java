@@ -4,7 +4,6 @@ package org.laladev.moneyjinn.server.controller.moneyflow;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -13,41 +12,21 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IMoneyflowSplitEntryService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class DeleteMoneyflowByIdTest extends AbstractControllerTest {
+class DeleteMoneyflowByIdTest extends AbstractWebUserControllerTest {
 	@Inject
 	private IMoneyflowService moneyflowService;
 	@Inject
 	private IMoneyflowSplitEntryService moneyflowSplitEntryService;
 	@Inject
 	private IMoneyflowReceiptService moneyflowReceiptService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -87,8 +66,9 @@ class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 
 	@Test
 	void test_MoneyflowOwnedBySomeoneElse_noDeletionHappend() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
+
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, moneyflowId);
@@ -100,28 +80,13 @@ class DeleteMoneyflowByIdTest extends AbstractControllerTest {
 		Assertions.assertNotNull(moneyflow);
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		super.callUsecaseExpect204WithUriVariables(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 	}
 }

@@ -8,7 +8,6 @@ import java.util.Base64;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
@@ -16,7 +15,7 @@ import org.laladev.moneyjinn.server.builder.CompareDataDatasetTransportBuilder;
 import org.laladev.moneyjinn.server.builder.CompareDataFormatTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
 import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
@@ -28,12 +27,9 @@ import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.util.FileCopyUtils;
 
-class CompareDataTest extends AbstractControllerTest {
-	private String userName;
-	private String userPassword;
+class CompareDataTest extends AbstractWebUserControllerTest {
 	@Value("classpath:comparedata/postbank_online.csv")
 	private Resource postbankOnlineResource;
 	@Value("classpath:comparedata/sparda_bank.csv")
@@ -44,22 +40,6 @@ class CompareDataTest extends AbstractControllerTest {
 	private Resource volksbankResource;
 	@Value("classpath:comparedata/camt.xml")
 	private Resource camtResource;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -93,8 +73,8 @@ class CompareDataTest extends AbstractControllerTest {
 
 	@Test
 	void test_privateFlowProcessedButNotShown_bookedWithWrongCapitalsource_Successfull() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 		final CompareDataRequest request = new CompareDataRequest();
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID);
 		request.setStartDate(LocalDate.parse("2010-05-03"));
@@ -113,8 +93,8 @@ class CompareDataTest extends AbstractControllerTest {
 
 	@Test
 	void test_privateFlowProcessedButNotShown_notInFile_Successfull() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 		final CompareDataRequest request = new CompareDataRequest();
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		request.setStartDate(LocalDate.parse("2009-02-01"));
@@ -129,8 +109,8 @@ class CompareDataTest extends AbstractControllerTest {
 
 	@Test
 	void test_privateFlowProcessedButNotShown_matching_Successfull() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 		final CompareDataRequest request = new CompareDataRequest();
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		request.setStartDate(LocalDate.parse("2010-05-03"));
@@ -450,29 +430,13 @@ class CompareDataTest extends AbstractControllerTest {
 		return base64FileContents;
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
-		super.callUsecaseExpect403WithUriVariables(new CompareDataRequest());
-	}
-
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new CompareDataRequest());
 	}
 
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final CompareDataRequest request = new CompareDataRequest();
-
-		super.callUsecaseExpect200(request, CompareDataResponse.class);
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
+		super.callUsecaseExpect200(new CompareDataRequest(), CompareDataResponse.class);
 	}
 }

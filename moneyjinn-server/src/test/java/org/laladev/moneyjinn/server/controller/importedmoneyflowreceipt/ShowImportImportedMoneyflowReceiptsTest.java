@@ -5,36 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.ImportedMoneyflowReceiptTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
-import org.springframework.test.context.jdbc.Sql;
 
-class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerTest {
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
-
+class ShowImportImportedMoneyflowReceiptsTest extends AbstractWebUserControllerTest {
 	@Override
 	protected void loadMethod() {
 		super.getMock(ImportedMoneyflowReceiptControllerApi.class).showImportImportedMoneyflowReceipts();
@@ -54,28 +32,13 @@ class ShowImportImportedMoneyflowReceiptsTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403();
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403();
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final ShowImportImportedMoneyflowReceiptsResponse expected = new ShowImportImportedMoneyflowReceiptsResponse();
 		expected.setImportedMoneyflowReceiptTransports(Collections.emptyList());
 

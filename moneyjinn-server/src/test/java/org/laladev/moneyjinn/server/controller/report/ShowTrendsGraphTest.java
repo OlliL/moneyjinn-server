@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -18,38 +17,18 @@ import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.TrendsTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.server.model.TrendsTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class ShowTrendsGraphTest extends AbstractControllerTest {
+class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 	@Inject
 	private ICapitalsourceService capitalsourceService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -189,37 +168,13 @@ class ShowTrendsGraphTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new ShowTrendsGraphRequest());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new ShowTrendsGraphRequest());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
-
-		super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabaseFakeRequestData_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("2010-04-01"));
 		request.setEndDate(LocalDate.parse("2010-12-31"));

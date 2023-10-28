@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessID;
@@ -20,7 +19,7 @@ import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractAdminUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.UpdateUserRequest;
@@ -32,7 +31,7 @@ import org.laladev.moneyjinn.service.api.IUserService;
 
 import jakarta.inject.Inject;
 
-class UpdateUserTest extends AbstractControllerTest {
+class UpdateUserTest extends AbstractAdminUserControllerTest {
 	@Inject
 	private IUserService userService;
 	@Inject
@@ -54,25 +53,6 @@ class UpdateUserTest extends AbstractControllerTest {
 			this.accessRelationGroup1, LocalDate.parse("2700-01-01"), LocalDate.parse("2799-12-31"));
 	private final AccessRelation accessRelationUser1Default4 = new AccessRelation(this.accessIdUser1,
 			this.accessRelationGroup2, LocalDate.parse("2800-01-01"), LocalDate.parse("2999-12-31"));
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -358,27 +338,13 @@ class UpdateUserTest extends AbstractControllerTest {
 		this.help_AccessRelation_Testing(transport, accessRelationTransport, accessRelations);
 	}
 
-	@Test
-	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new UpdateUserRequest());
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
-		super.callUsecaseExpect403(new UpdateUserRequest());
-	}
-
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new UpdateUserRequest());
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
+		// Users are always there.
 	}
 }

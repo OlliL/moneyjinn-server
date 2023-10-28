@@ -2,46 +2,25 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class ChangePasswordTest extends AbstractControllerTest {
+class ChangePasswordTest extends AbstractWebUserControllerTest {
 	@Inject
 	private IUserService userService;
 	@Inject
 	private IAccessRelationService accessRelationService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -51,14 +30,14 @@ class ChangePasswordTest extends AbstractControllerTest {
 	@Test
 	void test_OldPasswordMatchingNewPasswordProvided_Successfull() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final String newPassword = this.userPassword + "new";
+		final String newPassword = UserTransportBuilder.USER1_PASSWORD + "new";
 
 		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(this.userPassword);
+		request.setOldPassword(UserTransportBuilder.USER1_PASSWORD);
 		request.setPassword(newPassword);
 
 		User user = this.userService.getUserById(userId);
-		String cryptedPassword = this.userService.cryptPassword(this.userPassword);
+		String cryptedPassword = this.userService.cryptPassword(UserTransportBuilder.USER1_PASSWORD);
 		Assertions.assertEquals(user.getPassword(), cryptedPassword);
 
 		super.callUsecaseExpect204(request);
@@ -72,7 +51,7 @@ class ChangePasswordTest extends AbstractControllerTest {
 	@Test
 	void test_OldPasswordMatchingNewPasswordEmptyButUserNew_errorRaised() throws Exception {
 		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(this.userPassword);
+		request.setOldPassword(UserTransportBuilder.USER1_PASSWORD);
 		request.setPassword("");
 
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
@@ -83,17 +62,17 @@ class ChangePasswordTest extends AbstractControllerTest {
 
 	@Test
 	void test_OldPasswordMatchingNewPasswordEmpty_passwordGotNotChanged() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 
 		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
 		final String newPassword = "";
 
 		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(this.userPassword);
+		request.setOldPassword(UserTransportBuilder.USER3_PASSWORD);
 		request.setPassword(newPassword);
 
-		final String cryptedPassword = this.userService.cryptPassword(this.userPassword);
+		final String cryptedPassword = this.userService.cryptPassword(UserTransportBuilder.USER3_PASSWORD);
 
 		User user = this.userService.getUserById(userId);
 		Assertions.assertEquals(user.getPassword(), cryptedPassword);
@@ -115,31 +94,16 @@ class ChangePasswordTest extends AbstractControllerTest {
 
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new ChangePasswordRequest());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new ChangePasswordRequest());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(this.userPassword);
-		request.setPassword(this.userPassword + "new");
+		request.setOldPassword(UserTransportBuilder.ADMIN_PASSWORD);
+		request.setPassword(UserTransportBuilder.ADMIN_PASSWORD + "new");
 
 		super.callUsecaseExpect204(request);
 	}

@@ -22,7 +22,6 @@ import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
@@ -205,28 +204,13 @@ class CreateCapitalsourceTest extends AbstractCapitalsourceTest {
 		Assertions.assertNull(capitalsource.getBankAccount());
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		super.setUsername(UserTransportBuilder.IMPORTUSER_NAME);
-		super.setPassword(UserTransportBuilder.IMPORTUSER_PASSWORD);
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new CapitalsourceTransport());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		super.setUsername(null);
-		super.setPassword(null);
-
-		super.callUsecaseExpect403(new CapitalsourceTransport());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		super.setUsername(UserTransportBuilder.ADMIN_NAME);
-		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
-
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final CapitalsourceTransport transport = new CapitalsourceTransportBuilder().forNewCapitalsource().build();
 
 		super.callUsecaseExpect204(transport);

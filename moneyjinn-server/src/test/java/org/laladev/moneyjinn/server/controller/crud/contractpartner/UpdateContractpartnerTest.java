@@ -19,7 +19,6 @@ import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
@@ -165,27 +164,13 @@ class UpdateContractpartnerTest extends AbstractContractpartnerTest {
 		Assertions.assertEquals(ContractpartnerTransportBuilder.CONTRACTPARTNER5_NAME, contractpartner.getName());
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		super.setUsername(UserTransportBuilder.IMPORTUSER_NAME);
-		super.setPassword(UserTransportBuilder.IMPORTUSER_PASSWORD);
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new ContractpartnerTransport());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		super.setUsername(null);
-		super.setPassword(null);
-
-		super.callUsecaseExpect403(new ContractpartnerTransport());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		super.setUsername(UserTransportBuilder.ADMIN_NAME);
-		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final ContractpartnerTransport transport = new ContractpartnerTransportBuilder().forContractpartner1().build();
 		transport.setPostingAccountId(null); // otherwise not existing id referenced
 

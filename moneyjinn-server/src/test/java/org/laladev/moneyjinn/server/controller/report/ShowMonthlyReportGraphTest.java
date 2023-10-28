@@ -8,45 +8,24 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.server.builder.PostingAccountAmountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlyReportGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowMonthlyReportGraphResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
-import org.springframework.test.context.jdbc.Sql;
 
 import jakarta.inject.Inject;
 
-class ShowMonthlyReportGraphTest extends AbstractControllerTest {
+class ShowMonthlyReportGraphTest extends AbstractWebUserControllerTest {
 	@Inject
 	private ISettingService settingService;
-
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -142,8 +121,9 @@ class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 
 	@Test
 	void test_privateMoneyflows_ignored() throws Exception {
-		this.userName = UserTransportBuilder.USER3_NAME;
-		this.userPassword = UserTransportBuilder.USER3_PASSWORD;
+		super.setUsername(UserTransportBuilder.USER3_NAME);
+		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
+
 		final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
 		request.setStartDate(LocalDate.parse("1970-01-01"));
 		request.setEndDate(LocalDate.parse("2099-12-31"));
@@ -169,37 +149,13 @@ class ShowMonthlyReportGraphTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new ShowMonthlyReportGraphRequest());
 	}
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new ShowMonthlyReportGraphRequest());
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
-		final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
-
-		super.callUsecaseExpect200(request, ShowMonthlyReportGraphResponse.class);
-	}
-
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabaseFakeRequestData_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final ShowMonthlyReportGraphRequest request = new ShowMonthlyReportGraphRequest();
 		request.setStartDate(LocalDate.parse("2010-04-01"));
 		request.setEndDate(LocalDate.parse("2010-12-31"));

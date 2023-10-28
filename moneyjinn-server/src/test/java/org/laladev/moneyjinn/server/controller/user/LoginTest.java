@@ -18,25 +18,12 @@ import jakarta.inject.Inject;
 
 class LoginTest extends AbstractControllerTest {
 	@Inject
-	JwtTokenProvider jwtTokenProvider;
-
-	private String userName;
-	private String userPassword;
+	private JwtTokenProvider jwtTokenProvider;
 
 	@BeforeEach
 	public void setUp() {
-		this.userName = null;
-		this.userPassword = null;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
+		super.setUsername(null);
+		super.setPassword(null);
 	}
 
 	@Override
@@ -114,12 +101,12 @@ class LoginTest extends AbstractControllerTest {
 	@Test
 	@Sql("classpath:h2defaults.sql")
 	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
 
 		final LoginRequest request = new LoginRequest();
-		request.setUserName(this.userName);
-		request.setUserPassword(this.userPassword);
+		request.setUserName(UserTransportBuilder.ADMIN_NAME);
+		request.setUserPassword(UserTransportBuilder.ADMIN_PASSWORD);
 
 		super.callUsecaseExpect200(request, LoginResponse.class);
 	}

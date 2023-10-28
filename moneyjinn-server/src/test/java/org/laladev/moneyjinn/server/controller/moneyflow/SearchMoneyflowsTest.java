@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
@@ -18,7 +17,7 @@ import org.laladev.moneyjinn.server.builder.MoneyflowSplitEntryTransportBuilder;
 import org.laladev.moneyjinn.server.builder.MoneyflowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.PostingAccountTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
+import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
@@ -26,28 +25,9 @@ import org.laladev.moneyjinn.server.model.SearchMoneyflowsRequest;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.springframework.test.context.jdbc.Sql;
 
-class SearchMoneyflowsTest extends AbstractControllerTest {
+class SearchMoneyflowsTest extends AbstractWebUserControllerTest {
 	private static final Integer SHORT_1 = 1;
-	private String userName;
-	private String userPassword;
-
-	@BeforeEach
-	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
-	}
-
-	@Override
-	protected String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	protected String getPassword() {
-		return this.userPassword;
-	}
 
 	@Override
 	protected void loadMethod() {
@@ -417,25 +397,10 @@ class SearchMoneyflowsTest extends AbstractControllerTest {
 	}
 
 	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
-		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
-
-		super.callUsecaseExpect403(new SearchMoneyflowsRequest());
-	}
-
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		this.userName = null;
-		this.userPassword = null;
-
-		super.callUsecaseExpect403(new SearchMoneyflowsRequest());
-	}
-
-	@Test
 	void test_noTransport_ErrorResponse() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+
 		final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
 		final ValidationResponse expected = new ValidationResponse();
 		final ValidationItemTransport validationItemTransport1 = new ValidationItemTransport();
@@ -449,11 +414,13 @@ class SearchMoneyflowsTest extends AbstractControllerTest {
 		Assertions.assertEquals(expected, actual);
 	}
 
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		this.userName = UserTransportBuilder.ADMIN_NAME;
-		this.userPassword = UserTransportBuilder.ADMIN_PASSWORD;
+	@Override
+	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
+		super.callUsecaseExpect403(new SearchMoneyflowsRequest());
+	}
+
+	@Override
+	protected void callUsecaseEmptyDatabase() throws Exception {
 		final SearchMoneyflowsRequest request = new SearchMoneyflowsRequest();
 		final MoneyflowSearchParamsTransport transport = new MoneyflowSearchParamsTransport();
 		transport.setSearchString("hugo");
