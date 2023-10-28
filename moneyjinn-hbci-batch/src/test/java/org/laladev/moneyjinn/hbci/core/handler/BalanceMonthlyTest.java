@@ -34,6 +34,9 @@ public class BalanceMonthlyTest {
 		am.setBalanceDate(date);
 		am.setBalanceValue(amount);
 
+		am.setBookingDate(date);
+		am.setValueDate(date);
+
 		return am;
 	}
 

@@ -56,7 +56,7 @@ import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
 	// @formatter:off
-	private final static String STATEMENT =
+	private final static String INSERT_STATEMENT =
 			"   INSERT "
 			+ "   INTO balance_monthly "
 			+ "      ( my_iban "
@@ -82,6 +82,18 @@ public class BalanceMonthlyHandler extends AbstractHandler {
                        // if the balance_value is the same, trigger a Column-cannot-be-NULL error and execute
 			           // no update at all - to prevent notifying any Observers
 			+ "        balance_value  = IF(VALUES(balance_value) = balance_value, NULL, VALUES(balance_value)) ";
+
+	
+	private final static String SELECT_STATEMENT =
+			"   SELECT id "
+			+ "   FROM balance_monthly "
+			+ "  WHERE my_iban          = ?"
+			+ "    AND my_bic           = ?"
+			+ "    AND my_accountnumber = ? "
+			+ "    AND my_bankcode      = ?"
+			+ "    AND balance_year     = ?"
+			+ "    AND balance_month    = ?"
+			+ "  LIMIT 1";	
 	// @formatter:on
 
 	private final BalanceDaily balanceDaily;
@@ -112,8 +124,17 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			final List<AccountMovement> movementsUntilToday = accountMovements.stream()
 					.filter(am -> am.getBalanceDate().isBefore(LocalDate.now())).toList();
 
+			// Now remove all AccountMovements which have a balanceDate and bookingDate off
+			// by a month.
+			// Example: bookingDate=2022-10-27, valueDate=2023-03-31, balanceDate=2022-10-27
+			// (wrong year on balanceDate!)
+			final List<AccountMovement> movementsWithoutInvalid = movementsUntilToday.stream().filter(
+					am -> java.time.temporal.ChronoUnit.DAYS.between(am.getBalanceDate(), am.getValueDate()) < 30)
+					.toList();
+
 			// Now generate BalanceMonthly entries for each AccountMovement
-			final Iterator<AccountMovement> movementsIterator = movementsUntilToday.iterator();
+			final Iterator<AccountMovement> movementsIterator = movementsWithoutInvalid.iterator();
+
 			if (movementsIterator.hasNext()) {
 				AccountMovement accountMovementPrev = movementsIterator.next();
 				YearMonth yearMonthPrev = YearMonth.from(accountMovementPrev.getBalanceDate());
@@ -187,7 +208,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
 		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
+		try (final PreparedStatement stmt = con.prepareStatement(INSERT_STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, balanceMonthly.getMyIban());
 			stmt.setString(2, balanceMonthly.getMyBic());
 			stmt.setLong(3, balanceMonthly.getMyAccountnumber());
@@ -203,10 +224,27 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 				if (rs.next()) {
 					balanceMonthly.setId(rs.getInt(1));
 				}
+
+				this.notifyObservers(balanceMonthly);
+			} else if (rowCount == 2) {
+				try (final PreparedStatement stmt2 = con.prepareStatement(SELECT_STATEMENT)) {
+					stmt2.setString(1, balanceMonthly.getMyIban());
+					stmt2.setString(2, balanceMonthly.getMyBic());
+					stmt2.setLong(3, balanceMonthly.getMyAccountnumber());
+					stmt2.setInt(4, balanceMonthly.getMyBankcode());
+					stmt2.setInt(5, balanceMonthly.getBalanceYear());
+					stmt2.setInt(6, balanceMonthly.getBalanceMonth());
+
+					final ResultSet rs = stmt2.executeQuery();
+					if (rs.next()) {
+						balanceMonthly.setId(rs.getInt(1));
+
+						this.notifyObservers(balanceMonthly);
+					}
+				}
 			}
 			con.commit();
 
-			this.notifyObservers(balanceMonthly);
 		} catch (final SQLException e) {
 			// ignore: Column 'balance_value' cannot be null
 			if (e.getErrorCode() != 1048)
