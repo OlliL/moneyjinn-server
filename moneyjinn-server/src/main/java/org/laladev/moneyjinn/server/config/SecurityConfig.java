@@ -131,7 +131,7 @@ public class SecurityConfig {
             .requestMatchers(antMatchers("/actuator/**")).permitAll()
             .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
             .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAnyAuthority(UserPermission.IMPORT.name(), UserPermission.ADMIN.name())
-            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAuthority(UserPermission.WEB.name())
+            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAnyAuthority(UserPermission.WEB.name(), UserPermission.ADMIN.name())
             // Whatever else you trying: deny
             .requestMatchers(antMatchers("/**")).denyAll()
             .anyRequest().authenticated()
