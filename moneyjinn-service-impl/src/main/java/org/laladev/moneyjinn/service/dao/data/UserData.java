@@ -36,4 +36,5 @@ public class UserData {
 	private boolean permLogin;
 	private boolean permAdmin;
 	private boolean attChangePassword;
+	private boolean permImport;
 }

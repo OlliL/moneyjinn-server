@@ -8,6 +8,7 @@
                 ,password
                 ,perm_login          as permLogin
                 ,perm_admin          as permAdmin
+                ,perm_import         as permImport
                 ,att_change_password as attChangePassword
         </sql>
 
@@ -48,6 +49,7 @@
                       ,password
                       ,perm_login
                       ,perm_admin
+                      ,perm_import
                       ,att_change_password
                       ,att_user
                       )
@@ -56,6 +58,7 @@
                       ,#{password}
                       ,#{permLogin}
                       ,#{permAdmin}
+                      ,#{permImport}
                       ,1
                       ,1
                       )
@@ -66,6 +69,7 @@
                    SET name                = #{name}
                       ,perm_login          = #{permLogin}
                       ,perm_admin          = #{permAdmin}
+                      ,perm_import         = #{permImport}
                       ,att_change_password = #{attChangePassword}
                  WHERE att_user = 1
                    AND id       = #{id}

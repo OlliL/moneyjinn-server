@@ -54,9 +54,9 @@ mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-quote-names --sk
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 
 cat << EOF >> ${PROGPATH}/mysqldump.sql
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admingroup',NULL,0,0,0,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('root','NULL',0,0,0,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admingroup',NULL,0,0,0,0,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('root','NULL',0,0,0,0,0);
 UPDATE access SET id=0 WHERE name='root';
 UPDATE access SET id=3 WHERE name='admin';
 UPDATE access SET id=1 WHERE name='admingroup';

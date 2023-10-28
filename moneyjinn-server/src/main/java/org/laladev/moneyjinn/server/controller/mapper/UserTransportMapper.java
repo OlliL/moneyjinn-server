@@ -72,7 +72,7 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 			permissions.add(UserPermission.ADMIN);
 		}
 		if (this.isTrue(b.getUserCanLogin())) {
-			permissions.add(UserPermission.LOGIN);
+			permissions.add(UserPermission.WEB);
 		}
 		if (permissions.isEmpty()) {
 			permissions.add(UserPermission.NONE);
@@ -106,7 +106,7 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 
 	@Named("mapUserPermissionLoginToTransport")
 	default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
-		if (a != null && a.contains(UserPermission.LOGIN)) {
+		if (a != null && a.contains(UserPermission.WEB)) {
 			return 1;
 		}
 		return null;

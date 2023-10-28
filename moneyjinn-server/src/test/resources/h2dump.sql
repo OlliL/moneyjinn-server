@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for FreeBSD13.2 (amd64)
+-- MySQL dump 10.13  Distrib 8.0.33, for FreeBSD13.2 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,6 +30,7 @@ CREATE TABLE `access` (
   `att_change_password` tinyint unsigned NOT NULL,
   `perm_login` tinyint unsigned NOT NULL,
   `perm_admin` tinyint unsigned NOT NULL,
+  `perm_import` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mac_i_01` (`name`,`att_user`)
 );

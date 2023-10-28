@@ -1,13 +1,12 @@
-Umsatzauskunft - gebuchte Ums‰tze
-Name;Petra Pfiffig
-BLZ;20010020
-Kontonummer;9999999999
-IBAN;DE31200100209999999999
-Aktueller Kontostand;5.314,05 Ä
-Summe vorgemerkter Ums‰tze;-11,33 Ä
+ÔªøUms√§tze
+Konto;Filial-/Kontonummer;IBAN;W√§hrung
+Postbank Giro extra plus;209 6905434 00;DE19440100460627378467;EUR
 
-"Buchungstag";"Wertstellung";"Umsatzart";"Buchungsdetails";"Auftraggeber";"Empf‰nger";"Betrag (Ä)";"Saldo (Ä)"
-"03.05.2010";"03.05.2010";"‹berweisung";"test1 ";"Petra Pfiffig";"Qartner2";"-5,00 Ä";"5.314,05 Ä"
-"13.05.2010";"13.05.2010";"Gutschrift";"test2 ";"Finanzkasse Kˆln-S¸d";"Petra Pfiffig";"1.000,00 Ä";"5.642,80 Ä"
-"01.02.2010";"01.02.2010";"‹berweisung";"test1 ";"Petra Pfiffig";"Hugo";"10,00 Ä";"5.314,05 Ä"
-"10.01.2010";"10.01.2010";"‹berweisung";"test1 ";"Petra Pfiffig";"Paul";"-10,00 Ä";"5.314,05 Ä"
+10.01.2010 - 13.05.2023
+Letzter Kontostand;;;;5.314,05;EUR
+Vorgemerkte und noch nicht gebuchte Ums√§tze sind nicht Bestandteil dieser √úbersicht.
+Buchungstag;Wert;Umsatzart;Beg√ºnstigter / Auftraggeber;Verwendungszweck;IBAN / Kontonummer;BIC;Kundenreferenz;Mandatsreferenz;Gl√§ubiger ID;Fremde Geb√ºhren;Betrag;Abweichender Empf√§nger;Anzahl der Auftr√§ge;Anzahl der Schecks;Soll;Haben;W√§hrung
+03.05.2010;03.05.2010;SEPA √úberweisung;Qartner2;test1;;;;;;;-5,00;;;-5,00;;EUR
+13.05.2010;13.05.2010;Gutschrift;Finanzkasse K√∂ln-S√ºd;test2;;;;;;;1000,00;;;;1000,00;EUR
+01.02.2010;01.02.2010;SEPA √úberweisung;Hugo;test1;;;;;;;10,00;;;;10,00;EUR
+10.01.2010;10.01.2010;SEPA √úberweisung;Paul;test1;;;;;;;-10,00;;;10,00;;EUR

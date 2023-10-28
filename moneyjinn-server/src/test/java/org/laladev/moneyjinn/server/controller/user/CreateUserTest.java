@@ -140,7 +140,7 @@ class CreateUserTest extends AbstractControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
 		// instead of NONE -----------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN, UserPermission.LOGIN), user.getPermissions());
+		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN, UserPermission.WEB), user.getPermissions());
 	}
 
 	@Test

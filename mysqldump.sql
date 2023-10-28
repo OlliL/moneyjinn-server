@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for FreeBSD13.2 (amd64)
+-- MySQL dump 10.13  Distrib 8.0.33, for FreeBSD13.2 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,6 +30,7 @@ CREATE TABLE `access` (
   `att_change_password` tinyint unsigned NOT NULL,
   `perm_login` tinyint unsigned NOT NULL,
   `perm_admin` tinyint unsigned NOT NULL,
+  `perm_import` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mac_i_01` (`name`,`att_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mac';
@@ -548,15 +549,15 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-11  2:28:49
+-- Dump completed on 2023-10-28 11:42:20
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wertstellung','Umsatzart','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',2,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt|Dauergutschrift)/',NULL,NULL);
+INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner','/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger','',';',1,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admingroup',NULL,0,0,0,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('root','NULL',0,0,0,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admingroup',NULL,0,0,0,0,0);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('root','NULL',0,0,0,0,0);
 UPDATE access SET id=0 WHERE name='root';
 UPDATE access SET id=3 WHERE name='admin';
 UPDATE access SET id=1 WHERE name='admingroup';

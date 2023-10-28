@@ -66,7 +66,10 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 			permissions.add(UserPermission.ADMIN);
 		}
 		if (b.isPermLogin()) {
-			permissions.add(UserPermission.LOGIN);
+			permissions.add(UserPermission.WEB);
+		}
+		if (b.isPermImport()) {
+			permissions.add(UserPermission.IMPORT);
 		}
 		if (permissions.isEmpty()) {
 			permissions.add(UserPermission.NONE);
@@ -78,6 +81,7 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 	@Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
 	@Mapping(target = "permLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToData")
 	@Mapping(target = "permAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToData")
+	@Mapping(target = "permImport", source = "permissions", qualifiedByName = "mapUserPermissionImportToData")
 	UserData mapAToB(User a);
 
 	@Named("mapUserAttributeIsNewToData")
@@ -92,6 +96,11 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 
 	@Named("mapUserPermissionLoginToData")
 	default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
-		return (a != null && a.contains(UserPermission.LOGIN));
+		return (a != null && a.contains(UserPermission.WEB));
+	}
+
+	@Named("mapUserPermissionImportToData")
+	default boolean mapUserPermissionImportToData(final Collection<UserPermission> a) {
+		return (a != null && a.contains(UserPermission.IMPORT));
 	}
 }

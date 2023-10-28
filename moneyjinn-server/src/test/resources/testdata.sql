@@ -1,10 +1,10 @@
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2',1,1,1,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (5,'user3','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,1,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2',1,1,1,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,0,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (5,'user3','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,1,0,0);
 
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (6,'group1',null,0,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (7,'group2',null,0,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin) values (8,'group3',null,0,0,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (6,'group1',null,0,0,0,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (7,'group2',null,0,0,0,0,0);
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (8,'group3',null,0,0,0,0,0);
 
 insert into access_relation (id,ref_id,validfrom,validtil) values (6,0,'2000-01-01','2999-12-31');
 insert into access_relation (id,ref_id,validfrom,validtil) values (7,0,'2000-01-01','2999-12-31');
