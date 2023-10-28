@@ -98,6 +98,15 @@ class UpdateGroupTest extends AbstractControllerTest {
 	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		super.callUsecaseExpect403(new UpdateGroupRequest());
+	}
+
+	@Test
+	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
+		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
+
 		super.callUsecaseExpect403(new UpdateGroupRequest());
 	}
 
@@ -105,6 +114,7 @@ class UpdateGroupTest extends AbstractControllerTest {
 	void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;
+
 		super.callUsecaseExpect403(new UpdateGroupRequest());
 	}
 }

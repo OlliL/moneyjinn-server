@@ -121,7 +121,8 @@ public class UserController extends AbstractController implements UserController
 	private LoginResponse generateLoginResponse(final User user) {
 		final LoginResponse response = new LoginResponse();
 		if (user != null) {
-			if (!user.getPermissions().contains(UserPermission.WEB)) {
+			if (!user.getPermissions().contains(UserPermission.WEB)
+					&& !user.getPermissions().contains(UserPermission.IMPORT)) {
 				throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
 			}
 			final List<String> permissions = user.getPermissions().stream().map(Enum::name).toList();

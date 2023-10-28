@@ -55,6 +55,7 @@ class ShowUserListTest extends AbstractControllerTest {
 		userTransports.add(new UserTransportBuilder().forUser1().build());
 		userTransports.add(new UserTransportBuilder().forUser2().build());
 		userTransports.add(new UserTransportBuilder().forUser3().build());
+		userTransports.add(new UserTransportBuilder().forImportUser().build());
 		expected.setUserTransports(userTransports);
 		final List<GroupTransport> groupTransports = new ArrayList<>();
 		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
@@ -65,6 +66,7 @@ class ShowUserListTest extends AbstractControllerTest {
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser1_2000_01_01().build());
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser2_2000_01_01().build());
 		accessRelationTransports.add(new AccessRelationTransportBuilder().forUser3_2000_01_01().build());
+		accessRelationTransports.add(new AccessRelationTransportBuilder().forImportUser_2000_01_01().build());
 		expected.setAccessRelationTransports(accessRelationTransports);
 		return expected;
 	}
@@ -80,6 +82,14 @@ class ShowUserListTest extends AbstractControllerTest {
 	void test_OnlyAdminAllowed_ErrorResponse() throws Exception {
 		this.userName = UserTransportBuilder.USER1_NAME;
 		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		super.callUsecaseExpect403();
+	}
+
+	@Test
+	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
+		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
 
 		super.callUsecaseExpect403();
 	}

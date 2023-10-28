@@ -74,6 +74,9 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 		if (this.isTrue(b.getUserCanLogin())) {
 			permissions.add(UserPermission.WEB);
 		}
+		if (this.isTrue(b.getUserCanImport())) {
+			permissions.add(UserPermission.IMPORT);
+		}
 		if (permissions.isEmpty()) {
 			permissions.add(UserPermission.NONE);
 		}
@@ -83,6 +86,7 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 	@Override
 	@Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
 	@Mapping(target = "userCanLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToTransport")
+	@Mapping(target = "userCanImport", source = "permissions", qualifiedByName = "mapUserPermissionImportToTransport")
 	@Mapping(target = "userIsAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToTransport")
 	@Mapping(target = "userName", source = "name")
 	@Mapping(target = "userPassword", ignore = true)
@@ -107,6 +111,15 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 	@Named("mapUserPermissionLoginToTransport")
 	default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
 		if (a != null && a.contains(UserPermission.WEB)) {
+			return 1;
+		}
+		return null;
+
+	}
+
+	@Named("mapUserPermissionImportToTransport")
+	default Integer mapUserPermissionImportToTransport(final Collection<UserPermission> a) {
+		if (a != null && a.contains(UserPermission.IMPORT)) {
 			return 1;
 		}
 		return null;

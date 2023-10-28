@@ -116,6 +116,14 @@ class ChangePasswordTest extends AbstractControllerTest {
 	}
 
 	@Test
+	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
+		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
+
+		super.callUsecaseExpect403(new ChangePasswordRequest());
+	}
+
+	@Test
 	void test_AuthorizationRequired_Error() throws Exception {
 		this.userName = null;
 		this.userPassword = null;

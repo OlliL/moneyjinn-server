@@ -41,8 +41,8 @@ class CreateImportedBalanceTest extends AbstractControllerTest {
 
 	@BeforeEach
 	public void setUp() {
-		this.userName = UserTransportBuilder.USER1_NAME;
-		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+		this.userName = UserTransportBuilder.IMPORTUSER_NAME;
+		this.userPassword = UserTransportBuilder.IMPORTUSER_PASSWORD;
 	}
 
 	@Override
@@ -191,6 +191,14 @@ class CreateImportedBalanceTest extends AbstractControllerTest {
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
 
 		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	void test_OnlyImportRoleAllowed_ErrorResponse() throws Exception {
+		this.userName = UserTransportBuilder.USER1_NAME;
+		this.userPassword = UserTransportBuilder.USER1_PASSWORD;
+
+		super.callUsecaseExpect403();
 	}
 
 	@Test

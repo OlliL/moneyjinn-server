@@ -62,6 +62,14 @@ public class AccessRelationTransportBuilder extends AccessRelationTransport {
 		return this;
 	}
 
+	public AccessRelationTransportBuilder forImportUser_2000_01_01() {
+		super.setId(UserTransportBuilder.IMPORTUSER_ID);
+		super.setRefId(GroupTransportBuilder.GROUP1_ID);
+		super.setValidfrom(LocalDate.parse("2000-01-01"));
+		super.setValidtil(LocalDate.parse("2999-12-31"));
+		return this;
+	}
+
 	public AccessRelationTransportBuilder forNewUser_2000_01_01() {
 		super.setId(UserTransportBuilder.NON_EXISTING_ID);
 		super.setRefId(GroupTransportBuilder.GROUP1_ID);

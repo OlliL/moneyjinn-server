@@ -6,6 +6,8 @@ insert into access (id,name,password,att_user,att_change_password,perm_login,per
 insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (7,'group2',null,0,0,0,0,0);
 insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (8,'group3',null,0,0,0,0,0);
 
+insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (9,'importuser','272c2d7dec93029abac86fb647b48e0f3bb3aa45',1,0,0,0,1);
+
 insert into access_relation (id,ref_id,validfrom,validtil) values (6,0,'2000-01-01','2999-12-31');
 insert into access_relation (id,ref_id,validfrom,validtil) values (7,0,'2000-01-01','2999-12-31');
 
@@ -16,6 +18,7 @@ insert into access_relation (id,ref_id,validfrom,validtil) values (3,7,'2800-01-
 
 insert into access_relation (id,ref_id,validfrom,validtil) values (4,6,'2000-01-01','2999-12-31');
 insert into access_relation (id,ref_id,validfrom,validtil) values (5,6,'2000-01-01','2999-12-31');
+insert into access_relation (id,ref_id,validfrom,validtil) values (9,6,'2000-01-01','2999-12-31');
 
 insert into access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) values (3,'2000-01-01','2599-12-31',3,6,0);
 insert into access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) values (3,'2600-01-01','6599-12-31',3,7,0);

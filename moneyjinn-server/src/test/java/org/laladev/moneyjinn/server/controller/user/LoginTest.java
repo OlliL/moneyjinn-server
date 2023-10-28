@@ -65,6 +65,26 @@ class LoginTest extends AbstractControllerTest {
 	}
 
 	@Test
+	void test_ImportUser_Successfull() throws Exception {
+		final String username = UserTransportBuilder.IMPORTUSER_NAME;
+		final String password = UserTransportBuilder.IMPORTUSER_PASSWORD;
+
+		final LoginRequest request = new LoginRequest();
+		request.setUserName(username);
+		request.setUserPassword(password);
+
+		final LoginResponse response = super.callUsecaseExpect200(request, LoginResponse.class);
+
+		Assertions.assertEquals(new UserTransportBuilder().forImportUser().build(), response.getUserTransport());
+
+		Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getToken()));
+		Assertions.assertFalse(this.jwtTokenProvider.isRefreshToken(response.getToken()));
+
+		Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getRefreshToken()));
+		Assertions.assertTrue(this.jwtTokenProvider.isRefreshToken(response.getRefreshToken()));
+	}
+
+	@Test
 	void test_LockedUser_ErrorResponse() throws Exception {
 		final String username = UserTransportBuilder.USER2_NAME;
 		final String password = UserTransportBuilder.USER2_PASSWORD;

@@ -61,6 +61,14 @@ class ReadAllContractpartnerAccountTest extends AbstractContractpartnerAccountTe
 	}
 
 	@Test
+	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
+		super.setUsername(UserTransportBuilder.IMPORTUSER_NAME);
+		super.setPassword(UserTransportBuilder.IMPORTUSER_PASSWORD);
+
+		super.callUsecaseExpect403WithUriVariables(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+	}
+
+	@Test
 	void test_AuthorizationRequired_Error() throws Exception {
 		super.setUsername(null);
 		super.setPassword(null);

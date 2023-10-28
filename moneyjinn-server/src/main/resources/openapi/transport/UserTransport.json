@@ -26,6 +26,10 @@
 		"userCanLogin": {
 			"type": "integer",
 			"format": "int32"
+		},
+		"userCanImport": {
+			"type": "integer",
+			"format": "int32"
 		}
 	}
 }
