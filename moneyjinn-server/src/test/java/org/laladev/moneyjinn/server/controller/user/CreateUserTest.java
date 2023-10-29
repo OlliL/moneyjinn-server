@@ -23,6 +23,7 @@ import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
+import org.laladev.moneyjinn.server.model.UserTransport.RoleEnum;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
@@ -94,7 +95,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 		Assertions.assertEquals(null, user.getPassword());
-		// instead of NONE -----------------------------vvvvvv
+		// instead of NONE ---------------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
 	}
 
@@ -115,12 +116,54 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
-		// sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		// sha1 of 123 ----------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
 		Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
-		// instead of NONE -----------------------------vvvvvv
+		// instead of NONE ---------------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
 		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+	}
+
+	@Test
+	void test_createRegularUser_Successfull() throws Exception {
+		final CreateUserRequest request = new CreateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
+		transport.setUserPassword("123");
+		transport.setRole(RoleEnum.STANDARD);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect200(request, CreateUserResponse.class);
+
+		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
+		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+	}
+
+	@Test
+	void test_createImportUser_Successfull() throws Exception {
+		final CreateUserRequest request = new CreateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
+		transport.setUserPassword("123");
+		transport.setRole(RoleEnum.IMPORT);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect200(request, CreateUserResponse.class);
+
+		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
+		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+	}
+
+	@Test
+	void test_createLockedUser_Successfull() throws Exception {
+		final CreateUserRequest request = new CreateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
+		transport.setUserPassword("123");
+		transport.setRole(RoleEnum.INACTIVE);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect200(request, CreateUserResponse.class);
+
+		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
+		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test

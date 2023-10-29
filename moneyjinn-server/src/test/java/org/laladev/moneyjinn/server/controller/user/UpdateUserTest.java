@@ -120,12 +120,129 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		// sha1 of 123 ------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		// sha1 of 123 ----------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
 		Assertions.assertEquals("hugo", user.getName());
-		// instead of NONE -----------------------------vvvvvv
+		// instead of NONE ---------------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
 		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+	}
+
+	@Test
+	void test_makeAdminUserStandard_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forAdmin().build();
+		transport.setRole(RoleEnum.STANDARD);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
+		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+	}
+
+	@Test
+	void test_makeAdminUserImport_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forAdmin().build();
+		transport.setRole(RoleEnum.IMPORT);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
+		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+	}
+
+	@Test
+	void test_makeAdminUserInactive_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forAdmin().build();
+		transport.setRole(RoleEnum.INACTIVE);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
+		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+	}
+
+	@Test
+	void test_makeStandardUserAdmin_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
+		transport.setRole(RoleEnum.ADMIN);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
+		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+	}
+
+	@Test
+	void test_makeStandardUserImport_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
+		transport.setRole(RoleEnum.IMPORT);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
+		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+	}
+
+	@Test
+	void test_makeStandardUserInactive_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forUser1().build();
+		transport.setRole(RoleEnum.INACTIVE);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
+		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+	}
+
+	@Test
+	void test_makeImportUserAdmin_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forImportUser().build();
+		transport.setRole(RoleEnum.ADMIN);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
+		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+	}
+
+	@Test
+	void test_makeImportUserStandard_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forImportUser().build();
+		transport.setRole(RoleEnum.STANDARD);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
+		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+	}
+
+	@Test
+	void test_makeImportUserInactive_Successfull() throws Exception {
+		final UpdateUserRequest request = new UpdateUserRequest();
+		final UserTransport transport = new UserTransportBuilder().forImportUser().build();
+		transport.setRole(RoleEnum.INACTIVE);
+		request.setUserTransport(transport);
+
+		super.callUsecaseExpect204(request);
+
+		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
+		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test

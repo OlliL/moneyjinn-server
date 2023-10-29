@@ -35,6 +35,17 @@ class DeleteUserByIdTest extends AbstractAdminUserControllerTest {
 	}
 
 	@Test
+	void test_importUserNoData_SuccessfullNoContent() throws Exception {
+		User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
+		Assertions.assertNotNull(user);
+
+		super.callUsecaseExpect204WithUriVariables(UserTransportBuilder.IMPORTUSER_ID);
+
+		user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
+		Assertions.assertNull(user);
+	}
+
+	@Test
 	void test_nonExistingUser_SuccessfullNoContent() throws Exception {
 		User user = this.userService.getUserById(new UserID(UserTransportBuilder.NON_EXISTING_ID));
 		Assertions.assertNull(user);
