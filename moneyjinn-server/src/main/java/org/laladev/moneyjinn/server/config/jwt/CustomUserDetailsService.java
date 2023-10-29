@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.server.config.jwt;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.access.User;
@@ -55,8 +56,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 
 		final String password = this.encoder.encode(user.getPassword());
-		final List<? extends GrantedAuthority> grantedAuthorities = user.getPermissions().stream()
-				.map(p -> new SimpleGrantedAuthority(p.name())).toList();
+		final List<? extends GrantedAuthority> grantedAuthorities = Collections
+				.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
 		return new org.springframework.security.core.userdetails.User(user.getName(), password, grantedAuthorities);
 	}

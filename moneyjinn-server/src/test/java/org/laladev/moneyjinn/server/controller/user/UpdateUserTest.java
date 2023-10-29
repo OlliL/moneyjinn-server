@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -24,6 +24,7 @@ import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.UpdateUserRequest;
 import org.laladev.moneyjinn.server.model.UserTransport;
+import org.laladev.moneyjinn.server.model.UserTransport.RoleEnum;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
@@ -108,8 +109,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		final UserTransport transport = new UserTransportBuilder().forUser1().build();
 		transport.setUserPassword("123");
 		transport.setUserName("hugo");
-		transport.setUserCanLogin(0);
-		transport.setUserIsAdmin(1);
+		transport.setRole(RoleEnum.ADMIN);
 		/*
 		 * this must be ignored by the server as the password is changed (which is done
 		 * by the admin here so the user MUST reset the password afterwards)
@@ -125,7 +125,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals("hugo", user.getName());
 		// instead of NONE -----------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN), user.getPermissions());
+		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test

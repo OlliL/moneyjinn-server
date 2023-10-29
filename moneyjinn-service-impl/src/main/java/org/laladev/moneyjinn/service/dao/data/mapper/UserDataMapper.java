@@ -34,7 +34,7 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -44,7 +44,7 @@ import org.mapstruct.Named;
 public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 	@Override
 	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-	@Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
+	@Mapping(target = "role", source = ".", qualifiedByName = "mapUserRoleToEntity")
 	User mapBToA(UserData b);
 
 	@Named("mapUserAttributesToEntity")
@@ -59,29 +59,25 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 		return attributes;
 	}
 
-	@Named("mapUserPermissionsToEntity")
-	default Collection<UserPermission> mapUserPermissionsToEntity(final UserData b) {
-		final Collection<UserPermission> permissions = new ArrayList<>();
+	@Named("mapUserRoleToEntity")
+	default UserRole mapUserRoleToEntity(final UserData b) {
 		if (b.isPermAdmin()) {
-			permissions.add(UserPermission.ADMIN);
+			return UserRole.ADMIN;
 		}
 		if (b.isPermLogin()) {
-			permissions.add(UserPermission.WEB);
+			return UserRole.STANDARD;
 		}
 		if (b.isPermImport()) {
-			permissions.add(UserPermission.IMPORT);
+			return UserRole.IMPORT;
 		}
-		if (permissions.isEmpty()) {
-			permissions.add(UserPermission.NONE);
-		}
-		return permissions;
+		return UserRole.INACTIVE;
 	}
 
 	@Override
 	@Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
-	@Mapping(target = "permLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToData")
-	@Mapping(target = "permAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToData")
-	@Mapping(target = "permImport", source = "permissions", qualifiedByName = "mapUserPermissionImportToData")
+	@Mapping(target = "permLogin", source = "role", qualifiedByName = "mapUserRoleLoginToData")
+	@Mapping(target = "permAdmin", source = "role", qualifiedByName = "mapUserRoleAdminToData")
+	@Mapping(target = "permImport", source = "role", qualifiedByName = "mapUserRoleImportToData")
 	UserData mapAToB(User a);
 
 	@Named("mapUserAttributeIsNewToData")
@@ -89,18 +85,18 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 		return (a != null && a.contains(UserAttribute.IS_NEW));
 	}
 
-	@Named("mapUserPermissionAdminToData")
-	default boolean mapUserPermissionAdminToData(final Collection<UserPermission> a) {
-		return (a != null && a.contains(UserPermission.ADMIN));
+	@Named("mapUserRoleAdminToData")
+	default boolean mapUserRoleAdminToData(final UserRole a) {
+		return UserRole.ADMIN == a;
 	}
 
-	@Named("mapUserPermissionLoginToData")
-	default boolean mapUserPermissionLoginToData(final Collection<UserPermission> a) {
-		return (a != null && a.contains(UserPermission.WEB));
+	@Named("mapUserRoleLoginToData")
+	default boolean mapUserRoleLoginToData(final UserRole a) {
+		return UserRole.STANDARD == a;
 	}
 
-	@Named("mapUserPermissionImportToData")
-	default boolean mapUserPermissionImportToData(final Collection<UserPermission> a) {
-		return (a != null && a.contains(UserPermission.IMPORT));
+	@Named("mapUserRoleImportToData")
+	default boolean mapUserRoleImportToData(final UserRole a) {
+		return UserRole.IMPORT == a;
 	}
 }

@@ -30,8 +30,7 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forAdmin() {
 		super.setId(ADMIN_ID);
-		super.setUserCanLogin(SHORT_1);
-		super.setUserIsAdmin(SHORT_1);
+		super.setRole(RoleEnum.ADMIN);
 		super.setUserIsNew(SHORT_1);
 		super.setUserName(ADMIN_NAME);
 		return this;
@@ -39,8 +38,7 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forUser1() {
 		super.setId(USER1_ID);
-		super.setUserCanLogin(SHORT_1);
-		super.setUserIsAdmin(null);
+		super.setRole(RoleEnum.STANDARD);
 		super.setUserIsNew(SHORT_1);
 		super.setUserName(USER1_NAME);
 		return this;
@@ -48,8 +46,7 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forUser2() {
 		super.setId(USER2_ID);
-		super.setUserCanLogin(null);
-		super.setUserIsAdmin(null);
+		super.setRole(RoleEnum.INACTIVE);
 		super.setUserIsNew(null);
 		super.setUserName(USER2_NAME);
 		return this;
@@ -57,8 +54,7 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forUser3() {
 		super.setId(USER3_ID);
-		super.setUserCanLogin(SHORT_1);
-		super.setUserIsAdmin(null);
+		super.setRole(RoleEnum.STANDARD);
 		super.setUserIsNew(null);
 		super.setUserName(USER3_NAME);
 		return this;
@@ -66,18 +62,15 @@ public class UserTransportBuilder extends UserTransport {
 
 	public UserTransportBuilder forImportUser() {
 		super.setId(IMPORTUSER_ID);
-		super.setUserCanLogin(null);
-		super.setUserIsAdmin(null);
+		super.setRole(RoleEnum.IMPORT);
 		super.setUserIsNew(null);
-		super.setUserCanImport(SHORT_1);
 		super.setUserName(IMPORTUSER_NAME);
 		return this;
 	}
 
 	public UserTransportBuilder forNewUser() {
 		super.setId(NON_EXISTING_ID);
-		super.setUserCanLogin(SHORT_1);
-		super.setUserIsAdmin(SHORT_1);
+		super.setRole(RoleEnum.ADMIN);
 		super.setUserIsNew(null);
 		super.setUserName(NEWUSER_NAME);
 		return this;
@@ -86,9 +79,7 @@ public class UserTransportBuilder extends UserTransport {
 	public UserTransport build() {
 		final UserTransport transport = new UserTransport();
 		transport.setId(super.getId());
-		transport.setUserCanLogin(super.getUserCanLogin());
-		transport.setUserIsAdmin(super.getUserIsAdmin());
-		transport.setUserCanImport(super.getUserCanImport());
+		transport.setRole(super.getRole());
 		transport.setUserIsNew(super.getUserIsNew());
 		transport.setUserName(super.getUserName());
 		return transport;

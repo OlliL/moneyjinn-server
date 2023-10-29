@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
@@ -121,12 +122,12 @@ public class UserController extends AbstractController implements UserController
 	private LoginResponse generateLoginResponse(final User user) {
 		final LoginResponse response = new LoginResponse();
 		if (user != null) {
-			if (!user.getPermissions().contains(UserPermission.WEB)
-					&& !user.getPermissions().contains(UserPermission.IMPORT)) {
+			if (UserRole.STANDARD != user.getRole() && UserRole.IMPORT != user.getRole()
+					&& UserRole.ADMIN != user.getRole()) {
 				throw new BusinessException("Your account has been locked!", ErrorCode.ACCOUNT_IS_LOCKED);
 			}
-			final List<String> permissions = user.getPermissions().stream().map(Enum::name).toList();
-			final String token = this.jwtTokenProvider.createToken(user.getName(), permissions, user.getId().getId());
+			final List<String> roles = Collections.singletonList(user.getRole().name());
+			final String token = this.jwtTokenProvider.createToken(user.getName(), roles, user.getId().getId());
 			final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(), user.getId().getId());
 			final UserTransport userTransport = super.map(user, UserTransport.class);
 			response.setUserTransport(userTransport);

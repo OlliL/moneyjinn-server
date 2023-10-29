@@ -15,21 +15,13 @@
 		"userPassword": {
 			"type": "string"
 		},
-		"userIsAdmin": {
-			"type": "integer",
-			"format": "int32"
-		},
 		"userIsNew": {
 			"type": "integer",
 			"format": "int32"
 		},
-		"userCanLogin": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"userCanImport": {
-			"type": "integer",
-			"format": "int32"
+		"role": {
+			"type": "string",
+			"enum": ["inactive", "standard", "import", "admin"]
 		}
 	}
 }

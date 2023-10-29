@@ -13,7 +13,7 @@ import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
@@ -120,7 +120,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
 		// instead of NONE -----------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assertions.assertEquals(Arrays.asList(UserPermission.ADMIN, UserPermission.WEB), user.getPermissions());
+		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test

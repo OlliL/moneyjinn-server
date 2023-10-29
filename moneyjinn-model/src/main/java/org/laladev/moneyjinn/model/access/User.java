@@ -35,7 +35,7 @@ import lombok.ToString;
 
 /**
  * Describes a User in the System, its ID, name, password,
- * {@link UserAttribute}s and {@link UserPermission}s.
+ * {@link UserAttribute}s and {@link UserRole}s.
  *
  * @author Oliver Lehmann
  *
@@ -48,17 +48,17 @@ public class User extends AbstractAccess<UserID> {
 	private static final long serialVersionUID = 1L;
 	private String password;
 	private Collection<UserAttribute> attributes;
-	private Collection<UserPermission> permissions;
+	private UserRole role;
 
 	public User(final UserID id) {
 		super(id);
 	}
 
 	public User(final UserID id, final String name, final String password, final Collection<UserAttribute> attributes,
-			final Collection<UserPermission> permissions) {
+			final UserRole role) {
 		super(id, name);
 		this.password = password;
 		this.attributes = attributes;
-		this.permissions = permissions;
+		this.role = role;
 	}
 }

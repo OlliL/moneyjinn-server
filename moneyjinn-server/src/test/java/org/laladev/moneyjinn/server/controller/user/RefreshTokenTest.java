@@ -2,7 +2,6 @@
 package org.laladev.moneyjinn.server.controller.user;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
@@ -88,7 +87,7 @@ class RefreshTokenTest extends AbstractControllerTest {
 	@Test
 	void test_LockedUser_ErrorResponse() throws Exception {
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		user.setPermissions(Collections.singletonList(UserPermission.NONE));
+		user.setRole(UserRole.INACTIVE);
 		this.userService.updateUser(user);
 
 		final ErrorResponse response = super.callUsecaseExpect403(ErrorResponse.class);

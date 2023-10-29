@@ -34,7 +34,7 @@ import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.model.UserTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -44,7 +44,7 @@ import org.mapstruct.Named;
 public interface UserTransportMapper extends IMapstructMapper<User, UserTransport> {
 	@Override
 	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-	@Mapping(target = "permissions", source = ".", qualifiedByName = "mapUserPermissionsToEntity")
+	@Mapping(target = "role", source = "role", qualifiedByName = "mapUserRoleToEntity")
 	@Mapping(target = "name", source = "userName")
 	@Mapping(target = "password", source = "userPassword")
 	User mapBToA(UserTransport b);
@@ -65,29 +65,19 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 		return attributes;
 	}
 
-	@Named("mapUserPermissionsToEntity")
-	default Collection<UserPermission> mapUserPermissionsToEntity(final UserTransport b) {
-		final Collection<UserPermission> permissions = new ArrayList<>();
-		if (this.isTrue(b.getUserIsAdmin())) {
-			permissions.add(UserPermission.ADMIN);
-		}
-		if (this.isTrue(b.getUserCanLogin())) {
-			permissions.add(UserPermission.WEB);
-		}
-		if (this.isTrue(b.getUserCanImport())) {
-			permissions.add(UserPermission.IMPORT);
-		}
-		if (permissions.isEmpty()) {
-			permissions.add(UserPermission.NONE);
-		}
-		return permissions;
+	@Named("mapUserRoleToEntity")
+	default UserRole mapUserRoleToEntity(final UserTransport.RoleEnum b) {
+		return switch (b) {
+		case ADMIN -> UserRole.ADMIN;
+		case IMPORT -> UserRole.IMPORT;
+		case INACTIVE -> UserRole.INACTIVE;
+		case STANDARD -> UserRole.STANDARD;
+		};
 	}
 
 	@Override
 	@Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
-	@Mapping(target = "userCanLogin", source = "permissions", qualifiedByName = "mapUserPermissionLoginToTransport")
-	@Mapping(target = "userCanImport", source = "permissions", qualifiedByName = "mapUserPermissionImportToTransport")
-	@Mapping(target = "userIsAdmin", source = "permissions", qualifiedByName = "mapUserPermissionAdminToTransport")
+	@Mapping(target = "role", source = "role", qualifiedByName = "mapUserRolesToTransport")
 	@Mapping(target = "userName", source = "name")
 	@Mapping(target = "userPassword", ignore = true)
 	UserTransport mapAToB(User a);
@@ -100,28 +90,14 @@ public interface UserTransportMapper extends IMapstructMapper<User, UserTranspor
 		return null;
 	}
 
-	@Named("mapUserPermissionAdminToTransport")
-	default Integer mapUserPermissionAdminToTransport(final Collection<UserPermission> a) {
-		if (a != null && a.contains(UserPermission.ADMIN)) {
-			return 1;
-		}
-		return null;
+	@Named("mapUserRolesToTransport")
+	default UserTransport.RoleEnum mapUserRolesToEntity(final UserRole b) {
+		return switch (b) {
+		case ADMIN -> UserTransport.RoleEnum.ADMIN;
+		case IMPORT -> UserTransport.RoleEnum.IMPORT;
+		case INACTIVE -> UserTransport.RoleEnum.INACTIVE;
+		case STANDARD -> UserTransport.RoleEnum.STANDARD;
+		};
 	}
 
-	@Named("mapUserPermissionLoginToTransport")
-	default Integer mapUserPermissionLoginToTransport(final Collection<UserPermission> a) {
-		if (a != null && a.contains(UserPermission.WEB)) {
-			return 1;
-		}
-		return null;
-
-	}
-
-	@Named("mapUserPermissionImportToTransport")
-	default Integer mapUserPermissionImportToTransport(final Collection<UserPermission> a) {
-		if (a != null && a.contains(UserPermission.IMPORT)) {
-			return 1;
-		}
-		return null;
-	}
 }

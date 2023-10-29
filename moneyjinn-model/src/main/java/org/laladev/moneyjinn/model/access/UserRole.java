@@ -27,14 +27,14 @@
 package org.laladev.moneyjinn.model.access;
 
 /**
- * A list of Permissions a {@link User} can have.
+ * A list of roles a {@link User} can have.
  *
  * @author Oliver Lehmann
  *
  */
-public enum UserPermission {
-	NONE,
-	WEB,
+public enum UserRole {
+	INACTIVE,
+	STANDARD,
 	IMPORT,
 	ADMIN;
 }

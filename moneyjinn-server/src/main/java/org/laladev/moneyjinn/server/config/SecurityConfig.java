@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.laladev.moneyjinn.model.access.UserPermission;
+import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.config.jwt.RefreshOnlyGrantedAuthority;
@@ -130,8 +130,8 @@ public class SecurityConfig {
             .requestMatchers(antMatchers("/websocket")).permitAll()
             .requestMatchers(antMatchers("/actuator/**")).permitAll()
             .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAnyAuthority(UserPermission.IMPORT.name(), UserPermission.ADMIN.name())
-            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAnyAuthority(UserPermission.WEB.name(), UserPermission.ADMIN.name())
+            .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
+            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
             // Whatever else you trying: deny
             .requestMatchers(antMatchers("/**")).denyAll()
             .anyRequest().authenticated()
