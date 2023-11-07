@@ -25,14 +25,14 @@
 		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
 	
 		<spring.boot.version>3.1.5</spring.boot.version>
-		<mybatis.version>3.5.13</mybatis.version>
+		<mybatis.version>3.5.14</mybatis.version>
 		<mybatis-spring.version>3.0.2</mybatis-spring.version>
 		<commons.io.version>2.15.0</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
 		<apache.tika.version>2.9.1</apache.tika.version>
 		<jjwt.version>0.12.3</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
-		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
 		<swagger.version>2.2.18</swagger.version>
 		<openapi-generator.version>7.0.1</openapi-generator.version>
 
@@ -41,7 +41,7 @@
 
 		<!-- Maven Plugins -->
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
@@ -49,8 +49,8 @@
 		<versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.10.0</junit.version>
-		<mockito.version>5.6.0</mockito.version>
+		<junit.version>5.10.1</junit.version>
+		<mockito.version>5.7.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.8</opencsv.version>
 
