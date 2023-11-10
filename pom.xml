@@ -33,7 +33,7 @@
 		<jjwt.version>0.12.3</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
-		<swagger.version>2.2.18</swagger.version>
+		<swagger.version>2.2.19</swagger.version>
 		<openapi-generator.version>7.0.1</openapi-generator.version>
 
 		<!--for hbci-batch only-->
