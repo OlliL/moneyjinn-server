@@ -181,7 +181,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 					new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
 		} else {
 			final AccessRelation accessRelation = this.accessRelationService
-					.getAccessRelationById(moneyflow.getUser().getId(), today);
+					.getCurrentAccessRelationById(moneyflow.getUser().getId());
 			// if this check is removed, make sure the accessor is evaluated for the
 			// bookingdate,
 			// not for today otherwise it will be created with the wrong accessor

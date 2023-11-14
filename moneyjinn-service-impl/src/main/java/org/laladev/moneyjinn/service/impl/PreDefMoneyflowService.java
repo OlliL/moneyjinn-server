@@ -94,7 +94,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final PreDefMoneyflow preDefMoneyflow = super.map(preDefMoneyflowData, PreDefMoneyflow.class);
 			final UserID userId = preDefMoneyflow.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final Group accessor = this.accessRelationService.getAccessor(userId);
+			final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
 			final GroupID groupId = accessor.getId();
 			preDefMoneyflow.setUser(user);
 			PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
@@ -136,7 +136,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
 		} else {
-			final Group accessor = this.accessRelationService.getAccessor(userId);
+			final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
 					preDefMoneyflow.getCapitalsource().getId());
 			if (capitalsource == null) {

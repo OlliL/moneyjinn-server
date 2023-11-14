@@ -335,7 +335,7 @@ public class MonthlySettlementController extends AbstractController implements M
 		final List<MonthlySettlement> monthlySettlements = super.mapList(request.getMonthlySettlementTransports(),
 				MonthlySettlement.class);
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentAccessor(userId);
 		for (final MonthlySettlement monthlySettlement : monthlySettlements) {
 			monthlySettlement.setUser(user);
 			monthlySettlement.setGroup(group);

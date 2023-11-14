@@ -127,7 +127,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final Group group = moneyflow.getGroup();
 		if (bookingDate != null) {
 			final AccessRelation accessRelation = this.accessRelationService
-					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+					.getCurrentAccessRelationById(moneyflow.getUser().getId());
 			// Only modify Capitalsources or Contractpartner if the Bookingdate is within
 			// the
 			// current group assignment validity period
@@ -275,7 +275,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 			saveAsPreDefMoneyflow = true;
 		}
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentAccessor(userId);
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
@@ -340,7 +340,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentAccessor(userId);
 		final List<MoneyflowSplitEntry> updateMoneyflowSplitEntries = super.mapList(
 				request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 		final List<MoneyflowSplitEntry> insertMoneyflowSplitEntries = super.mapList(

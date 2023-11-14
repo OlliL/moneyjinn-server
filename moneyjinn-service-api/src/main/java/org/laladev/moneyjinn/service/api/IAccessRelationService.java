@@ -98,17 +98,7 @@ public interface IAccessRelationService {
 	 * @param accessRelationID The {@link AccessID}
 	 * @return The found {@link AccessRelation}
 	 */
-	AccessRelation getAccessRelationById(final AccessID accessRelationID);
-
-	/**
-	 * The valid {@link AccessRelation} for the given {@link UserID} or
-	 * {@link GroupID} at the given {@link LocalDate}.
-	 *
-	 * @param accessRelationID The {@link AccessID}
-	 * @param date             The date when the Relation must have been valid
-	 * @return The found {@link AccessRelation}
-	 */
-	AccessRelation getAccessRelationById(final AccessID accessRelationID, final LocalDate date);
+	AccessRelation getCurrentAccessRelationById(final AccessID accessRelationID);
 
 	/**
 	 * Delets all relations to the given AccessID.
@@ -132,7 +122,7 @@ public interface IAccessRelationService {
 	 * @param userId The {@link UserID}
 	 * @return The found {@link Group}
 	 */
-	Group getAccessor(AccessID userId);
+	Group getCurrentAccessor(AccessID userId);
 
 	/**
 	 * Gives all {@link UserID}s who are or where in the same group the given user

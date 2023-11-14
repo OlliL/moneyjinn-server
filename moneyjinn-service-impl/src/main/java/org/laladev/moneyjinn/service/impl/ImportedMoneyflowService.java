@@ -72,7 +72,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 			final ImportedMoneyflowData importedMoneyflowData) {
 		if (importedMoneyflowData != null) {
 			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);
-			final Group group = this.accessRelationService.getAccessor(userId, LocalDate.now());
+			final Group group = this.accessRelationService.getCurrentAccessor(userId);
 			Capitalsource capitalsource = importedMoneyflow.getCapitalsource();
 			if (capitalsource != null) {
 				final CapitalsourceID capitalsourceId = capitalsource.getId();
@@ -133,7 +133,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
-		final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(userId);
+		final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
 
 		LocalDate firewalledDateFrom;
 		LocalDate firewalledDateTil;

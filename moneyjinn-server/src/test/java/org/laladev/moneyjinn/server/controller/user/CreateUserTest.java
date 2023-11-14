@@ -180,7 +180,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
-				.getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
+				.getCurrentAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
 		Assertions.assertNotNull(accessRelation);
 		Assertions.assertEquals(accessRelationTransport.getRefId(),
 				accessRelation.getParentAccessRelation().getId().getId());
@@ -204,7 +204,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
-				.getAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
+				.getCurrentAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
 		Assertions.assertNotNull(accessRelation);
 		// default did not overwrite
 		Assertions.assertEquals(accessRelationTransport.getValidtil(), accessRelation.getValidTil());

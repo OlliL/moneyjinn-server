@@ -235,7 +235,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 		final Group group = moneyflow.getGroup();
 		if (bookingDate != null) {
 			final AccessRelation accessRelation = this.accessRelationService
-					.getAccessRelationById(moneyflow.getUser().getId(), LocalDate.now());
+					.getCurrentAccessRelationById(moneyflow.getUser().getId());
 			// Only modify Capitalsources or Contractpartner if the Bookingdate is within
 			// the
 			// current group assignment validity period
@@ -322,7 +322,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 		}
 
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentAccessor(userId);
 		importedMoneyflow.setUser(user);
 		importedMoneyflow.setGroup(group);
 		final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();

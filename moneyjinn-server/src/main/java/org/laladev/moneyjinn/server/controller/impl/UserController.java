@@ -212,7 +212,7 @@ public class UserController extends AbstractController implements UserController
 		final List<AccessRelation> accessRelationList = new ArrayList<>();
 		if (users != null && !users.isEmpty()) {
 			for (final User user : users) {
-				final AccessRelation accessRelation = this.accessRelationService.getAccessRelationById(user.getId());
+				final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(user.getId());
 				if (accessRelation != null) {
 					accessRelationList.add(accessRelation);
 					if (accessRelation.getParentAccessRelation() != null) {

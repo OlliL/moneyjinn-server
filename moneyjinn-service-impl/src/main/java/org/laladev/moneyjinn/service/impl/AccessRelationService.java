@@ -95,7 +95,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	public Group getAccessor(final AccessID accessId) {
+	public Group getCurrentAccessor(final AccessID accessId) {
 		return this.getAccessor(accessId, this.now());
 	}
 
@@ -153,17 +153,10 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	public AccessRelation getAccessRelationById(final AccessID accessRelationId) {
+	public AccessRelation getCurrentAccessRelationById(final AccessID accessRelationId) {
 		Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
-		return this.getAccessRelationById(accessRelationId, this.now());
-	}
-
-	@Override
-	public AccessRelation getAccessRelationById(final AccessID accessRelationId, final LocalDate date) {
-		Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(date, "Date must not be null!");
 		final AccessRelationData accessRelationData = this.accessRelationDao
-				.getAccessRelationById(accessRelationId.getId(), date);
+				.getAccessRelationById(accessRelationId.getId(), this.now());
 		return super.map(accessRelationData, AccessRelation.class);
 	}
 
