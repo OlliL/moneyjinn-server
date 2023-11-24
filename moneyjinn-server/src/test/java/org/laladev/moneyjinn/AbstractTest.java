@@ -21,7 +21,7 @@ import jakarta.inject.Inject;
 @ActiveProfiles("test")
 public abstract class AbstractTest {
 	@Inject
-	CacheManager cacheManager;
+	private CacheManager cacheManager;
 
 	@BeforeEach
 	public void before() {
