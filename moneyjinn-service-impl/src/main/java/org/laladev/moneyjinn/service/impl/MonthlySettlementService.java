@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -147,7 +147,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		if (allMonths != null) {
 			return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
 		}
-		return new ArrayList<>();
+		return Collections.emptyList();
 	}
 
 	@Override

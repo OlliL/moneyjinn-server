@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -106,9 +107,9 @@ public class MonthlySettlementController extends AbstractController implements M
 		final UserID userId = super.getUserId();
 		final GetAvailableMonthlySettlementMonthResponse response = new GetAvailableMonthlySettlementMonthResponse();
 		final List<Integer> allYears = this.monthlySettlementService.getAllYears(userId);
-		List<Month> allMonth = null;
 		Integer year = requestYear;
 		Month month = this.getMonth(requestMonth);
+
 		// only continue if settlements where made at all
 		if (allYears != null && !allYears.isEmpty()) {
 			// validate if settlements are recorded for the given year, if not fall back to
@@ -117,7 +118,7 @@ public class MonthlySettlementController extends AbstractController implements M
 				year = allYears.get(allYears.size() - 1);
 				month = null;
 			}
-			allMonth = this.monthlySettlementService.getAllMonth(userId, year);
+			final List<Month> allMonth = this.monthlySettlementService.getAllMonth(userId, year);
 			if (allMonth != null && !allMonth.isEmpty()) {
 				response.setAllMonth(allMonth.stream().map(Month::getValue).toList());
 				if (month != null && allMonth.contains(month)) {
@@ -138,12 +139,13 @@ public class MonthlySettlementController extends AbstractController implements M
 		final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
 		final Integer year = requestYear;
 		final Month month = this.getMonth(requestMonth);
-		List<MonthlySettlementTransport> monthlySettlementTransports = null;
+
 		// only continue if settlements where made at all
 		if (month != null && year != null) {
 			final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 					.getAllMonthlySettlementsByYearMonth(userId, year, month);
-			monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+			final List<MonthlySettlementTransport> monthlySettlementTransports = super.mapList(monthlySettlements,
+					MonthlySettlementTransport.class);
 			response.setMonthlySettlementTransports(monthlySettlementTransports);
 		}
 		return ResponseEntity.ok(response);
@@ -227,9 +229,9 @@ public class MonthlySettlementController extends AbstractController implements M
 			if (selectedMonthDoesExist) {
 				monthlySettlements.addAll(this.getMyEditableMonthlySettlements(userId, year, month));
 				/*
-				 * I could be, that for an already fixed month, a "new" capitalsource gets valid
-				 * afterwards. To make it possible to create a settlement for this new source,
-				 * add it here.
+				 * It is possible that a capitalsource gets valid for a month which has already
+				 * been settled. To make it possible to create a settlement for this new source
+				 * it gets added here.
 				 */
 				final List<CapitalsourceID> capitalsourceIds = monthlySettlements.stream()
 						.map(ms -> ms.getCapitalsource().getId()).toList();
@@ -369,6 +371,6 @@ public class MonthlySettlementController extends AbstractController implements M
 		if (monthlySettlements != null && !monthlySettlements.isEmpty()) {
 			return monthlySettlements.stream().filter(ms -> ms.getUser().getId().equals(userId)).toList();
 		}
-		return new ArrayList<>();
+		return Collections.emptyList();
 	}
 }

@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.ImportedBalance;
@@ -94,7 +94,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
 
 		if (capitalsourceIds.isEmpty()) {
-			return new ArrayList<>();
+			return Collections.emptyList();
 		}
 
 		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();

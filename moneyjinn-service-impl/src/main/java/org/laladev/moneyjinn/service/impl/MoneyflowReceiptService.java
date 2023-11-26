@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.access.UserID;
@@ -84,7 +84,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 		if (moneyflowIdsWithReceipt != null) {
 			return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new).toList();
 		} else {
-			return new ArrayList<>();
+			return Collections.emptyList();
 		}
 	}
 

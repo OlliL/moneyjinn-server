@@ -30,6 +30,7 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -256,12 +257,12 @@ public class ReportController extends AbstractController implements ReportContro
 			LocalDate endDate, final List<CapitalsourceID> capitalsourceIds, final BigDecimal lastAmount) {
 
 		if (!endDate.isAfter(startDate)) {
-			return new ArrayList<>();
+			return Collections.emptyList();
 		}
 
 		LocalDate maxMoneyflowDate = this.moneyflowService.getMaxMoneyflowDate(userId);
 		if (maxMoneyflowDate == null) {
-			return new ArrayList<>();
+			return Collections.emptyList();
 		}
 
 		maxMoneyflowDate = maxMoneyflowDate.with(TemporalAdjusters.lastDayOfMonth());
