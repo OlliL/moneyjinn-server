@@ -84,7 +84,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowController extends AbstractController implements MoneyflowControllerApi {
 	private final IUserService userService;
@@ -180,8 +179,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 			}
 		}
 		// use the comment and postingaccount of the 1st split booking for the main
-		// booking if
-		// nothing is specified
+		// booking if nothing is specified
 		if (!moneyflowSplitEntries.isEmpty()) {
 			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
 			if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
@@ -270,10 +268,12 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
 				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 		final Long preDefMoneyflowIdLong = request.getUsedPreDefMoneyflowId();
-		boolean saveAsPreDefMoneyflow = false;
-		if (Integer.valueOf(1).equals(request.getSaveAsPreDefMoneyflow())) {
-			saveAsPreDefMoneyflow = true;
-		}
+		PreDefMoneyflowID preDefMoneyflowId = preDefMoneyflowIdLong != null
+				? new PreDefMoneyflowID(preDefMoneyflowIdLong)
+				: null;
+
+		final boolean saveAsPreDefMoneyflow = Integer.valueOf(1).equals(request.getSaveAsPreDefMoneyflow());
+
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentAccessor(userId);
 		moneyflow.setUser(user);
@@ -296,10 +296,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 			moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
 			this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
 		}
-		PreDefMoneyflowID preDefMoneyflowId = null;
-		if (preDefMoneyflowIdLong != null) {
-			preDefMoneyflowId = new PreDefMoneyflowID(preDefMoneyflowIdLong);
-		}
+
 		if (saveAsPreDefMoneyflow) {
 			final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
 			preDefMoneyflow.setAmount(moneyflow.getAmount());
@@ -353,7 +350,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final Moneyflow moneyflow = super.map(request.getMoneyflowTransport(), Moneyflow.class);
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
-		// build a List of all MoneyflowSplitEntries which will be there after his
+		// build a List of all MoneyflowSplitEntries which will be there after this
 		// update
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflow.getId());
@@ -474,8 +471,8 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 						.toList();
 				final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
 						.getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
-				final List<MoneyflowTransport> moneyflowTransports = relevantMoneyflows.stream()
-						.map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
+				final List<MoneyflowTransport> moneyflowTransports = super.mapList(relevantMoneyflows,
+						MoneyflowTransport.class);
 				response.setMoneyflowTransports(moneyflowTransports);
 				if (!moneyflowSplitEntries.isEmpty()) {
 					final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
