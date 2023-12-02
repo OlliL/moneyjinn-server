@@ -52,7 +52,7 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 		Assertions.assertNotNull(importedMoneyflows);
 		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(0, transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
 	}
@@ -99,7 +99,7 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 		Assertions.assertNotNull(importedMoneyflows);
 		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(0, transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
 		Assertions.assertEquals(transport.getBankCode() + "XXX",
@@ -128,7 +128,7 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
 				capitalsourceIds, ImportedMoneyflowStatus.CREATED);
 		Assertions.assertNotNull(importedMoneyflows);
 		Assertions.assertEquals(sizeBeforeInsert + 1, importedMoneyflows.size());
-		Assertions.assertTrue(transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()) == 0);
+		Assertions.assertEquals(0, transport.getAmount().compareTo(importedMoneyflows.get(2).getAmount()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedMoneyflows.get(2).getCapitalsource().getId().getId());
 	}

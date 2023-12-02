@@ -65,7 +65,7 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assertions.assertTrue(BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+		Assertions.assertEquals(0, BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()));
 
 		super.callUsecaseExpect204(request);
 
@@ -75,7 +75,7 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
 				importedMonthlySettlements.get(0).getId().getId());
-		Assertions.assertTrue(BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()) == 0);
+		Assertions.assertEquals(0, BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()));
 	}
 
 	@Test

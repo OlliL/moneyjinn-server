@@ -37,7 +37,7 @@ class UpdateEtfFlowTest extends AbstractWebUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final EtfFlow etfFlow = this.etfService.getEtfFlowById(new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_1ID));
-		Assertions.assertTrue(BigDecimal.ONE.compareTo(etfFlow.getPrice()) == 0);
+		Assertions.assertEquals(0, BigDecimal.ONE.compareTo(etfFlow.getPrice()));
 	}
 
 	@Test

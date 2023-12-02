@@ -54,7 +54,7 @@ class CreateImportedBalanceTest extends AbstractImportUserControllerTest {
 						Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID)));
 		Assertions.assertNotNull(importedBalances);
 		Assertions.assertEquals(1, importedBalances.size());
-		Assertions.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(0, transport.getBalance().compareTo(importedBalances.get(0).getBalance()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}
@@ -81,7 +81,7 @@ class CreateImportedBalanceTest extends AbstractImportUserControllerTest {
 				.getAllImportedBalancesByCapitalsourceIds(userId, Arrays.asList(capitalsourceId));
 		Assertions.assertNotNull(importedBalances);
 		Assertions.assertEquals(1, importedBalances.size());
-		Assertions.assertTrue(BigDecimal.TEN.compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(0, BigDecimal.TEN.compareTo(importedBalances.get(0).getBalance()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}
@@ -101,7 +101,7 @@ class CreateImportedBalanceTest extends AbstractImportUserControllerTest {
 						Arrays.asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID)));
 		Assertions.assertNotNull(importedBalances);
 		Assertions.assertEquals(1, importedBalances.size());
-		Assertions.assertTrue(transport.getBalance().compareTo(importedBalances.get(0).getBalance()) == 0);
+		Assertions.assertEquals(0, transport.getBalance().compareTo(importedBalances.get(0).getBalance()));
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
 				importedBalances.get(0).getCapitalsource().getId().getId());
 	}

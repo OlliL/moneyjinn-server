@@ -42,10 +42,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
+	private final IUserService userService;
+	private final PasswordEncoder encoder;
+
 	@Autowired
-	private IUserService userService;
-	@Autowired
-	private PasswordEncoder encoder;
+	public CustomUserDetailsService(final IUserService userService, final PasswordEncoder encoder) {
+		super();
+		this.userService = userService;
+		this.encoder = encoder;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {

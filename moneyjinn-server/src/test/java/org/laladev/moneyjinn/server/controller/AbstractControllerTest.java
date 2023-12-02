@@ -164,7 +164,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
 			return actual;
 		}
 
-		Assertions.assertTrue(content.length() == 0);
+		Assertions.assertEquals(0, content.length());
 		return null;
 	}
 

@@ -126,19 +126,18 @@ public class SecurityConfig {
           configurer.ignoringRequestMatchers(antMatchers(LOGIN_ENDPOINT));
         })
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(antMatchers(LOGIN_ENDPOINT)).permitAll()
-            .requestMatchers(antMatchers("/websocket")).permitAll()
-            .requestMatchers(antMatchers("/actuator/**")).permitAll()
-            .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-            .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
-            .requestMatchers(antMatchers(API_ROOT + "/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
-            // Whatever else you trying: deny
-            .requestMatchers(antMatchers("/**")).denyAll()
-            .anyRequest().authenticated()
-
+          .requestMatchers(antMatchers(LOGIN_ENDPOINT)).permitAll()
+          .requestMatchers(antMatchers("/websocket")).permitAll()
+          .requestMatchers(antMatchers("/actuator/**")).permitAll()
+          .requestMatchers(antMatchers(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+          .requestMatchers(antMatchers(IMPORT_ENDPOINTS)).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
+          .requestMatchers(antMatchers(API_ROOT + "/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
+          // Whatever else you trying: deny
+          .requestMatchers(antMatchers("/**")).denyAll()
+          .anyRequest().authenticated()
         )
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-        .apply(new JwtConfigurer(this.jwtTokenProvider));
+        .with(new JwtConfigurer(this.jwtTokenProvider), withDefaults());
     //@formatter:on
 		return http.build();
 	}
