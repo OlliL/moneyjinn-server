@@ -27,7 +27,7 @@
 		<spring.boot.version>3.2.0</spring.boot.version>
 		<mybatis.version>3.5.14</mybatis.version>
 		<mybatis-spring.version>3.0.3</mybatis-spring.version>
-		<commons.io.version>2.15.0</commons.io.version>
+		<commons.io.version>2.15.1</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
 		<apache.tika.version>2.9.1</apache.tika.version>
 		<jjwt.version>0.12.3</jjwt.version>
@@ -45,12 +45,12 @@
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
-		<build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
+		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
 		<junit.version>5.10.1</junit.version>
-		<mockito.version>5.7.0</mockito.version>
+		<mockito.version>5.8.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.9</opencsv.version>
 
