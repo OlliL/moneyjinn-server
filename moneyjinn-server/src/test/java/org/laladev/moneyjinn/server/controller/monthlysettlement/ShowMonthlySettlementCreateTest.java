@@ -12,19 +12,10 @@ import org.laladev.moneyjinn.server.builder.MonthlySettlementTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-
-import jakarta.inject.Inject;
 
 class ShowMonthlySettlementCreateTest extends AbstractWebUserControllerTest {
-	@Inject
-	private ICapitalsourceService capitalsourceService;
-	@Inject
-	private CapitalsourceTransportMapper capitalsourceTransportMapper;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(MonthlySettlementControllerApi.class).showMonthlySettlementCreate();

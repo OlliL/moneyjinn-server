@@ -11,14 +11,8 @@ import org.laladev.moneyjinn.server.controller.AbstractAdminUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
-import org.laladev.moneyjinn.service.api.IGroupService;
-
-import jakarta.inject.Inject;
 
 class ShowGroupListTest extends AbstractAdminUserControllerTest {
-	@Inject
-	private IGroupService groupService;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(GroupControllerApi.class).showGroupList();

@@ -13,14 +13,11 @@ import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.GetAvailableReportMonthResponse;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 
 import jakarta.inject.Inject;
 
 class GetAvailableMonthYearMonthTest extends AbstractWebUserControllerTest {
-	@Inject
-	private ICapitalsourceService capitalsourceService;
 	@Inject
 	private IMoneyflowService moneyflowService;
 

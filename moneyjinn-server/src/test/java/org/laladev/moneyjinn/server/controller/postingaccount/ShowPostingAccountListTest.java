@@ -11,14 +11,8 @@ import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-
-import jakarta.inject.Inject;
 
 class ShowPostingAccountListTest extends AbstractWebUserControllerTest {
-	@Inject
-	private IPostingAccountService postingAccountService;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(PostingAccountControllerApi.class).showPostingAccountList();

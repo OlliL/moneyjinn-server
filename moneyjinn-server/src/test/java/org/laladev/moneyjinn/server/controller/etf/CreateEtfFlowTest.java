@@ -14,14 +14,8 @@ import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowResponse;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.service.api.IEtfService;
-
-import jakarta.inject.Inject;
 
 class CreateEtfFlowTest extends AbstractWebUserControllerTest {
-	@Inject
-	private IEtfService etfService;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(EtfControllerApi.class).createEtfFlow(null);

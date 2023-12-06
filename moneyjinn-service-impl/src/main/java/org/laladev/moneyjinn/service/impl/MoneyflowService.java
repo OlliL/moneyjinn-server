@@ -170,9 +170,11 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(moneyflow.getUser().getId(), "Moneyflow.user.id must not be null!");
 		Assert.notNull(moneyflow.getGroup(), "Moneyflow.group must not be null!");
 		Assert.notNull(moneyflow.getGroup().getId(), "Moneyflowgroup.id must not be null!");
+
 		this.prepareMoneyflow(moneyflow);
+
 		final ValidationResult validationResult = new ValidationResult();
-		final LocalDate today = LocalDate.now();
+
 		final UserID userId = moneyflow.getUser().getId();
 		final GroupID groupId = moneyflow.getGroup().getId();
 		final LocalDate bookingDate = moneyflow.getBookingDate();

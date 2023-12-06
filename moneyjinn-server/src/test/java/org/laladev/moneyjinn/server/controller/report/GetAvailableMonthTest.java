@@ -9,17 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.GetAvailableReportMonthResponse;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-
-import jakarta.inject.Inject;
 
 class GetAvailableMonthTest extends AbstractWebUserControllerTest {
-	@Inject
-	private ICapitalsourceService capitalsourceService;
-	@Inject
-	private IMoneyflowService moneyflowService;
-
 	private static final List<Integer> ALL_YEARS = Arrays.asList(2008, 2009, 2010);
 
 	@Override

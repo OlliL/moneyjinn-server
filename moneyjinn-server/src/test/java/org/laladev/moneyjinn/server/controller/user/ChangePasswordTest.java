@@ -11,7 +11,6 @@ import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IUserService;
 
 import jakarta.inject.Inject;
@@ -19,8 +18,6 @@ import jakarta.inject.Inject;
 class ChangePasswordTest extends AbstractWebUserControllerTest {
 	@Inject
 	private IUserService userService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void loadMethod() {

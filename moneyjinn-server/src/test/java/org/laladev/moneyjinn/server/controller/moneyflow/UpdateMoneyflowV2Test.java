@@ -36,7 +36,6 @@ import org.laladev.moneyjinn.server.model.UpdateMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.UpdateMoneyflowResponse;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -53,8 +52,6 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 	private ICapitalsourceService capitalsourceService;
 	@Inject
 	private IContractpartnerService contractpartnerService;
-	@Inject
-	private IAccessRelationService accessRelationService;
 
 	@Override
 	protected void loadMethod() {

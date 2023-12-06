@@ -15,14 +15,8 @@ import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowUserListResponse;
 import org.laladev.moneyjinn.server.model.UserTransport;
-import org.laladev.moneyjinn.service.api.IUserService;
-
-import jakarta.inject.Inject;
 
 class ShowUserListTest extends AbstractAdminUserControllerTest {
-	@Inject
-	private IUserService userService;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(UserControllerApi.class).showUserList();

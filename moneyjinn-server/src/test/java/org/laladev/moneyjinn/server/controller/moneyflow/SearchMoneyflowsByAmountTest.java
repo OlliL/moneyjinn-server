@@ -14,14 +14,8 @@ import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-
-import jakarta.inject.Inject;
 
 class SearchMoneyflowsByAmountTest extends AbstractWebUserControllerTest {
-	@Inject
-	private IMoneyflowService moneyflowService;
-
 	@Override
 	protected void loadMethod() {
 		super.getMock(MoneyflowControllerApi.class).searchMoneyflowsByAmount(null, null, null);
