@@ -24,24 +24,24 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
 	
-		<spring.boot.version>3.2.0</spring.boot.version>
-		<mybatis.version>3.5.14</mybatis.version>
+		<spring.boot.version>3.2.1</spring.boot.version>
+		<mybatis.version>3.5.15</mybatis.version>
 		<mybatis-spring.version>3.0.3</mybatis-spring.version>
 		<commons.io.version>2.15.1</commons.io.version>
 		<commons.codec.version>1.16.0</commons.codec.version>
-		<apache.tika.version>2.9.1</apache.tika.version>
+		<apache.tika.version>3.0.0-BETA</apache.tika.version>
 		<jjwt.version>0.12.3</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
-		<swagger.version>2.2.19</swagger.version>
-		<openapi-generator.version>7.1.0</openapi-generator.version>
+		<swagger.version>2.2.20</swagger.version>
+		<openapi-generator.version>7.2.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 
 		<!-- Maven Plugins -->
-		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+		<maven-compiler-plugin.version>3.12.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.2.3</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
