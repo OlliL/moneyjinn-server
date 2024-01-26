@@ -24,7 +24,7 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
 	
-		<spring.boot.version>3.2.1</spring.boot.version>
+		<spring.boot.version>3.2.2</spring.boot.version>
 		<mybatis.version>3.5.15</mybatis.version>
 		<mybatis-spring.version>3.0.3</mybatis-spring.version>
 		<commons.io.version>2.15.1</commons.io.version>
@@ -40,8 +40,8 @@
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
 
 		<!-- Maven Plugins -->
-		<maven-compiler-plugin.version>3.12.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>3.2.3</maven-surefire-plugin.version>
+		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
@@ -50,7 +50,7 @@
 
 		<!-- Test Scope -->
 		<junit.version>5.10.1</junit.version>
-		<mockito.version>5.8.0</mockito.version>
+		<mockito.version>5.10.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.9</opencsv.version>
 
