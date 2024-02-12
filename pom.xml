@@ -28,13 +28,13 @@
 		<mybatis.version>3.5.15</mybatis.version>
 		<mybatis-spring.version>3.0.3</mybatis-spring.version>
 		<commons.io.version>2.15.1</commons.io.version>
-		<commons.codec.version>1.16.0</commons.codec.version>
+		<commons.codec.version>1.16.1</commons.codec.version>
 		<apache.tika.version>3.0.0-BETA</apache.tika.version>
-		<jjwt.version>0.12.3</jjwt.version>
+		<jjwt.version>0.12.5</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
 		<swagger.version>2.2.20</swagger.version>
-		<openapi-generator.version>7.2.0</openapi-generator.version>
+		<openapi-generator.version>7.3.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
@@ -49,7 +49,7 @@
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.10.1</junit.version>
+		<junit.version>5.10.2</junit.version>
 		<mockito.version>5.10.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 		<opencsv.version>5.9</opencsv.version>
