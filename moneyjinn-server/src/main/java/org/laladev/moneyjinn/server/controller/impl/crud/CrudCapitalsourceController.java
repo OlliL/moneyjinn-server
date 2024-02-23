@@ -75,10 +75,10 @@ public class CrudCapitalsourceController extends AbstractController implements C
 		final UserID userId = super.getUserId();
 		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setId(null);
 		capitalsource.setUser(user);
-		capitalsource.setAccess(accessor);
+		capitalsource.setGroup(group);
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
@@ -98,9 +98,9 @@ public class CrudCapitalsourceController extends AbstractController implements C
 		final UserID userId = super.getUserId();
 		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setUser(user);
-		capitalsource.setAccess(accessor);
+		capitalsource.setGroup(group);
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
@@ -113,10 +113,10 @@ public class CrudCapitalsourceController extends AbstractController implements C
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
 		final UserID userId = super.getUserId();
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 
-		this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);
+		this.capitalsourceService.deleteCapitalsource(userId, group.getId(), capitalsourceId);
 
 		return ResponseEntity.noContent().build();
 	}

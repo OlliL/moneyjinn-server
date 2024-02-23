@@ -42,14 +42,14 @@ import org.mapstruct.Mapping;
 public interface ContractpartnerDataMapper extends IMapstructMapper<Contractpartner, ContractpartnerData> {
 	@Override
 	@Mapping(target = "user.id", source = "mauUserId")
-	@Mapping(target = "access.id", source = "magGroupId")
+	@Mapping(target = "group.id", source = "magGroupId")
 	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
 	@Mapping(target = "moneyflowComment", source = "mmfComment")
 	Contractpartner mapBToA(ContractpartnerData contractpartnerData);
 
 	@Override
 	@Mapping(target = "mauUserId", source = "user.id")
-	@Mapping(target = "magGroupId", source = "access.id")
+	@Mapping(target = "magGroupId", source = "group.id")
 	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
 	@Mapping(target = "mmfComment", source = "moneyflowComment")
 	ContractpartnerData mapAToB(Contractpartner contractpartner);

@@ -35,7 +35,7 @@ class ContractpartnerServiceTest extends AbstractTest {
 	void test_createWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
-		contractpartner.setAccess(new Group(new GroupID(1L)));
+		contractpartner.setGroup(new Group(new GroupID(1L)));
 		Assertions.assertThrows(BusinessException.class, () -> {
 			this.contractpartnerService.createContractpartner(contractpartner);
 		});
@@ -45,7 +45,7 @@ class ContractpartnerServiceTest extends AbstractTest {
 	void test_updateWithInvalidEntity_raisesException() {
 		final Contractpartner contractpartner = new Contractpartner();
 		contractpartner.setUser(new User(new UserID(1L)));
-		contractpartner.setAccess(new Group(new GroupID(1L)));
+		contractpartner.setGroup(new Group(new GroupID(1L)));
 		Assertions.assertThrows(BusinessException.class, () -> {
 			this.contractpartnerService.updateContractpartner(contractpartner);
 		});

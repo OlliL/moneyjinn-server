@@ -78,8 +78,8 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 		Assert.notNull(importedMoneyflowReceipt.getUser(), "Imported Moneyflow Receipt.user must not be null!");
 		Assert.notNull(importedMoneyflowReceipt.getUser().getId(),
 				"Imported Moneyflow Receipt.user.id must not be null!");
-		Assert.notNull(importedMoneyflowReceipt.getAccess(), "Imported Moneyflow Receipt.access must not be null!");
-		Assert.notNull(importedMoneyflowReceipt.getAccess().getId(),
+		Assert.notNull(importedMoneyflowReceipt.getGroup(), "Imported Moneyflow Receipt.access must not be null!");
+		Assert.notNull(importedMoneyflowReceipt.getGroup().getId(),
 				"Imported Moneyflow Receipt.access.id must not be null!");
 		Assert.notNull(importedMoneyflowReceipt.getReceipt(), "Imported Moneyflow Receipt.receipt must not be null!");
 		Assert.notNull(importedMoneyflowReceipt.getFilename(), "Imported Moneyflow Receipt.filename must not be null!");

@@ -46,7 +46,7 @@ public interface CapitalsourceTransportMapper extends IMapstructMapper<Capitalso
 	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
 	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
 	@Mapping(target = "user.id", source = "userid")
-	@Mapping(target = "access", ignore = true)
+	@Mapping(target = "group", ignore = true)
 	Capitalsource mapBToA(final CapitalsourceTransport b);
 
 	@Override

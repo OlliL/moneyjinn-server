@@ -43,7 +43,7 @@ import lombok.ToString;
 public class Contractpartner extends AbstractEntity<ContractpartnerID> implements IHasPostingAccount, IHasUser {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private Group access;
+	private Group group;
 	private String name;
 	private String street;
 	private Integer postcode;

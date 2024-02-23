@@ -45,7 +45,7 @@ class CapitalsourceServiceTest extends AbstractTest {
 	void test_createWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1L)));
-		capitalsource.setAccess(new Group(new GroupID(1L)));
+		capitalsource.setGroup(new Group(new GroupID(1L)));
 		Assertions.assertThrows(BusinessException.class, () -> {
 			this.capitalsourceService.createCapitalsource(capitalsource);
 		});
@@ -55,7 +55,7 @@ class CapitalsourceServiceTest extends AbstractTest {
 	void test_updateWithInvalidEntity_raisesException() {
 		final Capitalsource capitalsource = new Capitalsource();
 		capitalsource.setUser(new User(new UserID(1l)));
-		capitalsource.setAccess(new Group(new GroupID(1L)));
+		capitalsource.setGroup(new Group(new GroupID(1L)));
 		Assertions.assertThrows(BusinessException.class, () -> {
 			this.capitalsourceService.updateCapitalsource(capitalsource);
 		});

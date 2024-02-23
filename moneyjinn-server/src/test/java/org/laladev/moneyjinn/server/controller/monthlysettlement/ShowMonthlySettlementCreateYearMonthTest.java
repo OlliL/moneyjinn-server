@@ -81,7 +81,7 @@ class ShowMonthlySettlementCreateYearMonthTest extends AbstractWebUserController
 				.forNewCapitalsource().withUserId(UserTransportBuilder.USER1_ID)
 				.withId(CapitalsourceTransportBuilder.NEXT_ID).build();
 		final Capitalsource newCapitalsource = this.capitalsourceTransportMapper.mapBToA(newCapitalsourceTransport);
-		newCapitalsource.setAccess(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
+		newCapitalsource.setGroup(new Group(new GroupID(GroupTransportBuilder.GROUP1_ID)));
 		this.capitalsourceService.createCapitalsource(newCapitalsource);
 		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
 				.withCapitalsource(newCapitalsourceTransport).withAmount(BigDecimal.ZERO).withMonth(12).withYear(2008)

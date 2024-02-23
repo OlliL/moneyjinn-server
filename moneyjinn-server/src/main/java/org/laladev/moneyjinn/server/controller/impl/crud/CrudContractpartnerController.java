@@ -76,10 +76,10 @@ public class CrudContractpartnerController extends AbstractController implements
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(contractpartnerTransport, Contractpartner.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		contractpartner.setId(null);
 		contractpartner.setUser(user);
-		contractpartner.setAccess(accessor);
+		contractpartner.setGroup(group);
 		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
@@ -99,9 +99,9 @@ public class CrudContractpartnerController extends AbstractController implements
 		final UserID userId = super.getUserId();
 		final Contractpartner contractpartner = super.map(contractpartnerTransport, Contractpartner.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		contractpartner.setUser(user);
-		contractpartner.setAccess(accessor);
+		contractpartner.setGroup(group);
 		final ValidationResult validationResult = this.contractpartnerService.validateContractpartner(contractpartner);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
@@ -114,11 +114,11 @@ public class CrudContractpartnerController extends AbstractController implements
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
 		final UserID userId = super.getUserId();
-		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
 
 		this.contractpartnerAccountService.deleteContractpartnerAccounts(userId, contractpartnerId);
-		this.contractpartnerService.deleteContractpartner(userId, accessor.getId(), contractpartnerId);
+		this.contractpartnerService.deleteContractpartner(userId, group.getId(), contractpartnerId);
 
 		return ResponseEntity.noContent().build();
 	}

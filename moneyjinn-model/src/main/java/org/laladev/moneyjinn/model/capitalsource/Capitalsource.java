@@ -22,7 +22,7 @@ import lombok.ToString;
 public class Capitalsource extends AbstractEntity<CapitalsourceID> implements IHasBankAccount, IHasUser {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private Group access;
+	private Group group;
 	private CapitalsourceType type;
 	private CapitalsourceState state;
 	private BankAccount bankAccount;

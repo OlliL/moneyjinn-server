@@ -45,7 +45,7 @@ public interface ImportedMoneyflowReceiptTransportMapper
 		extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
 	@Override
 	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "access", ignore = true)
+	@Mapping(target = "group", ignore = true)
 	@Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
 	ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport);
 

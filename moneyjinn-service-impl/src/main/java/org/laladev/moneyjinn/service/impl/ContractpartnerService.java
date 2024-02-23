@@ -91,9 +91,9 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
 			final UserID userId = contractpartner.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final Group group = this.groupService.getGroupById(contractpartner.getAccess().getId());
+			final Group group = this.groupService.getGroupById(contractpartner.getGroup().getId());
 			contractpartner.setUser(user);
-			contractpartner.setAccess(group);
+			contractpartner.setGroup(group);
 			PostingAccount postingAccount = contractpartner.getPostingAccount();
 			if (postingAccount != null) {
 				final PostingAccountID postingAccountId = postingAccount.getId();
@@ -129,8 +129,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
 		Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
 		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.getUser().getId() must not be null!");
-		Assert.notNull(contractpartner.getAccess(), "contractpartner.getAccess() must not be null!");
-		Assert.notNull(contractpartner.getAccess().getId(), "contractpartner.getAccess().getId() must not be null!");
+		Assert.notNull(contractpartner.getGroup(), "contractpartner.getGroup() must not be null!");
+		Assert.notNull(contractpartner.getGroup().getId(), "contractpartner.getGroup().getId() must not be null!");
 
 		this.prepareContractpartner(contractpartner);
 

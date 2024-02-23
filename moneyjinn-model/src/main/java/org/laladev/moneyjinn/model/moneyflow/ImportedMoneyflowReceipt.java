@@ -41,7 +41,7 @@ import lombok.ToString;
 public class ImportedMoneyflowReceipt extends AbstractEntity<ImportedMoneyflowReceiptID> implements IHasUser {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private Group access;
+	private Group group;
 	private byte[] receipt;
 	private String filename;
 	private String mediaType;

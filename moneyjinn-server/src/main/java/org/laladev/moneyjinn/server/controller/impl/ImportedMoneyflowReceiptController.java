@@ -95,7 +95,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 				request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
 		importedMoneyflowReceipts.stream().forEach(imr -> {
 			imr.setUser(user);
-			imr.setAccess(group);
+			imr.setGroup(group);
 			imr.setId(null);
 			validationResult
 					.mergeValidationResult(this.importedMoneyflowReceiptService.validateImportedMoneyflowReceipt(imr));

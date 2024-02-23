@@ -45,13 +45,13 @@ public interface CapitalsourceDataMapper extends IMapstructMapper<Capitalsource,
 	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
 	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
 	@Mapping(target = "user.id", source = "mauUserId")
-	@Mapping(target = "access.id", source = "magGroupId")
+	@Mapping(target = "group.id", source = "magGroupId")
 	Capitalsource mapBToA(final CapitalsourceData b);
 
 	@Override
 	@Mapping(target = "attGroupUse", source = "groupUse")
 	@Mapping(target = ".", source = "bankAccount")
 	@Mapping(target = "mauUserId", source = "user.id")
-	@Mapping(target = "magGroupId", source = "access.id")
+	@Mapping(target = "magGroupId", source = "group.id")
 	CapitalsourceData mapAToB(final Capitalsource a);
 }

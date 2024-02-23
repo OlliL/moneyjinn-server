@@ -90,9 +90,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			final Capitalsource capitalsource = super.map(capitalsourceData, Capitalsource.class);
 			final UserID userId = capitalsource.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final Group group = this.groupService.getGroupById(capitalsource.getAccess().getId());
+			final Group group = this.groupService.getGroupById(capitalsource.getGroup().getId());
 			capitalsource.setUser(user);
-			capitalsource.setAccess(group);
+			capitalsource.setGroup(group);
 			return capitalsource;
 		}
 		return null;
@@ -129,8 +129,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
 		Assert.notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
 		Assert.notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
-		Assert.notNull(capitalsource.getAccess(), "Capitalsource.access must not be null!");
-		Assert.notNull(capitalsource.getAccess().getId(), "Capitalsource.access.id must not be null!");
+		Assert.notNull(capitalsource.getGroup(), "Capitalsource.access must not be null!");
+		Assert.notNull(capitalsource.getGroup().getId(), "Capitalsource.access.id must not be null!");
 		this.prepareCapitalsource(capitalsource);
 		final ValidationResult validationResult = new ValidationResult();
 		if (capitalsource.getValidTil().isBefore(capitalsource.getValidFrom())) {
@@ -219,7 +219,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		}
 		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
 		this.capitalsourceDao.updateCapitalsource(capitalsourceData);
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
+		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
 				capitalsource.getId());
 		final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
 		super.publishEvent(event);
@@ -239,7 +239,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(capitalsourceIdLong);
 		capitalsource.setId(capitalsourceId);
 
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getAccess().getId(),
+		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
 				capitalsourceId);
 
 		final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);

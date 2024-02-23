@@ -42,7 +42,7 @@ import org.mapstruct.Mapping;
 public interface ContractpartnerTransportMapper extends IMapstructMapper<Contractpartner, ContractpartnerTransport> {
 	@Override
 	@Mapping(target = "user.id", source = "userid")
-	@Mapping(target = "access", ignore = true)
+	@Mapping(target = "group", ignore = true)
 	@Mapping(target = "postingAccount.id", source = "postingAccountId")
 	Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
 
