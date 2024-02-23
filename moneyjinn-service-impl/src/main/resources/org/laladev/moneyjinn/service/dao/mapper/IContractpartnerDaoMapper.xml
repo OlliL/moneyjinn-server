@@ -22,7 +22,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  ORDER BY name
         </select>
@@ -32,7 +32,7 @@
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
                  WHERE contractpartnerid = #{id}
-                   AND mar_mug_userid            = #{userId}
+                   AND mar_mau_userid            = #{userId}
                  LIMIT 1
         </select>
 
@@ -41,7 +41,7 @@
 
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
-                 WHERE mar_mug_userid    = #{userId}
+                 WHERE mar_mau_userid    = #{userId}
                    AND name      = #{name}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1

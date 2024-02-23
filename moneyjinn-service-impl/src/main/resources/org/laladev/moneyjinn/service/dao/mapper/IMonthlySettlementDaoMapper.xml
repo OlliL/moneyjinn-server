@@ -14,14 +14,14 @@
             <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT `year`
                   FROM vw_monthlysettlements
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                  ORDER BY `year` ASC
         </select>
         
             <select id="getAllMonth" resultType="java.lang.Integer">
                 SELECT DISTINCT `month`
                   FROM vw_monthlysettlements
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                    AND `year` = #{year}
                  ORDER BY `month` ASC
         </select>
@@ -32,7 +32,7 @@
                   FROM vw_monthlysettlements
                  WHERE `month`= #{month}
                    AND `year` = #{year}
-                   AND mar_mug_userid = #{userId}
+                   AND mar_mau_userid = #{userId}
                  ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,mcs_capitalsourceid
         </select>
@@ -123,7 +123,7 @@
                       open="(" separator="," close=")">
                         #{mcsCapitalsourceId}
                    </foreach>
-                   AND mar_mug_userid = #{userId}
+                   AND mar_mau_userid = #{userId}
                  ORDER BY `year`
                          ,`month`
                          ,CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END

@@ -1,11 +1,11 @@
 /*
  * this view will show all data from moneyflows which is visible
- * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * to a user. Use mar_mau_userid in your SELECT for your userid. In
  * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE VIEW vw_moneyflows (
    mau_userid
-  ,mar_mug_userid
+  ,mar_mau_userid
   ,moneyflowid
   ,bookingdate
   ,invoicedate
@@ -34,12 +34,12 @@ CREATE OR REPLACE VIEW vw_moneyflows (
 
 /*
  * this view will show all data from monthlysettlements which is visible
- * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * to a user. Use mar_mau_userid in your SELECT for your userid. In
  * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE VIEW vw_monthlysettlements (
    mau_userid
-  ,mar_mug_userid
+  ,mar_mau_userid
   ,monthlysettlementid
   ,mcs_capitalsourceid
   ,`month`
@@ -62,12 +62,12 @@ CREATE OR REPLACE VIEW vw_monthlysettlements (
 
 /*
  * this view will show all data from contractpartners which is visible
- * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * to a user. Use mar_mau_userid in your SELECT for your userid. In
  * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE VIEW vw_contractpartners (
    mau_userid
-  ,mar_mug_userid
+  ,mar_mau_userid
   ,mag_groupid
   ,contractpartnerid
   ,name
@@ -103,12 +103,12 @@ CREATE OR REPLACE VIEW vw_contractpartners (
 
 /*
  * this view will show all data from capitalsources which is visible
- * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * to a user. Use mar_mau_userid in your SELECT for your userid. In
  * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE VIEW vw_capitalsources (
    mau_userid
-  ,mar_mug_userid
+  ,mar_mau_userid
   ,mag_groupid
   ,capitalsourceid
   ,type

@@ -22,7 +22,7 @@
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
                  WHERE capitalsourceid = #{id}
-                   AND mar_mug_userid  = #{userId}
+                   AND mar_mau_userid  = #{userId}
                    AND mag_groupid     = #{magGroupId}
                  LIMIT 1
         </select>
@@ -42,7 +42,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,capitalsourceid
@@ -52,7 +52,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                    AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
                    AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
                    AND validfrom <![CDATA[ <= ]]> #{validTil}
@@ -131,7 +131,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE mar_mug_userid = #{userId}
+                 WHERE mar_mau_userid = #{userId}
                    AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
                    AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
                    AND ( mau_userid = #{userId}

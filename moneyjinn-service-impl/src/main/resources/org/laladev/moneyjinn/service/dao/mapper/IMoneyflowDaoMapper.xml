@@ -20,7 +20,7 @@
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE moneyflowid     = #{id}
-                   AND mar_mug_userid          = #{userId}
+                   AND mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -87,7 +87,7 @@
                 SELECT IFNULL(SUM(amount),0)
                   FROM vw_moneyflows
                  WHERE bookingdate BETWEEN #{validFrom} AND #{validTil}
-                   AND mar_mug_userid      = #{userId}
+                   AND mar_mau_userid      = #{userId}
                    AND mcs_capitalsourceid IN 
                    <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
                       open="(" separator="," close=")">
@@ -98,7 +98,7 @@
             <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT YEAR(bookingdate)
                   FROM vw_moneyflows
-                 WHERE mar_mug_userid          = #{userId}
+                 WHERE mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -111,7 +111,7 @@
                 SELECT DISTINCT MONTH(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
-                   AND mar_mug_userid        = #{userId}
+                   AND mar_mau_userid        = #{userId}
                    AND (
                         private      = 0
                           OR
@@ -125,14 +125,14 @@
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND mar_mug_userid              = #{userId}
+                   AND mar_mau_userid              = #{userId}
         </select>
         
         <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM vw_moneyflows
                  WHERE bookingdate     BETWEEN #{dateFrom} AND #{dateTil}
-                   AND mar_mug_userid          = #{userId}
+                   AND mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -144,7 +144,7 @@
          <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
-                 WHERE mar_mug_userid          = #{userId}
+                 WHERE mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -155,7 +155,7 @@
          <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
-                 WHERE mar_mug_userid          = #{userId}
+                 WHERE mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -167,7 +167,7 @@
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate     <![CDATA[ < ]]> #{date}
-                   AND mar_mug_userid          = #{userId}
+                   AND mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -179,7 +179,7 @@
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate     <![CDATA[ > ]]> #{date}
-                   AND mar_mug_userid          = #{userId}
+                   AND mar_mau_userid          = #{userId}
                    AND (
                         private        = 0
                           OR
@@ -201,7 +201,7 @@
                       open="(" separator="," close=")">
                         #{postingAccountId}
                    </foreach>
-                   AND mmf.mar_mug_userid  = #{userId}
+                   AND mmf.mar_mau_userid  = #{userId}
                    AND (
                         mmf.private        = 0
                           OR
@@ -229,7 +229,7 @@
                       open="(" separator="," close=")">
                         #{postingAccountId}
                    </foreach>
-                   AND mmf.mar_mug_userid              = #{userId}
+                   AND mmf.mar_mau_userid              = #{userId}
                    AND (
                         mmf.private            = 0
                           OR
@@ -248,7 +248,7 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND amount              = CAST(#{amount} AS DECIMAL(8,2))
-                   AND mar_mug_userid              = #{userId}
+                   AND mar_mau_userid              = #{userId}
         </select>
 
         <select id="searchMoneyflowsByAbsoluteAmountDate"
@@ -257,7 +257,7 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND ABS(amount)         = CAST(#{amount} AS DECIMAL(8,2))
-                   AND mar_mug_userid              = #{userId}
+                   AND mar_mau_userid              = #{userId}
         </select>
 
         <select id="getAllMoneyflowsByDateRangeCapitalsourceId"
@@ -266,7 +266,7 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND mcs_capitalsourceid = #{capitalsourceId}
-                   AND mar_mug_userid              = #{userId}
+                   AND mar_mau_userid              = #{userId}
                    AND (
                         private            = 0
                           OR
@@ -322,7 +322,7 @@
                            AND
                        </if>
                        mmf.bookingdate BETWEEN #{startDate} AND #{endDate}
-                   AND mmf.mar_mug_userid              = #{userId}
+                   AND mmf.mar_mau_userid              = #{userId}
                    AND (
                         mmf.private            = 0
                           OR
