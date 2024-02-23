@@ -163,7 +163,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@Override
 	public Set<UserID> getAllUserWithSameGroup(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
 		return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
 	}

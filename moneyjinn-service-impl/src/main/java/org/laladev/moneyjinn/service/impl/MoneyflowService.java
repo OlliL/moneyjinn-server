@@ -169,7 +169,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(moneyflow.getUser(), "Moneyflow.user must not be null!");
 		Assert.notNull(moneyflow.getUser().getId(), "Moneyflow.user.id must not be null!");
 		Assert.notNull(moneyflow.getGroup(), "Moneyflow.group must not be null!");
-		Assert.notNull(moneyflow.getGroup().getId(), "Moneyflowgroup.id must not be null!");
+		Assert.notNull(moneyflow.getGroup().getId(), "Moneyflow.group.id must not be null!");
 
 		this.prepareMoneyflow(moneyflow);
 
