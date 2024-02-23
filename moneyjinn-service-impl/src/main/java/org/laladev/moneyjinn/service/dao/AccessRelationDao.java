@@ -30,7 +30,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.mapper.IAccessRelationDaoMapper;
 
@@ -69,18 +68,6 @@ public class AccessRelationDao {
 
 	public void createAccessRelation(final AccessRelationData accessRelationData) {
 		this.mapper.createAccessRelation(accessRelationData);
-	}
-
-	public void deleteAllAccessFlattened(final Long id) {
-		this.mapper.deleteAllAccessFlattened(id);
-	}
-
-	public void deleteAccessFlattenedAfter(final Long id, final LocalDate date) {
-		this.mapper.deleteAccessFlattenedAfter(id, date);
-	}
-
-	public void createAccessFlattened(final AccessFlattenedData accessFlattenedData) {
-		this.mapper.createAccessFlattened(accessFlattenedData);
 	}
 
 	public Set<Long> getAllUserWithSameGroup(final Long id) {

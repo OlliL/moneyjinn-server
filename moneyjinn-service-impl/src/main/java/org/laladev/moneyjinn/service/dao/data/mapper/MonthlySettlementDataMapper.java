@@ -42,14 +42,14 @@ import org.mapstruct.Mapping;
 		CapitalsourceIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
 public interface MonthlySettlementDataMapper extends IMapstructMapper<MonthlySettlement, MonthlySettlementData> {
 	@Override
-	@Mapping(target = "user.id", source = "macIdCreator")
-	@Mapping(target = "group.id", source = "macIdAccessor")
+	@Mapping(target = "user.id", source = "mauUserId")
+	@Mapping(target = "group.id", source = "magGroupId")
 	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
 	MonthlySettlement mapBToA(MonthlySettlementData monthlySettlementData);
 
 	@Override
-	@Mapping(target = "macIdCreator", source = "user.id")
-	@Mapping(target = "macIdAccessor", source = "group.id")
+	@Mapping(target = "mauUserId", source = "user.id")
+	@Mapping(target = "magGroupId", source = "group.id")
 	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
 	MonthlySettlementData mapAToB(MonthlySettlement monthlySettlement);
 }

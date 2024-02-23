@@ -36,7 +36,6 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
@@ -44,9 +43,7 @@ import org.laladev.moneyjinn.service.CacheNames;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.dao.AccessRelationDao;
-import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
-import org.laladev.moneyjinn.service.dao.data.mapper.AccessFlattenedDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.EnableCaching;
@@ -61,18 +58,16 @@ import lombok.RequiredArgsConstructor;
 @EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
-	private static final String ACCESS_RELATION_ID_MUST_NOT_BE_NULL = "AccessRelationId must not be null!";
+	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private static final String ACCESS_RELATION_MUST_NOT_BE_NULL = "AccessRelation must not be null!";
 	private final AccessRelationDao accessRelationDao;
 	private final IGroupService groupService;
 	private final AccessRelationDataMapper accessRelationDataMapper;
-	private final AccessFlattenedDataMapper accessFlattenedDataMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		super.registerBeanMapper(this.accessRelationDataMapper);
-		super.registerBeanMapper(this.accessFlattenedDataMapper);
 	}
 
 	public LocalDate now() {
@@ -83,7 +78,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
 		Assert.notNull(accessRelation, ACCESS_RELATION_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = new ValidationResult();
-		if (accessRelation.getParentAccessRelation() == null) {
+		if (accessRelation.getGroupID() == null) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(accessRelation.getId(), ErrorCode.GROUP_MUST_BE_SPECIFIED));
 		}
@@ -95,19 +90,18 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	public Group getCurrentAccessor(final AccessID accessId) {
-		return this.getAccessor(accessId, this.now());
+	public Group getCurrentGroup(final UserID userId) {
+		return this.getGroup(userId, this.now());
 	}
 
 	@Override
-	public Group getAccessor(final AccessID accessId, final LocalDate date) {
-		Assert.notNull(accessId, "AccessId must not be null!");
+	public Group getGroup(final UserID userId, final LocalDate date) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(date, "Date must not be null!");
-		final List<AccessRelation> accessRelations = this.getAllAccessRelationsById(accessId);
+		final List<AccessRelation> accessRelations = this.getAllAccessRelationsById(userId);
 		for (final AccessRelation accessRelation : accessRelations) {
 			if (!(date.isBefore(accessRelation.getValidFrom()) || date.isAfter(accessRelation.getValidTil()))) {
-				return this.groupService
-						.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+				return this.groupService.getGroupById(accessRelation.getGroupID());
 			}
 		}
 		return null;
@@ -115,15 +109,15 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccessRelation> getAllAccessRelationsById(final AccessID accessId) {
-		Assert.notNull(accessId, "AccessId must not be null!");
+	public List<AccessRelation> getAllAccessRelationsById(final UserID userId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-		List<AccessRelation> result = cache.get(accessId.getId(), List.class);
+		List<AccessRelation> result = cache.get(userId.getId(), List.class);
 		if (result == null) {
 			final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-					.getAllAccessRelationsById(accessId.getId());
+					.getAllAccessRelationsById(userId.getId());
 			result = super.mapList(accessRelationDataList, AccessRelation.class);
-			cache.put(accessId.getId(), result);
+			cache.put(userId.getId(), result);
 		}
 		return result;
 	}
@@ -153,23 +147,22 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	}
 
 	@Override
-	public AccessRelation getCurrentAccessRelationById(final AccessID accessRelationId) {
-		Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
-		final AccessRelationData accessRelationData = this.accessRelationDao
-				.getAccessRelationById(accessRelationId.getId(), this.now());
+	public AccessRelation getCurrentAccessRelationById(final UserID userId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		final AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(userId.getId(),
+				this.now());
 		return super.map(accessRelationData, AccessRelation.class);
 	}
 
 	@Override
-	public void deleteAllAccessRelation(final AccessID accessRelationId) {
-		Assert.notNull(accessRelationId, ACCESS_RELATION_ID_MUST_NOT_BE_NULL);
-		this.evictAccessRelationCache(accessRelationId);
-		this.accessRelationDao.deleteAllAccessFlattened(accessRelationId.getId());
-		this.accessRelationDao.deleteAllAccessRelation(accessRelationId.getId());
+	public void deleteAllAccessRelation(final UserID useriId) {
+		Assert.notNull(useriId, USER_ID_MUST_NOT_BE_NULL);
+		this.evictAccessRelationCache(useriId);
+		this.accessRelationDao.deleteAllAccessRelation(useriId.getId());
 	}
 
 	@Override
-	public Set<UserID> getAllUserWithSameGroup(final AccessID userId) {
+	public Set<UserID> getAllUserWithSameGroup(final UserID userId) {
 		Assert.notNull(userId, "UserId must not be null!");
 		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
 		return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
@@ -250,8 +243,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 				if (currentAccessRelation.getValidFrom().isEqual(accessRelation.getValidFrom())) {
 					// if there is already a relation which starts at the same day, our new relation
 					// gets the same Valid-Til as the original relation has
-					if (previousCurrentAccessRelation != null && previousCurrentAccessRelation.getParentAccessRelation()
-							.getId().equals(accessRelation.getParentAccessRelation().getId())) {
+					if (previousCurrentAccessRelation != null
+							&& previousCurrentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 						// (d, h) if the access relation which was valid straight before the new
 						// access relation is for the same RefId, remove the previous and current
 						// relation and modify the new relation to start at the previous and end at
@@ -261,8 +254,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 						deleteAccessRelationItems.add(previousCurrentAccessRelation);
 						deleteAccessRelationItems.add(currentAccessRelation);
 						addAccessRelation = true;
-					} else if (currentAccessRelation.getParentAccessRelation().getId()
-							.equals(accessRelation.getParentAccessRelation().getId())) {
+					} else if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 						// (e) if the new relation starts at the same day than the currently checked
 						// one and is also for the same RefId - just ignore it
 						addAccessRelation = false;
@@ -279,8 +271,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 					// (a, b, f, g) if the checked relation starts before the new relation, modify
 					// its validtil to just straight before the new one starts if the RefId is
 					// different
-					if (!currentAccessRelation.getParentAccessRelation().getId()
-							.equals(accessRelation.getParentAccessRelation().getId())) {
+					if (!currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 
 						AccessRelation updateAccessRelationItem;
 						updateAccessRelationItem = new AccessRelation(currentAccessRelation);
@@ -294,8 +285,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 				} else if (currentAccessRelation.getValidFrom().isEqual(nextValidFrom)) {
 					// (f, i) if the next item after the new access relation has the same refId,
 					// delete it and prolong our new item
-					if (currentAccessRelation.getParentAccessRelation().getId()
-							.equals(accessRelation.getParentAccessRelation().getId())) {
+					if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
 						deleteAccessRelationItems.add(currentAccessRelation);
 					}
@@ -303,44 +293,18 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 				previousCurrentAccessRelation = currentAccessRelation;
 			}
 		}
-		LocalDate flattenRelationSince = null;
 		for (final AccessRelation accessRelationItem : deleteAccessRelationItems) {
-			if (flattenRelationSince == null || accessRelationItem.getValidFrom().isBefore(flattenRelationSince)) {
-				flattenRelationSince = accessRelationItem.getValidFrom();
-			}
 			this.accessRelationDao.deleteAccessRelationByDate(accessRelationItem.getId().getId(),
 					accessRelationItem.getValidFrom());
 		}
 		for (final AccessRelation accessRelationItem : updateAccessRelationItems) {
-			if (flattenRelationSince == null || accessRelationItem.getValidFrom().isBefore(flattenRelationSince)) {
-				flattenRelationSince = accessRelationItem.getValidFrom();
-			}
 			final AccessRelationData accessRelationData = super.map(accessRelationItem, AccessRelationData.class);
 			this.accessRelationDao.updateAccessRelation(accessRelationItem.getId().getId(),
 					accessRelationItem.getValidFrom(), accessRelationData);
 		}
 		if (addAccessRelation) {
-			if (flattenRelationSince == null || insertAccessRelation.getValidFrom().isBefore(flattenRelationSince)) {
-				flattenRelationSince = insertAccessRelation.getValidFrom();
-			}
 			final AccessRelationData accessRelationData = super.map(insertAccessRelation, AccessRelationData.class);
 			this.accessRelationDao.createAccessRelation(accessRelationData);
-		}
-		// we have to recreate the access_flattened table beginning with the earlies
-		// entry we
-		// modified
-		if (flattenRelationSince != null) {
-			this.redoAccessFlattened(accessRelation.getId(), flattenRelationSince);
-		}
-	}
-
-	// does currently only support 1 user . 1 group . "group-0"
-	private void redoAccessFlattened(final AccessID userId, final LocalDate date) {
-		final List<AccessRelation> accessRelations = this.getAllAccessRelationsByIdDate(userId, date);
-		this.accessRelationDao.deleteAccessFlattenedAfter(userId.getId(), date);
-		for (final AccessRelation accessRelation : accessRelations) {
-			final AccessFlattenedData accessFlattened = super.map(accessRelation, AccessFlattenedData.class);
-			this.accessRelationDao.createAccessFlattened(accessFlattened);
 		}
 	}
 

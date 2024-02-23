@@ -48,8 +48,8 @@ public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, Moneyfl
 	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
 	@Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
 	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-	@Mapping(target = "user.id", source = "macIdCreator")
-	@Mapping(target = "group.id", source = "macIdAccessor")
+	@Mapping(target = "user.id", source = "mauUserId")
+	@Mapping(target = "group.id", source = "magGroupId")
 	@Mapping(target = "moneyflowSplitEntries", ignore = true)
 	Moneyflow mapBToA(MoneyflowData moneyflowData);
 
@@ -59,7 +59,7 @@ public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, Moneyfl
 	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
 	@Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
 	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-	@Mapping(target = "macIdCreator", source = "user.id")
-	@Mapping(target = "macIdAccessor", source = "group.id")
+	@Mapping(target = "mauUserId", source = "user.id")
+	@Mapping(target = "magGroupId", source = "group.id")
 	public MoneyflowData mapAToB(Moneyflow moneyflow);
 }

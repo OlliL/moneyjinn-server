@@ -47,7 +47,7 @@ public interface PreDefMoneyflowDataMapper extends IMapstructMapper<PreDefMoneyf
 	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
 	@Mapping(target = "creationDate", source = "createdate")
 	@Mapping(target = "lastUsedDate", source = "lastUsed")
-	@Mapping(target = "user.id", source = "macId")
+	@Mapping(target = "user.id", source = "mauUserId")
 	PreDefMoneyflow mapBToA(PreDefMoneyflowData preDefMoneyflowData);
 
 	@Override
@@ -56,6 +56,6 @@ public interface PreDefMoneyflowDataMapper extends IMapstructMapper<PreDefMoneyf
 	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
 	@Mapping(target = "createdate", source = "creationDate")
 	@Mapping(target = "lastUsed", source = "lastUsedDate")
-	@Mapping(target = "macId", source = "user.id")
+	@Mapping(target = "mauUserId", source = "user.id")
 	PreDefMoneyflowData mapAToB(PreDefMoneyflow preDefMoneyflow);
 }

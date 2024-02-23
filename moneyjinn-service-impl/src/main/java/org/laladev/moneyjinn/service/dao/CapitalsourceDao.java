@@ -50,8 +50,8 @@ public class CapitalsourceDao {
 		return this.mapper.getAllCapitalsourcesByDateRange(userId, validFrom, validTil);
 	}
 
-	public CapitalsourceData getCapitalsourceById(final Long userId, final Long accessorId, final Long id) {
-		return this.mapper.getCapitalsourceById(userId, accessorId, id);
+	public CapitalsourceData getCapitalsourceById(final Long userId, final Long magGroupId, final Long id) {
+		return this.mapper.getCapitalsourceById(userId, magGroupId, id);
 	}
 
 	public CapitalsourceData getCapitalsourceByComment(final Long userId, final String comment, final LocalDate date) {
@@ -67,8 +67,8 @@ public class CapitalsourceDao {
 		this.mapper.updateCapitalsource(capitalsourceData);
 	}
 
-	public void deleteCapitalsource(final Long userId, final Long accessorId, final Long id) {
-		this.mapper.deleteCapitalsource(userId, accessorId, id);
+	public void deleteCapitalsource(final Long userId, final Long magGroupId, final Long id) {
+		this.mapper.deleteCapitalsource(userId, magGroupId, id);
 	}
 
 	public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,

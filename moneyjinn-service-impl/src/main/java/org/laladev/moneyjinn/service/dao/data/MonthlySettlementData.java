@@ -33,8 +33,8 @@ import lombok.Data;
 @Data
 public class MonthlySettlementData {
 	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
+	private Long mauUserId;
+	private Long magGroupId;
 	private Long mcsCapitalsourceId;
 	private Integer month;
 	private Integer year;

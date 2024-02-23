@@ -56,7 +56,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 	@Override
 	public ResponseEntity<CapitalsourceTransport> readOne(@PathVariable("id") final Long id) {
 		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
 				capitalsourceId);
@@ -75,7 +75,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 		final UserID userId = super.getUserId();
 		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
+		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setId(null);
 		capitalsource.setUser(user);
 		capitalsource.setAccess(accessor);
@@ -98,7 +98,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 		final UserID userId = super.getUserId();
 		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
 		final User user = this.userService.getUserById(userId);
-		final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
+		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setUser(user);
 		capitalsource.setAccess(accessor);
 		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
@@ -113,7 +113,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
 		final UserID userId = super.getUserId();
-		final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
+		final Group accessor = this.accessRelationService.getCurrentGroup(userId);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 
 		this.capitalsourceService.deleteCapitalsource(userId, accessor.getId(), capitalsourceId);

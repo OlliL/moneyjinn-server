@@ -4,15 +4,15 @@
 
             <sql id="preDefMoneyflowColumns">
                  predefmoneyflowid        AS id
-                ,mac_id                        AS macId
+                ,mau_userid               AS mauUserId
                 ,amount
-                ,mcs_capitalsourceid        AS mcsCapitalsourceId
-                ,mcp_contractpartnerid        AS mcpContractpartnerId
+                ,mcs_capitalsourceid      AS mcsCapitalsourceId
+                ,mcp_contractpartnerid    AS mcpContractpartnerId
                 ,comment
                 ,createdate
-                ,once_a_month                AS onceAMonth
+                ,once_a_month             AS onceAMonth
                 ,last_used                AS lastUsed
-                ,mpa_postingaccountid        AS mpaPostingAccountId
+                ,mpa_postingaccountid     AS mpaPostingAccountId
         </sql>
     
             <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
@@ -20,7 +20,7 @@
                 SELECT <include refid="preDefMoneyflowColumns" />
                   FROM predefmoneyflows
                  WHERE predefmoneyflowid = #{id}
-                   AND mac_id            = #{userId}
+                   AND mau_userid        = #{userId}
                  LIMIT 1
         </select>
 
@@ -28,7 +28,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
                 SELECT <include refid="preDefMoneyflowColumns" />
                   FROM predefmoneyflows
-                 WHERE mac_id = #{userId}
+                 WHERE mau_userid = #{userId}
                  ORDER BY predefmoneyflowid
         </select>
 
@@ -37,7 +37,7 @@
                 useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
                 INSERT
                   INTO predefmoneyflows
-                      (mac_id
+                      (mau_userid
                       ,amount
                       ,mcs_capitalsourceid
                       ,mcp_contractpartnerid
@@ -46,7 +46,7 @@
                       ,mpa_postingaccountid
                       )
                 VALUES
-                      (#{macId}
+                      (#{mauUserId}
                       ,#{amount}
                       ,#{mcsCapitalsourceId}
                       ,#{mcpContractpartnerId}
@@ -58,14 +58,14 @@
         
         <update id="updatePreDefMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
                 UPDATE predefmoneyflows
-                   SET amount                        = #{amount}
-                      ,mcs_capitalsourceid        = #{mcsCapitalsourceId}
-                      ,mcp_contractpartnerid        = #{mcpContractpartnerId}
-                      ,comment                        = #{comment}
-                      ,once_a_month                = #{onceAMonth}
-                      ,mpa_postingaccountid        = #{mpaPostingAccountId}
-                 WHERE predefmoneyflowid = #{id}
-                   AND mac_id            = #{macId}
+                   SET amount                = #{amount}
+                      ,mcs_capitalsourceid   = #{mcsCapitalsourceId}
+                      ,mcp_contractpartnerid = #{mcpContractpartnerId}
+                      ,comment               = #{comment}
+                      ,once_a_month          = #{onceAMonth}
+                      ,mpa_postingaccountid  = #{mpaPostingAccountId}
+                 WHERE predefmoneyflowid     = #{id}
+                   AND mau_userid            = #{mauUserId}
                  LIMIT 1
         </update>
         
@@ -73,7 +73,7 @@
                 DELETE
                   FROM predefmoneyflows
                  WHERE predefmoneyflowid = #{id}
-                   AND mac_id            = #{userId}
+                   AND mau_userid        = #{userId}
                  LIMIT 1
         </delete>
          
@@ -81,7 +81,7 @@
                 UPDATE predefmoneyflows
                    SET last_used         = NOW()
                  WHERE predefmoneyflowid = #{id}
-                   AND mac_id            = #{userId}
+                   AND mau_userid        = #{userId}
                  LIMIT 1
         </update>
 </mapper>

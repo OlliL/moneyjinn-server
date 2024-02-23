@@ -9,7 +9,7 @@ public class GroupTransportBuilder extends GroupTransport {
 	public static final String GROUP2_NAME = "group2";
 	public static final String GROUP3_NAME = "group3";
 	public static final String NEWGROUP_NAME = "students";
-	public static final Long ADMINGROUP_ID = 1l;
+	public static final Long ADMINGROUP_ID = 0l;
 	public static final Long GROUP1_ID = 6l;
 	public static final Long GROUP2_ID = 7l;
 	public static final Long GROUP3_ID = 8l;

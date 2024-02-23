@@ -41,12 +41,12 @@ import org.mapstruct.Mapping;
 public interface ImportedMoneyflowReceiptDataMapper
 		extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
 	@Override
-	@Mapping(target = "user.id", source = "macIdCreator")
-	@Mapping(target = "access.id", source = "macIdAccessor")
+	@Mapping(target = "user.id", source = "mauUserId")
+	@Mapping(target = "access.id", source = "magGroupId")
 	ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
 
 	@Override
-	@Mapping(target = "macIdCreator", source = "user.id")
-	@Mapping(target = "macIdAccessor", source = "access.id")
+	@Mapping(target = "mauUserId", source = "user.id")
+	@Mapping(target = "magGroupId", source = "access.id")
 	ImportedMoneyflowReceiptData mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
 }

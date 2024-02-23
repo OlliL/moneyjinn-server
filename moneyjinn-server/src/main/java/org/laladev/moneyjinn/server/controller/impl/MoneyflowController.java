@@ -275,7 +275,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final boolean saveAsPreDefMoneyflow = Integer.valueOf(1).equals(request.getSaveAsPreDefMoneyflow());
 
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		moneyflow.setUser(user);
 		moneyflow.setGroup(group);
 		this.prepareForValidityCheck(moneyflow, moneyflowSplitEntries);
@@ -337,7 +337,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final UpdateMoneyflowResponse response = new UpdateMoneyflowResponse();
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final List<MoneyflowSplitEntry> updateMoneyflowSplitEntries = super.mapList(
 				request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 		final List<MoneyflowSplitEntry> insertMoneyflowSplitEntries = super.mapList(

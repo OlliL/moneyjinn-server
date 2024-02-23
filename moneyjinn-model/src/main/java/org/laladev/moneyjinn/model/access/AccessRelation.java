@@ -39,35 +39,34 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class AccessRelation extends AbstractEntity<AccessID> {
+public class AccessRelation extends AbstractEntity<UserID> {
 	private static final long serialVersionUID = 1L;
-	private AccessRelation parentAccessRelation;
+	private GroupID groupID;
 	private LocalDate validFrom;
 	private LocalDate validTil;
 
-	public AccessRelation(final AccessID id) {
+	public AccessRelation(final UserID id) {
 		super.setId(id);
 	}
 
-	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation, final LocalDate validFrom,
-			final LocalDate validTil) {
+	public AccessRelation(final UserID id, final GroupID groupID, final LocalDate validFrom, final LocalDate validTil) {
 		super.setId(id);
-		this.parentAccessRelation = parentAccessRelation;
+		this.groupID = groupID;
 		this.validFrom = validFrom;
 		this.validTil = validTil;
 	}
 
-	public AccessRelation(final AccessID id, final AccessRelation parentAccessRelation) {
+	public AccessRelation(final UserID id, final GroupID groupID) {
 		super.setId(id);
-		this.parentAccessRelation = parentAccessRelation;
+		this.groupID = groupID;
 	}
 
 	public AccessRelation(final AccessRelation accessRelation) {
 		if (accessRelation != null) {
-			this.setId(new AccessID(accessRelation.getId().getId()));
+			this.setId(new UserID(accessRelation.getId().getId()));
 			this.setValidFrom(accessRelation.getValidFrom());
 			this.setValidTil(accessRelation.getValidTil());
-			this.setParentAccessRelation(new AccessRelation(accessRelation.getParentAccessRelation()));
+			this.setGroupID(new GroupID(accessRelation.getGroupID().getId()));
 		}
 	}
 }

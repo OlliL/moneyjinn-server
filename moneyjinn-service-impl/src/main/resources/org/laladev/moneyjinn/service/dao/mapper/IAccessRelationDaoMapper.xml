@@ -4,17 +4,17 @@
         namespace="org.laladev.moneyjinn.service.dao.mapper.IAccessRelationDaoMapper">
 
         <sql id="accessRelationColumns">
-                 id
-                ,ref_id     as refId
-                ,validfrom  as validFrom
-                ,validtil   as validTil
+                 mau_userid  as mauUserId
+                ,mag_groupid as magGroupId
+                ,validfrom   as validFrom
+                ,validtil    as validTil
         </sql>
     
         <select id="getAccessRelationById" 
                 resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
                 SELECT <include refid="accessRelationColumns" />
                   FROM access_relation
-                 WHERE id = #{id}
+                 WHERE mau_userid = #{id}
                    AND #{date} BETWEEN validfrom AND validtil
                  LIMIT 1
         </select>
@@ -23,7 +23,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
                 SELECT <include refid="accessRelationColumns" />
                   FROM access_relation
-                 WHERE id = #{id}
+                 WHERE mau_userid = #{id}
                  ORDER BY validfrom
         </select>
         
@@ -31,7 +31,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
                 SELECT <include refid="accessRelationColumns" />
                   FROM access_relation
-                 WHERE id = #{id}
+                 WHERE mau_userid = #{id}
                    AND validtil >= #{date}
                  ORDER BY validfrom
         </select>
@@ -39,87 +39,49 @@
         <delete id="deleteAllAccessRelation">
                 DELETE
                   FROM access_relation
-                 WHERE id = #{id}
+                 WHERE mau_userid = #{id}
         </delete>
         
         <delete id="deleteAccessRelationByDate">
                 DELETE
                   FROM access_relation
-                 WHERE id        = #{id}
+                 WHERE mau_userid        = #{id}
                    AND validfrom = #{date}
         </delete>
         
         <update id="updateAccessRelation">
                 UPDATE access_relation
-                   SET ref_id    = #{accessRelationData.refId}
-                      ,validfrom = #{accessRelationData.validFrom}
-                      ,validtil  = #{accessRelationData.validTil}
-                 WHERE id        = #{id}
-                   AND validfrom = #{date}
+                   SET mag_groupid = #{accessRelationData.magGroupId}
+                      ,validfrom   = #{accessRelationData.validFrom}
+                      ,validtil    = #{accessRelationData.validTil}
+                 WHERE mau_userid  = #{id}
+                   AND validfrom   = #{date}
         </update>
         
         <insert id="createAccessRelation"
                 parameterType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
                 INSERT
                   INTO access_relation
-                      (id
-                      ,ref_id
+                      (mau_userid
+                      ,mag_groupid
                       ,validfrom
                       ,validtil
                       )
                 VALUES
-                      (#{id}
-                      ,#{refId}
+                      (#{mauUserId}
+                      ,#{magGroupId}
                       ,#{validFrom}
                       ,#{validTil}
-                      )
-        </insert>
-        
-        <delete id="deleteAllAccessFlattened">
-                DELETE
-                  FROM access_flattened
-                 WHERE id = #{id}
-        </delete>
-        
-        <delete id="deleteAccessFlattenedAfter">
-                DELETE
-                  FROM access_flattened
-                 WHERE id        = #{id}
-                   AND validtil >= #{date}
-        </delete>
-        
-        <insert id="createAccessFlattened"
-                parameterType="org.laladev.moneyjinn.service.dao.data.AccessFlattenedData">
-                INSERT
-                  INTO access_flattened
-                      (id
-                      ,validfrom
-                      ,validtil
-                      ,id_level_1
-                      ,id_level_2
-                      ,id_level_3
-                      ,id_level_4
-                      ,id_level_5
-                      )
-                VALUES
-                      (#{id}
-                      ,#{validFrom}
-                      ,#{validTil}
-                      ,#{idLevel1}
-                      ,#{idLevel2}
-                      ,#{idLevel3}
-                      ,#{idLevel4}
-                      ,#{idLevel5}
                       )
         </insert>
         
         <select id="getAllUserWithSameGroup" resultType="java.lang.Long">
-                SELECT id_level_1
-                  FROM access_flattened
-                 WHERE id_level_2 IN (SELECT id_level_2
-                                        FROM access_flattened
-                                       WHERE id_level_1=#{id})
-                 GROUP BY id_level_1
+                SELECT mau_userid
+                  FROM access_relation
+                 WHERE mag_groupid IN (SELECT mag_groupid
+                                         FROM access_relation
+                                        WHERE mau_userid=#{id})
+                 GROUP BY mau_userid
         </select>
 </mapper>
  

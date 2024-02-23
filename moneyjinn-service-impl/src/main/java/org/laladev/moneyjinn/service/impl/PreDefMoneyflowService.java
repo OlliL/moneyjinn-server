@@ -37,7 +37,7 @@ import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
-import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -94,8 +94,8 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final PreDefMoneyflow preDefMoneyflow = super.map(preDefMoneyflowData, PreDefMoneyflow.class);
 			final UserID userId = preDefMoneyflow.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
-			final GroupID groupId = accessor.getId();
+			final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
+			final GroupID groupId = accessRelation.getGroupID();
 			preDefMoneyflow.setUser(user);
 			PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
 			if (postingAccount != null) {
@@ -136,9 +136,9 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
 		} else {
-			final Group accessor = this.accessRelationService.getCurrentAccessor(userId);
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, accessor.getId(),
-					preDefMoneyflow.getCapitalsource().getId());
+			final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+					accessRelation.getGroupID(), preDefMoneyflow.getCapitalsource().getId());
 			if (capitalsource == null) {
 				validationResult.addValidationResultItem(
 						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));

@@ -3,15 +3,15 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper">
 
             <sql id="moneyflowColumns">
-                 moneyflowid                AS id
-                ,mac_id_creator                AS macIdCreator
+                 moneyflowid            AS id
+                ,mau_userid             AS mauUserId
                 ,bookingdate
                 ,invoicedate
                 ,amount
-                ,mcs_capitalsourceid        AS mcsCapitalsourceId
-                ,mcp_contractpartnerid        AS mcpContractpartnerId
+                ,mcs_capitalsourceid    AS mcsCapitalsourceId
+                ,mcp_contractpartnerid  AS mcpContractpartnerId
                 ,comment
-                ,mpa_postingaccountid        AS mpaPostingAccountId
+                ,mpa_postingaccountid   AS mpaPostingAccountId
                 ,private                AS privat
         </sql>
     
@@ -19,12 +19,12 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
-                 WHERE moneyflowid         = #{id}
-                   AND maf_id              = #{userId}
+                 WHERE moneyflowid     = #{id}
+                   AND mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
                  LIMIT 1
         </select>
@@ -34,8 +34,8 @@
                 useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
                 INSERT
                   INTO moneyflows
-                      (mac_id_creator
-                      ,mac_id_accessor
+                      (mau_userid
+                      ,mag_groupid
                       ,bookingdate
                       ,invoicedate
                       ,amount
@@ -46,8 +46,8 @@
                       ,private
                       )
                 VALUES
-                      (#{macIdCreator}
-                      ,#{macIdAccessor}
+                      (#{mauUserId}
+                      ,#{magGroupId}
                       ,#{bookingdate}
                       ,#{invoicedate}
                       ,#{amount}
@@ -69,16 +69,16 @@
                       ,comment               = #{comment}
                       ,mpa_postingaccountid  = #{mpaPostingAccountId}
                       ,private               = #{privat}
-                 WHERE mac_id_creator = #{macIdCreator}
-                   AND moneyflowid    = #{id}
+                 WHERE mau_userid            = #{mauUserId}
+                   AND moneyflowid           = #{id}
                  LIMIT 1
         </update>
 
         <delete id="deleteMoneyflow">
                 DELETE
                   FROM moneyflows
-                 WHERE mac_id_creator = #{userId}
-                   AND moneyflowid    = #{id}
+                 WHERE mau_userid  = #{userId}
+                   AND moneyflowid = #{id}
                  LIMIT 1
         </delete>
         
@@ -86,8 +86,8 @@
                 resultType="java.math.BigDecimal">
                 SELECT IFNULL(SUM(amount),0)
                   FROM vw_moneyflows
-                 WHERE bookingdate   BETWEEN #{validFrom} AND #{validTil}
-                   AND maf_id              = #{userId}
+                 WHERE bookingdate BETWEEN #{validFrom} AND #{validTil}
+                   AND mar_mug_userid      = #{userId}
                    AND mcs_capitalsourceid IN 
                    <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
                       open="(" separator="," close=")">
@@ -98,11 +98,11 @@
             <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT YEAR(bookingdate)
                   FROM vw_moneyflows
-                 WHERE maf_id              = #{userId}
+                 WHERE mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
                  ORDER BY 1 ASC
         </select>
@@ -111,11 +111,11 @@
                 SELECT DISTINCT MONTH(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
-                   AND maf_id              = #{userId}
+                   AND mar_mug_userid        = #{userId}
                    AND (
-                        private            = 0
+                        private      = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid   = #{userId}
                        )
                  ORDER BY 1 ASC
         </select>
@@ -125,18 +125,18 @@
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND maf_id              = #{userId}
+                   AND mar_mug_userid              = #{userId}
         </select>
         
         <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND maf_id              = #{userId}
+                 WHERE bookingdate     BETWEEN #{dateFrom} AND #{dateTil}
+                   AND mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
                  LIMIT 1
         </select>
@@ -144,46 +144,46 @@
          <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
-                 WHERE maf_id              = #{userId}
+                 WHERE mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
          </select>           
 
          <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
-                 WHERE maf_id              = #{userId}
+                 WHERE mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
          </select>           
 
         <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
-                 WHERE bookingdate         <![CDATA[ < ]]> #{date}
-                   AND maf_id              = #{userId}
+                 WHERE bookingdate     <![CDATA[ < ]]> #{date}
+                   AND mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
          </select>
 
          <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
-                 WHERE bookingdate         <![CDATA[ > ]]> #{date}
-                   AND maf_id              = #{userId}
+                 WHERE bookingdate     <![CDATA[ > ]]> #{date}
+                   AND mar_mug_userid          = #{userId}
                    AND (
-                        private            = 0
+                        private        = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
          </select>
          
@@ -195,17 +195,17 @@
                   FROM vw_moneyflows mmf
                   LEFT OUTER JOIN moneyflowsplitentries mse
                     ON mmf.moneyflowid = mse.mmf_moneyflowid 
-                 WHERE mmf.invoicedate    BETWEEN #{dateFrom} AND #{dateTil}
+                 WHERE mmf.invoicedate BETWEEN #{dateFrom} AND #{dateTil}
                    AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN 
                    <foreach item="postingAccountId" index="index" collection="postingAccountIds"
                       open="(" separator="," close=")">
                         #{postingAccountId}
                    </foreach>
-                   AND mmf.maf_id              = #{userId}
+                   AND mmf.mar_mug_userid  = #{userId}
                    AND (
-                        mmf.private            = 0
+                        mmf.private        = 0
                           OR
-                        mmf.mac_id_creator     = #{userId}
+                        mmf.mau_userid     = #{userId}
                        )
                  GROUP BY YEAR(mmf.invoicedate)
                          ,MONTH(mmf.invoicedate)
@@ -229,11 +229,11 @@
                       open="(" separator="," close=")">
                         #{postingAccountId}
                    </foreach>
-                   AND mmf.maf_id              = #{userId}
+                   AND mmf.mar_mug_userid              = #{userId}
                    AND (
                         mmf.private            = 0
                           OR
-                        mmf.mac_id_creator     = #{userId}
+                        mmf.mau_userid     = #{userId}
                        )
                  GROUP BY YEAR(mmf.invoicedate)
                          ,mpaPostingAccountId
@@ -248,7 +248,7 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND amount              = CAST(#{amount} AS DECIMAL(8,2))
-                   AND maf_id              = #{userId}
+                   AND mar_mug_userid              = #{userId}
         </select>
 
         <select id="searchMoneyflowsByAbsoluteAmountDate"
@@ -257,7 +257,7 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND ABS(amount)         = CAST(#{amount} AS DECIMAL(8,2))
-                   AND maf_id              = #{userId}
+                   AND mar_mug_userid              = #{userId}
         </select>
 
         <select id="getAllMoneyflowsByDateRangeCapitalsourceId"
@@ -266,11 +266,11 @@
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND mcs_capitalsourceid = #{capitalsourceId}
-                   AND maf_id              = #{userId}
+                   AND mar_mug_userid              = #{userId}
                    AND (
                         private            = 0
                           OR
-                        mac_id_creator     = #{userId}
+                        mau_userid     = #{userId}
                        )
         </select>
         
@@ -279,7 +279,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
                 parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData">
                 SELECT mmf.moneyflowid                                            AS id
-                      ,mmf.mac_id_creator                                         AS macIdCreator
+                      ,mmf.mau_userid                                         AS mauUserId
                       ,mmf.bookingdate                                            AS bookingdate
                       ,mmf.invoicedate                                            AS invoicedate
                       ,IFNULL(mse.amount,mmf.amount)                              AS amount
@@ -322,11 +322,11 @@
                            AND
                        </if>
                        mmf.bookingdate BETWEEN #{startDate} AND #{endDate}
-                   AND mmf.maf_id              = #{userId}
+                   AND mmf.mar_mug_userid              = #{userId}
                    AND (
                         mmf.private            = 0
                           OR
-                        mmf.mac_id_creator     = #{userId}
+                        mmf.mau_userid     = #{userId}
                        )
                        <if test="featureOnlyMinusAmounts">
                            AND IFNULL(mse.amount, mmf.amount) <![CDATA[ < ]]> 0

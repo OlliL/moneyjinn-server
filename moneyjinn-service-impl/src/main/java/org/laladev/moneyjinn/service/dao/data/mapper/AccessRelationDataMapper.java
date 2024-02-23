@@ -26,34 +26,24 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import org.laladev.moneyjinn.converter.AccessIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
-@Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
+@Mapper(config = MapStructConfig.class, uses = { UserIdMapper.class, GroupIdMapper.class })
 public interface AccessRelationDataMapper extends IMapstructMapper<AccessRelation, AccessRelationData> {
 	@Override
-	@Mapping(target = "parentAccessRelation", source = "refId", qualifiedByName = "createParentAccessRelation")
+	@Mapping(target = "groupID", source = "magGroupId")
+	@Mapping(target = "id", source = "mauUserId")
 	AccessRelation mapBToA(AccessRelationData accessRelationData);
 
 	@Override
-	@Mapping(target = "refId", source = "parentAccessRelation.id")
+	@Mapping(target = "magGroupId", source = "groupID")
+	@Mapping(target = "mauUserId", source = "id")
 	AccessRelationData mapAToB(AccessRelation accessRelation);
-
-	@Named("createParentAccessRelation")
-	default AccessRelation createParentAccessRelation(final Long refId) {
-		if (refId == null) {
-			return null;
-		}
-
-		final AccessRelation parentAccessRelation = new AccessRelation(new AccessID(refId));
-		parentAccessRelation.setParentAccessRelation(new AccessRelation(new AccessID(0L)));
-		return parentAccessRelation;
-	}
 }

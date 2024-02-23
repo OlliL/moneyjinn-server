@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.service.dao.data.AccessFlattenedData;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 
 public interface IAccessRelationDaoMapper {
@@ -49,12 +48,6 @@ public interface IAccessRelationDaoMapper {
 			@Param("accessRelationData") AccessRelationData accessRelationData);
 
 	public void createAccessRelation(AccessRelationData accessRelationData);
-
-	public void deleteAllAccessFlattened(Long id);
-
-	public void deleteAccessFlattenedAfter(@Param("id") Long id, @Param("date") LocalDate date);
-
-	public void createAccessFlattened(AccessFlattenedData accessFlattenedData);
 
 	public Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
 }

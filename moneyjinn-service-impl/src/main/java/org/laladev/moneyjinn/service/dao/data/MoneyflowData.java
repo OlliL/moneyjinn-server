@@ -34,8 +34,8 @@ import lombok.Data;
 @Data
 public class MoneyflowData {
 	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
+	private Long mauUserId;
+	private Long magGroupId;
 	private LocalDate bookingdate;
 	private LocalDate invoicedate;
 	private BigDecimal amount;

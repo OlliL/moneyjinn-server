@@ -9,10 +9,10 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.builder.AccessRelationTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -180,10 +180,9 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
-				.getCurrentAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
+				.getCurrentAccessRelationById(new UserID(UserTransportBuilder.NEXT_ID));
 		Assertions.assertNotNull(accessRelation);
-		Assertions.assertEquals(accessRelationTransport.getRefId(),
-				accessRelation.getParentAccessRelation().getId().getId());
+		Assertions.assertEquals(accessRelationTransport.getRefId(), accessRelation.getGroupID().getId());
 		Assertions.assertEquals(accessRelationTransport.getValidfrom(), accessRelation.getValidFrom());
 		// default if validTil is empty
 		Assertions.assertEquals(LocalDate.parse("2999-12-31"), accessRelation.getValidTil());
@@ -204,7 +203,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
-				.getCurrentAccessRelationById(new AccessID(UserTransportBuilder.NEXT_ID));
+				.getCurrentAccessRelationById(new UserID(UserTransportBuilder.NEXT_ID));
 		Assertions.assertNotNull(accessRelation);
 		// default did not overwrite
 		Assertions.assertEquals(accessRelationTransport.getValidtil(), accessRelation.getValidTil());

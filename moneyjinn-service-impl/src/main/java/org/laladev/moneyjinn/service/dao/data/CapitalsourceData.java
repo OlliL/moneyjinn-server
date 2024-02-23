@@ -33,8 +33,8 @@ import lombok.Data;
 @Data
 public class CapitalsourceData {
 	private Long id;
-	private Long macIdCreator;
-	private Long macIdAccessor;
+	private Long mauUserId;
+	private Long magGroupId;
 	private Integer type;
 	private Integer state;
 	private String accountNumber;

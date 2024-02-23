@@ -3,8 +3,8 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper">
 
             <sql id="contractpartnerColumns">
-                 mac_id_creator                AS macIdCreator
-                ,mac_id_accessor        AS macIdAccessor
+                 mau_userid                AS mauUserId
+                ,mag_groupid        AS magGroupId
                 ,contractpartnerid      AS id
                 ,name
                 ,street
@@ -22,7 +22,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
-                 WHERE maf_id = #{userId}
+                 WHERE mar_mug_userid = #{userId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  ORDER BY name
         </select>
@@ -32,7 +32,7 @@
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
                  WHERE contractpartnerid = #{id}
-                   AND maf_id            = #{userId}
+                   AND mar_mug_userid            = #{userId}
                  LIMIT 1
         </select>
 
@@ -41,7 +41,7 @@
 
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
-                 WHERE maf_id    = #{userId}
+                 WHERE mar_mug_userid    = #{userId}
                    AND name      = #{name}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
@@ -52,8 +52,8 @@
                 useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">
                 INSERT
                   INTO contractpartners
-                      (mac_id_creator
-                      ,mac_id_accessor
+                      (mau_userid
+                      ,mag_groupid
                       ,name
                       ,street
                       ,postcode
@@ -65,8 +65,8 @@
                       ,mpa_postingaccountid
                       )
                 VALUES
-                      (#{macIdCreator}
-                      ,#{macIdAccessor}
+                      (#{mauUserId}
+                      ,#{magGroupId}
                       ,#{name}
                       ,#{street}
                       ,#{postcode}
@@ -91,14 +91,14 @@
                       ,mmf_comment          = #{mmfComment}
                       ,mpa_postingaccountid = #{mpaPostingAccountId}
                  WHERE contractpartnerid = #{id}
-                   AND mac_id_accessor   = #{macIdAccessor}
+                   AND mag_groupid   = #{magGroupId}
                  LIMIT 1
         </update>
 
         <delete id="deleteContractpartner">
                 DELETE
                   FROM contractpartners
-                 WHERE mac_id_accessor   = #{groupId}
+                 WHERE mag_groupid   = #{groupId}
                    AND contractpartnerid = #{id}
                  LIMIT 1
         </delete>

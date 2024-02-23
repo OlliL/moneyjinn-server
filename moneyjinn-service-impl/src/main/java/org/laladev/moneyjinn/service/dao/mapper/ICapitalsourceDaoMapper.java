@@ -38,7 +38,7 @@ public interface ICapitalsourceDaoMapper {
 	public List<CapitalsourceData> getAllCapitalsourcesByDateRange(@Param("userId") Long userId,
 			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 
-	public CapitalsourceData getCapitalsourceById(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
+	public CapitalsourceData getCapitalsourceById(@Param("userId") Long userId, @Param("magGroupId") Long magGroupId,
 			@Param("id") Long id);
 
 	public CapitalsourceData getCapitalsourceByComment(@Param("userId") Long userId, @Param("comment") String comment,
@@ -48,7 +48,7 @@ public interface ICapitalsourceDaoMapper {
 
 	public void updateCapitalsource(CapitalsourceData capitalsourceData);
 
-	public void deleteCapitalsource(@Param("userId") Long userId, @Param("accessorId") Long accessorId,
+	public void deleteCapitalsource(@Param("userId") Long userId, @Param("magGroupId") Long magGroupId,
 			@Param("id") Long id);
 
 	public Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,

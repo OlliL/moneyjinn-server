@@ -65,7 +65,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
 		if (importedBalanceData != null) {
 			final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
-			final Group group = this.accessRelationService.getAccessor(userId, importedBalance.getDate().toLocalDate());
+			final Group group = this.accessRelationService.getGroup(userId, importedBalance.getDate().toLocalDate());
 			Capitalsource capitalsource = importedBalance.getCapitalsource();
 			if (capitalsource != null) {
 				final CapitalsourceID capitalsourceId = capitalsource.getId();

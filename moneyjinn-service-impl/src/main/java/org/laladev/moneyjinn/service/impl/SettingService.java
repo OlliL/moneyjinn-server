@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
@@ -65,7 +64,7 @@ public class SettingService extends AbstractService implements ISettingService {
 
 	private static final String SETTING_GET_SETTING_MUST_NOT_BE_NULL = "setting.getSetting() must not be null!";
 	private static final String SETTING_MUST_NOT_BE_NULL = "setting must not be null!";
-	private static final String ACCESS_ID_MUST_NOT_BE_NULL = "accessId must not be null!";
+	private static final String ACCESS_ID_MUST_NOT_BE_NULL = "userId must not be null!";
 	private final SettingDao settingDao;
 	private final ObjectMapper objectMapper;
 
@@ -81,15 +80,15 @@ public class SettingService extends AbstractService implements ISettingService {
 		this.settingDao.deleteSettings(userId.getId());
 	}
 
-	private void setSetting(final AccessID accessId, final AbstractSetting<?> setting) {
-		Assert.notNull(accessId, ACCESS_ID_MUST_NOT_BE_NULL);
+	private void setSetting(final UserID userId, final AbstractSetting<?> setting) {
+		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(setting, SETTING_MUST_NOT_BE_NULL);
 		Assert.notNull(setting.getSetting(), SETTING_GET_SETTING_MUST_NOT_BE_NULL);
 
 		try {
 			final String settingString = this.objectMapper.writeValueAsString(setting);
 
-			final SettingData settingData = new SettingData(accessId.getId(),
+			final SettingData settingData = new SettingData(userId.getId(),
 					SettingNameConverter.getSettingNameByClassName(setting.getClass().getSimpleName()), settingString);
 			this.settingDao.setSetting(settingData);
 		} catch (final JsonProcessingException e) {
@@ -97,9 +96,9 @@ public class SettingService extends AbstractService implements ISettingService {
 		}
 	}
 
-	private <T> Optional<T> getSetting(final AccessID accessId, final Class<T> clazz) {
-		Assert.notNull(accessId, ACCESS_ID_MUST_NOT_BE_NULL);
-		final SettingData settingData = this.settingDao.getSetting(accessId.getId(),
+	private <T> Optional<T> getSetting(final UserID userId, final Class<T> clazz) {
+		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
+		final SettingData settingData = this.settingDao.getSetting(userId.getId(),
 				SettingNameConverter.getSettingNameByClassName(clazz.getSimpleName()));
 		if (settingData != null) {
 			try {
@@ -113,111 +112,110 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientReportingUnselectedPostingAccountIdsSetting(final AccessID accessId,
+	public void setClientReportingUnselectedPostingAccountIdsSetting(final UserID userId,
 			final ClientReportingUnselectedPostingAccountIdsSetting setting) {
-		this.setSetting(accessId, setting);
+		this.setSetting(userId, setting);
 	}
 
 	@Override
 	public Optional<ClientReportingUnselectedPostingAccountIdsSetting> getClientReportingUnselectedPostingAccountIdsSetting(
-			final AccessID accessId) {
-		return this.getSetting(accessId, ClientReportingUnselectedPostingAccountIdsSetting.class);
+			final UserID userId) {
+		return this.getSetting(userId, ClientReportingUnselectedPostingAccountIdsSetting.class);
 	}
 
 	@Override
-	public void setClientTrendCapitalsourceIDsSetting(final AccessID accessId,
+	public void setClientTrendCapitalsourceIDsSetting(final UserID userId,
 			final ClientTrendCapitalsourceIDsSetting setting) {
-		this.setSetting(accessId, setting);
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(final AccessID accessId) {
-		return this.getSetting(accessId, ClientTrendCapitalsourceIDsSetting.class);
+	public Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(final UserID userId) {
+		return this.getSetting(userId, ClientTrendCapitalsourceIDsSetting.class);
 	}
 
 	@Override
-	public void setClientCompareDataSelectedCapitalsource(final AccessID accessId,
+	public void setClientCompareDataSelectedCapitalsource(final UserID userId,
 			final ClientCompareDataSelectedCapitalsource setting) {
-		this.setSetting(accessId, setting);
+		this.setSetting(userId, setting);
 	}
 
 	@Override
 	public Optional<ClientCompareDataSelectedCapitalsource> getClientCompareDataSelectedCapitalsource(
-			final AccessID accessId) {
-		return this.getSetting(accessId, ClientCompareDataSelectedCapitalsource.class);
+			final UserID userId) {
+		return this.getSetting(userId, ClientCompareDataSelectedCapitalsource.class);
 	}
 
 	@Override
-	public void setClientCompareDataSelectedFormat(final AccessID accessId,
-			final ClientCompareDataSelectedFormat setting) {
-		this.setSetting(accessId, setting);
+	public void setClientCompareDataSelectedFormat(final UserID userId, final ClientCompareDataSelectedFormat setting) {
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCompareDataSelectedFormat> getClientCompareDataSelectedFormat(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCompareDataSelectedFormat.class);
+	public Optional<ClientCompareDataSelectedFormat> getClientCompareDataSelectedFormat(final UserID userId) {
+		return this.getSetting(userId, ClientCompareDataSelectedFormat.class);
 	}
 
 	@Override
-	public void setClientCompareDataSelectedSourceIsFile(final AccessID accessId,
+	public void setClientCompareDataSelectedSourceIsFile(final UserID userId,
 			final ClientCompareDataSelectedSourceIsFile setting) {
-		this.setSetting(accessId, setting);
+		this.setSetting(userId, setting);
 	}
 
 	@Override
 	public Optional<ClientCompareDataSelectedSourceIsFile> getClientCompareDataSelectedSourceIsFile(
-			final AccessID accessId) {
-		return this.getSetting(accessId, ClientCompareDataSelectedSourceIsFile.class);
+			final UserID userId) {
+		return this.getSetting(userId, ClientCompareDataSelectedSourceIsFile.class);
 	}
 
 	@Override
-	public void setClientCalcEtfSaleIsin(final AccessID accessId, final ClientCalcEtfSaleIsin setting) {
-		this.setSetting(accessId, setting);
+	public void setClientCalcEtfSaleIsin(final UserID userId, final ClientCalcEtfSaleIsin setting) {
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCalcEtfSaleIsin.class);
+	public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleIsin.class);
 	}
 
 	@Override
-	public void setClientCalcEtfSaleAskPrice(final AccessID accessId, final ClientCalcEtfSaleAskPrice setting) {
-		this.setSetting(accessId, setting);
+	public void setClientCalcEtfSaleAskPrice(final UserID userId, final ClientCalcEtfSaleAskPrice setting) {
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCalcEtfSaleAskPrice.class);
+	public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleAskPrice.class);
 	}
 
 	@Override
-	public void setClientCalcEtfSaleBidPrice(final AccessID accessId, final ClientCalcEtfSaleBidPrice setting) {
-		this.setSetting(accessId, setting);
+	public void setClientCalcEtfSaleBidPrice(final UserID userId, final ClientCalcEtfSaleBidPrice setting) {
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCalcEtfSaleBidPrice.class);
+	public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleBidPrice.class);
 	}
 
 	@Override
-	public void setClientCalcEtfSalePieces(final AccessID accessId, final ClientCalcEtfSalePieces setting) {
-		this.setSetting(accessId, setting);
+	public void setClientCalcEtfSalePieces(final UserID userId, final ClientCalcEtfSalePieces setting) {
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCalcEtfSalePieces.class);
+	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSalePieces.class);
 	}
 
 	@Override
-	public void setClientCalcEtfSaleTransactionCosts(final AccessID accessId,
+	public void setClientCalcEtfSaleTransactionCosts(final UserID userId,
 			final ClientCalcEtfSaleTransactionCosts setting) {
-		this.setSetting(accessId, setting);
+		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(final AccessID accessId) {
-		return this.getSetting(accessId, ClientCalcEtfSaleTransactionCosts.class);
+	public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleTransactionCosts.class);
 	}
 }

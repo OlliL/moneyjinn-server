@@ -113,10 +113,10 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 			final User user = this.userService.getUserById(userId);
 			final LocalDate endOfMonth = LocalDate.of(monthlySettlement.getYear(), monthlySettlement.getMonth(), 1)
 					.with(TemporalAdjusters.lastDayOfMonth());
-			final Group accessor = this.accessRelationService.getAccessor(userId, endOfMonth);
-			final GroupID groupId = accessor.getId();
+			final Group group = this.accessRelationService.getGroup(userId, endOfMonth);
+			final GroupID groupId = group.getId();
 			monthlySettlement.setUser(user);
-			monthlySettlement.setGroup(accessor);
+			monthlySettlement.setGroup(group);
 			Capitalsource capitalsource = monthlySettlement.getCapitalsource();
 			if (capitalsource != null) {
 				final CapitalsourceID capitalsourceId = capitalsource.getId();

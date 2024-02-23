@@ -72,7 +72,7 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 			final LocalDate beginOfMonth = LocalDate.of(importedMonthlySettlement.getYear(),
 					importedMonthlySettlement.getMonth(), 1);
 			final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-			final Group group = this.accessRelationService.getAccessor(userId, endOfMonth);
+			final Group group = this.accessRelationService.getGroup(userId, endOfMonth);
 			Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
 			if (capitalsource != null) {
 				final CapitalsourceID capitalsourceId = capitalsource.getId();

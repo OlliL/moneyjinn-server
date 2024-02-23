@@ -4,7 +4,7 @@
         namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
 
         <sql id="settingColumns">
-                 mac_id      as accessId
+                 mau_userid      as mauUserId
                 ,name
                 ,`value`
         </sql>
@@ -13,7 +13,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
                 SELECT <include refid="settingColumns" />
                   FROM settings
-                 WHERE mac_id = #{accessId}
+                 WHERE mau_userid = #{mauUserId}
                    AND name = #{name}
                  LIMIT 1
         </select>
@@ -21,12 +21,12 @@
             <insert id="setSetting" >
                 INSERT
                   INTO settings
-                      (mac_id
+                      (mau_userid
                       ,name
                       ,`value`
                       )
                 VALUES
-                      (#{accessId}
+                      (#{mauUserId}
                       ,#{name}
                       ,#{value}
                       )
@@ -37,7 +37,7 @@
             <delete id="deleteSettings">
                 DELETE
                   FROM settings
-                 WHERE mac_id = #{accessId}
+                 WHERE mau_userid = #{mauUserId}
             </delete>
             
 </mapper>

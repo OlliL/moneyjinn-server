@@ -33,7 +33,6 @@ import java.util.Set;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -212,12 +211,12 @@ public class UserController extends AbstractController implements UserController
 		final List<AccessRelation> accessRelationList = new ArrayList<>();
 		if (users != null && !users.isEmpty()) {
 			for (final User user : users) {
-				final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(user.getId());
+				final AccessRelation accessRelation = this.accessRelationService
+						.getCurrentAccessRelationById(user.getId());
 				if (accessRelation != null) {
 					accessRelationList.add(accessRelation);
-					if (accessRelation.getParentAccessRelation() != null) {
-						final Group group = this.groupService
-								.getGroupById(new GroupID(accessRelation.getParentAccessRelation().getId().getId()));
+					if (accessRelation.getGroupID() != null) {
+						final Group group = this.groupService.getGroupById(accessRelation.getGroupID());
 						groupSet.add(group);
 					}
 				}

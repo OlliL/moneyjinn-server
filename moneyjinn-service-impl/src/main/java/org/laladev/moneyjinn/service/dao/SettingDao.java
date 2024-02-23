@@ -45,8 +45,8 @@ import lombok.RequiredArgsConstructor;
 public class SettingDao {
 	private final ISettingDaoMapper mapper;
 
-	public SettingData getSetting(final Long accessId, final String name) {
-		return this.mapper.getSetting(accessId, name);
+	public SettingData getSetting(final Long mauUserId, final String name) {
+		return this.mapper.getSetting(mauUserId, name);
 	}
 
 	public void setSetting(final SettingData settingData) {

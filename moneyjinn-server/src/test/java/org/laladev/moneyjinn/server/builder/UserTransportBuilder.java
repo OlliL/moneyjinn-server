@@ -11,7 +11,7 @@ public class UserTransportBuilder extends UserTransport {
 	public static final String USER3_NAME = "user3";
 	public static final String NEWUSER_NAME = "paul";
 	public static final String IMPORTUSER_NAME = "importuser";
-	public static final Long ADMIN_ID = 2l;
+	public static final Long ADMIN_ID = 1l;
 	public static final Long USER1_ID = 3l;
 	public static final Long USER2_ID = 4l;
 	public static final Long USER3_ID = 5l;

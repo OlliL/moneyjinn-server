@@ -13,7 +13,6 @@ fi
 mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-triggers --quote-names --default-character-set=utf8 --tables --add-drop-table --single-transaction --no-data moneyflow \
 	access \
 	access_relation \
-	access_flattened \
 	settings \
 	capitalsources \
 	postingaccounts \
@@ -56,14 +55,9 @@ mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-quote-names --sk
 cat << EOF >> ${PROGPATH}/mysqldump.sql
 INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,0,1,0);
 INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admingroup',NULL,0,0,0,0,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('root','NULL',0,0,0,0,0);
-UPDATE access SET id=0 WHERE name='root';
-UPDATE access SET id=3 WHERE name='admin';
-UPDATE access SET id=1 WHERE name='admingroup';
-UPDATE access SET id=2 WHERE name='admin';
-INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'2000-01-01','2999-12-31');
-INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (2,1,'2000-01-01','2999-12-31');
-INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2,id_level_3) VALUES (2,'2000-01-01','2999-12-31',2,1,0);
+UPDATE access SET id=1 WHERE name='admin';
+UPDATE access SET id=0 WHERE name='admingroup';
+INSERT INTO access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (1,0,'2000-01-01','2999-12-31');
 EOF
 
 sed -i.bak "s/\\\'/''/g" ${PROGPATH}/mysqldump.sql && rm -f ${PROGPATH}/mysqldump.sql.bak

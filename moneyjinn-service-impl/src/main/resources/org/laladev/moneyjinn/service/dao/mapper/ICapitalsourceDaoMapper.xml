@@ -3,8 +3,8 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper">
 
             <sql id="capitalsourceColumns">
-                 mac_id_creator                AS macIdCreator
-                ,mac_id_accessor        AS macIdAccessor
+                 mau_userid                AS mauUserId
+                ,mag_groupid        AS magGroupId
                 ,capitalsourceid        AS id
                 ,type
                 ,state
@@ -22,8 +22,8 @@
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
                  WHERE capitalsourceid = #{id}
-                   AND maf_id          = #{userId}
-                   AND mac_id_accessor = #{accessorId}
+                   AND mar_mug_userid  = #{userId}
+                   AND mag_groupid     = #{magGroupId}
                  LIMIT 1
         </select>
 
@@ -32,9 +32,9 @@
 
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE mac_id_creator  = #{userId}
-                   AND comment         = #{comment}
-                   AND #{date}   BETWEEN validfrom AND validtil
+                 WHERE mau_userid  = #{userId}
+                   AND comment     = #{comment}
+                   AND #{date}      BETWEEN validfrom AND validtil
                  LIMIT 1
         </select>
             
@@ -42,9 +42,9 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE maf_id = #{userId}
+                 WHERE mar_mug_userid = #{userId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                 ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,capitalsourceid
         </select>
         
@@ -52,12 +52,12 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE maf_id = #{userId}
+                 WHERE mar_mug_userid = #{userId}
                    AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
                    AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
                    AND validfrom <![CDATA[ <= ]]> #{validTil}
                    AND validtil  <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                 ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,capitalsourceid
         </select>
                 
@@ -66,8 +66,8 @@
                 useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
                 INSERT
                   INTO capitalsources
-                      (mac_id_creator
-                      ,mac_id_accessor
+                      (mau_userid
+                      ,mag_groupid
                       ,type
                       ,state
                       ,accountnumber
@@ -79,8 +79,8 @@
                       ,import_allowed
                       )
                 VALUES
-                      (#{macIdCreator}
-                      ,#{macIdAccessor}
+                      (#{mauUserId}
+                      ,#{magGroupId}
                       ,#{type}
                       ,#{state}
                       ,#{accountNumber}
@@ -105,16 +105,16 @@
                       ,att_group_use  =        #{attGroupUse}
                       ,import_allowed =        #{importAllowed}
                  WHERE capitalsourceid = #{id}
-                   AND mac_id_creator  = #{macIdCreator}
-                   AND mac_id_accessor = #{macIdAccessor}
+                   AND mau_userid  = #{mauUserId}
+                   AND mag_groupid = #{magGroupId}
                  LIMIT 1
         </update>
 
         <delete id="deleteCapitalsource">
                 DELETE
                   FROM capitalsources
-                 WHERE mac_id_creator  = #{userId}
-                   AND mac_id_accessor = #{accessorId}
+                 WHERE mau_userid      = #{userId}
+                   AND mag_groupid     = #{magGroupId}
                    AND capitalsourceid = #{id}
                  LIMIT 1
         </delete>
@@ -131,16 +131,16 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
                 SELECT <include refid="capitalsourceColumns" />
                   FROM vw_capitalsources
-                 WHERE maf_id = #{userId}
+                 WHERE mar_mug_userid = #{userId}
                    AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
                    AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND ( mac_id_creator = #{userId}
+                   AND ( mau_userid = #{userId}
                          OR
                          att_group_use = 1
                        )
                    AND validfrom <![CDATA[ <= ]]> #{validTil}
                    AND validtil  <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY CASE WHEN  mac_id_creator = #{userId} THEN 1 ELSE 2 END
+                 ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,capitalsourceid
         </select>
 

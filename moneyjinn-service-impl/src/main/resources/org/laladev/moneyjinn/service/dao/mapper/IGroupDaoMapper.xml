@@ -13,7 +13,6 @@
                   FROM access
                  WHERE id       = #{id}
                    AND att_user = 0
-                   AND id      != 0
                  LIMIT 1
         </select>
 
@@ -24,7 +23,6 @@
                   FROM access
                  WHERE name = #{name}
                    AND att_user = 0
-                   AND id      != 0
                  LIMIT 1
         </select>
 
@@ -33,7 +31,6 @@
                 SELECT <include refid="groupColumns" />
                   FROM access
                  WHERE att_user = 0
-                   AND id      != 0
                  ORDER BY name
         </select>
         
@@ -63,7 +60,6 @@
                 UPDATE access
                    SET name     = #{name}
                  WHERE att_user = 0
-                   AND id      != 0
                    AND id       = #{id}
                  LIMIT 1
         </update>
@@ -73,10 +69,8 @@
                 DELETE
                   FROM access
                  WHERE att_user = 0
-                   AND id      != 0
                    AND id       = #{id}
                  LIMIT 1
         </delete>
-                        
 </mapper>
  

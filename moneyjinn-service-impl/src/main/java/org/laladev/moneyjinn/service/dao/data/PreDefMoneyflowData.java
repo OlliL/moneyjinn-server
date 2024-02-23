@@ -34,7 +34,7 @@ import lombok.Data;
 @Data
 public class PreDefMoneyflowData {
 	private Long id;
-	private Long macId;
+	private Long mauUserId;
 	private BigDecimal amount;
 	private Long mcsCapitalsourceId;
 	private Long mcpContractpartnerId;

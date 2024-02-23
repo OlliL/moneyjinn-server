@@ -32,8 +32,8 @@ import lombok.Data;
 
 @Data
 public class AccessRelationData {
-	private Long id;
-	private Long refId;
+	private Long mauUserId;
+	private Long magGroupId;
 	private LocalDate validFrom;
 	private LocalDate validTil;
 }

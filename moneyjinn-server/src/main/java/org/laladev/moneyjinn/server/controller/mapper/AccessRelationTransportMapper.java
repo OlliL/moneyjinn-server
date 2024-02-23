@@ -26,8 +26,9 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.converter.AccessIdMapper;
+import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
@@ -36,26 +37,25 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = AccessIdMapper.class)
+@Mapper(config = MapStructConfig.class, uses = { UserIdMapper.class, GroupIdMapper.class })
 public interface AccessRelationTransportMapper extends IMapstructMapper<AccessRelation, AccessRelationTransport> {
 	@Override
 	@Mapping(target = "validFrom", source = "validfrom")
 	@Mapping(target = "validTil", source = "validtil")
-	@Mapping(target = "parentAccessRelation.id", source = "refId")
+	@Mapping(target = "groupID", source = "refId")
 	AccessRelation mapBToA(AccessRelationTransport accessRelationTransport);
 
 	@Override
 	@Mapping(target = "validfrom", source = "validFrom")
 	@Mapping(target = "validtil", source = "validTil")
-	@Mapping(target = "refId", source = "parentAccessRelation.id")
+	@Mapping(target = "refId", source = "groupID")
 	AccessRelationTransport mapAToB(AccessRelation accessRelation);
 
 	// work around https://github.com/mapstruct/mapstruct/issues/1166
 	@AfterMapping
 	default void doAfterMapping(@MappingTarget final AccessRelation entity) {
-		if (entity != null && entity.getParentAccessRelation() != null
-				&& entity.getParentAccessRelation().getId() == null) {
-			entity.setParentAccessRelation(null);
+		if (entity != null && entity.getGroupID() != null && entity.getGroupID().getId() == null) {
+			entity.setGroupID(null);
 		}
 	}
 }

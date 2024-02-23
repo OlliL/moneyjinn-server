@@ -33,7 +33,6 @@ import java.util.Set;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
@@ -73,7 +72,7 @@ public interface IAccessRelationService {
 	 * @param userId the {@link UserID}
 	 * @return The found {@link AccessRelation}
 	 */
-	List<AccessRelation> getAllAccessRelationsById(AccessID userId);
+	List<AccessRelation> getAllAccessRelationsById(UserID userId);
 
 	/**
 	 * Persists the given {@link AccessRelation} for an existing User.
@@ -92,20 +91,19 @@ public interface IAccessRelationService {
 	ValidationResult setAccessRelationForNewUser(AccessRelation accessRelation);
 
 	/**
-	 * Gets the currently valid {@link AccessRelation} for the given {@link UserID}
-	 * or {@link GroupID}.
+	 * Gets the currently valid {@link AccessRelation} for the given {@link UserID}.
 	 *
-	 * @param accessRelationID The {@link AccessID}
+	 * @param userId The {@link UserID}
 	 * @return The found {@link AccessRelation}
 	 */
-	AccessRelation getCurrentAccessRelationById(final AccessID accessRelationID);
+	AccessRelation getCurrentAccessRelationById(final UserID userId);
 
 	/**
 	 * Delets all relations to the given AccessID.
 	 *
-	 * @param accessRelationID The {@link AccessID}
+	 * @param userId The {@link UserID}
 	 */
-	void deleteAllAccessRelation(AccessID accessRelationID);
+	void deleteAllAccessRelation(UserID userId);
 
 	/**
 	 * Gives the Group the {@link AccessID} is attached to.
@@ -114,7 +112,7 @@ public interface IAccessRelationService {
 	 * @param date   The date of the {@link Group} assignment
 	 * @return The found {@link Group}
 	 */
-	Group getAccessor(AccessID userId, LocalDate date);
+	Group getGroup(UserID userId, LocalDate date);
 
 	/**
 	 * Gives the Group the {@link AccessID} is attached to.
@@ -122,7 +120,7 @@ public interface IAccessRelationService {
 	 * @param userId The {@link UserID}
 	 * @return The found {@link Group}
 	 */
-	Group getCurrentAccessor(AccessID userId);
+	Group getCurrentGroup(UserID userId);
 
 	/**
 	 * Gives all {@link UserID}s who are or where in the same group the given user
@@ -131,5 +129,5 @@ public interface IAccessRelationService {
 	 * @param userID The {@link UserID}
 	 * @return The found List of {@link UserID}
 	 */
-	Set<UserID> getAllUserWithSameGroup(AccessID userID);
+	Set<UserID> getAllUserWithSameGroup(UserID userID);
 }

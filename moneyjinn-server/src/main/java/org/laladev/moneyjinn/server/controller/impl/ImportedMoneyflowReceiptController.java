@@ -89,7 +89,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 			@RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ValidationResult validationResult = new ValidationResult();
 		final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = super.mapList(
 				request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
@@ -112,7 +112,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	@Override
 	public ResponseEntity<ShowImportImportedMoneyflowReceiptsResponse> showImportImportedMoneyflowReceipts() {
 		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
 		final List<ImportedMoneyflowReceipt> allImportedMoneyflowReceipts = this.importedMoneyflowReceiptService
 				.getAllImportedMoneyflowReceipts(userId, group.getId());
@@ -125,7 +125,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	@Override
 	public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
 		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);
 
 		this.importedMoneyflowReceiptService.deleteImportedMoneyflowReceipt(userId, group.getId(),
@@ -139,7 +139,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	public ResponseEntity<Void> importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
 			@PathVariable(value = "moneyflowid") final Long moneyflowid) {
 		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);
 		final MoneyflowID moneyflowId = new MoneyflowID(moneyflowid);
 		final ImportedMoneyflowReceipt importedMoneyflowReceipt = this.importedMoneyflowReceiptService

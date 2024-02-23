@@ -114,10 +114,10 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			final Moneyflow moneyflow = super.map(moneyflowData, Moneyflow.class);
 			final UserID userId = moneyflow.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final Group accessor = this.accessRelationService.getAccessor(userId, moneyflow.getBookingDate());
-			final GroupID groupId = accessor.getId();
+			final Group group = this.accessRelationService.getGroup(userId, moneyflow.getBookingDate());
+			final GroupID groupId = group.getId();
 			moneyflow.setUser(user);
-			moneyflow.setGroup(accessor);
+			moneyflow.setGroup(group);
 			PostingAccount postingAccount = moneyflow.getPostingAccount();
 			if (postingAccount != null) {
 				final PostingAccountID postingAccountId = postingAccount.getId();
@@ -184,9 +184,9 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		} else {
 			final AccessRelation accessRelation = this.accessRelationService
 					.getCurrentAccessRelationById(moneyflow.getUser().getId());
-			// if this check is removed, make sure the accessor is evaluated for the
-			// bookingdate,
-			// not for today otherwise it will be created with the wrong accessor
+			// if this check is removed, make sure the group is evaluated for the
+			// bookingdate, not for today otherwise it will be created with the wrong
+			// group
 			if (bookingDate.isBefore(accessRelation.getValidFrom())
 					|| bookingDate.isAfter(accessRelation.getValidTil())) {
 				validationResult.addValidationResultItem(

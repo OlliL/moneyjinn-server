@@ -322,7 +322,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 		}
 
 		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentAccessor(userId);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		importedMoneyflow.setUser(user);
 		importedMoneyflow.setGroup(group);
 		final Moneyflow moneyflow = importedMoneyflow.getMoneyflow();

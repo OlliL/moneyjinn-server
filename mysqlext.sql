@@ -1,11 +1,11 @@
 /*
  * this view will show all data from moneyflows which is visible
- * to a user. Use maf_id in your SELECT for your userid. In
- * mac_id_creator you'll find the original userid of the creator
+ * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
-   mac_id_creator
-  ,maf_id
+   mau_userid
+  ,mar_mug_userid
   ,moneyflowid
   ,bookingdate
   ,invoicedate
@@ -16,8 +16,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
   ,mpa_postingaccountid
   ,private
   ) AS
-      SELECT mmf.mac_id_creator
-            ,maf.id
+      SELECT mmf.mau_userid
+            ,mar.mau_userid
             ,mmf.moneyflowid
             ,mmf.bookingdate
             ,mmf.invoicedate
@@ -27,48 +27,48 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
             ,mmf.comment
             ,mmf.mpa_postingaccountid
             ,mmf.private
-        FROM moneyflows       mmf
-            ,access_flattened maf
-       WHERE mmf.bookingdate BETWEEN maf.validfrom AND maf.validtil
-         AND mmf.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+        FROM moneyflows      mmf
+            ,access_relation mar
+       WHERE mmf.bookingdate BETWEEN mar.validfrom AND mar.validtil
+         AND mmf.mag_groupid = mar.mag_groupid;
 
 /*
  * this view will show all data from monthlysettlements which is visible
- * to a user. Use maf_id in your SELECT for your userid. In
- * mac_id_creator you'll find the original userid of the creator
+ * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
-   mac_id_creator
-  ,maf_id
+   mau_userid
+  ,mar_mug_userid
   ,monthlysettlementid
   ,mcs_capitalsourceid
   ,`month`
   ,`year`
   ,amount
   ) AS
-      SELECT mms.mac_id_creator
-            ,maf.id
+      SELECT mms.mau_userid
+            ,mar.mau_userid
             ,mms.monthlysettlementid
             ,mms.mcs_capitalsourceid
             ,mms.`month`
             ,mms.`year`
             ,mms.amount
         FROM monthlysettlements mms
-            ,access_flattened   maf
+            ,access_relation    mar
        WHERE TIMESTAMPADD(DAY,-1, TIMESTAMPADD(MONTH,1, CONCAT(`year`,'-',LPAD(`month`,2,'0'),'-01')))
              /*LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) */
-                         BETWEEN maf.validfrom and maf.validtil
-         AND mms.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+                         BETWEEN mar.validfrom and mar.validtil
+         AND mms.mag_groupid = mar.mag_groupid;
 
 /*
  * this view will show all data from contractpartners which is visible
- * to a user. Use maf_id in your SELECT for your userid. In
- * mac_id_creator you'll find the original userid of the creator
+ * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
-   mac_id_creator
-  ,maf_id
-  ,mac_id_accessor
+   mau_userid
+  ,mar_mug_userid
+  ,mag_groupid
   ,contractpartnerid
   ,name
   ,street
@@ -82,9 +82,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
   ,maf_validfrom
   ,maf_validtil
   ) AS
-      SELECT mcp.mac_id_creator
-            ,maf.id
-            ,mcp.mac_id_accessor
+      SELECT mcp.mau_userid
+            ,mar.mau_userid
+            ,mcp.mag_groupid
             ,mcp.contractpartnerid
             ,mcp.name
             ,mcp.street
@@ -95,21 +95,21 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
             ,mcp.validtil
             ,mcp.mmf_comment
             ,mcp.mpa_postingaccountid
-            ,maf.validfrom maf_validfrom
-            ,maf.validtil  maf_validtil
+            ,mar.validfrom maf_validfrom
+            ,mar.validtil  maf_validtil
         FROM contractpartners mcp
-            ,access_flattened maf
-       WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+            ,access_relation  mar
+       WHERE mcp.mag_groupid = mar.mag_groupid;
 
 /*
  * this view will show all data from capitalsources which is visible
- * to a user. Use maf_id in your SELECT for your userid. In
- * mac_id_creator you'll find the original userid of the creator
+ * to a user. Use mar_mug_userid in your SELECT for your userid. In
+ * mau_userid you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
-   mac_id_creator
-  ,maf_id
-  ,mac_id_accessor
+   mau_userid
+  ,mar_mug_userid
+  ,mag_groupid
   ,capitalsourceid
   ,type
   ,state
@@ -123,9 +123,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
   ,maf_validfrom
   ,maf_validtil
   ) AS
-      SELECT mcs.mac_id_creator
-            ,maf.id
-            ,mcs.mac_id_accessor
+      SELECT mcs.mau_userid
+            ,mar.mau_userid
+            ,mcs.mag_groupid
             ,mcs.capitalsourceid
             ,mcs.type
             ,mcs.state
@@ -136,11 +136,11 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
             ,mcs.validfrom
             ,mcs.att_group_use
             ,mcs.import_allowed
-            ,maf.validfrom maf_validfrom
-            ,maf.validtil  maf_validtil
-        FROM capitalsources     mcs
-            ,access_flattened   maf
-       WHERE mcs.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+            ,mar.validfrom maf_validfrom
+            ,mar.validtil  maf_validtil
+        FROM capitalsources  mcs
+            ,access_relation mar
+       WHERE mcs.mag_groupid = mar.mag_groupid;
 
 
 -- FUNCTIONS
@@ -183,8 +183,8 @@ BEGIN
       FROM                 imp_data            mid
            LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  LIKE mis.source_from
            LEFT OUTER JOIN imp_mapping_partner mip ON mid.partner = mip.partner_from
-           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mac_id_creator = pi_userid
-           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mac_id_Creator = pi_userid
+           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mau_userid = pi_userid
+           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mau_userid = pi_userid
      WHERE mid.status = 1;
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_found  := FALSE;
@@ -202,8 +202,8 @@ BEGIN
       SET l_insert := TRUE;
 
       INSERT INTO moneyflows
-            (mac_id_creator
-            ,mac_id_accessor
+            (mau_userid
+            ,mag_groupid
             ,bookingdate
             ,invoicedate
             ,amount
