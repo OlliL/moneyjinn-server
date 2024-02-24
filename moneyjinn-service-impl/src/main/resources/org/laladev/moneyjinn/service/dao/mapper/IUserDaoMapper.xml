@@ -3,22 +3,19 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper">
 
         <sql id="userColumns">
-                 id
+                 userid
                 ,name
                 ,password
-                ,perm_login          as permLogin
-                ,perm_admin          as permAdmin
-                ,perm_import         as permImport
-                ,att_change_password as attChangePassword
+                ,role
+                ,change_password as changePassword
         </sql>
 
         <select id="getUserById" parameterType="java.lang.Long"
                 resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
                 SELECT <include refid="userColumns" />
-                  FROM access
-                 WHERE id = #{id}
-                   AND att_user = 1
+                  FROM access_users
+                 WHERE userid = #{userid}
                  LIMIT 1
         </select>
 
@@ -26,81 +23,65 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
                 SELECT <include refid="userColumns" />
-                  FROM access
+                  FROM access_users
                  WHERE name = #{name}
-                   AND att_user = 1
                  LIMIT 1
         </select>
         
         <select id="getAllUsers" 
                 resultType="org.laladev.moneyjinn.service.dao.data.UserData">
-
                 SELECT <include refid="userColumns" />
-                  FROM access
-                 WHERE att_user = 1
+                  FROM access_users
         </select>
 
         <insert id="createUser"
                 parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+                useGeneratedKeys="true" keyProperty="userid" keyColumn="userid">
                 INSERT
-                  INTO access
+                  INTO access_users
                       (name
                       ,password
-                      ,perm_login
-                      ,perm_admin
-                      ,perm_import
-                      ,att_change_password
-                      ,att_user
+                      ,role
+                      ,change_password
                       )
                 VALUES
                       (#{name}
                       ,#{password}
-                      ,#{permLogin}
-                      ,#{permAdmin}
-                      ,#{permImport}
-                      ,1
+                      ,#{role}
                       ,1
                       )
         </insert>
         
         <update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
-                UPDATE access
-                   SET name                = #{name}
-                      ,perm_login          = #{permLogin}
-                      ,perm_admin          = #{permAdmin}
-                      ,perm_import         = #{permImport}
-                      ,att_change_password = #{attChangePassword}
-                 WHERE att_user = 1
-                   AND id       = #{id}
+                UPDATE access_users
+                   SET name            = #{name}
+					  ,role            = #{role}
+                      ,change_password = #{changePassword}
+                 WHERE userid          = #{userid}
                  LIMIT 1
         </update>
         
         <update id="setPassword">
-                UPDATE access
-                   SET password            = #{password}
-                      ,att_change_password = 0
-                WHERE att_user = 1
-                  AND id       = #{userId}
+                UPDATE access_users
+                   SET password        = #{password}
+                      ,change_password = 0
+                WHERE userid           = #{userid}
                 LIMIT 1
         </update>
         
         <update id="resetPassword">
-                UPDATE access
-                   SET password            = #{password}
-                      ,att_change_password = 1
-                 WHERE att_user = 1
-                   AND id       = #{userId}
+                UPDATE access_users
+                   SET password        = #{password}
+                      ,change_password = 1
+                 WHERE userid          = #{userid}
                  LIMIT 1            
         </update>
                 
         <delete id="deleteUser">
                 DELETE
-                  FROM access
-                 WHERE att_user = 1
-                   AND id       = #{userId}
+                  FROM access_users
+                 WHERE userid = #{userid}
                  LIMIT 1
         </delete>
-        
 </mapper>
  

@@ -1,12 +1,12 @@
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2',1,1,1,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (5,'user3','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9',1,0,1,0,0);
+insert into access_users (userid,name,password,role,change_password) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2','STANDARD',1);
+insert into access_users (userid,name,password,role,change_password) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9','INACTIVE',0);
+insert into access_users (userid,name,password,role,change_password) values (5,'user3','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9','STANDARD',0);
 
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (6,'group1',null,0,0,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (7,'group2',null,0,0,0,0,0);
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (8,'group3',null,0,0,0,0,0);
+insert into access_groups (groupid,name) values (6,'group1');
+insert into access_groups (groupid,name) values (7,'group2');
+insert into access_groups (groupid,name) values (8,'group3');
 
-insert into access (id,name,password,att_user,att_change_password,perm_login,perm_admin, perm_import) values (9,'importuser','272c2d7dec93029abac86fb647b48e0f3bb3aa45',1,0,0,0,1);
+insert into access_users (userid,name,password,role,change_password) values (9,'importuser','272c2d7dec93029abac86fb647b48e0f3bb3aa45','IMPORT',0);
 
 insert into access_relation (mau_userid,mag_groupid,validfrom,validtil) values (3,6,'2000-01-01','2599-12-31');
 insert into access_relation (mau_userid,mag_groupid,validfrom,validtil) values (3,7,'2600-01-01','2699-12-31');
@@ -43,7 +43,7 @@ INSERT INTO contractpartners (mau_userid,mag_groupid,name      ,street   ,postco
 INSERT INTO contractpartners (mau_userid,mag_groupid,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (5             ,6              ,'Sartner4','Street4',12345   ,'Town4','Country4','2000-01-02','2010-12-31',NULL               ,NULL                );
 INSERT INTO contractpartners (mau_userid,mag_groupid,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
-                      VALUES (1             ,0              ,'AdminPartner','Street',12345   ,'Town','Country','2000-01-01','2999-12-31',NULL               ,NULL                );
+                      VALUES (0             ,0              ,'AdminPartner','Street',12345   ,'Town','Country','2000-01-01','2999-12-31',NULL               ,NULL                );
 
 INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
                              VALUES (1                    ,'ABC123' , 'DE1234567890');

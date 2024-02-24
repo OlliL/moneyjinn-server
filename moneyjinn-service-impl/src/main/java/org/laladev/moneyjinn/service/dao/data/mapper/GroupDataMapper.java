@@ -32,7 +32,15 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = GroupIdMapper.class)
 public interface GroupDataMapper extends IMapstructMapper<Group, GroupData> {
+	@Override
+	@Mapping(target = "id", source = "groupid")
+	Group mapBToA(GroupData a);
+
+	@Override
+	@Mapping(target = "groupid", source = "id")
+	GroupData mapAToB(Group b);
 }

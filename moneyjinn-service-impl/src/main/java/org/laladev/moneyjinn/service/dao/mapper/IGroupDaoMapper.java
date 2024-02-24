@@ -33,7 +33,7 @@ import org.laladev.moneyjinn.service.dao.data.GroupData;
 public interface IGroupDaoMapper {
 	public List<GroupData> getAllGroups();
 
-	public GroupData getGroupById(Long id);
+	public GroupData getGroupById(Long groupid);
 
 	public GroupData getGroupByName(String name);
 
@@ -41,5 +41,5 @@ public interface IGroupDaoMapper {
 
 	public void updateGroup(GroupData groupData);
 
-	public void deleteGroup(Long id);
+	public void deleteGroup(Long groupid);
 }

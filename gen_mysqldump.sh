@@ -11,7 +11,8 @@ else
 fi
 
 mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-triggers --quote-names --default-character-set=utf8 --tables --add-drop-table --single-transaction --no-data moneyflow \
-	access \
+	access_users \
+	access_groups \
 	access_relation \
 	settings \
 	capitalsources \
@@ -53,11 +54,11 @@ mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-quote-names --sk
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 
 cat << EOF >> ${PROGPATH}/mysqldump.sql
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,0,1,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admingroup',NULL,0,0,0,0,0);
-UPDATE access SET id=1 WHERE name='admin';
-UPDATE access SET id=0 WHERE name='admingroup';
-INSERT INTO access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (1,0,'2000-01-01','2999-12-31');
+INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997','ADMIN',1);
+INSERT INTO access_groups (name) VALUES ('admingroup');
+UPDATE access_users SET userid=0 WHERE name='admin';
+UPDATE access_groups SET groupid=0 WHERE name='admingroup';
+INSERT INTO access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (0,0,'2000-01-01','2999-12-31');
 EOF
 
 sed -i.bak "s/\\\'/''/g" ${PROGPATH}/mysqldump.sql && rm -f ${PROGPATH}/mysqldump.sql.bak

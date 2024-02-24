@@ -34,7 +34,7 @@ import org.laladev.moneyjinn.service.dao.data.UserData;
 public interface IUserDaoMapper {
 	public List<UserData> getAllUsers();
 
-	public UserData getUserById(Long id);
+	public UserData getUserById(Long userid);
 
 	public UserData getUserByName(String name);
 
@@ -42,9 +42,9 @@ public interface IUserDaoMapper {
 
 	public void updateUser(UserData userData);
 
-	public void deleteUser(Long userId);
+	public void deleteUser(Long userid);
 
-	public void setPassword(@Param("userId") Long userId, @Param("password") String password);
+	public void setPassword(@Param("userid") Long userid, @Param("password") String password);
 
-	public void resetPassword(@Param("userId") Long userId, @Param("password") String password);
+	public void resetPassword(@Param("userid") Long userid, @Param("password") String password);
 }

@@ -54,7 +54,7 @@ public class GroupDao {
 
 	public Long createGroup(final GroupData groupData) {
 		this.mapper.createGroup(groupData);
-		return groupData.getId();
+		return groupData.getGroupid();
 	}
 
 	public void updateGroup(final GroupData groupData) {

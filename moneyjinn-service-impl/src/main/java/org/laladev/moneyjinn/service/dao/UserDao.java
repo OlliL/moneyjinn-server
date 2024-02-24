@@ -54,7 +54,7 @@ public class UserDao {
 
 	public Long createUser(final UserData userData) {
 		this.mapper.createUser(userData);
-		return userData.getId();
+		return userData.getUserid();
 	}
 
 	public void updateUser(final UserData userData) {

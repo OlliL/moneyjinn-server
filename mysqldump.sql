@@ -16,24 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `access`
+-- Table structure for table `access_users`
 --
 
-DROP TABLE IF EXISTS `access`;
+DROP TABLE IF EXISTS `access_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `access` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) COLLATE utf8mb3_bin NOT NULL,
-  `password` varchar(40) COLLATE utf8mb3_bin DEFAULT NULL,
-  `att_user` tinyint unsigned NOT NULL,
-  `att_change_password` tinyint unsigned NOT NULL,
-  `perm_login` tinyint unsigned NOT NULL,
-  `perm_admin` tinyint unsigned NOT NULL,
-  `perm_import` tinyint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `mac_i_01` (`name`,`att_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mac';
+CREATE TABLE `access_users` (
+  `userid` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `password` varchar(40) COLLATE utf8mb3_bin NOT NULL,
+  `role` char(8) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `change_password` tinyint unsigned NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `mau_i_01` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mau';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `access_groups`
+--
+
+DROP TABLE IF EXISTS `access_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_groups` (
+  `groupid` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`groupid`),
+  UNIQUE KEY `mag_i_01` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mag';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,9 +61,9 @@ CREATE TABLE `access_relation` (
   `validfrom` date NOT NULL,
   `validtil` date NOT NULL,
   PRIMARY KEY (`mau_userid`,`validfrom`),
-  KEY `mar_i_01` (`mag_groupid`),
-  CONSTRAINT `mar_mac_pk_01` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mar_mac_pk_02` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  KEY `mar_i_01` (`mag_groupid`,`validfrom`) USING BTREE,
+  CONSTRAINT `mar_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mar_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -68,7 +80,7 @@ CREATE TABLE `settings` (
   `value` varchar(2048) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`name`,`mau_userid`),
   KEY `mse_mau_pk` (`mau_userid`),
-  CONSTRAINT `mse_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mse_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mse';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -95,8 +107,8 @@ CREATE TABLE `capitalsources` (
   PRIMARY KEY (`capitalsourceid`,`mag_groupid`),
   KEY `mcs_mau_pk` (`mau_userid`),
   KEY `mcs_mag_pk` (`mag_groupid`),
-  CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mcs_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcs_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mcs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,8 +151,8 @@ CREATE TABLE `contractpartners` (
   KEY `mcp_mau_pk` (`mau_userid`),
   KEY `mcp_mag_pk` (`mag_groupid`),
   KEY `mcp_mpa_pk` (`mpa_postingaccountid`),
-  CONSTRAINT `mcp_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mcp_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcp_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcp_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mcp_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mcp';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -236,15 +248,15 @@ CREATE TABLE `moneyflows` (
   `mpa_postingaccountid` int unsigned NOT NULL,
   `private` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`moneyflowid`),
-  KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_mau_pk` (`mau_userid`),
   KEY `mmf_mag_pk` (`mag_groupid`),
   KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mmf_mcp_pk` (`mcp_contractpartnerid`),
   KEY `mmf_mpa_pk` (`mpa_postingaccountid`),
+  KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_i_02` (`mag_groupid`,`bookingdate`),
-  CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -310,8 +322,8 @@ CREATE TABLE `monthlysettlements` (
   KEY `mms_mag_pk` (`mag_groupid`),
   KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mms_mau_pk` (`mau_userid`) USING BTREE,
-  CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mms';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -339,7 +351,7 @@ CREATE TABLE `predefmoneyflows` (
   KEY `mpm_mpa_pk` (`mpa_postingaccountid`),
   KEY `mpm_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mpm_mcp_pk` (`mcp_contractpartnerid`),
-  CONSTRAINT `mpm_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mpm_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -378,8 +390,8 @@ CREATE TABLE `impmoneyflowreceipts` (
   PRIMARY KEY (`impmoneyflowreceiptid`),
   KEY `mir_mau_pk` (`mau_userid`),
   KEY `mir_mag_pk` (`mag_groupid`),
-  CONSTRAINT `mir_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mir_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mir_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mir_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mir';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -518,14 +530,14 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-23 22:40:26
+-- Dump completed on 2024-02-24  1:57:56
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner','/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger','',';',1,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,0,1,0);
-INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin,perm_import) VALUES ('admingroup',NULL,0,0,0,0,0);
-UPDATE access SET id=1 WHERE name='admin';
-UPDATE access SET id=0 WHERE name='admingroup';
-INSERT INTO access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (1,0,'2000-01-01','2999-12-31');
+INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997','ADMIN',1);
+INSERT INTO access_groups (name) VALUES ('admingroup');
+UPDATE access_users SET userid=0 WHERE name='admin';
+UPDATE access_groups SET groupid=0 WHERE name='admingroup';
+INSERT INTO access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (0,0,'2000-01-01','2999-12-31');

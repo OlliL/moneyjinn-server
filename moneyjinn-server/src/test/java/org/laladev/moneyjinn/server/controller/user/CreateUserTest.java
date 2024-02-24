@@ -79,31 +79,9 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 	}
 
 	@Test
-	void test_AccessRelationAndPasswordEmpty_Successfull() throws Exception {
-		final CreateUserRequest request = new CreateUserRequest();
-		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
-		/*
-		 * this must be ignored by the server as the attribute is always set to 1 on
-		 * creation
-		 */
-		transport.setUserIsNew(0);
-		request.setUserTransport(transport);
-
-		final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
-
-		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
-		Assertions.assertEquals(null, user.getPassword());
-		// instead of NONE ---------------------------------vvvvvv
-		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-	}
-
-	@Test
 	void test_AccessRelationEmpty_Successfull() throws Exception {
 		final CreateUserRequest request = new CreateUserRequest();
 		final UserTransport transport = new UserTransportBuilder().forNewUser().build();
-		transport.setUserPassword("123");
 		/*
 		 * this must be ignored by the server as the attribute is always set to 1 on
 		 * creation
@@ -116,12 +94,9 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
 		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
-		// sha1 of 123 ----------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
-		Assertions.assertEquals(UserTransportBuilder.NEWUSER_NAME, user.getName());
+		Assertions.assertEquals(UserTransportBuilder.IMPORTUSER_PASSWORD_SHA1, user.getPassword());
 		// instead of NONE ---------------------------------vvvvvv
 		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test

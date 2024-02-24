@@ -11,7 +11,7 @@ public class UserTransportBuilder extends UserTransport {
 	public static final String USER3_NAME = "user3";
 	public static final String NEWUSER_NAME = "paul";
 	public static final String IMPORTUSER_NAME = "importuser";
-	public static final Long ADMIN_ID = 1l;
+	public static final Long ADMIN_ID = 0l;
 	public static final Long USER1_ID = 3l;
 	public static final Long USER2_ID = 4l;
 	public static final Long USER3_ID = 5l;
@@ -73,6 +73,7 @@ public class UserTransportBuilder extends UserTransport {
 		super.setRole(RoleEnum.ADMIN);
 		super.setUserIsNew(null);
 		super.setUserName(NEWUSER_NAME);
+		super.setUserPassword(IMPORTUSER_PASSWORD);
 		return this;
 	}
 
@@ -82,6 +83,7 @@ public class UserTransportBuilder extends UserTransport {
 		transport.setRole(super.getRole());
 		transport.setUserIsNew(super.getUserIsNew());
 		transport.setUserName(super.getUserName());
+		transport.setUserPassword(super.getUserPassword());
 		return transport;
 	}
 }

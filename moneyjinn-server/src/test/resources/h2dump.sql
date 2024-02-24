@@ -16,23 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `access`
+-- Table structure for table `access_users`
 --
 
-DROP TABLE IF EXISTS `access`;
+DROP TABLE IF EXISTS `access_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `access` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `password` varchar(40) DEFAULT NULL,
-  `att_user` tinyint unsigned NOT NULL,
-  `att_change_password` tinyint unsigned NOT NULL,
-  `perm_login` tinyint unsigned NOT NULL,
-  `perm_admin` tinyint unsigned NOT NULL,
-  `perm_import` tinyint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `mac_i_01` (`name`,`att_user`)
+CREATE TABLE `access_users` (
+  `userid` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb3 NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `role` char(8) CHARACTER SET utf8mb3 NOT NULL,
+  `change_password` tinyint unsigned NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `mau_i_01` (`name`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `access_groups`
+--
+
+DROP TABLE IF EXISTS `access_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_groups` (
+  `groupid` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb3 NOT NULL,
+  PRIMARY KEY (`groupid`),
+  UNIQUE KEY `mag_i_01` (`name`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,9 +61,9 @@ CREATE TABLE `access_relation` (
   `validfrom` date NOT NULL,
   `validtil` date NOT NULL,
   PRIMARY KEY (`mau_userid`,`validfrom`),
-  KEY `mar_i_01` (`mag_groupid`),
-  CONSTRAINT `mar_mac_pk_01` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mar_mac_pk_02` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  KEY `mar_i_01` (`mag_groupid`,`validfrom`),
+  CONSTRAINT `mar_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mar_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -68,7 +80,7 @@ CREATE TABLE `settings` (
   `value` varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`name`,`mau_userid`),
   KEY `mse_mau_pk` (`mau_userid`),
-  CONSTRAINT `mse_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mse_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -95,8 +107,8 @@ CREATE TABLE `capitalsources` (
   PRIMARY KEY (`capitalsourceid`,`mag_groupid`),
   KEY `mcs_mau_pk` (`mau_userid`),
   KEY `mcs_mag_pk` (`mag_groupid`),
-  CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mcs_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcs_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,8 +151,8 @@ CREATE TABLE `contractpartners` (
   KEY `mcp_mau_pk` (`mau_userid`),
   KEY `mcp_mag_pk` (`mag_groupid`),
   KEY `mcp_mpa_pk` (`mpa_postingaccountid`),
-  CONSTRAINT `mcp_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mcp_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcp_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mcp_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mcp_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -236,15 +248,15 @@ CREATE TABLE `moneyflows` (
   `mpa_postingaccountid` int unsigned NOT NULL,
   `private` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`moneyflowid`),
-  KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_mau_pk` (`mau_userid`),
   KEY `mmf_mag_pk` (`mag_groupid`),
   KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mmf_mcp_pk` (`mcp_contractpartnerid`),
   KEY `mmf_mpa_pk` (`mpa_postingaccountid`),
+  KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_i_02` (`mag_groupid`,`bookingdate`),
-  CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -310,8 +322,8 @@ CREATE TABLE `monthlysettlements` (
   KEY `mms_mag_pk` (`mag_groupid`),
   KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mms_mau_pk` (`mau_userid`),
-  CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -339,7 +351,7 @@ CREATE TABLE `predefmoneyflows` (
   KEY `mpm_mpa_pk` (`mpa_postingaccountid`),
   KEY `mpm_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mpm_mcp_pk` (`mcp_contractpartnerid`),
-  CONSTRAINT `mpm_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mpm_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mpm_mpa_pk` FOREIGN KEY (`mpa_postingaccountid`) REFERENCES `postingaccounts` (`postingaccountid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -378,8 +390,8 @@ CREATE TABLE `impmoneyflowreceipts` (
   PRIMARY KEY (`impmoneyflowreceiptid`),
   KEY `mir_mau_pk` (`mau_userid`),
   KEY `mir_mag_pk` (`mag_groupid`),
-  CONSTRAINT `mir_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `mir_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `mir_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `mir_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

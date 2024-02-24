@@ -2,74 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper">
 
-            <sql id="groupColumns">
-                 id
+        <sql id="groupColumns">
+                 groupid
                 ,name
         </sql>
     
-            <select id="getGroupById" parameterType="java.lang.Long"
+        <select id="getGroupById" parameterType="java.lang.Long"
                 resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
                 SELECT <include refid="groupColumns" />
-                  FROM access
-                 WHERE id       = #{id}
-                   AND att_user = 0
+                  FROM access_groups
+                 WHERE groupid = #{groupid}
                  LIMIT 1
         </select>
 
         <select id="getGroupByName" parameterType="java.lang.String"
                 resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
-
                 SELECT <include refid="groupColumns" />
-                  FROM access
+                  FROM access_groups
                  WHERE name = #{name}
-                   AND att_user = 0
                  LIMIT 1
         </select>
 
         <select id="getAllGroups"
                 resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
                 SELECT <include refid="groupColumns" />
-                  FROM access
-                 WHERE att_user = 0
+                  FROM access_groups
                  ORDER BY name
         </select>
         
         <insert id="createGroup"
                 parameterType="org.laladev.moneyjinn.service.dao.data.GroupData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+                useGeneratedKeys="true" keyProperty="groupid" keyColumn="groupid">
                 INSERT
-                  INTO access
+                  INTO access_groups
                       (name
-                      ,att_user
-                      ,att_change_password
-                      ,perm_login
-                      ,perm_admin
-                      ,perm_import
                       )
                 VALUES
                       (#{name}
-                      ,0
-                      ,0
-                      ,0
-                      ,0
-                      ,0
                       )
         </insert>
         
         <update id="updateGroup" parameterType="org.laladev.moneyjinn.service.dao.data.GroupData">
-                UPDATE access
-                   SET name     = #{name}
-                 WHERE att_user = 0
-                   AND id       = #{id}
+                UPDATE access_groups
+                   SET name    = #{name}
+                 WHERE groupid = #{groupid}
                  LIMIT 1
         </update>
         
 
         <delete id="deleteGroup">
                 DELETE
-                  FROM access
-                 WHERE att_user = 0
-                   AND id       = #{id}
+                  FROM access_groups
+                 WHERE groupid = #{groupid}
                  LIMIT 1
         </delete>
 </mapper>

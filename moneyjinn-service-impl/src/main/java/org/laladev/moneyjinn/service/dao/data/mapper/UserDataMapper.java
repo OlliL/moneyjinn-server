@@ -39,18 +39,20 @@ import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.mapstruct.ValueMapping;
 
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 	@Override
-	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-	@Mapping(target = "role", source = ".", qualifiedByName = "mapUserRoleToEntity")
+	@Mapping(target = "attributes", source = "changePassword", qualifiedByName = "mapUserAttributesToEntity")
+	@Mapping(target = "role", source = "role")
+	@Mapping(target = "id", source = "userid")
 	User mapBToA(UserData b);
 
 	@Named("mapUserAttributesToEntity")
-	default Collection<UserAttribute> mapUserAttributesToEntity(final UserData b) {
+	default Collection<UserAttribute> mapUserAttributesToEntity(final boolean changePassword) {
 		final Collection<UserAttribute> attributes = new ArrayList<>();
-		if (b.isAttChangePassword()) {
+		if (changePassword) {
 			attributes.add(UserAttribute.IS_NEW);
 		}
 		if (attributes.isEmpty()) {
@@ -59,44 +61,26 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 		return attributes;
 	}
 
-	@Named("mapUserRoleToEntity")
-	default UserRole mapUserRoleToEntity(final UserData b) {
-		if (b.isPermAdmin()) {
-			return UserRole.ADMIN;
-		}
-		if (b.isPermLogin()) {
-			return UserRole.STANDARD;
-		}
-		if (b.isPermImport()) {
-			return UserRole.IMPORT;
-		}
-		return UserRole.INACTIVE;
-	}
+	@ValueMapping(target = "ADMIN", source = "ADMIN")
+	@ValueMapping(target = "STANDARD", source = "STANDARD")
+	@ValueMapping(target = "IMPORT", source = "IMPORT")
+	@ValueMapping(target = "INACTIVE", source = "INACTIVE")
+	UserRole mapUserRoleToEntity(String role);
+
+	@ValueMapping(target = "ADMIN", source = "ADMIN")
+	@ValueMapping(target = "STANDARD", source = "STANDARD")
+	@ValueMapping(target = "IMPORT", source = "IMPORT")
+	@ValueMapping(target = "INACTIVE", source = "INACTIVE")
+	String mapEntityToUserRole(UserRole role);
 
 	@Override
-	@Mapping(target = "attChangePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
-	@Mapping(target = "permLogin", source = "role", qualifiedByName = "mapUserRoleLoginToData")
-	@Mapping(target = "permAdmin", source = "role", qualifiedByName = "mapUserRoleAdminToData")
-	@Mapping(target = "permImport", source = "role", qualifiedByName = "mapUserRoleImportToData")
+	@Mapping(target = "changePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
+	@Mapping(target = "role", source = "role")
+	@Mapping(target = "userid", source = "id")
 	UserData mapAToB(User a);
 
 	@Named("mapUserAttributeIsNewToData")
 	default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
 		return (a != null && a.contains(UserAttribute.IS_NEW));
-	}
-
-	@Named("mapUserRoleAdminToData")
-	default boolean mapUserRoleAdminToData(final UserRole a) {
-		return UserRole.ADMIN == a;
-	}
-
-	@Named("mapUserRoleLoginToData")
-	default boolean mapUserRoleLoginToData(final UserRole a) {
-		return UserRole.STANDARD == a;
-	}
-
-	@Named("mapUserRoleImportToData")
-	default boolean mapUserRoleImportToData(final UserRole a) {
-		return UserRole.IMPORT == a;
 	}
 }

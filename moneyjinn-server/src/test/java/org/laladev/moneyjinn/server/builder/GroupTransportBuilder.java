@@ -14,7 +14,7 @@ public class GroupTransportBuilder extends GroupTransport {
 	public static final Long GROUP2_ID = 7l;
 	public static final Long GROUP3_ID = 8l;
 	public static final Long NON_EXISTING_ID = 666l;
-	public static final Long NEXT_ID = 10l;
+	public static final Long NEXT_ID = 9l;
 
 	public GroupTransportBuilder forAdminGroup() {
 		super.setId(ADMINGROUP_ID);
