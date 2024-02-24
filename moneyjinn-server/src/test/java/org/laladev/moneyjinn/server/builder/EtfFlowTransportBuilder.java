@@ -11,11 +11,22 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 	public static final Long ETF_FLOW_1ID = 1L;
 	public static final Long ETF_FLOW_2ID = 2L;
 	public static final Long ETF_FLOW_3ID = 3L;
-	public static final Long NEXT_ID = 4L;
+	public static final Long ETF_FLOW_4ID = 4L;
+	public static final Long NEXT_ID = 5L;
 	public static final String ISIN = "ISIN123";
 
 	public EtfFlowTransportBuilder forFlow1() {
 		super.setEtfflowid(ETF_FLOW_1ID);
+		super.setAmount(new BigDecimal("30.000"));
+		super.setIsin(ISIN);
+		super.setNanoseconds(320000000);
+		super.setPrice(new BigDecimal("777.666"));
+		super.setTimestamp(OffsetDateTime.of(2008, 12, 13, 15, 16, 20, 320000000, ZoneOffset.UTC));
+		return this;
+	}
+
+	public EtfFlowTransportBuilder forFlow2() {
+		super.setEtfflowid(ETF_FLOW_2ID);
 		super.setAmount(new BigDecimal("100.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -24,8 +35,8 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		return this;
 	}
 
-	public EtfFlowTransportBuilder forFlow2() {
-		super.setEtfflowid(ETF_FLOW_2ID);
+	public EtfFlowTransportBuilder forFlow3() {
+		super.setEtfflowid(ETF_FLOW_3ID);
 		super.setAmount(new BigDecimal("-50.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -34,8 +45,8 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		return this;
 	}
 
-	public EtfFlowTransportBuilder forFlow3() {
-		super.setEtfflowid(ETF_FLOW_3ID);
+	public EtfFlowTransportBuilder forFlow4() {
+		super.setEtfflowid(ETF_FLOW_4ID);
 		super.setAmount(new BigDecimal("1.234"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);

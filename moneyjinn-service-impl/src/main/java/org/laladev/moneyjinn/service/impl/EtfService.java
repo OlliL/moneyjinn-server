@@ -171,7 +171,6 @@ public class EtfService extends AbstractService implements IEtfService {
 			while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
 				final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
 				if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
-					// FIXME: if-branch is uncovered by Unit-Tests!
 					etfBuyFlowsIterator.remove();
 					salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
 				} else {

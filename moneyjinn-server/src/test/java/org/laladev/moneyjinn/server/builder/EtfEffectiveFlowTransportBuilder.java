@@ -8,14 +8,14 @@ import java.time.ZoneOffset;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 
 public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport {
-	public static final Long ETF_FLOW_1ID = 1L;
-	public static final Long ETF_FLOW_3ID = 3L;
+	public static final Long ETF_FLOW_2ID = 2L;
+	public static final Long ETF_FLOW_4ID = 4L;
 	public static final Long NEXT_ID = 4L;
 	public static final String ISIN = "ISIN123";
 
-	public EtfEffectiveFlowTransportBuilder forFlow1() {
-		super.setEtfflowid(ETF_FLOW_1ID);
-		super.setAmount(new BigDecimal("50.000"));
+	public EtfEffectiveFlowTransportBuilder forFlow2() {
+		super.setEtfflowid(ETF_FLOW_2ID);
+		super.setAmount(new BigDecimal("80.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.666"));
@@ -23,8 +23,8 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 		return this;
 	}
 
-	public EtfEffectiveFlowTransportBuilder forFlow3() {
-		super.setEtfflowid(ETF_FLOW_3ID);
+	public EtfEffectiveFlowTransportBuilder forFlow4() {
+		super.setEtfflowid(ETF_FLOW_4ID);
 		super.setAmount(new BigDecimal("1.234"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);

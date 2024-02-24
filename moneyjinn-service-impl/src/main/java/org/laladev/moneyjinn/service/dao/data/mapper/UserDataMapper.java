@@ -38,6 +38,7 @@ import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.Named;
 import org.mapstruct.ValueMapping;
 
@@ -65,6 +66,7 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
 	@ValueMapping(target = "STANDARD", source = "STANDARD")
 	@ValueMapping(target = "IMPORT", source = "IMPORT")
 	@ValueMapping(target = "INACTIVE", source = "INACTIVE")
+	@ValueMapping(target = MappingConstants.THROW_EXCEPTION, source = MappingConstants.ANY_REMAINING)
 	UserRole mapUserRoleToEntity(String role);
 
 	@ValueMapping(target = "ADMIN", source = "ADMIN")

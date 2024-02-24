@@ -28,8 +28,8 @@ class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 	@Test
 	void test_standardRequest_FullResponseObject() throws Exception {
 		final EtfTransport etf = new EtfTransportBuilder().forEtf1().build();
-		final EtfEffectiveFlowTransport flow1 = new EtfEffectiveFlowTransportBuilder().forFlow1().build();
-		final EtfEffectiveFlowTransport flow3 = new EtfEffectiveFlowTransportBuilder().forFlow3().build();
+		final EtfEffectiveFlowTransport flow1 = new EtfEffectiveFlowTransportBuilder().forFlow2().build();
+		final EtfEffectiveFlowTransport flow3 = new EtfEffectiveFlowTransportBuilder().forFlow4().build();
 
 		final ListEtfOverviewResponse expected = new ListEtfOverviewResponse();
 

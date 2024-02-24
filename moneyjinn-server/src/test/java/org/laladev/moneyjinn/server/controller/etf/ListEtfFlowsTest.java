@@ -66,14 +66,15 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 		expected.setEtfTransports(etfs);
 
 		final List<EtfFlowTransport> allTransports = new ArrayList<>();
+		allTransports.add(new EtfFlowTransportBuilder().forFlow4().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow3().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow2().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow1().build());
 		expected.setEtfFlowTransports(allTransports);
 
 		final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
-		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow3().build());
-		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow1().build());
+		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow4().build());
+		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow2().build());
 		expected.setEtfEffectiveFlowTransports(effectiveTransports);
 		return expected;
 	}
