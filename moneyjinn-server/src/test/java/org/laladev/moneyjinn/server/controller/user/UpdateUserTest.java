@@ -1,12 +1,14 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessRelation;
@@ -37,6 +39,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 	private IUserService userService;
 	@Inject
 	private IAccessRelationService accessRelationService;
+
 	private final UserID userId1 = new UserID(UserTransportBuilder.USER1_ID);
 	private final UserID userId2 = new UserID(UserTransportBuilder.USER2_ID);
 	private final GroupID groupId1 = new GroupID(GroupTransportBuilder.GROUP1_ID);
@@ -68,7 +71,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
-		Assertions.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	@Test
@@ -95,8 +98,8 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		Assertions.assertEquals(UserTransportBuilder.USER1_PASSWORD_SHA1, user.getPassword());
-		Assertions.assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
+		assertEquals(UserTransportBuilder.USER1_PASSWORD_ENCODED, user.getPassword());
+		assertEquals(Arrays.asList(UserAttribute.NONE), user.getAttributes());
 	}
 
 	@Test
@@ -116,12 +119,11 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		// sha1 of 123 ----------vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-		Assertions.assertEquals("40bd001563085fc35165329ea1ff5c5ecbdbbeef", user.getPassword());
-		Assertions.assertEquals("hugo", user.getName());
+		assertTrue(this.userService.passwordMatches("123", user.getPassword()));
+		assertEquals("hugo", user.getName());
 		// instead of NONE ---------------------------------vvvvvv
-		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
-		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+		assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test
@@ -134,7 +136,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
-		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+		assertEquals(UserRole.STANDARD, user.getRole());
 	}
 
 	@Test
@@ -147,7 +149,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
-		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+		assertEquals(UserRole.IMPORT, user.getRole());
 	}
 
 	@Test
@@ -160,7 +162,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.ADMIN_ID));
-		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+		assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test
@@ -173,7 +175,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+		assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test
@@ -186,7 +188,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+		assertEquals(UserRole.IMPORT, user.getRole());
 	}
 
 	@Test
@@ -199,7 +201,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.USER1_ID));
-		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+		assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test
@@ -212,7 +214,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
-		Assertions.assertEquals(UserRole.ADMIN, user.getRole());
+		assertEquals(UserRole.ADMIN, user.getRole());
 	}
 
 	@Test
@@ -225,7 +227,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
-		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+		assertEquals(UserRole.STANDARD, user.getRole());
 	}
 
 	@Test
@@ -238,7 +240,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect204(request);
 
 		final User user = this.userService.getUserById(new UserID(UserTransportBuilder.IMPORTUSER_ID));
-		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+		assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test
@@ -279,7 +281,7 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
 
 		final List<AccessRelation> accessRelations = this.accessRelationService
 				.getAllAccessRelationsById(new UserID(transport.getId()));
-		Assertions.assertEquals(expectedAccessRelations, accessRelations);
+		assertEquals(expectedAccessRelations, accessRelations);
 	}
 
 	/**

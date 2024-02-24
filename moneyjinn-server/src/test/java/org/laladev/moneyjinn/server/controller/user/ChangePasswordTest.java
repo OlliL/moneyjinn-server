@@ -1,7 +1,10 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.User;
@@ -34,15 +37,12 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
 		request.setPassword(newPassword);
 
 		User user = this.userService.getUserById(userId);
-		String cryptedPassword = this.userService.cryptPassword(UserTransportBuilder.USER1_PASSWORD);
-		Assertions.assertEquals(user.getPassword(), cryptedPassword);
+		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER1_PASSWORD, user.getPassword()));
 
 		super.callUsecaseExpect204(request);
 
 		user = this.userService.getUserById(userId);
-		cryptedPassword = this.userService.cryptPassword(newPassword);
-		Assertions.assertEquals(user.getPassword(), cryptedPassword);
-
+		assertTrue(this.userService.passwordMatches(newPassword, user.getPassword()));
 	}
 
 	@Test
@@ -52,8 +52,8 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
 		request.setPassword("");
 
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-		Assertions.assertNotNull(actual);
-		Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
+		assertNotNull(actual);
+		assertEquals(actual.getCode(), ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
 
 	}
 
@@ -69,15 +69,13 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
 		request.setOldPassword(UserTransportBuilder.USER3_PASSWORD);
 		request.setPassword(newPassword);
 
-		final String cryptedPassword = this.userService.cryptPassword(UserTransportBuilder.USER3_PASSWORD);
-
 		User user = this.userService.getUserById(userId);
-		Assertions.assertEquals(user.getPassword(), cryptedPassword);
+		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER3_PASSWORD, user.getPassword()));
 
 		super.callUsecaseExpect204(request);
 
 		user = this.userService.getUserById(userId);
-		Assertions.assertEquals(user.getPassword(), cryptedPassword);
+		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER3_PASSWORD, user.getPassword()));
 	}
 
 	@Test
@@ -86,8 +84,8 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
 		request.setOldPassword("wrongPassword");
 
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-		Assertions.assertNotNull(actual);
-		Assertions.assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
+		assertNotNull(actual);
+		assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
 
 	}
 

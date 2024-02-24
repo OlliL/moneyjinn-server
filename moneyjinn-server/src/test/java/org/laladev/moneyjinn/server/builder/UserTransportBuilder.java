@@ -19,14 +19,11 @@ public class UserTransportBuilder extends UserTransport {
 	public static final Long NON_EXISTING_ID = 666l;
 	public static final Long NEXT_ID = 10l;
 	public static final String USER1_PASSWORD = "111";
-	public static final String USER1_PASSWORD_SHA1 = "6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2";
+	public static final String USER1_PASSWORD_ENCODED = "$2a$10$PQ54whtOGLu4u/arNe/X3uxTf6SiyaGGbHGzKyZfeZ/5gtdVKeiai";
 	public static final String USER2_PASSWORD = "222";
-	public static final String USER2_PASSWORD_SHA1 = "1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9";
 	public static final String USER3_PASSWORD = "222";
 	public static final String ADMIN_PASSWORD = "admin";
-	public static final String ADMIN_PASSWORD_SHA1 = "d033e22ae348aeb5660fc2140aec35850c4da997";
 	public static final String IMPORTUSER_PASSWORD = "importpass";
-	public static final String IMPORTUSER_PASSWORD_SHA1 = "272c2d7dec93029abac86fb647b48e0f3bb3aa45";
 
 	public UserTransportBuilder forAdmin() {
 		super.setId(ADMIN_ID);

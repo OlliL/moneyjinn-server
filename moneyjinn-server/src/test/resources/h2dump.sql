@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `access_users`;
 CREATE TABLE `access_users` (
   `userid` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8mb3 NOT NULL,
-  `password` varchar(40) NOT NULL,
+  `password` char(60) CHARACTER SET latin1 NOT NULL,
   `role` char(8) CHARACTER SET utf8mb3 NOT NULL,
   `change_password` tinyint unsigned NOT NULL,
   PRIMARY KEY (`userid`),

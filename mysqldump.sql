@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `access_users`;
 CREATE TABLE `access_users` (
   `userid` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
-  `password` varchar(40) COLLATE utf8mb3_bin NOT NULL,
+  `password` char(60) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
   `role` char(8) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
   `change_password` tinyint unsigned NOT NULL,
   PRIMARY KEY (`userid`),
@@ -530,13 +530,13 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-24  1:57:56
+-- Dump completed on 2024-02-24 10:13:22
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner','/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger','',';',1,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
-INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997','ADMIN',1);
+INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW','ADMIN',1);
 INSERT INTO access_groups (name) VALUES ('admingroup');
 UPDATE access_users SET userid=0 WHERE name='admin';
 UPDATE access_groups SET groupid=0 WHERE name='admingroup';

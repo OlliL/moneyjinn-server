@@ -1,12 +1,12 @@
-insert into access_users (userid,name,password,role,change_password) values (3,'user1','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2','STANDARD',1);
-insert into access_users (userid,name,password,role,change_password) values (4,'user2','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9','INACTIVE',0);
-insert into access_users (userid,name,password,role,change_password) values (5,'user3','1c6637a8f2e1f75e06ff9984894d6bd16a3a36a9','STANDARD',0);
+insert into access_users (userid,name,password,role,change_password) values (3,'user1','$2a$10$PQ54whtOGLu4u/arNe/X3uxTf6SiyaGGbHGzKyZfeZ/5gtdVKeiai','STANDARD',1);
+insert into access_users (userid,name,password,role,change_password) values (4,'user2','$2a$10$9VlC9RqT7luBNCrXtGl5rOnJtvxW78dKx3oafsmm9W0wNnmTi1FQK','INACTIVE',0);
+insert into access_users (userid,name,password,role,change_password) values (5,'user3','$2a$10$9VlC9RqT7luBNCrXtGl5rOnJtvxW78dKx3oafsmm9W0wNnmTi1FQK','STANDARD',0);
 
 insert into access_groups (groupid,name) values (6,'group1');
 insert into access_groups (groupid,name) values (7,'group2');
 insert into access_groups (groupid,name) values (8,'group3');
 
-insert into access_users (userid,name,password,role,change_password) values (9,'importuser','272c2d7dec93029abac86fb647b48e0f3bb3aa45','IMPORT',0);
+insert into access_users (userid,name,password,role,change_password) values (9,'importuser','$2a$10$OfpEhrOVAjFieHZjTuWYtOdHm.lsTo1X8CcA1X565bcxW7u3wEwAC','IMPORT',0);
 
 insert into access_relation (mau_userid,mag_groupid,validfrom,validtil) values (3,6,'2000-01-01','2599-12-31');
 insert into access_relation (mau_userid,mag_groupid,validfrom,validtil) values (3,7,'2600-01-01','2699-12-31');

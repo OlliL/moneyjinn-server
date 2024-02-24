@@ -101,7 +101,7 @@ public class UserController extends AbstractController implements UserController
 	@Override
 	public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest request) {
 		final String username = request.getUserName();
-		final String password = this.userService.cryptPassword(request.getUserPassword());
+		final String password = request.getUserPassword();
 
 		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
@@ -142,8 +142,8 @@ public class UserController extends AbstractController implements UserController
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
 		final String password = request.getPassword();
-		final String oldPassword = this.userService.cryptPassword(request.getOldPassword());
-		if (!user.getPassword().equals(oldPassword)) {
+		final String oldPassword = request.getOldPassword();
+		if (!this.userService.passwordMatches(oldPassword, user.getPassword())) {
 			throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
 		}
 		if (password != null && !password.trim().isEmpty()) {

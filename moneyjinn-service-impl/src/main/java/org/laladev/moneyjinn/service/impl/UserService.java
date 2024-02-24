@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -46,6 +44,7 @@ import org.laladev.moneyjinn.service.dao.data.mapper.UserDataMapper;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -62,6 +61,7 @@ public class UserService extends AbstractService implements IUserService {
 	private static final Log LOG = LogFactory.getLog(UserService.class);
 	private final UserDao userDao;
 	private final UserDataMapper userDataMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	@PostConstruct
@@ -175,30 +175,12 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public String cryptPassword(final String password) {
-		if (password != null) {
-			try {
-				final MessageDigest sha1Md = MessageDigest.getInstance("SHA1");
-				return convert(sha1Md.digest(password.getBytes()));
-			} catch (final NoSuchAlgorithmException e) {
-				LOG.error(e);
-			}
-		}
-		return null;
+	public boolean passwordMatches(final CharSequence rawPassword, final String encodedPassword) {
+		return this.passwordEncoder.matches(rawPassword, encodedPassword);
 	}
 
-	private static final char[] HEY_ARRAY = "0123456789abcdef".toCharArray();
-
-	private static String convert(final byte[] bytes) {
-		final int l = bytes.length;
-		final char[] out = new char[l << 1];
-		int j = 0;
-		for (int i = 0; i < l; i++) {
-			final byte byteToWorkOn = bytes[i];
-			out[j++] = HEY_ARRAY[(0xF0 & byteToWorkOn) >>> 4];
-			out[j++] = HEY_ARRAY[0x0F & byteToWorkOn];
-		}
-		return new String(out);
+	private String cryptPassword(final String password) {
+		return password == null ? null : this.passwordEncoder.encode(password);
 	}
 
 	private void evictUserCache(final User user) {

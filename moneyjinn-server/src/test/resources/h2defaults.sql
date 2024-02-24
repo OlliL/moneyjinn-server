@@ -45,7 +45,7 @@ INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','U
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner','/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger','',';',1,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
-INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997','ADMIN',1);
+INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW','ADMIN',1);
 INSERT INTO access_groups (name) VALUES ('admingroup');
 UPDATE access_users SET userid=0 WHERE name='admin';
 UPDATE access_groups SET groupid=0 WHERE name='admingroup';

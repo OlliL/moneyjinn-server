@@ -1,12 +1,15 @@
 
 package org.laladev.moneyjinn.server.controller.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessRelation;
@@ -54,7 +57,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		expected.setValidationItemTransports(validationItems);
 		expected.setResult(Boolean.FALSE);
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
-		Assertions.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	@Test
@@ -92,11 +95,11 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
-		Assertions.assertEquals(UserTransportBuilder.IMPORTUSER_PASSWORD_SHA1, user.getPassword());
+		assertEquals(UserTransportBuilder.NEXT_ID, user.getId().getId());
+		assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
+		assertTrue(this.userService.passwordMatches(UserTransportBuilder.IMPORTUSER_PASSWORD, user.getPassword()));
 		// instead of NONE ---------------------------------vvvvvv
-		Assertions.assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+		assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
 	}
 
 	@Test
@@ -110,7 +113,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect200(request, CreateUserResponse.class);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
-		Assertions.assertEquals(UserRole.STANDARD, user.getRole());
+		assertEquals(UserRole.STANDARD, user.getRole());
 	}
 
 	@Test
@@ -124,7 +127,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect200(request, CreateUserResponse.class);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
-		Assertions.assertEquals(UserRole.IMPORT, user.getRole());
+		assertEquals(UserRole.IMPORT, user.getRole());
 	}
 
 	@Test
@@ -138,7 +141,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 		super.callUsecaseExpect200(request, CreateUserResponse.class);
 
 		final User user = this.userService.getUserByName(UserTransportBuilder.NEWUSER_NAME);
-		Assertions.assertEquals(UserRole.INACTIVE, user.getRole());
+		assertEquals(UserRole.INACTIVE, user.getRole());
 	}
 
 	@Test
@@ -152,15 +155,15 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 
 		final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
+		assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
 				.getCurrentAccessRelationById(new UserID(UserTransportBuilder.NEXT_ID));
-		Assertions.assertNotNull(accessRelation);
-		Assertions.assertEquals(accessRelationTransport.getRefId(), accessRelation.getGroupID().getId());
-		Assertions.assertEquals(accessRelationTransport.getValidfrom(), accessRelation.getValidFrom());
+		assertNotNull(accessRelation);
+		assertEquals(accessRelationTransport.getRefId(), accessRelation.getGroupID().getId());
+		assertEquals(accessRelationTransport.getValidfrom(), accessRelation.getValidFrom());
 		// default if validTil is empty
-		Assertions.assertEquals(LocalDate.parse("2999-12-31"), accessRelation.getValidTil());
+		assertEquals(LocalDate.parse("2999-12-31"), accessRelation.getValidTil());
 	}
 
 	@Test
@@ -175,13 +178,13 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
 
 		final CreateUserResponse actual = super.callUsecaseExpect200(request, CreateUserResponse.class);
 
-		Assertions.assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
+		assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
 
 		final AccessRelation accessRelation = this.accessRelationService
 				.getCurrentAccessRelationById(new UserID(UserTransportBuilder.NEXT_ID));
-		Assertions.assertNotNull(accessRelation);
+		assertNotNull(accessRelation);
 		// default did not overwrite
-		Assertions.assertEquals(accessRelationTransport.getValidtil(), accessRelation.getValidTil());
+		assertEquals(accessRelationTransport.getValidtil(), accessRelation.getValidTil());
 	}
 
 	@Test

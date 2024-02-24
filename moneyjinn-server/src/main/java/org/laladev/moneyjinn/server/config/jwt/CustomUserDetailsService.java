@@ -37,19 +37,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 	private final IUserService userService;
-	private final PasswordEncoder encoder;
 
 	@Autowired
-	public CustomUserDetailsService(final IUserService userService, final PasswordEncoder encoder) {
+	public CustomUserDetailsService(final IUserService userService) {
 		super();
 		this.userService = userService;
-		this.encoder = encoder;
 	}
 
 	@Override
@@ -60,10 +57,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			return null;
 		}
 
-		final String password = this.encoder.encode(user.getPassword());
 		final List<? extends GrantedAuthority> grantedAuthorities = Collections
 				.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
-		return new org.springframework.security.core.userdetails.User(user.getName(), password, grantedAuthorities);
+		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
+				grantedAuthorities);
 	}
 }
