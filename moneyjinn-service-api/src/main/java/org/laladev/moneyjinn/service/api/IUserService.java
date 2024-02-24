@@ -109,10 +109,11 @@ public interface IUserService {
 	 * the user itself changes his password as it also disables the "user has to
 	 * change his password flag"
 	 *
-	 * @param userId   The {@link UserID} for which the password has to be set
-	 * @param password The new User-Password
+	 * @param userId      The {@link UserID} for which the password has to be set
+	 * @param password    The new User-Password
+	 * @param oldPAssword The old User-Password
 	 */
-	void setPassword(final UserID userId, final String password);
+	void setPassword(final UserID userId, final String password, String oldPassword);
 
 	/**
 	 * This service sets a new User-Password for the given User-Id. The password has

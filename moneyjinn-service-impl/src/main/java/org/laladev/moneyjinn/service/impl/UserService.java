@@ -141,11 +141,20 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public void setPassword(final UserID userId, final String password) {
+	public void setPassword(final UserID userId, final String password, final String oldPassword) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(password, "password must not be null!");
+		Assert.notNull(password, "Password must not be null!");
+		Assert.notNull(oldPassword, "Old password must not be null!");
+		Assert.isTrue(!password.isBlank(), "Password must not be empty!");
+		Assert.isTrue(!oldPassword.isBlank(), "Old password must not be empty!");
+
 		final User user = this.getUserById(userId);
+		if (!this.passwordMatches(oldPassword, user.getPassword())) {
+			throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
+		}
+
 		this.evictUserCache(user);
+
 		final String cryptedPassword = this.cryptPassword(password);
 		this.userDao.setPassword(userId.getId(), cryptedPassword);
 	}

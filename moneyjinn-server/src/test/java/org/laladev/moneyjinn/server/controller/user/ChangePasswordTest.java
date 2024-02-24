@@ -46,42 +46,28 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_OldPasswordMatchingNewPasswordEmptyButUserNew_errorRaised() throws Exception {
-		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(UserTransportBuilder.USER1_PASSWORD);
-		request.setPassword("");
-
-		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-		assertNotNull(actual);
-		assertEquals(actual.getCode(), ErrorCode.PASSWORD_MUST_BE_CHANGED.getErrorCode());
-
-	}
-
-	@Test
-	void test_OldPasswordMatchingNewPasswordEmpty_passwordGotNotChanged() throws Exception {
+	void test_OldPasswordMatchingNewPasswordEmpty_errorRaised() throws Exception {
 		super.setUsername(UserTransportBuilder.USER3_NAME);
 		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 
-		final UserID userId = new UserID(UserTransportBuilder.USER3_ID);
-		final String newPassword = "";
-
 		final ChangePasswordRequest request = new ChangePasswordRequest();
 		request.setOldPassword(UserTransportBuilder.USER3_PASSWORD);
-		request.setPassword(newPassword);
+		request.setPassword("");
 
-		User user = this.userService.getUserById(userId);
-		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER3_PASSWORD, user.getPassword()));
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setCode(ErrorCode.UNKNOWN.getErrorCode());
+		expected.setMessage("Password must not be empty!");
 
-		super.callUsecaseExpect204(request);
+		final ErrorResponse actual = super.callUsecaseExpect500(request, ErrorResponse.class);
 
-		user = this.userService.getUserById(userId);
-		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER3_PASSWORD, user.getPassword()));
+		assertEquals(expected, actual);
 	}
 
 	@Test
 	void test_OldPasswordNotMatching_errorRaised() throws Exception {
 		final ChangePasswordRequest request = new ChangePasswordRequest();
 		request.setOldPassword("wrongPassword");
+		request.setPassword("hugo");
 
 		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
 		assertNotNull(actual);

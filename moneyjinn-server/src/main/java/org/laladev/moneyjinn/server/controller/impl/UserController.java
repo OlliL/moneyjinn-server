@@ -34,7 +34,6 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -144,17 +143,11 @@ public class UserController extends AbstractController implements UserController
 	@Override
 	public ResponseEntity<Void> changePassword(@RequestBody final ChangePasswordRequest request) {
 		final UserID userId = super.getUserId();
-		final User user = this.userService.getUserById(userId);
 		final String password = request.getPassword();
 		final String oldPassword = request.getOldPassword();
-		if (!this.userService.passwordMatches(oldPassword, user.getPassword())) {
-			throw new BusinessException("Wrong password!", ErrorCode.PASSWORD_NOT_MATCHING);
-		}
-		if (password != null && !password.trim().isEmpty()) {
-			this.userService.setPassword(userId, password);
-		} else if (user.getAttributes().contains(UserAttribute.IS_NEW)) {
-			throw new BusinessException("You have to change your password!", ErrorCode.PASSWORD_MUST_BE_CHANGED);
-		}
+
+		this.userService.setPassword(userId, password, oldPassword);
+
 		return ResponseEntity.noContent().build();
 	}
 
