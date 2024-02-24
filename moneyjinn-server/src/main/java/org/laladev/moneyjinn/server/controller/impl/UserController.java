@@ -98,14 +98,18 @@ public class UserController extends AbstractController implements UserController
 		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
-	@Override
-	public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest request) {
+	private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(final LoginRequest request) {
 		final String username = request.getUserName();
 		final String password = request.getUserPassword();
 
-		this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		return new UsernamePasswordAuthenticationToken(username, password);
+	}
 
-		final User user = this.userService.getUserByName(username);
+	@Override
+	public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest request) {
+		this.authenticationManager.authenticate(this.getUsernamePasswordAuthenticationToken(request));
+
+		final User user = this.userService.getUserByName(request.getUserName());
 
 		return ResponseEntity.ok(this.generateLoginResponse(user));
 	}
