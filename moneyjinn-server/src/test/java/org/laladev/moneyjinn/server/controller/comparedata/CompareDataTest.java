@@ -191,12 +191,46 @@ class CompareDataTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_invalidFileFormat_Exception() throws Exception {
+	void test_wrongFileFormatSelected_Exception() throws Exception {
 		final CompareDataRequest request = new CompareDataRequest();
 		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
 		request.setStartDate(LocalDate.parse("2010-01-01"));
 		request.setEndDate(LocalDate.parse("2010-01-31"));
 		request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
+		// just pick a file which does not match the above set FormatId
+		final String base64FileContents = this.getFileContents(this.spardaBankResource);
+		request.setFileContents(base64FileContents);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setMessage("The specified file is not parseable! Maybe you've selected the wrong format or file?");
+		expected.setCode(ErrorCode.WRONG_FILE_FORMAT.getErrorCode());
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	void test_sendCamtClaimingItsCsv_Exception() throws Exception {
+		final CompareDataRequest request = new CompareDataRequest();
+		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		request.setStartDate(LocalDate.parse("2010-01-01"));
+		request.setEndDate(LocalDate.parse("2010-01-31"));
+		request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT3_ID);
+		// just pick a file which does not match the above set FormatId
+		final String base64FileContents = this.getFileContents(this.camtResource);
+		request.setFileContents(base64FileContents);
+		final ErrorResponse expected = new ErrorResponse();
+		expected.setMessage("The specified file is not parseable! Maybe you've selected the wrong format or file?");
+		expected.setCode(ErrorCode.WRONG_FILE_FORMAT.getErrorCode());
+		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+		Assertions.assertEquals(expected, actual);
+	}
+
+	@Test
+	void test_sendCsvClaimingItsCamt_Exception() throws Exception {
+		final CompareDataRequest request = new CompareDataRequest();
+		request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+		request.setStartDate(LocalDate.parse("2010-01-01"));
+		request.setEndDate(LocalDate.parse("2010-01-31"));
+		request.setFormatId(CompareDataFormatTransportBuilder.COMPARE_DATA_FORMAT4_ID);
 		// just pick a file which does not match the above set FormatId
 		final String base64FileContents = this.getFileContents(this.spardaBankResource);
 		request.setFileContents(base64FileContents);

@@ -89,8 +89,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 				monthlySettlement.getUser().getId(), monthlySettlement.getGroup().getId(),
 				monthlySettlement.getCapitalsource().getId());
 		// You must not change, or create MonthlySettlements for Capitalsources not
-		// belonging to
-		// you.
+		// belonging to you.
 		if (capitalsource == null || !capitalsource.getUser().getId().equals(monthlySettlement.getUser().getId())) {
 			validationResult.addValidationResultItem(
 					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));

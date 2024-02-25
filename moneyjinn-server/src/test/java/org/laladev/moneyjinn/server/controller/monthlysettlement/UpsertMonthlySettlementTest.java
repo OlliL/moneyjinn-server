@@ -91,6 +91,14 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
+	void test_AmountNull_Error() throws Exception {
+		final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
+				.forMonthlySettlement1().build();
+		monthlySettlementTransport.setAmount(null);
+		this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED);
+	}
+
+	@Test
 	void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
