@@ -13,7 +13,6 @@ import java.util.Spliterators;
 import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.config.JwtCache;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
@@ -21,8 +20,6 @@ import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -56,8 +53,6 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	private ObjectMapper objectMapper;
 	@Inject
 	private MockMvc mvc;
-	@Inject
-	private CacheManager cacheManager;
 	@Inject
 	private JwtCache jwtCache;
 	private String overrideJwtToken;
@@ -286,14 +281,5 @@ public abstract class AbstractControllerTest extends AbstractTest {
 			builder = builder.content(bodyStr);
 		}
 		return builder;
-	}
-
-	/**
-	 * Clears all Caches before each test execution.
-	 */
-	@Override
-	@BeforeEach
-	public void before() {
-		this.cacheManager.getCacheNames().stream().map(this.cacheManager::getCache).forEach(Cache::clear);
 	}
 }
