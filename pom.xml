@@ -33,6 +33,7 @@
 		<jjwt.version>0.12.5</jjwt.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
+		<opencsv.version>5.9</opencsv.version>
 		<swagger.version>2.2.20</swagger.version>
 		<openapi-generator.version>7.3.0</openapi-generator.version>
 
@@ -50,9 +51,8 @@
 
 		<!-- Test Scope -->
 		<junit.version>5.10.2</junit.version>
-		<mockito.version>5.10.0</mockito.version>
+		<mockito.version>5.11.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
-		<opencsv.version>5.9</opencsv.version>
 
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
