@@ -49,7 +49,6 @@ import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.dao.MoneyflowSplitEntryDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSplitEntryDataMapper;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -58,7 +57,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryService extends AbstractService implements IMoneyflowSplitEntryService {
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
@@ -76,12 +74,12 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		if (moneyflowSplitEntryData != null) {
 			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData,
 					MoneyflowSplitEntry.class);
+
 			PostingAccount postingAccount = moneyflowSplitEntry.getPostingAccount();
-			if (postingAccount != null) {
-				final PostingAccountID postingAccountId = postingAccount.getId();
-				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-				moneyflowSplitEntry.setPostingAccount(postingAccount);
-			}
+			final PostingAccountID postingAccountId = postingAccount.getId();
+			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
+			moneyflowSplitEntry.setPostingAccount(postingAccount);
+
 			return moneyflowSplitEntry;
 		}
 		return null;

@@ -58,7 +58,6 @@ import org.laladev.moneyjinn.service.event.ContractpartnerChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -68,7 +67,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
 	private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
@@ -95,12 +93,14 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final Group group = this.groupService.getGroupById(contractpartner.getGroup().getId());
 			contractpartner.setUser(user);
 			contractpartner.setGroup(group);
+
 			PostingAccount postingAccount = contractpartner.getPostingAccount();
 			if (postingAccount != null) {
 				final PostingAccountID postingAccountId = postingAccount.getId();
 				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
 				contractpartner.setPostingAccount(postingAccount);
 			}
+
 			return contractpartner;
 		}
 		return null;

@@ -58,7 +58,6 @@ import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -68,7 +67,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
@@ -94,6 +92,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			final Group group = this.groupService.getGroupById(capitalsource.getGroup().getId());
 			capitalsource.setUser(user);
 			capitalsource.setGroup(group);
+
 			return capitalsource;
 		}
 		return null;

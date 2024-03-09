@@ -122,8 +122,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			// this secures the Account - a user which has no access to the partner may not
-			// modify
-			// its accounts
+			// modify its accounts
 			if (contractpartner != null) {
 				contractpartnerAccount.setContractpartner(contractpartner);
 				return contractpartnerAccount;

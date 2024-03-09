@@ -44,7 +44,6 @@ import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.data.mapper.GroupDataMapper;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -53,7 +52,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class GroupService extends AbstractService implements IGroupService {
 	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";

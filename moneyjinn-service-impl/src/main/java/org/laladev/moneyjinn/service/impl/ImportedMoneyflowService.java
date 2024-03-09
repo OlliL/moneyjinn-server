@@ -73,12 +73,12 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 		if (importedMoneyflowData != null) {
 			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);
 			final Group group = this.accessRelationService.getCurrentGroup(userId);
+
 			Capitalsource capitalsource = importedMoneyflow.getCapitalsource();
-			if (capitalsource != null) {
-				final CapitalsourceID capitalsourceId = capitalsource.getId();
-				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-				importedMoneyflow.setCapitalsource(capitalsource);
-			}
+			final CapitalsourceID capitalsourceId = capitalsource.getId();
+			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+			importedMoneyflow.setCapitalsource(capitalsource);
+
 			return importedMoneyflow;
 		}
 		return null;

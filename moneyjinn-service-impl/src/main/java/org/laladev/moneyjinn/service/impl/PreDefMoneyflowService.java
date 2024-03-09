@@ -39,7 +39,7 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -60,7 +60,6 @@ import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -70,7 +69,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowService extends AbstractService implements IPreDefMoneyflowService {
 	private static final String PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL = "preDefMoneyflowId must not be null!";
@@ -95,27 +93,24 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final PreDefMoneyflow preDefMoneyflow = super.map(preDefMoneyflowData, PreDefMoneyflow.class);
 			final UserID userId = preDefMoneyflow.getUser().getId();
 			final User user = this.userService.getUserById(userId);
-			final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
-			final GroupID groupId = accessRelation.getGroupID();
+			final Group group = this.accessRelationService.getCurrentGroup(userId);
 			preDefMoneyflow.setUser(user);
+
 			PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
-			if (postingAccount != null) {
-				final PostingAccountID postingAccountId = postingAccount.getId();
-				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-				preDefMoneyflow.setPostingAccount(postingAccount);
-			}
+			final PostingAccountID postingAccountId = postingAccount.getId();
+			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
+			preDefMoneyflow.setPostingAccount(postingAccount);
+
 			Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
-			if (capitalsource != null) {
-				final CapitalsourceID capitalsourceId = capitalsource.getId();
-				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
-				preDefMoneyflow.setCapitalsource(capitalsource);
-			}
+			final CapitalsourceID capitalsourceId = capitalsource.getId();
+			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+			preDefMoneyflow.setCapitalsource(capitalsource);
+
 			Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
-			if (contractpartner != null) {
-				final ContractpartnerID contractpartnerId = contractpartner.getId();
-				contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-				preDefMoneyflow.setContractpartner(contractpartner);
-			}
+			final ContractpartnerID contractpartnerId = contractpartner.getId();
+			contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+			preDefMoneyflow.setContractpartner(contractpartner);
+
 			return preDefMoneyflow;
 		}
 		return null;

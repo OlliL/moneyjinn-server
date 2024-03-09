@@ -27,6 +27,7 @@ package org.laladev.moneyjinn.config;
 import org.laladev.moneyjinn.server.config.MoneyjinnConfiguration;
 import org.laladev.moneyjinn.server.main.MoneyJinnServer;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -37,5 +38,6 @@ import org.springframework.context.annotation.FilterType;
 				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyjinnConfiguration.class),
 				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MoneyJinnServer.class) })
 @EnableAutoConfiguration
+@EnableCaching
 public class MoneyjinnTestConfiguration {
 }

@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,5 +33,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
 		"org.laladev.moneyjinn.server" })
 @EnableAutoConfiguration
+@EnableCaching
 public class MoneyjinnConfiguration {
 }

@@ -36,7 +36,6 @@ import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.dao.MoneyflowReceiptDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowReceiptDataMapper;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -45,7 +44,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowReceiptService extends AbstractService implements IMoneyflowReceiptService {
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
@@ -59,10 +57,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 	}
 
 	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
-		if (moneyflowReceiptData != null) {
-			return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
-		}
-		return null;
+		return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
 	}
 
 	@Override

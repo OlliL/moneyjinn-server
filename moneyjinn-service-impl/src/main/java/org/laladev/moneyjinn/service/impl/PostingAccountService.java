@@ -46,7 +46,6 @@ import org.laladev.moneyjinn.service.event.EventType;
 import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -55,7 +54,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
 	private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";

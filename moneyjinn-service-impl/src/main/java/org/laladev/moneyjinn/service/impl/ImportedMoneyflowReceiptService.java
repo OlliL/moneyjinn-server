@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.service.api.IImportedMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.dao.ImportedMoneyflowReceiptDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowReceiptDataMapper;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -52,7 +51,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptService extends AbstractService implements IImportedMoneyflowReceiptService {
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";

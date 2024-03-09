@@ -45,7 +45,6 @@ import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -74,7 +73,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchResultDataMa
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountAmountDataMapper;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -84,7 +82,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowService extends AbstractService implements IMoneyflowService {
 	private static final String DATE_TIL_MUST_NOT_BE_NULL = "dateTil must not be null!";
@@ -116,27 +113,24 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			final UserID userId = moneyflow.getUser().getId();
 			final User user = this.userService.getUserById(userId);
 			final Group group = this.accessRelationService.getGroup(userId, moneyflow.getBookingDate());
-			final GroupID groupId = group.getId();
 			moneyflow.setUser(user);
 			moneyflow.setGroup(group);
+
 			PostingAccount postingAccount = moneyflow.getPostingAccount();
-			if (postingAccount != null) {
-				final PostingAccountID postingAccountId = postingAccount.getId();
-				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-				moneyflow.setPostingAccount(postingAccount);
-			}
+			final PostingAccountID postingAccountId = postingAccount.getId();
+			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
+			moneyflow.setPostingAccount(postingAccount);
+
 			Capitalsource capitalsource = moneyflow.getCapitalsource();
-			if (capitalsource != null) {
-				final CapitalsourceID capitalsourceId = capitalsource.getId();
-				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
-				moneyflow.setCapitalsource(capitalsource);
-			}
+			final CapitalsourceID capitalsourceId = capitalsource.getId();
+			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+			moneyflow.setCapitalsource(capitalsource);
+
 			Contractpartner contractpartner = moneyflow.getContractpartner();
-			if (contractpartner != null) {
-				final ContractpartnerID contractpartnerId = contractpartner.getId();
-				contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-				moneyflow.setContractpartner(contractpartner);
-			}
+			final ContractpartnerID contractpartnerId = contractpartner.getId();
+			contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
+			moneyflow.setContractpartner(contractpartner);
+
 			return moneyflow;
 		}
 		return null;

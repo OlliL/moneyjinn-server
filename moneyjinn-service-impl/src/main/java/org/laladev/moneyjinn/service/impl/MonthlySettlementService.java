@@ -36,7 +36,6 @@ import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -115,15 +114,14 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 			final LocalDate endOfMonth = LocalDate.of(monthlySettlement.getYear(), monthlySettlement.getMonth(), 1)
 					.with(TemporalAdjusters.lastDayOfMonth());
 			final Group group = this.accessRelationService.getGroup(userId, endOfMonth);
-			final GroupID groupId = group.getId();
 			monthlySettlement.setUser(user);
 			monthlySettlement.setGroup(group);
+
 			Capitalsource capitalsource = monthlySettlement.getCapitalsource();
-			if (capitalsource != null) {
-				final CapitalsourceID capitalsourceId = capitalsource.getId();
-				capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId, capitalsourceId);
-				monthlySettlement.setCapitalsource(capitalsource);
-			}
+			final CapitalsourceID capitalsourceId = capitalsource.getId();
+			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
+			monthlySettlement.setCapitalsource(capitalsource);
+
 			return monthlySettlement;
 		}
 		return null;

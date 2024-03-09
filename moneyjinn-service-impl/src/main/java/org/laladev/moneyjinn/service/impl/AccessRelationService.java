@@ -47,7 +47,6 @@ import org.laladev.moneyjinn.service.dao.AccessRelationDao;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -56,7 +55,6 @@ import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
 @Named
-@EnableCaching
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
