@@ -32,6 +32,7 @@ import java.time.Month;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -96,29 +97,32 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public ValidationResult validateEtfFlow(final EtfFlow etfFlow) {
 		Assert.notNull(etfFlow, "etfFlow must not be null!");
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(etfFlow.getId(), errorCode));
+
 		if (etfFlow.getTime() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(etfFlow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
+			addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
 		}
+
 		if (etfFlow.getAmount() == null || etfFlow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.PIECES_NOT_SET));
+			addResult.accept(ErrorCode.PIECES_NOT_SET);
 		}
+
 		if (etfFlow.getPrice() == null || etfFlow.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.PRICE_NOT_SET));
+			addResult.accept(ErrorCode.PRICE_NOT_SET);
 		}
-		if (etfFlow.getIsin() == null || etfFlow.getIsin().getId().trim().isEmpty()) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
+
+		if (etfFlow.getIsin() == null || etfFlow.getIsin().getId().isBlank()) {
+			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 		} else {
 			final EtfData etfData = this.etfDao.getEtfById(etfFlow.getIsin().getId());
 			if (etfData == null) {
-				validationResult
-						.addValidationResultItem(new ValidationResultItem(etfFlow.getId(), ErrorCode.NO_ETF_SPECIFIED));
+				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			}
 		}
+
 		return validationResult;
 	}
 

@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
@@ -79,17 +80,17 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	@Override
 	public ValidationResult validateContractpartnerAccount(final UserID userId,
 			final ContractpartnerAccount contractpartnerAccount) {
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(contractpartnerAccount.getId(), errorCode));
+
 		if (contractpartnerAccount.getBankAccount() == null) {
-			validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-					ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY));
-			validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-					ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY));
+			addResult.accept(ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
+			addResult.accept(ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
 		} else {
-			for (final ErrorCode errorCode : contractpartnerAccount.getBankAccount().checkValidity()) {
-				validationResult
-						.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(), errorCode));
-			}
+			contractpartnerAccount.getBankAccount().checkValidity().forEach(addResult);
+
 			final ContractpartnerAccount contractpartnerAccountChecked = this
 					.getContractpartnerAccountByBankAccount(userId, contractpartnerAccount.getBankAccount());
 			if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
@@ -99,17 +100,17 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 						Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
 			}
 		}
+
 		if (contractpartnerAccount.getContractpartner() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(contractpartnerAccount.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
+			addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
 		} else {
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			if (contractpartner == null) {
-				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-						ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
+				addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
 			}
 		}
+
 		return validationResult;
 	}
 

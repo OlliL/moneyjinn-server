@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -173,86 +174,74 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 		this.prepareMoneyflow(moneyflow);
 
-		final ValidationResult validationResult = new ValidationResult();
-
 		final UserID userId = moneyflow.getUser().getId();
-		final GroupID groupId = moneyflow.getGroup().getId();
 		final LocalDate bookingDate = moneyflow.getBookingDate();
+		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(moneyflow.getId(), errorCode));
+
 		if (bookingDate == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT));
+			addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
 		} else {
 			final AccessRelation accessRelation = this.accessRelationService
 					.getCurrentAccessRelationById(moneyflow.getUser().getId());
 			// if this check is removed, make sure the group is evaluated for the
 			// bookingdate, not for today otherwise it will be created with the wrong
 			// group
-			if (bookingDate.isBefore(accessRelation.getValidFrom())
-					|| bookingDate.isAfter(accessRelation.getValidTil())) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT));
+			if (!accessRelation.dateIsInValidPeriod(bookingDate)) {
+				addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
 			}
 		}
+
 		if (moneyflow.getCapitalsource() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
+			addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
 		} else {
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, groupId,
-					moneyflow.getCapitalsource().getId());
+			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+					moneyflow.getGroup().getId(), moneyflow.getCapitalsource().getId());
 			if (capitalsource == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+			} else if (!capitalsource.groupUseAllowed(userId)) {
+				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+			} else if (!capitalsource.dateIsInValidPeriod(bookingDate)) {
+				addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
 			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
-			} else if (!capitalsource.getUser().getId().equals(moneyflow.getUser().getId())
-					&& !capitalsource.isGroupUse()) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
-			} else if (bookingDate != null && (bookingDate.isBefore(capitalsource.getValidFrom())
-					|| bookingDate.isAfter(capitalsource.getValidTil()))) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY));
+				addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
 			}
 		}
+
 		if (moneyflow.getContractpartner() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
+			addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
 		} else {
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					moneyflow.getContractpartner().getId());
 			if (contractpartner == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
-			} else if (bookingDate != null && (bookingDate.isBefore(contractpartner.getValidFrom())
-					|| bookingDate.isAfter(contractpartner.getValidTil()))) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID));
+				addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+			} else if (!contractpartner.dateIsInValidPeriod(bookingDate)) {
+				addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 			}
 		}
-		if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+
+		if (moneyflow.getComment() == null || moneyflow.getComment().isBlank()) {
+			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
 		}
+
 		final BigDecimal amount = moneyflow.getAmount();
 		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
+			addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
 		} else if (amount.precision() - amount.scale() > 6) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(moneyflow.getId(), ErrorCode.AMOUNT_TO_BIG));
+			addResult.accept(ErrorCode.AMOUNT_TO_BIG);
 		}
+
 		if (moneyflow.getPostingAccount() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 		} else {
 			final PostingAccount postingAccount = this.postingAccountService
 					.getPostingAccountById(moneyflow.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 			}
 		}
+
 		return validationResult;
 	}
 

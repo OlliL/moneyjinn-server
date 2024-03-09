@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,18 +73,21 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	public ValidationResult validateUser(final User user) {
 		Assert.notNull(user, USER_MUST_NOT_BE_NULL);
+
 		final ValidationResult validationResult = new ValidationResult();
-		if (user.getName() == null || user.getName().trim().isEmpty()) {
-			validationResult
-					.addValidationResultItem(new ValidationResultItem(user.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(user.getId(), errorCode));
+
+		if (user.getName() == null || user.getName().isBlank()) {
+			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 		} else {
 			final User checkUser = this.getUserByName(user.getName());
 			if (checkUser != null && (user.getId() == null || !checkUser.getId().equals(user.getId()))) {
 				// Update OR Create
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(user.getId(), ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS));
+				addResult.accept(ErrorCode.USER_WITH_SAME_NAME_ALREADY_EXISTS);
 			}
 		}
+
 		return validationResult;
 	}
 

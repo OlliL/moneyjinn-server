@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -94,27 +95,30 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	@Override
 	public ValidationResult validateMoneyflowSplitEntry(final MoneyflowSplitEntry moneyflowSplitEntry) {
 		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
+
 		final ValidationResult validationResult = new ValidationResult();
-		if (moneyflowSplitEntry.getComment() == null || moneyflowSplitEntry.getComment().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(moneyflowSplitEntry.getId(), errorCode));
+
+		if (moneyflowSplitEntry.getComment() == null || moneyflowSplitEntry.getComment().isBlank()) {
+			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
 		}
-		if (moneyflowSplitEntry.getAmount() == null
-				|| moneyflowSplitEntry.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.AMOUNT_IS_ZERO));
+
+		final BigDecimal amount = moneyflowSplitEntry.getAmount();
+		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
+			addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
 		}
+
 		if (moneyflowSplitEntry.getPostingAccount() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 		} else {
 			final PostingAccount postingAccount = this.postingAccountService
 					.getPostingAccountById(moneyflowSplitEntry.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(moneyflowSplitEntry.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 			}
 		}
+
 		return validationResult;
 	}
 

@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,37 +128,35 @@ public class ContractpartnerService extends AbstractService implements IContract
 	@Override
 	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
 		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartner.getUser(), "contractpartner.getUser() must not be null!");
-		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.getUser().getId() must not be null!");
-		Assert.notNull(contractpartner.getGroup(), "contractpartner.getGroup() must not be null!");
-		Assert.notNull(contractpartner.getGroup().getId(), "contractpartner.getGroup().getId() must not be null!");
+		Assert.notNull(contractpartner.getUser(), "contractpartner.user must not be null!");
+		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.user.id must not be null!");
+		Assert.notNull(contractpartner.getGroup(), "contractpartner.group must not be null!");
+		Assert.notNull(contractpartner.getGroup().getId(), "contractpartner.group.id must not be null!");
 
 		this.prepareContractpartner(contractpartner);
 
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(contractpartner.getId(), errorCode));
 
 		if (contractpartner.getValidTil().isBefore(contractpartner.getValidFrom())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(contractpartner.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
+			addResult.accept(ErrorCode.VALIDFROM_AFTER_VALIDTIL);
 		} else if (contractpartner.getId() != null && this.contractpartnerDao.checkContractpartnerInUseOutOfDate(
 				contractpartner.getUser().getId().getId(), contractpartner.getId().getId(),
 				contractpartner.getValidFrom(), contractpartner.getValidTil())) {
 			// update existing Contractpartner
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(contractpartner.getId(), ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD));
+			addResult.accept(ErrorCode.MONEYFLOWS_OUTSIDE_VALIDITY_PERIOD);
 		}
 
-		if (contractpartner.getName() == null || contractpartner.getName().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		if (contractpartner.getName() == null || contractpartner.getName().isBlank()) {
+			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 		} else {
 			final Contractpartner checkContractpartner = this
 					.getContractpartnerByName(contractpartner.getUser().getId(), contractpartner.getName());
 			if (checkContractpartner != null && (contractpartner.getId() == null
 					|| !checkContractpartner.getId().equals(contractpartner.getId()))) {
 				// new Contractpartner || update existing Contractpartner
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(contractpartner.getId(), ErrorCode.NAME_ALREADY_EXISTS));
+				addResult.accept(ErrorCode.NAME_ALREADY_EXISTS);
 			}
 		}
 
@@ -165,8 +164,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final PostingAccount postingAccount = this.postingAccountService
 					.getPostingAccountById(contractpartner.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(contractpartner.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 			} else {
 				// Replace by full object to send postingAccountComment via the event later.
 				contractpartner.setPostingAccount(postingAccount);

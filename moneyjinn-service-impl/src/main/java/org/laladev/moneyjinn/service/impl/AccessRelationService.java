@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -77,15 +78,19 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	@Override
 	public ValidationResult validateAccessRelation(final AccessRelation accessRelation) {
 		Assert.notNull(accessRelation, ACCESS_RELATION_MUST_NOT_BE_NULL);
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(accessRelation.getId(), errorCode));
+
 		if (accessRelation.getGroupID() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(accessRelation.getId(), ErrorCode.GROUP_MUST_BE_SPECIFIED));
+			addResult.accept(ErrorCode.GROUP_MUST_BE_SPECIFIED);
 		}
+
 		if (accessRelation.getValidFrom() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_NOT_DEFINED));
+			addResult.accept(ErrorCode.VALIDFROM_NOT_DEFINED);
 		}
+
 		return validationResult;
 	}
 

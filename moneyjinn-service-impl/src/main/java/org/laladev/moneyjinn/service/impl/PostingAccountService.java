@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,19 +72,22 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	@Override
 	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
 		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+
 		final ValidationResult validationResult = new ValidationResult();
-		if (postingAccount.getName() == null || postingAccount.getName().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(postingAccount.getId(), ErrorCode.NAME_MUST_NOT_BE_EMPTY));
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(postingAccount.getId(), errorCode));
+
+		if (postingAccount.getName() == null || postingAccount.getName().isBlank()) {
+			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 		} else {
 			final PostingAccount checkPostingAccount = this.getPostingAccountByName(postingAccount.getName());
 			// Update OR Create
 			if (checkPostingAccount != null && (postingAccount.getId() == null
 					|| !checkPostingAccount.getId().equals(postingAccount.getId()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(postingAccount.getId(),
-						ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS));
+				addResult.accept(ErrorCode.POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS);
 			}
 		}
+
 		return validationResult;
 	}
 

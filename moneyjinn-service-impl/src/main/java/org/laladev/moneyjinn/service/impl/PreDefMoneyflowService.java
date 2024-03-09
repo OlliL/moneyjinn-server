@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -127,70 +128,65 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	@Override
 	public ValidationResult validatePreDefMoneyflow(final PreDefMoneyflow preDefMoneyflow) {
 		Assert.notNull(preDefMoneyflow, PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL);
-		Assert.notNull(preDefMoneyflow.getUser(), "preDefMoneyflow.getUser() must not be null!");
-		Assert.notNull(preDefMoneyflow.getUser().getId(), "preDefMoneyflow.getUser().getId() must not be null!");
-		final ValidationResult validationResult = new ValidationResult();
+		Assert.notNull(preDefMoneyflow.getUser(), "preDefMoneyflow.user must not be null!");
+		Assert.notNull(preDefMoneyflow.getUser().getId(), "preDefMoneyflow.user.id must not be null!");
+
 		final LocalDate today = LocalDate.now();
 		final UserID userId = preDefMoneyflow.getUser().getId();
+		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(preDefMoneyflow.getId(), errorCode));
+
 		if (preDefMoneyflow.getCapitalsource() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_IS_NOT_SET));
+			addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
 		} else {
 			final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
 			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
 					accessRelation.getGroupID(), preDefMoneyflow.getCapitalsource().getId());
 			if (capitalsource == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+			} else if (!capitalsource.groupUseAllowed(userId)) {
+				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+			} else if (!capitalsource.dateIsInValidPeriod(today)) {
+				addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
 			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_INVALID));
-			} else if (!capitalsource.getUser().getId().equals(preDefMoneyflow.getUser().getId())
-					&& !capitalsource.isGroupUse()) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
-			} else if (today.isBefore(capitalsource.getValidFrom()) || today.isAfter(capitalsource.getValidTil())) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY));
+				addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
 			}
 		}
+
 		if (preDefMoneyflow.getContractpartner() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CONTRACTPARTNER_IS_NOT_SET));
+			addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
 		} else {
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					preDefMoneyflow.getContractpartner().getId());
 			if (contractpartner == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST));
-			} else if (today.isBefore(contractpartner.getValidFrom()) || today.isAfter(contractpartner.getValidTil())) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID));
+				addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+			} else if (!contractpartner.dateIsInValidPeriod(today)) {
+				addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
 			}
 		}
-		if (preDefMoneyflow.getComment() == null || preDefMoneyflow.getComment().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+
+		if (preDefMoneyflow.getComment() == null || preDefMoneyflow.getComment().isBlank()) {
+			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
 		}
+
 		final BigDecimal amount = preDefMoneyflow.getAmount();
 		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.AMOUNT_IS_ZERO));
+			addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
 		} else if (amount.precision() - amount.scale() > 6) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.AMOUNT_TO_BIG));
+			addResult.accept(ErrorCode.AMOUNT_TO_BIG);
 		}
+
 		if (preDefMoneyflow.getPostingAccount() == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+			addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 		} else {
 			final PostingAccount postingAccount = this.postingAccountService
 					.getPostingAccountById(preDefMoneyflow.getPostingAccount().getId());
 			if (postingAccount == null) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(preDefMoneyflow.getId(), ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED));
+				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
 			}
 		}
+
 		return validationResult;
 	}
 

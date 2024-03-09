@@ -32,6 +32,7 @@ import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.Group;
@@ -77,31 +78,32 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
 	private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {
 		Assert.notNull(monthlySettlement, "monthlySettlement must not be null!");
-		Assert.notNull(monthlySettlement.getCapitalsource(), "monthlySettlement.getCapitalsource() must not be null!");
+		Assert.notNull(monthlySettlement.getCapitalsource(), "monthlySettlement.capitalsource must not be null!");
 		Assert.notNull(monthlySettlement.getCapitalsource().getId(),
-				"monthlySettlement.getCapitalsource().getId() must not be null!");
-		Assert.notNull(monthlySettlement.getUser(), "monthlySettlement.getUser() must not be null!");
-		Assert.notNull(monthlySettlement.getUser().getId(), "monthlySettlement.getUser().getId() must not be null!");
-		Assert.notNull(monthlySettlement.getGroup(), "monthlySettlement.getGroup() must not be null!");
-		Assert.notNull(monthlySettlement.getGroup().getId(), "monthlySettlement.getGroup().getId() must not be null!");
+				"monthlySettlement.capitalsource.id must not be null!");
+		Assert.notNull(monthlySettlement.getUser(), "monthlySettlement.user must not be null!");
+		Assert.notNull(monthlySettlement.getUser().getId(), "monthlySettlement.user.id must not be null!");
+		Assert.notNull(monthlySettlement.getGroup(), "monthlySettlement.group must not be null!");
+		Assert.notNull(monthlySettlement.getGroup().getId(), "monthlySettlement.group.id must not be null!");
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(monthlySettlement.getId(), errorCode));
+
 		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(
 				monthlySettlement.getUser().getId(), monthlySettlement.getGroup().getId(),
 				monthlySettlement.getCapitalsource().getId());
-		// You must not change, or create MonthlySettlements for Capitalsources not
-		// belonging to you.
 		if (capitalsource == null || !capitalsource.getUser().getId().equals(monthlySettlement.getUser().getId())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST));
+			addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
 		}
+
 		final BigDecimal amount = monthlySettlement.getAmount();
 		if (amount == null) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED));
+			addResult.accept(ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED);
 		} else if ((amount.signum() == 0 ? 1 : amount.precision() - amount.scale()) > 6) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(monthlySettlement.getId(), ErrorCode.AMOUNT_TO_BIG));
+			addResult.accept(ErrorCode.AMOUNT_TO_BIG);
 		}
+
 		return validationResult;
 	}
 
@@ -190,6 +192,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 					MonthlySettlementData.class);
 			monthlySettlementDatas.forEach(this.monthlySettlementDao::upsertMonthlySettlement);
 		}
+
 		return validationResult;
 	}
 

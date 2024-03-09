@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -129,41 +130,43 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
 		Assert.notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
 		Assert.notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
-		Assert.notNull(capitalsource.getGroup(), "Capitalsource.access must not be null!");
-		Assert.notNull(capitalsource.getGroup().getId(), "Capitalsource.access.id must not be null!");
+		Assert.notNull(capitalsource.getGroup(), "Capitalsource.group must not be null!");
+		Assert.notNull(capitalsource.getGroup().getId(), "Capitalsource.group.id must not be null!");
+
 		this.prepareCapitalsource(capitalsource);
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(capitalsource.getId(), errorCode));
+
 		if (capitalsource.getValidTil().isBefore(capitalsource.getValidFrom())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(capitalsource.getId(), ErrorCode.VALIDFROM_AFTER_VALIDTIL));
+			addResult.accept(ErrorCode.VALIDFROM_AFTER_VALIDTIL);
 		} else if (capitalsource.getId() != null) {
 			// update existing Capitalsource
 			final boolean checkCapitalsourceInUseOutOfDate = this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(
 					capitalsource.getUser().getId().getId(), capitalsource.getId().getId(),
 					capitalsource.getValidFrom(), capitalsource.getValidTil());
 			if (checkCapitalsourceInUseOutOfDate) {
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(capitalsource.getId(), ErrorCode.CAPITALSOURCE_IN_USE_PERIOD));
+				addResult.accept(ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
 			}
 		}
-		if (capitalsource.getComment() == null || capitalsource.getComment().trim().isEmpty()) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(capitalsource.getId(), ErrorCode.COMMENT_IS_NOT_SET));
+
+		if (capitalsource.getComment() == null || capitalsource.getComment().isBlank()) {
+			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
 		} else {
 			final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
 					capitalsource.getComment(), capitalsource.getValidFrom());
 			if (checkCapitalsource != null
 					&& (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId()))) {
 				// new Capitalsource || update existing Capitalsource
-				validationResult.addValidationResultItem(
-						new ValidationResultItem(capitalsource.getId(), ErrorCode.NAME_ALREADY_EXISTS));
+				addResult.accept(ErrorCode.NAME_ALREADY_EXISTS);
 			}
 		}
+
 		if (capitalsource.getBankAccount() != null) {
-			for (final ErrorCode errorCode : capitalsource.getBankAccount().checkValidity()) {
-				validationResult.addValidationResultItem(new ValidationResultItem(capitalsource.getId(), errorCode));
-			}
+			capitalsource.getBankAccount().checkValidity().forEach(addResult);
 		}
+
 		return validationResult;
 	}
 

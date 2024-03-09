@@ -138,9 +138,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
 							group.getId(), moneyflow.getCapitalsource().getId());
 					if (capitalsource != null) {
-						final boolean userMayUseCapitalsource = capitalsource.getUser().getId()
-								.equals(moneyflow.getUser().getId()) || capitalsource.isGroupUse();
-						if (userMayUseCapitalsource) {
+						if (capitalsource.groupUseAllowed(userId)) {
 							final boolean bookingDateIsBeforeValidity = bookingDate
 									.isBefore(capitalsource.getValidFrom());
 							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());

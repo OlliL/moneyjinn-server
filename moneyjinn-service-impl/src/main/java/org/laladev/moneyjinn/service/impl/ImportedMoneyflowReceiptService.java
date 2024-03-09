@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.tika.Tika;
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -83,12 +84,17 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 				"Imported Moneyflow Receipt.access.id must not be null!");
 		Assert.notNull(importedMoneyflowReceipt.getReceipt(), "Imported Moneyflow Receipt.receipt must not be null!");
 		Assert.notNull(importedMoneyflowReceipt.getFilename(), "Imported Moneyflow Receipt.filename must not be null!");
+
 		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(importedMoneyflowReceipt.getId(), errorCode));
+
 		this.prepareImportedMoneyflowReceipt(importedMoneyflowReceipt);
+
 		if (!SUPPORTED_MEDIA_TYPES.contains(importedMoneyflowReceipt.getMediaType())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(importedMoneyflowReceipt.getId(), ErrorCode.UNSUPPORTED_MEDIA_TYPE));
+			addResult.accept(ErrorCode.UNSUPPORTED_MEDIA_TYPE);
 		}
+
 		return validationResult;
 	}
 
