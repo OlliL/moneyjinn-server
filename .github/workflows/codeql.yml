@@ -70,13 +70,12 @@ jobs:
 
     - uses: s4u/maven-settings-action@v3.0.0
       with:
-        repositories: '[{"id":"github","name":"github","url":"https://maven.pkg.github.com/OlliL/moneyjinn-sepa-camt","snapshots":{"enabled":true}}]'
+        repositories: '[{"id":"github","name":"moneyjinn-sepa-camt repo","url":"https://maven.pkg.github.com/OlliL/moneyjinn-sepa-camt","snapshots":{"enabled":true}}]'
     
     - name: build
       env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: cat ~/.m2/settings.xml && mvn package
+      run: mvn package
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
