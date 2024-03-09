@@ -68,11 +68,12 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
+    - uses: s4u/maven-settings-action@v3.0.0
+      with:
+        repositories: '[{"id":"github","name":"github","url":"https://maven.pkg.github.com/OlliL/moneyjinn-sepa-camt","snapshots":{"enabled":true}}]'
+    
     - name: build
-      env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn --settings settings.xml package
+      run: cat ~/.m2/settings.xml ; mvn package
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
