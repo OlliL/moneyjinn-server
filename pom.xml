@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.laladev.moneyjinn</groupId>
@@ -15,15 +17,16 @@
 		<module>moneyjinn-service-impl</module>
 		<module>moneyjinn-server</module>
 	</modules>
-	
+
 	<scm>
-		<developerConnection>scm:git:https://github.com/OlliL/moneyjinn-server.git</developerConnection>
-	  <tag>v1.2.0</tag>
-  </scm>
+		<developerConnection>
+			scm:git:https://github.com/OlliL/moneyjinn-server.git</developerConnection>
+		<tag>v1.2.0</tag>
+	</scm>
 
 	<properties>
-		<moneyjinn-sepa-camt.version>1.0.1</moneyjinn-sepa-camt.version>
-	
+		<moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
+
 		<spring.boot.version>3.2.3</spring.boot.version>
 		<mybatis.version>3.5.15</mybatis.version>
 		<mybatis-spring.version>3.0.3</mybatis-spring.version>
@@ -64,13 +67,13 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-    				<groupId>org.junit</groupId>
-    				<artifactId>junit-bom</artifactId>
-    				<version>${junit.version}</version>
-    				<type>pom</type>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.version}</version>
+				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
 			<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
@@ -196,16 +199,16 @@
 
 			<!-- TEST SCOPE -->
 			<dependency>
-    				<groupId>org.mockito</groupId>
-    				<artifactId>mockito-core</artifactId>
-    				<version>${mockito.version}</version>
-    				<scope>test</scope>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
-    				<groupId>org.mockito</groupId>
-    				<artifactId>mockito-junit-jupiter</artifactId>
-    				<version>${mockito.version}</version>
-    				<scope>test</scope>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.github.albfernandez</groupId>
@@ -258,15 +261,15 @@
 				<version>${maven-release-plugin.version}</version>
 			</plugin>
 			<plugin>
-  				<groupId>org.codehaus.mojo</groupId>
-  				<artifactId>versions-maven-plugin</artifactId>
-	  			<version>${versions-maven-plugin.version}</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${versions-maven-plugin.version}</version>
 			</plugin>
 			<plugin>
-   				<groupId>org.codehaus.mojo</groupId>
-    			<artifactId>build-helper-maven-plugin</artifactId>
-	  			<version>${build-helper-maven-plugin.version}</version>
-    		</plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper-maven-plugin.version}</version>
+			</plugin>
 		</plugins>
 	</build>
 </project>
