@@ -30,6 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.IHasCapitalsource;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
@@ -178,4 +180,6 @@ public interface ICapitalsourceService {
 	 */
 	List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(UserID userId, LocalDate validFrom,
 			LocalDate validTil);
+
+	<T extends IHasCapitalsource & IHasUser> void enrichEntity(T entity);
 }

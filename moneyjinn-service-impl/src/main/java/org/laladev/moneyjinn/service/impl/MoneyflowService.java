@@ -39,13 +39,10 @@ import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
@@ -60,6 +57,7 @@ import org.laladev.moneyjinn.service.CacheNames;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.api.IUserService;
@@ -88,6 +86,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private static final String DATE_FROM_MUST_NOT_BE_NULL = "dateFrom must not be null!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final IUserService userService;
+	private final IGroupService groupService;
 	private final ICapitalsourceService capitalsourceService;
 	private final IContractpartnerService contractpartnerService;
 	private final IAccessRelationService accessRelationService;
@@ -110,26 +109,12 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
 		if (moneyflowData != null) {
 			final Moneyflow moneyflow = super.map(moneyflowData, Moneyflow.class);
-			final UserID userId = moneyflow.getUser().getId();
-			final User user = this.userService.getUserById(userId);
-			final Group group = this.accessRelationService.getGroup(userId, moneyflow.getBookingDate());
-			moneyflow.setUser(user);
-			moneyflow.setGroup(group);
 
-			PostingAccount postingAccount = moneyflow.getPostingAccount();
-			final PostingAccountID postingAccountId = postingAccount.getId();
-			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-			moneyflow.setPostingAccount(postingAccount);
-
-			Capitalsource capitalsource = moneyflow.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			moneyflow.setCapitalsource(capitalsource);
-
-			Contractpartner contractpartner = moneyflow.getContractpartner();
-			final ContractpartnerID contractpartnerId = contractpartner.getId();
-			contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-			moneyflow.setContractpartner(contractpartner);
+			this.userService.enrichEntity(moneyflow);
+			this.groupService.enrichEntity(moneyflow);
+			this.postingAccountService.enrichEntity(moneyflow);
+			this.capitalsourceService.enrichEntity(moneyflow);
+			this.contractpartnerService.enrichEntity(moneyflow);
 
 			return moneyflow;
 		}

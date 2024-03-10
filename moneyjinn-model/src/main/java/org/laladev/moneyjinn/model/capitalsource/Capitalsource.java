@@ -4,6 +4,7 @@ package org.laladev.moneyjinn.model.capitalsource;
 import org.laladev.moneyjinn.model.AbstractValidPeriodEntity;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.IHasBankAccount;
+import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
@@ -18,7 +19,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class Capitalsource extends AbstractValidPeriodEntity<CapitalsourceID> implements IHasBankAccount, IHasUser {
+public class Capitalsource extends AbstractValidPeriodEntity<CapitalsourceID>
+		implements IHasBankAccount, IHasUser, IHasGroup {
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private Group group;

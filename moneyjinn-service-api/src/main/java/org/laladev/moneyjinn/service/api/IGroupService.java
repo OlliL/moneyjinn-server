@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -113,4 +114,6 @@ public interface IGroupService {
 	 *                           Key Constraint Violation on the DB level
 	 */
 	void deleteGroup(GroupID groupId);
+
+	<T extends IHasGroup> void enrichEntity(T entity);
 }

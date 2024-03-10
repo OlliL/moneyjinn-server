@@ -30,9 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
@@ -41,6 +40,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ImportedMoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper;
@@ -58,6 +58,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	private static final String IMPORTED_MONEYFLOW_ID_MUST_NOT_BE_NULL = "importedMoneyflowId must not be null!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final ImportedMoneyflowDao importedMoneyflowDao;
+	private final IUserService userService;
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
@@ -72,12 +73,11 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 			final ImportedMoneyflowData importedMoneyflowData) {
 		if (importedMoneyflowData != null) {
 			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);
-			final Group group = this.accessRelationService.getCurrentGroup(userId);
+			importedMoneyflow.setUser(new User(userId));
 
-			Capitalsource capitalsource = importedMoneyflow.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			importedMoneyflow.setCapitalsource(capitalsource);
+			this.userService.enrichEntity(importedMoneyflow);
+			this.accessRelationService.enrichEntity(importedMoneyflow, importedMoneyflow.getBookingDate());
+			this.capitalsourceService.enrichEntity(importedMoneyflow);
 
 			return importedMoneyflow;
 		}

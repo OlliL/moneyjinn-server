@@ -30,14 +30,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.ImportedBalance;
-import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
@@ -52,6 +52,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
 	private final ImportedBalanceDao importedBalanceDao;
+	private final IUserService userService;
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedBalanceDataMapper importedBalanceDataMapper;
@@ -65,12 +66,11 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
 		if (importedBalanceData != null) {
 			final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
-			final Group group = this.accessRelationService.getGroup(userId, importedBalance.getDate().toLocalDate());
+			importedBalance.setUser(new User(userId));
 
-			Capitalsource capitalsource = importedBalance.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			importedBalance.setCapitalsource(capitalsource);
+			this.userService.enrichEntity(importedBalance);
+			this.accessRelationService.enrichEntity(importedBalance, importedBalance.getDate().toLocalDate());
+			this.capitalsourceService.enrichEntity(importedBalance);
 
 			return importedBalance;
 		}

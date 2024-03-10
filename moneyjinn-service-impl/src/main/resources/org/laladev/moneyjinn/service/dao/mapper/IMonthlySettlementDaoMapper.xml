@@ -5,6 +5,7 @@
             <sql id="monthlySettlementsColumns">
                  monthlysettlementid       AS id
                 ,mau_userid                AS mauUserId
+                ,mag_groupid               AS magGroupId
                 ,`year`
                 ,`month`
                 ,amount

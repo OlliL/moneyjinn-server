@@ -39,7 +39,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class Contractpartner extends AbstractValidPeriodEntity<ContractpartnerID>
-		implements IHasPostingAccount, IHasUser {
+		implements IHasPostingAccount, IHasUser, IHasGroup {
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private Group group;

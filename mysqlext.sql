@@ -6,6 +6,7 @@
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
    mau_userid
   ,mar_mau_userid
+  ,mag_groupid
   ,moneyflowid
   ,bookingdate
   ,invoicedate
@@ -18,6 +19,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
   ) AS
       SELECT mmf.mau_userid
             ,mar.mau_userid
+            ,mmf.mag_groupid
             ,mmf.moneyflowid
             ,mmf.bookingdate
             ,mmf.invoicedate
@@ -40,6 +42,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
    mau_userid
   ,mar_mau_userid
+  ,mag_groupid
   ,monthlysettlementid
   ,mcs_capitalsourceid
   ,`month`
@@ -48,6 +51,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
   ) AS
       SELECT mms.mau_userid
             ,mar.mau_userid
+            ,mms.mag_groupid
             ,mms.monthlysettlementid
             ,mms.mcs_capitalsourceid
             ,mms.`month`

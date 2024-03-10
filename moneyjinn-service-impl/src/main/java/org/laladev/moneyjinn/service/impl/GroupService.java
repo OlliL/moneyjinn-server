@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -159,6 +160,14 @@ public class GroupService extends AbstractService implements IGroupService {
 			if (groupByIdCache != null) {
 				groupByIdCache.evict(groupId);
 			}
+		}
+	}
+
+	@Override
+	public <T extends IHasGroup> void enrichEntity(final T entity) {
+		if (entity.getGroup() != null) {
+			final var fullMag = this.getGroupById(entity.getGroup().getId());
+			entity.setGroup(fullMag);
 		}
 	}
 }

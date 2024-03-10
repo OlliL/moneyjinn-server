@@ -36,9 +36,9 @@ import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.IHasContractpartner;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
-import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -88,18 +88,10 @@ public class ContractpartnerService extends AbstractService implements IContract
 	private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
 		if (contractpartnerData != null) {
 			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
-			final UserID userId = contractpartner.getUser().getId();
-			final User user = this.userService.getUserById(userId);
-			final Group group = this.groupService.getGroupById(contractpartner.getGroup().getId());
-			contractpartner.setUser(user);
-			contractpartner.setGroup(group);
 
-			PostingAccount postingAccount = contractpartner.getPostingAccount();
-			if (postingAccount != null) {
-				final PostingAccountID postingAccountId = postingAccount.getId();
-				postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-				contractpartner.setPostingAccount(postingAccount);
-			}
+			this.userService.enrichEntity(contractpartner);
+			this.groupService.enrichEntity(contractpartner);
+			this.postingAccountService.enrichEntity(contractpartner);
 
 			return contractpartner;
 		}
@@ -286,6 +278,17 @@ public class ContractpartnerService extends AbstractService implements IContract
 					allContractpartnerByCDateCache.clear();
 				}
 			}
+		}
+	}
+
+	@Override
+	public <T extends IHasContractpartner & IHasUser> void enrichEntity(final T entity) {
+		final User user = entity.getUser();
+		final Contractpartner contractpartner = entity.getContractpartner();
+
+		if (contractpartner != null && user != null) {
+			final var fullMcp = this.getContractpartnerById(user.getId(), contractpartner.getId());
+			entity.setContractpartner(fullMcp);
 		}
 	}
 }

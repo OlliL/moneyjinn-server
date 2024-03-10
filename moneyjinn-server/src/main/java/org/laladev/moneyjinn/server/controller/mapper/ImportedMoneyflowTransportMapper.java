@@ -69,7 +69,7 @@ public interface ImportedMoneyflowTransportMapper
 	@Mapping(target = "contractpartnername", source = "contractpartner.name")
 	@Mapping(target = "postingaccountid", source = "postingAccount.id")
 	@Mapping(target = "postingaccountname", source = "postingAccount.name")
-	@Mapping(target = "userid", source = "user.id")
+	@Mapping(target = "userid", ignore = true)
 	@Mapping(target = "accountNumberCapitalsource", ignore = true)
 	@Mapping(target = "bankCodeCapitalsource", ignore = true)
 	@Mapping(target = "externalid", source = "externalId")

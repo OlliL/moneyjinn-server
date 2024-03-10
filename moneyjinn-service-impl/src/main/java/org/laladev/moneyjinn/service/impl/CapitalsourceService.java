@@ -35,7 +35,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.IHasCapitalsource;
+import org.laladev.moneyjinn.model.IHasGroup;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -87,11 +89,9 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {
 		if (capitalsourceData != null) {
 			final Capitalsource capitalsource = super.map(capitalsourceData, Capitalsource.class);
-			final UserID userId = capitalsource.getUser().getId();
-			final User user = this.userService.getUserById(userId);
-			final Group group = this.groupService.getGroupById(capitalsource.getGroup().getId());
-			capitalsource.setUser(user);
-			capitalsource.setGroup(group);
+
+			this.userService.enrichEntity(capitalsource);
+			this.groupService.enrichEntity(capitalsource);
 
 			return capitalsource;
 		}
@@ -329,6 +329,23 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 					groupCapitalsourcesByDateCache.clear();
 				}
 			}
+		}
+	}
+
+	@Override
+	public <T extends IHasCapitalsource & IHasUser> void enrichEntity(final T entity) {
+		final User user = entity.getUser();
+		final Capitalsource capitalsource = entity.getCapitalsource();
+
+		if (capitalsource != null && user != null) {
+			final GroupID groupId;
+			if (entity instanceof final IHasGroup hasGroup && hasGroup.getGroup() != null) {
+				groupId = hasGroup.getGroup().getId();
+			} else {
+				groupId = this.accessRelationService.getCurrentGroup(user.getId()).getId();
+			}
+			final var fullMcs = this.getCapitalsourceById(user.getId(), groupId, capitalsource.getId());
+			entity.setCapitalsource(fullMcs);
 		}
 	}
 }

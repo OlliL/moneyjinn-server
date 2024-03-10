@@ -31,15 +31,14 @@ import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
-import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ImportedMonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
@@ -54,6 +53,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMonthlySettlementService extends AbstractService implements IImportedMonthlySettlementService {
 	private final ImportedMonthlySettlementDao importedMonthlySettlementDao;
+	private final IUserService userService;
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
@@ -69,15 +69,15 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 		if (importedMonthlySettlementData != null) {
 			final ImportedMonthlySettlement importedMonthlySettlement = super.map(importedMonthlySettlementData,
 					ImportedMonthlySettlement.class);
-			final LocalDate beginOfMonth = LocalDate.of(importedMonthlySettlement.getYear(),
-					importedMonthlySettlement.getMonth(), 1);
-			final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-			final Group group = this.accessRelationService.getGroup(userId, endOfMonth);
+			importedMonthlySettlement.setUser(new User(userId));
 
-			Capitalsource capitalsource = importedMonthlySettlement.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			importedMonthlySettlement.setCapitalsource(capitalsource);
+			final LocalDate endOfMonth = LocalDate
+					.of(importedMonthlySettlement.getYear(), importedMonthlySettlement.getMonth(), 1)
+					.with(TemporalAdjusters.lastDayOfMonth());
+
+			this.userService.enrichEntity(importedMonthlySettlement);
+			this.accessRelationService.enrichEntity(importedMonthlySettlement, endOfMonth);
+			this.capitalsourceService.enrichEntity(importedMonthlySettlement);
 
 			return importedMonthlySettlement;
 		}

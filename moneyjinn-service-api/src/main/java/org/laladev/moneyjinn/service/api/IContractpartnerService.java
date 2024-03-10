@@ -30,6 +30,8 @@ import java.util.List;
 
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.IHasContractpartner;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -126,4 +128,6 @@ public interface IContractpartnerService {
 	 * @throws BusinessException
 	 */
 	void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
+
+	<T extends IHasContractpartner & IHasUser> void enrichEntity(T entity);
 }

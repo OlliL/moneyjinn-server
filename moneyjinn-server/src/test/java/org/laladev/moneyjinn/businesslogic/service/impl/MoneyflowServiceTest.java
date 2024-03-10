@@ -14,6 +14,7 @@ import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
@@ -172,12 +173,13 @@ class MoneyflowServiceTest extends AbstractTest {
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 		moneyflow.getUser().setId(user2Id);
 		moneyflow.setBookingDate(LocalDate.now());
+		moneyflow.setCapitalsource(
+				new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID)));
 		// this should also modify the cache of user 1!
 		this.moneyflowService.createMoneyflow(moneyflow);
 		final List<Integer> allYears2 = this.moneyflowService.getAllYears(user1Id);
 		// Cache of user1 should have been invalidated and the added Moneyflow should be
-		// now
-		// in the List of all years.
+		// now in the List of all years.
 		Assertions.assertNotEquals(allYears1.size(), allYears2.size());
 	}
 }

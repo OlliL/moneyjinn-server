@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -204,6 +205,14 @@ public class UserService extends AbstractService implements IUserService {
 			if (userByIdCache != null) {
 				userByIdCache.evict(user.getId());
 			}
+		}
+	}
+
+	@Override
+	public <T extends IHasUser> void enrichEntity(final T entity) {
+		if (entity.getUser() != null) {
+			final var fullMau = this.getUserById(entity.getUser().getId());
+			entity.setUser(fullMau);
 		}
 	}
 }

@@ -40,6 +40,8 @@ public interface ImportedBalanceTransportMapper extends IMapstructMapper<Importe
 	@Override
 	@Mapping(target = "capitalsource", ignore = true)
 	@Mapping(target = "date", expression = "java(LocalDateTime.now())")
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "group", ignore = true)
 	ImportedBalance mapBToA(ImportedBalanceTransport importedBalanceTransport);
 
 	@Override

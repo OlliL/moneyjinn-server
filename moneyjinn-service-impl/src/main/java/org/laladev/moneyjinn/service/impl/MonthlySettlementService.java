@@ -29,22 +29,19 @@ package org.laladev.moneyjinn.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.MonthlySettlementDao;
@@ -65,8 +62,8 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final MonthlySettlementDao monthlySettlementDao;
 	private final IUserService userService;
+	private final IGroupService groupService;
 	private final ICapitalsourceService capitalsourceService;
-	private final IAccessRelationService accessRelationService;
 	private final MonthlySettlementDataMapper monthlySettlementDataMapper;
 
 	@Override
@@ -109,18 +106,10 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	private MonthlySettlement mapMonthlySettlementData(final MonthlySettlementData monthlySettlementData) {
 		if (monthlySettlementData != null) {
 			final MonthlySettlement monthlySettlement = super.map(monthlySettlementData, MonthlySettlement.class);
-			final UserID userId = monthlySettlement.getUser().getId();
-			final User user = this.userService.getUserById(userId);
-			final LocalDate endOfMonth = LocalDate.of(monthlySettlement.getYear(), monthlySettlement.getMonth(), 1)
-					.with(TemporalAdjusters.lastDayOfMonth());
-			final Group group = this.accessRelationService.getGroup(userId, endOfMonth);
-			monthlySettlement.setUser(user);
-			monthlySettlement.setGroup(group);
 
-			Capitalsource capitalsource = monthlySettlement.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			monthlySettlement.setCapitalsource(capitalsource);
+			this.userService.enrichEntity(monthlySettlement);
+			this.groupService.enrichEntity(monthlySettlement);
+			this.capitalsourceService.enrichEntity(monthlySettlement);
 
 			return monthlySettlement;
 		}

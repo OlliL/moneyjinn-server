@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -147,4 +148,6 @@ public interface IUserService {
 	 *         password from storage
 	 */
 	boolean passwordMatches(CharSequence rawPassword, String encodedPassword);
+
+	<T extends IHasUser> void enrichEntity(T entity);
 }

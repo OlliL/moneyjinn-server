@@ -33,17 +33,12 @@ import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
-import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceType;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -91,25 +86,11 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	private final PreDefMoneyflow mapPreDefMoneyflowData(final PreDefMoneyflowData preDefMoneyflowData) {
 		if (preDefMoneyflowData != null) {
 			final PreDefMoneyflow preDefMoneyflow = super.map(preDefMoneyflowData, PreDefMoneyflow.class);
-			final UserID userId = preDefMoneyflow.getUser().getId();
-			final User user = this.userService.getUserById(userId);
-			final Group group = this.accessRelationService.getCurrentGroup(userId);
-			preDefMoneyflow.setUser(user);
 
-			PostingAccount postingAccount = preDefMoneyflow.getPostingAccount();
-			final PostingAccountID postingAccountId = postingAccount.getId();
-			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-			preDefMoneyflow.setPostingAccount(postingAccount);
-
-			Capitalsource capitalsource = preDefMoneyflow.getCapitalsource();
-			final CapitalsourceID capitalsourceId = capitalsource.getId();
-			capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(), capitalsourceId);
-			preDefMoneyflow.setCapitalsource(capitalsource);
-
-			Contractpartner contractpartner = preDefMoneyflow.getContractpartner();
-			final ContractpartnerID contractpartnerId = contractpartner.getId();
-			contractpartner = this.contractpartnerService.getContractpartnerById(userId, contractpartnerId);
-			preDefMoneyflow.setContractpartner(contractpartner);
+			this.userService.enrichEntity(preDefMoneyflow);
+			this.postingAccountService.enrichEntity(preDefMoneyflow);
+			this.capitalsourceService.enrichEntity(preDefMoneyflow);
+			this.contractpartnerService.enrichEntity(preDefMoneyflow);
 
 			return preDefMoneyflow;
 		}

@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.api;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.model.IHasPostingAccount;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -116,4 +117,6 @@ public interface IPostingAccountService {
 	 *                           Key Constraint Violation on the DB level
 	 */
 	void deletePostingAccount(PostingAccountID postingAccountId);
+
+	<T extends IHasPostingAccount> void enrichEntity(T entity);
 }

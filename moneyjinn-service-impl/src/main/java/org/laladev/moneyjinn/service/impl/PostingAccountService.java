@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.IHasPostingAccount;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
@@ -182,6 +183,14 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 			if (postingAccountByIdCache != null) {
 				postingAccountByIdCache.evict(postingAccountId);
 			}
+		}
+	}
+
+	@Override
+	public <T extends IHasPostingAccount> void enrichEntity(final T entity) {
+		if (entity.getPostingAccount() != null) {
+			final var fullMca = this.getPostingAccountById(entity.getPostingAccount().getId());
+			entity.setPostingAccount(fullMca);
 		}
 	}
 }

@@ -30,6 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import org.laladev.moneyjinn.model.IHasGroup;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
@@ -130,4 +132,6 @@ public interface IAccessRelationService {
 	 * @return The found List of {@link UserID}
 	 */
 	Set<UserID> getAllUserWithSameGroup(UserID userID);
+
+	<T extends IHasGroup & IHasUser> void enrichEntity(T entity, LocalDate date);
 }

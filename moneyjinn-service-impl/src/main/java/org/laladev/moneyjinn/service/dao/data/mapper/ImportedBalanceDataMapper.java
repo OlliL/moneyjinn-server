@@ -39,6 +39,8 @@ public interface ImportedBalanceDataMapper extends IMapstructMapper<ImportedBala
 	@Override
 	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
 	@Mapping(target = "date", source = "changedate")
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "group", ignore = true)
 	ImportedBalance mapBToA(ImportedBalanceData importedBalanceData);
 
 	@Override

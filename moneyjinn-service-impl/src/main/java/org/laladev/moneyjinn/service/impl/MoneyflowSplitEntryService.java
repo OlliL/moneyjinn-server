@@ -36,7 +36,6 @@ import java.util.function.Consumer;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
-import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
@@ -75,10 +74,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData,
 					MoneyflowSplitEntry.class);
 
-			PostingAccount postingAccount = moneyflowSplitEntry.getPostingAccount();
-			final PostingAccountID postingAccountId = postingAccount.getId();
-			postingAccount = this.postingAccountService.getPostingAccountById(postingAccountId);
-			moneyflowSplitEntry.setPostingAccount(postingAccount);
+			this.postingAccountService.enrichEntity(moneyflowSplitEntry);
 
 			return moneyflowSplitEntry;
 		}

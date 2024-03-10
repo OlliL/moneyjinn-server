@@ -5,6 +5,7 @@
             <sql id="moneyflowColumns">
                  moneyflowid            AS id
                 ,mau_userid             AS mauUserId
+                ,mag_groupid            AS magGroupId
                 ,bookingdate
                 ,invoicedate
                 ,amount
@@ -279,7 +280,8 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
                 parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData">
                 SELECT mmf.moneyflowid                                            AS id
-                      ,mmf.mau_userid                                         AS mauUserId
+                      ,mmf.mau_userid                                             AS mauUserId
+                      ,mmf.mag_groupid                                            AS magGroupId
                       ,mmf.bookingdate                                            AS bookingdate
                       ,mmf.invoicedate                                            AS invoicedate
                       ,IFNULL(mse.amount,mmf.amount)                              AS amount

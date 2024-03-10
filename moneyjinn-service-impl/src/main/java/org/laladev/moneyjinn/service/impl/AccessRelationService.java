@@ -34,9 +34,12 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.IHasGroup;
+import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.AccessID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
@@ -314,5 +317,14 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	private void evictAccessRelationCache(final AccessID accessId) {
 		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
 		cache.evict(accessId.getId());
+	}
+
+	@Override
+	public <T extends IHasGroup & IHasUser> void enrichEntity(final T entity, final LocalDate date) {
+		final User user = entity.getUser();
+		if (user != null && date != null) {
+			final var fullMag = this.getGroup(user.getId(), date);
+			entity.setGroup(fullMag);
+		}
 	}
 }

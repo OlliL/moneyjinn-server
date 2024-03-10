@@ -34,6 +34,7 @@ import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.IHasCapitalsource;
 import org.laladev.moneyjinn.model.IHasContractpartner;
+import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.IHasPostingAccount;
 import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -49,7 +50,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I>
-		implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
+		implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser, IHasGroup {
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private Group group;
