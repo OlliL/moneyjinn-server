@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2023 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2024 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -126,7 +126,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 			// Now remove all AccountMovements which have a balanceDate and bookingDate off
 			// by a month.
-			// Example: bookingDate=2022-10-27, valueDate=2023-03-31, balanceDate=2022-10-27
+			// Example: bookingDate=2022-10-27, valueDate=2023-2024-03-31, balanceDate=2022-10-27
 			// (wrong year on balanceDate!)
 			final List<AccountMovement> movementsWithoutInvalid = movementsUntilToday.stream().filter(
 					am -> java.time.temporal.ChronoUnit.DAYS.between(am.getBalanceDate(), am.getValueDate()) < 30)
