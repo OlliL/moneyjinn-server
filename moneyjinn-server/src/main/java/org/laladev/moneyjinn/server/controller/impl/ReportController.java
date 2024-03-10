@@ -456,9 +456,8 @@ public class ReportController extends AbstractController implements ReportContro
 			moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeIncludingPrivate(userId, beginOfMonth,
 					endOfMonth);
 			if (moneyflows != null && !moneyflows.isEmpty()) {
-				final List<MoneyflowID> relevantMoneyflowIds = moneyflows.stream()
-						.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId)).map(Moneyflow::getId)
-						.toList();
+				final List<MoneyflowID> relevantMoneyflowIds = moneyflows.stream().filter(mf -> mf.isVisible(userId))
+						.map(Moneyflow::getId).toList();
 				moneyflowSplitEntries = this.moneyflowSplitEntryService.getMoneyflowSplitEntries(userId,
 						relevantMoneyflowIds);
 				moneyflowIdsWithReceipts = this.moneyflowReceiptService.getMoneyflowIdsWithReceipt(userId,
@@ -610,8 +609,7 @@ public class ReportController extends AbstractController implements ReportContro
 			response.setReportTurnoverCapitalsourceTransports(turnoverCapitalsources);
 		}
 		if (moneyflows != null && !moneyflows.isEmpty()) {
-			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
-					.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
+			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream().filter(mf -> mf.isVisible(userId))
 					.map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
 			response.setMoneyflowTransports(moneyflowTransports);
 			if (!moneyflowSplitEntries.isEmpty()) {

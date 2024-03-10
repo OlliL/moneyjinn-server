@@ -40,6 +40,7 @@ import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
 import lombok.Data;
@@ -62,4 +63,8 @@ public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEn
 	private String comment;
 	private boolean privat;
 	private PostingAccount postingAccount;
+
+	public boolean isVisible(final UserID userId) {
+		return !this.privat || this.user.getId().equals(userId);
+	}
 }

@@ -243,8 +243,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 
 		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflows(userId, moneyflowSearchParams);
 		if (moneyflows != null && !moneyflows.isEmpty()) {
-			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream()
-					.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId))
+			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream().filter(mf -> mf.isVisible(userId))
 					.map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
 			response.setMoneyflowTransports(moneyflowTransports);
 		}
@@ -462,8 +461,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAbsoluteAmountDate(userId, amount,
 				dateFrom, dateTil);
 		if (moneyflows != null && !moneyflows.isEmpty()) {
-			final List<Moneyflow> relevantMoneyflows = moneyflows.stream()
-					.filter(mf -> !mf.isPrivat() || mf.getUser().getId().equals(userId)).toList();
+			final List<Moneyflow> relevantMoneyflows = moneyflows.stream().filter(mf -> mf.isVisible(userId)).toList();
 			if (relevantMoneyflows != null && !relevantMoneyflows.isEmpty()) {
 				final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
 						.toList();

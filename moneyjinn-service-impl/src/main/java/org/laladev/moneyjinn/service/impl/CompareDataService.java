@@ -201,7 +201,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 						}
 					}
 					if (matchingMoneyflow != null) {
-						if (!matchingMoneyflow.isPrivat() || matchingMoneyflow.getUser().getId().equals(userId)) {
+						if (matchingMoneyflow.isVisible(userId)) {
 							if (matchingMoneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
 								result.addCompareDataMatching(
 										new CompareDataMatching(matchingMoneyflow, compareDataDataset));
@@ -217,7 +217,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 		}
 		allMoneyflows.removeIf(mf -> !mf.getCapitalsource().getId().equals(capitalsourceId));
 		for (final Moneyflow moneyflow : allMoneyflows) {
-			if (!moneyflow.isPrivat() || moneyflow.getUser().getId().equals(userId)) {
+			if (moneyflow.isVisible(userId)) {
 				result.addCompareDataNotInFile(new CompareDataNotInFile(moneyflow));
 			}
 		}
