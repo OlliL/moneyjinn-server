@@ -30,9 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -63,13 +62,15 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Log
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
+	private static final String STILL_REFERENCED = "You may not delete a contractual partner who is still referenced by a flow of money!";
 	private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
-	private static final Log LOG = LogFactory.getLog(ContractpartnerService.class);
 	private final ContractpartnerDao contractpartnerDao;
 	private final IUserService userService;
 	private final IGroupService groupService;
@@ -253,10 +254,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 						contractpartner);
 				super.publishEvent(event);
 			} catch (final Exception e) {
-				LOG.info(e);
-				throw new BusinessException(
-						"You may not delete a contractual partner who is still referenced by a flow of money!",
-						ErrorCode.CONTRACTPARTNER_IN_USE);
+				log.log(Level.INFO, STILL_REFERENCED, e);
+				throw new BusinessException(STILL_REFERENCED, ErrorCode.CONTRACTPARTNER_IN_USE);
 			}
 		}
 	}

@@ -29,9 +29,8 @@ package org.laladev.moneyjinn.service.impl;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.access.Group;
@@ -50,12 +49,14 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Log
 public class GroupService extends AbstractService implements IGroupService {
+	private static final String STILL_REFERENCED = "You may not delete a group while there where/are users assigned to it!";
 	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
-	private static final Log LOG = LogFactory.getLog(GroupService.class);
 	private final GroupDao groupDao;
 	private final GroupDataMapper croupDataMapper;
 
@@ -144,9 +145,8 @@ public class GroupService extends AbstractService implements IGroupService {
 			this.groupDao.deleteGroup(groupId.getId());
 			this.evictGroupCache(groupId);
 		} catch (final Exception e) {
-			LOG.info(e);
-			throw new BusinessException("You may not delete a group while there where/are users assigned to it!",
-					ErrorCode.GROUP_IN_USE);
+			log.log(Level.INFO, STILL_REFERENCED, e);
+			throw new BusinessException(STILL_REFERENCED, ErrorCode.GROUP_IN_USE);
 		}
 	}
 

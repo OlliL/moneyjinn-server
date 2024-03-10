@@ -29,9 +29,8 @@ package org.laladev.moneyjinn.service.impl;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.IHasPostingAccount;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -52,12 +51,14 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Log
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
+	private static final String STILL_REFERENCED = "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!";
 	private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
-	private static final Log LOG = LogFactory.getLog(PostingAccountService.class);
 	private final PostingAccountDao postingAccountDao;
 	private final PostingAccountDataMapper postingAccountDataMapper;
 
@@ -168,10 +169,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 						postingAccount);
 				super.publishEvent(event);
 			} catch (final Exception e) {
-				LOG.info(e);
-				throw new BusinessException(
-						"The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!",
-						ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
+				log.log(Level.INFO, STILL_REFERENCED, e);
+				throw new BusinessException(STILL_REFERENCED, ErrorCode.POSTINGACCOUNT_STILL_REFERENCED);
 			}
 		}
 	}

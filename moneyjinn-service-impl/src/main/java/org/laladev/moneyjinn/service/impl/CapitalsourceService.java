@@ -30,9 +30,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.IHasCapitalsource;
@@ -65,13 +64,15 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Log
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
+	private static final String STILL_REFERENCED = "You may not delete a source of capital while it is referenced by a flow of money!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private static final String CAPITALSOURCE_MUST_NOT_BE_NULL = "Capitalsource must not be null!";
-	private static final Log LOG = LogFactory.getLog(CapitalsourceService.class);
 	private final CapitalsourceDao capitalsourceDao;
 	private final IUserService userService;
 	private final IGroupService groupService;
@@ -269,10 +270,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 				super.publishEvent(event);
 
 			} catch (final Exception e) {
-				LOG.info(e);
-				throw new BusinessException(
-						"You may not delete a source of capital while it is referenced by a flow of money!",
-						ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+				log.log(Level.INFO, STILL_REFERENCED, e);
+				throw new BusinessException(STILL_REFERENCED, ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
 			}
 		}
 	}

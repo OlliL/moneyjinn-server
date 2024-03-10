@@ -28,12 +28,13 @@ package org.laladev.moneyjinn.core.mapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.error.MoneyjinnException;
@@ -123,13 +124,9 @@ public abstract class AbstractMapperSupport {
 		return null;
 	}
 
+	@SuppressWarnings("java:S6204") // can't be replaced with toList() because list needs to be modifiable
 	protected <T> List<T> mapList(final List<?> args, final Class<T> clazz) {
-		final List<T> resultList = new ArrayList<>();
-		if (args != null) {
-			for (final Object object : args) {
-				resultList.add(this.map(object, clazz));
-			}
-		}
-		return resultList;
+		return args == null ? Collections.emptyList()
+				: args.stream().map(a -> this.map(a, clazz)).collect(Collectors.toList());
 	}
 }
