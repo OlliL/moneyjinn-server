@@ -68,10 +68,6 @@ public class ContractpartnerDao {
 
 	public boolean checkContractpartnerInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
 			final LocalDate validTil) {
-		final Boolean result = this.mapper.checkContractpartnerInUseOutOfDate(userId, id, validFrom, validTil);
-		if (result == null) {
-			return false;
-		}
-		return result;
+		return Boolean.TRUE.equals(this.mapper.checkContractpartnerInUseOutOfDate(userId, id, validFrom, validTil));
 	}
 }

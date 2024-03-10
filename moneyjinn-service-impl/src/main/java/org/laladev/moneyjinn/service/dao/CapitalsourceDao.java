@@ -73,11 +73,7 @@ public class CapitalsourceDao {
 
 	public boolean checkCapitalsourceInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
 			final LocalDate validTil) {
-		final Boolean result = this.mapper.checkCapitalsourceInUseOutOfDate(userId, id, validFrom, validTil);
-		if (result == null) {
-			return false;
-		}
-		return result;
+		return Boolean.TRUE.equals(this.mapper.checkCapitalsourceInUseOutOfDate(userId, id, validFrom, validTil));
 	}
 
 	public List<CapitalsourceData> getGroupCapitalsourcesByDateRange(final Long userId, final LocalDate validFrom,

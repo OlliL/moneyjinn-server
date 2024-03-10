@@ -82,11 +82,7 @@ public class MoneyflowDao {
 	}
 
 	public boolean monthHasMoneyflows(final Long userId, final LocalDate dateFrom, final LocalDate dateTil) {
-		final Boolean result = this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil);
-		if (result == null) {
-			return false;
-		}
-		return result;
+		return Boolean.TRUE.equals(this.mapper.monthHasMoneyflows(userId, dateFrom, dateTil));
 	}
 
 	public LocalDate getMinMoneyflowDate(final Long userId) {

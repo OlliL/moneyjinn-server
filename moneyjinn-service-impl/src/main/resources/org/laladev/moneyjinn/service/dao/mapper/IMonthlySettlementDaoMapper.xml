@@ -38,7 +38,7 @@
                       ,mcs_capitalsourceid
         </select>
 
-        <select id="checkMonthlySettlementsExists" resultType="java.lang.Integer">
+        <select id="checkMonthlySettlementsExists" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM monthlysettlements
                  WHERE mau_userid = #{userId}

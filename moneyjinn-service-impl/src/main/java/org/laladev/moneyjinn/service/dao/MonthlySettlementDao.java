@@ -63,8 +63,7 @@ public class MonthlySettlementDao {
 	}
 
 	public boolean checkMonthlySettlementsExists(final Long userId, final Integer year, final Integer month) {
-		final Integer exists = this.mapper.checkMonthlySettlementsExists(userId, year, month);
-		return exists != null;
+		return Boolean.TRUE.equals(this.mapper.checkMonthlySettlementsExists(userId, year, month));
 	}
 
 	public void upsertMonthlySettlement(final MonthlySettlementData monthlySettlementData) {

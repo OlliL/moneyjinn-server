@@ -44,7 +44,7 @@ public interface IMonthlySettlementDaoMapper {
 
 	public LocalDate getMinSettlementDate(Long userId);
 
-	public Integer checkMonthlySettlementsExists(@Param("userId") Long userId, @Param("year") Integer year,
+	public Boolean checkMonthlySettlementsExists(@Param("userId") Long userId, @Param("year") Integer year,
 			@Param("month") Integer month);
 
 	public void upsertMonthlySettlement(MonthlySettlementData monthlySettlementData);

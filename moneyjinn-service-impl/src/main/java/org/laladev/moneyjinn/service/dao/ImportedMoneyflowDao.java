@@ -67,10 +67,6 @@ public class ImportedMoneyflowDao {
 	}
 
 	public boolean checkIfExternalIdAlreadyExists(final String externalId) {
-		final Boolean result = this.mapper.checkIfExternalIdAlreadyExists(externalId);
-		if (result == null) {
-			return false;
-		}
-		return result;
+		return Boolean.TRUE.equals(this.mapper.checkIfExternalIdAlreadyExists(externalId));
 	}
 }
