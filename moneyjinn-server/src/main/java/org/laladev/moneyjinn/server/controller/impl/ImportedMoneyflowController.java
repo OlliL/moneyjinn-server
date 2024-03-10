@@ -60,7 +60,6 @@ import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMa
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
@@ -102,16 +101,14 @@ public class ImportedMoneyflowController extends AbstractController implements I
 	private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
 	private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
 	private final PostingAccountTransportMapper postingAccountTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
-		this.registerBeanMapper(this.capitalsourceTransportMapper);
-		this.registerBeanMapper(this.contractpartnerTransportMapper);
-		this.registerBeanMapper(this.postingAccountTransportMapper);
-		this.registerBeanMapper(this.importedMoneyflowTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
+		super.registerBeanMapper(this.capitalsourceTransportMapper);
+		super.registerBeanMapper(this.contractpartnerTransportMapper);
+		super.registerBeanMapper(this.postingAccountTransportMapper);
+		super.registerBeanMapper(this.importedMoneyflowTransportMapper);
 		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
 	}
 

@@ -31,7 +31,6 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateGroupRequest;
 import org.laladev.moneyjinn.server.model.CreateGroupResponse;
 import org.laladev.moneyjinn.server.model.GroupTransport;
@@ -57,13 +56,11 @@ import lombok.RequiredArgsConstructor;
 public class GroupController extends AbstractController implements GroupControllerApi {
 	private final IGroupService groupService;
 	private final GroupTransportMapper groupTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.groupTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

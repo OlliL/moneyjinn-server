@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
@@ -57,13 +56,11 @@ import lombok.RequiredArgsConstructor;
 public class PreDefMoneyflowController extends AbstractController implements PreDefMoneyflowControllerApi {
 	private final IPreDefMoneyflowService preDefMoneyflowService;
 	private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.preDefMoneyflowTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

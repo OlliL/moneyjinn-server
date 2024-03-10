@@ -44,7 +44,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.laladev.moneyjinn.server.model.ShowMonthlySettlementCreateResponse;
@@ -79,14 +78,12 @@ public class MonthlySettlementController extends AbstractController implements M
 	private final IAccessRelationService accessRelationService;
 	private final ImportedMonthlySettlementTransportMapper importedMonthlySettlementTransportMapper;
 	private final MonthlySettlementTransportMapper monthlySettlementTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.monthlySettlementTransportMapper);
 		this.registerBeanMapper(this.importedMonthlySettlementTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

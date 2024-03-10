@@ -35,7 +35,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudCapitalsourceControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
@@ -60,13 +59,11 @@ public class CrudCapitalsourceController extends AbstractController implements C
 	private final ICapitalsourceService capitalsourceService;
 	private final IUserService userService;
 	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.capitalsourceTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

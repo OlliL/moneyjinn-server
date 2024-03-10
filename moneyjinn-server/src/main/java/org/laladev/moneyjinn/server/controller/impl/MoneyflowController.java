@@ -53,7 +53,6 @@ import org.laladev.moneyjinn.server.controller.api.MoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
@@ -97,7 +96,6 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	private final MoneyflowSearchParamsTransportMapper moneyflowSearchParamsTransportMapper;
 	private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
 	private final MoneyflowTransportMapper moneyflowTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	private static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -105,7 +103,6 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	@PostConstruct
 	protected void addBeanMapper() {
 		super.registerBeanMapper(this.moneyflowTransportMapper);
-		super.registerBeanMapper(this.validationItemTransportMapper);
 		super.registerBeanMapper(this.moneyflowSearchParamsTransportMapper);
 		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
 	}

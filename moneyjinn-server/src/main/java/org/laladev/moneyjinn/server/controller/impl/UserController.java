@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.AccessRelationTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.UserTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
@@ -86,7 +85,6 @@ public class UserController extends AbstractController implements UserController
 	private final AccessRelationTransportMapper accessRelationTransportMapper;
 	private final GroupTransportMapper groupTransportMapper;
 	private final UserTransportMapper userTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
@@ -94,7 +92,6 @@ public class UserController extends AbstractController implements UserController
 		this.registerBeanMapper(this.userTransportMapper);
 		this.registerBeanMapper(this.groupTransportMapper);
 		this.registerBeanMapper(this.accessRelationTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(final LoginRequest request) {

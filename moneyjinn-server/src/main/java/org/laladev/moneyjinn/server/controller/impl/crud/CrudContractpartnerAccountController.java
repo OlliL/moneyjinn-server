@@ -34,7 +34,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudContractpartnerAccountControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
 import org.springframework.http.ResponseEntity;
@@ -56,13 +55,11 @@ public class CrudContractpartnerAccountController extends AbstractController
 		implements CrudContractpartnerAccountControllerApi {
 	private final IContractpartnerAccountService contractpartnerAccountService;
 	private final ContractpartnerAccountTransportMapper contractpartnerAccountTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.contractpartnerAccountTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

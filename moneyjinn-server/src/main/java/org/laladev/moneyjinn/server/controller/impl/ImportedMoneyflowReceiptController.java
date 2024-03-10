@@ -40,7 +40,6 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowReceiptControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowReceiptTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowReceiptsRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
 import org.laladev.moneyjinn.server.model.ShowImportImportedMoneyflowReceiptsResponse;
@@ -72,7 +71,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	private final IAccessRelationService accessRelationService;
 	private final IUserService userService;
 	private final ImportedMoneyflowReceiptTransportMapper importedMoneyflowReceiptTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
 	private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
@@ -81,7 +79,6 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.importedMoneyflowReceiptTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

@@ -31,7 +31,6 @@ import org.laladev.moneyjinn.model.PostingAccountID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
 import org.laladev.moneyjinn.server.model.PostingAccountTransport;
@@ -56,13 +55,11 @@ import lombok.RequiredArgsConstructor;
 public class PostingAccountController extends AbstractController implements PostingAccountControllerApi {
 	private final IPostingAccountService postingAccountService;
 	private final PostingAccountTransportMapper postingAccountTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
 		this.registerBeanMapper(this.postingAccountTransportMapper);
-		this.registerBeanMapper(this.validationItemTransportMapper);
 	}
 
 	@Override

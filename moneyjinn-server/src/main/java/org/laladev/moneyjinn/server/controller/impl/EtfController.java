@@ -52,7 +52,6 @@ import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
@@ -89,7 +88,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	private final EtfTransportMapper etfTransportMapper;
 	private final EtfFlowTransportMapper etfFlowTransportMapper;
 	private final EtfEffectiveFlowTransportMapper etfEffectiveFlowTransportMapper;
-	private final ValidationItemTransportMapper validationItemTransportMapper;
 
 	@Override
 	public ResponseEntity<ListEtfOverviewResponse> listEtfOverview(
@@ -278,6 +276,5 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		super.registerBeanMapper(this.etfFlowTransportMapper);
 		super.registerBeanMapper(this.etfEffectiveFlowTransportMapper);
 		super.registerBeanMapper(this.etfTransportMapper);
-		super.registerBeanMapper(this.validationItemTransportMapper);
 	}
 }
