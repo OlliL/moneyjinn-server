@@ -28,8 +28,8 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,8 +58,6 @@ import org.laladev.moneyjinn.service.dao.data.CapitalsourceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceDataMapper;
 import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -170,24 +168,27 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	@Cacheable(CacheNames.CAPITALSOURCE_BY_ID)
 	public Capitalsource getCapitalsourceById(final UserID userId, final GroupID groupId,
 			final CapitalsourceID capitalsourceId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(groupId, "GroupId must not be null!");
 		Assert.notNull(capitalsourceId, "CapitalsourceId must not be null!");
-		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceById(userId.getId(),
-				groupId.getId(), capitalsourceId.getId());
-		return this.mapCapitalsourceData(capitalsourceData);
+
+		final Supplier<Capitalsource> supplier = () -> this.mapCapitalsourceData(
+				this.capitalsourceDao.getCapitalsourceById(userId.getId(), groupId.getId(), capitalsourceId.getId()));
+
+		return super.getFromCacheOrExecute(CacheNames.CAPITALSOURCE_BY_ID,
+				new SimpleKey(userId, groupId, capitalsourceId), supplier, Capitalsource.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_CAPITALSOURCES)
 	public List<Capitalsource> getAllCapitalsources(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-				.getAllCapitalsources(userId.getId());
-		return this.mapCapitalsourceDataList(capitalsourceDataList);
+
+		final Supplier<List<Capitalsource>> supplier = () -> this
+				.mapCapitalsourceDataList(this.capitalsourceDao.getAllCapitalsources(userId.getId()));
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_CAPITALSOURCES, userId, supplier, Capitalsource.class);
 	}
 
 	@Override
@@ -283,23 +284,19 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		return capitalsources.stream().filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT)).toList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Capitalsource> getGroupCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
 			final LocalDate validTil) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(validFrom, "ValidFrom must not be null!");
 		Assert.notNull(validTil, "ValidTil must not be null!");
-		final Cache cache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId().toString());
-		final SimpleKey key = new SimpleKey(validFrom, validTil);
-		List<Capitalsource> capitalsources = cache.get(key, List.class);
-		if (capitalsources == null) {
-			final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-					.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
-			capitalsources = this.mapCapitalsourceDataList(capitalsourceDataList);
-			cache.put(key, capitalsources);
-		}
-		return capitalsources;
+
+		final Supplier<List<Capitalsource>> supplier = () -> this.mapCapitalsourceDataList(
+				this.capitalsourceDao.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil));
+
+		return super.getListFromCacheOrExecute(
+				super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId()),
+				new SimpleKey(validFrom, validTil), supplier, Capitalsource.class);
 	}
 
 	@Override
@@ -313,22 +310,13 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
 			final CapitalsourceID capitalsourceId) {
 		if (capitalsourceId != null) {
-			final Cache allCapitalsourcesCache = super.getCache(CacheNames.ALL_CAPITALSOURCES);
-			final Cache capitalsourceByIdCache = super.getCache(CacheNames.CAPITALSOURCE_BY_ID);
-			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
-			for (final UserID evictingUserId : userIds) {
-				final Cache groupCapitalsourcesByDateCache = super.getCache(CacheNames.GROUP_CAPITALSOURCES_BY_DATE,
-						evictingUserId.getId().toString());
-				if (allCapitalsourcesCache != null) {
-					allCapitalsourcesCache.evict(evictingUserId);
-				}
-				if (capitalsourceByIdCache != null) {
-					capitalsourceByIdCache.evict(new SimpleKey(evictingUserId, groupId, capitalsourceId));
-				}
-				if (groupCapitalsourcesByDateCache != null) {
-					groupCapitalsourcesByDateCache.clear();
-				}
-			}
+			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+				super.evictFromCache(CacheNames.CAPITALSOURCE_BY_ID,
+						new SimpleKey(evictingUserId, groupId, capitalsourceId));
+				super.evictFromCache(CacheNames.ALL_CAPITALSOURCES, evictingUserId);
+				super.clearCache(
+						super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, evictingUserId.getId()));
+			});
 		}
 	}
 

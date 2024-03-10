@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,8 +44,6 @@ import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.dao.GroupDao;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.data.mapper.GroupDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -88,18 +87,19 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	@Cacheable(CacheNames.GROUP_BY_ID)
 	public Group getGroupById(final GroupID groupId) {
 		Assert.notNull(groupId, "groupId must not be null!");
-		final GroupData groupData = this.groupDao.getGroupById(groupId.getId());
-		return super.map(groupData, Group.class);
+
+		final Supplier<Group> supplier = () -> super.map(this.groupDao.getGroupById(groupId.getId()), Group.class);
+
+		return super.getFromCacheOrExecute(CacheNames.GROUP_BY_ID, groupId, supplier, Group.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_GROUPS)
 	public List<Group> getAllGroups() {
-		final List<GroupData> groupDataList = this.groupDao.getAllGroups();
-		return super.mapList(groupDataList, Group.class);
+		final Supplier<List<Group>> supplier = () -> super.mapList(this.groupDao.getAllGroups(), Group.class);
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_GROUPS, CacheNames.ALL_GROUPS, supplier, Group.class);
 	}
 
 	@Override
@@ -152,14 +152,8 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	private void evictGroupCache(final GroupID groupId) {
 		if (groupId != null) {
-			final Cache allGroupsCache = super.getCache(CacheNames.ALL_GROUPS);
-			final Cache groupByIdCache = super.getCache(CacheNames.GROUP_BY_ID);
-			if (allGroupsCache != null) {
-				allGroupsCache.clear();
-			}
-			if (groupByIdCache != null) {
-				groupByIdCache.evict(groupId);
-			}
+			super.evictFromCache(CacheNames.GROUP_BY_ID, groupId);
+			super.clearCache(CacheNames.ALL_GROUPS);
 		}
 	}
 

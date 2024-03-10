@@ -38,9 +38,9 @@ public class CacheNames {
 	public static final String GROUP_CAPITALSOURCES_BY_DATE = "groupCapitalsourcesByDate";
 	public static final String CAPITALSOURCE_BY_ID = "capitalsourceById";
 	public static final String ALL_CONTRACTPARTNER = "allContractpartner";
-	public static final String ALL_CONTRACTPARTNER_BY_DATE = "allContractpartnerByDate";
 	public static final String CONTRACTPARTNER_BY_ID = "contractpartnerById";
 	public static final String ALL_PRE_DEF_MONEYFLOWS = "allPreDefMoneyflows";
+	public static final String PRE_DEF_MONEYFLOW_BY_ID = "preDefMoneyflowById";
 	public static final String MONEYFLOW_BY_ID = "moneyflowById";
 	public static final String MONEYFLOW_YEARS = "moneyflowYears";
 	public static final String MONEYFLOW_MONTH = "moneyflowMonths";

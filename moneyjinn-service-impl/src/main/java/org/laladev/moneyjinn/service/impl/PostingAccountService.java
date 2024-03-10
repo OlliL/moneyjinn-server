@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,8 +46,6 @@ import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountDataMapper;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -91,19 +90,23 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	@Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
 	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
 		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
-		final PostingAccountData postingAccountData = this.postingAccountDao
-				.getPostingAccountById(postingAccountId.getId());
-		return super.map(postingAccountData, PostingAccount.class);
+
+		final Supplier<PostingAccount> supplier = () -> super.map(
+				this.postingAccountDao.getPostingAccountById(postingAccountId.getId()), PostingAccount.class);
+
+		return super.getFromCacheOrExecute(CacheNames.POSTINGACCOUNT_BY_ID, postingAccountId, supplier,
+				PostingAccount.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_POSTINGACCOUNTS)
 	public List<PostingAccount> getAllPostingAccounts() {
-		final List<PostingAccountData> postingAccountDataList = this.postingAccountDao.getAllPostingAccounts();
-		return super.mapList(postingAccountDataList, PostingAccount.class);
+		final Supplier<List<PostingAccount>> supplier = () -> super.mapList(
+				this.postingAccountDao.getAllPostingAccounts(), PostingAccount.class);
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_POSTINGACCOUNTS, CacheNames.ALL_POSTINGACCOUNTS, supplier,
+				PostingAccount.class);
 	}
 
 	@Override
@@ -175,14 +178,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	private void evictPostingAccountCache(final PostingAccountID postingAccountId) {
 		if (postingAccountId != null) {
-			final Cache allPostingAccountsCache = super.getCache(CacheNames.ALL_POSTINGACCOUNTS);
-			final Cache postingAccountByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
-			if (allPostingAccountsCache != null) {
-				allPostingAccountsCache.clear();
-			}
-			if (postingAccountByIdCache != null) {
-				postingAccountByIdCache.evict(postingAccountId);
-			}
+			super.clearCache(CacheNames.ALL_POSTINGACCOUNTS);
+			super.evictFromCache(CacheNames.POSTINGACCOUNT_BY_ID, postingAccountId);
 		}
 	}
 

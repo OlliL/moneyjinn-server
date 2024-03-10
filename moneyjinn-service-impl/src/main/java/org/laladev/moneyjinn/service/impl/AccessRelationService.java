@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
@@ -49,7 +50,6 @@ import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.dao.AccessRelationDao;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
-import org.springframework.cache.Cache;
 import org.springframework.util.Assert;
 
 import jakarta.annotation.PostConstruct;
@@ -113,19 +113,15 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccessRelation> getAllAccessRelationsById(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-		List<AccessRelation> result = cache.get(userId.getId(), List.class);
-		if (result == null) {
-			final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-					.getAllAccessRelationsById(userId.getId());
-			result = super.mapList(accessRelationDataList, AccessRelation.class);
-			cache.put(userId.getId(), result);
-		}
-		return result;
+
+		final Supplier<List<AccessRelation>> supplier = () -> super.mapList(
+				this.accessRelationDao.getAllAccessRelationsById(userId.getId()), AccessRelation.class);
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier,
+				AccessRelation.class);
 	}
 
 	@Override
@@ -314,9 +310,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		}
 	}
 
-	private void evictAccessRelationCache(final AccessID accessId) {
-		final Cache cache = super.getCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID);
-		cache.evict(accessId.getId());
+	private void evictAccessRelationCache(final UserID userId) {
+		super.evictFromCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId);
 	}
 
 	@Override

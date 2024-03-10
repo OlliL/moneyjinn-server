@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,8 +44,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.UserDao;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.laladev.moneyjinn.service.dao.data.mapper.UserDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
@@ -91,11 +90,13 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	@Cacheable(CacheNames.USER_BY_ID)
 	public User getUserById(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		final UserData userData = this.userDao.getUserById(userId.getId());
-		return super.map(userData, User.class);
+
+		final Supplier<User> supplier = () -> super.map(
+				this.userDao.getUserById(userId.getId()), User.class);
+
+		return super.getFromCacheOrExecute(CacheNames.USER_BY_ID, userId, supplier, User.class);
 	}
 
 	@Override
@@ -105,11 +106,13 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	@Cacheable(CacheNames.USER_BY_NAME)
 	public User getUserByName(final String name) {
 		Assert.notNull(name, "name must not be null!");
-		final UserData userData = this.userDao.getUserByName(name);
-		return super.map(userData, User.class);
+
+		final Supplier<User> supplier = () -> super.map(
+				this.userDao.getUserByName(name), User.class);
+
+		return super.getFromCacheOrExecute(CacheNames.USER_BY_NAME, name, supplier, User.class);
 	}
 
 	@Override
@@ -197,14 +200,8 @@ public class UserService extends AbstractService implements IUserService {
 
 	private void evictUserCache(final User user) {
 		if (user != null) {
-			final Cache userByNameCache = super.getCache(CacheNames.USER_BY_NAME);
-			final Cache userByIdCache = super.getCache(CacheNames.USER_BY_ID);
-			if (userByNameCache != null) {
-				userByNameCache.evict(user.getName());
-			}
-			if (userByIdCache != null) {
-				userByIdCache.evict(user.getId());
-			}
+			super.evictFromCache(CacheNames.USER_BY_NAME, user.getName());
+			super.evictFromCache(CacheNames.USER_BY_ID, user.getId());
 		}
 	}
 

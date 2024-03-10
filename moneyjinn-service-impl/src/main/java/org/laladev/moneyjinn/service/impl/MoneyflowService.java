@@ -31,11 +31,10 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -69,8 +68,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchParamsDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchResultDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountAmountDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -225,12 +222,15 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.MONEYFLOW_BY_ID)
 	public Moneyflow getMoneyflowById(final UserID userId, final MoneyflowID moneyflowId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
-		final MoneyflowData moneyflowData = this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId());
-		return this.mapMoneyflowData(moneyflowData);
+
+		final Supplier<Moneyflow> supplier = () -> this.mapMoneyflowData(
+				this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId()));
+
+		return super.getFromCacheOrExecute(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(userId, moneyflowId), supplier,
+				Moneyflow.class);
 	}
 
 	@Override
@@ -269,21 +269,11 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
 		if (moneyflowId != null) {
-			final Cache moneyflowIdCache = super.getCache(CacheNames.MONEYFLOW_BY_ID);
-			final Cache yearsCache = super.getCache(CacheNames.MONEYFLOW_YEARS);
-			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
-			for (final UserID evictingUserId : userIds) {
-				final Cache monthsCache = super.getCache(CacheNames.MONEYFLOW_MONTH, evictingUserId.getId().toString());
-				if (moneyflowIdCache != null) {
-					moneyflowIdCache.evict(new SimpleKey(evictingUserId, moneyflowId));
-				}
-				if (monthsCache != null) {
-					monthsCache.clear();
-				}
-				if (yearsCache != null) {
-					yearsCache.evict(evictingUserId);
-				}
-			}
+			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+				super.evictFromCache(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(evictingUserId, moneyflowId));
+				super.evictFromCache(CacheNames.MONEYFLOW_YEARS, evictingUserId);
+				super.clearCache(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, evictingUserId.getId()));
+			});
 		}
 	}
 
@@ -295,32 +285,30 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	}
 
 	@Override
-	@Cacheable(value = CacheNames.MONEYFLOW_YEARS)
 	public List<Integer> getAllYears(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		return this.moneyflowDao.getAllYears(userId.getId());
+
+		final Supplier<List<Integer>> supplier = () -> this.moneyflowDao.getAllYears(userId.getId());
+
+		return super.getListFromCacheOrExecute(CacheNames.MONEYFLOW_YEARS, userId, supplier, Integer.class);
+
 	}
 
 	@Override
 	public List<Month> getAllMonth(final UserID userId, final Integer year) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(year, "year must not be null!");
-		final Cache cache = super.getCache(CacheNames.MONEYFLOW_MONTH, userId.getId().toString());
-		@SuppressWarnings("unchecked")
-		List<Month> months = cache.get(year, List.class);
-		if (months != null) {
-			return months;
-		}
-		final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
-		final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
-		final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
-		if (allMonths == null || allMonths.isEmpty()) {
-			months = new ArrayList<>();
-		} else {
-			months = allMonths.stream().map(m -> Month.of(m.intValue())).toList();
-		}
-		cache.put(year, months);
-		return months;
+
+		final Supplier<List<Month>> supplier = () -> {
+			final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
+			final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
+			final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
+			return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
+		};
+
+		return super.getListFromCacheOrExecute(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, userId.getId()),
+				year, supplier, Month.class);
+
 	}
 
 	@Override

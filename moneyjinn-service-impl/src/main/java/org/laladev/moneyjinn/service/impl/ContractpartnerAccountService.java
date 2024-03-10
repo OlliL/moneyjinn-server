@@ -28,8 +28,8 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
@@ -50,8 +50,6 @@ import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerAccountDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -147,25 +145,30 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	@Cacheable(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID)
 	public ContractpartnerAccount getContractpartnerAccountById(final UserID userId,
 			final ContractpartnerAccountID contractpartnerAccountId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(contractpartnerAccountId, "ContractpartnerAccountId must not be null!");
-		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
-				.getContractpartnerAccountById(contractpartnerAccountId.getId());
-		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
+
+		final Supplier<ContractpartnerAccount> supplier = () -> this.mapContractpartnerAccountData(userId,
+				this.contractpartnerAccountDao.getContractpartnerAccountById(contractpartnerAccountId.getId()));
+
+		return super.getFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
+				new SimpleKey(userId, contractpartnerAccountId), supplier, ContractpartnerAccount.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER)
 	public List<ContractpartnerAccount> getContractpartnerAccounts(final UserID userId,
 			final ContractpartnerID contractpartnerId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(contractpartnerId, "ContractpartnerId must not be null!");
-		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
-				.getContractpartnerAccounts(contractpartnerId.getId());
-		return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
+
+		final Supplier<List<ContractpartnerAccount>> supplier = () -> this.mapContractpartnerAccountDataList(userId,
+				this.contractpartnerAccountDao.getContractpartnerAccounts(contractpartnerId.getId()));
+
+		return super.getListFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
+				new SimpleKey(userId, contractpartnerId), supplier, ContractpartnerAccount.class);
+
 	}
 
 	@Override
@@ -259,18 +262,12 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	private void evictContractpartnerAccountCache(final UserID userId,
 			final ContractpartnerAccountID contractpartnerAccountIDd, final ContractpartnerID contractpartnerId) {
 		if (contractpartnerAccountIDd != null) {
-			final Cache contractpartnerAccountsByPartnerCache = super.getCache(
-					CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER);
-			final Cache contractpartnerAccountByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID);
-			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
-			for (final UserID evictingUserId : userIds) {
-				if (contractpartnerAccountsByPartnerCache != null) {
-					contractpartnerAccountsByPartnerCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
-				}
-				if (contractpartnerAccountByIdCache != null) {
-					contractpartnerAccountByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerAccountIDd));
-				}
-			}
+			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+				super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
+						new SimpleKey(evictingUserId, contractpartnerId));
+				super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
+						new SimpleKey(evictingUserId, contractpartnerAccountIDd));
+			});
 		}
 	}
 }

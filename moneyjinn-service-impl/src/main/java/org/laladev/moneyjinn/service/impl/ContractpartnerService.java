@@ -28,8 +28,8 @@ package org.laladev.moneyjinn.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,8 +56,6 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
 import org.laladev.moneyjinn.service.event.ContractpartnerChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -167,22 +165,25 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	@Cacheable(CacheNames.CONTRACTPARTNER_BY_ID)
 	public Contractpartner getContractpartnerById(final UserID userId, final ContractpartnerID contractpartnerId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
-		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerById(userId.getId(),
-				contractpartnerId.getId());
-		return this.mapContractpartnerData(contractpartnerData);
+
+		final Supplier<Contractpartner> supplier = () -> this.mapContractpartnerData(
+				this.contractpartnerDao.getContractpartnerById(userId.getId(), contractpartnerId.getId()));
+
+		return super.getFromCacheOrExecute(CacheNames.CONTRACTPARTNER_BY_ID, new SimpleKey(userId, contractpartnerId),
+				supplier, Contractpartner.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_CONTRACTPARTNER)
 	public List<Contractpartner> getAllContractpartners(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		final List<ContractpartnerData> contractpartnerDataList = this.contractpartnerDao
-				.getAllContractpartners(userId.getId());
-		return this.mapContractpartnerDataList(contractpartnerDataList);
+
+		final Supplier<List<Contractpartner>> supplier = () -> this.mapContractpartnerDataList(
+				this.contractpartnerDao.getAllContractpartners(userId.getId()));
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_CONTRACTPARTNER, userId, supplier, Contractpartner.class);
 	}
 
 	@Override
@@ -262,22 +263,11 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	private void evictContractpartnerCache(final UserID userId, final ContractpartnerID contractpartnerId) {
 		if (contractpartnerId != null) {
-			final Cache allContractpartnersCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER);
-			final Cache contractpartnerByIdCache = super.getCache(CacheNames.CONTRACTPARTNER_BY_ID);
-			final Set<UserID> userIds = this.accessRelationService.getAllUserWithSameGroup(userId);
-			for (final UserID evictingUserId : userIds) {
-				final Cache allContractpartnerByCDateCache = super.getCache(CacheNames.ALL_CONTRACTPARTNER_BY_DATE,
-						evictingUserId.getId().toString());
-				if (allContractpartnersCache != null) {
-					allContractpartnersCache.evict(evictingUserId);
-				}
-				if (contractpartnerByIdCache != null) {
-					contractpartnerByIdCache.evict(new SimpleKey(evictingUserId, contractpartnerId));
-				}
-				if (allContractpartnerByCDateCache != null) {
-					allContractpartnerByCDateCache.clear();
-				}
-			}
+			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+				super.evictFromCache(CacheNames.CONTRACTPARTNER_BY_ID,
+						new SimpleKey(evictingUserId, contractpartnerId));
+				super.evictFromCache(CacheNames.ALL_CONTRACTPARTNER, evictingUserId);
+			});
 		}
 	}
 

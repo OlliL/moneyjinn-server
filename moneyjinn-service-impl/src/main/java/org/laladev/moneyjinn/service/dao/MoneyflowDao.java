@@ -28,6 +28,7 @@ package org.laladev.moneyjinn.service.dao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
@@ -66,7 +67,8 @@ public class MoneyflowDao {
 	}
 
 	public List<Integer> getAllMonth(final Long userId, final LocalDate beginOfYear, final LocalDate endOfYear) {
-		return this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
+		final List<Integer> allMonth = this.mapper.getAllMonth(userId, beginOfYear, endOfYear);
+		return allMonth == null ? Collections.emptyList() : allMonth;
 	}
 
 	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final LocalDate validFrom,

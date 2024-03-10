@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -53,8 +54,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.PreDefMoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
-import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
@@ -167,22 +166,27 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	}
 
 	@Override
-	@Cacheable(CacheNames.POSTINGACCOUNT_BY_ID)
 	public PreDefMoneyflow getPreDefMoneyflowById(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(preDefMoneyflowId, PRE_DEF_MONEYFLOW_ID_MUST_NOT_BE_NULL);
-		final PreDefMoneyflowData preDefMoneyflowData = this.preDefMoneyflowDao.getPreDefMoneyflowById(userId.getId(),
-				preDefMoneyflowId.getId());
-		return this.mapPreDefMoneyflowData(preDefMoneyflowData);
+
+		final Supplier<PreDefMoneyflow> supplier = () -> this.mapPreDefMoneyflowData(
+				this.preDefMoneyflowDao.getPreDefMoneyflowById(userId.getId(), preDefMoneyflowId.getId()));
+
+		return super.getFromCacheOrExecute(CacheNames.PRE_DEF_MONEYFLOW_BY_ID, new SimpleKey(userId, preDefMoneyflowId),
+				supplier, PreDefMoneyflow.class);
 	}
 
 	@Override
-	@Cacheable(CacheNames.ALL_PRE_DEF_MONEYFLOWS)
 	public List<PreDefMoneyflow> getAllPreDefMoneyflows(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		final List<PreDefMoneyflowData> preDefMoneyflowDataList = this.preDefMoneyflowDao
-				.getAllPreDefMoneyflows(userId.getId());
-		return this.mapPreDefMoneyflowDataList(preDefMoneyflowDataList);
+
+		final Supplier<List<PreDefMoneyflow>> supplier = () -> this.mapPreDefMoneyflowDataList(
+				this.preDefMoneyflowDao.getAllPreDefMoneyflows(userId.getId()));
+
+		return super.getListFromCacheOrExecute(CacheNames.ALL_PRE_DEF_MONEYFLOWS, userId, supplier,
+				PreDefMoneyflow.class);
+
 	}
 
 	@Override
@@ -231,14 +235,8 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
 	private void evictPreDefMoneyflowCache(final UserID userId, final PreDefMoneyflowID preDefMoneyflowId) {
 		if (preDefMoneyflowId != null) {
-			final Cache allPreDefMoneyflowsCache = super.getCache(CacheNames.ALL_PRE_DEF_MONEYFLOWS);
-			final Cache preDefMoneyflowByIdCache = super.getCache(CacheNames.POSTINGACCOUNT_BY_ID);
-			if (allPreDefMoneyflowsCache != null) {
-				allPreDefMoneyflowsCache.evict(userId);
-			}
-			if (preDefMoneyflowByIdCache != null) {
-				preDefMoneyflowByIdCache.evict(new SimpleKey(userId, preDefMoneyflowId));
-			}
+			super.evictFromCache(CacheNames.ALL_PRE_DEF_MONEYFLOWS, userId);
+			super.evictFromCache(CacheNames.PRE_DEF_MONEYFLOW_BY_ID, new SimpleKey(userId, preDefMoneyflowId));
 		}
 	}
 }

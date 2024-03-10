@@ -27,6 +27,9 @@
 package org.laladev.moneyjinn.service.impl;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.springframework.cache.Cache;
@@ -44,9 +47,49 @@ public abstract class AbstractService extends AbstractMapperSupport {
 
 	static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
 
-	protected Cache getCache(final String... cacheNameParts) {
-		final String cacheName = String.join("#", cacheNameParts);
-		return this.cacheManager.getCache(cacheName);
+	protected String getCombinedCacheName(final Object... cacheNameParts) {
+		return String.join("#", Arrays.toString(cacheNameParts));
+	}
+
+	protected void evictFromCache(final String cacheName, final Object key) {
+		final var cache = this.cacheManager.getCache(cacheName);
+		if (cache != null)
+			cache.evict(key);
+	}
+
+	protected void clearCache(final String cacheName) {
+		final var cache = this.cacheManager.getCache(cacheName);
+		if (cache != null)
+			cache.clear();
+	}
+
+	protected <T> T getFromCacheOrExecute(final String cacheName, final Object key, final Supplier<T> supplier,
+			final Class<T> clazz) {
+		final Cache cache = this.cacheManager.getCache(cacheName);
+
+		final T cacheValue = cache.get(key, clazz);
+		if (cacheValue != null) {
+			return cacheValue;
+		}
+
+		final T value = supplier.get();
+		cache.put(key, value);
+		return value;
+	}
+
+	protected <T> List<T> getListFromCacheOrExecute(final String cacheName, final Object key,
+			final Supplier<List<T>> supplier, final Class<T> clazz) {
+		final Cache cache = this.cacheManager.getCache(cacheName);
+
+		@SuppressWarnings("unchecked")
+		final List<T> cacheValue = cache.get(key, List.class);
+		if (cacheValue != null) {
+			return cacheValue;
+		}
+
+		final List<T> value = supplier.get();
+		cache.put(key, value);
+		return value;
 	}
 
 	protected void publishEvent(final ApplicationEvent event) {
