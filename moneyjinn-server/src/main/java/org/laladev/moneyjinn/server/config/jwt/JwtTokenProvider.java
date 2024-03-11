@@ -38,6 +38,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -99,64 +100,75 @@ public class JwtTokenProvider {
 	}
 
 	public Authentication getAuthentication(final String token) {
-		PreAuthenticatedAuthenticationToken authenticationToken = null;
+		if (token == null)
+			return null;
 
-		final String username = this.getUsername(token);
-		final Long userId = this.getUserId(token);
+		final Claims validatedToken = this.getValidatedToken(token);
+
+		if (validatedToken == null)
+			return null;
+
+		final String username = this.getUsername(validatedToken);
+		final Long userId = this.getUserId(validatedToken);
+
+		if (username == null || userId == null)
+			return null;
+
 		final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-		if (username != null && userId != null) {
-
-			if (this.isRefreshToken(token)) {
-				grantedAuthorities.add(new RefreshOnlyGrantedAuthority());
-			} else {
-				this.getRoles(token).forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p)));
-			}
-
-			final org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-					username, "", grantedAuthorities);
-
-			authenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, "",
-					userDetails.getAuthorities());
-			authenticationToken.setDetails(userId);
+		if (this.isRefreshToken(validatedToken)) {
+			grantedAuthorities.add(new RefreshOnlyGrantedAuthority());
+		} else {
+			this.getRoles(validatedToken).forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p)));
 		}
+
+		final var userDetails = new org.springframework.security.core.userdetails.User(username, "",
+				grantedAuthorities);
+
+		final var authenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, "",
+				userDetails.getAuthorities());
+		authenticationToken.setDetails(userId);
 
 		return authenticationToken;
 	}
 
-	private String getUsername(final String token) {
-		return Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload().getSubject();
+	private String getUsername(final Claims payload) {
+		return payload.getSubject();
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<String> getRoles(final String token) {
-		return Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload().get(CLAIM_ROLES,
-				List.class);
+	private List<String> getRoles(final Claims payload) {
+		return payload.get(CLAIM_ROLES, List.class);
 	}
 
-	private Long getUserId(final String token) {
-		return Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload().get(CLAIM_USERID,
-				Long.class);
+	private Long getUserId(final Claims payload) {
+		return payload.get(CLAIM_USERID, Long.class);
 	}
 
-	public boolean isRefreshToken(final String token) {
-		final Collection<?> roles = Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token)
-				.getPayload().get(CLAIM_ROLES, Collection.class);
+	private boolean isRefreshToken(final Claims payload) {
+		final Collection<?> roles = payload.get(CLAIM_ROLES, Collection.class);
 		return (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE));
 	}
 
 	public String resolveToken(final HttpServletRequest req) {
 		final String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
+		return this.extractFromHeader(bearerToken);
+	}
+
+	public String resolveToken(final NativeMessageHeaderAccessor accessor) {
+		final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+		return this.extractFromHeader(bearerToken);
+	}
+
+	private String extractFromHeader(final String bearerToken) {
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			return bearerToken.substring(7, bearerToken.length());
 		}
 		return null;
 	}
 
-	public boolean validateToken(final String token) {
+	private Claims getValidatedToken(final String token) {
 		try {
-			Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token);
-			return true;
+			return Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload();
 		} catch (final MalformedJwtException e) {
 			log.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
 		} catch (final ExpiredJwtException e) {
@@ -166,6 +178,6 @@ public class JwtTokenProvider {
 		} catch (final IllegalArgumentException e) {
 			log.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
 		}
-		return false;
+		return null;
 	}
 }

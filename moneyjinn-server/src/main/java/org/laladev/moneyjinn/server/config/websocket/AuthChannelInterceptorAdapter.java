@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.server.config.websocket;
 
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
-import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -52,15 +51,11 @@ public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
 		final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
 		if (accessor != null && StompCommand.CONNECT == accessor.getCommand()) {
-			String token = null;
-			final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
-			if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-				token = bearerToken.substring(7, bearerToken.length());
-			}
-			if (token != null && this.jwtTokenProvider.validateToken(token)) {
-				final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
+			final String token = this.jwtTokenProvider.resolveToken(accessor);
+			final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
+
+			if (auth != null)
 				accessor.setUser(auth);
-			}
 		}
 		return message;
 	}

@@ -49,10 +49,10 @@ public class JwtTokenFilter extends GenericFilterBean {
 	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain filterChain)
 			throws IOException, ServletException {
 		final String token = this.jwtTokenProvider.resolveToken((HttpServletRequest) req);
-		if (token != null && this.jwtTokenProvider.validateToken(token)) {
-			final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
+		final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
+		if (auth != null)
 			SecurityContextHolder.getContext().setAuthentication(auth);
-		}
+
 		filterChain.doFilter(req, res);
 	}
 }

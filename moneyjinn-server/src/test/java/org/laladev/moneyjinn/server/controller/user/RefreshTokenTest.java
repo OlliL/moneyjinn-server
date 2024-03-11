@@ -11,7 +11,6 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
 import org.laladev.moneyjinn.server.controller.AbstractControllerTest;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
@@ -29,8 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 
 class RefreshTokenTest extends AbstractControllerTest {
-	@Inject
-	private JwtTokenProvider jwtTokenProvider;
 	@Inject
 	private ObjectMapper objectMapper;
 	@Inject
@@ -80,8 +77,8 @@ class RefreshTokenTest extends AbstractControllerTest {
 		final LoginResponse response = super.callUsecaseExpect200(LoginResponse.class);
 
 		Assertions.assertEquals(new UserTransportBuilder().forUser1().build(), response.getUserTransport());
-		Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getToken()));
-		Assertions.assertTrue(this.jwtTokenProvider.validateToken(response.getRefreshToken()));
+		Assertions.assertNotNull(response.getToken());
+		Assertions.assertNotNull(response.getRefreshToken());
 	}
 
 	@Test

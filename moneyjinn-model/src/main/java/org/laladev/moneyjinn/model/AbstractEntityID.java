@@ -29,8 +29,10 @@ package org.laladev.moneyjinn.model;
 import java.io.Serializable;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(doNotUseGetters = true)
 public abstract class AbstractEntityID<I extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private I id;
