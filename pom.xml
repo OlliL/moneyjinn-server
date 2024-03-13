@@ -38,7 +38,7 @@
 		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
 		<opencsv.version>5.9</opencsv.version>
 		<swagger.version>2.2.20</swagger.version>
-		<openapi-generator.version>7.3.0</openapi-generator.version>
+		<openapi-generator.version>7.4.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
@@ -48,7 +48,7 @@
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+		<maven-assembly-plugin.version>3.7.0</maven-assembly-plugin.version>
 		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 
