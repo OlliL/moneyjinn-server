@@ -162,6 +162,22 @@ class AccountMovementMapperTest {
 	@Test
 	void test_InvoiceTimestamp5OLVFirstLine() {
 		final List<String> usage = new ArrayList<>();
+		usage.add("EREF+9999999999999999999999");
+		usage.add("9999999999999");
+		usage.add("MREF+G999999999999999999999");
+		usage.add("CRED+DE9999999999999999");
+		usage.add("SVWZ+9999999999999999999999");
+
+		// usageLine:
+		usage.add("99999 ELV99999999 10.06 01.");
+		usage.add("03 ME4");
+
+		this.testInvoiceDate(usage, "5");
+	}
+
+	@Test
+	void test_InvoiceTimestamp5ELVInTheMiddle() {
+		final List<String> usage = new ArrayList<>();
 		final String usageLine = "OLV12345678 10.06 01.03";
 		usage.add(usageLine);
 
@@ -194,6 +210,18 @@ class AccountMovementMapperTest {
 		final List<String> usage = new ArrayList<>();
 		final String usageLine = "10.06 01.03 TA-NR. XXXXXX";
 		usage.add(usageLine);
+
+		this.testInvoiceDate(usage, "83");
+	}
+
+	@Test
+	void test_InvoiceTimestamp83TaNrInMiddle() {
+		final List<String> usage = new ArrayList<>();
+		usage.add("SVWZ+KBS 99999999 AAA0000/1");
+		usage.add("2.12 10.06 01.03 TA-NR. 999");
+		usage.add("999 99999 AAAAAAAAAA AA AAA");
+		usage.add("AAAAAAAAn AAA AA AAAAAAAA A");
+		usage.add("AAA (DEBITKARTE) MIT PIN");
 
 		this.testInvoiceDate(usage, "83");
 	}

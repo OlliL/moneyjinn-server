@@ -38,12 +38,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
-import org.kapott.hbci.tools.StringUtil;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
 // TODO Migrate to Java 8 java.time.*
@@ -59,6 +57,12 @@ public class AccountMovementMapper {
 	private final DateFormat dateTimeWithoutYearSlashFormatter = new SimpleDateFormat("dd.MM/HH.mm");
 	private final DateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	private final DateFormat dateTimeFormatterGerman = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss");
+	private final Pattern elvOlvPattern = Pattern
+			.compile(".*(ELV|OLV)\\d{8} ([0-3][0-9]\\.[0-1][0-9] [0-2][0-9]\\.[0-5][0-9]).*");
+	private final Pattern taNrPattern = Pattern
+			.compile(".*([0-3][0-9]\\.[0-1][0-9] [0-2][0-9]\\.[0-5][0-9]) TA-NR. .*");
+	private final Pattern germanDateTimePattern = Pattern.compile(
+			".*([0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]).*");
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
@@ -182,94 +186,92 @@ public class AccountMovementMapper {
 				final String movementReason = accountMovement.getMovementReason();
 				final Short movementTypeCode = accountMovement.getMovementTypeCode();
 				final List<String> lines = Arrays.asList(movementReason.split("\r\n|\r|\n"));
+				final String oneLine = movementReason.replaceAll("\r\n|\r|\n", "");
 
 				if (movementTypeCode.equals(MOVEMENT_TYPE_DIRECT_DEBIT)
 						|| movementTypeCode.equals(MOVEMENT_TYPE_SEPA_DIRECT_DEBIT_POS)) {
 
-					final Iterator<String> lineIterator = lines.iterator();
+					final var elvOlvMatcher = this.elvOlvPattern.matcher(oneLine);
 
-					lineloop: while (lineIterator.hasNext()) {
-						String line = lineIterator.next();
+					if (elvOlvMatcher.matches()) {
+						// ELV12345678 10.06 01.03
+						invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(elvOlvMatcher.group(2));
+						this.setYear(accountMovement.getBookingDate(), invoiceDate);
+					} else {
 
-						if ((line.startsWith(" ELV") || line.startsWith(" OLV")) && line.length() == 8
-								&& lineIterator.hasNext()) {
-							// Usage text starts with " OLVXXXX" and continues on the next line with
-							// "XXXX 09.12 17.05 ME0"
-							line = line.substring(1) + lineIterator.next();
-						}
+						final Iterator<String> lineIterator = lines.iterator();
 
-						if (line.startsWith("ELV") || line.startsWith("OLV")) {
-							// Usage text starts with "ELVXXXXXXXX 15.12 16.29 ME1"
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(line.substring(12, 23));
-							this.setYear(accountMovement.getBookingDate(), invoiceDate);
-							break;
+						lineloop: while (lineIterator.hasNext()) {
+							final String line = lineIterator.next();
 
-						} else if (line.startsWith("EL+")) {
-							// Usage text starts with "EL+ XXXXXXXX 06.07 09:46 KA"
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatterColon.parse(line.substring(13, 24));
-							this.setYear(accountMovement.getBookingDate(), invoiceDate);
-							break;
-
-						} else if (line.startsWith("EC ")) {
-							// Usage text starts with "EC XXXXXXXX 090215165422IC1"
-							invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
-							break;
-						} else {
-							if (line.length() == 27) {
-								for (int i = 0; i < line.length(); i++) {
-									if (!Character.isDigit(line.charAt(i))) {
-										continue lineloop;
-									}
-								}
-								invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
+							if (line.startsWith("EL+")) {
+								// Usage text starts with "EL+ XXXXXXXX 06.07 09:46 KA"
+								invoiceDate = this.dateTimeWithoutYearSpaceFormatterColon.parse(line.substring(13, 24));
 								this.setYear(accountMovement.getBookingDate(), invoiceDate);
-								/*
-								 * the invoice date must be before or equal than the bookingdate and not more
-								 * than two weeks before the bookingdate
-								 */
-								final Date bookingDate = Date.valueOf(accountMovement.getBookingDate());
-								if (invoiceDate.before(bookingDate)
-										&& bookingDate.getTime() - invoiceDate.getTime() > 14 * 86400000) {
-									invoiceDate = null;
-								} else {
-									break;
+								break;
+
+							} else if (line.startsWith("EC ")) {
+								// Usage text starts with "EC XXXXXXXX 090215165422IC1"
+								invoiceDate = this.dateTimeWithYearFormatter.parse(line.substring(12, 24));
+								break;
+							} else {
+								// 100601031885492151200031520 --> 10060103 --> 10.06. 01:03
+								if (line.length() == 27) {
+									for (int i = 0; i < line.length(); i++) {
+										if (!Character.isDigit(line.charAt(i))) {
+											continue lineloop;
+										}
+									}
+									invoiceDate = this.dateTimeWithoutYearFormatter.parse(line.substring(0, 8));
+									this.setYear(accountMovement.getBookingDate(), invoiceDate);
+									/*
+									 * the invoice date must be before or equal than the bookingdate and not more
+									 * than two weeks before the bookingdate
+									 */
+									final Date bookingDate = Date.valueOf(accountMovement.getBookingDate());
+									if (invoiceDate.before(bookingDate)
+											&& bookingDate.getTime() - invoiceDate.getTime() > 14 * 86400000) {
+										invoiceDate = null;
+									} else {
+										break;
+									}
 								}
 							}
 						}
 					}
 
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_WITHDRAWAL)) {
-					for (final String line : lines) {
-						if (line.contains("TA-NR.")) {
-							// 10.02 16.56 TA-NR. XXXXXX
-							invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(line.substring(0, 11));
-							break;
-						} else if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
-							// 16.02/07.49UHR XXXXXXXXXX
-							invoiceDate = this.dateTimeWithoutYearSlashFormatter.parse(line.substring(0, 11));
-							break;
+					final var taNrMatcher = this.taNrPattern.matcher(oneLine);
+
+					if (taNrMatcher.matches()) {
+						// 10.06 01.03 TA-NR. XXXXXX
+						invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(taNrMatcher.group(1));
+					} else {
+						for (final String line : lines) {
+							if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
+								// 16.02/07.49UHR XXXXXXXXXX
+								invoiceDate = this.dateTimeWithoutYearSlashFormatter.parse(line.substring(0, 11));
+								break;
+							}
 						}
 					}
 					if (invoiceDate != null) {
 						this.setYear(accountMovement.getBookingDate(), invoiceDate);
 					}
 				} else if (movementTypeCode.equals(MOVEMENT_TYPE_SEPA_CARDS_CLEARING)) {
-					for (final String line : lines) {
-						if (line.matches(
-								"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-2][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
-							// 2015-09-22T17:16:41
-							invoiceDate = this.dateTimeFormatter.parse(line);
-							break;
-						}
-					}
-					if (invoiceDate == null) {
-						// try merge all lines together and search for a Time in there
-						final String line = StringUtil.join(lines, "");
-						final Pattern pattern = Pattern.compile(
-								".*([0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]).*");
-						final Matcher matcher = pattern.matcher(line);
-						if (matcher.find()) {
-							invoiceDate = this.dateTimeFormatterGerman.parse(matcher.group(1));
+					final var germanDateTimeMatcher = this.germanDateTimePattern.matcher(oneLine);
+
+					if (germanDateTimeMatcher.matches()) {
+						// 10-06-2015T01:03:22
+						invoiceDate = this.dateTimeFormatterGerman.parse(germanDateTimeMatcher.group(1));
+					} else {
+						for (final String line : lines) {
+							if (line.matches(
+									"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-2][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+								// 2015-09-22T17:16:41
+								invoiceDate = this.dateTimeFormatter.parse(line);
+								break;
+							}
 						}
 					}
 				}
