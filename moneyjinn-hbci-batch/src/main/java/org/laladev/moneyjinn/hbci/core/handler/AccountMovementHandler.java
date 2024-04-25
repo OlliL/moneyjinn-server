@@ -41,7 +41,7 @@ import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
 public class AccountMovementHandler extends AbstractHandler {
 	// @formatter:off
-	private final static String STATEMENT =
+	private static final String STATEMENT =
 			"   INSERT "
 			+ "   INTO account_movements "
 			+ "      ( creation_time "

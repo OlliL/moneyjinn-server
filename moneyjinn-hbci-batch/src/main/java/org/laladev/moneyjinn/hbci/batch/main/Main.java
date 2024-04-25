@@ -54,7 +54,7 @@ public final class Main {
 			properties.load(propertyFile);
 		}
 
-		final List<PropertyChangeListener> observers = new ArrayList<PropertyChangeListener>(1);
+		final List<PropertyChangeListener> observers = new ArrayList<>(1);
 		observers.add(new AccountMovementObserver());
 		observers.add(new BalanceMonthlyObserver());
 		observers.add(new BalanceDailyObserver());

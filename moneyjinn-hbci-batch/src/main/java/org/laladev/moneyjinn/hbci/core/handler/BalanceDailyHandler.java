@@ -38,7 +38,7 @@ import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
 public class BalanceDailyHandler extends AbstractHandler {
 	// @formatter:off
-	private final static String STATEMENT =
+	private static final String STATEMENT =
 			"   INSERT "
 			+ "   INTO balance_daily "
 			+ "      ( my_iban "

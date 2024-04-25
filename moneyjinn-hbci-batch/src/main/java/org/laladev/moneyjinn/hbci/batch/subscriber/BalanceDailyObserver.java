@@ -41,8 +41,8 @@ public class BalanceDailyObserver implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
-		if (event.getNewValue() instanceof BalanceDaily) {
-			this.notify((BalanceDaily) event.getNewValue());
+		if (event.getNewValue() instanceof final BalanceDaily balanceDaily) {
+			this.notify(balanceDaily);
 		}
 
 	}

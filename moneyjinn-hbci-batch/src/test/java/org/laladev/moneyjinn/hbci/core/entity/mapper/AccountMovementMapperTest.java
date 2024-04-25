@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
@@ -283,15 +282,4 @@ class AccountMovementMapperTest {
 
 		this.testInvoiceDate(usage, "106");
 	}
-
-	@Test
-	@Disabled
-	void test_InvoiceTimestamp96Kontouebertrag() {
-		final List<String> usage = new ArrayList<>();
-		final String usageLine = "DATUM 10.06.2015,01.03 UHR, 1.TAN 123456";
-		usage.add(usageLine);
-
-		this.testInvoiceDate(usage, "96");
-	}
-
 }

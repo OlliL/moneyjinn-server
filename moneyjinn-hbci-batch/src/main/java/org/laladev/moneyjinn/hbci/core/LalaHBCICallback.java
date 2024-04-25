@@ -47,8 +47,7 @@ public class LalaHBCICallback extends HBCICallbackConsole {
 	public void callback(final HBCIPassport passport, final int reason, final String msg, final int dataType,
 			final StringBuffer retData) {
 		switch (reason) {
-		case NEED_PASSPHRASE_LOAD:
-		case NEED_PASSPHRASE_SAVE:
+		case NEED_PASSPHRASE_LOAD, NEED_PASSPHRASE_SAVE:
 			retData.replace(0, retData.length(), this.passportPassword);
 			break;
 		case NEED_PT_PIN:
@@ -59,9 +58,7 @@ public class LalaHBCICallback extends HBCICallbackConsole {
 
 			}
 			break;
-		case NEED_CONNECTION:
-		case CLOSE_CONNECTION:
-		case HAVE_INST_MSG:
+		case NEED_CONNECTION, CLOSE_CONNECTION, HAVE_INST_MSG:
 			break;
 		default:
 			super.callback(passport, reason, msg, dataType, retData);
@@ -70,12 +67,7 @@ public class LalaHBCICallback extends HBCICallbackConsole {
 
 	@Override
 	public synchronized void status(final HBCIPassport passport, final int statusTag, final Object[] o) {
-		switch (statusTag) {
-		case STATUS_MSG_RAW_RECV:
-		case STATUS_MSG_RAW_SEND:
-			break;
-		default:
+		if (statusTag != STATUS_MSG_RAW_RECV && statusTag != STATUS_MSG_RAW_SEND)
 			super.status(passport, statusTag, o);
-		}
 	}
 }

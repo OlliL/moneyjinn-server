@@ -41,8 +41,8 @@ public class BalanceMonthlyObserver implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
-		if (event.getNewValue() instanceof BalanceMonthly) {
-			this.notify((BalanceMonthly) event.getNewValue());
+		if (event.getNewValue() instanceof final BalanceMonthly balanceMonthly) {
+			this.notify(balanceMonthly);
 		}
 
 	}

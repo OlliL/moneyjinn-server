@@ -56,7 +56,7 @@ import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
 	// @formatter:off
-	private final static String INSERT_STATEMENT =
+	private static final String INSERT_STATEMENT =
 			"   INSERT "
 			+ "   INTO balance_monthly "
 			+ "      ( my_iban "
@@ -84,7 +84,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			+ "        balance_value  = IF(VALUES(balance_value) = balance_value, NULL, VALUES(balance_value)) ";
 
 	
-	private final static String SELECT_STATEMENT =
+	private static final String SELECT_STATEMENT =
 			"   SELECT id "
 			+ "   FROM balance_monthly "
 			+ "  WHERE my_iban          = ?"
@@ -118,7 +118,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			final BalanceDaily balanceDaily) {
 		final List<BalanceMonthly> balanceMonthlies = new ArrayList<>();
 
-		if (accountMovements != null && accountMovements.size() > 0) {
+		if (accountMovements != null && !accountMovements.isEmpty()) {
 
 			// First step - remove all AccountMovements which are in the future
 			final List<AccountMovement> movementsUntilToday = accountMovements.stream()
@@ -126,7 +126,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
 			// Now remove all AccountMovements which have a balanceDate and bookingDate off
 			// by a month.
-			// Example: bookingDate=2022-10-27, valueDate=2023-2024-03-31, balanceDate=2022-10-27
+			// Example: bookingDate=2022-10-27, valueDate=2023-2024-03-31,
+			// balanceDate=2022-10-27
 			// (wrong year on balanceDate!)
 			final List<AccountMovement> movementsWithoutInvalid = movementsUntilToday.stream().filter(
 					am -> java.time.temporal.ChronoUnit.DAYS.between(am.getBalanceDate(), am.getValueDate()) < 30)

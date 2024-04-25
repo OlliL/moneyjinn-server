@@ -57,7 +57,7 @@ public final class LalaHBCI {
 		this.properties = properties;
 	}
 
-	public void main(final List<String> passports, final List<PropertyChangeListener> observerList) throws Exception {
+	public void main(final List<String> passports, final List<PropertyChangeListener> observerList) {
 
 		HBCIUtils.init(this.getHbciProperties(), new LalaHBCICallback());
 

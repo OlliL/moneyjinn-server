@@ -58,11 +58,10 @@ public class AccountMovementMapper {
 	private final DateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	private final DateFormat dateTimeFormatterGerman = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss");
 	private final Pattern elvOlvPattern = Pattern
-			.compile(".*(ELV|OLV)\\d{8} ([0-3][0-9]\\.[0-1][0-9] [0-2][0-9]\\.[0-5][0-9]).*");
-	private final Pattern taNrPattern = Pattern
-			.compile(".*([0-3][0-9]\\.[0-1][0-9] [0-2][0-9]\\.[0-5][0-9]) TA-NR. .*");
+			.compile(".*(ELV|OLV)\\d{8} ([0-3]\\d\\.[0-1]\\d [0-2]\\d\\.[0-5]\\d).*");
+	private final Pattern taNrPattern = Pattern.compile(".*([0-3]\\d\\.[0-1]\\d [0-2]\\d\\.[0-5]\\d) TA-NR. .*");
 	private final Pattern germanDateTimePattern = Pattern.compile(
-			".*([0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]).*");
+			".*(\\d\\d-\\d\\d-\\d\\d\\d\\dT\\d\\d:\\d\\d:\\d\\d).*");
 
 	public AccountMovement map(final UmsLine entry, final Konto myAccount) {
 		final AccountMovement accountMovement = new AccountMovement();
@@ -130,7 +129,7 @@ public class AccountMovementMapper {
 		accountMovement.setMovementCurrency(entry.value.getCurr());
 		String usage = null;
 		for (final String usageline : entry.usage) {
-			usage = usage == null ? new String(usageline) : usage + '\n' + usageline;
+			usage = usage == null ? usageline : usage + '\n' + usageline;
 		}
 
 		if (usage != null) {
@@ -267,7 +266,7 @@ public class AccountMovementMapper {
 					} else {
 						for (final String line : lines) {
 							if (line.matches(
-									"^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-2][0-9]:[0-9][0-9]:[0-9][0-9]$")) {
+									"^\\d\\d\\d\\d-\\d\\d-\\d\\dT[0-2]\\d:\\d\\d:\\d\\d$")) {
 								// 2015-09-22T17:16:41
 								invoiceDate = this.dateTimeFormatter.parse(line);
 								break;

@@ -14,7 +14,7 @@ import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 
-public class BalanceMonthlyTest {
+class BalanceMonthlyTest {
 
 	private BalanceMonthlyHandler balanceMonthlyHandler;
 
@@ -82,7 +82,7 @@ public class BalanceMonthlyTest {
 	}
 
 	@Test
-	public void twoMonthWithAGap_prolongTheFirstMonth() {
+	void twoMonthWithAGap_prolongTheFirstMonth() {
 		final LocalDate date = LocalDate.now();
 		final List<AccountMovement> ams = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class BalanceMonthlyTest {
 	}
 
 	@Test
-	public void twoMonthWithAGapOneInFuture_prolongTheFirstMonthUntilThisMonth() {
+	void twoMonthWithAGapOneInFuture_prolongTheFirstMonthUntilThisMonth() {
 		final LocalDate date = LocalDate.now();
 		final List<AccountMovement> ams = new ArrayList<>();
 
@@ -129,7 +129,7 @@ public class BalanceMonthlyTest {
 	}
 
 	@Test
-	public void balanceDailyLastTransactionSomeMonthAgo_BalanceMonthliesCreated() {
+	void balanceDailyLastTransactionSomeMonthAgo_BalanceMonthliesCreated() {
 		final LocalDateTime threeMonthAgo = LocalDateTime.now().minusMonths(3L);
 		final BalanceDaily balanceDaily = this.getBaseBalanceDaily(threeMonthAgo, BigDecimal.TEN);
 
@@ -147,7 +147,7 @@ public class BalanceMonthlyTest {
 	}
 
 	@Test
-	public void balanceDailyLastTransactionToday_NoBalanceMonthliesCreated() {
+	void balanceDailyLastTransactionToday_NoBalanceMonthliesCreated() {
 		final LocalDateTime now = LocalDateTime.now();
 		final BalanceDaily balanceDaily = this.getBaseBalanceDaily(now, BigDecimal.TEN);
 
@@ -160,7 +160,7 @@ public class BalanceMonthlyTest {
 	}
 
 	@Test
-	public void balanceDailyLastTransactionSomewhereThisMonth_NoBalanceMonthliesCreated() {
+	void balanceDailyLastTransactionSomewhereThisMonth_NoBalanceMonthliesCreated() {
 		final LocalDateTime now = YearMonth.now().atDay(1).atStartOfDay();
 		final BalanceDaily balanceDaily = this.getBaseBalanceDaily(now, BigDecimal.TEN);
 

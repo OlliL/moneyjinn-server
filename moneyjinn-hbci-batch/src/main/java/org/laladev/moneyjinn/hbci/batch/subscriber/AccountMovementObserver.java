@@ -41,8 +41,8 @@ public class AccountMovementObserver implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
-		if (event.getNewValue() instanceof AccountMovement) {
-			this.notify((AccountMovement) event.getNewValue());
+		if (event.getNewValue() instanceof final AccountMovement accountMovement) {
+			this.notify(accountMovement);
 		}
 
 	}

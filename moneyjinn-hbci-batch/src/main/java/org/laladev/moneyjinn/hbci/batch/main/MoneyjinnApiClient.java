@@ -36,14 +36,13 @@ import org.laladev.moneyjinn.hbci.backend.ApiClient;
 public final class MoneyjinnApiClient {
 	private static ApiClient apiClient;
 	private static String jwtToken;
-	private static CookieManager cookieManager;
 
 	private MoneyjinnApiClient() {
 	}
 
 	public static void initialize() {
 		final Builder httpClientBuilder = HttpClient.newBuilder();
-		cookieManager = new CookieManager();
+		final CookieManager cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
 		httpClientBuilder.cookieHandler(CookieHandler.getDefault());
 
