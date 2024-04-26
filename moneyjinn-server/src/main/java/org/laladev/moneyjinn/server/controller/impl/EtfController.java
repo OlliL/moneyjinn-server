@@ -39,6 +39,7 @@ import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
+import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
@@ -103,7 +104,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
 			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
-			final List<EtfFlow> etfFlows = this.etfService.calculateEffectiveEtfFlows(allEtfFlows);
+			final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(allEtfFlows);
 			if (etfFlows != null && !etfFlows.isEmpty()) {
 				final EtfSummaryTransport transport = new EtfSummaryTransport();
 				transport.setIsin(etf.getId().getId());
@@ -145,7 +146,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			for (final Etf etf : etfs) {
 				final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDateTime.now());
 				transports.addAll(super.mapList(etfFlows, EtfFlowTransport.class));
-				final List<EtfFlow> etfEffectiveFlows = new ArrayList<>(
+				final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
 						this.etfService.calculateEffectiveEtfFlows(etfFlows));
 				Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
 				effectiveTransports.addAll(super.mapList(etfEffectiveFlows, EtfEffectiveFlowTransport.class));
@@ -188,19 +189,27 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final EtfIsin etfIsin = new EtfIsin(request.getIsin());
 		BigDecimal openPieces = pieces;
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
+		BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
 
 		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfIsin, LocalDateTime.now());
-		final List<EtfFlow> effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(etfFlows);
+		final List<EtfFlowWithTaxInfo> effectiveEtfFlows = new ArrayList<>(
+				this.etfService.calculateEffectiveEtfFlows(etfFlows));
 
 		if (effectiveEtfFlows != null && !effectiveEtfFlows.isEmpty()) {
-			for (final EtfFlow etfFlow : effectiveEtfFlows) {
+			for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {
 				BigDecimal useablePieces = etfFlow.getAmount();
 				if (useablePieces.compareTo(openPieces) > 0) {
 					useablePieces = openPieces;
+					overallPreliminaryLumpSum = overallPreliminaryLumpSum.add(etfFlow.getAccumulatedPreliminaryLumpSum()
+							.divide(etfFlow.getAmount(), 10, RoundingMode.HALF_UP).multiply(openPieces));
+				} else {
+					overallPreliminaryLumpSum = overallPreliminaryLumpSum
+							.add(etfFlow.getAccumulatedPreliminaryLumpSum());
 				}
 				openPieces = openPieces.subtract(useablePieces);
 				originalBuyPrice = originalBuyPrice.add(useablePieces.multiply(etfFlow.getPrice()));
 			}
+			overallPreliminaryLumpSum = overallPreliminaryLumpSum.setScale(2, RoundingMode.HALF_UP);
 			if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
 				final ValidationResult validationResult = new ValidationResult();
 				validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.AMOUNT_TO_HIGH));
@@ -211,7 +220,9 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				final BigDecimal sellPrice = bidPrice.multiply(pieces);
 				final BigDecimal transactionCosts = request.getTransactionCosts().multiply(BigDecimal.valueOf(2));
 				final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
-				final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP);
+				final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP)
+						.subtract(overallPreliminaryLumpSum.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2,
+								RoundingMode.UP));
 				final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
 				final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
 				response.setNewBuyPrice(newBuyPrice);
@@ -221,6 +232,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				response.setPieces(pieces);
 				response.setOriginalBuyPrice(originalBuyPrice);
 				response.setProfit(profit);
+				response.setAccumulatedPreliminaryLumpSum(overallPreliminaryLumpSum);
 				response.setChargeable(chargeable);
 				response.setRebuyLosses(rebuyLosses);
 				response.setOverallCosts(overallCosts);

@@ -29,6 +29,7 @@ DELETE FROM `monthlysettlements`;
 DELETE FROM `moneyflowreceipts`;
 DELETE FROM `moneyflowsplitentries`;
 DELETE FROM `moneyflows`;
+DELETE FROM `etfpreliminarylumpsum`;
 DELETE FROM `etfvalues`;
 DELETE FROM `etfflows`;
 DELETE FROM `etf`;

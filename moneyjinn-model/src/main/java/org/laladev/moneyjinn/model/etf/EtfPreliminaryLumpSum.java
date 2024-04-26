@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2024 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2024 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,31 +27,19 @@
 package org.laladev.moneyjinn.model.etf;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 import org.laladev.moneyjinn.model.AbstractEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor
-public class EtfFlow extends AbstractEntity<EtfFlowID> {
+public class EtfPreliminaryLumpSum extends AbstractEntity<EtfIsin> {
 	private static final long serialVersionUID = 1L;
-	private EtfIsin isin;
-	private LocalDateTime time;
+	private YearMonth yearMonth;
 	private BigDecimal amount;
-	private BigDecimal price;
-
-	public EtfFlow(final EtfFlow etfFlow) {
-		super.setId(etfFlow.getId());
-		this.setIsin(etfFlow.getIsin());
-		this.setAmount(etfFlow.getAmount());
-		this.setPrice(etfFlow.getPrice());
-		this.setTime(etfFlow.getTime());
-	}
 }

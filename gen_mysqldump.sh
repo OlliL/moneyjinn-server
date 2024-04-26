@@ -22,6 +22,7 @@ mysqldump -u root --set-gtid-purged=OFF --no-tablespaces --skip-triggers --quote
 	etf \
 	etfflows \
 	etfvalues \
+	etfpreliminarylumpsum \
 	moneyflows \
 	moneyflowsplitentries \
 	moneyflowreceipts \

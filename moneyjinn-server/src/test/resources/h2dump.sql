@@ -229,6 +229,22 @@ CREATE TABLE `etfvalues` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `etfpreliminarylumpsum`
+--
+
+DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `etfpreliminarylumpsum` (
+  `isin` varchar(30) NOT NULL,
+  `year` year NOT NULL,
+  `month` int unsigned NOT NULL,
+  `amount` decimal(8,2) NOT NULL,
+  PRIMARY KEY (`isin`,`year`,`month`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `moneyflows`
 --
 

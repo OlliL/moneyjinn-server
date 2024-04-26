@@ -32,6 +32,7 @@ import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.LocalDateTimeToOffsetDateTimeMapper;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -40,17 +41,19 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class,
 		LocalDateTimeToOffsetDateTimeMapper.class })
-public interface EtfEffectiveFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfEffectiveFlowTransport> {
+public interface EtfEffectiveFlowTransportMapper
+		extends IMapstructMapper<EtfFlowWithTaxInfo, EtfEffectiveFlowTransport> {
 	@Override
 	@Mapping(target = "id", source = "etfflowid")
 	@Mapping(target = "time", source = "timestamp")
-	EtfFlow mapBToA(EtfEffectiveFlowTransport etfEffectiveFlowTransport);
+	@Mapping(target = "accumulatedPreliminaryLumpSum", ignore = true)
+	EtfFlowWithTaxInfo mapBToA(EtfEffectiveFlowTransport etfEffectiveFlowTransport);
 
 	@Override
 	@Mapping(target = "etfflowid", source = "id")
 	@Mapping(target = "nanoseconds", source = "time.nano")
 	@Mapping(target = "timestamp", source = "time")
-	EtfEffectiveFlowTransport mapAToB(EtfFlow etfFlow);
+	EtfEffectiveFlowTransport mapAToB(EtfFlowWithTaxInfo etfFlow);
 
 	@AfterMapping
 	default void doAfterMapping(final EtfEffectiveFlowTransport source, @MappingTarget final EtfFlow entity) {

@@ -18,7 +18,7 @@
                 ,price
         </sql>
         
-           <sql id="etfValuesColumns">
+        <sql id="etfValuesColumns">
                  isin
                 ,date
                 ,buy_price    AS buyPrice
@@ -26,12 +26,21 @@
                 ,changedate
         </sql>
    
-            <select id="getAllEtf"
+        <sql id="etfPreliminaryLumpSumColumns">
+                 isin
+                ,`year`
+                ,`month`
+                ,amount
+        </sql>
+
+
+        <select id="getAllEtf"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
                   FROM etf
         </select>
-            <select id="getEtfById"
+        
+        <select id="getEtfById"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
                   FROM etf
@@ -39,7 +48,7 @@
                  LIMIT 1
         </select>
                     
-            <select id="getAllFlowsUntil"
+        <select id="getAllFlowsUntil"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />
                   FROM etfflows
@@ -58,7 +67,7 @@
                  LIMIT 1
         </select>
 
-            <select id="getEtfFlowById"
+        <select id="getEtfFlowById"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />
                   FROM etfflows
@@ -66,7 +75,7 @@
                  LIMIT 1
         </select>
         
-            <insert id="createEtfFlow"
+        <insert id="createEtfFlow"
                 parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData"
                 useGeneratedKeys="true" keyProperty="etfflowid" keyColumn="etfflowid">
                 INSERT
@@ -100,6 +109,13 @@
                  WHERE etfflowid     = #{id}
                  LIMIT 1
         </delete>
-        
+ 
+         <select id="getAllPreliminaryLumpSum"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+                SELECT <include refid="etfPreliminaryLumpSumColumns" />
+                  FROM etfpreliminarylumpsum
+                 WHERE isin = #{isin}
+                 ORDER BY `year`, `month` ASC
+        </select>       
 </mapper>
  

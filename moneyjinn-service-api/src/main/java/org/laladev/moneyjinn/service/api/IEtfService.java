@@ -33,6 +33,7 @@ import java.util.List;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
+import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -54,5 +55,5 @@ public interface IEtfService {
 
 	void deleteEtfFlow(EtfFlowID etfFlowId);
 
-	List<EtfFlow> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
+	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
 }
