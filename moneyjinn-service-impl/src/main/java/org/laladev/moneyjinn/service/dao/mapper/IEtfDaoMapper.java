@@ -33,6 +33,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
+import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
 public interface IEtfDaoMapper {
@@ -52,4 +53,6 @@ public interface IEtfDaoMapper {
 	public void updateEtfFlow(EtfFlowData data);
 
 	public void deleteEtfFlow(@Param("id") Long id);
+
+	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("isin") String isin);
 }

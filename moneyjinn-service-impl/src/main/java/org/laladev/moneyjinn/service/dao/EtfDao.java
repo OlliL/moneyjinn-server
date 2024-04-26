@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
+import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
 
@@ -79,5 +80,9 @@ public class EtfDao {
 
 	public void deleteEtfFlow(final Long etfFlowId) {
 		this.mapper.deleteEtfFlow(etfFlowId);
+	}
+
+	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final String isin) {
+		return this.mapper.getAllPreliminaryLumpSum(isin);
 	}
 }

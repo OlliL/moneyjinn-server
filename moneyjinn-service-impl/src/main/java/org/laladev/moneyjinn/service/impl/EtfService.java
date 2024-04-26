@@ -27,11 +27,17 @@
 package org.laladev.moneyjinn.service.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -40,7 +46,9 @@ import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
+import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
+import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -49,9 +57,11 @@ import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.dao.EtfDao;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
+import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfFlowDataMapper;
+import org.laladev.moneyjinn.service.dao.data.mapper.EtfPreliminaryLumpSumDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 import org.springframework.util.Assert;
 
@@ -67,6 +77,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	private final EtfFlowDataMapper etfFlowDataMapper;
 	private final EtfValueDataMapper etfValueDataMapper;
 	private final EtfDataMapper etfDataMapper;
+	private final EtfPreliminaryLumpSumDataMapper etfPreliminaryLumpSumDataMapper;
 
 	@Override
 	@PostConstruct
@@ -74,6 +85,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		super.registerBeanMapper(this.etfFlowDataMapper);
 		super.registerBeanMapper(this.etfValueDataMapper);
 		super.registerBeanMapper(this.etfDataMapper);
+		super.registerBeanMapper(this.etfPreliminaryLumpSumDataMapper);
 	}
 
 	@Override
@@ -163,15 +175,81 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
-	public List<EtfFlow> calculateEffectiveEtfFlows(final List<EtfFlow> etfFlows) {
+	public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final List<EtfFlow> allEtfFlows) {
+		final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+		final Map<EtfIsin, List<EtfFlow>> etfFlowsByIsinMap = allEtfFlows.stream()
+				.collect(Collectors.groupingBy(EtfFlow::getIsin));
+
+		final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
+		for (final var etfFlowsByIsinMapEntry : etfFlowsByIsinMap.entrySet()) {
+			final var etfFlows = etfFlowsByIsinMapEntry.getValue();
+			final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(etfFlowsByIsinMapEntry.getKey());
+			final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
+
+			// initialize accumulated preliminary lump sum to 0 for each effective flow
+			final List<EtfFlowWithTaxInfo> etfFlowWithTaxInfos = etfBuyFlows.stream().map(ef -> {
+				final EtfFlowWithTaxInfo etfFlowWithTaxInfo = new EtfFlowWithTaxInfo(ef);
+				etfFlowWithTaxInfo.setAccumulatedPreliminaryLumpSum(BigDecimal.ZERO);
+				return etfFlowWithTaxInfo;
+			}).toList();
+
+			// delete all preliminary lump sums older than the earliest effective flow
+			final YearMonth dateOfEarliestEtfBuyFlow = YearMonth.from(etfFlowWithTaxInfos.get(0).getTime());
+			etfPreliminaryLumpSums.removeIf(epls -> epls.getYearMonth().isBefore(dateOfEarliestEtfBuyFlow));
+
+			for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
+				final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYearMonth().atDay(1).atStartOfDay();
+				final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYearMonth().atEndOfMonth()
+						.atTime(LocalTime.MAX);
+				final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
+
+				if (endOfMonth.getMonth().equals(Month.JANUARY)) {
+					final BigDecimal pieceTax = this.getPieceTax(etfPreliminaryLumpSum, relevantTaxFlows);
+
+					etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
+							.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
+									efwti.getAccumulatedPreliminaryLumpSum()
+											.add(efwti.getAmount().multiply(pieceTax))));
+				} else {
+					final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
+							.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
+					if (!relevantTaxFlowsForThisMonth.isEmpty()) {
+						final BigDecimal pieceTax = this.getPieceTax(etfPreliminaryLumpSum,
+								relevantTaxFlowsForThisMonth);
+
+						etfFlowWithTaxInfos.stream().filter(
+								efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
+								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
+										.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount().multiply(pieceTax))));
+					}
+				}
+
+			}
+
+			relevantEtfFlows.addAll(etfFlowWithTaxInfos);
+		}
+
+		return relevantEtfFlows;
+	}
+
+	private BigDecimal getPieceTax(final EtfPreliminaryLumpSum etfPreliminaryLumpSum,
+			final List<EtfFlow> relevantTaxFlows) {
+		final BigDecimal amountSum = relevantTaxFlows.stream().map(EtfFlow::getAmount).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
+		final BigDecimal pieceTax = etfPreliminaryLumpSum.getAmount().divide(amountSum, 10, RoundingMode.HALF_UP);
+		return pieceTax;
+	}
+
+	private List<EtfFlow> calculateEffectiveEtfFlowsUntil(final List<EtfFlow> etfFlows, final LocalDateTime until) {
 		Collections.sort(etfFlows, new EtfFlowComparator());
 		final List<EtfFlow> etfSalesFlows = etfFlows.stream()
-				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).toList();
+				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).filter(ef -> ef.getTime().isBefore(until))
+				.toList();
 		final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
-				.collect(Collectors.toList());
+				.filter(ef -> ef.getTime().isBefore(until)).collect(Collectors.toList());
 		for (final EtfFlow etfSalesFlow : etfSalesFlows) {
 			BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
-			final Iterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.iterator();
+			final ListIterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.listIterator();
 			while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
 				final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
 				if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
@@ -179,11 +257,19 @@ public class EtfService extends AbstractService implements IEtfService {
 					salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
 				} else {
 					final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
-					etfBuyFlow.setAmount(newAmount);
+					// Don't modify the elements in the parameterlist - create a new object instead.
+					final EtfFlow firstAndReducedEtfFlow = new EtfFlow(etfBuyFlow);
+					firstAndReducedEtfFlow.setAmount(newAmount);
+					etfBuyFlowsIterator.set(firstAndReducedEtfFlow);
 					salesAmount = BigDecimal.ZERO;
 				}
 			}
 		}
 		return etfBuyFlows;
+	}
+
+	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final EtfIsin isin) {
+		final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(isin.getId());
+		return super.mapList(datas, EtfPreliminaryLumpSum.class);
 	}
 }

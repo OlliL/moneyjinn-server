@@ -47,6 +47,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setRebuyLosses(new BigDecimal("5.000"));
 		expected.setOverallCosts(new BigDecimal("6.980"));
 		expected.setPieces(BigDecimal.TEN);
+		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
 
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
@@ -93,6 +94,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setRebuyLosses(new BigDecimal("5.000"));
 		expected.setOverallCosts(new BigDecimal("6.980"));
 		expected.setPieces(BigDecimal.TEN);
+		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
 
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 

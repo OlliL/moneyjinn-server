@@ -6,6 +6,7 @@
 		"sellPrice",
 		"newBuyPrice",
 		"profit",
+		"accumulatedPreliminaryLumpSum",
 		"chargeable",
 		"transactionCosts",
 		"rebuyLosses",
@@ -26,6 +27,9 @@
 			"type": "number"
 		},
 		"profit": {
+			"type": "number"
+		},
+		"accumulatedPreliminaryLumpSum": {
 			"type": "number"
 		},
 		"chargeable": {
