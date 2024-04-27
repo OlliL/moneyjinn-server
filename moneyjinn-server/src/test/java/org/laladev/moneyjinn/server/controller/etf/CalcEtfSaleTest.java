@@ -37,7 +37,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final CalcEtfSaleResponse expected = this.getExpected();
+		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -63,7 +63,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_negativeInput_AbsoluteValuesAreUsed() throws Exception {
+	void test_standardRequestNegativeInput_AbsoluteValuesAreUsed() throws Exception {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE.negate());
@@ -72,15 +72,15 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(SETTING_SALE_PIECES.negate());
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final CalcEtfSaleResponse expected = this.getExpected();
+		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 
 	}
 
-	private CalcEtfSaleResponse getExpected() {
-		final BigDecimal pieces = BigDecimal.TEN;
+	private CalcEtfSaleResponse getStandardRequestExpected() {
+		final BigDecimal pieces = SETTING_SALE_PIECES;
 		final BigDecimal sellPrice = SETTING_SALE_BID_PRICE.multiply(pieces).setScale(2);
 		final BigDecimal newBuyPrice = SETTING_SALE_ASK_PRICE.multiply(pieces).setScale(2);
 		final BigDecimal originalBuyPrice = new BigDecimal("8020.482782").setScale(2, RoundingMode.HALF_UP);
@@ -98,6 +98,64 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setPieces(pieces);
 		expected.accumulatedPreliminaryLumpSum(new BigDecimal("19.22"));
 		return expected;
+	}
+
+	@Test
+	void test_preliminaryLumpSumBuyingMonthAndNextJanuary_LumpSumCorrectlySummedUp() throws Exception {
+
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(SETTING_SALE_ASK_PRICE);
+		request.setBidPrice(SETTING_SALE_BID_PRICE);
+		request.setIsin(SETTING_ISIN);
+		request.setPieces(new BigDecimal("2"));
+		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+
+		final BigDecimal expectedSum = new BigDecimal("5.56");
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+	}
+
+	@Test
+	void test_preliminaryLumpSumBuyingMonthWithBuySaleBuyButOnlyFirstBuyedPiecesSold_LumpSumCorrectlySummedUp()
+			throws Exception {
+
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(SETTING_SALE_ASK_PRICE);
+		request.setBidPrice(SETTING_SALE_BID_PRICE);
+		request.setIsin(SETTING_ISIN);
+		request.setPieces(new BigDecimal("160"));
+		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+
+		// 02.234pcs -> (7.2€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.215€
+		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.626€
+		// 76.766pcs -> (109.32€ / 110.000pcs) * 76.766pcs = 076.291€
+		// --> 6.215€ + 135.626€ + 76.291€ == 218.132€
+		final BigDecimal expectedSum = new BigDecimal("218.13");
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+	}
+
+	@Test
+	void test_preliminaryLumpSumBuyingMonthWithBuySaleBuyPiecesSoldFromBothBuyStacks_LumpSumCorrectlySummedUp()
+			throws Exception {
+
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(SETTING_SALE_ASK_PRICE);
+		request.setBidPrice(SETTING_SALE_BID_PRICE);
+		request.setIsin(SETTING_ISIN);
+		request.setPieces(new BigDecimal("180"));
+		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+
+		// 02.234pcs -> (7.2€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.215€
+		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.626€
+		// 96.766pcs -> (109.32€ / 110.000pcs) * 96.766pcs = 096.168€
+		// --> 6.215€ + 135.626€ + 96.168€ == 238.009€
+		final BigDecimal expectedSum = new BigDecimal("238.01");
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
 	}
 
 	@Test
