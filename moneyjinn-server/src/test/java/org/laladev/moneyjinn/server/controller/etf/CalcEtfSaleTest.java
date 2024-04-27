@@ -91,12 +91,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setSellPrice(sellPrice);
 		expected.setNewBuyPrice(newBuyPrice);
 		expected.setProfit(new BigDecimal("974.52"));
-		expected.setChargeable(new BigDecimal("682.17"));
+		expected.setChargeable(new BigDecimal("668.71"));
 		expected.setTransactionCosts(new BigDecimal("1.98"));
 		expected.setRebuyLosses(new BigDecimal("5.00"));
 		expected.setOverallCosts(new BigDecimal("6.98"));
 		expected.setPieces(pieces);
-		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
+		expected.accumulatedPreliminaryLumpSum(new BigDecimal("19.22"));
 		return expected;
 	}
 
