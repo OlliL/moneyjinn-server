@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,8 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 
 class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
-	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("800.000");
-	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("799.500");
+	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("900.000");
+	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("899.500");
 	private final static String SETTING_ISIN = EtfTransportBuilder.ISIN;
 	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
 	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
@@ -36,19 +37,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-		expected.setIsin(SETTING_ISIN);
-		expected.setOriginalBuyPrice(new BigDecimal("7776.660"));
-		expected.setSellPrice(new BigDecimal("7995.000"));
-		expected.setNewBuyPrice(new BigDecimal("8000.000"));
-		expected.setProfit(new BigDecimal("218.340"));
-		expected.setChargeable(new BigDecimal("152.84"));
-		expected.setTransactionCosts(new BigDecimal("1.98"));
-		expected.setRebuyLosses(new BigDecimal("5.000"));
-		expected.setOverallCosts(new BigDecimal("6.980"));
-		expected.setPieces(BigDecimal.TEN);
-		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
-
+		final CalcEtfSaleResponse expected = this.getExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);
@@ -83,23 +72,32 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(SETTING_SALE_PIECES.negate());
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-		expected.setIsin(SETTING_ISIN);
-		expected.setOriginalBuyPrice(new BigDecimal("7776.660"));
-		expected.setSellPrice(new BigDecimal("7995.000"));
-		expected.setNewBuyPrice(new BigDecimal("8000.000"));
-		expected.setProfit(new BigDecimal("218.340"));
-		expected.setChargeable(new BigDecimal("152.84"));
-		expected.setTransactionCosts(new BigDecimal("1.98"));
-		expected.setRebuyLosses(new BigDecimal("5.000"));
-		expected.setOverallCosts(new BigDecimal("6.980"));
-		expected.setPieces(BigDecimal.TEN);
-		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
-
+		final CalcEtfSaleResponse expected = this.getExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);
 
+	}
+
+	private CalcEtfSaleResponse getExpected() {
+		final BigDecimal pieces = BigDecimal.TEN;
+		final BigDecimal sellPrice = SETTING_SALE_BID_PRICE.multiply(pieces).setScale(2);
+		final BigDecimal newBuyPrice = SETTING_SALE_ASK_PRICE.multiply(pieces).setScale(2);
+		final BigDecimal originalBuyPrice = new BigDecimal("8020.482782").setScale(2, RoundingMode.HALF_UP);
+
+		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
+		expected.setIsin(SETTING_ISIN);
+		expected.setOriginalBuyPrice(originalBuyPrice);
+		expected.setSellPrice(sellPrice);
+		expected.setNewBuyPrice(newBuyPrice);
+		expected.setProfit(new BigDecimal("974.52"));
+		expected.setChargeable(new BigDecimal("682.17"));
+		expected.setTransactionCosts(new BigDecimal("1.98"));
+		expected.setRebuyLosses(new BigDecimal("5.00"));
+		expected.setOverallCosts(new BigDecimal("6.98"));
+		expected.setPieces(pieces);
+		expected.accumulatedPreliminaryLumpSum(BigDecimal.ZERO.setScale(2));
+		return expected;
 	}
 
 	@Test

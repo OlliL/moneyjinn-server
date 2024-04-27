@@ -207,7 +207,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
 							.add(etfFlow.getAccumulatedPreliminaryLumpSum());
 				}
 				openPieces = openPieces.subtract(useablePieces);
-				originalBuyPrice = originalBuyPrice.add(useablePieces.multiply(etfFlow.getPrice()));
+				originalBuyPrice = originalBuyPrice
+						.add(useablePieces.multiply(etfFlow.getPrice()).setScale(2, RoundingMode.HALF_UP));
 			}
 			overallPreliminaryLumpSum = overallPreliminaryLumpSum.setScale(2, RoundingMode.HALF_UP);
 			if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
@@ -216,8 +217,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 				this.throwValidationExceptionIfInvalid(validationResult);
 			} else {
-				final BigDecimal newBuyPrice = askPrice.multiply(pieces);
-				final BigDecimal sellPrice = bidPrice.multiply(pieces);
+				final BigDecimal newBuyPrice = askPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
+				final BigDecimal sellPrice = bidPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
 				final BigDecimal transactionCosts = request.getTransactionCosts().multiply(BigDecimal.valueOf(2));
 				final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
 				final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP)

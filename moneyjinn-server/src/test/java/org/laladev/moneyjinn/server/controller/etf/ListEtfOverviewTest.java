@@ -9,11 +9,9 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.builder.EtfEffectiveFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
-import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
 import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
@@ -28,15 +26,11 @@ class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 	@Test
 	void test_standardRequest_FullResponseObject() throws Exception {
 		final EtfTransport etf = new EtfTransportBuilder().forEtf1().build();
-		final EtfEffectiveFlowTransport flow1 = new EtfEffectiveFlowTransportBuilder().forFlow2().build();
-		final EtfEffectiveFlowTransport flow3 = new EtfEffectiveFlowTransportBuilder().forFlow4().build();
-
 		final ListEtfOverviewResponse expected = new ListEtfOverviewResponse();
 
 		final EtfSummaryTransport transport = new EtfSummaryTransport();
-		final BigDecimal amount = flow1.getAmount().add(flow3.getAmount());
-		final BigDecimal spentValue = flow1.getAmount().multiply(flow1.getPrice())
-				.add(flow3.getAmount().multiply(flow3.getPrice()));
+		final BigDecimal amount = new BigDecimal("93.234");
+		final BigDecimal spentValue = new BigDecimal("73212.348782");
 		transport.setIsin(etf.getIsin());
 		transport.setName(etf.getName());
 		transport.setChartUrl(etf.getChartUrl());
@@ -45,12 +39,12 @@ class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 		// latest etfvalues table entry
 		transport.setBuyPrice(new BigDecimal("666.000"));
 		transport.setSellPrice(new BigDecimal("666.543"));
-		transport.setPricesTimestamp(ZonedDateTime.of(2008, 12, 16, 22, 5, 2, 0, ZoneId.systemDefault()).toInstant()
+		transport.setPricesTimestamp(ZonedDateTime.of(2012, 01, 16, 22, 5, 2, 0, ZoneId.systemDefault()).toInstant()
 				.atOffset(ZoneOffset.UTC));
 
 		expected.setEtfSummaryTransports(Collections.singletonList(transport));
 
-		final ListEtfOverviewResponse actual = super.callUsecaseExpect200(ListEtfOverviewResponse.class, 2008, 12);
+		final ListEtfOverviewResponse actual = super.callUsecaseExpect200(ListEtfOverviewResponse.class, 2010, 1);
 
 		Assertions.assertEquals(expected, actual);
 

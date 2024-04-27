@@ -66,6 +66,11 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 		expected.setEtfTransports(etfs);
 
 		final List<EtfFlowTransport> allTransports = new ArrayList<>();
+		allTransports.add(new EtfFlowTransportBuilder().forFlow11().build());
+		allTransports.add(new EtfFlowTransportBuilder().forFlow10().build());
+		allTransports.add(new EtfFlowTransportBuilder().forFlow9().build());
+		allTransports.add(new EtfFlowTransportBuilder().forFlow8().build());
+		allTransports.add(new EtfFlowTransportBuilder().forFlow7().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow6().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow5().build());
 		allTransports.add(new EtfFlowTransportBuilder().forFlow4().build());
@@ -75,10 +80,10 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 		expected.setEtfFlowTransports(allTransports);
 
 		final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
+		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow11().build());
+		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow9().build());
+		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow8().build());
 		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow6().build());
-		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow5().build());
-		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow4().build());
-		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow2().build());
 		expected.setEtfEffectiveFlowTransports(effectiveTransports);
 		return expected;
 	}
