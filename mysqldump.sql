@@ -236,12 +236,23 @@ DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfpreliminarylumpsum` (
-  `isin` varchar(30) COLLATE utf8mb3_bin NOT NULL,
+  `met_isin` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
   `year` year NOT NULL,
-  `month` int unsigned NOT NULL,
-  `amount` decimal(8,2) NOT NULL,
-  PRIMARY KEY (`isin`,`year`,`month`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='els';
+  `amount01` decimal(8,2) NOT NULL,
+  `amount02` decimal(8,2) NOT NULL,
+  `amount03` decimal(8,2) NOT NULL,
+  `amount04` decimal(8,2) NOT NULL,
+  `amount05` decimal(8,2) NOT NULL,
+  `amount06` decimal(8,2) NOT NULL,
+  `amount07` decimal(8,2) NOT NULL,
+  `amount08` decimal(8,2) NOT NULL,
+  `amount09` decimal(8,2) NOT NULL,
+  `amount10` decimal(8,2) NOT NULL,
+  `amount11` decimal(8,2) NOT NULL,
+  `amount12` decimal(8,2) NOT NULL,
+  PRIMARY KEY (`met_isin`,`year`),
+  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_isin`) REFERENCES `etf` (`isin`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mep';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,7 +557,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-27  0:45:36
+-- Dump completed on 2024-04-27 23:53:09
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

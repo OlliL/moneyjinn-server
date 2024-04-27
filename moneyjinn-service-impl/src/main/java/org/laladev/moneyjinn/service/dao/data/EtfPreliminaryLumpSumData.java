@@ -32,8 +32,18 @@ import lombok.Data;
 
 @Data
 public class EtfPreliminaryLumpSumData {
-	private String isin;
-	private Integer month;
+	private String metIsin;
 	private Integer year;
-	private BigDecimal amount;
+	private BigDecimal amountJanuary;
+	private BigDecimal amountFebruary;
+	private BigDecimal amountMarch;
+	private BigDecimal amountApril;
+	private BigDecimal amountMay;
+	private BigDecimal amountJune;
+	private BigDecimal amountJuly;
+	private BigDecimal amountAugust;
+	private BigDecimal amountSeptember;
+	private BigDecimal amountOctober;
+	private BigDecimal amountNovember;
+	private BigDecimal amountDecember;
 }

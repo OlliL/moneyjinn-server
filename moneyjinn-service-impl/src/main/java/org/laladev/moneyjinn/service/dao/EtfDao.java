@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.service.dao;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
@@ -55,8 +56,8 @@ public class EtfDao {
 		return this.mapper.getEtfById(isin);
 	}
 
-	public EtfValueData getEtfValueForMonth(final String isin, final Integer year, final Month month) {
-		final LocalDate startDate = LocalDate.of(year.intValue(), month, 1);
+	public EtfValueData getEtfValueForMonth(final String isin, final Year year, final Month month) {
+		final LocalDate startDate = year.atMonth(month).atDay(1);
 		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
 		return this.mapper.getEtfValueForMonth(isin, startDate, endDate);
 	}
@@ -84,5 +85,9 @@ public class EtfDao {
 
 	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final String isin) {
 		return this.mapper.getAllPreliminaryLumpSum(isin);
+	}
+
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final String isin, final Year year) {
+		return this.mapper.getPreliminaryLumpSum(isin, year.getValue());
 	}
 }

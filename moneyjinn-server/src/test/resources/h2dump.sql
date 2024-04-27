@@ -236,11 +236,22 @@ DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfpreliminarylumpsum` (
-  `isin` varchar(30) NOT NULL,
+  `met_isin` varchar(30) CHARACTER SET utf8mb3 NOT NULL,
   `year` year NOT NULL,
-  `month` int unsigned NOT NULL,
-  `amount` decimal(8,2) NOT NULL,
-  PRIMARY KEY (`isin`,`year`,`month`)
+  `amount01` decimal(8,2) NOT NULL,
+  `amount02` decimal(8,2) NOT NULL,
+  `amount03` decimal(8,2) NOT NULL,
+  `amount04` decimal(8,2) NOT NULL,
+  `amount05` decimal(8,2) NOT NULL,
+  `amount06` decimal(8,2) NOT NULL,
+  `amount07` decimal(8,2) NOT NULL,
+  `amount08` decimal(8,2) NOT NULL,
+  `amount09` decimal(8,2) NOT NULL,
+  `amount10` decimal(8,2) NOT NULL,
+  `amount11` decimal(8,2) NOT NULL,
+  `amount12` decimal(8,2) NOT NULL,
+  PRIMARY KEY (`met_isin`,`year`),
+  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_isin`) REFERENCES `etf` (`isin`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

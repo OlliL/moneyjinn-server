@@ -29,6 +29,12 @@
 		"/moneyflow/server/contractpartneraccounts/{id}": {
 			"$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccountId.json"
 		},
+		"/moneyflow/server/etfpreliminarylumpsumps": {
+			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
+		},
+		"/moneyflow/server/etfpreliminarylumpsumps/{isin}/{year}": {
+			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumId.json"
+		},
 		"/moneyflow/server/user/changePassword": {
 			"$ref": "openapi/user/paths/ChangePassword.json"
 		},

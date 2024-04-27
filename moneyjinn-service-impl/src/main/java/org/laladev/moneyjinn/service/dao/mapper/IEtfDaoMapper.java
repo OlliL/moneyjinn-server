@@ -55,4 +55,6 @@ public interface IEtfDaoMapper {
 	public void deleteEtfFlow(@Param("id") Long id);
 
 	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("isin") String isin);
+
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(@Param("isin") String isin, @Param("year") Integer year);
 }

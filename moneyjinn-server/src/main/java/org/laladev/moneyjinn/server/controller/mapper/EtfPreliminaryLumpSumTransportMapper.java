@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2024 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2024 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,40 +24,25 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.api;
+package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
-import java.util.List;
-
-import org.laladev.moneyjinn.model.etf.Etf;
-import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
-import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
+import org.laladev.moneyjinn.converter.EtfIsinMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.YearToIntegerMapper;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
-import org.laladev.moneyjinn.model.etf.EtfValue;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
+import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public interface IEtfService {
-	List<Etf> getAllEtf();
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, YearToIntegerMapper.class })
+public interface EtfPreliminaryLumpSumTransportMapper
+		extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport> {
+	@Override
+	@Mapping(target = "id", source = "isin")
+	EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumTransport etfPreliminaryLumpSumData);
 
-	List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDateTime timeUntil);
-
-	EtfValue getEtfValueEndOfMonth(EtfIsin isin, Year year, Month month);
-
-	EtfFlow getEtfFlowById(EtfFlowID etfFlowId);
-
-	ValidationResult validateEtfFlow(EtfFlow etfFlow);
-
-	EtfFlowID createEtfFlow(EtfFlow etfFlow);
-
-	void updateEtfFlow(EtfFlow etfFlow);
-
-	void deleteEtfFlow(EtfFlowID etfFlowId);
-
-	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
-
-	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfIsin isin, Year year);
+	@Override
+	@Mapping(target = "isin", source = "id")
+	EtfPreliminaryLumpSumTransport mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 }

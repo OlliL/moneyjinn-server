@@ -32,7 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.YearMonth;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,7 +101,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
-	public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Integer year, final Month month) {
+	public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Year year, final Month month) {
 		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
 		return super.map(etfValueData, EtfValue.class);
 	}
@@ -194,36 +194,55 @@ public class EtfService extends AbstractService implements IEtfService {
 			}).toList();
 
 			// delete all preliminary lump sums older than the earliest effective flow
-			final YearMonth dateOfEarliestEtfBuyFlow = YearMonth.from(etfFlowWithTaxInfos.get(0).getTime());
-			etfPreliminaryLumpSums.removeIf(epls -> epls.getYearMonth().isBefore(dateOfEarliestEtfBuyFlow));
+			final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.get(0).getTime());
+			etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
 
 			for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
-				final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYearMonth().atDay(1).atStartOfDay();
-				final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYearMonth().atEndOfMonth()
-						.atTime(LocalTime.MAX);
-				final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
+				for (final Month month : Month.values()) {
+					final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
+							.atStartOfDay();
+					final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
+							.atTime(LocalTime.MAX);
+					final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows,
+							endOfMonth);
 
-				if (endOfMonth.getMonth().equals(Month.JANUARY)) {
-					final BigDecimal pieceTax = this.getPieceTax(etfPreliminaryLumpSum, relevantTaxFlows);
+					final BigDecimal amount = switch (month) {
+					case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
+					case FEBRUARY -> etfPreliminaryLumpSum.getAmountFebruary();
+					case MARCH -> etfPreliminaryLumpSum.getAmountMarch();
+					case APRIL -> etfPreliminaryLumpSum.getAmountApril();
+					case MAY -> etfPreliminaryLumpSum.getAmountMay();
+					case JUNE -> etfPreliminaryLumpSum.getAmountJune();
+					case JULY -> etfPreliminaryLumpSum.getAmountJuly();
+					case AUGUST -> etfPreliminaryLumpSum.getAmountAugust();
+					case SEPTEMBER -> etfPreliminaryLumpSum.getAmountSeptember();
+					case OCTOBER -> etfPreliminaryLumpSum.getAmountOctober();
+					case NOVEMBER -> etfPreliminaryLumpSum.getAmountNovember();
+					case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
+					};
 
-					etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
-							.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
-									efwti.getAccumulatedPreliminaryLumpSum()
-											.add(efwti.getAmount().multiply(pieceTax))));
-				} else {
-					final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
-							.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
-					if (!relevantTaxFlowsForThisMonth.isEmpty()) {
-						final BigDecimal pieceTax = this.getPieceTax(etfPreliminaryLumpSum,
-								relevantTaxFlowsForThisMonth);
+					if (month.equals(Month.JANUARY)) {
+						final BigDecimal pieceTax = this.getPieceTax(amount, relevantTaxFlows);
 
-						etfFlowWithTaxInfos.stream().filter(
-								efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
-								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
-										.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount().multiply(pieceTax))));
+						etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
+								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
+										efwti.getAccumulatedPreliminaryLumpSum()
+												.add(efwti.getAmount().multiply(pieceTax))));
+					} else {
+						final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
+								.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
+						if (!relevantTaxFlowsForThisMonth.isEmpty()) {
+							final BigDecimal pieceTax = this.getPieceTax(amount, relevantTaxFlowsForThisMonth);
+
+							etfFlowWithTaxInfos.stream().filter(
+									efwti -> !efwti.getTime().isAfter(endOfMonth)
+											&& !startOfMonth.isAfter(efwti.getTime()))
+									.forEach(efwti -> efwti
+											.setAccumulatedPreliminaryLumpSum(efwti.getAccumulatedPreliminaryLumpSum()
+													.add(efwti.getAmount().multiply(pieceTax))));
+						}
 					}
 				}
-
 			}
 
 			relevantEtfFlows.addAll(etfFlowWithTaxInfos);
@@ -232,12 +251,10 @@ public class EtfService extends AbstractService implements IEtfService {
 		return relevantEtfFlows;
 	}
 
-	private BigDecimal getPieceTax(final EtfPreliminaryLumpSum etfPreliminaryLumpSum,
-			final List<EtfFlow> relevantTaxFlows) {
+	private BigDecimal getPieceTax(final BigDecimal amount, final List<EtfFlow> relevantTaxFlows) {
 		final BigDecimal amountSum = relevantTaxFlows.stream().map(EtfFlow::getAmount).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
-		final BigDecimal pieceTax = etfPreliminaryLumpSum.getAmount().divide(amountSum, 10, RoundingMode.HALF_UP);
-		return pieceTax;
+		return amount.divide(amountSum, 10, RoundingMode.HALF_UP);
 	}
 
 	private List<EtfFlow> calculateEffectiveEtfFlowsUntil(final List<EtfFlow> etfFlows, final LocalDateTime until) {
@@ -271,5 +288,12 @@ public class EtfService extends AbstractService implements IEtfService {
 	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final EtfIsin isin) {
 		final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(isin.getId());
 		return super.mapList(datas, EtfPreliminaryLumpSum.class);
+	}
+
+	@Override
+	public EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(final EtfIsin isin, final Year year) {
+		final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(isin.getId(), year);
+		return super.map(data, EtfPreliminaryLumpSum.class);
+
 	}
 }

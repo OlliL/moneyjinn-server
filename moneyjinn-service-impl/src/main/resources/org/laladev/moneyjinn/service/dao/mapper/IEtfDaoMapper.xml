@@ -27,10 +27,20 @@
         </sql>
    
         <sql id="etfPreliminaryLumpSumColumns">
-                 isin
+                 met_isin AS metIsin
                 ,`year`
-                ,`month`
-                ,amount
+                ,amount01 AS amountJanuary
+                ,amount02 AS amountFebruary
+                ,amount03 AS amountMarch
+                ,amount04 AS amountApril
+                ,amount05 AS amountMay
+                ,amount06 AS amountJune
+                ,amount07 AS amountJuly
+                ,amount08 AS amountAugust
+                ,amount09 AS amountSeptember
+                ,amount10 AS amountOctober
+                ,amount11 AS amountNovember
+                ,amount12 AS amountDecember
         </sql>
 
 
@@ -110,12 +120,20 @@
                  LIMIT 1
         </delete>
  
-         <select id="getAllPreliminaryLumpSum"
+        <select id="getAllPreliminaryLumpSum"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
-                 WHERE isin = #{isin}
-                 ORDER BY `year`, `month` ASC
+                 WHERE met_isin = #{isin}
+                 ORDER BY `year` ASC
+        </select> 
+
+        <select id="getPreliminaryLumpSum"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+                SELECT <include refid="etfPreliminaryLumpSumColumns" />
+                  FROM etfpreliminarylumpsum
+                 WHERE met_isin   = #{isin}
+                   AND `year` = #{year}
         </select>       
 </mapper>
  

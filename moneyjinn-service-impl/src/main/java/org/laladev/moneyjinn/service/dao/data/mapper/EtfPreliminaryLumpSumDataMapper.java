@@ -26,44 +26,23 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import java.time.YearMonth;
-
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
+import org.laladev.moneyjinn.converter.javatypes.YearToIntegerMapper;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, MonthToIntegerMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, YearToIntegerMapper.class })
 public interface EtfPreliminaryLumpSumDataMapper
 		extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumData> {
 	@Override
-	@Mapping(target = "id", source = "isin")
-	@Mapping(target = "yearMonth", source = ".", qualifiedByName = "mapToYearMonth")
+	@Mapping(target = "id", source = "metIsin")
 	EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumData etfPreliminaryLumpSumData);
 
 	@Override
-	@Mapping(target = "isin", source = "id")
-	@Mapping(target = "year", source = "yearMonth", qualifiedByName = "mapToYear")
-	@Mapping(target = "month", source = "yearMonth", qualifiedByName = "mapToMonth")
+	@Mapping(target = "metIsin", source = "id")
 	EtfPreliminaryLumpSumData mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
-
-	@Named("mapToYearMonth")
-	default YearMonth mapToYearMonth(final EtfPreliminaryLumpSumData etfPreliminaryLumpSumData) {
-		return YearMonth.of(etfPreliminaryLumpSumData.getYear(), etfPreliminaryLumpSumData.getMonth());
-	}
-
-	@Named("mapToYear")
-	default Integer mapToYear(final YearMonth yearMonth) {
-		return yearMonth.getYear();
-	}
-
-	@Named("mapToMonth")
-	default Integer mapToMonth(final YearMonth yearMonth) {
-		return yearMonth.getMonthValue();
-	}
 }

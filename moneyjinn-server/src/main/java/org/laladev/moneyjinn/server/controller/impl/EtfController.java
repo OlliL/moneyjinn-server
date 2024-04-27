@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -95,6 +96,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			@PathVariable(value = "year") final Integer requestYear,
 			@PathVariable(value = "month") final Integer requestMonth) {
 		final Month month = Month.of(requestMonth);
+		final Year year = Year.of(requestYear);
 		final LocalDateTime endOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999)
 				.with(TemporalAdjusters.lastDayOfMonth());
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
@@ -102,7 +104,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 		final List<Etf> etfs = this.etfService.getAllEtf();
 		for (final Etf etf : etfs) {
-			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), requestYear, month);
+			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getId(), year, month);
 			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
 			final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(allEtfFlows);
 			if (etfFlows != null && !etfFlows.isEmpty()) {

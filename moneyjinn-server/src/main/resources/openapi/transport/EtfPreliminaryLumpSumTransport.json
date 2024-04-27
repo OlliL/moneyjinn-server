@@ -1,0 +1,64 @@
+{
+	"type": "object",
+	"required": [
+		"isin",
+		"year",
+		"amountJanuary",
+		"amountFebruary",
+		"amountMarch",
+		"amountApril",
+		"amountMay",
+		"amountJune",
+		"amountJuly",
+		"amountAugust",
+		"amountSeptember",
+		"amountOctober",
+		"amountNovember",
+		"amountDecember"
+	],
+	"properties": {
+		"isin": {
+			"type": "string"
+		},
+		"year": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"amountJanuary": {
+			"type": "number"
+		},
+		"amountFebruary": {
+			"type": "number"
+		},
+		"amountMarch": {
+			"type": "number"
+		},
+		"amountApril": {
+			"type": "number"
+		},
+		"amountMay": {
+			"type": "number"
+		},
+		"amountJune": {
+			"type": "number"
+		},
+		"amountJuly": {
+			"type": "number"
+		},
+		"amountAugust": {
+			"type": "number"
+		},
+		"amountSeptember": {
+			"type": "number"
+		},
+		"amountOctober": {
+			"type": "number"
+		},
+		"amountNovember": {
+			"type": "number"
+		},
+		"amountDecember": {
+			"type": "number"
+		}
+	}
+}

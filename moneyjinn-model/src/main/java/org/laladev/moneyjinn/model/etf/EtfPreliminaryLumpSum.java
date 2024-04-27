@@ -27,7 +27,7 @@
 package org.laladev.moneyjinn.model.etf;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
+import java.time.Year;
 
 import org.laladev.moneyjinn.model.AbstractEntity;
 
@@ -40,6 +40,17 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class EtfPreliminaryLumpSum extends AbstractEntity<EtfIsin> {
 	private static final long serialVersionUID = 1L;
-	private YearMonth yearMonth;
-	private BigDecimal amount;
+	private Year year;
+	private BigDecimal amountJanuary;
+	private BigDecimal amountFebruary;
+	private BigDecimal amountMarch;
+	private BigDecimal amountApril;
+	private BigDecimal amountMay;
+	private BigDecimal amountJune;
+	private BigDecimal amountJuly;
+	private BigDecimal amountAugust;
+	private BigDecimal amountSeptember;
+	private BigDecimal amountOctober;
+	private BigDecimal amountNovember;
+	private BigDecimal amountDecember;
 }
