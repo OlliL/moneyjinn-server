@@ -91,12 +91,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setSellPrice(sellPrice);
 		expected.setNewBuyPrice(newBuyPrice);
 		expected.setProfit(new BigDecimal("974.52"));
-		expected.setChargeable(new BigDecimal("668.71"));
+		expected.setChargeable(new BigDecimal("668.23"));
 		expected.setTransactionCosts(new BigDecimal("1.98"));
 		expected.setRebuyLosses(new BigDecimal("5.00"));
 		expected.setOverallCosts(new BigDecimal("6.98"));
 		expected.setPieces(pieces);
-		expected.accumulatedPreliminaryLumpSum(new BigDecimal("19.22"));
+		expected.accumulatedPreliminaryLumpSum(new BigDecimal("19.91"));
 		return expected;
 	}
 
@@ -110,7 +110,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(new BigDecimal("2"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final BigDecimal expectedSum = new BigDecimal("5.56");
+		final BigDecimal expectedSum = new BigDecimal("6.19");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
@@ -127,11 +127,11 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(new BigDecimal("160"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		// 02.234pcs -> (7.2€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.215€
-		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.626€
-		// 76.766pcs -> (109.32€ / 110.000pcs) * 76.766pcs = 076.291€
-		// --> 6.215€ + 135.626€ + 76.291€ == 218.132€
-		final BigDecimal expectedSum = new BigDecimal("218.13");
+		// 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
+		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
+		// 76.766pcs -> (109.32€ / 110.000pcs) * 76.766pcs = 117.821€
+		// --> 6.909€ + 135.625€ + 117.821€ == 260.36€
+		final BigDecimal expectedSum = new BigDecimal("260.36");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
@@ -148,11 +148,11 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(new BigDecimal("180"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		// 02.234pcs -> (7.2€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.215€
-		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.626€
-		// 96.766pcs -> (109.32€ / 110.000pcs) * 96.766pcs = 096.168€
-		// --> 6.215€ + 135.626€ + 96.168€ == 238.009€
-		final BigDecimal expectedSum = new BigDecimal("238.01");
+		// 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
+		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
+		// 96.766pcs -> (109.32€ / 110.000pcs) * 96.766pcs = 148.518€
+		// --> 6.909€ + 135.625€ + 148.518€ == 291.05€
+		final BigDecimal expectedSum = new BigDecimal("291.05");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
