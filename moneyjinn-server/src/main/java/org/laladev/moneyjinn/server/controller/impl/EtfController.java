@@ -242,6 +242,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				response.setNewBuyPrice(newBuyPrice);
 				response.setSellPrice(sellPrice);
 				response.setTransactionCosts(transactionCosts);
+				response.setEtfId(etfId.getId());
 				response.setIsin(etfIsin.getId());
 				response.setPieces(pieces);
 				response.setOriginalBuyPrice(originalBuyPrice);

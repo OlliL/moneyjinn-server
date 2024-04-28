@@ -1,6 +1,7 @@
 {
 	"type": "object",
 	"required": [
+		"etfId",
 		"isin",
 		"originalBuyPrice",
 		"sellPrice",
@@ -14,6 +15,10 @@
 		"pieces"
 	],
 	"properties": {
+		"etfId": {
+			"type": "integer",
+			"format": "int64"
+		},
 		"isin": {
 			"type": "string"
 		},
