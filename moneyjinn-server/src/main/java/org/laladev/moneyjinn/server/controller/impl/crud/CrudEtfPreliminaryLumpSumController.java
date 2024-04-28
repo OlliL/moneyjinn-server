@@ -27,7 +27,7 @@ package org.laladev.moneyjinn.server.controller.impl.crud;
 import java.time.Year;
 import java.util.List;
 
-import org.laladev.moneyjinn.model.etf.EtfIsin;
+import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
@@ -64,22 +64,22 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("isin") final String isin) {
-		final EtfIsin etfIsin = new EtfIsin(isin);
+	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("etfId") final Long requestEtfId) {
+		final EtfID etfId = new EtfID(requestEtfId);
 
-		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfIsin);
+		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfId);
 
 		return allYears.isEmpty() ? ResponseEntity.notFound().build()
 				: ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
 	}
 
 	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("isin") final String isin,
+	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("etfId") final Long requestEtfId,
 			@PathVariable("year") final Integer requestYear) {
-		final EtfIsin etfIsin = new EtfIsin(isin);
+		final EtfID etfId = new EtfID(requestEtfId);
 		final Year year = Year.of(requestYear);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
 
@@ -116,12 +116,12 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<Void> delete(@PathVariable("isin") final String isin,
+	public ResponseEntity<Void> delete(@PathVariable("etfId") final Long requestEtfId,
 			@PathVariable("year") final Integer requestYear) {
-		final EtfIsin etfIsin = new EtfIsin(isin);
+		final EtfID etfId = new EtfID(requestEtfId);
 		final Year year = Year.of(requestYear);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
 		this.etfService.deleteEtfPreliminaryLumpSum(id);
 

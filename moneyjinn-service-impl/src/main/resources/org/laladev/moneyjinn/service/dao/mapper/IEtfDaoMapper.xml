@@ -3,7 +3,8 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
 
            <sql id="etfColumns">
-                 isin
+                 etfid
+                ,isin
                 ,name
                 ,wkn
                 ,ticker
@@ -12,8 +13,8 @@
         
         <sql id="etfFlowsColumns">
                  etfflowid
+                ,met_etfid   AS metEtfid
                 ,flowdate
-                ,isin
                 ,amount
                 ,price
         </sql>
@@ -27,7 +28,7 @@
         </sql>
    
         <sql id="etfPreliminaryLumpSumColumns">
-                 met_isin AS metIsin
+                 met_etfid AS metEtfid
                 ,`year`
                 ,amount01 AS amountJanuary
                 ,amount02 AS amountFebruary
@@ -54,7 +55,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
                   FROM etf
-                 WHERE isin     = #{isin}
+                 WHERE etfid = #{metEtfid}
                  LIMIT 1
         </select>
                     
@@ -62,7 +63,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />
                   FROM etfflows
-                 WHERE isin = #{isin}
+                 WHERE met_etfid = #{metEtfid}
                    AND flowdate <![CDATA[ <= ]]> #{dateUntil}
                  ORDER BY flowdate DESC
         </select>
@@ -81,7 +82,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />
                   FROM etfflows
-                 WHERE etfflowid     = #{id}
+                 WHERE etfflowid = #{id}
                  LIMIT 1
         </select>
         
@@ -90,14 +91,14 @@
                 useGeneratedKeys="true" keyProperty="etfflowid" keyColumn="etfflowid">
                 INSERT
                   INTO etfflows
-                      (flowdate
-                      ,isin
+                      (met_etfid
+                      ,flowdate
                       ,amount
                       ,price
                       )
                 VALUES
-                      (#{flowdate}
-                      ,#{isin}
+                      (#{metEtfid}
+                      ,#{flowdate}
                       ,#{amount}
                       ,#{price}
                       )
@@ -106,7 +107,7 @@
         <update id="updateEtfFlow" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 UPDATE etfflows
                    SET flowdate      = #{flowdate}
-                      ,isin          = #{isin}
+                      ,met_etfid     = #{metEtfid}
                       ,amount        = #{amount}
                       ,price         = #{price}
                  WHERE etfflowid     = #{etfflowid}
@@ -124,7 +125,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
-                 WHERE met_isin = #{isin}
+                 WHERE met_etfid = #{metEtfid}
                  ORDER BY `year` ASC
         </select> 
 
@@ -132,14 +133,14 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
-                 WHERE met_isin   = #{isin}
-                   AND `year` = #{year}
+                 WHERE met_etfid = #{metEtfid}
+                   AND `year`    = #{year}
         </select>
         
         <select id="getAllPreliminaryLumpSumYears" resultType="java.lang.Integer">
                 SELECT `year`
                   FROM etfpreliminarylumpsum
-                 WHERE met_isin = #{isin}
+                 WHERE met_etfid = #{metEtfid}
                  ORDER BY `year` ASC
         </select>     
 
@@ -147,7 +148,7 @@
                 parameterType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 INSERT
                   INTO etfpreliminarylumpsum
-                      (met_isin
+                      (met_etfid
                       ,`year`
                       ,amount01
                       ,amount02
@@ -163,7 +164,7 @@
                       ,amount12
                       )
                 VALUES
-                      (#{metIsin}
+                      (#{metEtfid}
                       ,#{year}
                       ,#{amountJanuary}
                       ,#{amountFebruary}
@@ -194,7 +195,7 @@
                       ,amount10      = #{amountOctober}
                       ,amount11      = #{amountNovember}
                       ,amount12      = #{amountDecember}
-                 WHERE met_isin      = #{metIsin}
+                 WHERE met_etfid     = #{metEtfid}
                    AND `year`        = #{year}
                  LIMIT 1
         </update>
@@ -202,8 +203,8 @@
         <delete id="deletePreliminaryLumpSum">
                 DELETE
                   FROM etfpreliminarylumpsum
-                 WHERE met_isin = #{isin}
-                   AND `year`   = #{year}
+                 WHERE met_etfid = #{metEtfid}
+                   AND `year`    = #{year}
                  LIMIT 1
         </delete>
 </mapper>

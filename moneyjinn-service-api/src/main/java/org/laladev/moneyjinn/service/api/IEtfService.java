@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
+import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
@@ -44,9 +45,9 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
 public interface IEtfService {
 	List<Etf> getAllEtf();
 
-	List<EtfFlow> getAllEtfFlowsUntil(EtfIsin isin, LocalDateTime timeUntil);
+	List<EtfFlow> getAllEtfFlowsUntil(EtfID etfId, LocalDateTime timeUntil);
 
-	EtfValue getEtfValueEndOfMonth(EtfIsin isin, Year year, Month month);
+	EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
 
 	EtfFlow getEtfFlowById(EtfFlowID etfFlowId);
 
@@ -62,7 +63,7 @@ public interface IEtfService {
 
 	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
 
-	List<Year> getAllEtfPreliminaryLumpSumYears(EtfIsin isin);
+	List<Year> getAllEtfPreliminaryLumpSumYears(EtfID etfId);
 
 	ValidationResult validateEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 

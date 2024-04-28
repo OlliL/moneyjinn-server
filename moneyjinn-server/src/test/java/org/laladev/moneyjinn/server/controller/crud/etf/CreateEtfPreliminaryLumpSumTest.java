@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
+import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
@@ -49,10 +49,10 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
-		final var etfIsin = new EtfIsin(EtfTransportBuilder.ISIN);
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
@@ -68,10 +68,10 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
-		final var etfIsin = new EtfIsin(EtfTransportBuilder.ISIN);
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
@@ -90,10 +90,10 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
-		final var etfIsin = new EtfIsin(EtfTransportBuilder.ISIN);
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
@@ -108,7 +108,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	void test_EtfPreliminaryLumpSumNonExistingIsin_Error() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
-		transport.setIsin(EtfTransportBuilder.NON_EXISTING_ISIN);
+		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
 		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
 	}
 
@@ -116,7 +116,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	void test_EtfPreliminaryLumpSumNonEmptyIsin_Error() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
-		transport.setIsin(null);
+		transport.setEtfId(null);
 		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
 	}
 

@@ -34,8 +34,8 @@ import lombok.Data;
 @Data
 public class EtfFlowData {
 	private Long etfflowid;
+	private Long metEtfid;
 	private LocalDateTime flowdate;
-	private String isin;
 	private BigDecimal amount;
 	private BigDecimal price;
 }

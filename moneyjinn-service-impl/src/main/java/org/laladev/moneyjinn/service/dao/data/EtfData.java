@@ -30,6 +30,7 @@ import lombok.Data;
 
 @Data
 public class EtfData {
+	private Long etfid;
 	private String isin;
 	private String name;
 	private String wkn;

@@ -13,7 +13,7 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 	public static final Integer NON_EXISTING_YEAR = 1970;
 
 	public EtfPreliminaryLumpSumTransportBuilder for2009() {
-		super.setIsin(EtfTransportBuilder.ISIN);
+		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
 		super.setYear(YEAR_2009);
 		super.setAmountJanuary(new BigDecimal("134.23"));
 		super.setAmountFebruary(new BigDecimal("9.22"));
@@ -31,7 +31,7 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 	}
 
 	public EtfPreliminaryLumpSumTransportBuilder for2010() {
-		super.setIsin(EtfTransportBuilder.ISIN);
+		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
 		super.setYear(YEAR_2010);
 		super.setAmountJanuary(new BigDecimal("156.11"));
 		super.setAmountFebruary(new BigDecimal("168.83"));
@@ -49,7 +49,7 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 	}
 
 	public EtfPreliminaryLumpSumTransportBuilder forNewYear() {
-		super.setIsin(EtfTransportBuilder.ISIN);
+		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
 		super.setYear(NEW_YEAR);
 		super.setAmountJanuary(new BigDecimal("1"));
 		super.setAmountFebruary(new BigDecimal("2"));
@@ -68,7 +68,7 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 
 	public EtfPreliminaryLumpSumTransport build() {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransport();
-		transport.setIsin(super.getIsin());
+		transport.setEtfId(this.getEtfId());
 		transport.setYear(this.getYear());
 		transport.setAmountJanuary(this.getAmountJanuary());
 		transport.setAmountFebruary(this.getAmountFebruary());

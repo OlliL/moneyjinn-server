@@ -1,6 +1,7 @@
 {
 	"type": "object",
 	"required": [
+		"etfId",
 		"isin",
 		"name",
 		"wkn",
@@ -8,6 +9,10 @@
 		"chartUrl"
 	],
 	"properties": {
+		"etfId": {
+			"type": "integer",
+			"format": "int64"
+		},
 		"isin": {
 			"type": "string"
 		},

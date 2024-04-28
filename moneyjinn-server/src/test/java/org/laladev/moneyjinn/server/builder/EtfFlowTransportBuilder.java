@@ -20,10 +20,12 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 	public static final Long ETF_FLOW_10ID = 10L;
 	public static final Long ETF_FLOW_11ID = 11L;
 	public static final Long NEXT_ID = 12L;
-	public static final String ISIN = "ISIN123";
+	public static final String ISIN = EtfTransportBuilder.ISIN;
+	public static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
 
 	public EtfFlowTransportBuilder forFlow1() {
 		super.setEtfflowid(ETF_FLOW_1ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -34,6 +36,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow2() {
 		super.setEtfflowid(ETF_FLOW_2ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("100.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -44,6 +47,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow3() {
 		super.setEtfflowid(ETF_FLOW_3ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-50.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -54,6 +58,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow4() {
 		super.setEtfflowid(ETF_FLOW_4ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("1.234"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -64,6 +69,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow5() {
 		super.setEtfflowid(ETF_FLOW_5ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("5.500"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
@@ -74,6 +80,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow6() {
 		super.setEtfflowid(ETF_FLOW_6ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("6.500"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
@@ -84,6 +91,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow7() {
 		super.setEtfflowid(ETF_FLOW_7ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-81.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -94,6 +102,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow8() {
 		super.setEtfflowid(ETF_FLOW_8ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("81.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -104,6 +113,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow9() {
 		super.setEtfflowid(ETF_FLOW_9ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("80.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -114,6 +124,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow10() {
 		super.setEtfflowid(ETF_FLOW_10ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-10.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -124,6 +135,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forFlow11() {
 		super.setEtfflowid(ETF_FLOW_11ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -134,6 +146,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 
 	public EtfFlowTransportBuilder forNewFlow() {
 		super.setEtfflowid(NEXT_ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("100.432"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(20000000);
@@ -145,6 +158,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 	public EtfFlowTransport build() {
 		final EtfFlowTransport transport = new EtfFlowTransport();
 		transport.setEtfflowid(super.getEtfflowid());
+		transport.setEtfId(super.getEtfId());
 		transport.setAmount(super.getAmount());
 		transport.setIsin(super.getIsin());
 		transport.setNanoseconds(super.getNanoseconds());

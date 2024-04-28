@@ -17,7 +17,7 @@ public class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLump
 	void test_HappyCase_ResponseObject() throws Exception {
 		final EtfPreliminaryLumpSumTransport expected = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 		final EtfPreliminaryLumpSumTransport actual = super.callUsecaseExpect200(EtfPreliminaryLumpSumTransport.class,
-				EtfTransportBuilder.ISIN, 2009);
+				EtfTransportBuilder.ETF_ID_1, 2009);
 
 		Assertions.assertNotNull(actual);
 		Assertions.assertEquals(expected, actual);
@@ -26,18 +26,19 @@ public class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLump
 
 	@Test
 	void test_notExisting_NotFoundRaised() throws Exception {
-		super.callUsecaseExpect404(EtfTransportBuilder.ISIN, EtfPreliminaryLumpSumTransportBuilder.NON_EXISTING_YEAR);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1,
+				EtfPreliminaryLumpSumTransportBuilder.NON_EXISTING_YEAR);
 	}
 
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
-		super.callUsecaseExpect403WithUriVariables(EtfTransportBuilder.ISIN,
+		super.callUsecaseExpect403WithUriVariables(EtfTransportBuilder.ETF_ID_1,
 				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 	}
 
 	@Override
 	protected void callUsecaseEmptyDatabase() throws Exception {
-		super.callUsecaseExpect404(EtfTransportBuilder.ISIN, EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1, EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 	}
 
 }

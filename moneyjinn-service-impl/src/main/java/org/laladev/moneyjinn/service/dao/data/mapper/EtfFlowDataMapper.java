@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
+import org.laladev.moneyjinn.converter.EtfIdMapper;
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -35,15 +36,17 @@ import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class, EtfIdMapper.class })
 public interface EtfFlowDataMapper extends IMapstructMapper<EtfFlow, EtfFlowData> {
 	@Override
 	@Mapping(target = "id", source = "etfflowid")
 	@Mapping(target = "time", source = "flowdate")
+	@Mapping(target = "etfId", source = "metEtfid")
 	EtfFlow mapBToA(EtfFlowData a);
 
 	@Override
 	@Mapping(target = "etfflowid", source = "id")
 	@Mapping(target = "flowdate", source = "time")
+	@Mapping(target = "metEtfid", source = "etfId")
 	EtfFlowData mapAToB(EtfFlow b);
 }

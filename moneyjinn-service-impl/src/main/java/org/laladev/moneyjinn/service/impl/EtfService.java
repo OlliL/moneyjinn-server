@@ -47,6 +47,7 @@ import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
+import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
@@ -97,14 +98,14 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
-	public List<EtfFlow> getAllEtfFlowsUntil(final EtfIsin isin, final LocalDateTime timeUntil) {
-		final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(isin.getId(), timeUntil);
+	public List<EtfFlow> getAllEtfFlowsUntil(final EtfID etfId, final LocalDateTime timeUntil) {
+		final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(etfId.getId(), timeUntil);
 		return super.mapList(etfFlowData, EtfFlow.class);
 	}
 
 	@Override
-	public EtfValue getEtfValueEndOfMonth(final EtfIsin isin, final Year year, final Month month) {
-		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(isin.getId(), year, month);
+	public EtfValue getEtfValueEndOfMonth(final EtfIsin etfIsin, final Year year, final Month month) {
+		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(etfIsin, year, month);
 		return super.map(etfValueData, EtfValue.class);
 	}
 
@@ -128,10 +129,10 @@ public class EtfService extends AbstractService implements IEtfService {
 			addResult.accept(ErrorCode.PRICE_NOT_SET);
 		}
 
-		if (etfFlow.getIsin() == null || etfFlow.getIsin().getId().isBlank()) {
+		if (etfFlow.getEtfId() == null || etfFlow.getEtfId().getId() == null) {
 			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 		} else {
-			final EtfData etfData = this.etfDao.getEtfById(etfFlow.getIsin().getId());
+			final EtfData etfData = this.etfDao.getEtfById(etfFlow.getEtfId().getId());
 			if (etfData == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			}
@@ -152,11 +153,11 @@ public class EtfService extends AbstractService implements IEtfService {
 
 		} else {
 			final EtfPreliminaryLumpSumIDValues idValues = etfPreliminaryLumpSum.getId().getId();
-			if (idValues.getEtfIsin() == null || idValues.getEtfIsin().getId().isBlank()) {
+			if (idValues.getEtfId() == null || idValues.getEtfId().getId() == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			} else {
 				final EtfData etfData = this.etfDao
-						.getEtfById(etfPreliminaryLumpSum.getId().getId().getEtfIsin().getId());
+						.getEtfById(etfPreliminaryLumpSum.getId().getId().getEtfId().getId());
 				if (etfData == null) {
 					addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 				}
@@ -209,8 +210,8 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final List<EtfFlow> allEtfFlows) {
 		final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
-		final Map<EtfIsin, List<EtfFlow>> etfFlowsByIsinMap = allEtfFlows.stream()
-				.collect(Collectors.groupingBy(EtfFlow::getIsin));
+		final Map<EtfID, List<EtfFlow>> etfFlowsByIsinMap = allEtfFlows.stream()
+				.collect(Collectors.groupingBy(EtfFlow::getEtfId));
 
 		final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
 		for (final var etfFlowsByIsinMapEntry : etfFlowsByIsinMap.entrySet()) {
@@ -317,23 +318,23 @@ public class EtfService extends AbstractService implements IEtfService {
 		return etfBuyFlows;
 	}
 
-	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final EtfIsin isin) {
-		final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(isin.getId());
+	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final EtfID etfId) {
+		final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
 		return super.mapList(datas, EtfPreliminaryLumpSum.class);
 	}
 
 	@Override
 	public EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(final EtfPreliminaryLumpSumID id) {
 		final var idValues = id.getId();
-		final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(idValues.getEtfIsin().getId(),
+		final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(idValues.getEtfId().getId(),
 				idValues.getYear());
 		return super.map(data, EtfPreliminaryLumpSum.class);
 
 	}
 
 	@Override
-	public List<Year> getAllEtfPreliminaryLumpSumYears(final EtfIsin isin) {
-		final List<Integer> datas = this.etfDao.getAllPreliminaryLumpSumYears(isin.getId());
+	public List<Year> getAllEtfPreliminaryLumpSumYears(final EtfID etfId) {
+		final List<Integer> datas = this.etfDao.getAllPreliminaryLumpSumYears(etfId.getId());
 		return datas.stream().map(Year::of).toList();
 	}
 
@@ -374,10 +375,10 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(id, "ID must not be null!");
 		final var idValues = id.getId();
 		Assert.notNull(idValues, "ID must not be null!");
-		Assert.notNull(idValues.getEtfIsin(), "ISIN must not be null!");
-		Assert.notNull(idValues.getEtfIsin().getId(), "ISIN must not be null!");
+		Assert.notNull(idValues.getEtfId(), "ISIN must not be null!");
+		Assert.notNull(idValues.getEtfId().getId(), "ISIN must not be null!");
 		Assert.notNull(idValues.getYear(), "year must not be null!");
 
-		this.etfDao.deletePreliminaryLumpSum(idValues.getEtfIsin().getId(), idValues.getYear());
+		this.etfDao.deletePreliminaryLumpSum(idValues.getEtfId().getId(), idValues.getYear());
 	}
 }

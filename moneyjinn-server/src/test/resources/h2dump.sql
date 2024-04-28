@@ -184,12 +184,14 @@ DROP TABLE IF EXISTS `etf`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etf` (
+  `etfid` int unsigned NOT NULL AUTO_INCREMENT,
   `isin` varchar(30) NOT NULL,
   `name` varchar(60) NOT NULL,
   `wkn` varchar(10) NOT NULL,
   `ticker` varchar(10) NOT NULL,
   `chart_url` varchar(255) NOT NULL,
-  PRIMARY KEY (`isin`)
+  PRIMARY KEY (`etfid`),
+  UNIQUE KEY `met_i_01` (`name`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -202,12 +204,13 @@ DROP TABLE IF EXISTS `etfflows`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfflows` (
   `etfflowid` int unsigned NOT NULL AUTO_INCREMENT,
+  `met_etfid` int unsigned NOT NULL,
   `flowdate` datetime(6) NOT NULL,
-  `isin` varchar(30) NOT NULL,
   `amount` decimal(10,3) NOT NULL,
   `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`),
-  KEY `flowdate` (`isin`,`flowdate`)
+  UNIQUE KEY `mef_i_01` (`met_etfid`,`flowdate`),
+  CONSTRAINT `mef_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,7 +239,7 @@ DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfpreliminarylumpsum` (
-  `met_isin` varchar(30) CHARACTER SET utf8mb3 NOT NULL,
+  `met_etfid` int unsigned NOT NULL,
   `year` year NOT NULL,
   `amount01` decimal(8,2) NOT NULL,
   `amount02` decimal(8,2) NOT NULL,
@@ -250,8 +253,8 @@ CREATE TABLE `etfpreliminarylumpsum` (
   `amount10` decimal(8,2) NOT NULL,
   `amount11` decimal(8,2) NOT NULL,
   `amount12` decimal(8,2) NOT NULL,
-  PRIMARY KEY (`met_isin`,`year`),
-  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_isin`) REFERENCES `etf` (`isin`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`met_etfid`,`year`),
+  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

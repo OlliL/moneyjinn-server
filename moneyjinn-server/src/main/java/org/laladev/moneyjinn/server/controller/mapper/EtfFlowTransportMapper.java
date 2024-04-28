@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
+import org.laladev.moneyjinn.converter.EtfIdMapper;
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -38,7 +39,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class,
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfIdMapper.class, EtfFlowIdMapper.class,
 		LocalDateTimeToOffsetDateTimeMapper.class })
 public interface EtfFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfFlowTransport> {
 	@Override
@@ -50,6 +51,7 @@ public interface EtfFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfFlo
 	@Mapping(target = "etfflowid", source = "id")
 	@Mapping(target = "nanoseconds", source = "time.nano")
 	@Mapping(target = "timestamp", source = "time")
+	@Mapping(target = "isin", ignore = true)
 	EtfFlowTransport mapAToB(EtfFlow etfFlow);
 
 	@AfterMapping

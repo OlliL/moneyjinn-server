@@ -1,7 +1,7 @@
 {
 	"type": "object",
 	"required": [
-		"isin",
+		"etfId",
 		"year",
 		"amountJanuary",
 		"amountFebruary",
@@ -17,8 +17,9 @@
 		"amountDecember"
 	],
 	"properties": {
-		"isin": {
-			"type": "string"
+		"etfId": {
+			"type": "integer",
+			"format": "int64"
 		},
 		"year": {
 			"type": "integer",

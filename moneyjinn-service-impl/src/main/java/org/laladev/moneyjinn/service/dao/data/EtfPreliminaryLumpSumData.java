@@ -32,7 +32,7 @@ import lombok.Data;
 
 @Data
 public class EtfPreliminaryLumpSumData {
-	private String metIsin;
+	private Long metEtfid;
 	private Integer year;
 	private BigDecimal amountJanuary;
 	private BigDecimal amountFebruary;

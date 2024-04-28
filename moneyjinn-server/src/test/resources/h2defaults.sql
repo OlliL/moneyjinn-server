@@ -4,6 +4,7 @@ ALTER TABLE `capitalsources` ALTER COLUMN `capitalsourceid` RESTART WITH 1;
 ALTER TABLE `postingaccounts` ALTER COLUMN `postingaccountid` RESTART WITH 1;
 ALTER TABLE `contractpartners` ALTER COLUMN `contractpartnerid` RESTART WITH 1;
 ALTER TABLE `contractpartneraccounts` ALTER COLUMN `contractpartneraccountid` RESTART WITH 1;
+ALTER TABLE `etf` ALTER COLUMN `etfid` RESTART WITH 1;
 ALTER TABLE `etfflows` ALTER COLUMN `etfflowid` RESTART WITH 1;
 ALTER TABLE `moneyflows` ALTER COLUMN `moneyflowid` RESTART WITH 1;
 ALTER TABLE `moneyflowsplitentries` ALTER COLUMN `moneyflowsplitentryid` RESTART WITH 1;

@@ -12,10 +12,12 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 	public static final Long ETF_FLOW_8ID = 8L;
 	public static final Long ETF_FLOW_9ID = 9L;
 	public static final Long ETF_FLOW_11ID = 11L;
-	public static final String ISIN = "ISIN123";
+	public static final String ISIN = EtfTransportBuilder.ISIN;
+	public static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
 
 	public EtfEffectiveFlowTransportBuilder forFlow6() {
 		super.setEtfflowid(ETF_FLOW_6ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("2.234"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
@@ -26,6 +28,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 
 	public EtfEffectiveFlowTransportBuilder forFlow8() {
 		super.setEtfflowid(ETF_FLOW_8ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("81.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -36,6 +39,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 
 	public EtfEffectiveFlowTransportBuilder forFlow9() {
 		super.setEtfflowid(ETF_FLOW_9ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("80.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -46,6 +50,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 
 	public EtfEffectiveFlowTransportBuilder forFlow11() {
 		super.setEtfflowid(ETF_FLOW_11ID);
+		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
 		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
@@ -57,6 +62,7 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 	public EtfEffectiveFlowTransport build() {
 		final EtfEffectiveFlowTransport transport = new EtfEffectiveFlowTransport();
 		transport.setEtfflowid(super.getEtfflowid());
+		transport.setEtfId(super.getEtfId());
 		transport.setAmount(super.getAmount());
 		transport.setIsin(super.getIsin());
 		transport.setNanoseconds(super.getNanoseconds());

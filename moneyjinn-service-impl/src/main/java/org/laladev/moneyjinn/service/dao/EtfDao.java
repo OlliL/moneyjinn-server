@@ -33,6 +33,7 @@ import java.time.Year;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
@@ -52,18 +53,18 @@ public class EtfDao {
 		return this.mapper.getAllEtf();
 	}
 
-	public EtfData getEtfById(final String isin) {
-		return this.mapper.getEtfById(isin);
+	public EtfData getEtfById(final Long etfId) {
+		return this.mapper.getEtfById(etfId);
 	}
 
-	public EtfValueData getEtfValueForMonth(final String isin, final Year year, final Month month) {
+	public EtfValueData getEtfValueForMonth(final EtfIsin etfIsin, final Year year, final Month month) {
 		final LocalDate startDate = year.atMonth(month).atDay(1);
 		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-		return this.mapper.getEtfValueForMonth(isin, startDate, endDate);
+		return this.mapper.getEtfValueForMonth(etfIsin.getId(), startDate, endDate);
 	}
 
-	public List<EtfFlowData> getAllFlowsUntil(final String isin, final LocalDateTime timeUntil) {
-		return this.mapper.getAllFlowsUntil(isin, timeUntil);
+	public List<EtfFlowData> getAllFlowsUntil(final Long etfId, final LocalDateTime timeUntil) {
+		return this.mapper.getAllFlowsUntil(etfId, timeUntil);
 	}
 
 	public EtfFlowData getEtfFowById(final Long etfFlowId) {
@@ -83,16 +84,16 @@ public class EtfDao {
 		this.mapper.deleteEtfFlow(etfFlowId);
 	}
 
-	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final String isin) {
-		return this.mapper.getAllPreliminaryLumpSum(isin);
+	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final Long etfId) {
+		return this.mapper.getAllPreliminaryLumpSum(etfId);
 	}
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final String isin, final Year year) {
-		return this.mapper.getPreliminaryLumpSum(isin, year.getValue());
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final Long etfId, final Year year) {
+		return this.mapper.getPreliminaryLumpSum(etfId, year.getValue());
 	}
 
-	public List<Integer> getAllPreliminaryLumpSumYears(final String isin) {
-		return this.mapper.getAllPreliminaryLumpSumYears(isin);
+	public List<Integer> getAllPreliminaryLumpSumYears(final Long etfId) {
+		return this.mapper.getAllPreliminaryLumpSumYears(etfId);
 	}
 
 	public void createPreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
@@ -103,7 +104,7 @@ public class EtfDao {
 		this.mapper.updatePreliminaryLumpSum(data);
 	}
 
-	public void deletePreliminaryLumpSum(final String isin, final Year year) {
-		this.mapper.deletePreliminaryLumpSum(isin, year.getValue());
+	public void deletePreliminaryLumpSum(final Long etfId, final Year year) {
+		this.mapper.deletePreliminaryLumpSum(etfId, year.getValue());
 	}
 }

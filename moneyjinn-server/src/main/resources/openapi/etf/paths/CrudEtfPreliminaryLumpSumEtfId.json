@@ -1,11 +1,12 @@
 {
 	"parameters": [
 		{
-			"name": "isin",
+			"name": "etfId",
 			"in": "path",
 			"required": true,
 			"schema": {
-				"type": "string"
+				"type": "integer",
+				"format": "int64"
 			}
 		}
 	],

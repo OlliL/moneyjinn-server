@@ -39,9 +39,10 @@ import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 public interface IEtfDaoMapper {
 	public List<EtfData> getAllEtf();
 
-	public EtfData getEtfById(@Param("isin") String isin);
+	public EtfData getEtfById(@Param("metEtfid") Long etfId);
 
-	public List<EtfFlowData> getAllFlowsUntil(@Param("isin") String isin, @Param("dateUntil") LocalDateTime timeUntil);
+	public List<EtfFlowData> getAllFlowsUntil(@Param("metEtfid") Long etfId,
+			@Param("dateUntil") LocalDateTime timeUntil);
 
 	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("startDate") LocalDate startDate,
 			@Param("endDate") LocalDate endDate);
@@ -54,15 +55,15 @@ public interface IEtfDaoMapper {
 
 	public void deleteEtfFlow(@Param("id") Long id);
 
-	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("isin") String isin);
+	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("metEtfid") Long etfId);
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(@Param("isin") String isin, @Param("year") Integer year);
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(@Param("metEtfid") Long etfId, @Param("year") Integer year);
 
-	public List<Integer> getAllPreliminaryLumpSumYears(@Param("isin") String isin);
+	public List<Integer> getAllPreliminaryLumpSumYears(@Param("metEtfid") Long etfId);
 
 	public void createPreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 
 	public void updatePreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 
-	public void deletePreliminaryLumpSum(@Param("isin") String isin, @Param("year") Integer year);
+	public void deletePreliminaryLumpSum(@Param("metEtfid") Long etfId, @Param("year") Integer year);
 }

@@ -42,14 +42,14 @@ import lombok.ToString;
 @NoArgsConstructor
 public class EtfFlow extends AbstractEntity<EtfFlowID> {
 	private static final long serialVersionUID = 1L;
-	private EtfIsin isin;
+	private EtfID etfId;
 	private LocalDateTime time;
 	private BigDecimal amount;
 	private BigDecimal price;
 
 	public EtfFlow(final EtfFlow etfFlow) {
 		super.setId(etfFlow.getId());
-		this.setIsin(etfFlow.getIsin());
+		this.setEtfId(etfFlow.getEtfId());
 		this.setAmount(etfFlow.getAmount());
 		this.setPrice(etfFlow.getPrice());
 		this.setTime(etfFlow.getTime());

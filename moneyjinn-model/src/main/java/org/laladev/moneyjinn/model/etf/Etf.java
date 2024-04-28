@@ -35,8 +35,9 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Etf extends AbstractEntity<EtfIsin> {
+public class Etf extends AbstractEntity<EtfID> {
 	private static final long serialVersionUID = 1L;
+	private EtfIsin isin;
 	private String name;
 	private String wkn;
 	private String ticker;

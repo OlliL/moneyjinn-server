@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.converter.EtfIsinMapper;
+import org.laladev.moneyjinn.converter.EtfIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.YearToIntegerMapper;
@@ -35,16 +35,16 @@ import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, YearToIntegerMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIdMapper.class, YearToIntegerMapper.class })
 public interface EtfPreliminaryLumpSumTransportMapper
 		extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport> {
 	@Override
-	@Mapping(target = "id.id.etfIsin", source = "isin")
+	@Mapping(target = "id.id.etfId", source = "etfId")
 	@Mapping(target = "id.id.year", source = "year")
 	EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumTransport etfPreliminaryLumpSumData);
 
 	@Override
-	@Mapping(target = "isin", source = "id.id.etfIsin")
+	@Mapping(target = "etfId", source = "id.id.etfId")
 	@Mapping(target = "year", source = "id.id.year")
 	EtfPreliminaryLumpSumTransport mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 }

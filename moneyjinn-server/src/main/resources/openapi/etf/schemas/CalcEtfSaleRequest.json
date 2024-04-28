@@ -1,8 +1,13 @@
 {
 	"type": "object",
 	"properties": {
+		"etfId": {
+			"type": "integer",
+			"format": "int64"
+		},
 		"isin": {
-			"type": "string"
+			"type": "string",
+			"deprecated": true
 		},
 		"pieces": {
 			"type": "number"

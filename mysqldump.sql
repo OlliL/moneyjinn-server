@@ -184,12 +184,14 @@ DROP TABLE IF EXISTS `etf`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etf` (
+  `etfid` int unsigned NOT NULL AUTO_INCREMENT,
   `isin` varchar(30) COLLATE utf8mb3_bin NOT NULL,
   `name` varchar(60) COLLATE utf8mb3_bin NOT NULL,
   `wkn` varchar(10) COLLATE utf8mb3_bin NOT NULL,
   `ticker` varchar(10) COLLATE utf8mb3_bin NOT NULL,
   `chart_url` varchar(255) COLLATE utf8mb3_bin NOT NULL,
-  PRIMARY KEY (`isin`)
+  PRIMARY KEY (`etfid`),
+  UNIQUE KEY `met_i_01` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='met';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -202,12 +204,13 @@ DROP TABLE IF EXISTS `etfflows`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfflows` (
   `etfflowid` int unsigned NOT NULL AUTO_INCREMENT,
+  `met_etfid` int unsigned NOT NULL,
   `flowdate` datetime(6) NOT NULL,
-  `isin` varchar(30) COLLATE utf8mb3_bin NOT NULL,
   `amount` decimal(10,3) NOT NULL,
   `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`),
-  KEY `flowdate` (`isin`,`flowdate`) USING BTREE
+  UNIQUE KEY `mef_i_01` (`met_etfid`,`flowdate`) USING BTREE,
+  CONSTRAINT `mef_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mef';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,7 +239,7 @@ DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfpreliminarylumpsum` (
-  `met_isin` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `met_etfid` int unsigned NOT NULL,
   `year` year NOT NULL,
   `amount01` decimal(8,2) NOT NULL,
   `amount02` decimal(8,2) NOT NULL,
@@ -250,8 +253,8 @@ CREATE TABLE `etfpreliminarylumpsum` (
   `amount10` decimal(8,2) NOT NULL,
   `amount11` decimal(8,2) NOT NULL,
   `amount12` decimal(8,2) NOT NULL,
-  PRIMARY KEY (`met_isin`,`year`),
-  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_isin`) REFERENCES `etf` (`isin`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`met_etfid`,`year`),
+  CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mep';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -557,7 +560,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-27 23:53:09
+-- Dump completed on 2024-04-28 18:32:42
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

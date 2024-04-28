@@ -2,6 +2,7 @@
 	"type": "object",
 	"required": [
 		"etfflowid",
+		"etfId",
 		"isin",
 		"timestamp",
 		"nanoseconds",
@@ -13,8 +14,13 @@
 			"type": "integer",
 			"format": "int64"
 		},
+		"etfId": {
+			"type": "integer",
+			"format": "int64"
+		},
 		"isin": {
-			"type": "string"
+			"type": "string",
+			"deprecated": true
 		},
 		"timestamp": {
 			"type": "string",
