@@ -66,11 +66,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(etfIsin, year);
 
-		if (etfPreliminaryLumpSum == null) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok(super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class));
+		return etfPreliminaryLumpSum == null ? ResponseEntity.notFound().build()
+				: ResponseEntity.ok(super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class));
 	}
 
 	@Override
@@ -79,11 +76,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
 		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfIsin);
 
-		if (allYears.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
+		return allYears.isEmpty() ? ResponseEntity.notFound().build()
+				: ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
 
 	}
 }
