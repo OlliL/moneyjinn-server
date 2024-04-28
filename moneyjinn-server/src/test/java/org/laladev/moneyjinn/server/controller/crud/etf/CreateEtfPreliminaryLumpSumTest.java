@@ -14,6 +14,7 @@ import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
@@ -117,6 +118,13 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 				.build();
 		transport.setIsin(null);
 		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
+	}
+
+	@Test
+	void test_EtfPreliminaryLumpSumAlreadyExisting_Error() throws Exception {
+		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		final ErrorResponse actual = super.callUsecaseExpect400(transport, ErrorResponse.class);
+		Assertions.assertEquals(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS.getErrorCode(), actual.getCode());
 	}
 
 	@Override

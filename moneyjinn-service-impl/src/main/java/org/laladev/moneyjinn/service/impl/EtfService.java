@@ -344,6 +344,11 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
 			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
 		}
+		final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(etfPreliminaryLumpSum.getId());
+		if (etfPreliminaryLumpSumExists != null) {
+			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
+					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
+		}
 		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
 		this.etfDao.createPreliminaryLumpSum(data);
 	}
@@ -354,6 +359,11 @@ public class EtfService extends AbstractService implements IEtfService {
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
 			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
+		}
+		final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(etfPreliminaryLumpSum.getId());
+		if (etfPreliminaryLumpSumExists == null) {
+			throw new BusinessException("EtfPreliminaryLumpSum does not exist!",
+					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST);
 		}
 		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
 		this.etfDao.updatePreliminaryLumpSum(data);
