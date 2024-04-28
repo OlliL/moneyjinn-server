@@ -134,6 +134,13 @@
                   FROM etfpreliminarylumpsum
                  WHERE met_isin   = #{isin}
                    AND `year` = #{year}
-        </select>       
+        </select>
+        
+        <select id="getAllPreliminaryLumpSumYears" resultType="java.lang.Integer">
+                SELECT `year`
+                  FROM etfpreliminarylumpsum
+                 WHERE met_isin = #{isin}
+                 ORDER BY `year` ASC
+        </select>     
 </mapper>
  

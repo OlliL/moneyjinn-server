@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
 import java.time.Year;
+import java.util.List;
 
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
@@ -70,5 +71,19 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 		}
 
 		return ResponseEntity.ok(super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class));
+	}
+
+	@Override
+	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("isin") final String isin) {
+		final EtfIsin etfIsin = new EtfIsin(isin);
+
+		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfIsin);
+
+		if (allYears.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
+
 	}
 }

@@ -7,11 +7,13 @@ import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 
 public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSumTransport {
 	private final BigDecimal zero = new BigDecimal("0.00");
+	public static final Integer YEAR_2009 = 2009;
+	public static final Integer YEAR_2010 = 2010;
 	public static final Integer NON_EXISTING_YEAR = 1970;
 
 	public EtfPreliminaryLumpSumTransportBuilder for2009() {
 		super.setIsin(EtfTransportBuilder.ISIN);
-		super.setYear(2009);
+		super.setYear(YEAR_2009);
 		super.setAmountJanuary(new BigDecimal("134.23"));
 		super.setAmountFebruary(new BigDecimal("9.22"));
 		super.setAmountMarch(this.zero);
@@ -29,7 +31,7 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 
 	public EtfPreliminaryLumpSumTransportBuilder for2010() {
 		super.setIsin(EtfTransportBuilder.ISIN);
-		super.setYear(2010);
+		super.setYear(YEAR_2010);
 		super.setAmountJanuary(new BigDecimal("156.11"));
 		super.setAmountFebruary(new BigDecimal("168.83"));
 		super.setAmountMarch(this.zero);

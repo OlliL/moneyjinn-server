@@ -90,4 +90,8 @@ public class EtfDao {
 	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final String isin, final Year year) {
 		return this.mapper.getPreliminaryLumpSum(isin, year.getValue());
 	}
+
+	public List<Integer> getAllPreliminaryLumpSumYears(final String isin) {
+		return this.mapper.getAllPreliminaryLumpSumYears(isin);
+	}
 }

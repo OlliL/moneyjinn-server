@@ -57,4 +57,6 @@ public interface IEtfDaoMapper {
 	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("isin") String isin);
 
 	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(@Param("isin") String isin, @Param("year") Integer year);
+
+	public List<Integer> getAllPreliminaryLumpSumYears(@Param("isin") String isin);
 }

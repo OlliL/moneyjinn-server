@@ -296,4 +296,10 @@ public class EtfService extends AbstractService implements IEtfService {
 		return super.map(data, EtfPreliminaryLumpSum.class);
 
 	}
+
+	@Override
+	public List<Year> getAllEtfPreliminaryLumpSumYears(final EtfIsin isin) {
+		final List<Integer> datas = this.etfDao.getAllPreliminaryLumpSumYears(isin.getId());
+		return datas.stream().map(Year::of).toList();
+	}
 }

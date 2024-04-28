@@ -1,30 +1,4 @@
 {
-	"get": {
-		"tags": [
-			"crud-etf-preliminary-lump-sum-controller"
-		],
-		"operationId": "readAllYears",
-		"description": "Returns all years with recorded data.",
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "array",
-							"items": {
-								"type": "integer",
-								"format": "int32"
-							}
-						}
-					}
-				}
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			}
-		}
-	},
 	"post": {
 		"tags": [
 			"crud-etf-preliminary-lump-sum-controller"

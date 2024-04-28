@@ -60,4 +60,6 @@ public interface IEtfService {
 	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
 
 	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfIsin isin, Year year);
+
+	List<Year> getAllEtfPreliminaryLumpSumYears(EtfIsin isin);
 }

@@ -32,12 +32,12 @@ public class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLump
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403WithUriVariables(EtfTransportBuilder.ISIN,
-				EtfPreliminaryLumpSumTransportBuilder.NON_EXISTING_YEAR);
+				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 	}
 
 	@Override
 	protected void callUsecaseEmptyDatabase() throws Exception {
-		super.callUsecaseExpect404(EtfTransportBuilder.ISIN, EtfPreliminaryLumpSumTransportBuilder.NON_EXISTING_YEAR);
+		super.callUsecaseExpect404(EtfTransportBuilder.ISIN, EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 	}
 
 }

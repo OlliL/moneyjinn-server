@@ -32,8 +32,11 @@
 		"/moneyflow/server/etfpreliminarylumpsumps": {
 			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
 		},
+		"/moneyflow/server/etfpreliminarylumpsumps/{isin}": {
+			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumIsin.json"
+		},
 		"/moneyflow/server/etfpreliminarylumpsumps/{isin}/{year}": {
-			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumId.json"
+			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumIsinYear.json"
 		},
 		"/moneyflow/server/user/changePassword": {
 			"$ref": "openapi/user/paths/ChangePassword.json"
