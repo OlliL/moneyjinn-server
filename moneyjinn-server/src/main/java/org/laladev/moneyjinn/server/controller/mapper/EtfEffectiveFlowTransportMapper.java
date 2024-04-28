@@ -28,7 +28,6 @@ package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
 import org.laladev.moneyjinn.converter.EtfIdMapper;
-import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.LocalDateTimeToOffsetDateTimeMapper;
@@ -40,7 +39,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfFlowIdMapper.class, EtfIdMapper.class,
+@Mapper(config = MapStructConfig.class, uses = { EtfFlowIdMapper.class, EtfIdMapper.class,
 		LocalDateTimeToOffsetDateTimeMapper.class })
 public interface EtfEffectiveFlowTransportMapper
 		extends IMapstructMapper<EtfFlowWithTaxInfo, EtfEffectiveFlowTransport> {
