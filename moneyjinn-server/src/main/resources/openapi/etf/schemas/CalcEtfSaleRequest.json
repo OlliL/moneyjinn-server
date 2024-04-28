@@ -5,10 +5,6 @@
 			"type": "integer",
 			"format": "int64"
 		},
-		"isin": {
-			"type": "string",
-			"deprecated": true
-		},
 		"pieces": {
 			"type": "number"
 		},

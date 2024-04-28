@@ -50,7 +50,6 @@ public interface EtfFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfFlo
 	@Mapping(target = "etfflowid", source = "id")
 	@Mapping(target = "nanoseconds", source = "time.nano")
 	@Mapping(target = "timestamp", source = "time")
-	@Mapping(target = "isin", ignore = true)
 	EtfFlowTransport mapAToB(EtfFlow etfFlow);
 
 	@AfterMapping

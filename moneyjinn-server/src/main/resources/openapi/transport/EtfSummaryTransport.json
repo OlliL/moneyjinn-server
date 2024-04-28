@@ -2,7 +2,6 @@
 	"type": "object",
 	"required": [
 		"etfId",
-		"isin",
 		"name",
 		"chartUrl",
 		"amount",
@@ -15,10 +14,6 @@
 		"etfId": {
 			"type": "integer",
 			"format": "int64"
-		},
-		"isin": {
-			"type": "string",
-			"deprecated": true
 		},
 		"name": {
 			"type": "string"

@@ -24,7 +24,7 @@
 			"crud-etf-preliminary-lump-sum-controller"
 		],
 		"operationId": "readOne",
-		"description": "Returns the preliminary lump sum specified by the ISIN and year.",
+		"description": "Returns the preliminary lump sum specified by the ETF ID and year.",
 		"responses": {
 			"200": {
 				"description": "OK",
@@ -49,7 +49,7 @@
 			"crud-etf-preliminary-lump-sum-controller"
 		],
 		"operationId": "delete",
-		"description": "Deletes the preliminary lump sum specified by the ISIN and year.",
+		"description": "Deletes the preliminary lump sum specified by the ETF ID and year.",
 		"responses": {
 			"204": {
 				"description": "OK"

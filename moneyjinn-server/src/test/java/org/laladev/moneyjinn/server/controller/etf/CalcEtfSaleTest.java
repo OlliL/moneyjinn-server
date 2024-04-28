@@ -34,7 +34,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -51,7 +51,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal(100000));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -69,7 +69,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE.negate());
 		request.setBidPrice(SETTING_SALE_BID_PRICE.negate());
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES.negate());
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -88,7 +88,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		expected.setEtfId(SETTING_ETF_ID);
-		expected.setIsin(SETTING_ISIN);
+		expected.setEtfId(SETTING_ETF_ID);
 		expected.setOriginalBuyPrice(originalBuyPrice);
 		expected.setSellPrice(sellPrice);
 		expected.setNewBuyPrice(newBuyPrice);
@@ -108,7 +108,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("2"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -125,7 +125,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("160"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -146,7 +146,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("180"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -166,7 +166,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin("NOTEXISTING");
+		request.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -182,7 +182,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -197,7 +197,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
@@ -228,7 +228,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
@@ -243,7 +243,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin(SETTING_ISIN);
+		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
@@ -258,7 +258,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
-		request.setIsin("NOTEXISTING");
+		request.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
 		request.setPieces(BigDecimal.ZERO);
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 

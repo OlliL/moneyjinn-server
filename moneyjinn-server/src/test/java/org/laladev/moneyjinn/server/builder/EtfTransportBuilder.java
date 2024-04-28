@@ -6,7 +6,6 @@ import org.laladev.moneyjinn.server.model.EtfTransport;
 public class EtfTransportBuilder extends EtfTransport {
 	public static final String ISIN = "ISIN123";
 	public static final Long ETF_ID_1 = 1L;
-	public static final String NON_EXISTING_ISIN = "AAAAAA";
 	public static final Long NON_EXISTING_ETF_ID = 0L;
 
 	public EtfTransportBuilder forEtf1() {

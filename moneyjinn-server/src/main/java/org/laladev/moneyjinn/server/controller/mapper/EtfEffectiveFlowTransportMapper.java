@@ -55,7 +55,6 @@ public interface EtfEffectiveFlowTransportMapper
 	@Mapping(target = "etfId", source = "etfId")
 	@Mapping(target = "nanoseconds", source = "time.nano")
 	@Mapping(target = "timestamp", source = "time")
-	@Mapping(target = "isin", ignore = true)
 	EtfEffectiveFlowTransport mapAToB(EtfFlowWithTaxInfo etfFlow);
 
 	@AfterMapping

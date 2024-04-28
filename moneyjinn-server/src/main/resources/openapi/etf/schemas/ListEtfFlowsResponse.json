@@ -19,8 +19,9 @@
 				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
 			}
 		},
-		"calcEtfSaleIsin": {
-			"type": "string"
+		"calcEtfSaleEtfId": {
+			"type": "integer",
+			"format": "int64"
 		},
 		"calcEtfSalePieces": {
 			"type": "number"

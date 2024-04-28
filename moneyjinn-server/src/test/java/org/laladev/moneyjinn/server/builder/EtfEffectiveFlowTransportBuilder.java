@@ -12,14 +12,12 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 	public static final Long ETF_FLOW_8ID = 8L;
 	public static final Long ETF_FLOW_9ID = 9L;
 	public static final Long ETF_FLOW_11ID = 11L;
-	public static final String ISIN = EtfTransportBuilder.ISIN;
 	public static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
 
 	public EtfEffectiveFlowTransportBuilder forFlow6() {
 		super.setEtfflowid(ETF_FLOW_6ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("2.234"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
 		super.setPrice(new BigDecimal("889.123"));
 		super.setTimestamp(OffsetDateTime.of(2009, 2, 20, 23, 59, 59, 999000000, ZoneOffset.UTC));
@@ -30,7 +28,6 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 		super.setEtfflowid(ETF_FLOW_8ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("81.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 01, 01, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -41,7 +38,6 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 		super.setEtfflowid(ETF_FLOW_9ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("80.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 02, 02, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -52,7 +48,6 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 		super.setEtfflowid(ETF_FLOW_11ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("750.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 02, 04, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -64,7 +59,6 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
 		transport.setEtfflowid(super.getEtfflowid());
 		transport.setEtfId(super.getEtfId());
 		transport.setAmount(super.getAmount());
-		transport.setIsin(super.getIsin());
 		transport.setNanoseconds(super.getNanoseconds());
 		transport.setPrice(super.getPrice());
 		transport.setTimestamp(super.getTimestamp());

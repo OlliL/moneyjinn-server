@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
+import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
@@ -39,7 +40,7 @@ class CreateEtfFlowTest extends AbstractWebUserControllerTest {
 	void test_noEtfSpecified_errorResponse() throws Exception {
 		final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
-		transport.setIsin(null);
+		transport.setEtfId(null);
 		request.setEtfFlowTransport(transport);
 
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
@@ -54,7 +55,7 @@ class CreateEtfFlowTest extends AbstractWebUserControllerTest {
 	void test_invalidEtfSpecified_errorResponse() throws Exception {
 		final CreateEtfFlowRequest request = new CreateEtfFlowRequest();
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
-		transport.setIsin("NOTEXISTING");
+		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
 		request.setEtfFlowTransport(transport);
 
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);

@@ -34,7 +34,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.Etf;
@@ -43,11 +42,9 @@ import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfID;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -112,7 +109,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			if (etfFlows != null && !etfFlows.isEmpty()) {
 				final EtfSummaryTransport transport = new EtfSummaryTransport();
 				transport.setEtfId(etf.getId().getId());
-				transport.setIsin(etf.getIsin().getId());
 				transport.setName(etf.getName());
 				transport.setChartUrl(etf.getChartUrl());
 				if (etfValue != null) {
@@ -151,7 +147,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			for (final Etf etf : etfs) {
 				final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDateTime.now());
 				final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
-				etfFlowTransports.forEach(a -> a.setIsin(etf.getIsin().getId()));
 				transports.addAll(etfFlowTransports);
 
 				final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
@@ -159,7 +154,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
 				final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
 						EtfEffectiveFlowTransport.class);
-				etfEffectiveFlowTransports.forEach(a -> a.setIsin(etf.getIsin().getId()));
 				effectiveTransports.addAll(etfEffectiveFlowTransports);
 			}
 			response.setEtfFlowTransports(transports);
@@ -168,8 +162,9 @@ public class EtfController extends AbstractController implements EtfControllerAp
 					.ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
 			this.settingService.getClientCalcEtfSaleBidPrice(this.getUserId())
 					.ifPresent(s -> response.setCalcEtfBidPrice(s.getSetting()));
-			this.settingService.getClientCalcEtfSaleIsin(this.getUserId())
-					.ifPresent(s -> response.setCalcEtfSaleIsin(s.getSetting()));
+// TODO
+//			this.settingService.getClientCalcEtfSaleIsin(this.getUserId())
+//					.ifPresent(s -> response.setCalcEtfSaleIsin(s.getSetting()));
 			this.settingService.getClientCalcEtfSalePieces(this.getUserId())
 					.ifPresent(s -> response.setCalcEtfSalePieces(s.getSetting()));
 			this.settingService.getClientCalcEtfSaleTransactionCosts(this.getUserId())
@@ -183,7 +178,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	public ResponseEntity<CalcEtfSaleResponse> calcEtfSale(@RequestBody final CalcEtfSaleRequest request) {
 		final CalcEtfSaleResponse response = new CalcEtfSaleResponse();
 
-		if (request.getAskPrice() == null || request.getBidPrice() == null || request.getIsin() == null
+		if (request.getAskPrice() == null || request.getBidPrice() == null || request.getEtfId() == null
 				|| request.getPieces() == null || request.getTransactionCosts() == null) {
 			return ResponseEntity.ok(response);
 		}
@@ -193,19 +188,14 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final BigDecimal bidPrice = request.getBidPrice().abs();
 		this.settingService.setClientCalcEtfSaleAskPrice(this.getUserId(), new ClientCalcEtfSaleAskPrice(askPrice));
 		this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(), new ClientCalcEtfSaleBidPrice(bidPrice));
-		this.settingService.setClientCalcEtfSaleIsin(this.getUserId(), new ClientCalcEtfSaleIsin(request.getIsin()));
+		// TODO
+		// this.settingService.setClientCalcEtfSaleIsin(this.getUserId(), new
+		// ClientCalcEtfSaleIsin(request.getIsin()));
 		this.settingService.setClientCalcEtfSalePieces(this.getUserId(), new ClientCalcEtfSalePieces(pieces));
 		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
 				new ClientCalcEtfSaleTransactionCosts(request.getTransactionCosts()));
 
-		final EtfIsin etfIsin = new EtfIsin(request.getIsin());
-
-		final EtfID etfId;
-		if (request.getEtfId() != null) {
-			etfId = new EtfID(request.getEtfId());
-		} else {
-			etfId = this.getEtfID(etfIsin);
-		}
+		final EtfID etfId = new EtfID(request.getEtfId());
 		BigDecimal openPieces = pieces;
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
 		BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
@@ -249,7 +239,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				response.setSellPrice(sellPrice);
 				response.setTransactionCosts(transactionCosts);
 				response.setEtfId(etfId.getId());
-				response.setIsin(etfIsin.getId());
 				response.setPieces(pieces);
 				response.setOriginalBuyPrice(originalBuyPrice);
 				response.setProfit(profit);
@@ -269,14 +258,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 		if (etfFlow != null) {
 			etfFlow.setId(null);
-			final EtfID etfId;
-			if (request.getEtfFlowTransport().getEtfId() != null) {
-				etfId = new EtfID(request.getEtfFlowTransport().getEtfId());
-			} else {
-				etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
-			}
-			etfFlow.setEtfId(etfId);
-
 			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
 
 			this.throwValidationExceptionIfInvalid(validationResult);
@@ -294,13 +275,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
 
 		if (etfFlow != null) {
-			final EtfID etfId;
-			if (request.getEtfFlowTransport().getEtfId() != null) {
-				etfId = new EtfID(request.getEtfFlowTransport().getEtfId());
-			} else {
-				etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
-			}
-			etfFlow.setEtfId(etfId);
 
 			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
 
@@ -310,13 +284,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		}
 
 		return ResponseEntity.noContent().build();
-	}
-
-	@Deprecated(since = "Compatiblilty until Issue #53 is done only")
-	private EtfID getEtfID(final EtfIsin isin) {
-		final var etfs = this.etfService.getAllEtf();
-		final Optional<EtfID> etfId = etfs.stream().filter(e -> isin.equals(e.getIsin())).map(Etf::getId).findFirst();
-		return etfId.isPresent() ? etfId.get() : new EtfID(-1L);
 	}
 
 	@Override

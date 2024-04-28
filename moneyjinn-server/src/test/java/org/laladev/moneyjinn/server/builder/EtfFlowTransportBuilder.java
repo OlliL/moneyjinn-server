@@ -20,14 +20,12 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 	public static final Long ETF_FLOW_10ID = 10L;
 	public static final Long ETF_FLOW_11ID = 11L;
 	public static final Long NEXT_ID = 12L;
-	public static final String ISIN = EtfTransportBuilder.ISIN;
 	public static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
 
 	public EtfFlowTransportBuilder forFlow1() {
 		super.setEtfflowid(ETF_FLOW_1ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.666"));
 		super.setTimestamp(OffsetDateTime.of(2008, 12, 13, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -38,7 +36,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_2ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("100.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.666"));
 		super.setTimestamp(OffsetDateTime.of(2008, 12, 14, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -49,7 +46,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_3ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-50.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("877.000"));
 		super.setTimestamp(OffsetDateTime.of(2008, 12, 15, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -60,7 +56,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_4ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("1.234"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("666.123"));
 		super.setTimestamp(OffsetDateTime.of(2008, 12, 16, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -71,7 +66,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_5ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("5.500"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
 		super.setPrice(new BigDecimal("789.123"));
 		super.setTimestamp(OffsetDateTime.of(2009, 1, 31, 23, 59, 59, 999000000, ZoneOffset.UTC));
@@ -82,7 +76,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_6ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("6.500"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(999000000);
 		super.setPrice(new BigDecimal("889.123"));
 		super.setTimestamp(OffsetDateTime.of(2009, 2, 20, 23, 59, 59, 999000000, ZoneOffset.UTC));
@@ -93,7 +86,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_7ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-81.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("877.000"));
 		super.setTimestamp(OffsetDateTime.of(2009, 12, 12, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -104,7 +96,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_8ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("81.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 01, 01, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -115,7 +106,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_9ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("80.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("777.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 02, 02, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -126,7 +116,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_10ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("-10.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("760.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 02, 03, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -137,7 +126,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(ETF_FLOW_11ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("30.000"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(320000000);
 		super.setPrice(new BigDecimal("750.000"));
 		super.setTimestamp(OffsetDateTime.of(2010, 02, 04, 15, 16, 20, 320000000, ZoneOffset.UTC));
@@ -148,7 +136,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setEtfflowid(NEXT_ID);
 		super.setEtfId(ETF_ID_1);
 		super.setAmount(new BigDecimal("100.432"));
-		super.setIsin(ISIN);
 		super.setNanoseconds(20000000);
 		super.setPrice(new BigDecimal("667.456"));
 		super.setTimestamp(OffsetDateTime.of(2008, 12, 17, 23, 59, 59, 200000000, ZoneOffset.UTC));
@@ -160,7 +147,6 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		transport.setEtfflowid(super.getEtfflowid());
 		transport.setEtfId(super.getEtfId());
 		transport.setAmount(super.getAmount());
-		transport.setIsin(super.getIsin());
 		transport.setNanoseconds(super.getNanoseconds());
 		transport.setPrice(super.getPrice());
 		transport.setTimestamp(super.getTimestamp());

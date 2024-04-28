@@ -106,7 +106,7 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 
 		expected.setCalcEtfAskPrice(SETTING_SALE_ASK_PRICE);
 		expected.setCalcEtfBidPrice(SETTING_SALE_BID_PRICE);
-		expected.setCalcEtfSaleIsin(SETTING_ISIN);
+		expected.setCalcEtfSaleEtfId(null);
 		expected.setCalcEtfSalePieces(SETTING_SALE_PIECES);
 		expected.setCalcEtfTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 

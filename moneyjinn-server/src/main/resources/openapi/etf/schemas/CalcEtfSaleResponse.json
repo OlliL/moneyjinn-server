@@ -2,7 +2,6 @@
 	"type": "object",
 	"required": [
 		"etfId",
-		"isin",
 		"originalBuyPrice",
 		"sellPrice",
 		"newBuyPrice",
@@ -18,9 +17,6 @@
 		"etfId": {
 			"type": "integer",
 			"format": "int64"
-		},
-		"isin": {
-			"type": "string"
 		},
 		"originalBuyPrice": {
 			"type": "number"
