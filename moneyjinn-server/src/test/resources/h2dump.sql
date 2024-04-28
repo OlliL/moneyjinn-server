@@ -209,7 +209,7 @@ CREATE TABLE `etfflows` (
   `amount` decimal(10,3) NOT NULL,
   `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`),
-  UNIQUE KEY `mef_i_01` (`met_etfid`,`flowdate`),
+  KEY `mef_i_01` (`met_etfid`,`flowdate`),
   CONSTRAINT `mef_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
