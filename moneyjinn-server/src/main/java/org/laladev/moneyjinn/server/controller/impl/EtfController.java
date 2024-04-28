@@ -199,7 +199,13 @@ public class EtfController extends AbstractController implements EtfControllerAp
 				new ClientCalcEtfSaleTransactionCosts(request.getTransactionCosts()));
 
 		final EtfIsin etfIsin = new EtfIsin(request.getIsin());
-		final EtfID etfId = this.getEtfID(etfIsin);
+
+		final EtfID etfId;
+		if (request.getEtfId() != null) {
+			etfId = new EtfID(request.getEtfId());
+		} else {
+			etfId = this.getEtfID(etfIsin);
+		}
 		BigDecimal openPieces = pieces;
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
 		BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
@@ -263,7 +269,12 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 		if (etfFlow != null) {
 			etfFlow.setId(null);
-			final EtfID etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
+			final EtfID etfId;
+			if (request.getEtfFlowTransport().getEtfId() != null) {
+				etfId = new EtfID(request.getEtfFlowTransport().getEtfId());
+			} else {
+				etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
+			}
 			etfFlow.setEtfId(etfId);
 
 			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
@@ -283,7 +294,12 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
 
 		if (etfFlow != null) {
-			final EtfID etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
+			final EtfID etfId;
+			if (request.getEtfFlowTransport().getEtfId() != null) {
+				etfId = new EtfID(request.getEtfFlowTransport().getEtfId());
+			} else {
+				etfId = this.getEtfID(new EtfIsin(request.getEtfFlowTransport().getIsin()));
+			}
 			etfFlow.setEtfId(etfId);
 
 			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
