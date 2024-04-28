@@ -142,5 +142,43 @@
                  WHERE met_isin = #{isin}
                  ORDER BY `year` ASC
         </select>     
+
+        <insert id="createPreliminaryLumpSum"
+                parameterType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+                INSERT
+                  INTO etfpreliminarylumpsum
+                      (met_isin
+                      ,`year`
+                      ,amount01
+                      ,amount02
+                      ,amount03
+                      ,amount04
+                      ,amount05
+                      ,amount06
+                      ,amount07
+                      ,amount08
+                      ,amount09
+                      ,amount10
+                      ,amount11
+                      ,amount12
+                      )
+                VALUES
+                      (#{metIsin}
+                      ,#{year}
+                      ,#{amountJanuary}
+                      ,#{amountFebruary}
+                      ,#{amountMarch}
+                      ,#{amountApril}
+                      ,#{amountMay}
+                      ,#{amountJune}
+                      ,#{amountJuly}
+                      ,#{amountAugust}
+                      ,#{amountSeptember}
+                      ,#{amountOctober}
+                      ,#{amountNovember}
+                      ,#{amountDecember}
+                      )
+        </insert>
+
 </mapper>
  

@@ -139,6 +139,24 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
+	public ValidationResult validateEtfPreliminaryLumpSum(final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(etfPreliminaryLumpSum.getId(), errorCode));
+
+		if (etfPreliminaryLumpSum.getId() == null || etfPreliminaryLumpSum.getId().getId().isBlank()) {
+			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+		} else {
+			final EtfData etfData = this.etfDao.getEtfById(etfPreliminaryLumpSum.getId().getId());
+			if (etfData == null) {
+				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+			}
+		}
+
+		return validationResult;
+	}
+
+	@Override
 	public EtfFlow getEtfFlowById(final EtfFlowID etfFlowId) {
 		Assert.notNull(etfFlowId, "etfFlowId must not be null!");
 		final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
@@ -301,5 +319,16 @@ public class EtfService extends AbstractService implements IEtfService {
 	public List<Year> getAllEtfPreliminaryLumpSumYears(final EtfIsin isin) {
 		final List<Integer> datas = this.etfDao.getAllPreliminaryLumpSumYears(isin.getId());
 		return datas.stream().map(Year::of).toList();
+	}
+
+	@Override
+	public void createEtfPreliminaryLumpSum(final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
+		}
+		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
+		this.etfDao.createPreliminaryLumpSum(data);
 	}
 }

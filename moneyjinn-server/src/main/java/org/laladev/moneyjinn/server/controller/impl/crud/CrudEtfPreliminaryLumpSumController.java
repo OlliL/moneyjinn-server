@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudEtfPreliminaryLumpSumControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
 import org.laladev.moneyjinn.server.controller.mapper.EtfPreliminaryLumpSumTransportMapper;
@@ -38,6 +39,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.PostConstruct;
@@ -59,6 +62,16 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
+	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("isin") final String isin) {
+		final EtfIsin etfIsin = new EtfIsin(isin);
+
+		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfIsin);
+
+		return allYears.isEmpty() ? ResponseEntity.notFound().build()
+				: ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
+	}
+
+	@Override
 	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("isin") final String isin,
 			@PathVariable("year") final Integer requestYear) {
 		final EtfIsin etfIsin = new EtfIsin(isin);
@@ -71,13 +84,16 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("isin") final String isin) {
-		final EtfIsin etfIsin = new EtfIsin(isin);
+	public ResponseEntity<EtfPreliminaryLumpSumTransport> create(
+			@RequestBody final EtfPreliminaryLumpSumTransport transport,
+			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = super.map(transport, EtfPreliminaryLumpSum.class);
+		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
 
-		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(etfIsin);
+		this.throwValidationExceptionIfInvalid(validationResult);
 
-		return allYears.isEmpty() ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
+		this.etfService.createEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
 
+		return this.preferedReturn(prefer, etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class);
 	}
 }

@@ -62,4 +62,8 @@ public interface IEtfService {
 	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfIsin isin, Year year);
 
 	List<Year> getAllEtfPreliminaryLumpSumYears(EtfIsin isin);
+
+	ValidationResult validateEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+
+	void createEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 }

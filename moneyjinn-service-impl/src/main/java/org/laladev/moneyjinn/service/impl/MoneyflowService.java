@@ -238,7 +238,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
-			throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
+			throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
 		}
 		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
 		final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);

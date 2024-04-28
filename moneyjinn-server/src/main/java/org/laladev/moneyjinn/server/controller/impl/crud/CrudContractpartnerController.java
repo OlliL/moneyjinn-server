@@ -110,7 +110,6 @@ public class CrudContractpartnerController extends AbstractController implements
 		contractpartner.setId(contractpartnerId);
 
 		return this.preferedReturn(prefer, contractpartner, ContractpartnerTransport.class);
-
 	}
 
 	@Override
