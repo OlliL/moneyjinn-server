@@ -331,4 +331,22 @@ public class EtfService extends AbstractService implements IEtfService {
 		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
 		this.etfDao.createPreliminaryLumpSum(data);
 	}
+
+	@Override
+	public void updateEtfPreliminaryLumpSum(final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
+		}
+		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
+		this.etfDao.updatePreliminaryLumpSum(data);
+	}
+
+	@Override
+	public void deleteEtfPreliminaryLumpSum(final EtfIsin isin, final Year year) {
+		Assert.notNull(isin, "ISIN must not be null!");
+		Assert.notNull(year, "year must not be null!");
+		this.etfDao.deletePreliminaryLumpSum(isin.getId(), year);
+	}
 }

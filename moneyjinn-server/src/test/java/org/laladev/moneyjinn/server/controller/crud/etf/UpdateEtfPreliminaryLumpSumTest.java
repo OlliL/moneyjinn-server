@@ -1,6 +1,7 @@
 
 package org.laladev.moneyjinn.server.controller.crud.etf;
 
+import java.math.BigDecimal;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,14 @@ import org.laladev.moneyjinn.service.api.IEtfService;
 
 import jakarta.inject.Inject;
 
-class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
+class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
+	private static final BigDecimal TEN = new BigDecimal("10.00");
 	@Inject
 	private IEtfService etfService;
 
 	@Override
 	protected void loadMethod() {
-		super.getMock().create(null, null);
+		super.getMock().update(null, null);
 	}
 
 	private void testError(final EtfPreliminaryLumpSumTransport transport, final ErrorCode errorCode) throws Exception {
@@ -43,22 +45,21 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 	@Test
 	void test_standardRequest_Successfull_MinimalReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setAmountAugust(TEN);
 
 		super.callUsecaseExpect204Minimal(transport);
 
 		final var id = new EtfIsin(EtfTransportBuilder.ISIN);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
+		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id, year);
-		Assertions.assertEquals(id, etfPreliminaryLumpSum.getId());
-		Assertions.assertEquals(year, etfPreliminaryLumpSum.getYear());
+		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 
 	@Test
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setAmountAugust(TEN);
 
 		final EtfPreliminaryLumpSumTransport actualTransport = super.callUsecaseExpect200Representation(transport,
 				EtfPreliminaryLumpSumTransport.class);
@@ -66,24 +67,22 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		Assertions.assertEquals(transport, actualTransport);
 
 		final var id = new EtfIsin(EtfTransportBuilder.ISIN);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
+		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id, year);
-		Assertions.assertEquals(id, etfPreliminaryLumpSum.getId());
-		Assertions.assertEquals(year, etfPreliminaryLumpSum.getYear());
+		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 
 	@Test
 	void test_standardRequest_Successfull_DefaultReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setAmountAugust(TEN);
 
 		super.callUsecaseExpect204(transport);
 
 		final var id = new EtfIsin(EtfTransportBuilder.ISIN);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
+		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id, year);
-		Assertions.assertEquals(id, etfPreliminaryLumpSum.getId());
-		Assertions.assertEquals(year, etfPreliminaryLumpSum.getYear());
+		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 
 	@Test

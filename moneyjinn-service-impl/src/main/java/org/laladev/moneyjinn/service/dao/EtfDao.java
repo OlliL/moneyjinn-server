@@ -97,6 +97,13 @@ public class EtfDao {
 
 	public void createPreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
 		this.mapper.createPreliminaryLumpSum(data);
+	}
 
+	public void updatePreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
+		this.mapper.updatePreliminaryLumpSum(data);
+	}
+
+	public void deletePreliminaryLumpSum(final String isin, final Year year) {
+		this.mapper.deletePreliminaryLumpSum(isin, year.getValue());
 	}
 }

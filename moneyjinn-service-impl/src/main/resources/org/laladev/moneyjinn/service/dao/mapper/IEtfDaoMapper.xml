@@ -180,5 +180,31 @@
                       )
         </insert>
 
+        <update id="updatePreliminaryLumpSum" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
+                UPDATE etfpreliminarylumpsum
+                   SET amount01      = #{amountJanuary}
+                      ,amount02      = #{amountFebruary}
+                      ,amount03      = #{amountMarch}
+                      ,amount04      = #{amountApril}
+                      ,amount05      = #{amountMay}
+                      ,amount06      = #{amountJune}
+                      ,amount07      = #{amountJuly}
+                      ,amount08      = #{amountAugust}
+                      ,amount09      = #{amountSeptember}
+                      ,amount10      = #{amountOctober}
+                      ,amount11      = #{amountNovember}
+                      ,amount12      = #{amountDecember}
+                 WHERE met_isin      = #{metIsin}
+                   AND `year`        = #{year}
+                 LIMIT 1
+        </update>
+        
+        <delete id="deletePreliminaryLumpSum">
+                DELETE
+                  FROM etfpreliminarylumpsum
+                 WHERE met_isin = #{isin}
+                   AND `year`   = #{year}
+                 LIMIT 1
+        </delete>
 </mapper>
  

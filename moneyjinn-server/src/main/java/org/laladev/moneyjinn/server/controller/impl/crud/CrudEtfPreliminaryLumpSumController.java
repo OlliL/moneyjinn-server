@@ -96,4 +96,29 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
 		return this.preferedReturn(prefer, etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class);
 	}
+
+	@Override
+	public ResponseEntity<EtfPreliminaryLumpSumTransport> update(
+			@RequestBody final EtfPreliminaryLumpSumTransport transport,
+			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = super.map(transport, EtfPreliminaryLumpSum.class);
+		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
+
+		this.throwValidationExceptionIfInvalid(validationResult);
+
+		this.etfService.updateEtfPreliminaryLumpSum(etfPreliminaryLumpSum);
+
+		return this.preferedReturn(prefer, etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class);
+	}
+
+	@Override
+	public ResponseEntity<Void> delete(@PathVariable("isin") final String isin,
+			@PathVariable("year") final Integer requestYear) {
+		final EtfIsin etfIsin = new EtfIsin(isin);
+		final Year year = Year.of(requestYear);
+
+		this.etfService.deleteEtfPreliminaryLumpSum(etfIsin, year);
+
+		return ResponseEntity.noContent().build();
+	}
 }
