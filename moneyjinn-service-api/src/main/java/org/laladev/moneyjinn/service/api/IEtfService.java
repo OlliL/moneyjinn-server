@@ -37,6 +37,7 @@ import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
+import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
@@ -59,7 +60,7 @@ public interface IEtfService {
 
 	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
 
-	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfIsin isin, Year year);
+	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
 
 	List<Year> getAllEtfPreliminaryLumpSumYears(EtfIsin isin);
 
@@ -69,6 +70,6 @@ public interface IEtfService {
 
 	void updateEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void deleteEtfPreliminaryLumpSum(EtfIsin isin, Year year);
+	void deleteEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
 
 }

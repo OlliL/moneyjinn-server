@@ -79,9 +79,10 @@ public enum ErrorCode {
 	RECEIPT_ALREADY_EXISTS(366),
 	AMOUNT_TO_BIG(376),
 	AMOUNT_HAS_TO_BE_SPECIFIED(380),
-	MONEYFLOW_DOES_NOT_EXISTS(381);
+	MONEYFLOW_DOES_NOT_EXISTS(381),
+	YEAR_NOT_SET(382);
 
-	private int code;
+	private final int code;
 
 	ErrorCode(final int errorCode) {
 		this.code = errorCode;

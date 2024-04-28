@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2024 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2024 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,14 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao.data.mapper;
+package org.laladev.moneyjinn.model.etf;
 
-import org.laladev.moneyjinn.converter.EtfIsinMapper;
-import org.laladev.moneyjinn.converter.IMapstructMapper;
-import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.YearToIntegerMapper;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
-import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.laladev.moneyjinn.model.AbstractEntityID;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, YearToIntegerMapper.class })
-public interface EtfPreliminaryLumpSumDataMapper
-		extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumData> {
-	@Override
-	@Mapping(target = "id.id.etfIsin", source = "metIsin")
-	@Mapping(target = "id.id.year", source = "year")
-	EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumData etfPreliminaryLumpSumData);
+public class EtfPreliminaryLumpSumID extends AbstractEntityID<EtfPreliminaryLumpSumIDValues> {
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	@Mapping(target = "metIsin", source = "id.id.etfIsin")
-	@Mapping(target = "year", source = "id.id.year")
-	EtfPreliminaryLumpSumData mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+	public EtfPreliminaryLumpSumID(final EtfPreliminaryLumpSumIDValues id) {
+		super(id);
+	}
 }

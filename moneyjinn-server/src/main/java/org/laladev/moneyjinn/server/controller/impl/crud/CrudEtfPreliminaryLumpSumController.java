@@ -29,6 +29,8 @@ import java.util.List;
 
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
+import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
+import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudEtfPreliminaryLumpSumControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
@@ -76,8 +78,10 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 			@PathVariable("year") final Integer requestYear) {
 		final EtfIsin etfIsin = new EtfIsin(isin);
 		final Year year = Year.of(requestYear);
+		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
+				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
 
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(etfIsin, year);
+		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
 
 		return etfPreliminaryLumpSum == null ? ResponseEntity.notFound().build()
 				: ResponseEntity.ok(super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class));
@@ -116,8 +120,10 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 			@PathVariable("year") final Integer requestYear) {
 		final EtfIsin etfIsin = new EtfIsin(isin);
 		final Year year = Year.of(requestYear);
+		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
+				new EtfPreliminaryLumpSumIDValues(etfIsin, year));
 
-		this.etfService.deleteEtfPreliminaryLumpSum(etfIsin, year);
+		this.etfService.deleteEtfPreliminaryLumpSum(id);
 
 		return ResponseEntity.noContent().build();
 	}

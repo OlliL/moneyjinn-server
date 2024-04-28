@@ -39,10 +39,12 @@ import org.mapstruct.Mapping;
 public interface EtfPreliminaryLumpSumTransportMapper
 		extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport> {
 	@Override
-	@Mapping(target = "id", source = "isin")
+	@Mapping(target = "id.id.etfIsin", source = "isin")
+	@Mapping(target = "id.id.year", source = "year")
 	EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumTransport etfPreliminaryLumpSumData);
 
 	@Override
-	@Mapping(target = "isin", source = "id")
+	@Mapping(target = "isin", source = "id.id.etfIsin")
+	@Mapping(target = "year", source = "id.id.year")
 	EtfPreliminaryLumpSumTransport mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 }
