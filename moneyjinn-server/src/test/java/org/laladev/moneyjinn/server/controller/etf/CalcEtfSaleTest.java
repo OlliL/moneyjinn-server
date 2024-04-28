@@ -161,7 +161,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_invalidIsinWithPieces_emptyResponse() throws Exception {
+	void test_invalidEtfIdWithPieces_emptyResponse() throws Exception {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -208,7 +208,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_isinNotSet_emptyResponse() throws Exception {
+	void test_etfIdNotSet_emptyResponse() throws Exception {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -253,7 +253,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_invalidIsinWith0Pieces_emptyResponse() throws Exception {
+	void test_invalidEtfIdWith0Pieces_emptyResponse() throws Exception {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);

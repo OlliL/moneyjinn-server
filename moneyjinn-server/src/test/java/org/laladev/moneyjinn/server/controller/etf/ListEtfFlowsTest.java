@@ -51,6 +51,7 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 				new ClientCalcEtfSaleAskPrice(SETTING_SALE_ASK_PRICE));
 		this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(),
 				new ClientCalcEtfSaleBidPrice(SETTING_SALE_BID_PRICE));
+		// TODO Issue #53
 		this.settingService.setClientCalcEtfSaleIsin(this.getUserId(), new ClientCalcEtfSaleIsin(SETTING_ISIN));
 		this.settingService.setClientCalcEtfSalePieces(this.getUserId(),
 				new ClientCalcEtfSalePieces(SETTING_SALE_PIECES));

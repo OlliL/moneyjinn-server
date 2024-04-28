@@ -107,7 +107,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	}
 
 	@Test
-	void test_EtfPreliminaryLumpSumNonExistingIsin_Error() throws Exception {
+	void test_EtfPreliminaryLumpSumNonExistingEtfId_Error() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
@@ -115,7 +115,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	}
 
 	@Test
-	void test_EtfPreliminaryLumpSumNonEmptyIsin_Error() throws Exception {
+	void test_EtfPreliminaryLumpSumNonEmptyEtfId_Error() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 		transport.setEtfId(null);

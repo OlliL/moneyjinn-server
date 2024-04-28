@@ -210,11 +210,11 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final List<EtfFlow> allEtfFlows) {
 		final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
-		final Map<EtfID, List<EtfFlow>> etfFlowsByIsinMap = allEtfFlows.stream()
+		final Map<EtfID, List<EtfFlow>> etfFlowsByEtfIdMap = allEtfFlows.stream()
 				.collect(Collectors.groupingBy(EtfFlow::getEtfId));
 
 		final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
-		for (final var etfFlowsByIsinMapEntry : etfFlowsByIsinMap.entrySet()) {
+		for (final var etfFlowsByIsinMapEntry : etfFlowsByEtfIdMap.entrySet()) {
 			final var etfFlows = etfFlowsByIsinMapEntry.getValue();
 			final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(etfFlowsByIsinMapEntry.getKey());
 			final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
