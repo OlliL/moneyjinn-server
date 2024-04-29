@@ -49,12 +49,12 @@ import lombok.RequiredArgsConstructor;
 public class EtfDao {
 	private final IEtfDaoMapper mapper;
 
-	public List<EtfData> getAllEtf() {
-		return this.mapper.getAllEtf();
+	public List<EtfData> getAllEtf(final Long userId) {
+		return this.mapper.getAllEtf(userId);
 	}
 
-	public EtfData getEtfById(final Long etfId) {
-		return this.mapper.getEtfById(etfId);
+	public EtfData getEtfById(final Long userId, final Long etfId) {
+		return this.mapper.getEtfById(userId, etfId);
 	}
 
 	public EtfValueData getEtfValueForMonth(final EtfIsin etfIsin, final Year year, final Month month) {

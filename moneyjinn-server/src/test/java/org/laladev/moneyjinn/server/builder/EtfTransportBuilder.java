@@ -10,6 +10,8 @@ public class EtfTransportBuilder extends EtfTransport {
 
 	public EtfTransportBuilder forEtf1() {
 		super.setEtfId(ETF_ID_1);
+		super.setUserid(UserTransportBuilder.USER1_ID);
+		super.setGroupUse(1);
 		super.setIsin(ISIN);
 		super.setName("name456");
 		super.setWkn("WKN789");
@@ -21,6 +23,8 @@ public class EtfTransportBuilder extends EtfTransport {
 	public EtfTransport build() {
 		final EtfTransport transport = new EtfTransport();
 		transport.setEtfId(super.getEtfId());
+		transport.setUserid(super.getUserid());
+		transport.setGroupUse(super.getGroupUse());
 		transport.setIsin(super.getIsin());
 		transport.setName(super.getName());
 		transport.setWkn(super.getWkn());

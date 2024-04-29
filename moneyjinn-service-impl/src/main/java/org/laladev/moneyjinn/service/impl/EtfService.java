@@ -77,6 +77,8 @@ import lombok.RequiredArgsConstructor;
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfService extends AbstractService implements IEtfService {
+	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
+
 	private final EtfDao etfDao;
 	private final EtfFlowDataMapper etfFlowDataMapper;
 	private final EtfValueDataMapper etfValueDataMapper;
@@ -94,7 +96,9 @@ public class EtfService extends AbstractService implements IEtfService {
 
 	@Override
 	public List<Etf> getAllEtf(final UserID userId) {
-		final List<EtfData> etfData = this.etfDao.getAllEtf();
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+
+		final List<EtfData> etfData = this.etfDao.getAllEtf(userId.getId());
 		return super.mapList(etfData, Etf.class);
 	}
 
@@ -163,7 +167,8 @@ public class EtfService extends AbstractService implements IEtfService {
 		if (etfFlow.getEtfId() == null || etfFlow.getEtfId().getId() == null) {
 			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 		} else {
-			final EtfData etfData = this.etfDao.getEtfById(etfFlow.getEtfId().getId());
+			// TODO Issue #54
+			final EtfData etfData = this.etfDao.getEtfById(666L, etfFlow.getEtfId().getId());
 			if (etfData == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			}
@@ -187,8 +192,9 @@ public class EtfService extends AbstractService implements IEtfService {
 			if (idValues.getEtfId() == null || idValues.getEtfId().getId() == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			} else {
-				final EtfData etfData = this.etfDao
-						.getEtfById(etfPreliminaryLumpSum.getId().getId().getEtfId().getId());
+				// TODO Issue #54
+				final EtfData etfData = this.etfDao.getEtfById(666L,
+						etfPreliminaryLumpSum.getId().getId().getEtfId().getId());
 				if (etfData == null) {
 					addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 				}

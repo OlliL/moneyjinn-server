@@ -3,12 +3,15 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
 
            <sql id="etfColumns">
-                 etfid
+                 mau_userid     AS mauUserId
+                ,mag_groupid    AS magGroupId
+                ,etfid
                 ,isin
                 ,name
                 ,wkn
                 ,ticker
-                ,chart_url   AS chartUrl
+                ,chart_url      AS chartUrl
+                ,att_group_use  AS attGroupUse
         </sql>
         
         <sql id="etfFlowsColumns">
@@ -48,16 +51,20 @@
         <select id="getAllEtf"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
-                  FROM etf
+                  FROM vw_etf
+                 WHERE mar_mau_userid = #{userId}  
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
         </select>
         
         <select id="getEtfById"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
-                  FROM etf
+                  FROM vw_etf
                  WHERE etfid = #{metEtfid}
+                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
         </select>
+        <!--                    AND mar_mau_userid = #{userId} -->
                     
         <select id="getAllFlowsUntil"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">

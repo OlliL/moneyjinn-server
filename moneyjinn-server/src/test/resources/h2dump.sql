@@ -185,13 +185,20 @@ DROP TABLE IF EXISTS `etf`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etf` (
   `etfid` int unsigned NOT NULL AUTO_INCREMENT,
+  `mau_userid` int unsigned NOT NULL,
+  `mag_groupid` int unsigned NOT NULL,
   `isin` varchar(30) NOT NULL,
   `name` varchar(60) NOT NULL,
   `wkn` varchar(10) NOT NULL,
   `ticker` varchar(10) NOT NULL,
-  `chart_url` varchar(255) NOT NULL,
+  `chart_url` varchar(255) DEFAULT NULL,
+  `att_group_use` tinyint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`etfid`),
-  UNIQUE KEY `met_i_01` (`name`)
+  UNIQUE KEY `met_i_01` (`name`),
+  KEY `met_mau_pk` (`mau_userid`),
+  KEY `met_mag_pk` (`mag_groupid`),
+  CONSTRAINT `met_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `met_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

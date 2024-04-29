@@ -185,13 +185,20 @@ DROP TABLE IF EXISTS `etf`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etf` (
   `etfid` int unsigned NOT NULL AUTO_INCREMENT,
+  `mau_userid` int unsigned NOT NULL,
+  `mag_groupid` int unsigned NOT NULL,
   `isin` varchar(30) COLLATE utf8mb3_bin NOT NULL,
   `name` varchar(60) COLLATE utf8mb3_bin NOT NULL,
   `wkn` varchar(10) COLLATE utf8mb3_bin NOT NULL,
   `ticker` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `chart_url` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+  `chart_url` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+  `att_group_use` tinyint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`etfid`),
-  UNIQUE KEY `met_i_01` (`name`)
+  UNIQUE KEY `met_i_01` (`name`),
+  KEY `met_mau_pk` (`mau_userid`),
+  KEY `met_mag_pk` (`mag_groupid`),
+  CONSTRAINT `met_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `met_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='met';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -560,7 +567,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-28 18:39:06
+-- Dump completed on 2024-04-29 21:21:18
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

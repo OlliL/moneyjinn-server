@@ -37,9 +37,9 @@ import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
 public interface IEtfDaoMapper {
-	public List<EtfData> getAllEtf();
+	public List<EtfData> getAllEtf(@Param("userId") Long userId);
 
-	public EtfData getEtfById(@Param("metEtfid") Long etfId);
+	public EtfData getEtfById(@Param("userId") Long userId, @Param("metEtfid") Long etfId);
 
 	public List<EtfFlowData> getAllFlowsUntil(@Param("metEtfid") Long etfId,
 			@Param("dateUntil") LocalDateTime timeUntil);

@@ -146,6 +146,40 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
             ,access_relation mar
        WHERE mcs.mag_groupid = mar.mag_groupid;
 
+/*
+ * this view will show all data from etf which is visible
+ * to a user. Use mar_mau_userid in your SELECT for your userid. In
+ * mau_userid you'll find the original userid of the creator
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_etf (
+   mau_userid
+  ,mar_mau_userid
+  ,mag_groupid
+  ,etfid
+  ,isin
+  ,name
+  ,wkn
+  ,ticker
+  ,chart_url
+  ,att_group_use
+  ,maf_validfrom
+  ,maf_validtil
+  ) AS
+      SELECT met.mau_userid
+            ,mar.mau_userid
+            ,met.mag_groupid
+            ,met.etfid
+            ,met.isin
+            ,met.name
+            ,met.wkn
+            ,met.ticker
+            ,met.chart_url
+            ,met.att_group_use
+            ,mar.validfrom maf_validfrom
+            ,mar.validtil  maf_validtil
+        FROM etf             met
+            ,access_relation mar
+       WHERE met.mag_groupid = mar.mag_groupid;
 
 -- FUNCTIONS
 
