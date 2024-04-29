@@ -31,6 +31,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.List;
 
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
@@ -43,7 +44,26 @@ import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 public interface IEtfService {
-	List<Etf> getAllEtf();
+
+	//
+	// ETF
+	//
+
+	List<Etf> getAllEtf(UserID userId);
+
+	Etf getEtfById(UserID userId, EtfID etfId);
+
+	ValidationResult validateEtf(Etf etf);
+
+	EtfID createEtf(Etf etf);
+
+	void updateEtf(Etf etf);
+
+	void deleteEtf(UserID userId, EtfID etfId);
+
+	//
+	// ETF Flows
+	//
 
 	List<EtfFlow> getAllEtfFlowsUntil(EtfID etfId, LocalDateTime timeUntil);
 
@@ -60,6 +80,10 @@ public interface IEtfService {
 	void deleteEtfFlow(EtfFlowID etfFlowId);
 
 	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
+
+	//
+	// ETF Preliminary Lump Sum
+	//
 
 	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
 

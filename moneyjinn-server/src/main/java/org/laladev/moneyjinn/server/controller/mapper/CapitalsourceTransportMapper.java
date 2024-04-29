@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
-import org.laladev.moneyjinn.converter.GroupIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -38,7 +37,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class,
-		CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class,
+		CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class,
 		BooleanToIntegerMapper.class })
 public interface CapitalsourceTransportMapper extends IMapstructMapper<Capitalsource, CapitalsourceTransport> {
 

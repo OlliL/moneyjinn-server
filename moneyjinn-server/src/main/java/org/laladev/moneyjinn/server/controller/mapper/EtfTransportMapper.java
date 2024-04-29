@@ -29,19 +29,25 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.EtfIdMapper;
 import org.laladev.moneyjinn.converter.EtfIsinMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfIdMapper.class, UserIdMapper.class,
+		BooleanToIntegerMapper.class })
 public interface EtfTransportMapper extends IMapstructMapper<Etf, EtfTransport> {
 	@Override
 	@Mapping(target = "id", source = "etfId")
+	@Mapping(target = "user.id", source = "userid")
+	@Mapping(target = "group", ignore = true)
 	Etf mapBToA(EtfTransport b);
 
 	@Override
 	@Mapping(target = "etfId", source = "id")
+	@Mapping(target = "userid", source = "user.id")
 	EtfTransport mapAToB(Etf a);
 }

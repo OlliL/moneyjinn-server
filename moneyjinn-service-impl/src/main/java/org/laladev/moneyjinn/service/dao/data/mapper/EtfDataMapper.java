@@ -39,6 +39,9 @@ import org.mapstruct.Mapping;
 public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
 	@Override
 	@Mapping(target = "id", source = "etfid")
+	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "group", ignore = true)
+	@Mapping(target = "groupUse", ignore = true)
 	Etf mapBToA(EtfData b);
 
 	@Override

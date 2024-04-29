@@ -42,6 +42,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
@@ -92,9 +93,39 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
-	public List<Etf> getAllEtf() {
+	public List<Etf> getAllEtf(final UserID userId) {
 		final List<EtfData> etfData = this.etfDao.getAllEtf();
 		return super.mapList(etfData, Etf.class);
+	}
+
+	@Override
+	public Etf getEtfById(final UserID userId, final EtfID etfId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ValidationResult validateEtf(final Etf etf) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EtfID createEtf(final Etf etf) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateEtf(final Etf etf) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteEtf(final UserID userId, final EtfID etfId) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -381,4 +412,5 @@ public class EtfService extends AbstractService implements IEtfService {
 
 		this.etfDao.deletePreliminaryLumpSum(idValues.getEtfId().getId(), idValues.getYear());
 	}
+
 }

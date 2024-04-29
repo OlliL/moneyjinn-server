@@ -2,6 +2,8 @@
 	"type": "object",
 	"required": [
 		"etfId",
+		"userid",
+		"groupUse",
 		"isin",
 		"name",
 		"wkn",
@@ -12,6 +14,14 @@
 		"etfId": {
 			"type": "integer",
 			"format": "int64"
+		},
+		"userid": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"groupUse": {
+			"type": "integer",
+			"format": "int32"
 		},
 		"isin": {
 			"type": "string"

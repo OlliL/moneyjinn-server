@@ -27,6 +27,10 @@
 package org.laladev.moneyjinn.model.etf;
 
 import org.laladev.moneyjinn.model.AbstractEntity;
+import org.laladev.moneyjinn.model.IHasGroup;
+import org.laladev.moneyjinn.model.IHasUser;
+import org.laladev.moneyjinn.model.access.Group;
+import org.laladev.moneyjinn.model.access.User;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,11 +39,15 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Etf extends AbstractEntity<EtfID> {
+public class Etf extends AbstractEntity<EtfID> implements IHasUser, IHasGroup {
 	private static final long serialVersionUID = 1L;
+	private User user;
+	private Group group;
 	private EtfIsin isin;
 	private String name;
 	private String wkn;
 	private String ticker;
 	private String chartUrl;
+	private boolean groupUse;
+
 }

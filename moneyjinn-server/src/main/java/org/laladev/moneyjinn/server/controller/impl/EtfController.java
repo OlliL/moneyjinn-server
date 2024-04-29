@@ -101,7 +101,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
 		final List<EtfSummaryTransport> transports = new ArrayList<>();
 
-		final List<Etf> etfs = this.etfService.getAllEtf();
+		final List<Etf> etfs = this.etfService.getAllEtf(super.getUserId());
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
 			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
@@ -138,7 +138,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	public ResponseEntity<ListEtfFlowsResponse> listEtfFlows() {
 		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
 
-		final List<Etf> etfs = this.etfService.getAllEtf();
+		final List<Etf> etfs = this.etfService.getAllEtf(super.getUserId());
 
 		if (!etfs.isEmpty()) {
 			response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
