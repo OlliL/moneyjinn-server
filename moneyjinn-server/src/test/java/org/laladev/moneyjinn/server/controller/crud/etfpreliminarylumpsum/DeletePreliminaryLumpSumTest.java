@@ -1,5 +1,5 @@
 
-package org.laladev.moneyjinn.server.controller.crud.etf;
+package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
 import java.time.Year;
 
@@ -39,10 +39,10 @@ class DeletePreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 
 	@Test
 	void test_nonExisting_SuccessfullNoContent() throws Exception {
-		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.NON_EXISTING_ETF_ID,
+		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.NON_EXISTING_ID,
 				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 
-		final var etfId = new EtfID(EtfTransportBuilder.NON_EXISTING_ETF_ID);
+		final var etfId = new EtfID(EtfTransportBuilder.NON_EXISTING_ID);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));

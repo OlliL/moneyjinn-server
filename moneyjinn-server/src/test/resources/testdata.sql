@@ -167,6 +167,9 @@ INSERT INTO `monthlysettlements` VALUES (50,3,6,2,4,2010,110.00);
 INSERT INTO `monthlysettlements` VALUES (51,5,6,4,4,2010,1000.00);
 
 INSERT INTO etf       VALUES ( 1, 3, 6, 'ISIN123', 'name456', 'WKN789', 'TKR0', 'https://www.lipsum.com/');
+INSERT INTO etf       VALUES ( 2, 0, 0, 'ISIN456', 'name456', 'WKN789', 'TKR0', 'https://www.lipsum.com/');
+INSERT INTO etf       VALUES ( 3, 3, 6, 'ISIN789', 'name456', 'WKN789', 'TKR0', 'https://www.lipsum.com/');
+INSERT INTO etf       VALUES ( 4, 5, 6, 'ISIN012', 'name456', 'WKN789', 'TKR0', 'https://www.lipsum.com/');
 INSERT INTO etfflows  VALUES ( 1, 1, '2008-12-13 15:16:20.320000',  30.000, 777.666);
 INSERT INTO etfflows  VALUES ( 2, 1, '2008-12-14 15:16:20.320000', 100.000, 777.666);
 INSERT INTO etfflows  VALUES ( 3, 1, '2008-12-15 15:16:20.320000', -50.000, 877.000);

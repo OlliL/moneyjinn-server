@@ -64,6 +64,8 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 
 		final List<EtfTransport> etfs = new ArrayList<>();
 		etfs.add(new EtfTransportBuilder().forEtf1().build());
+		etfs.add(new EtfTransportBuilder().forEtf3().build());
+		etfs.add(new EtfTransportBuilder().forEtf4().build());
 		expected.setEtfTransports(etfs);
 
 		final List<EtfFlowTransport> allTransports = new ArrayList<>();

@@ -67,7 +67,7 @@
 
         <insert id="createEtf"
                 parameterType="org.laladev.moneyjinn.service.dao.data.EtfData"
-                useGeneratedKeys="true" keyProperty="etffid" keyColumn="etffid">
+                useGeneratedKeys="true" keyProperty="etfid" keyColumn="etfid">
                 INSERT
                   INTO etf
                       (mau_userid

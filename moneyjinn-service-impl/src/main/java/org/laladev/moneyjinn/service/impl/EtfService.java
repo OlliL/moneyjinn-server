@@ -121,16 +121,16 @@ public class EtfService extends AbstractService implements IEtfService {
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(etf.getId(), errorCode));
 
-		if (etf.getIsin() == null) {
+		if (etf.getIsin() == null || etf.getIsin().getId().isBlank()) {
 			addResult.accept(ErrorCode.ISIN_MUST_NOT_BE_EMPTY);
 		}
-		if (etf.getWkn() == null) {
+		if (etf.getWkn() == null || etf.getWkn().isBlank()) {
 			addResult.accept(ErrorCode.WKN_MUST_NOT_BE_EMPTY);
 		}
-		if (etf.getTicker() == null) {
+		if (etf.getTicker() == null || etf.getTicker().isBlank()) {
 			addResult.accept(ErrorCode.TICKER_MUST_NOT_BE_EMPTY);
 		}
-		if (etf.getName() == null) {
+		if (etf.getName() == null || etf.getName().isBlank()) {
 			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 		}
 
@@ -209,7 +209,7 @@ public class EtfService extends AbstractService implements IEtfService {
 				this.etfDao.deleteEtf(groupId.getId(), etfId.getId());
 			} catch (final Exception e) {
 				log.log(Level.INFO, STILL_REFERENCED, e);
-				throw new BusinessException(STILL_REFERENCED, ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+				throw new BusinessException(STILL_REFERENCED, ErrorCode.ETF_STILL_REFERENCED);
 			}
 		}
 	}

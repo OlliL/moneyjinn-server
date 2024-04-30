@@ -193,7 +193,6 @@ CREATE TABLE `etf` (
   `ticker` varchar(10) NOT NULL,
   `chart_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`etfid`),
-  UNIQUE KEY `met_i_01` (`name`),
   KEY `met_mau_pk` (`mau_userid`),
   KEY `met_mag_pk` (`mag_groupid`),
   CONSTRAINT `met_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,

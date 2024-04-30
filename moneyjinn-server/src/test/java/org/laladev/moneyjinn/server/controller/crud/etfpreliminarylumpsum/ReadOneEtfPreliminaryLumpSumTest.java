@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.crud.etf;
+package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

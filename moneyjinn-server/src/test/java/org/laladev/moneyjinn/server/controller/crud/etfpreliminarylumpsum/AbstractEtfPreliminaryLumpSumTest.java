@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.crud.etf;
+package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.CrudEtfPreliminaryLumpSumControllerApi;

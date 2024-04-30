@@ -1,4 +1,4 @@
-package org.laladev.moneyjinn.server.controller.crud.etf;
+package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminar
 
 	@Test
 	void test_notExisting_NotFoundRaised() throws Exception {
-		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ETF_ID);
+		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 
 	@Override

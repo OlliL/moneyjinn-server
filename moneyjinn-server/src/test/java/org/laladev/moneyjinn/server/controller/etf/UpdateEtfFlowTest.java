@@ -60,7 +60,7 @@ class UpdateEtfFlowTest extends AbstractWebUserControllerTest {
 	void test_invalidEtfSpecified_errorResponse() throws Exception {
 		final UpdateEtfFlowRequest request = new UpdateEtfFlowRequest();
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forFlow1().build();
-		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ETF_ID);
+		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ID);
 		request.setEtfFlowTransport(transport);
 
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
