@@ -37,9 +37,15 @@ import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
 public interface IEtfDaoMapper {
-	public List<EtfData> getAllEtf(@Param("userId") Long userId);
+	public List<EtfData> getAllEtf(@Param("mauUserId") Long userId);
 
-	public EtfData getEtfById(@Param("userId") Long userId, @Param("metEtfid") Long etfId);
+	public EtfData getEtfById(@Param("mauUserId") Long userId, @Param("etfid") Long etfId);
+
+	public Long createEtf(EtfData data);
+
+	public void updateEtf(EtfData data);
+
+	public void deleteEtf(@Param("magGroupId") Long magGroupId, @Param("etfid") Long etfid);
 
 	public List<EtfFlowData> getAllFlowsUntil(@Param("metEtfid") Long etfId,
 			@Param("dateUntil") LocalDateTime timeUntil);

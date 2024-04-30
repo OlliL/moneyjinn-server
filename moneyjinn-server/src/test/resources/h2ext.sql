@@ -161,7 +161,6 @@ CREATE OR REPLACE VIEW vw_etf (
   ,wkn
   ,ticker
   ,chart_url
-  ,att_group_use
   ,maf_validfrom
   ,maf_validtil
   ) AS
@@ -174,7 +173,6 @@ CREATE OR REPLACE VIEW vw_etf (
             ,met.wkn
             ,met.ticker
             ,met.chart_url
-            ,met.att_group_use
             ,mar.validfrom maf_validfrom
             ,mar.validtil  maf_validtil
         FROM etf             met

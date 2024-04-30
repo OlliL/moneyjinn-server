@@ -57,6 +57,19 @@ public class EtfDao {
 		return this.mapper.getEtfById(userId, etfId);
 	}
 
+	public Long createEtf(final EtfData etfData) {
+		this.mapper.createEtf(etfData);
+		return etfData.getEtfid();
+	}
+
+	public void updateEtf(final EtfData etfData) {
+		this.mapper.updateEtf(etfData);
+	}
+
+	public void deleteEtf(final Long groupId, final Long etfId) {
+		this.mapper.deleteEtf(groupId, etfId);
+	}
+
 	public EtfValueData getEtfValueForMonth(final EtfIsin etfIsin, final Year year, final Month month) {
 		final LocalDate startDate = year.atMonth(month).atDay(1);
 		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());

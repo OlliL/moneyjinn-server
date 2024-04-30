@@ -48,6 +48,5 @@ public class Etf extends AbstractEntity<EtfID> implements IHasUser, IHasGroup {
 	private String wkn;
 	private String ticker;
 	private String chartUrl;
-	private boolean groupUse;
 
 }

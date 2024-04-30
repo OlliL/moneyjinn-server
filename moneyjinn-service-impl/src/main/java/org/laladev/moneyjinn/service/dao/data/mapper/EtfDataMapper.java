@@ -41,7 +41,6 @@ import org.mapstruct.Mapping;
 		GroupIdMapper.class })
 public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
 	@Override
-	@Mapping(target = "groupUse", source = "attGroupUse")
 	@Mapping(target = "id", source = "etfid")
 	@Mapping(target = "user.id", source = "mauUserId")
 	@Mapping(target = "group.id", source = "magGroupId")
@@ -49,7 +48,6 @@ public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
 
 	@Override
 	@Mapping(target = "etfid", source = "id")
-	@Mapping(target = "attGroupUse", source = "groupUse")
 	@Mapping(target = "mauUserId", source = "user.id")
 	@Mapping(target = "magGroupId", source = "group.id")
 	EtfData mapAToB(Etf a);

@@ -38,5 +38,4 @@ public class EtfData {
 	private String wkn;
 	private String ticker;
 	private String chartUrl;
-	private boolean attGroupUse;
 }

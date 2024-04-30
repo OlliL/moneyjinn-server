@@ -39,9 +39,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
@@ -58,6 +60,8 @@ import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.api.IEtfService;
+import org.laladev.moneyjinn.service.api.IGroupService;
+import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.EtfDao;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
@@ -73,17 +77,24 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Log
 public class EtfService extends AbstractService implements IEtfService {
+	private static final String STILL_REFERENCED = "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
+	private static final String ETF_MUST_NOT_BE_NULL = "ETF must not be null!";
 
 	private final EtfDao etfDao;
 	private final EtfFlowDataMapper etfFlowDataMapper;
 	private final EtfValueDataMapper etfValueDataMapper;
 	private final EtfDataMapper etfDataMapper;
 	private final EtfPreliminaryLumpSumDataMapper etfPreliminaryLumpSumDataMapper;
+
+	private final IUserService userService;
+	private final IGroupService groupService;
 
 	@Override
 	@PostConstruct
@@ -94,43 +105,118 @@ public class EtfService extends AbstractService implements IEtfService {
 		super.registerBeanMapper(this.etfPreliminaryLumpSumDataMapper);
 	}
 
+	//
+	// Etf
+	//
+
+	@Override
+	public ValidationResult validateEtf(final Etf etf) {
+		Assert.notNull(etf, ETF_MUST_NOT_BE_NULL);
+		Assert.notNull(etf.getUser(), "etf.user must not be null!");
+		Assert.notNull(etf.getUser().getId(), "etf.user.id must not be null!");
+		Assert.notNull(etf.getGroup(), "etf.group must not be null!");
+		Assert.notNull(etf.getGroup().getId(), "etf.group.id must not be null!");
+
+		final ValidationResult validationResult = new ValidationResult();
+		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+				new ValidationResultItem(etf.getId(), errorCode));
+
+		if (etf.getIsin() == null) {
+			addResult.accept(ErrorCode.ISIN_MUST_NOT_BE_EMPTY);
+		}
+		if (etf.getWkn() == null) {
+			addResult.accept(ErrorCode.WKN_MUST_NOT_BE_EMPTY);
+		}
+		if (etf.getTicker() == null) {
+			addResult.accept(ErrorCode.TICKER_MUST_NOT_BE_EMPTY);
+		}
+		if (etf.getName() == null) {
+			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+		}
+
+		return validationResult;
+	}
+
+	private Etf mapEtfData(final EtfData etfData) {
+		if (etfData != null) {
+			final Etf etf = super.map(etfData, Etf.class);
+
+			this.userService.enrichEntity(etf);
+			this.groupService.enrichEntity(etf);
+
+			return etf;
+		}
+		return null;
+	}
+
+	private List<Etf> mapEtfDataList(final List<EtfData> etfDataList) {
+		return etfDataList.stream().map(this::mapEtfData).toList();
+	}
+
 	@Override
 	public List<Etf> getAllEtf(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 
 		final List<EtfData> etfData = this.etfDao.getAllEtf(userId.getId());
-		return super.mapList(etfData, Etf.class);
+		return this.mapEtfDataList(etfData);
 	}
 
 	@Override
 	public Etf getEtfById(final UserID userId, final EtfID etfId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ValidationResult validateEtf(final Etf etf) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public EtfID createEtf(final Etf etf) {
-		// TODO Auto-generated method stub
-		return null;
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(etfId, "etfId must not be null!");
+		final EtfData etfData = this.etfDao.getEtfById(userId.getId(), etfId.getId());
+		return this.mapEtfData(etfData);
 	}
 
 	@Override
 	public void updateEtf(final Etf etf) {
-		// TODO Auto-generated method stub
-
+		Assert.notNull(etf, ETF_MUST_NOT_BE_NULL);
+		final ValidationResult validationResult = this.validateEtf(etf);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Etf update failed!", validationResultItem.getError());
+		}
+		final EtfData etfData = super.map(etf, EtfData.class);
+		this.etfDao.updateEtf(etfData);
 	}
 
 	@Override
-	public void deleteEtf(final UserID userId, final EtfID etfId) {
-		// TODO Auto-generated method stub
-
+	public EtfID createEtf(final Etf etf) {
+		Assert.notNull(etf, ETF_MUST_NOT_BE_NULL);
+		etf.setId(null);
+		final ValidationResult validationResult = this.validateEtf(etf);
+		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			throw new BusinessException("Etf creation failed!", validationResultItem.getError());
+		}
+		final EtfData etfData = super.map(etf, EtfData.class);
+		final Long etfIdLong = this.etfDao.createEtf(etfData);
+		final EtfID etfId = new EtfID(etfIdLong);
+		etf.setId(etfId);
+		return etfId;
 	}
+
+	@Override
+	public void deleteEtf(final UserID userId, final GroupID groupId, final EtfID etfId) {
+		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(groupId, "GroupId must not be null!");
+		Assert.notNull(etfId, "EtfId must not be null!");
+
+		final Etf etf = this.getEtfById(userId, etfId);
+		if (etf != null) {
+			try {
+				this.etfDao.deleteEtf(groupId.getId(), etfId.getId());
+			} catch (final Exception e) {
+				log.log(Level.INFO, STILL_REFERENCED, e);
+				throw new BusinessException(STILL_REFERENCED, ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+			}
+		}
+	}
+
+	//
+	// EtfFlow
+	//
 
 	@Override
 	public List<EtfFlow> getAllEtfFlowsUntil(final EtfID etfId, final LocalDateTime timeUntil) {

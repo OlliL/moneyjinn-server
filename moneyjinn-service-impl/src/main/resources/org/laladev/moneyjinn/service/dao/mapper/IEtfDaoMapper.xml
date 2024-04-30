@@ -11,7 +11,6 @@
                 ,wkn
                 ,ticker
                 ,chart_url      AS chartUrl
-                ,att_group_use  AS attGroupUse
         </sql>
         
         <sql id="etfFlowsColumns">
@@ -52,7 +51,7 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
                   FROM vw_etf
-                 WHERE mar_mau_userid = #{userId}  
+                 WHERE mar_mau_userid = #{mauUserId}  
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
         </select>
         
@@ -60,12 +59,56 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfData">
                 SELECT <include refid="etfColumns" />
                   FROM vw_etf
-                 WHERE etfid = #{metEtfid}
+                 WHERE etfid = #{etfid}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
         </select>
-        <!--                    AND mar_mau_userid = #{userId} -->
-                    
+        <!--TODO:   AND mar_mau_userid = #{mauUserId} -->
+
+        <insert id="createEtf"
+                parameterType="org.laladev.moneyjinn.service.dao.data.EtfData"
+                useGeneratedKeys="true" keyProperty="etffid" keyColumn="etffid">
+                INSERT
+                  INTO etf
+                      (mau_userid
+                      ,mag_groupid
+                      ,isin
+                      ,name
+                      ,wkn
+                      ,ticker
+                      ,chart_url
+                      )
+                VALUES
+                      (#{mauUserId}
+                      ,#{magGroupId}
+                      ,#{isin}
+                      ,#{name}
+                      ,#{wkn}
+                      ,#{ticker}
+                      ,#{chartUrl}
+                      )
+        </insert>
+        
+        <update id="updateEtf" parameterType="org.laladev.moneyjinn.service.dao.data.EtfData">
+                UPDATE etf
+                   SET isin          = #{isin}
+                      ,name          = #{name}
+                      ,wkn           = #{wkn}
+                      ,ticker        = #{ticker}
+                      ,chart_url     = #{chartUrl}
+                 WHERE etfid         = #{etfid}
+                   AND mag_groupid   = #{magGroupId}
+                 LIMIT 1
+        </update>
+
+        <delete id="deleteEtf">
+                DELETE
+                  FROM etf
+                 WHERE etfid         = #{etfid}
+                   AND mag_groupid   = #{magGroupId}
+                 LIMIT 1
+        </delete>
+
         <select id="getAllFlowsUntil"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />

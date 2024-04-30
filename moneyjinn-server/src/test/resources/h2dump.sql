@@ -192,7 +192,6 @@ CREATE TABLE `etf` (
   `wkn` varchar(10) NOT NULL,
   `ticker` varchar(10) NOT NULL,
   `chart_url` varchar(255) DEFAULT NULL,
-  `att_group_use` tinyint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`etfid`),
   UNIQUE KEY `met_i_01` (`name`),
   KEY `met_mau_pk` (`mau_userid`),

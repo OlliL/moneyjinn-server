@@ -131,8 +131,9 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
 		final UserID userId = super.getUserId();
 		final EtfID etfId = new EtfID(id);
+		final Group group = this.accessRelationService.getCurrentGroup(userId);
 
-		this.etfService.deleteEtf(userId, etfId);
+		this.etfService.deleteEtf(userId, group.getId(), etfId);
 
 		return ResponseEntity.noContent().build();
 	}

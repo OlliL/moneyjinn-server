@@ -31,6 +31,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.List;
 
+import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
@@ -59,7 +60,7 @@ public interface IEtfService {
 
 	void updateEtf(Etf etf);
 
-	void deleteEtf(UserID userId, EtfID etfId);
+	void deleteEtf(UserID userId, GroupID groupId, EtfID etfId);
 
 	//
 	// ETF Flows
