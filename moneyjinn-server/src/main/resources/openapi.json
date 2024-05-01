@@ -83,12 +83,6 @@
 		"/moneyflow/server/etf/calcEtfSale": {
 			"$ref": "openapi/etf/paths/CalcEtfSale.json"
 		},
-		"/moneyflow/server/etf/createEtfFlow": {
-			"$ref": "openapi/etf/paths/CreateEtfFlow.json"
-		},
-		"/moneyflow/server/etf/deleteEtfFlow/{id}": {
-			"$ref": "openapi/etf/paths/DeleteEtfFlow.json"
-		},
 		"/moneyflow/server/etf/listEtfOverview/{year}/{month}": {
 			"$ref": "openapi/etf/paths/ListEtfOverview.json"
 		},
@@ -97,9 +91,6 @@
 		},
 		"/moneyflow/server/etf/listEtfFlows/{id}": {
 			"$ref": "openapi/etf/paths/ListEtfFlowsId.json"
-		},
-		"/moneyflow/server/etf/updateEtfFlow": {
-			"$ref": "openapi/etf/paths/UpdateEtfFlow.json"
 		},
 		"/moneyflow/server/event/showEventList": {
 			"$ref": "openapi/event/paths/ShowEventList.json"

@@ -443,6 +443,10 @@ public class EtfService extends AbstractService implements IEtfService {
 		return etfBuyFlows;
 	}
 
+	//
+	// Etf Preliminary Lump Sum
+	//
+
 	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final EtfID etfId) {
 		final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
 		return super.mapList(datas, EtfPreliminaryLumpSum.class);

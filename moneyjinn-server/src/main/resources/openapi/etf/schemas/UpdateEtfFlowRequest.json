@@ -1,8 +1,0 @@
-{
-	"type": "object",
-	"properties": {
-		"etfFlowTransport": {
-			"$ref": "../../transport/EtfFlowTransport.json"
-		}
-	}
-}

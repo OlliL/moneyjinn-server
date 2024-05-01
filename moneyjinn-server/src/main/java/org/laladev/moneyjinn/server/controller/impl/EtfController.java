@@ -41,7 +41,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
 import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfValue;
@@ -58,15 +57,12 @@ import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
-import org.laladev.moneyjinn.server.model.CreateEtfFlowRequest;
-import org.laladev.moneyjinn.server.model.CreateEtfFlowResponse;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
 import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
-import org.laladev.moneyjinn.server.model.UpdateEtfFlowRequest;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.ResponseEntity;
@@ -83,7 +79,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 // TODO: Multi-User
-// TODO: Multi-ETF
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfController extends AbstractController implements EtfControllerApi {
 	private static final BigDecimal TAX_RELEVANT_PERCENTAGE = new BigDecimal(70).scaleByPowerOfTen(-2);
@@ -267,48 +262,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			}
 		}
 		return ResponseEntity.ok(response);
-	}
-
-	@Override
-	public ResponseEntity<CreateEtfFlowResponse> createEtfFlow(@RequestBody final CreateEtfFlowRequest request) {
-		final CreateEtfFlowResponse response = new CreateEtfFlowResponse();
-		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
-
-		if (etfFlow != null) {
-			etfFlow.setId(null);
-			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
-
-			this.throwValidationExceptionIfInvalid(validationResult);
-
-			final EtfFlowID etfFlowId = this.etfService.createEtfFlow(etfFlow);
-
-			response.setEtfFlowId(etfFlowId.getId());
-		}
-
-		return ResponseEntity.ok(response);
-	}
-
-	@Override
-	public ResponseEntity<Void> updateEtfFlow(@RequestBody final UpdateEtfFlowRequest request) {
-		final EtfFlow etfFlow = super.map(request.getEtfFlowTransport(), EtfFlow.class);
-
-		if (etfFlow != null) {
-
-			final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
-
-			this.throwValidationExceptionIfInvalid(validationResult);
-
-			this.etfService.updateEtfFlow(etfFlow);
-		}
-
-		return ResponseEntity.noContent().build();
-	}
-
-	@Override
-	public ResponseEntity<Void> deleteEtfFlow(@PathVariable(value = "id") final Long id) {
-		this.etfService.deleteEtfFlow(new EtfFlowID(id));
-
-		return ResponseEntity.noContent().build();
 	}
 
 	@Override
