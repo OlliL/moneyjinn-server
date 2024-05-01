@@ -89,6 +89,9 @@
 		"/moneyflow/server/etf/listEtfFlows": {
 			"$ref": "openapi/etf/paths/ListEtfFlows.json"
 		},
+		"/moneyflow/server/etf/listEtfFlows/{id}": {
+			"$ref": "openapi/etf/paths/ListEtfFlowsId.json"
+		},
 		"/moneyflow/server/etf/updateEtfFlow": {
 			"$ref": "openapi/etf/paths/UpdateEtfFlow.json"
 		},

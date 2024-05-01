@@ -34,8 +34,10 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
@@ -47,6 +49,7 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
+import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
@@ -134,44 +137,62 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
-	public ResponseEntity<ListEtfFlowsResponse> listEtfFlows() {
+	private ListEtfFlowsResponse getDefaultListEtfFlowsResponse() {
 		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
 
 		final List<Etf> etfs = this.etfService.getAllEtf(super.getUserId());
+		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
+		return response;
+	}
 
-		if (!etfs.isEmpty()) {
-			response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-			final List<EtfFlowTransport> transports = new ArrayList<>();
-			final List<EtfEffectiveFlowTransport> effectiveTransports = new ArrayList<>();
-			for (final Etf etf : etfs) {
-				final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), LocalDateTime.now());
-				final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
-				transports.addAll(etfFlowTransports);
+	@Override
+	public ResponseEntity<ListEtfFlowsResponse> listEtfFlowsById(@PathVariable("id") final Long id) {
+		final UserID userId = this.getUserId();
+		final EtfID etfId = new EtfID(id);
 
-				final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
-						this.etfService.calculateEffectiveEtfFlows(etfFlows));
-				Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
-				final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
-						EtfEffectiveFlowTransport.class);
-				effectiveTransports.addAll(etfEffectiveFlowTransports);
-			}
-			response.setEtfFlowTransports(transports);
-			response.setEtfEffectiveFlowTransports(effectiveTransports);
-			this.settingService.getClientCalcEtfSaleAskPrice(this.getUserId())
-					.ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
-			this.settingService.getClientCalcEtfSaleBidPrice(this.getUserId())
-					.ifPresent(s -> response.setCalcEtfBidPrice(s.getSetting()));
-// TODO
-//			this.settingService.getClientCalcEtfSaleIsin(this.getUserId())
-//					.ifPresent(s -> response.setCalcEtfSaleIsin(s.getSetting()));
-			this.settingService.getClientCalcEtfSalePieces(this.getUserId())
-					.ifPresent(s -> response.setCalcEtfSalePieces(s.getSetting()));
-			this.settingService.getClientCalcEtfSaleTransactionCosts(this.getUserId())
-					.ifPresent(s -> response.setCalcEtfTransactionCosts(s.getSetting()));
+		if (this.etfService.getEtfById(userId, etfId) == null) {
+			return ResponseEntity.notFound().build();
 		}
 
+		final ListEtfFlowsResponse response = this.getDefaultListEtfFlowsResponse();
+
+		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfId, LocalDateTime.now());
+		final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
+		response.setEtfFlowTransports(etfFlowTransports);
+
+		final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
+				this.etfService.calculateEffectiveEtfFlows(etfFlows));
+		Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
+		final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
+				EtfEffectiveFlowTransport.class);
+		response.setEtfEffectiveFlowTransports(etfEffectiveFlowTransports);
+
+		this.settingService.getClientCalcEtfSaleAskPrice(userId)
+				.ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
+		this.settingService.getClientCalcEtfSaleBidPrice(userId)
+				.ifPresent(s -> response.setCalcEtfBidPrice(s.getSetting()));
+		this.settingService.getClientCalcEtfSalePieces(userId)
+				.ifPresent(s -> response.setCalcEtfSalePieces(s.getSetting()));
+		this.settingService.getClientCalcEtfSaleTransactionCosts(userId)
+				.ifPresent(s -> response.setCalcEtfTransactionCosts(s.getSetting()));
+
+		response.setDefaultEtfId(etfId.getId());
+		this.settingService.setClientListEtfDepotDefaultEtfId(userId,
+				new ClientListEtfDepotDefaultEtfId(etfId.getId().toString()));
+
 		return ResponseEntity.ok(response);
+	}
+
+	@Override
+	public ResponseEntity<ListEtfFlowsResponse> listEtfFlows() {
+		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
+				.getClientListEtfDepotDefaultEtfId(this.getUserId());
+
+		if (setting.isPresent()) {
+			return this.listEtfFlowsById(Long.valueOf(setting.get().getSetting()));
+		} else {
+			return ResponseEntity.ok(this.getDefaultListEtfFlowsResponse());
+		}
 	}
 
 	@Override

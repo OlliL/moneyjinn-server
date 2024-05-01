@@ -19,7 +19,7 @@
 				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
 			}
 		},
-		"calcEtfSaleEtfId": {
+		"defaultEtfId": {
 			"type": "integer",
 			"format": "int64"
 		},

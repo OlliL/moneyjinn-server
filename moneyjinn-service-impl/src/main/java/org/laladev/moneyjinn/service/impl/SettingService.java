@@ -34,7 +34,7 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
+import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
@@ -169,13 +169,13 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCalcEtfSaleIsin(final UserID userId, final ClientCalcEtfSaleIsin setting) {
+	public void setClientListEtfDepotDefaultEtfId(final UserID userId, final ClientListEtfDepotDefaultEtfId setting) {
 		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleIsin.class);
+	public Optional<ClientListEtfDepotDefaultEtfId> getClientListEtfDepotDefaultEtfId(final UserID userId) {
+		return this.getSetting(userId, ClientListEtfDepotDefaultEtfId.class);
 	}
 
 	@Override

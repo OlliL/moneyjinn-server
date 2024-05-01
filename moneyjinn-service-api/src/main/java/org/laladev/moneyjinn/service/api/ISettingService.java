@@ -32,12 +32,12 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleIsin;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
+import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 
@@ -162,9 +162,9 @@ public interface ISettingService {
 	 */
 	Optional<ClientCompareDataSelectedSourceIsFile> getClientCompareDataSelectedSourceIsFile(UserID userId);
 
-	void setClientCalcEtfSaleIsin(UserID userId, ClientCalcEtfSaleIsin setting);
+	void setClientListEtfDepotDefaultEtfId(UserID userId, ClientListEtfDepotDefaultEtfId setting);
 
-	Optional<ClientCalcEtfSaleIsin> getClientCalcEtfSaleIsin(UserID userId);
+	Optional<ClientListEtfDepotDefaultEtfId> getClientListEtfDepotDefaultEtfId(UserID userId);
 
 	void setClientCalcEtfSaleAskPrice(UserID userId, ClientCalcEtfSaleAskPrice setting);
 

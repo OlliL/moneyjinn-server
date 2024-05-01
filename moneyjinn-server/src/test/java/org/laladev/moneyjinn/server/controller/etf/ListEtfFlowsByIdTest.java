@@ -12,7 +12,6 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
-import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.server.builder.EtfEffectiveFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
@@ -27,19 +26,18 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 
 import jakarta.inject.Inject;
 
-class ListEtfFlowsTest extends AbstractWebUserControllerTest {
+class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 	@Inject
 	private ISettingService settingService;
 
 	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("800.000");
 	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("879.500");
-	private final static Long SETTING_ETF_ID = EtfTransportBuilder.ETF_ID_1;
 	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
 	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
 
 	@Override
 	protected void loadMethod() {
-		super.getMock(EtfControllerApi.class).listEtfFlows();
+		super.getMock(EtfControllerApi.class).listEtfFlowsById(null);
 	}
 
 	private UserID getUserId() {
@@ -51,8 +49,6 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 				new ClientCalcEtfSaleAskPrice(SETTING_SALE_ASK_PRICE));
 		this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(),
 				new ClientCalcEtfSaleBidPrice(SETTING_SALE_BID_PRICE));
-		this.settingService.setClientListEtfDepotDefaultEtfId(this.getUserId(),
-				new ClientListEtfDepotDefaultEtfId(SETTING_ETF_ID.toString()));
 		this.settingService.setClientCalcEtfSalePieces(this.getUserId(),
 				new ClientCalcEtfSalePieces(SETTING_SALE_PIECES));
 		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
@@ -93,14 +89,17 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 		etfs.add(new EtfTransportBuilder().forEtf3().build());
 		etfs.add(new EtfTransportBuilder().forEtf4().build());
 		expected.setEtfTransports(etfs);
+		expected.setDefaultEtfId(EtfTransportBuilder.ETF_ID_1);
+
 		return expected;
 	}
 
 	@Test
 	void test_standardRequestWithoutSettings_FullResponseObject() throws Exception {
-		final ListEtfFlowsResponse expected = this.getBaseResponse();
+		final ListEtfFlowsResponse expected = this.getResponseForEtf1();
 
-		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class);
+		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class,
+				EtfTransportBuilder.ETF_ID_1);
 
 		Assertions.assertEquals(expected, actual);
 
@@ -114,25 +113,28 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 
 		expected.setCalcEtfAskPrice(SETTING_SALE_ASK_PRICE);
 		expected.setCalcEtfBidPrice(SETTING_SALE_BID_PRICE);
-		expected.setDefaultEtfId(EtfTransportBuilder.ETF_ID_1);
 		expected.setCalcEtfSalePieces(SETTING_SALE_PIECES);
 		expected.setCalcEtfTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class);
+		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class,
+				EtfTransportBuilder.ETF_ID_1);
 
 		Assertions.assertEquals(expected, actual);
 
+	}
+
+	@Test
+	void test_notExisting_NotFoundRaised() throws Exception {
+		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
-		super.callUsecaseExpect403();
+		super.callUsecaseExpect403WithUriVariables(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 
 	@Override
 	protected void callUsecaseEmptyDatabase() throws Exception {
-		final ListEtfFlowsResponse expected = new ListEtfFlowsResponse();
-		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class);
-		Assertions.assertEquals(expected, actual);
+		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 }
