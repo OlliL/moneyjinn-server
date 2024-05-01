@@ -8,9 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
@@ -45,14 +47,15 @@ class CreateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_MinimalReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.NEXT_ID);
 
-		var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNull(etfFlow);
 
 		super.callUsecaseExpect204Minimal(transport);
 
-		etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNotNull(etfFlow);
 	}
 
@@ -60,9 +63,10 @@ class CreateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.NEXT_ID);
 
-		var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNull(etfFlow);
 
 		final EtfFlowTransport actualTransport = super.callUsecaseExpect200Representation(transport,
@@ -70,7 +74,7 @@ class CreateEtfFlowTest extends AbstractEtfFlowTest {
 		transport.setEtfflowid(EtfFlowTransportBuilder.NEXT_ID);
 
 		Assertions.assertEquals(transport, actualTransport);
-		etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNotNull(etfFlow);
 	}
 
@@ -78,14 +82,15 @@ class CreateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_DefaultReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.NEXT_ID);
 
-		var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNull(etfFlow);
 
 		super.callUsecaseExpect204(transport);
 
-		etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNotNull(etfFlow);
 	}
 
@@ -94,14 +99,15 @@ class CreateEtfFlowTest extends AbstractEtfFlowTest {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forNewFlow().build();
 		transport.setNanoseconds(null);
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.NEXT_ID);
 
-		var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNull(etfFlow);
 
 		super.callUsecaseExpect204(transport);
 
-		etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		Assertions.assertNotNull(etfFlow);
 	}
 

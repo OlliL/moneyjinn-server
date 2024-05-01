@@ -66,36 +66,40 @@ public interface IEtfService {
 	// ETF Flows
 	//
 
-	List<EtfFlow> getAllEtfFlowsUntil(EtfID etfId, LocalDateTime timeUntil);
+	List<EtfFlow> getAllEtfFlowsUntil(UserID userId, EtfID etfId, LocalDateTime timeUntil);
 
-	EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
+	EtfFlow getEtfFlowById(UserID userId, EtfFlowID etfFlowId);
 
-	EtfFlow getEtfFlowById(EtfFlowID etfFlowId);
+	ValidationResult validateEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	ValidationResult validateEtfFlow(EtfFlow etfFlow);
+	EtfFlowID createEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	EtfFlowID createEtfFlow(EtfFlow etfFlow);
+	void updateEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	void updateEtfFlow(EtfFlow etfFlow);
+	void deleteEtfFlow(UserID userId, EtfFlowID etfFlowId);
 
-	void deleteEtfFlow(EtfFlowID etfFlowId);
-
-	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(List<EtfFlow> etfFlows);
+	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(UserID userId, List<EtfFlow> etfFlows);
 
 	//
 	// ETF Preliminary Lump Sum
 	//
 
-	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
+	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
 
-	List<Year> getAllEtfPreliminaryLumpSumYears(EtfID etfId);
+	List<Year> getAllEtfPreliminaryLumpSumYears(UserID userId, EtfID etfId);
 
-	ValidationResult validateEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+	ValidationResult validateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void createEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+	void createEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void updateEtfPreliminaryLumpSum(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+	void updateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void deleteEtfPreliminaryLumpSum(EtfPreliminaryLumpSumID id);
+	void deleteEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
+
+	//
+	// ETF value
+	//
+
+	EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
 
 }

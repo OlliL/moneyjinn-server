@@ -10,9 +10,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
@@ -48,12 +50,13 @@ class UpdateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_MinimalReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forFlow11().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_11ID);
 
 		transport.setAmount(BIGDECIMAL_123_01);
 		super.callUsecaseExpect204Minimal(transport);
 
-		final var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		final var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		assertNotNull(etfFlow);
 		assertEquals(BIGDECIMAL_123_01, etfFlow.getAmount());
 	}
@@ -62,6 +65,7 @@ class UpdateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forFlow11().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_11ID);
 
 		transport.setAmount(BIGDECIMAL_123_01);
@@ -70,7 +74,7 @@ class UpdateEtfFlowTest extends AbstractEtfFlowTest {
 
 		assertEquals(transport, actualTransport);
 
-		final var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		final var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		assertNotNull(etfFlow);
 		assertEquals(BIGDECIMAL_123_01, etfFlow.getAmount());
 	}
@@ -79,12 +83,13 @@ class UpdateEtfFlowTest extends AbstractEtfFlowTest {
 	void test_standardRequest_Successfull_DefaultReturn() throws Exception {
 		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forFlow11().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_11ID);
 
 		transport.setAmount(BIGDECIMAL_123_01);
 		super.callUsecaseExpect204(transport);
 
-		final var etfFlow = this.etfService.getEtfFlowById(etfFlowId);
+		final var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
 		assertNotNull(etfFlow);
 		assertEquals(BIGDECIMAL_123_01, etfFlow.getAmount());
 	}

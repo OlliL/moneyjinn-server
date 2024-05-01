@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl.crud;
 
 import java.util.List;
 
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -64,13 +65,14 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 	@Override
 	public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final UserID userId = super.getUserId();
 		final EtfFlow etfFlow = super.map(etfFlowTransport, EtfFlow.class);
 		etfFlow.setId(null);
-		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
 
-		final EtfFlowID etfId = this.etfService.createEtfFlow(etfFlow);
+		final EtfFlowID etfId = this.etfService.createEtfFlow(userId, etfFlow);
 
 		etfFlow.setId(etfId);
 
@@ -81,21 +83,23 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 	@Override
 	public ResponseEntity<EtfFlowTransport> update(@RequestBody final EtfFlowTransport etfFlowTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+		final UserID userId = super.getUserId();
 		final EtfFlow etfFlow = super.map(etfFlowTransport, EtfFlow.class);
-		final ValidationResult validationResult = this.etfService.validateEtfFlow(etfFlow);
+		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
 
-		this.etfService.updateEtfFlow(etfFlow);
+		this.etfService.updateEtfFlow(userId, etfFlow);
 
 		return this.preferedReturn(prefer, etfFlow, EtfFlowTransport.class);
 	}
 
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
+		final UserID userId = super.getUserId();
 		final EtfFlowID etfFlowId = new EtfFlowID(id);
 
-		this.etfService.deleteEtfFlow(etfFlowId);
+		this.etfService.deleteEtfFlow(userId, etfFlowId);
 
 		return ResponseEntity.noContent().build();
 	}

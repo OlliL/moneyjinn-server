@@ -71,7 +71,7 @@ class DeleteEtfTest extends AbstractEtfTest {
 	@Test
 	void test_etfFromOtherGroup_nothingHappened() throws Exception {
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_2);
-		final var userId = new UserID(UserTransportBuilder.USER1_ID);
+		final var userId = new UserID(UserTransportBuilder.ADMIN_ID);
 
 		var etf = this.etfService.getEtfById(userId, etfId);
 		Assertions.assertNotNull(etf);

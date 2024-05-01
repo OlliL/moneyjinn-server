@@ -9,11 +9,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
@@ -50,18 +52,19 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	void test_standardRequest_Successfull_MinimalReturn() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(transport.getAmountAugust(), etfPreliminaryLumpSum.getAmountAugust());
 
 		transport.setAmountAugust(TEN);
 		super.callUsecaseExpect204Minimal(transport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 
@@ -69,12 +72,13 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(transport.getAmountAugust(), etfPreliminaryLumpSum.getAmountAugust());
 
 		transport.setAmountAugust(TEN);
@@ -83,7 +87,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 		Assertions.assertEquals(transport, actualTransport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 
@@ -91,18 +95,19 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	void test_standardRequest_Successfull_DefaultReturn() throws Exception {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(transport.getAmountAugust(), etfPreliminaryLumpSum.getAmountAugust());
 
 		transport.setAmountAugust(TEN);
 		super.callUsecaseExpect204(transport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertEquals(TEN, etfPreliminaryLumpSum.getAmountAugust());
 	}
 

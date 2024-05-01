@@ -60,10 +60,10 @@
                 SELECT <include refid="etfColumns" />
                   FROM vw_etf
                  WHERE etfid = #{etfid}
+                   AND mar_mau_userid = #{mauUserId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
         </select>
-        <!--TODO:   AND mar_mau_userid = #{mauUserId} -->
 
         <insert id="createEtf"
                 parameterType="org.laladev.moneyjinn.service.dao.data.EtfData"

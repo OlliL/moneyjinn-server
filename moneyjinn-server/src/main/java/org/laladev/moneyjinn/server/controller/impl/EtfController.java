@@ -96,14 +96,15 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final Year year = Year.of(requestYear);
 		final LocalDateTime endOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999)
 				.with(TemporalAdjusters.lastDayOfMonth());
+		final UserID userId = super.getUserId();
 		final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
 		final List<EtfSummaryTransport> transports = new ArrayList<>();
 
 		final List<Etf> etfs = this.etfService.getAllEtf(super.getUserId());
 		for (final Etf etf : etfs) {
 			final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
-			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(etf.getId(), endOfMonth);
-			final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(allEtfFlows);
+			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
+			final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows);
 			if (etfFlows != null && !etfFlows.isEmpty()) {
 				final EtfSummaryTransport transport = new EtfSummaryTransport();
 				transport.setEtfId(etf.getId().getId());
@@ -151,12 +152,12 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 		final ListEtfFlowsResponse response = this.getDefaultListEtfFlowsResponse();
 
-		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfId, LocalDateTime.now());
+		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, LocalDateTime.now());
 		final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
 		response.setEtfFlowTransports(etfFlowTransports);
 
 		final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
-				this.etfService.calculateEffectiveEtfFlows(etfFlows));
+				this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
 		Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
 		final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
 				EtfEffectiveFlowTransport.class);
@@ -199,6 +200,13 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			return ResponseEntity.ok(response);
 		}
 
+		final UserID userId = this.getUserId();
+		final EtfID etfId = new EtfID(request.getEtfId());
+
+		if (this.etfService.getEtfById(userId, etfId) == null) {
+			return ResponseEntity.ok(response);
+		}
+
 		final BigDecimal pieces = request.getPieces().abs();
 		final BigDecimal askPrice = request.getAskPrice().abs();
 		final BigDecimal bidPrice = request.getBidPrice().abs();
@@ -208,14 +216,13 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
 				new ClientCalcEtfSaleTransactionCosts(request.getTransactionCosts()));
 
-		final EtfID etfId = new EtfID(request.getEtfId());
 		BigDecimal openPieces = pieces;
 		BigDecimal originalBuyPrice = BigDecimal.ZERO;
 		BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
 
-		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(etfId, LocalDateTime.now());
+		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, LocalDateTime.now());
 		final List<EtfFlowWithTaxInfo> effectiveEtfFlows = new ArrayList<>(
-				this.etfService.calculateEffectiveEtfFlows(etfFlows));
+				this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
 
 		if (effectiveEtfFlows != null && !effectiveEtfFlows.isEmpty()) {
 			for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {

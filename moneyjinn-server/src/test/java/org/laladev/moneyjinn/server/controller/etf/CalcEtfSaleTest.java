@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
@@ -39,6 +40,25 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
 		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		Assertions.assertEquals(expected, actual);
+
+	}
+
+	@Test
+	void test_etfOwnedByDifferentGroup_EmptyResponse() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(SETTING_SALE_ASK_PRICE);
+		request.setBidPrice(SETTING_SALE_BID_PRICE);
+		request.setEtfId(SETTING_ETF_ID);
+		request.setPieces(SETTING_SALE_PIECES);
+		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+
+		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);

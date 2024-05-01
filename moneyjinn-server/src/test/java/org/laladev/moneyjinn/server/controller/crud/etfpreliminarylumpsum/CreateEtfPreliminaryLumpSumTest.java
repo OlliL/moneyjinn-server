@@ -8,11 +8,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
@@ -49,17 +51,18 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
 
 		super.callUsecaseExpect204Minimal(transport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNotNull(etfPreliminaryLumpSum);
 	}
 
@@ -68,12 +71,13 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
 
 		final EtfPreliminaryLumpSumTransport actualTransport = super.callUsecaseExpect200Representation(transport,
@@ -81,7 +85,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 		Assertions.assertEquals(transport, actualTransport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNotNull(etfPreliminaryLumpSum);
 	}
 
@@ -90,17 +94,18 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
 				.build();
 
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
 
-		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
 
 		super.callUsecaseExpect204(transport);
 
-		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(id);
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNotNull(etfPreliminaryLumpSum);
 	}
 
