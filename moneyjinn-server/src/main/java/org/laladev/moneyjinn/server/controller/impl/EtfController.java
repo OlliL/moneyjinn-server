@@ -209,9 +209,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final BigDecimal bidPrice = request.getBidPrice().abs();
 		this.settingService.setClientCalcEtfSaleAskPrice(this.getUserId(), new ClientCalcEtfSaleAskPrice(askPrice));
 		this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(), new ClientCalcEtfSaleBidPrice(bidPrice));
-		// TODO
-		// this.settingService.setClientCalcEtfSaleIsin(this.getUserId(), new
-		// ClientCalcEtfSaleIsin(request.getIsin()));
 		this.settingService.setClientCalcEtfSalePieces(this.getUserId(), new ClientCalcEtfSalePieces(pieces));
 		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
 				new ClientCalcEtfSaleTransactionCosts(request.getTransactionCosts()));

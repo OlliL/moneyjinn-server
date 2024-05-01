@@ -20,7 +20,8 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 	public static final Long ETF_FLOW_10ID = 10L;
 	public static final Long ETF_FLOW_11ID = 11L;
 	public static final Long NEXT_ID = 12L;
-	public static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
+	private static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
+	public static final Long NON_EXISTING_ID = 0L;
 
 	public EtfFlowTransportBuilder forFlow1() {
 		super.setEtfflowid(ETF_FLOW_1ID);
@@ -138,7 +139,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
 		super.setAmount(new BigDecimal("100.432"));
 		super.setNanoseconds(20000000);
 		super.setPrice(new BigDecimal("667.456"));
-		super.setTimestamp(OffsetDateTime.of(2008, 12, 17, 23, 59, 59, 200000000, ZoneOffset.UTC));
+		super.setTimestamp(OffsetDateTime.of(2008, 12, 17, 23, 59, 59, 20000000, ZoneOffset.UTC));
 		return this;
 	}
 

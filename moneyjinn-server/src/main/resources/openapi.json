@@ -35,6 +35,12 @@
 		"/moneyflow/server/etf/{id}": {
 			"$ref": "openapi/etf/paths/CrudEtfId.json"
 		},
+		"/moneyflow/server/etfflow": {
+			"$ref": "openapi/etf/paths/CrudEtfFlow.json"
+		},
+		"/moneyflow/server/etfflow/{id}": {
+			"$ref": "openapi/etf/paths/CrudEtfFlowId.json"
+		},
 		"/moneyflow/server/etfpreliminarylumpsumps": {
 			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
 		},

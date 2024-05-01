@@ -133,6 +133,8 @@ public class EtfService extends AbstractService implements IEtfService {
 		if (etf.getName() == null || etf.getName().isBlank()) {
 			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
 		}
+		if (etf.getChartUrl() != null && etf.getChartUrl().isBlank())
+			etf.setChartUrl(null);
 
 		return validationResult;
 	}
@@ -337,9 +339,9 @@ public class EtfService extends AbstractService implements IEtfService {
 				.collect(Collectors.groupingBy(EtfFlow::getEtfId));
 
 		final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
-		for (final var etfFlowsByIsinMapEntry : etfFlowsByEtfIdMap.entrySet()) {
-			final var etfFlows = etfFlowsByIsinMapEntry.getValue();
-			final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(etfFlowsByIsinMapEntry.getKey());
+		for (final var etfFlowsByEtfIdMapEntry : etfFlowsByEtfIdMap.entrySet()) {
+			final var etfFlows = etfFlowsByEtfIdMapEntry.getValue();
+			final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(etfFlowsByEtfIdMapEntry.getKey());
 			final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
 
 			// initialize accumulated preliminary lump sum to 0 for each effective flow
