@@ -6,7 +6,7 @@ import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilde
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 
-public class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
+class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 
 	@Override
 	protected void loadMethod() {

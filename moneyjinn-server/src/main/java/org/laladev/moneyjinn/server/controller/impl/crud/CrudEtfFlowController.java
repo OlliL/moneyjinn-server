@@ -26,8 +26,6 @@ package org.laladev.moneyjinn.server.controller.impl.crud;
 
 import java.util.List;
 
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -95,9 +93,7 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
-		final UserID userId = super.getUserId();
 		final EtfFlowID etfFlowId = new EtfFlowID(id);
-		final Group group = this.accessRelationService.getCurrentGroup(userId);
 
 		this.etfService.deleteEtfFlow(etfFlowId);
 

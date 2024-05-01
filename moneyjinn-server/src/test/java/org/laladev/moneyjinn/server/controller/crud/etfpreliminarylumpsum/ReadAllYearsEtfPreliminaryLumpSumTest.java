@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 
-public class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
+class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 
 	@Override
 	protected void loadMethod() {
