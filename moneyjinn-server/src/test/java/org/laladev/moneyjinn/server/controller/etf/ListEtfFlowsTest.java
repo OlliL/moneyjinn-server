@@ -42,20 +42,15 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 		super.getMock(EtfControllerApi.class).listEtfFlows();
 	}
 
-	private UserID getUserId() {
-		return new UserID(UserTransportBuilder.USER1_ID);
-	}
+	private void initEtfSettings(final Long userIdLong) {
+		final var userId = new UserID(userIdLong);
 
-	private void initEtfSettings() {
-		this.settingService.setClientCalcEtfSaleAskPrice(this.getUserId(),
-				new ClientCalcEtfSaleAskPrice(SETTING_SALE_ASK_PRICE));
-		this.settingService.setClientCalcEtfSaleBidPrice(this.getUserId(),
-				new ClientCalcEtfSaleBidPrice(SETTING_SALE_BID_PRICE));
-		this.settingService.setClientListEtfDepotDefaultEtfId(this.getUserId(),
+		this.settingService.setClientCalcEtfSaleAskPrice(userId, new ClientCalcEtfSaleAskPrice(SETTING_SALE_ASK_PRICE));
+		this.settingService.setClientCalcEtfSaleBidPrice(userId, new ClientCalcEtfSaleBidPrice(SETTING_SALE_BID_PRICE));
+		this.settingService.setClientListEtfDepotDefaultEtfId(userId,
 				new ClientListEtfDepotDefaultEtfId(SETTING_ETF_ID.toString()));
-		this.settingService.setClientCalcEtfSalePieces(this.getUserId(),
-				new ClientCalcEtfSalePieces(SETTING_SALE_PIECES));
-		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
+		this.settingService.setClientCalcEtfSalePieces(userId, new ClientCalcEtfSalePieces(SETTING_SALE_PIECES));
+		this.settingService.setClientCalcEtfSaleTransactionCosts(userId,
 				new ClientCalcEtfSaleTransactionCosts(SETTING_SALE_TRANSACTION_COSTS));
 	}
 
@@ -110,7 +105,7 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 	void test_standardRequestWithSettings_FullResponseObject() throws Exception {
 		final ListEtfFlowsResponse expected = this.getResponseForEtf1();
 
-		this.initEtfSettings();
+		this.initEtfSettings(UserTransportBuilder.USER1_ID);
 
 		expected.setCalcEtfAskPrice(SETTING_SALE_ASK_PRICE);
 		expected.setCalcEtfBidPrice(SETTING_SALE_BID_PRICE);
@@ -122,6 +117,15 @@ class ListEtfFlowsTest extends AbstractWebUserControllerTest {
 
 		Assertions.assertEquals(expected, actual);
 
+	}
+
+	@Test
+	void test_etfFromOtherGroup_nothingHappens() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+		this.initEtfSettings(UserTransportBuilder.ADMIN_ID);
+
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1);
 	}
 
 	@Override

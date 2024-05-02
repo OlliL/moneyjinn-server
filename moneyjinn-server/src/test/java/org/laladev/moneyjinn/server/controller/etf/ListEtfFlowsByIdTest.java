@@ -128,6 +128,14 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 
+	@Test
+	void test_etfFromOtherGroup_nothingHappens() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1);
+	}
+
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403WithUriVariables(EtfTransportBuilder.NON_EXISTING_ID);

@@ -289,6 +289,24 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
 	}
 
+	@Test
+	void test_etfFromOtherGroup_nothingHappens() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(SETTING_SALE_ASK_PRICE);
+		request.setBidPrice(SETTING_SALE_BID_PRICE);
+		request.setEtfId(SETTING_ETF_ID);
+		request.setPieces(SETTING_SALE_PIECES);
+		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+
+		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		Assertions.assertEquals(expected, actual);
+
+	}
+
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new CalcEtfSaleRequest());
