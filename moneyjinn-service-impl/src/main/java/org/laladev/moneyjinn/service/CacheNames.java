@@ -46,6 +46,7 @@ public class CacheNames {
 	public static final String MONEYFLOW_MONTH = "moneyflowMonths";
 	public static final String CONTRACTPARTNER_ACCOUNT_BY_ID = "contractpartnerAccountById";
 	public static final String CONTRACTPARTNER_ACCOUNTS_BY_PARTNER = "contractpartnerAccountsByPartner";
+	public static final String ETF_BY_ID = "etfById";
 
 	private CacheNames() {
 	}
