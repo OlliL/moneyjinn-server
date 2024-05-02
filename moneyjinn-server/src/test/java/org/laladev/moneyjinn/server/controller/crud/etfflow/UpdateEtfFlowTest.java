@@ -143,6 +143,13 @@ class UpdateEtfFlowTest extends AbstractEtfFlowTest {
 		this.testError(transport, ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
 	}
 
+	@Test
+	void test_etfFromOtherGroup_Error() throws Exception {
+		final EtfFlowTransport transport = new EtfFlowTransportBuilder().forFlow11().build();
+		transport.setEtfId(EtfTransportBuilder.ETF_ID_2);
+		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
+	}
+
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403(new EtfFlowTransport());

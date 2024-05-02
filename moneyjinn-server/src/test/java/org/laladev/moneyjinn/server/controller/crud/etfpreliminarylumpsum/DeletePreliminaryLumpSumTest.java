@@ -27,24 +27,25 @@ class DeletePreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 
 	@Test
 	void test_happyCase_SuccessfullNoContent() throws Exception {
-		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.ETF_ID_1,
-				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
-
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
 				new EtfPreliminaryLumpSumIDValues(etfId, year));
-		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+
+		Assertions.assertNotNull(etfPreliminaryLumpSum);
+
+		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.ETF_ID_1,
+				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
+
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 
 		Assertions.assertNull(etfPreliminaryLumpSum);
 	}
 
 	@Test
 	void test_nonExisting_SuccessfullNoContent() throws Exception {
-		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.NON_EXISTING_ID,
-				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
-
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.NON_EXISTING_ID);
 		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
@@ -53,6 +54,29 @@ class DeletePreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 
 		Assertions.assertNull(etfPreliminaryLumpSum);
+
+		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.NON_EXISTING_ID,
+				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
+	}
+
+	@Test
+	void test_etfFromOtherGroup_nothingHappens() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
+		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
+		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
+				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+		Assertions.assertNotNull(etfPreliminaryLumpSum);
+
+		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.ETF_ID_1,
+				EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
+
+		etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+		Assertions.assertNotNull(etfPreliminaryLumpSum);
 	}
 
 	@Override

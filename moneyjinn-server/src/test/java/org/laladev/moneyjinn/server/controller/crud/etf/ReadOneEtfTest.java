@@ -23,6 +23,11 @@ class ReadOneEtfTest extends AbstractEtfTest {
 	}
 
 	@Test
+	void test_etfFromOtherGroup_NotFoundRaised() throws Exception {
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_2);
+	}
+
+	@Test
 	void test_notExisting_NotFoundRaised() throws Exception {
 		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}

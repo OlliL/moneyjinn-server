@@ -50,7 +50,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 	@Test
 	void test_standardRequest_Successfull_MinimalReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
@@ -70,7 +70,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 	@Test
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
@@ -93,7 +93,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 	@Test
 	void test_standardRequest_Successfull_DefaultReturn() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
@@ -113,26 +113,30 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 
 	@Test
 	void test_EtfPreliminaryLumpSumNonExistingEtfId_Error() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 		transport.setEtfId(EtfTransportBuilder.NON_EXISTING_ID);
 		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
 	}
 
 	@Test
 	void test_EtfPreliminaryLumpSumNonEmptyEtfId_Error() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 		transport.setEtfId(null);
 		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
 	}
 
 	@Test
 	void test_EtfPreliminaryLumpSumNotExisting_Error() throws Exception {
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 		final ErrorResponse actual = super.callUsecaseExpect400(transport, ErrorResponse.class);
 		Assertions.assertEquals(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST.getErrorCode(), actual.getCode());
+	}
+
+	@Test
+	void test_etfFromOtherGroup_Error() throws Exception {
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setEtfId(EtfTransportBuilder.ETF_ID_2);
+		this.testError(transport, ErrorCode.NO_ETF_SPECIFIED);
 	}
 
 	@Override
@@ -143,8 +147,7 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	@Override
 	protected void callUsecaseEmptyDatabase() throws Exception {
 
-		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear()
-				.build();
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 
 		super.callUsecaseExpect422(transport, ValidationResponse.class);
 	}

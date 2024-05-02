@@ -46,6 +46,23 @@ class DeleteEtfFlowTest extends AbstractEtfFlowTest {
 		Assertions.assertNull(etfFlow);
 	}
 
+	@Test
+	void test_etfFromOtherGroup_Error() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final var etfFlowId = new EtfFlowID(EtfFlowTransportBuilder.ETF_FLOW_10ID);
+
+		var etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
+		Assertions.assertNotNull(etfFlow);
+
+		super.callUsecaseExpect204WithUriVariables(EtfFlowTransportBuilder.ETF_FLOW_10ID);
+
+		etfFlow = this.etfService.getEtfFlowById(userId, etfFlowId);
+		Assertions.assertNotNull(etfFlow);
+	}
+
 	@Override
 	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
 		super.callUsecaseExpect403WithUriVariables(EtfFlowTransportBuilder.NON_EXISTING_ID);

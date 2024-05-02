@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -160,6 +161,23 @@ class UpdateEtfTest extends AbstractEtfTest {
 		final var etf = this.etfService.getEtfById(userId, etfId);
 		assertEquals(EtfTransportBuilder.ETF_ID_1, etf.getId().getId());
 		assertEquals("hugo", etf.getName());
+	}
+
+	@Test
+	void test_etfFromOtherGroup_nothingHappened() throws Exception {
+		final EtfTransport transport = new EtfTransportBuilder().forEtf2().build();
+		transport.setName("hugo");
+
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_2);
+		final var userId = new UserID(UserTransportBuilder.ADMIN_ID);
+
+		var etf = this.etfService.getEtfById(userId, etfId);
+		Assertions.assertNotEquals("hugo", etf.getName());
+
+		super.callUsecaseExpect204(transport);
+
+		etf = this.etfService.getEtfById(userId, etfId);
+		Assertions.assertNotEquals("hugo", etf.getName());
 	}
 
 	@Override

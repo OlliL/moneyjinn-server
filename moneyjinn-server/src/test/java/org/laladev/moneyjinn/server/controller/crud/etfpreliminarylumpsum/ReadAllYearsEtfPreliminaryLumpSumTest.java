@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 
 class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
 
@@ -26,6 +27,13 @@ class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSu
 	@Test
 	void test_notExisting_NotFoundRaised() throws Exception {
 		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
+	}
+
+	@Test
+	void test_etfFromOtherGroup_NotFoundRaised() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1);
 	}
 
 	@Override

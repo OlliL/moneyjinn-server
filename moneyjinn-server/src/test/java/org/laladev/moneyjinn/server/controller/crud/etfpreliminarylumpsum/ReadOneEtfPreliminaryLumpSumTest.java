@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
+import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 
 class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest {
@@ -17,7 +18,7 @@ class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest
 	void test_HappyCase_ResponseObject() throws Exception {
 		final EtfPreliminaryLumpSumTransport expected = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 		final EtfPreliminaryLumpSumTransport actual = super.callUsecaseExpect200(EtfPreliminaryLumpSumTransport.class,
-				EtfTransportBuilder.ETF_ID_1, 2009);
+				EtfTransportBuilder.ETF_ID_1, EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 
 		Assertions.assertNotNull(actual);
 		Assertions.assertEquals(expected, actual);
@@ -28,6 +29,13 @@ class ReadOneEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest
 	void test_notExisting_NotFoundRaised() throws Exception {
 		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1,
 				EtfPreliminaryLumpSumTransportBuilder.NON_EXISTING_YEAR);
+	}
+
+	@Test
+	void test_etfFromOtherGroup_NotFoundRaised() throws Exception {
+		super.setUsername(UserTransportBuilder.ADMIN_NAME);
+		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1, EtfPreliminaryLumpSumTransportBuilder.YEAR_2009);
 	}
 
 	@Override
