@@ -25,12 +25,14 @@
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.model.etf.EtfID;
+import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudEtfControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
@@ -38,6 +40,7 @@ import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
 import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IEtfService;
+import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,6 +61,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	private final IAccessRelationService accessRelationService;
 	private final IEtfService etfService;
 	private final IUserService userService;
+	private final ISettingService settingService;
 	private final EtfTransportMapper etfTransportMapper;
 
 	@Override
@@ -71,7 +75,17 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final UserID userId = super.getUserId();
 		final List<Etf> etfs = this.etfService.getAllEtf(userId);
 
-		return ResponseEntity.ok(super.mapList(etfs, EtfTransport.class));
+		final List<EtfTransport> transports = super.mapList(etfs, EtfTransport.class);
+
+		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
+				.getClientListEtfDepotDefaultEtfId(this.getUserId());
+		if (setting.isPresent()) {
+			final var favoriteEtfId = Long.valueOf(setting.get().getSetting());
+			transports.stream().filter(t -> t.getEtfId().equals(favoriteEtfId)).findFirst()
+					.ifPresent((e) -> e.setIsFavorite(1));
+
+		}
+		return ResponseEntity.ok(transports);
 	}
 
 	@Override
@@ -84,7 +98,18 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(super.map(etf, EtfTransport.class));
+		final EtfTransport transport = super.map(etf, EtfTransport.class);
+
+		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
+				.getClientListEtfDepotDefaultEtfId(this.getUserId());
+		if (setting.isPresent()) {
+			final var favoriteEtfId = Long.valueOf(setting.get().getSetting());
+			if (favoriteEtfId.equals(id)) {
+				transport.setIsFavorite(1);
+			}
+		}
+
+		return ResponseEntity.ok(transport);
 	}
 
 	@Override
@@ -104,6 +129,9 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final EtfID etfId = this.etfService.createEtf(etf);
 
 		etf.setId(etfId);
+		if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
+			this.settingService.setClientListEtfDepotDefaultEtfId(userId,
+					new ClientListEtfDepotDefaultEtfId(etfId.getId().toString()));
 
 		return this.preferedReturn(prefer, etf, EtfTransport.class);
 
@@ -123,6 +151,9 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		this.throwValidationExceptionIfInvalid(validationResult);
 
 		this.etfService.updateEtf(etf);
+		if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
+			this.settingService.setClientListEtfDepotDefaultEtfId(userId,
+					new ClientListEtfDepotDefaultEtfId(etf.getId().getId().toString()));
 
 		return this.preferedReturn(prefer, etf, EtfTransport.class);
 	}

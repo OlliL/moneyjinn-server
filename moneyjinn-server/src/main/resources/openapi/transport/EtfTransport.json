@@ -32,6 +32,10 @@
 		},
 		"chartUrl": {
 			"type": "string"
+		},
+		"isFavorite": {
+			"type": "integer",
+			"format": "int32"
 		}
 	}
 }
