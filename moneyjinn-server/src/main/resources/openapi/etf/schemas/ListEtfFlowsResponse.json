@@ -1,12 +1,6 @@
 {
 	"type": "object",
 	"properties": {
-		"etfTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/EtfTransport.json"
-			}
-		},
 		"etfFlowTransports": {
 			"type": "array",
 			"items": {
@@ -18,10 +12,6 @@
 			"items": {
 				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
 			}
-		},
-		"defaultEtfId": {
-			"type": "integer",
-			"format": "int64"
 		},
 		"calcEtfSalePieces": {
 			"type": "number"

@@ -20,7 +20,6 @@ import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
-import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 
@@ -56,7 +55,7 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 	}
 
 	private ListEtfFlowsResponse getResponseForEtf1() {
-		final ListEtfFlowsResponse expected = this.getBaseResponse();
+		final ListEtfFlowsResponse expected = new ListEtfFlowsResponse();
 
 		final List<EtfFlowTransport> allTransports = new ArrayList<>();
 		allTransports.add(new EtfFlowTransportBuilder().forFlow11().build());
@@ -78,19 +77,6 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow8().build());
 		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow6().build());
 		expected.setEtfEffectiveFlowTransports(effectiveTransports);
-		return expected;
-	}
-
-	private ListEtfFlowsResponse getBaseResponse() {
-		final ListEtfFlowsResponse expected = new ListEtfFlowsResponse();
-
-		final List<EtfTransport> etfs = new ArrayList<>();
-		etfs.add(new EtfTransportBuilder().forEtf1().build());
-		etfs.add(new EtfTransportBuilder().forEtf3().build());
-		etfs.add(new EtfTransportBuilder().forEtf4().build());
-		expected.setEtfTransports(etfs);
-		expected.setDefaultEtfId(EtfTransportBuilder.ETF_ID_1);
-
 		return expected;
 	}
 

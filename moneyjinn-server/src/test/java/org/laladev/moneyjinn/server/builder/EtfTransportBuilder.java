@@ -24,6 +24,7 @@ public class EtfTransportBuilder extends EtfTransport {
 		super.setWkn("WKN789");
 		super.setTicker("TKR0");
 		super.setChartUrl("https://www.lipsum.com/");
+		super.setIsFavorite(1);
 		return this;
 	}
 
@@ -80,6 +81,7 @@ public class EtfTransportBuilder extends EtfTransport {
 		transport.setWkn(super.getWkn());
 		transport.setTicker(super.getTicker());
 		transport.setChartUrl(super.getChartUrl());
+		transport.setIsFavorite(super.getIsFavorite());
 		return transport;
 	}
 }

@@ -86,9 +86,6 @@
 		"/moneyflow/server/etf/listEtfOverview/{year}/{month}": {
 			"$ref": "openapi/etf/paths/ListEtfOverview.json"
 		},
-		"/moneyflow/server/etf/listEtfFlows": {
-			"$ref": "openapi/etf/paths/ListEtfFlows.json"
-		},
 		"/moneyflow/server/etf/listEtfFlows/{id}": {
 			"$ref": "openapi/etf/paths/ListEtfFlowsId.json"
 		},

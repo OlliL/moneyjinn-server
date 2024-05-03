@@ -34,7 +34,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -48,7 +47,6 @@ import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
-import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
@@ -60,7 +58,6 @@ import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
-import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.server.model.ListEtfOverviewResponse;
 import org.laladev.moneyjinn.service.api.IEtfService;
@@ -133,14 +130,6 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		return ResponseEntity.ok(response);
 	}
 
-	private ListEtfFlowsResponse getDefaultListEtfFlowsResponse() {
-		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
-
-		final List<Etf> etfs = this.etfService.getAllEtf(super.getUserId());
-		response.setEtfTransports(super.mapList(etfs, EtfTransport.class));
-		return response;
-	}
-
 	@Override
 	public ResponseEntity<ListEtfFlowsResponse> listEtfFlowsById(@PathVariable("id") final Long id) {
 		final UserID userId = this.getUserId();
@@ -150,7 +139,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			return ResponseEntity.notFound().build();
 		}
 
-		final ListEtfFlowsResponse response = this.getDefaultListEtfFlowsResponse();
+		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
 
 		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, LocalDateTime.now());
 		final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
@@ -172,23 +161,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		this.settingService.getClientCalcEtfSaleTransactionCosts(userId)
 				.ifPresent(s -> response.setCalcEtfTransactionCosts(s.getSetting()));
 
-		response.setDefaultEtfId(etfId.getId());
-		this.settingService.setClientListEtfDepotDefaultEtfId(userId,
-				new ClientListEtfDepotDefaultEtfId(etfId.getId().toString()));
-
 		return ResponseEntity.ok(response);
-	}
-
-	@Override
-	public ResponseEntity<ListEtfFlowsResponse> listEtfFlows() {
-		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
-				.getClientListEtfDepotDefaultEtfId(this.getUserId());
-
-		if (setting.isPresent()) {
-			return this.listEtfFlowsById(Long.valueOf(setting.get().getSetting()));
-		} else {
-			return ResponseEntity.ok(this.getDefaultListEtfFlowsResponse());
-		}
 	}
 
 	@Override
