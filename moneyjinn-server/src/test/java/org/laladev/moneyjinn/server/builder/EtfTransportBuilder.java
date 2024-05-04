@@ -14,6 +14,7 @@ public class EtfTransportBuilder extends EtfTransport {
 	public static final Long ETF_ID_4 = 4L;
 	public static final Long NON_EXISTING_ID = 0L;
 	public static final Long NEXT_ID = 5L;
+	public static final Long FAVORITE_ETF_ID = 1L;
 	public static final String NEW_ETFNAME = "NEWNAME";
 
 	public EtfTransportBuilder forEtf1() {

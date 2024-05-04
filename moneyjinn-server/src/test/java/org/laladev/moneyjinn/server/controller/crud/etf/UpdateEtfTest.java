@@ -25,6 +25,8 @@ import jakarta.inject.Inject;
 class UpdateEtfTest extends AbstractEtfTest {
 	@Inject
 	private IEtfService etfService;
+	@Inject
+	private EtfFavoriteTestUtil favoriteTestUtil;
 
 	@Override
 	protected void loadMethod() {
@@ -180,6 +182,21 @@ class UpdateEtfTest extends AbstractEtfTest {
 
 		etf = this.etfService.getEtfById(userId, etfId);
 		Assertions.assertNotEquals("hugo", etf.getName());
+	}
+
+	@Test
+	void test_newFavorite_favoriteMoved() throws Exception {
+		final EtfTransport transport = new EtfTransportBuilder().forEtf3().build();
+		transport.setIsFavorite(1);
+
+		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_3);
+		final var userId = new UserID(UserTransportBuilder.USER1_ID);
+
+		this.favoriteTestUtil.assertDefaultFavorite(userId);
+
+		super.callUsecaseExpect204Minimal(transport);
+		this.favoriteTestUtil.assertDefaultIsNotFavorite(userId);
+		this.favoriteTestUtil.assertIsFavorite(userId, etfId);
 	}
 
 	@Override
