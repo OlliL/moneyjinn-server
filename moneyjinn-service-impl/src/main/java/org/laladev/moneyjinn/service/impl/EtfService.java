@@ -360,44 +360,18 @@ public class EtfService extends AbstractService implements IEtfService {
 							.atDay(1).atStartOfDay();
 					final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getId().getId().getYear().atMonth(month)
 							.atEndOfMonth().atTime(LocalTime.MAX);
-					final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows,
-							endOfMonth);
-
-					final BigDecimal amount = switch (month) {
-					case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
-					case FEBRUARY -> etfPreliminaryLumpSum.getAmountFebruary();
-					case MARCH -> etfPreliminaryLumpSum.getAmountMarch();
-					case APRIL -> etfPreliminaryLumpSum.getAmountApril();
-					case MAY -> etfPreliminaryLumpSum.getAmountMay();
-					case JUNE -> etfPreliminaryLumpSum.getAmountJune();
-					case JULY -> etfPreliminaryLumpSum.getAmountJuly();
-					case AUGUST -> etfPreliminaryLumpSum.getAmountAugust();
-					case SEPTEMBER -> etfPreliminaryLumpSum.getAmountSeptember();
-					case OCTOBER -> etfPreliminaryLumpSum.getAmountOctober();
-					case NOVEMBER -> etfPreliminaryLumpSum.getAmountNovember();
-					case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
-					};
+					final BigDecimal pieceTax = this.getPieceTax(month, etfPreliminaryLumpSum, allEtfFlows);
 
 					if (month.equals(Month.JANUARY)) {
-						final BigDecimal pieceTax = this.getPieceTax(amount, relevantTaxFlows);
-
 						etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
 								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
 										efwti.getAccumulatedPreliminaryLumpSum()
 												.add(efwti.getAmount().multiply(pieceTax))));
 					} else {
-						final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
-								.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
-						if (!relevantTaxFlowsForThisMonth.isEmpty()) {
-							final BigDecimal pieceTax = this.getPieceTax(amount, relevantTaxFlowsForThisMonth);
-
-							etfFlowWithTaxInfos.stream().filter(
-									efwti -> !efwti.getTime().isAfter(endOfMonth)
-											&& !startOfMonth.isAfter(efwti.getTime()))
-									.forEach(efwti -> efwti
-											.setAccumulatedPreliminaryLumpSum(efwti.getAccumulatedPreliminaryLumpSum()
-													.add(efwti.getAmount().multiply(pieceTax))));
-						}
+						etfFlowWithTaxInfos.stream().filter(
+								efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
+								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
+										.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount().multiply(pieceTax))));
 					}
 				}
 			}
@@ -408,7 +382,44 @@ public class EtfService extends AbstractService implements IEtfService {
 		return relevantEtfFlows;
 	}
 
-	private BigDecimal getPieceTax(final BigDecimal amount, final List<EtfFlow> relevantTaxFlows) {
+	private BigDecimal getPieceTax(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum,
+			final List<EtfFlow> allEtfFlows) {
+		final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getId().getId().getYear().atMonth(month).atDay(1)
+				.atStartOfDay();
+		final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getId().getId().getYear().atMonth(month).atEndOfMonth()
+				.atTime(LocalTime.MAX);
+		final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
+
+		final BigDecimal amount = switch (month) {
+		case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
+		case FEBRUARY -> etfPreliminaryLumpSum.getAmountFebruary();
+		case MARCH -> etfPreliminaryLumpSum.getAmountMarch();
+		case APRIL -> etfPreliminaryLumpSum.getAmountApril();
+		case MAY -> etfPreliminaryLumpSum.getAmountMay();
+		case JUNE -> etfPreliminaryLumpSum.getAmountJune();
+		case JULY -> etfPreliminaryLumpSum.getAmountJuly();
+		case AUGUST -> etfPreliminaryLumpSum.getAmountAugust();
+		case SEPTEMBER -> etfPreliminaryLumpSum.getAmountSeptember();
+		case OCTOBER -> etfPreliminaryLumpSum.getAmountOctober();
+		case NOVEMBER -> etfPreliminaryLumpSum.getAmountNovember();
+		case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
+		};
+
+		if (month.equals(Month.JANUARY)) {
+			return this.calculatePieceTax(amount, relevantTaxFlows);
+		} else {
+			final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
+					.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
+			if (!relevantTaxFlowsForThisMonth.isEmpty()) {
+				return this.calculatePieceTax(amount, relevantTaxFlowsForThisMonth);
+			}
+		}
+
+		return BigDecimal.ZERO;
+
+	}
+
+	private BigDecimal calculatePieceTax(final BigDecimal amount, final List<EtfFlow> relevantTaxFlows) {
 		final BigDecimal amountSum = relevantTaxFlows.stream().map(EtfFlow::getAmount).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
 		return amount.divide(amountSum, 10, RoundingMode.HALF_UP);
