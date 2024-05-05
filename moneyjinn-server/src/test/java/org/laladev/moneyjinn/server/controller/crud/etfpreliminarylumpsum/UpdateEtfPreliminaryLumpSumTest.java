@@ -121,6 +121,20 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	}
 
 	@Test
+	void test_EtfPreliminaryLumpSumType1ButPiecePrice_Error() throws Exception {
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2010().build();
+		transport.setType(1);
+		this.testError(transport, ErrorCode.ETF_PRELIMINARY_LUMP_SUM_PIECE_PRICE_MUST_BE_NULL);
+	}
+
+	@Test
+	void test_EtfPreliminaryLumpSumType2ButMonthlyPrices_Error() throws Exception {
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setType(2);
+		this.testError(transport, ErrorCode.ETF_PRELIMINARY_LUMP_SUM_MONTHLY_PRICES_MUST_BE_NULL);
+	}
+
+	@Test
 	void test_etfFromOtherGroup_Error() throws Exception {
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 		transport.setEtfId(EtfTransportBuilder.ETF_ID_2);

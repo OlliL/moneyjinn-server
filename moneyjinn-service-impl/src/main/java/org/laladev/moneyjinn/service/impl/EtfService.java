@@ -55,6 +55,7 @@ import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
+import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumType;
 import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -86,6 +87,8 @@ import lombok.extern.java.Log;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class EtfService extends AbstractService implements IEtfService {
+	private static final String ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL = "etfPreliminaryLumpSum must not be null!";
+	private static final String ETF_ID_MUST_NOT_BE_NULL = "etfId must not be null!";
 	private static final String STILL_REFERENCED = "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private static final String ETF_MUST_NOT_BE_NULL = "ETF must not be null!";
@@ -171,16 +174,16 @@ public class EtfService extends AbstractService implements IEtfService {
 
 	private void evictEtfCache(final UserID userId, final EtfID etfId) {
 		if (etfId != null) {
-			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
-				super.evictFromCache(CacheNames.ETF_BY_ID, new SimpleKey(evictingUserId, etfId));
-			});
+			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(
+					evictingUserId -> super.evictFromCache(CacheNames.ETF_BY_ID, new SimpleKey(evictingUserId, etfId))
+			);
 		}
 	}
 
 	@Override
 	public Etf getEtfById(final UserID userId, final EtfID etfId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfId, "etfId must not be null!");
+		Assert.notNull(etfId, ETF_ID_MUST_NOT_BE_NULL);
 
 		final Supplier<Etf> supplier = () -> this.mapEtfData(
 				this.etfDao.getEtfById(userId.getId(), etfId.getId()));
@@ -455,6 +458,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		final List<EtfFlow> etfSalesFlows = etfFlows.stream()
 				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).filter(ef -> ef.getTime().isBefore(until))
 				.toList();
+		@SuppressWarnings("java:S6204") // list gets modified
 		final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
 				.filter(ef -> ef.getTime().isBefore(until)).collect(Collectors.toList());
 		for (final EtfFlow etfSalesFlow : etfSalesFlows) {
@@ -483,26 +487,36 @@ public class EtfService extends AbstractService implements IEtfService {
 	//
 
 	@Override
-	public ValidationResult validateEtfPreliminaryLumpSum(final UserID userId,
-			final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+	public ValidationResult validateEtfPreliminaryLumpSum(final UserID userId, final EtfPreliminaryLumpSum mep) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfPreliminaryLumpSum, "etfPreliminaryLumpSum must not be null!");
+		Assert.notNull(mep, ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL);
 
 		final ValidationResult validationResult = new ValidationResult();
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(null, errorCode));
 
-		if (etfPreliminaryLumpSum.getEtfId() == null || etfPreliminaryLumpSum.getEtfId().getId() == null) {
+		if (mep.getEtfId() == null || mep.getEtfId().getId() == null) {
 			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 		} else {
-			final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
+			final Etf etf = this.getEtfById(userId, mep.getEtfId());
 			if (etf == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
 			}
 		}
 
-		if (etfPreliminaryLumpSum.getYear() == null) {
+		if (mep.getYear() == null) {
 			addResult.accept(ErrorCode.YEAR_NOT_SET);
+		}
+
+		if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH && mep.getAmountPerPiece() != null) {
+			addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_PIECE_PRICE_MUST_BE_NULL);
+		} else if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE && (mep.getAmountJanuary() != null
+				|| mep.getAmountFebruary() != null || mep.getAmountMarch() != null || mep.getAmountApril() != null
+				|| mep.getAmountMay() != null || mep.getAmountJune() != null || mep.getAmountJuly() != null
+				|| mep.getAmountAugust() != null || mep.getAmountSeptember() != null || mep.getAmountOctober() != null
+				|| mep.getAmountNovember() != null || mep.getAmountDecember() != null)) {
+			addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_MONTHLY_PRICES_MUST_BE_NULL);
+
 		}
 
 		return validationResult;
@@ -510,14 +524,14 @@ public class EtfService extends AbstractService implements IEtfService {
 
 	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(final UserID userId, final EtfID etfId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfId, "etfId must not be null!");
+		Assert.notNull(etfId, ETF_ID_MUST_NOT_BE_NULL);
 
 		final Etf etf = this.getEtfById(userId, etfId);
 		if (etf != null) {
 			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
 			return super.mapList(datas, EtfPreliminaryLumpSum.class);
 		} else {
-			return null;
+			return Collections.emptyList();
 		}
 	}
 
@@ -542,7 +556,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(final UserID userId, final EtfID etfId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfId, "etfId must not be null!");
+		Assert.notNull(etfId, ETF_ID_MUST_NOT_BE_NULL);
 		final Etf etf = this.getEtfById(userId, etfId);
 		if (etf != null) {
 			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllEtfPreliminaryLumpSum(etfId.getId());
@@ -555,7 +569,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public void createEtfPreliminaryLumpSum(final UserID userId, final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfPreliminaryLumpSum, "etfPreliminaryLumpSum must not be null!");
+		Assert.notNull(etfPreliminaryLumpSum, ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
@@ -574,7 +588,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public void updateEtfPreliminaryLumpSum(final UserID userId, final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(etfPreliminaryLumpSum, "etfPreliminaryLumpSum must not be null!");
+		Assert.notNull(etfPreliminaryLumpSum, ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
@@ -587,7 +601,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		}
 		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
 				etfPreliminaryLumpSum.getYear().getValue());
-		if (idLong != etfPreliminaryLumpSum.getId().getId()) {
+		if (!idLong.equals(etfPreliminaryLumpSum.getId().getId())) {
 			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
