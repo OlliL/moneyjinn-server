@@ -465,23 +465,17 @@ public class EtfService extends AbstractService implements IEtfService {
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(null, errorCode));
 
-		if (etfPreliminaryLumpSum.getId() == null || etfPreliminaryLumpSum.getId().getId() == null) {
+		if (etfPreliminaryLumpSum.getEtfId() == null || etfPreliminaryLumpSum.getEtfId().getId() == null) {
 			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-			addResult.accept(ErrorCode.YEAR_NOT_SET);
-
 		} else {
-			if (etfPreliminaryLumpSum.getEtfId() == null || etfPreliminaryLumpSum.getEtfId().getId() == null) {
+			final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
+			if (etf == null) {
 				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-			} else {
-				final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
-				if (etf == null) {
-					addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-				}
 			}
+		}
 
-			if (etfPreliminaryLumpSum.getYear() == null) {
-				addResult.accept(ErrorCode.YEAR_NOT_SET);
-			}
+		if (etfPreliminaryLumpSum.getYear() == null) {
+			addResult.accept(ErrorCode.YEAR_NOT_SET);
 		}
 
 		return validationResult;
@@ -540,8 +534,9 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
 			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
 		}
-		final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum.getId());
-		if (etfPreliminaryLumpSumExists != null) {
+		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
+				etfPreliminaryLumpSum.getYear().getValue());
+		if (idLong != null) {
 			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
@@ -562,6 +557,12 @@ public class EtfService extends AbstractService implements IEtfService {
 		if (etfPreliminaryLumpSumExists == null) {
 			throw new BusinessException("EtfPreliminaryLumpSum does not exist!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST);
+		}
+		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
+				etfPreliminaryLumpSum.getYear().getValue());
+		if (idLong != etfPreliminaryLumpSum.getId().getId()) {
+			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
+					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
 		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
 		this.etfDao.updatePreliminaryLumpSum(data);

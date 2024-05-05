@@ -190,7 +190,16 @@
                  LIMIT 1
         </select>
         
-        <select id="getAllEtfPreliminaryLumpSum"  resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+        <select id="getPreliminaryLumpSumId"
+                resultType="java.lang.Long">
+                SELECT etfpreliminarylumpsumid
+                  FROM etfpreliminarylumpsum
+                 WHERE met_etfid = #{metEtfid}
+                   AND `year`    = #{year}
+                 LIMIT 1
+        </select>
+        
+                <select id="getAllEtfPreliminaryLumpSum"  resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
                  WHERE met_etfid = #{metEtfid}

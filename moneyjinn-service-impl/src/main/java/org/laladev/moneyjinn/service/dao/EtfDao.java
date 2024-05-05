@@ -105,6 +105,10 @@ public class EtfDao {
 		return this.mapper.getPreliminaryLumpSum(etfPreliminaryLumpSumId);
 	}
 
+	public Long getPreliminaryLumpSumId(final Long etfId, final Integer year) {
+		return this.mapper.getPreliminaryLumpSumId(etfId, year);
+	}
+
 	public List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(final Long etfId) {
 		return this.mapper.getAllEtfPreliminaryLumpSum(etfId);
 	}
