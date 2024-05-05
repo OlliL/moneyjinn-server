@@ -34,7 +34,6 @@ import org.laladev.moneyjinn.server.controller.api.CrudEtfFlowControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
@@ -52,7 +51,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CrudEtfFlowController extends AbstractController implements CrudEtfFlowControllerApi {
-	private final IAccessRelationService accessRelationService;
 	private final IEtfService etfService;
 	private final EtfFlowTransportMapper etfFlowTransportMapper;
 

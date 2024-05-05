@@ -20,7 +20,6 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("900.000");
 	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("899.500");
 	private final static Long SETTING_ETF_ID = EtfTransportBuilder.ETF_ID_1;
-	private final static String SETTING_ISIN = EtfTransportBuilder.ISIN;
 	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
 	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
 
