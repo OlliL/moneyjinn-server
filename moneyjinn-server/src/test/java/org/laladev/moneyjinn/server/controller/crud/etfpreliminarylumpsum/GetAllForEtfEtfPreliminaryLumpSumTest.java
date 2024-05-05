@@ -31,20 +31,14 @@ class GetAllForEtfEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSu
 
 	@Test
 	void test_notExisting_EmptyResponse() throws Exception {
-		final EtfPreliminaryLumpSumTransport[] expected = {};
-		final EtfPreliminaryLumpSumTransport[] actual = super.callUsecaseExpect200(
-				EtfPreliminaryLumpSumTransport[].class, EtfTransportBuilder.NON_EXISTING_ID);
-		assertArrayEquals(expected, actual);
+		super.callUsecaseExpect404(EtfTransportBuilder.NON_EXISTING_ID);
 	}
 
 	@Test
 	void test_etfFromOtherGroup_EmptyResponse() throws Exception {
 		super.setUsername(UserTransportBuilder.ADMIN_NAME);
 		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
-		final EtfPreliminaryLumpSumTransport[] expected = {};
-		final EtfPreliminaryLumpSumTransport[] actual = super.callUsecaseExpect200(
-				EtfPreliminaryLumpSumTransport[].class, EtfTransportBuilder.ETF_ID_1);
-		assertArrayEquals(expected, actual);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1);
 	}
 
 	@Override
@@ -54,10 +48,7 @@ class GetAllForEtfEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSu
 
 	@Override
 	protected void callUsecaseEmptyDatabase() throws Exception {
-		final EtfPreliminaryLumpSumTransport[] expected = {};
-		final EtfPreliminaryLumpSumTransport[] actual = super.callUsecaseExpect200(
-				EtfPreliminaryLumpSumTransport[].class, EtfTransportBuilder.ETF_ID_1);
-		assertArrayEquals(expected, actual);
+		super.callUsecaseExpect404(EtfTransportBuilder.ETF_ID_1);
 	}
 
 }

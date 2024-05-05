@@ -71,7 +71,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 		final List<EtfPreliminaryLumpSum> etfPreliminaryLumpSums = this.etfService.getAllEtfPreliminaryLumpSum(userId,
 				etfId);
 
-		return ResponseEntity.ok(super.mapList(etfPreliminaryLumpSums, EtfPreliminaryLumpSumTransport.class));
+		return etfPreliminaryLumpSums.isEmpty() ? ResponseEntity.notFound().build()
+				: ResponseEntity.ok(super.mapList(etfPreliminaryLumpSums, EtfPreliminaryLumpSumTransport.class));
 	}
 
 	@Override
