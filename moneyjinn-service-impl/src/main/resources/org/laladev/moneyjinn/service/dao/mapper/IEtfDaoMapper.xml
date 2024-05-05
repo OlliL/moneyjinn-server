@@ -190,8 +190,8 @@
                  LIMIT 1
         </select>
         
-        <select id="getAllPreliminaryLumpSumYears" resultType="java.lang.Integer">
-                SELECT `year`
+        <select id="getAllEtfPreliminaryLumpSum"  resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+                SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
                  WHERE met_etfid = #{metEtfid}
                  ORDER BY `year` ASC

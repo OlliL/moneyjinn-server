@@ -519,13 +519,13 @@ public class EtfService extends AbstractService implements IEtfService {
 	}
 
 	@Override
-	public List<Year> getAllEtfPreliminaryLumpSumYears(final UserID userId, final EtfID etfId) {
+	public List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(final UserID userId, final EtfID etfId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(etfId, "etfId must not be null!");
 		final Etf etf = this.getEtfById(userId, etfId);
 		if (etf != null) {
-			final List<Integer> datas = this.etfDao.getAllPreliminaryLumpSumYears(etfId.getId());
-			return datas.stream().map(Year::of).toList();
+			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllEtfPreliminaryLumpSum(etfId.getId());
+			return super.mapList(datas, EtfPreliminaryLumpSum.class);
 		} else {
 			return Collections.emptyList();
 		}

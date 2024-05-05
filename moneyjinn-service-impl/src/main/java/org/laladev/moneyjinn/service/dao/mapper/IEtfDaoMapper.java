@@ -66,7 +66,7 @@ public interface IEtfDaoMapper {
 	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(
 			@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
 
-	public List<Integer> getAllPreliminaryLumpSumYears(@Param("metEtfid") Long etfId);
+	public List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(@Param("metEtfid") Long etfId);
 
 	public void createPreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 

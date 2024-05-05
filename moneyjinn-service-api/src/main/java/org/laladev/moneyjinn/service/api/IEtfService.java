@@ -86,7 +86,7 @@ public interface IEtfService {
 
 	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
 
-	List<Year> getAllEtfPreliminaryLumpSumYears(UserID userId, EtfID etfId);
+	List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(UserID userId, EtfID etfId);
 
 	ValidationResult validateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 

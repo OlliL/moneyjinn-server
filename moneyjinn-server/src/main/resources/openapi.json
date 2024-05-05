@@ -44,7 +44,7 @@
 		"/moneyflow/server/etfpreliminarylumpsumps": {
 			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
 		},
-		"/moneyflow/server/etfpreliminarylumpsumps/getAllYears/{etfId}": {
+		"/moneyflow/server/etfpreliminarylumpsumps/getAllForEtf/{etfId}": {
 			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumEtfId.json"
 		},
 		"/moneyflow/server/etfpreliminarylumpsumps/{id}": {

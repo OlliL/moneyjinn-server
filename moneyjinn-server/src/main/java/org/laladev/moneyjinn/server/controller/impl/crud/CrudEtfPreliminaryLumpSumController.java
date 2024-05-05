@@ -24,7 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
-import java.time.Year;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.access.UserID;
@@ -64,14 +63,15 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<List<Integer>> readAllYears(@PathVariable("etfId") final Long requestEtfId) {
+	public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(
+			@PathVariable("etfId") final Long requestEtfId) {
 		final UserID userId = super.getUserId();
 		final EtfID etfId = new EtfID(requestEtfId);
 
-		final List<Year> allYears = this.etfService.getAllEtfPreliminaryLumpSumYears(userId, etfId);
+		final List<EtfPreliminaryLumpSum> etfPreliminaryLumpSums = this.etfService.getAllEtfPreliminaryLumpSum(userId,
+				etfId);
 
-		return allYears.isEmpty() ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(allYears.stream().map(Year::getValue).toList());
+		return ResponseEntity.ok(super.mapList(etfPreliminaryLumpSums, EtfPreliminaryLumpSumTransport.class));
 	}
 
 	@Override

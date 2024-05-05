@@ -14,8 +14,8 @@
 		"tags": [
 			"crud-etf-preliminary-lump-sum-controller"
 		],
-		"operationId": "readAllYears",
-		"description": "Returns all years with recorded data.",
+		"operationId": "getAllForEtf",
+		"description": "Returns data recorded for one Etf.",
 		"responses": {
 			"200": {
 				"description": "OK",
@@ -24,8 +24,7 @@
 						"schema": {
 							"type": "array",
 							"items": {
-								"type": "integer",
-								"format": "int32"
+								"$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
 							}
 						}
 					}
