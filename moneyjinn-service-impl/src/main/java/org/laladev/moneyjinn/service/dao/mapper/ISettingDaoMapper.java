@@ -41,5 +41,7 @@ public interface ISettingDaoMapper {
 
 	public void setSetting(SettingData settingData);
 
+	public void deleteSetting(@Param("mauUserId") Long mauUserId, @Param("name") String name);
+
 	public void deleteSettings(Long id);
 }

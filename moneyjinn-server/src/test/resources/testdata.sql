@@ -187,4 +187,4 @@ INSERT INTO etfvalues VALUES ( 'ISIN123', '2008-12-14',777.777, 777.000, '2008-1
 INSERT INTO etfvalues VALUES ( 'ISIN123', '2008-12-15',878.000, 878.500, '2008-12-15 22:05:02');
 INSERT INTO etfvalues VALUES ( 'ISIN123', '2010-01-16',666.000, 666.543, '2012-01-16 22:05:02');
 
-INSERT INTO settings VALUES (3, 'client_list_etf_depot_default_etfid', '{"setting":"1"}');
+INSERT INTO settings VALUES (3, 'client_list_etf_depot_default_etfid', '{"setting":{"id":1}}');

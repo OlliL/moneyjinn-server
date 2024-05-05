@@ -69,6 +69,14 @@ public interface ISettingService {
 	void deleteSettings(final UserID userId);
 
 	/**
+	 * Delete a specific setting for the given {@link UserID}.
+	 *
+	 * @param The User ID.
+	 * @param The setting.
+	 */
+	void deleteSetting(final UserID userId, AbstractSetting<?> setting);
+
+	/**
 	 * This Service returns the
 	 * {@link ClientReportingUnselectedPostingAccountIdsSetting} for the given
 	 * {@link UserID}.

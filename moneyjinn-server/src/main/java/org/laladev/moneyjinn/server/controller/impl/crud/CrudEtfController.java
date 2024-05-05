@@ -80,8 +80,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());
 		if (setting.isPresent()) {
-			final var favoriteEtfId = Long.valueOf(setting.get().getSetting());
-			transports.stream().filter(t -> t.getEtfId().equals(favoriteEtfId)).findFirst()
+			final var favoriteEtfId = setting.get().getSetting();
+			transports.stream().filter(t -> t.getEtfId().equals(favoriteEtfId.getId())).findFirst()
 					.ifPresent((e) -> e.setIsFavorite(1));
 
 		}
@@ -103,8 +103,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());
 		if (setting.isPresent()) {
-			final var favoriteEtfId = Long.valueOf(setting.get().getSetting());
-			if (favoriteEtfId.equals(id)) {
+			final var favoriteEtfId = setting.get().getSetting();
+			if (favoriteEtfId.getId().equals(id)) {
 				transport.setIsFavorite(1);
 			}
 		}
@@ -130,8 +130,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 
 		etf.setId(etfId);
 		if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
-			this.settingService.setClientListEtfDepotDefaultEtfId(userId,
-					new ClientListEtfDepotDefaultEtfId(etfId.getId().toString()));
+			this.settingService.setClientListEtfDepotDefaultEtfId(userId, new ClientListEtfDepotDefaultEtfId(etfId));
 
 		return this.preferedReturn(prefer, etf, EtfTransport.class);
 
@@ -153,7 +152,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		this.etfService.updateEtf(etf);
 		if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
 			this.settingService.setClientListEtfDepotDefaultEtfId(userId,
-					new ClientListEtfDepotDefaultEtfId(etf.getId().getId().toString()));
+					new ClientListEtfDepotDefaultEtfId(etf.getId()));
 
 		return this.preferedReturn(prefer, etf, EtfTransport.class);
 	}
@@ -165,6 +164,15 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 
 		this.etfService.deleteEtf(userId, group.getId(), etfId);
+
+		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
+				.getClientListEtfDepotDefaultEtfId(this.getUserId());
+		if (setting.isPresent()) {
+			final var favoriteEtfId = setting.get().getSetting();
+			if (favoriteEtfId.equals(etfId)) {
+				this.settingService.deleteSetting(userId, setting.get());
+			}
+		}
 
 		return ResponseEntity.noContent().build();
 	}

@@ -34,12 +34,12 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
-import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
+import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -76,8 +76,16 @@ public class SettingService extends AbstractService implements ISettingService {
 
 	@Override
 	public void deleteSettings(final UserID userId) {
-		Assert.notNull(userId, "UserId must not be null!");
+		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
 		this.settingDao.deleteSettings(userId.getId());
+	}
+
+	@Override
+	public void deleteSetting(final UserID userId, final AbstractSetting<?> setting) {
+		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
+		Assert.notNull(setting, SETTING_MUST_NOT_BE_NULL);
+		this.settingDao.deleteSetting(userId.getId(),
+				SettingNameConverter.getSettingNameByClassName(setting.getClass().getSimpleName()));
 	}
 
 	private void setSetting(final UserID userId, final AbstractSetting<?> setting) {

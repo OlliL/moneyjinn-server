@@ -1,6 +1,8 @@
 
 package org.laladev.moneyjinn.model.setting;
 
+import org.laladev.moneyjinn.model.etf.EtfID;
+
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,8 +14,8 @@ import lombok.NoArgsConstructor;
  *
  */
 @NoArgsConstructor
-public class ClientListEtfDepotDefaultEtfId extends AbstractSetting<String> {
-	public ClientListEtfDepotDefaultEtfId(final String setting) {
+public class ClientListEtfDepotDefaultEtfId extends AbstractSetting<EtfID> {
+	public ClientListEtfDepotDefaultEtfId(final EtfID setting) {
 		super.setSetting(setting);
 	}
 }

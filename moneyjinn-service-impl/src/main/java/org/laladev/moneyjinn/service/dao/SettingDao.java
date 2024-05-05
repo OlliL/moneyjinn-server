@@ -53,6 +53,10 @@ public class SettingDao {
 		this.mapper.setSetting(settingData);
 	}
 
+	public void deleteSetting(final Long mauUserId, final String name) {
+		this.mapper.deleteSetting(mauUserId, name);
+	}
+
 	public void deleteSettings(final Long id) {
 		this.mapper.deleteSettings(id);
 	}

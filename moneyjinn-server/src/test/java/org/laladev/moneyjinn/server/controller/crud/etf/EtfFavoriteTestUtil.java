@@ -1,6 +1,7 @@
 package org.laladev.moneyjinn.server.controller.crud.etf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +34,7 @@ public class EtfFavoriteTestUtil {
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(userId);
 		assertTrue(setting.isPresent());
-		final var favoriteEtfId = new EtfID(Long.valueOf(setting.get().getSetting()));
+		final var favoriteEtfId = setting.get().getSetting();
 		assertEquals(etfId, favoriteEtfId);
 	}
 
@@ -41,9 +42,18 @@ public class EtfFavoriteTestUtil {
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(userId);
 		if (setting.isPresent()) {
-			final var favoriteEtfId = new EtfID(Long.valueOf(setting.get().getSetting()));
+			final var favoriteEtfId = setting.get().getSetting();
 			assertNotEquals(etfId, favoriteEtfId);
 		}
 	}
 
+	public void makeFavorite(final UserID userId, final EtfID etfId) {
+		this.settingService.setClientListEtfDepotDefaultEtfId(userId, new ClientListEtfDepotDefaultEtfId(etfId));
+	}
+
+	public void assertNoFavoriteSet(final UserID userId) {
+		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
+				.getClientListEtfDepotDefaultEtfId(userId);
+		assertFalse(setting.isPresent());
+	}
 }

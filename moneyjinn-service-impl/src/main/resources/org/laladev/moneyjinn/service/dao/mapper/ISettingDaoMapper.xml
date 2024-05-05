@@ -9,7 +9,7 @@
                 ,`value`
         </sql>
     
-            <select id="getSetting" 
+        <select id="getSetting" 
                 resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
                 SELECT <include refid="settingColumns" />
                   FROM settings
@@ -18,7 +18,7 @@
                  LIMIT 1
         </select>
 
-            <insert id="setSetting" >
+        <insert id="setSetting" >
                 INSERT
                   INTO settings
                       (mau_userid
@@ -34,11 +34,19 @@
                 UPDATE `value` = VALUES(`value`)
         </insert>
         
-            <delete id="deleteSettings">
+        <delete id="deleteSettings">
                 DELETE
                   FROM settings
                  WHERE mau_userid = #{mauUserId}
-            </delete>
+        </delete>
+            
+        <delete id="deleteSetting">
+                DELETE
+                  FROM settings
+                 WHERE mau_userid = #{mauUserId}
+                   AND name = #{name}
+                 LIMIT 1
+        </delete>
             
 </mapper>
  

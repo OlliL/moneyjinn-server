@@ -26,12 +26,17 @@ package org.laladev.moneyjinn.model.etf;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
+import lombok.NoArgsConstructor;
+
 /**
  * The unique ID of {@link Etf}.
  *
  * @author Oliver Lehmann
  *
  */
+//Is needed for Settings recovering from the JSON string which is stored in the DB (Jackson
+//Mapper).
+@NoArgsConstructor
 public class EtfID extends AbstractEntityID<Long> {
 	private static final long serialVersionUID = 1L;
 

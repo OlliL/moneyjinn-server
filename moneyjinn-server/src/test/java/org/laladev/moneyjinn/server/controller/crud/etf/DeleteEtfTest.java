@@ -16,6 +16,8 @@ import jakarta.inject.Inject;
 class DeleteEtfTest extends AbstractEtfTest {
 	@Inject
 	private IEtfService etfService;
+	@Inject
+	private EtfFavoriteTestUtil favoriteTestUtil;
 
 	@Override
 	protected void loadMethod() {
@@ -37,6 +39,7 @@ class DeleteEtfTest extends AbstractEtfTest {
 
 		etf = this.etfService.getEtfById(userId, etfId);
 		Assertions.assertNotNull(etf);
+		this.favoriteTestUtil.assertDefaultFavorite(userId);
 		Assertions.assertEquals(expected, actual);
 	}
 
@@ -48,10 +51,15 @@ class DeleteEtfTest extends AbstractEtfTest {
 		var etf = this.etfService.getEtfById(userId, etfId);
 		Assertions.assertNotNull(etf);
 
+		this.favoriteTestUtil.assertDefaultFavorite(userId);
+		this.favoriteTestUtil.makeFavorite(userId, etfId);
+		this.favoriteTestUtil.assertIsFavorite(userId, etfId);
+
 		super.callUsecaseExpect204WithUriVariables(EtfTransportBuilder.ETF_ID_3);
 
 		etf = this.etfService.getEtfById(userId, etfId);
 		Assertions.assertNull(etf);
+		this.favoriteTestUtil.assertNoFavoriteSet(userId);
 	}
 
 	@Test
