@@ -30,20 +30,23 @@
         </sql>
    
         <sql id="etfPreliminaryLumpSumColumns">
-                 met_etfid AS metEtfid
+                 etfpreliminarylumpsumid AS etfPreliminaryLumpSumId
+                ,met_etfid               AS metEtfid
                 ,`year`
-                ,amount01 AS amountJanuary
-                ,amount02 AS amountFebruary
-                ,amount03 AS amountMarch
-                ,amount04 AS amountApril
-                ,amount05 AS amountMay
-                ,amount06 AS amountJune
-                ,amount07 AS amountJuly
-                ,amount08 AS amountAugust
-                ,amount09 AS amountSeptember
-                ,amount10 AS amountOctober
-                ,amount11 AS amountNovember
-                ,amount12 AS amountDecember
+                ,type
+                ,amount_per_piece        AS amountPerPiece
+                ,amount01                AS amountJanuary
+                ,amount02                AS amountFebruary
+                ,amount03                AS amountMarch
+                ,amount04                AS amountApril
+                ,amount05                AS amountMay
+                ,amount06                AS amountJune
+                ,amount07                AS amountJuly
+                ,amount08                AS amountAugust
+                ,amount09                AS amountSeptember
+                ,amount10                AS amountOctober
+                ,amount11                AS amountNovember
+                ,amount12                AS amountDecember
         </sql>
 
 
@@ -183,8 +186,8 @@
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
                 SELECT <include refid="etfPreliminaryLumpSumColumns" />
                   FROM etfpreliminarylumpsum
-                 WHERE met_etfid = #{metEtfid}
-                   AND `year`    = #{year}
+                 WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
+                 LIMIT 1
         </select>
         
         <select id="getAllPreliminaryLumpSumYears" resultType="java.lang.Integer">
@@ -195,11 +198,14 @@
         </select>     
 
         <insert id="createPreliminaryLumpSum"
-                parameterType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData">
+                parameterType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData"
+                useGeneratedKeys="true" keyProperty="etfPreliminaryLumpSumId" keyColumn="etfpreliminarylumpsumid">
                 INSERT
                   INTO etfpreliminarylumpsum
                       (met_etfid
                       ,`year`
+                      ,type
+                      ,amount_per_piece
                       ,amount01
                       ,amount02
                       ,amount03
@@ -216,6 +222,8 @@
                 VALUES
                       (#{metEtfid}
                       ,#{year}
+                      ,#{type}
+                      ,#{amountPerPiece}
                       ,#{amountJanuary}
                       ,#{amountFebruary}
                       ,#{amountMarch}
@@ -233,28 +241,30 @@
 
         <update id="updatePreliminaryLumpSum" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 UPDATE etfpreliminarylumpsum
-                   SET amount01      = #{amountJanuary}
-                      ,amount02      = #{amountFebruary}
-                      ,amount03      = #{amountMarch}
-                      ,amount04      = #{amountApril}
-                      ,amount05      = #{amountMay}
-                      ,amount06      = #{amountJune}
-                      ,amount07      = #{amountJuly}
-                      ,amount08      = #{amountAugust}
-                      ,amount09      = #{amountSeptember}
-                      ,amount10      = #{amountOctober}
-                      ,amount11      = #{amountNovember}
-                      ,amount12      = #{amountDecember}
-                 WHERE met_etfid     = #{metEtfid}
-                   AND `year`        = #{year}
+                   SET met_etfid        = #{metEtfid}
+                      ,`year`           = #{year}
+                      ,type             = #{type}
+                      ,amount_per_piece = #{amountPerPiece}
+                      ,amount01         = #{amountJanuary}
+                      ,amount02         = #{amountFebruary}
+                      ,amount03         = #{amountMarch}
+                      ,amount04         = #{amountApril}
+                      ,amount05         = #{amountMay}
+                      ,amount06         = #{amountJune}
+                      ,amount07         = #{amountJuly}
+                      ,amount08         = #{amountAugust}
+                      ,amount09         = #{amountSeptember}
+                      ,amount10         = #{amountOctober}
+                      ,amount11         = #{amountNovember}
+                      ,amount12         = #{amountDecember}
+                 WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
                  LIMIT 1
         </update>
         
         <delete id="deletePreliminaryLumpSum">
                 DELETE
                   FROM etfpreliminarylumpsum
-                 WHERE met_etfid = #{metEtfid}
-                   AND `year`    = #{year}
+                 WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
                  LIMIT 1
         </delete>
 </mapper>

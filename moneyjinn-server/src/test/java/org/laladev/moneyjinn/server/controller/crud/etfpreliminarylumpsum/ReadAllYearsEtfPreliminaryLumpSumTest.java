@@ -2,7 +2,6 @@ package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 
@@ -15,8 +14,7 @@ class ReadAllYearsEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSu
 
 	@Test
 	void test_HappyCase_ResponseObject() throws Exception {
-		final Integer[] expected = { EtfPreliminaryLumpSumTransportBuilder.YEAR_2009,
-				EtfPreliminaryLumpSumTransportBuilder.YEAR_2010 };
+		final Integer[] expected = { 2009, 2010 };
 		final Integer[] actual = super.callUsecaseExpect200(Integer[].class, EtfTransportBuilder.ETF_ID_1);
 
 		Assertions.assertNotNull(actual);

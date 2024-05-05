@@ -31,7 +31,6 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.CrudEtfPreliminaryLumpSumControllerApi;
 import org.laladev.moneyjinn.server.controller.impl.AbstractController;
@@ -76,13 +75,9 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("etfId") final Long requestEtfId,
-			@PathVariable("year") final Integer requestYear) {
+	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("id") final Long requestId) {
 		final UserID userId = super.getUserId();
-		final EtfID etfId = new EtfID(requestEtfId);
-		final Year year = Year.of(requestYear);
-		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		final var id = new EtfPreliminaryLumpSumID(requestId);
 
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 
@@ -123,13 +118,9 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<Void> delete(@PathVariable("etfId") final Long requestEtfId,
-			@PathVariable("year") final Integer requestYear) {
+	public ResponseEntity<Void> delete(@PathVariable("id") final Long requestId) {
 		final UserID userId = super.getUserId();
-		final EtfID etfId = new EtfID(requestEtfId);
-		final Year year = Year.of(requestYear);
-		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		final var id = new EtfPreliminaryLumpSumID(requestId);
 
 		this.etfService.deleteEtfPreliminaryLumpSum(userId, id);
 

@@ -211,7 +211,7 @@ CREATE TABLE `etfflows` (
   `etfflowid` int unsigned NOT NULL AUTO_INCREMENT,
   `met_etfid` int unsigned NOT NULL,
   `flowdate` datetime(6) NOT NULL,
-  `amount` decimal(10,3) NOT NULL,
+  `amount` decimal(12,5) NOT NULL,
   `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`),
   KEY `mef_i_01` (`met_etfid`,`flowdate`) USING BTREE,
@@ -244,21 +244,25 @@ DROP TABLE IF EXISTS `etfpreliminarylumpsum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etfpreliminarylumpsum` (
+  `etfpreliminarylumpsumid` int unsigned NOT NULL AUTO_INCREMENT,
   `met_etfid` int unsigned NOT NULL,
   `year` year NOT NULL,
-  `amount01` decimal(8,2) NOT NULL,
-  `amount02` decimal(8,2) NOT NULL,
-  `amount03` decimal(8,2) NOT NULL,
-  `amount04` decimal(8,2) NOT NULL,
-  `amount05` decimal(8,2) NOT NULL,
-  `amount06` decimal(8,2) NOT NULL,
-  `amount07` decimal(8,2) NOT NULL,
-  `amount08` decimal(8,2) NOT NULL,
-  `amount09` decimal(8,2) NOT NULL,
-  `amount10` decimal(8,2) NOT NULL,
-  `amount11` decimal(8,2) NOT NULL,
-  `amount12` decimal(8,2) NOT NULL,
-  PRIMARY KEY (`met_etfid`,`year`),
+  `type` tinyint NOT NULL,
+  `amount_per_piece` decimal(12,8) DEFAULT NULL,
+  `amount01` decimal(8,2) DEFAULT NULL,
+  `amount02` decimal(8,2) DEFAULT NULL,
+  `amount03` decimal(8,2) DEFAULT NULL,
+  `amount04` decimal(8,2) DEFAULT NULL,
+  `amount05` decimal(8,2) DEFAULT NULL,
+  `amount06` decimal(8,2) DEFAULT NULL,
+  `amount07` decimal(8,2) DEFAULT NULL,
+  `amount08` decimal(8,2) DEFAULT NULL,
+  `amount09` decimal(8,2) DEFAULT NULL,
+  `amount10` decimal(8,2) DEFAULT NULL,
+  `amount11` decimal(8,2) DEFAULT NULL,
+  `amount12` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`etfpreliminarylumpsumid`),
+  UNIQUE KEY `mep_i_01` (`met_etfid`,`year`) USING BTREE,
   CONSTRAINT `mep_met_pk` FOREIGN KEY (`met_etfid`) REFERENCES `etf` (`etfid`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='mep';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -565,7 +569,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-30 17:28:51
+-- Dump completed on 2024-05-05 13:05:41
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);

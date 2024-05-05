@@ -1,21 +1,12 @@
 {
 	"parameters": [
 		{
-			"name": "etfId",
+			"name": "id",
 			"in": "path",
 			"required": true,
 			"schema": {
 				"type": "integer",
 				"format": "int64"
-			}
-		},
-		{
-			"name": "year",
-			"in": "path",
-			"required": true,
-			"schema": {
-				"type": "integer",
-				"format": "int32"
 			}
 		}
 	],
@@ -24,7 +15,7 @@
 			"crud-etf-preliminary-lump-sum-controller"
 		],
 		"operationId": "readOne",
-		"description": "Returns the preliminary lump sum specified by the ETF ID and year.",
+		"description": "Returns the preliminary lump sum specified by its ID.",
 		"responses": {
 			"200": {
 				"description": "OK",
@@ -49,7 +40,7 @@
 			"crud-etf-preliminary-lump-sum-controller"
 		],
 		"operationId": "delete",
-		"description": "Deletes the preliminary lump sum specified by the ETF ID and year.",
+		"description": "Deletes the preliminary lump sum specified by its ID.",
 		"responses": {
 			"204": {
 				"description": "OK"

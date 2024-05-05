@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.model.etf;
 
 import java.math.BigDecimal;
+import java.time.Year;
 
 import org.laladev.moneyjinn.model.AbstractEntity;
 
@@ -39,6 +40,10 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class EtfPreliminaryLumpSum extends AbstractEntity<EtfPreliminaryLumpSumID> {
 	private static final long serialVersionUID = 1L;
+	private EtfID etfId;
+	private Year year;
+	private EtfPreliminaryLumpSumType type;
+	private BigDecimal amountPerPiece;
 	private BigDecimal amountJanuary;
 	private BigDecimal amountFebruary;
 	private BigDecimal amountMarch;

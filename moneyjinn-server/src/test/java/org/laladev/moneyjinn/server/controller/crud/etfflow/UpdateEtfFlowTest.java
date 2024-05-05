@@ -24,7 +24,7 @@ import org.laladev.moneyjinn.service.api.IEtfService;
 import jakarta.inject.Inject;
 
 class UpdateEtfFlowTest extends AbstractEtfFlowTest {
-	private static final BigDecimal BIGDECIMAL_123_01 = new BigDecimal("123.010");
+	private static final BigDecimal BIGDECIMAL_123_01 = new BigDecimal("123.01000");
 	@Inject
 	private IEtfService etfService;
 

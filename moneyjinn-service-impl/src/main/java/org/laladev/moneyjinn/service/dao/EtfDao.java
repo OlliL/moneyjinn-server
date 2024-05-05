@@ -101,8 +101,8 @@ public class EtfDao {
 		return this.mapper.getAllPreliminaryLumpSum(etfId);
 	}
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final Long etfId, final Year year) {
-		return this.mapper.getPreliminaryLumpSum(etfId, year.getValue());
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
+		return this.mapper.getPreliminaryLumpSum(etfPreliminaryLumpSumId);
 	}
 
 	public List<Integer> getAllPreliminaryLumpSumYears(final Long etfId) {
@@ -117,7 +117,7 @@ public class EtfDao {
 		this.mapper.updatePreliminaryLumpSum(data);
 	}
 
-	public void deletePreliminaryLumpSum(final Long etfId, final Year year) {
-		this.mapper.deletePreliminaryLumpSum(etfId, year.getValue());
+	public void deletePreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
+		this.mapper.deletePreliminaryLumpSum(etfPreliminaryLumpSumId);
 	}
 }

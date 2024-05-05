@@ -63,7 +63,8 @@ public interface IEtfDaoMapper {
 
 	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("metEtfid") Long etfId);
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(@Param("metEtfid") Long etfId, @Param("year") Integer year);
+	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(
+			@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
 
 	public List<Integer> getAllPreliminaryLumpSumYears(@Param("metEtfid") Long etfId);
 
@@ -71,5 +72,5 @@ public interface IEtfDaoMapper {
 
 	public void updatePreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 
-	public void deletePreliminaryLumpSum(@Param("metEtfid") Long etfId, @Param("year") Integer year);
+	public void deletePreliminaryLumpSum(@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
 }

@@ -28,10 +28,10 @@ package org.laladev.moneyjinn.model.etf;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
-public class EtfPreliminaryLumpSumID extends AbstractEntityID<EtfPreliminaryLumpSumIDValues> {
+public class EtfPreliminaryLumpSumID extends AbstractEntityID<Long> {
 	private static final long serialVersionUID = 1L;
 
-	public EtfPreliminaryLumpSumID(final EtfPreliminaryLumpSumIDValues id) {
+	public EtfPreliminaryLumpSumID(final Long id) {
 		super(id);
 	}
 }

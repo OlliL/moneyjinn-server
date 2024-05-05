@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller.crud.etfpreliminarylumpsum;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumIDValues;
 import org.laladev.moneyjinn.server.builder.EtfPreliminaryLumpSumTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -51,10 +48,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
-		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		final var id = new EtfPreliminaryLumpSumID(EtfPreliminaryLumpSumTransportBuilder.NEXT_ID);
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
@@ -70,10 +64,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
-		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		final var id = new EtfPreliminaryLumpSumID(EtfPreliminaryLumpSumTransportBuilder.NEXT_ID);
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);
@@ -92,10 +83,7 @@ class CreateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
-		final var year = Year.of(EtfPreliminaryLumpSumTransportBuilder.NEW_YEAR);
-		final EtfPreliminaryLumpSumID id = new EtfPreliminaryLumpSumID(
-				new EtfPreliminaryLumpSumIDValues(etfId, year));
+		final var id = new EtfPreliminaryLumpSumID(EtfPreliminaryLumpSumTransportBuilder.NEXT_ID);
 
 		var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 		Assertions.assertNull(etfPreliminaryLumpSum);

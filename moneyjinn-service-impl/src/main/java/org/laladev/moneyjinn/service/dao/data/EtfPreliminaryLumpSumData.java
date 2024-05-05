@@ -32,8 +32,11 @@ import lombok.Data;
 
 @Data
 public class EtfPreliminaryLumpSumData {
+	private Long etfPreliminaryLumpSumId;
 	private Long metEtfid;
 	private Integer year;
+	private Integer type;
+	private BigDecimal amountPerPiece;
 	private BigDecimal amountJanuary;
 	private BigDecimal amountFebruary;
 	private BigDecimal amountMarch;

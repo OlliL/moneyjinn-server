@@ -1,22 +1,16 @@
 {
 	"type": "object",
 	"required": [
+		"id",
 		"etfId",
 		"year",
-		"amountJanuary",
-		"amountFebruary",
-		"amountMarch",
-		"amountApril",
-		"amountMay",
-		"amountJune",
-		"amountJuly",
-		"amountAugust",
-		"amountSeptember",
-		"amountOctober",
-		"amountNovember",
-		"amountDecember"
+		"type"
 	],
 	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
 		"etfId": {
 			"type": "integer",
 			"format": "int64"
@@ -24,6 +18,13 @@
 		"year": {
 			"type": "integer",
 			"format": "int32"
+		},
+		"type": {
+			"type": "integer",
+			"format": "int32"
+		},
+		"amountPerPiece": {
+			"type": "number"
 		},
 		"amountJanuary": {
 			"type": "number"

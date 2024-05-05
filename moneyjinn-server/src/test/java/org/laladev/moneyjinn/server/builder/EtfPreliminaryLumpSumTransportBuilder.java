@@ -7,14 +7,17 @@ import org.laladev.moneyjinn.server.model.EtfPreliminaryLumpSumTransport;
 
 public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSumTransport {
 	private final BigDecimal zero = new BigDecimal("0.00");
-	public static final Integer YEAR_2009 = 2009;
-	public static final Integer YEAR_2010 = 2010;
-	public static final Integer NEW_YEAR = 2011;
-	public static final Integer NON_EXISTING_YEAR = 1970;
+	public static final Long ID_2009 = 0L;
+	public static final Long ID_2010 = 1L;
+	public static final Long NEXT_ID = 2L;
+	public static final Long NON_EXISTING_ID = 3L;
 
 	public EtfPreliminaryLumpSumTransportBuilder for2009() {
+		super.setId(ID_2009);
 		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
-		super.setYear(YEAR_2009);
+		super.setYear(2009);
+		super.setType(1);
+		super.setAmountPerPiece(null);
 		super.setAmountJanuary(new BigDecimal("134.23"));
 		super.setAmountFebruary(new BigDecimal("9.22"));
 		super.setAmountMarch(this.zero);
@@ -31,8 +34,11 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 	}
 
 	public EtfPreliminaryLumpSumTransportBuilder for2010() {
+		super.setId(ID_2010);
 		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
-		super.setYear(YEAR_2010);
+		super.setYear(2010);
+		super.setType(1);
+		super.setAmountPerPiece(null);
 		super.setAmountJanuary(new BigDecimal("156.11"));
 		super.setAmountFebruary(new BigDecimal("168.83"));
 		super.setAmountMarch(this.zero);
@@ -49,8 +55,11 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 	}
 
 	public EtfPreliminaryLumpSumTransportBuilder forNewYear() {
+		super.setId(NEXT_ID);
 		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
-		super.setYear(NEW_YEAR);
+		super.setYear(2011);
+		super.setType(1);
+		super.setAmountPerPiece(null);
 		super.setAmountJanuary(new BigDecimal("1"));
 		super.setAmountFebruary(new BigDecimal("2"));
 		super.setAmountMarch(this.zero);
@@ -68,8 +77,11 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 
 	public EtfPreliminaryLumpSumTransport build() {
 		final EtfPreliminaryLumpSumTransport transport = new EtfPreliminaryLumpSumTransport();
+		transport.setId(this.getId());
 		transport.setEtfId(this.getEtfId());
 		transport.setYear(this.getYear());
+		transport.setType(this.getType());
+		transport.setAmountPerPiece(this.getAmountPerPiece());
 		transport.setAmountJanuary(this.getAmountJanuary());
 		transport.setAmountFebruary(this.getAmountFebruary());
 		transport.setAmountMarch(this.getAmountMarch());
