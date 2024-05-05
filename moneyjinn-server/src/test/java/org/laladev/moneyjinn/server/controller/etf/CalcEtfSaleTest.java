@@ -170,11 +170,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setPieces(new BigDecimal("180"));
 		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
 
-		// 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
-		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
-		// 96.766pcs -> (109.32€ / 110.000pcs) * 96.766pcs = 148.518€
-		// --> 6.909€ + 135.625€ + 148.518€ == 291.05€
-		final BigDecimal expectedSum = new BigDecimal("291.05");
+		final BigDecimal expectedSum = new BigDecimal("291.06");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());

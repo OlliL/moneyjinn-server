@@ -24,7 +24,7 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.server.controller.mapper;
+package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumType;

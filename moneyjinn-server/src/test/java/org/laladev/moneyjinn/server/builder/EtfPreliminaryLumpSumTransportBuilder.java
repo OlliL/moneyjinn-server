@@ -37,20 +37,20 @@ public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSum
 		super.setId(ID_2010);
 		super.setEtfId(EtfTransportBuilder.ETF_ID_1);
 		super.setYear(2010);
-		super.setType(1);
-		super.setAmountPerPiece(null);
-		super.setAmountJanuary(new BigDecimal("156.11"));
-		super.setAmountFebruary(new BigDecimal("168.83"));
-		super.setAmountMarch(this.zero);
-		super.setAmountApril(this.zero);
-		super.setAmountMay(this.zero);
-		super.setAmountJune(this.zero);
-		super.setAmountJuly(this.zero);
-		super.setAmountAugust(this.zero);
-		super.setAmountSeptember(this.zero);
-		super.setAmountOctober(this.zero);
-		super.setAmountNovember(this.zero);
-		super.setAmountDecember(this.zero);
+		super.setType(2);
+		super.setAmountPerPiece(new BigDecimal("1.67438917"));
+		super.setAmountJanuary(null);
+		super.setAmountFebruary(null);
+		super.setAmountMarch(null);
+		super.setAmountApril(null);
+		super.setAmountMay(null);
+		super.setAmountJune(null);
+		super.setAmountJuly(null);
+		super.setAmountAugust(null);
+		super.setAmountSeptember(null);
+		super.setAmountOctober(null);
+		super.setAmountNovember(null);
+		super.setAmountDecember(null);
 		return this;
 	}
 
