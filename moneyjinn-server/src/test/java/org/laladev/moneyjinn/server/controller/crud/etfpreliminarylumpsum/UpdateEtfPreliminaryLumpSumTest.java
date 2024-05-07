@@ -63,6 +63,20 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 	}
 
 	@Test
+	void test_yearChange_Successfull() throws Exception {
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setYear(2008);
+
+		super.callUsecaseExpect204(transport);
+
+		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+		final var id = new EtfPreliminaryLumpSumID(EtfPreliminaryLumpSumTransportBuilder.ID_2009);
+		final var etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+
+		Assertions.assertEquals(2008, etfPreliminaryLumpSum.getYear().getValue());
+	}
+
+	@Test
 	void test_standardRequest_Successfull_RepresentationReturn() throws Exception {
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
 
@@ -118,6 +132,14 @@ class UpdateEtfPreliminaryLumpSumTest extends AbstractEtfPreliminaryLumpSumTest 
 		final var transport = new EtfPreliminaryLumpSumTransportBuilder().forNewYear().build();
 		final ErrorResponse actual = super.callUsecaseExpect400(transport, ErrorResponse.class);
 		Assertions.assertEquals(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST.getErrorCode(), actual.getCode());
+	}
+
+	@Test
+	void test_EtfPreliminaryLumpSumForNewYearAlreadyExisting_Error() throws Exception {
+		final var transport = new EtfPreliminaryLumpSumTransportBuilder().for2009().build();
+		transport.setYear(2010);
+		final ErrorResponse actual = super.callUsecaseExpect400(transport, ErrorResponse.class);
+		Assertions.assertEquals(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS.getErrorCode(), actual.getCode());
 	}
 
 	@Test

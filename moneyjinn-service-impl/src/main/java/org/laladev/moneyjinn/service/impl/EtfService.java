@@ -371,8 +371,8 @@ public class EtfService extends AbstractService implements IEtfService {
 					if (month.equals(Month.JANUARY)) {
 						etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
 								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
-										efwti.getAccumulatedPreliminaryLumpSum()
-												.add(efwti.getAmount().multiply(pieceTax))));
+										efwti.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount()
+												.multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
 					} else {
 						final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
 								.atStartOfDay();
@@ -380,7 +380,8 @@ public class EtfService extends AbstractService implements IEtfService {
 						etfFlowWithTaxInfos.stream().filter(
 								efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
 								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
-										.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount().multiply(pieceTax))));
+										.getAccumulatedPreliminaryLumpSum()
+										.add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
 					}
 				}
 			}
@@ -601,7 +602,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		}
 		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
 				etfPreliminaryLumpSum.getYear().getValue());
-		if (!idLong.equals(etfPreliminaryLumpSum.getId().getId())) {
+		if (idLong != null && !idLong.equals(etfPreliminaryLumpSum.getId().getId())) {
 			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
