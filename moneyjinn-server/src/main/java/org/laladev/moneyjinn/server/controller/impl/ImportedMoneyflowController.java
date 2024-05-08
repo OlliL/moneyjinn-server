@@ -243,20 +243,17 @@ public class ImportedMoneyflowController extends AbstractController implements I
 				if (moneyflow.getCapitalsource() != null) {
 					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
 							group.getId(), moneyflow.getCapitalsource().getId());
-					if (capitalsource != null) {
-						if (capitalsource.groupUseAllowed(userId)) {
-							final boolean bookingDateIsBeforeValidity = bookingDate
-									.isBefore(capitalsource.getValidFrom());
-							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
-							if (bookingDateIsBeforeValidity) {
-								capitalsource.setValidFrom(bookingDate);
-							}
-							if (bookingDateIsAfterValidity) {
-								capitalsource.setValidTil(bookingDate);
-							}
-							if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-								this.capitalsourceService.updateCapitalsource(capitalsource);
-							}
+					if (capitalsource != null && capitalsource.groupUseAllowed(userId)) {
+						final boolean bookingDateIsBeforeValidity = bookingDate.isBefore(capitalsource.getValidFrom());
+						final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
+						if (bookingDateIsBeforeValidity) {
+							capitalsource.setValidFrom(bookingDate);
+						}
+						if (bookingDateIsAfterValidity) {
+							capitalsource.setValidTil(bookingDate);
+						}
+						if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+							this.capitalsourceService.updateCapitalsource(capitalsource);
 						}
 					}
 				}

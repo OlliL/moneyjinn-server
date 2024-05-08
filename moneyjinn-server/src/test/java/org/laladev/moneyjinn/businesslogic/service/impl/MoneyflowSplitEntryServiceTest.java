@@ -2,6 +2,7 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,9 @@ class MoneyflowSplitEntryServiceTest extends AbstractTest {
 	@Test
 	void test_createWithInvalidEntity_raisesException() {
 		final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
+		final List<MoneyflowSplitEntry> list = Collections.singletonList(moneyflowSplitEntry);
 		Assertions.assertThrows(BusinessException.class, () -> {
-			this.moneyflowSplitEntryService.createMoneyflowSplitEntries(this.user1Id,
-					Collections.singletonList(moneyflowSplitEntry));
+			this.moneyflowSplitEntryService.createMoneyflowSplitEntries(this.user1Id, list);
 		});
 	}
 

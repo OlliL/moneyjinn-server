@@ -25,6 +25,7 @@ import org.laladev.moneyjinn.service.api.IEtfService;
 import jakarta.inject.Inject;
 
 class EtfServiceTest extends AbstractTest {
+	private static final UserID USER_ID = new UserID(1L);
 	@Inject
 	private IEtfService etfService;
 
@@ -32,7 +33,7 @@ class EtfServiceTest extends AbstractTest {
 	void test_createEtfFlowWithInvalidEntity_raisesException() {
 		final EtfFlow etfFlow = new EtfFlow();
 		assertThrows(BusinessException.class, () -> {
-			this.etfService.createEtfFlow(new UserID(1L), etfFlow);
+			this.etfService.createEtfFlow(USER_ID, etfFlow);
 		});
 	}
 
@@ -40,14 +41,14 @@ class EtfServiceTest extends AbstractTest {
 	void test_updateEtfFlowWithInvalidEntity_raisesException() {
 		final EtfFlow etfFlow = new EtfFlow();
 		assertThrows(BusinessException.class, () -> {
-			this.etfService.updateEtfFlow(new UserID(1L), etfFlow);
+			this.etfService.updateEtfFlow(USER_ID, etfFlow);
 		});
 	}
 
 	@Test
 	void test_createEtfWithInvalidEntity_raisesException() {
 		final Etf etf = new Etf();
-		etf.setUser(new User(new UserID(1L)));
+		etf.setUser(new User(USER_ID));
 		etf.setGroup(new Group(new GroupID(2L)));
 		assertThrows(BusinessException.class, () -> {
 			this.etfService.createEtf(etf);
@@ -57,7 +58,7 @@ class EtfServiceTest extends AbstractTest {
 	@Test
 	void test_updateEtfWithInvalidEntity_raisesException() {
 		final Etf etf = new Etf();
-		etf.setUser(new User(new UserID(1L)));
+		etf.setUser(new User(USER_ID));
 		etf.setGroup(new Group(new GroupID(2L)));
 		assertThrows(BusinessException.class, () -> {
 			this.etfService.updateEtf(etf);
@@ -109,7 +110,7 @@ class EtfServiceTest extends AbstractTest {
 	void test_createEtfPreliminaryLumpSumWithInvalidEntity_raisesException() {
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = new EtfPreliminaryLumpSum();
 		assertThrows(BusinessException.class, () -> {
-			this.etfService.createEtfPreliminaryLumpSum(new UserID(1L), etfPreliminaryLumpSum);
+			this.etfService.createEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum);
 		});
 	}
 
@@ -117,7 +118,7 @@ class EtfServiceTest extends AbstractTest {
 	void test_updateEtfPreliminaryLumpSumWithInvalidEntity_raisesException() {
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = new EtfPreliminaryLumpSum();
 		assertThrows(BusinessException.class, () -> {
-			this.etfService.updateEtfPreliminaryLumpSum(new UserID(1L), etfPreliminaryLumpSum);
+			this.etfService.updateEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum);
 		});
 	}
 }

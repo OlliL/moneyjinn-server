@@ -82,7 +82,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		if (setting.isPresent()) {
 			final var favoriteEtfId = setting.get().getSetting();
 			transports.stream().filter(t -> t.getEtfId().equals(favoriteEtfId.getId())).findFirst()
-					.ifPresent((e) -> e.setIsFavorite(1));
+					.ifPresent(e -> e.setIsFavorite(1));
 
 		}
 		return ResponseEntity.ok(transports);
