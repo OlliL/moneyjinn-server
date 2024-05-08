@@ -2,6 +2,9 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
 import org.laladev.moneyjinn.server.model.EtfFlowTransport;
+import org.laladev.moneyjinn.server.model.EtfSummaryTransport;
+import org.laladev.moneyjinn.server.model.EtfTransport;
 import org.laladev.moneyjinn.server.model.ListEtfFlowsResponse;
 import org.laladev.moneyjinn.service.api.ISettingService;
 
@@ -77,6 +82,23 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow8().build());
 		effectiveTransports.add(new EtfEffectiveFlowTransportBuilder().forFlow6().build());
 		expected.setEtfEffectiveFlowTransports(effectiveTransports);
+
+		final EtfTransport etf = new EtfTransportBuilder().forEtf1().build();
+		final EtfSummaryTransport transport = new EtfSummaryTransport();
+		final BigDecimal amount = new BigDecimal("193.23400");
+		final BigDecimal spentValue = new BigDecimal("149583.30078200");
+		transport.setEtfId(etf.getEtfId());
+		transport.setName(etf.getName());
+		transport.setChartUrl(etf.getChartUrl());
+		transport.setAmount(amount);
+		transport.setSpentValue(spentValue);
+		// latest etfvalues table entry
+		transport.setBuyPrice(new BigDecimal("666.000"));
+		transport.setSellPrice(new BigDecimal("666.543"));
+		transport.setPricesTimestamp(ZonedDateTime.of(2012, 01, 16, 22, 5, 2, 0, ZoneId.systemDefault()).toInstant()
+				.atOffset(ZoneOffset.UTC));
+		expected.setEtfSummaryTransport(transport);
+
 		return expected;
 	}
 

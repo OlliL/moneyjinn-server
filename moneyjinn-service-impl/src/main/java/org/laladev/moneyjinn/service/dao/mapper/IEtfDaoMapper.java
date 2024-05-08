@@ -53,6 +53,8 @@ public interface IEtfDaoMapper {
 	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("startDate") LocalDate startDate,
 			@Param("endDate") LocalDate endDate);
 
+	public EtfValueData getLatestEtfValue(@Param("isin") String isin);
+
 	public EtfFlowData getEtfFlowById(@Param("id") Long id);
 
 	public Long createEtfFlow(EtfFlowData data);

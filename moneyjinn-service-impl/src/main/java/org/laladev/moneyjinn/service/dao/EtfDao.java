@@ -33,7 +33,6 @@ import java.time.Year;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
-import org.laladev.moneyjinn.model.etf.EtfIsin;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
@@ -70,10 +69,14 @@ public class EtfDao {
 		this.mapper.deleteEtf(groupId, etfId);
 	}
 
-	public EtfValueData getEtfValueForMonth(final EtfIsin etfIsin, final Year year, final Month month) {
+	public EtfValueData getEtfValueForMonth(final String etfIsin, final Year year, final Month month) {
 		final LocalDate startDate = year.atMonth(month).atDay(1);
 		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-		return this.mapper.getEtfValueForMonth(etfIsin.getId(), startDate, endDate);
+		return this.mapper.getEtfValueForMonth(etfIsin, startDate, endDate);
+	}
+
+	public EtfValueData getLatestEtfValue(final String etfIsin) {
+		return this.mapper.getLatestEtfValue(etfIsin);
 	}
 
 	public List<EtfFlowData> getAllFlowsUntil(final Long etfId, final LocalDateTime timeUntil) {

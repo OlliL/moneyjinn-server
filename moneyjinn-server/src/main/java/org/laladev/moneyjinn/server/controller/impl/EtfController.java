@@ -75,7 +75,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-// TODO: Multi-User
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfController extends AbstractController implements EtfControllerApi {
 	private static final BigDecimal TAX_RELEVANT_PERCENTAGE = new BigDecimal(70).scaleByPowerOfTen(-2);
@@ -84,6 +83,14 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	private final EtfTransportMapper etfTransportMapper;
 	private final EtfFlowTransportMapper etfFlowTransportMapper;
 	private final EtfEffectiveFlowTransportMapper etfEffectiveFlowTransportMapper;
+
+	@Override
+	@PostConstruct
+	protected void addBeanMapper() {
+		super.registerBeanMapper(this.etfFlowTransportMapper);
+		super.registerBeanMapper(this.etfEffectiveFlowTransportMapper);
+		super.registerBeanMapper(this.etfTransportMapper);
+	}
 
 	@Override
 	public ResponseEntity<ListEtfOverviewResponse> listEtfOverview(
@@ -103,24 +110,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 			final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
 			final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows);
 			if (etfFlows != null && !etfFlows.isEmpty()) {
-				final EtfSummaryTransport transport = new EtfSummaryTransport();
-				transport.setEtfId(etf.getId().getId());
-				transport.setName(etf.getName());
-				transport.setChartUrl(etf.getChartUrl());
-				if (etfValue != null) {
-					transport.setBuyPrice(etfValue.getBuyPrice());
-					transport.setSellPrice(etfValue.getSellPrice());
-					transport.setPricesTimestamp(
-							etfValue.getChangeDate().atZone(ZoneId.systemDefault()).toOffsetDateTime());
-				}
-				BigDecimal amount = BigDecimal.ZERO;
-				BigDecimal spentValue = BigDecimal.ZERO;
-				for (final EtfFlow flow : etfFlows) {
-					amount = amount.add(flow.getAmount());
-					spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
-				}
-				transport.setAmount(amount);
-				transport.setSpentValue(spentValue);
+				final EtfSummaryTransport transport = this.getEtfSummaryTransportForEtf(etf, etfValue, etfFlows);
 				transports.add(transport);
 			}
 		}
@@ -135,7 +125,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final UserID userId = this.getUserId();
 		final EtfID etfId = new EtfID(id);
 
-		if (this.etfService.getEtfById(userId, etfId) == null) {
+		final Etf etf = this.etfService.getEtfById(userId, etfId);
+		if (etf == null) {
 			return ResponseEntity.notFound().build();
 		}
 
@@ -151,6 +142,10 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
 				EtfEffectiveFlowTransport.class);
 		response.setEtfEffectiveFlowTransports(etfEffectiveFlowTransports);
+
+		final EtfValue etfValue = this.etfService.getLatestEtfValue(etf.getIsin());
+		final EtfSummaryTransport transport = this.getEtfSummaryTransportForEtf(etf, etfValue, etfEffectiveFlows);
+		response.setEtfSummaryTransport(transport);
 
 		this.settingService.getClientCalcEtfSaleAskPrice(userId)
 				.ifPresent(s -> response.setCalcEtfAskPrice(s.getSetting()));
@@ -197,58 +192,70 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final List<EtfFlowWithTaxInfo> effectiveEtfFlows = new ArrayList<>(
 				this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
 
-		if (effectiveEtfFlows != null && !effectiveEtfFlows.isEmpty()) {
-			for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {
-				BigDecimal useablePieces = etfFlow.getAmount();
-				if (useablePieces.compareTo(openPieces) > 0) {
-					useablePieces = openPieces;
-					overallPreliminaryLumpSum = overallPreliminaryLumpSum.add(etfFlow.getAccumulatedPreliminaryLumpSum()
-							.divide(etfFlow.getAmount(), 10, RoundingMode.HALF_UP).multiply(openPieces));
-				} else {
-					overallPreliminaryLumpSum = overallPreliminaryLumpSum
-							.add(etfFlow.getAccumulatedPreliminaryLumpSum());
-				}
-				openPieces = openPieces.subtract(useablePieces);
-				originalBuyPrice = originalBuyPrice
-						.add(useablePieces.multiply(etfFlow.getPrice()).setScale(2, RoundingMode.HALF_UP));
-			}
-			overallPreliminaryLumpSum = overallPreliminaryLumpSum.setScale(2, RoundingMode.HALF_UP);
-			if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
-				final ValidationResult validationResult = new ValidationResult();
-				validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.AMOUNT_TO_HIGH));
-
-				this.throwValidationExceptionIfInvalid(validationResult);
+		for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {
+			BigDecimal useablePieces = etfFlow.getAmount();
+			if (useablePieces.compareTo(openPieces) > 0) {
+				useablePieces = openPieces;
+				overallPreliminaryLumpSum = overallPreliminaryLumpSum.add(etfFlow.getAccumulatedPreliminaryLumpSum()
+						.divide(etfFlow.getAmount(), 10, RoundingMode.HALF_UP).multiply(openPieces));
 			} else {
-				final BigDecimal newBuyPrice = askPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
-				final BigDecimal sellPrice = bidPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
-				final BigDecimal transactionCosts = request.getTransactionCosts().multiply(BigDecimal.valueOf(2));
-				final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
-				final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP)
-						.subtract(overallPreliminaryLumpSum.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2,
-								RoundingMode.UP));
-				final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
-				final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
-				response.setNewBuyPrice(newBuyPrice);
-				response.setSellPrice(sellPrice);
-				response.setTransactionCosts(transactionCosts);
-				response.setEtfId(etfId.getId());
-				response.setPieces(pieces);
-				response.setOriginalBuyPrice(originalBuyPrice);
-				response.setProfit(profit);
-				response.setAccumulatedPreliminaryLumpSum(overallPreliminaryLumpSum);
-				response.setChargeable(chargeable);
-				response.setRebuyLosses(rebuyLosses);
-				response.setOverallCosts(overallCosts);
+				overallPreliminaryLumpSum = overallPreliminaryLumpSum.add(etfFlow.getAccumulatedPreliminaryLumpSum());
 			}
+			openPieces = openPieces.subtract(useablePieces);
+			originalBuyPrice = originalBuyPrice
+					.add(useablePieces.multiply(etfFlow.getPrice()).setScale(2, RoundingMode.HALF_UP));
 		}
+		overallPreliminaryLumpSum = overallPreliminaryLumpSum.setScale(2, RoundingMode.HALF_UP);
+		if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
+			final ValidationResult validationResult = new ValidationResult();
+			validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.AMOUNT_TO_HIGH));
+
+			this.throwValidationExceptionIfInvalid(validationResult);
+		} else {
+			final BigDecimal newBuyPrice = askPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
+			final BigDecimal sellPrice = bidPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
+			final BigDecimal transactionCosts = request.getTransactionCosts().multiply(BigDecimal.valueOf(2));
+			final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
+			final BigDecimal chargeable = profit.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP)
+					.subtract(overallPreliminaryLumpSum.multiply(TAX_RELEVANT_PERCENTAGE).setScale(2, RoundingMode.UP));
+			final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
+			final BigDecimal overallCosts = rebuyLosses.add(transactionCosts);
+			response.setNewBuyPrice(newBuyPrice);
+			response.setSellPrice(sellPrice);
+			response.setTransactionCosts(transactionCosts);
+			response.setEtfId(etfId.getId());
+			response.setPieces(pieces);
+			response.setOriginalBuyPrice(originalBuyPrice);
+			response.setProfit(profit);
+			response.setAccumulatedPreliminaryLumpSum(overallPreliminaryLumpSum);
+			response.setChargeable(chargeable);
+			response.setRebuyLosses(rebuyLosses);
+			response.setOverallCosts(overallCosts);
+		}
+
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.etfFlowTransportMapper);
-		super.registerBeanMapper(this.etfEffectiveFlowTransportMapper);
-		super.registerBeanMapper(this.etfTransportMapper);
+	private EtfSummaryTransport getEtfSummaryTransportForEtf(final Etf etf, final EtfValue etfValue,
+			final List<EtfFlowWithTaxInfo> etfFlows) {
+		final EtfSummaryTransport transport = new EtfSummaryTransport();
+		transport.setEtfId(etf.getId().getId());
+		transport.setName(etf.getName());
+		transport.setChartUrl(etf.getChartUrl());
+		if (etfValue != null) {
+			transport.setBuyPrice(etfValue.getBuyPrice());
+			transport.setSellPrice(etfValue.getSellPrice());
+			transport.setPricesTimestamp(
+					etfValue.getChangeDate().atZone(ZoneId.systemDefault()).toOffsetDateTime());
+		}
+		BigDecimal amount = BigDecimal.ZERO;
+		BigDecimal spentValue = BigDecimal.ZERO;
+		for (final EtfFlow flow : etfFlows) {
+			amount = amount.add(flow.getAmount());
+			spentValue = spentValue.add(flow.getAmount().multiply(flow.getPrice()));
+		}
+		transport.setAmount(amount);
+		transport.setSpentValue(spentValue);
+		return transport;
 	}
 }

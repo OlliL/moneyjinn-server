@@ -131,6 +131,15 @@
                  LIMIT 1
         </select>
 
+        <select id="getLatestEtfValue"
+                resultType="org.laladev.moneyjinn.service.dao.data.EtfValueData">
+                SELECT <include refid="etfValuesColumns" />
+                  FROM etfvalues
+                 WHERE isin = #{isin}
+                 ORDER BY date DESC
+                 LIMIT 1
+        </select>
+
         <select id="getEtfFlowById"
                 resultType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
                 SELECT <include refid="etfFlowsColumns" />

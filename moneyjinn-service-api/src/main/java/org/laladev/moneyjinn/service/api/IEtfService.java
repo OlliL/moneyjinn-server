@@ -102,4 +102,6 @@ public interface IEtfService {
 
 	EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
 
+	EtfValue getLatestEtfValue(EtfIsin etfIsin);
+
 }

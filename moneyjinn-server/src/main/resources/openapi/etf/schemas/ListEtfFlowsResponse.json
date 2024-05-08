@@ -13,6 +13,9 @@
 				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
 			}
 		},
+		"etfSummaryTransport": {
+			"$ref": "../../transport/EtfSummaryTransport.json"
+		},
 		"calcEtfSalePieces": {
 			"type": "number"
 		},
