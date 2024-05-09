@@ -212,6 +212,7 @@
 								<openApiNullable>false</openApiNullable>
 								<useTags>true</useTags>
 								<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
 						</configuration>
 					</execution>
