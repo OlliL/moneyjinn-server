@@ -167,7 +167,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				this.contractpartnerAccountDao.getContractpartnerAccounts(contractpartnerId.getId()));
 
 		return super.getListFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
-				new SimpleKey(userId, contractpartnerId), supplier, ContractpartnerAccount.class);
+				new SimpleKey(userId, contractpartnerId), supplier);
 
 	}
 
@@ -180,7 +180,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("ContractpartnerAccount creation failed!", validationResultItem.getError());
 		}
 
@@ -202,7 +202,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("ContractpartnerAccount update failed!", validationResultItem.getError());
 		}
 		final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,

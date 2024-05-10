@@ -573,7 +573,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 
 		final UpdateMoneyflowResponse response = super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 
-		Assertions.assertEquals(response.getMoneyflowSplitEntryTransports().get(0), updateTransport);
+		Assertions.assertEquals(response.getMoneyflowSplitEntryTransports().getFirst(), updateTransport);
 		insertTransport.setId(MoneyflowSplitEntryTransportBuilder.NEXT_ID);
 		Assertions.assertEquals(response.getMoneyflowSplitEntryTransports().get(1), insertTransport);
 		Assertions.assertEquals(response.getMoneyflowTransport(), transport);
@@ -598,8 +598,8 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID,
-				moneyflowSplitEntries.get(0).getId().getId());
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), new BigDecimal("-1.10"));
+				moneyflowSplitEntries.getFirst().getId().getId());
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getAmount(), new BigDecimal("-1.10"));
 	}
 
 	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Create_Mse_for_Moneyflow_2()
@@ -631,9 +631,9 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(2, moneyflowSplitEntriesMoneyflow1.size());
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID,
-				moneyflowSplitEntriesMoneyflow1.get(0).getId().getId());
+				moneyflowSplitEntriesMoneyflow1.getFirst().getId().getId());
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_AMOUNT,
-				moneyflowSplitEntriesMoneyflow1.get(0).getAmount());
+				moneyflowSplitEntriesMoneyflow1.getFirst().getAmount());
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID,
 				moneyflowSplitEntriesMoneyflow1.get(1).getId().getId());
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_AMOUNT,
@@ -647,9 +647,9 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.NEXT_ID,
-				moneyflowSplitEntries.get(0).getId().getId());
-		Assertions.assertEquals(0, moneyflowSplitEntries.get(0).getAmount().compareTo(new BigDecimal(".10")));
-		Assertions.assertEquals("inserted1", moneyflowSplitEntries.get(0).getComment());
+				moneyflowSplitEntries.getFirst().getId().getId());
+		Assertions.assertEquals(0, moneyflowSplitEntries.getFirst().getAmount().compareTo(new BigDecimal(".10")));
+		Assertions.assertEquals("inserted1", moneyflowSplitEntries.getFirst().getComment());
 		Assertions.assertEquals(moneyflowSplitEntries.get(1).getId().getId(),
 				Long.valueOf(Long.sum(MoneyflowSplitEntryTransportBuilder.NEXT_ID.longValue(), 1L)));
 		Assertions.assertEquals(0, moneyflowSplitEntries.get(1).getAmount().compareTo(BigDecimal.TEN));
@@ -717,8 +717,8 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID,
-				moneyflowSplitEntries.get(0).getId().getId());
-		Assertions.assertEquals(new BigDecimal("-0.10"), moneyflowSplitEntries.get(0).getAmount());
+				moneyflowSplitEntries.getFirst().getId().getId());
+		Assertions.assertEquals(new BigDecimal("-0.10"), moneyflowSplitEntries.getFirst().getAmount());
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.NEXT_ID,
 				moneyflowSplitEntries.get(1).getId().getId());
 		Assertions.assertEquals(new BigDecimal("-1.00"), moneyflowSplitEntries.get(1).getAmount());
@@ -744,9 +744,9 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.NEXT_ID,
-				moneyflowSplitEntries.get(0).getId().getId());
-		Assertions.assertEquals(new BigDecimal("10.10"), moneyflowSplitEntries.get(0).getAmount());
-		Assertions.assertEquals("inserted", moneyflowSplitEntries.get(0).getComment());
+				moneyflowSplitEntries.getFirst().getId().getId());
+		Assertions.assertEquals(new BigDecimal("10.10"), moneyflowSplitEntries.getFirst().getAmount());
+		Assertions.assertEquals("inserted", moneyflowSplitEntries.getFirst().getComment());
 	}
 
 	@Test
@@ -770,9 +770,9 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.NEXT_ID,
-				moneyflowSplitEntries.get(0).getId().getId());
-		Assertions.assertEquals(new BigDecimal("10.10"), moneyflowSplitEntries.get(0).getAmount());
-		Assertions.assertEquals("inserted", moneyflowSplitEntries.get(0).getComment());
+				moneyflowSplitEntries.getFirst().getId().getId());
+		Assertions.assertEquals(new BigDecimal("10.10"), moneyflowSplitEntries.getFirst().getAmount());
+		Assertions.assertEquals("inserted", moneyflowSplitEntries.getFirst().getComment());
 	}
 
 	@Test
@@ -810,8 +810,8 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertNotNull(moneyflow);
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), moneyflow.getComment());
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getComment(), moneyflow.getComment());
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getPostingAccount().getId(),
 				moneyflow.getPostingAccount().getId());
 	}
 

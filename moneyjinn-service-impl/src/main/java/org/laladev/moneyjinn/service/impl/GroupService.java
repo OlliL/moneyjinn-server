@@ -100,7 +100,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	public List<Group> getAllGroups() {
 		final Supplier<List<Group>> supplier = () -> super.mapList(this.groupDao.getAllGroups(), Group.class);
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_GROUPS, CacheNames.ALL_GROUPS, supplier, Group.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_GROUPS, CacheNames.ALL_GROUPS, supplier);
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class GroupService extends AbstractService implements IGroupService {
 		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateGroup(group);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Group update failed!", validationResultItem.getError());
 		}
 		final GroupData groupData = super.map(group, GroupData.class);
@@ -129,7 +129,7 @@ public class GroupService extends AbstractService implements IGroupService {
 		group.setId(null);
 		final ValidationResult validationResult = this.validateGroup(group);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Group creation failed!", validationResultItem.getError());
 		}
 		final GroupData groupData = super.map(group, GroupData.class);

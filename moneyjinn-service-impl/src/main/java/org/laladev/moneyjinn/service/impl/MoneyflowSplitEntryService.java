@@ -157,7 +157,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		moneyflowSplitEntries
 				.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("MoneyflowsSplitEntry creation failed!", validationResultItem.getError());
 		}
 		for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
@@ -172,7 +172,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
 		final ValidationResult validationResult = this.validateMoneyflowSplitEntry(moneyflowSplitEntry);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("MoneyflowSplitEntry update failed!", validationResultItem.getError());
 		}
 		final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry,

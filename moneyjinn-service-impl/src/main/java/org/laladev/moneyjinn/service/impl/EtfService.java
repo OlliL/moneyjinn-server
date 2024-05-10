@@ -196,7 +196,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(etf, ETF_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtf(etf);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Etf update failed!", validationResultItem.getError());
 		}
 		final EtfData etfData = super.map(etf, EtfData.class);
@@ -210,7 +210,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		etf.setId(null);
 		final ValidationResult validationResult = this.validateEtf(etf);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Etf creation failed!", validationResultItem.getError());
 		}
 		final EtfData etfData = super.map(etf, EtfData.class);
@@ -303,7 +303,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
 		}
 		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
@@ -316,7 +316,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
 		}
 		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
@@ -355,7 +355,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			}).toList();
 
 			// delete all preliminary lump sums older than the earliest effective flow
-			final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.get(0).getTime());
+			final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getFirst().getTime());
 			etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
 
 			for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
@@ -573,7 +573,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(etfPreliminaryLumpSum, ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
 		}
 		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
@@ -592,7 +592,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(etfPreliminaryLumpSum, ETF_PRELIMINARY_LUMP_SUM_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
 		}
 		final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum.getId());

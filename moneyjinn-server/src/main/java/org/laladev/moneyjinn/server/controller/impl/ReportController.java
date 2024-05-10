@@ -596,7 +596,7 @@ public class ReportController extends AbstractController implements ReportContro
 						if (amountBeginOfYear == null) {
 							final List<Month> allSettledMonth = this.monthlySettlementService.getAllMonth(userId, year);
 							amountBeginOfYear = this.getAssetAmountFromMonthlySettlements(userId, year,
-									allSettledMonth.get(0), yearlyAssetCapitalsourceIds);
+									allSettledMonth.getFirst(), yearlyAssetCapitalsourceIds);
 						}
 					}
 				}

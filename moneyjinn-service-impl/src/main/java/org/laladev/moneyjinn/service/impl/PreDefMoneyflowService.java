@@ -184,8 +184,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		final Supplier<List<PreDefMoneyflow>> supplier = () -> this.mapPreDefMoneyflowDataList(
 				this.preDefMoneyflowDao.getAllPreDefMoneyflows(userId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_PRE_DEF_MONEYFLOWS, userId, supplier,
-				PreDefMoneyflow.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_PRE_DEF_MONEYFLOWS, userId, supplier);
 
 	}
 
@@ -194,7 +193,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		Assert.notNull(preDefMoneyflow, PRE_DEF_MONEYFLOW_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validatePreDefMoneyflow(preDefMoneyflow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PreDefMoneyflow update failed!", validationResultItem.getError());
 		}
 		final PreDefMoneyflowData preDefMoneyflowData = super.map(preDefMoneyflow, PreDefMoneyflowData.class);
@@ -208,7 +207,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 		preDefMoneyflow.setId(null);
 		final ValidationResult validationResult = this.validatePreDefMoneyflow(preDefMoneyflow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PreDefMoneyflow creation failed!", validationResultItem.getError());
 		}
 		final PreDefMoneyflowData preDefMoneyflowData = super.map(preDefMoneyflow, PreDefMoneyflowData.class);

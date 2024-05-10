@@ -94,7 +94,7 @@ class DeleteContractpartnerTest extends AbstractContractpartnerTest {
 		Assertions.assertNotNull(contractpartner);
 		List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 				.getContractpartnerAccounts(userId, contractpartnerId);
-		final ContractpartnerAccount contractpartnerAccount = contractpartnerAccounts.get(0);
+		final ContractpartnerAccount contractpartnerAccount = contractpartnerAccounts.getFirst();
 		contractpartnerAccount.getBankAccount().setAccountNumber("TEST12345");
 		this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
 		contractpartnerAccounts = this.contractpartnerAccountService.getContractpartnerAccounts(userId,

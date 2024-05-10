@@ -283,7 +283,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 		// booking if
 		// nothing is specified
 		if (!moneyflowSplitEntries.isEmpty()) {
-			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.iterator().next();
+			final MoneyflowSplitEntry moneyflowSplitEntry = moneyflowSplitEntries.getFirst();
 			if (moneyflow.getComment() == null || moneyflow.getComment().trim().isEmpty()) {
 				moneyflow.setComment(moneyflowSplitEntry.getComment());
 			}

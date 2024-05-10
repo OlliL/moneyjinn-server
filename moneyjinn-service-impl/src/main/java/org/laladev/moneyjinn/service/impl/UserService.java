@@ -122,7 +122,7 @@ public class UserService extends AbstractService implements IUserService {
 		user.setId(null);
 		final ValidationResult validationResult = this.validateUser(user);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("User creation failed!", validationResultItem.getError());
 		}
 		final String cryptedPassword = this.cryptPassword(user.getPassword());
@@ -137,7 +137,7 @@ public class UserService extends AbstractService implements IUserService {
 		Assert.notNull(user, USER_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateUser(user);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("User update failed!", validationResultItem.getError());
 		}
 		final User oldUser = this.getUserById(user.getId());

@@ -31,7 +31,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
+import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationEvent;
@@ -40,10 +42,18 @@ import org.springframework.context.ApplicationEventPublisher;
 import jakarta.inject.Inject;
 
 public abstract class AbstractService extends AbstractMapperSupport {
-	@Inject
 	private CacheManager cacheManager;
-	@Inject
 	private ApplicationEventPublisher applicationEventPublisher;
+
+	@Inject
+	public void setApplicationEventPublisher(final ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher = applicationEventPublisher;
+	}
+
+	@Inject
+	public void setCacheManager(final CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
 
 	static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
 
@@ -67,6 +77,9 @@ public abstract class AbstractService extends AbstractMapperSupport {
 			final Class<T> clazz) {
 		final Cache cache = this.cacheManager.getCache(cacheName);
 
+		if (cache == null)
+			throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
+
 		final T cacheValue = cache.get(key, clazz);
 		if (cacheValue != null) {
 			return cacheValue;
@@ -78,8 +91,11 @@ public abstract class AbstractService extends AbstractMapperSupport {
 	}
 
 	protected <T> List<T> getListFromCacheOrExecute(final String cacheName, final Object key,
-			final Supplier<List<T>> supplier, final Class<T> clazz) {
+			final Supplier<List<T>> supplier) {
 		final Cache cache = this.cacheManager.getCache(cacheName);
+
+		if (cache == null)
+			throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
 
 		@SuppressWarnings("unchecked")
 		final List<T> cacheValue = cache.get(key, List.class);

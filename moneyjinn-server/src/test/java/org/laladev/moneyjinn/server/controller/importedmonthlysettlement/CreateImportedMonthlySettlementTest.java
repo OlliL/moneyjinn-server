@@ -46,9 +46,9 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertNotNull(importedMonthlySettlements);
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
-				importedMonthlySettlements.get(0).getId().getId());
+				importedMonthlySettlements.getFirst().getId().getId());
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID,
-				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
+				importedMonthlySettlements.getFirst().getCapitalsource().getId().getId());
 	}
 
 	@Test
@@ -64,8 +64,8 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertNotNull(importedMonthlySettlements);
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
-				importedMonthlySettlements.get(0).getId().getId());
-		Assertions.assertEquals(0, BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.get(0).getAmount()));
+				importedMonthlySettlements.getFirst().getId().getId());
+		Assertions.assertEquals(0, BigDecimal.valueOf(9l).compareTo(importedMonthlySettlements.getFirst().getAmount()));
 
 		super.callUsecaseExpect204(request);
 
@@ -74,8 +74,8 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertNotNull(importedMonthlySettlements);
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.IMPORTED_MONTHLYSETTLEMENT1_ID,
-				importedMonthlySettlements.get(0).getId().getId());
-		Assertions.assertEquals(0, BigDecimal.TEN.compareTo(importedMonthlySettlements.get(0).getAmount()));
+				importedMonthlySettlements.getFirst().getId().getId());
+		Assertions.assertEquals(0, BigDecimal.TEN.compareTo(importedMonthlySettlements.getFirst().getAmount()));
 	}
 
 	@Test
@@ -93,9 +93,9 @@ class CreateImportedMonthlySettlementTest extends AbstractImportUserControllerTe
 		Assertions.assertNotNull(importedMonthlySettlements);
 		Assertions.assertEquals(1, importedMonthlySettlements.size());
 		Assertions.assertEquals(ImportedMonthlySettlementTransportBuilder.NEXT_ID,
-				importedMonthlySettlements.get(0).getId().getId());
+				importedMonthlySettlements.getFirst().getId().getId());
 		Assertions.assertEquals(CapitalsourceTransportBuilder.CAPITALSOURCE5_ID,
-				importedMonthlySettlements.get(0).getCapitalsource().getId().getId());
+				importedMonthlySettlements.getFirst().getCapitalsource().getId().getId());
 	}
 
 	@Test

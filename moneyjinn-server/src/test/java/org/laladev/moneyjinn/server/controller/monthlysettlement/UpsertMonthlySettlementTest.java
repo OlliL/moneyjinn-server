@@ -40,7 +40,7 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
 		final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
 		request.setMonthlySettlementTransports(transports);
 		final List<ValidationItemTransport> validationItems = new ArrayList<>();
-		validationItems.add(new ValidationItemTransportBuilder().withKey(transports.get(0).getId().toString())
+		validationItems.add(new ValidationItemTransportBuilder().withKey(transports.getFirst().getId().toString())
 				.withError(errorCode.getErrorCode()).build());
 		final ValidationResponse expected = new ValidationResponse();
 		expected.setValidationItemTransports(validationItems);
@@ -62,9 +62,9 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
 						Month.of(monthlySettlementTransport.getMonth().intValue()));
 		Assertions.assertNotNull(monthlySettlements);
 		Assertions.assertEquals(1, monthlySettlements.size());
-		Assertions.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.iterator().next().getYear());
+		Assertions.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.getFirst().getYear());
 		Assertions.assertEquals(monthlySettlementTransport.getMonth().intValue(),
-				monthlySettlements.iterator().next().getMonth().getValue());
+				monthlySettlements.getFirst().getMonth().getValue());
 	}
 
 	@Test
@@ -112,12 +112,12 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
 		request.setMonthlySettlementTransports(monthlySettlementTransports);
 		super.callUsecaseExpect204(request);
 		final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.get(0).getYear(),
-						Month.of(monthlySettlementTransports.get(0).getMonth().intValue()));
+				.getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.getFirst().getYear(),
+						Month.of(monthlySettlementTransports.getFirst().getMonth().intValue()));
 		Assertions.assertNotNull(monthlySettlements);
 		Assertions.assertEquals(3, monthlySettlements.size());
 		Assertions.assertEquals(0,
-				monthlySettlementTransport1.getAmount().compareTo(monthlySettlements.get(0).getAmount()));
+				monthlySettlementTransport1.getAmount().compareTo(monthlySettlements.getFirst().getAmount()));
 		Assertions.assertEquals(0,
 				monthlySettlementTransport2.getAmount().compareTo(monthlySettlements.get(1).getAmount()));
 		Assertions.assertEquals(0, new MonthlySettlementTransportBuilder().forMonthlySettlement3().build().getAmount()

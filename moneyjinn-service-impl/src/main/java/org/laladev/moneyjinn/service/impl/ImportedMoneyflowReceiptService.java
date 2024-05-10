@@ -117,7 +117,7 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 		importedMoneyflowReceipt.setId(null);
 		final ValidationResult validationResult = this.validateImportedMoneyflowReceipt(importedMoneyflowReceipt);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Imported Moneyflow Receipt creation failed!", validationResultItem.getError());
 		}
 		final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = super.map(importedMoneyflowReceipt,

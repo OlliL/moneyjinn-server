@@ -76,7 +76,7 @@ class CreateImportedMoneyflowReceiptsTest extends AbstractWebUserControllerTest 
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
 		Assertions.assertEquals(ErrorCode.UNSUPPORTED_MEDIA_TYPE.getErrorCode(),
-				actual.getValidationItemTransports().get(0).getError());
+				actual.getValidationItemTransports().getFirst().getError());
 	}
 
 	@Test

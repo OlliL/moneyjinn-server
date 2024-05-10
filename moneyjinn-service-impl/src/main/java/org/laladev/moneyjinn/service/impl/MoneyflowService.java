@@ -237,7 +237,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	public MoneyflowID createMoneyflow(final Moneyflow moneyflow) {
 		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
 		}
 		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
@@ -251,7 +251,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		Assert.notNull(moneyflow, "moneyflow must not be null!");
 		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
 		}
 		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
@@ -290,7 +290,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 		final Supplier<List<Integer>> supplier = () -> this.moneyflowDao.getAllYears(userId.getId());
 
-		return super.getListFromCacheOrExecute(CacheNames.MONEYFLOW_YEARS, userId, supplier, Integer.class);
+		return super.getListFromCacheOrExecute(CacheNames.MONEYFLOW_YEARS, userId, supplier);
 
 	}
 
@@ -307,7 +307,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		};
 
 		return super.getListFromCacheOrExecute(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, userId.getId()),
-				year, supplier, Month.class);
+				year, supplier);
 
 	}
 

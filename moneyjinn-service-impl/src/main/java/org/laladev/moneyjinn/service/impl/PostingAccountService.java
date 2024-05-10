@@ -106,8 +106,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		final Supplier<List<PostingAccount>> supplier = () -> super.mapList(
 				this.postingAccountDao.getAllPostingAccounts(), PostingAccount.class);
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_POSTINGACCOUNTS, CacheNames.ALL_POSTINGACCOUNTS, supplier,
-				PostingAccount.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_POSTINGACCOUNTS, CacheNames.ALL_POSTINGACCOUNTS,
+				supplier);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PostingAccount update failed!", validationResultItem.getError());
 		}
 		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
@@ -139,7 +139,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 		postingAccount.setId(null);
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PostingAccount creation failed!", validationResultItem.getError());
 		}
 		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);

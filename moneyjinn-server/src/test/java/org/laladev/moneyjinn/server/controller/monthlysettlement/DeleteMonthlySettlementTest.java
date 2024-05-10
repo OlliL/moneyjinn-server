@@ -38,7 +38,7 @@ class DeleteMonthlySettlementTest extends AbstractWebUserControllerTest {
 		Assertions.assertNotNull(monthlySettlements);
 		Assertions.assertEquals(1, monthlySettlements.size());
 		Assertions.assertEquals(MonthlySettlementTransportBuilder.MONTHLYSETTLEMENT3_ID,
-				monthlySettlements.iterator().next().getId().getId());
+				monthlySettlements.getFirst().getId().getId());
 	}
 
 	@Test

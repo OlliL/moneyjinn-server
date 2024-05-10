@@ -461,9 +461,9 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSpliEntryService
 				.getMoneyflowSplitEntries(userId, moneyflowId);
 		Assertions.assertEquals(2, moneyflowSplitEntries.size());
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getAmount(), mseTransport1.getAmount());
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getComment(), mseTransport1.getComment());
-		Assertions.assertEquals(moneyflowSplitEntries.get(0).getPostingAccount().getId().getId(),
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getAmount(), mseTransport1.getAmount());
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getComment(), mseTransport1.getComment());
+		Assertions.assertEquals(moneyflowSplitEntries.getFirst().getPostingAccount().getId().getId(),
 				mseTransport1.getPostingaccountid());
 		Assertions.assertEquals(moneyflowSplitEntries.get(1).getAmount(), mseTransport2.getAmount());
 		Assertions.assertEquals(moneyflowSplitEntries.get(1).getComment(), mseTransport2.getComment());

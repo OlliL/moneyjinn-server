@@ -189,7 +189,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		final Supplier<List<Capitalsource>> supplier = () -> this
 				.mapCapitalsourceDataList(this.capitalsourceDao.getAllCapitalsources(userId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_CAPITALSOURCES, userId, supplier, Capitalsource.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_CAPITALSOURCES, userId, supplier);
 	}
 
 	@Override
@@ -218,7 +218,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Capitalsource update failed!", validationResultItem.getError());
 		}
 		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
@@ -235,7 +235,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 		capitalsource.setId(null);
 		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Capitalsource creation failed!", validationResultItem.getError());
 		}
 		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
@@ -295,7 +295,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 		return super.getListFromCacheOrExecute(
 				super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId()),
-				new SimpleKey(validFrom, validTil), supplier, Capitalsource.class);
+				new SimpleKey(validFrom, validTil), supplier);
 	}
 
 	@Override

@@ -184,7 +184,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		final Supplier<List<Contractpartner>> supplier = () -> this.mapContractpartnerDataList(
 				this.contractpartnerDao.getAllContractpartners(userId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_CONTRACTPARTNER, userId, supplier, Contractpartner.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_CONTRACTPARTNER, userId, supplier);
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Contractpartner update failed!", validationResultItem.getError());
 		}
 		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
@@ -218,7 +218,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 		contractpartner.setId(null);
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().get(0);
+			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Contractpartner creation failed!", validationResultItem.getError());
 		}
 		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);

@@ -233,9 +233,9 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
 		contractpartnerAccountsAfterInsert.removeAll(contractpartnerAccountsBeforeInsert);
 		Assertions.assertEquals(1, contractpartnerAccountsAfterInsert.size());
 		Assertions.assertEquals(transport.getAccountNumber(),
-				contractpartnerAccountsAfterInsert.get(0).getBankAccount().getAccountNumber());
+				contractpartnerAccountsAfterInsert.getFirst().getBankAccount().getAccountNumber());
 		Assertions.assertEquals(transport.getBankCode(),
-				contractpartnerAccountsAfterInsert.get(0).getBankAccount().getBankCode());
+				contractpartnerAccountsAfterInsert.getFirst().getBankAccount().getBankCode());
 	}
 
 	@Test

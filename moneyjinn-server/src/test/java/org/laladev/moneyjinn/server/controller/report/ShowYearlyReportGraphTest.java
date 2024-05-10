@@ -86,7 +86,7 @@ class ShowYearlyReportGraphTest extends AbstractWebUserControllerTest {
 		Assertions.assertNotNull(setting.get().getSetting());
 		Assertions.assertEquals(1, setting.get().getSetting().size());
 		Assertions.assertEquals(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID,
-				setting.get().getSetting().get(0).getId());
+				setting.get().getSetting().getFirst().getId());
 	}
 
 	@Test

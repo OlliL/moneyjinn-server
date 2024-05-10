@@ -78,7 +78,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
 		Assertions.assertFalse(actual.getResult());
 		Assertions.assertEquals(ErrorCode.AMOUNT_TO_HIGH.getErrorCode(),
-				actual.getValidationItemTransports().get(0).getError());
+				actual.getValidationItemTransports().getFirst().getError());
 
 	}
 

@@ -120,8 +120,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		final Supplier<List<AccessRelation>> supplier = () -> super.mapList(
 				this.accessRelationDao.getAllAccessRelationsById(userId.getId()), AccessRelation.class);
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier,
-				AccessRelation.class);
+		return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier);
 	}
 
 	@Override
@@ -194,51 +193,56 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		if (!currentAccessRelations.isEmpty()) {
 			// existing user
 			addAccessRelation = false;
-		// @formatter:off
-      // @non-java-start
-      //============================================================================================
-      // Time Frame changes which have to be supported
-      //============================================================================================
-      //   current:   | 1                           |
-      //   change:                | 2               |
-      //   new:       | 1        || 2               | (a) end 1, add 2 after 1
-      //============================================================================================
-      //   current:   | 1        || 2               |
-      //   change:                             | 1  |
-      //   new:       | 1        || 2         || 1  | (b) end 2, add another 1 after 2
-      //============================================================================================
-      //   current:   | 1        || 2         || 1  |
-      //   change:                       | 2        |
-      //   new:       | 1        || 2         || 1  | (c) ignore 2 as it is within another 2 entry
-      //============================================================================================
-      //   current:   | 1        || 2         || 1  |
-      //   change:                             | 2  |
-      //   new:       | 1        || 2               | (d) remove the second 1 and prolong 2
-      //============================================================================================
-      //   current:   | 1        || 2         || 1  |
-      //   change:                | 2               |
-      //   new:       | 1        || 2         || 1  | (e) ignore 2 as it starts at the same than
-      //                                            |     existing 2
-      //============================================================================================
-      //   current:   | 1        || 2         || 1  |
-      //   change:                       | 1        |
-      //   new:       | 1        || 2   || 1        | (f) shorten 2, add another 1 after the
-      //                                            |     shortened 2
-      //============================================================================================
-      //   current:   | 1        || 2   || 1        |
-      //   change:           | 2                    |
-      //   new:       | 1   || 2        || 1        | (g) shorten the first 1 and move the beginning
-      //                                            |     of 2 backward
-      //============================================================================================
-      //   current:   | 1   || 2        || 1        |
-      //   change:           | 1                    |
-      //   new:       | 1                           | (h) remove 2 and the second 1
-      //============================================================================================
-      //   current:   | 1        || 2         || 1  |
-      //   change:                | 3               |
-      //   new:       | 1        || 3         || 1  | (i) replace 2 by 3
-      // @non-java-end
-      // @formatter:on
+
+			// @formatter:off
+			// @non-java-start
+      /**
+       *============================================================================================
+       * Time Frame changes which have to be supported
+       *============================================================================================
+       *   current:   | 1                           |
+       *   change:                | 2               |
+       *   result:    | 1        || 2               | (a) end 1, add 2 after 1
+       *============================================================================================
+       *   current:   | 1        || 2               |
+       *   change:                             | 1  |
+       *   result:    | 1        || 2         || 1  | (b) end 2, add another 1 after 2
+       *============================================================================================
+       *   current:   | 1        || 2         || 1  |
+       *   change:                       | 2        |
+       *   result:    | 1        || 2         || 1  | (c) ignore 2 as it is within another 2 entry
+       *============================================================================================
+       *   current:   | 1        || 2         || 1  |
+       *   change:                             | 2  |
+       *   result:    | 1        || 2               | (d) remove the second 1 and prolong 2
+       *============================================================================================
+       *   current:   | 1        || 2         || 1  |
+       *   change:                | 2               |
+       *   result:    | 1        || 2         || 1  | (e) ignore 2 as it starts at the same than
+       *                                            |     existing 2
+       *============================================================================================
+       *   current:   | 1        || 2         || 1  |
+       *   change:                       | 1        |
+       *   result:    | 1        || 2   || 1        | (f) shorten 2, add another 1 after the
+       *                                            |     shortened 2
+       *============================================================================================
+       *   current:   | 1        || 2   || 1        |
+       *   change:           | 2                    |
+       *   result:    | 1   || 2        || 1        | (g) shorten the first 1 and move the beginning
+       *                                            |     of 2 backward
+       *============================================================================================
+       *   current:   | 1   || 2        || 1        |
+       *   change:           | 1                    |
+       *   result:    | 1                           | (h) remove 2 and the second 1
+       *============================================================================================
+       *   current:   | 1        || 2         || 1  |
+       *   change:                | 3               |
+       *   result:    | 1        || 3         || 1  | (i) replace 2 by 3
+       * 
+       */
+			// @non-java-end
+			// @formatter:on
+
 			for (final AccessRelation currentAccessRelation : currentAccessRelations) {
 				final LocalDate nextValidFrom = insertAccessRelation.getValidTil().plusDays(1);
 				previousValidTil = insertAccessRelation.getValidFrom().minusDays(1);
@@ -284,13 +288,12 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 						addAccessRelation = true;
 					}
 					// (c) nothing to do
-				} else if (currentAccessRelation.getValidFrom().isEqual(nextValidFrom)) {
-					// (f, i) if the next item after the new access relation has the same refId,
-					// delete it and prolong our new item
-					if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
-						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
-						deleteAccessRelationItems.add(currentAccessRelation);
-					}
+				} else if (currentAccessRelation.getValidFrom().isEqual(nextValidFrom) &&
+				// (f, i) if the next item after the new access relation has the same refId,
+				// delete it and prolong our new item
+						currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
+					insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
+					deleteAccessRelationItems.add(currentAccessRelation);
 				}
 				previousCurrentAccessRelation = currentAccessRelation;
 			}

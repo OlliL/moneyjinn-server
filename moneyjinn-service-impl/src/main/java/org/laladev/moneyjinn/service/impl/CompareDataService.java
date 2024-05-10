@@ -187,7 +187,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 					Moneyflow matchingMoneyflow = null;
 					if (moneyflows.size() == 1) {
 						// one match found
-						matchingMoneyflow = moneyflows.get(0);
+						matchingMoneyflow = moneyflows.getFirst();
 					} else {
 						// more than one match found - try to find the best one by rating all
 						int currentRating = -1;
@@ -241,7 +241,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 					.getAllContractpartnerByAccounts(userId,
 							Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
-			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty() && contractpartnerAccounts.get(0)
+			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty() && contractpartnerAccounts.getFirst()
 					.getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
 				rating += 50;
 			}
