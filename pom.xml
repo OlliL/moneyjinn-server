@@ -35,7 +35,7 @@
 		<apache.tika.version>3.0.0-BETA</apache.tika.version>
 		<jjwt.version>0.12.5</jjwt.version>
 		<lombok.version>1.18.32</lombok.version>
-		<mapstruct.version>1.6.0.Beta1</mapstruct.version>
+		<mapstruct.version>1.6.0.Beta2</mapstruct.version>
 		<opencsv.version>5.9</opencsv.version>
 		<swagger.version>2.2.21</swagger.version>
 		<openapi-generator.version>7.5.0</openapi-generator.version>
@@ -54,7 +54,7 @@
 
 		<!-- Test Scope -->
 		<junit.version>5.11.0-M1</junit.version>
-		<mockito.version>5.11.0</mockito.version>
+		<mockito.version>5.12.0</mockito.version>
 		<juniversalchardet.version>2.4.0</juniversalchardet.version>
 
 		<java.version>21</java.version>
