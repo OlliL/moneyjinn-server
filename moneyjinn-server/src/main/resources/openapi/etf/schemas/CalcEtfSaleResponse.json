@@ -8,7 +8,10 @@
 		"profit",
 		"accumulatedPreliminaryLumpSum",
 		"chargeable",
-		"transactionCosts",
+		"transactionCostsAbsoluteSell",
+		"transactionCostsRelativeSell",
+		"transactionCostsAbsoluteBuy",
+		"transactionCostsRelativeBuy",
 		"rebuyLosses",
 		"overallCosts",
 		"pieces"
