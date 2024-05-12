@@ -14,7 +14,8 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.server.builder.EtfEffectiveFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfFlowTransportBuilder;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
@@ -37,7 +38,8 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("800.000");
 	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("879.500");
 	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
-	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
+	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE = new BigDecimal("0.99");
+	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_RELATIVE = new BigDecimal("0.25");
 
 	@Override
 	protected void loadMethod() {
@@ -55,8 +57,10 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 				new ClientCalcEtfSaleBidPrice(SETTING_SALE_BID_PRICE));
 		this.settingService.setClientCalcEtfSalePieces(this.getUserId(),
 				new ClientCalcEtfSalePieces(SETTING_SALE_PIECES));
-		this.settingService.setClientCalcEtfSaleTransactionCosts(this.getUserId(),
-				new ClientCalcEtfSaleTransactionCosts(SETTING_SALE_TRANSACTION_COSTS));
+		this.settingService.setClientCalcEtfSaleTransactionCostsAbsolute(this.getUserId(),
+				new ClientCalcEtfSaleTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE));
+		this.settingService.setClientCalcEtfSaleTransactionCostsRelative(this.getUserId(),
+				new ClientCalcEtfSaleTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE));
 	}
 
 	private ListEtfFlowsResponse getResponseForEtf1() {
@@ -122,7 +126,8 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 		expected.setCalcEtfAskPrice(SETTING_SALE_ASK_PRICE);
 		expected.setCalcEtfBidPrice(SETTING_SALE_BID_PRICE);
 		expected.setCalcEtfSalePieces(SETTING_SALE_PIECES);
-		expected.setCalcEtfTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		expected.setCalcEtfTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		expected.setCalcEtfTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class,
 				EtfTransportBuilder.ETF_ID_1);

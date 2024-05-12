@@ -36,7 +36,16 @@
 		"chargeable": {
 			"type": "number"
 		},
-		"transactionCosts": {
+		"transactionCostsAbsoluteSell": {
+			"type": "number"
+		},
+		"transactionCostsRelativeSell": {
+			"type": "number"
+		},
+		"transactionCostsAbsoluteBuy": {
+			"type": "number"
+		},
+		"transactionCostsRelativeBuy": {
 			"type": "number"
 		},
 		"rebuyLosses": {

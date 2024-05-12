@@ -14,7 +14,10 @@
 		"askPrice": {
 			"type": "number"
 		},
-		"transactionCosts": {
+		"transactionCostsAbsolute": {
+			"type": "number"
+		},
+		"transactionCostsRelative": {
 			"type": "number"
 		}
 	}

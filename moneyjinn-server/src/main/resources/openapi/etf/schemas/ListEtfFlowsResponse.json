@@ -25,7 +25,10 @@
 		"calcEtfAskPrice": {
 			"type": "number"
 		},
-		"calcEtfTransactionCosts": {
+		"calcEtfTransactionCostsAbsolute": {
+			"type": "number"
+		},
+		"calcEtfTransactionCostsRelative": {
 			"type": "number"
 		}
 	}

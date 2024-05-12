@@ -35,7 +35,8 @@ import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -217,13 +218,26 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCalcEtfSaleTransactionCosts(final UserID userId,
-			final ClientCalcEtfSaleTransactionCosts setting) {
+	public void setClientCalcEtfSaleTransactionCostsAbsolute(final UserID userId,
+			final ClientCalcEtfSaleTransactionCostsAbsolute setting) {
 		this.setSetting(userId, setting);
 	}
 
 	@Override
-	public Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleTransactionCosts.class);
+	public Optional<ClientCalcEtfSaleTransactionCostsAbsolute> getClientCalcEtfSaleTransactionCostsAbsolute(
+			final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleTransactionCostsAbsolute.class);
+	}
+
+	@Override
+	public void setClientCalcEtfSaleTransactionCostsRelative(final UserID userId,
+			final ClientCalcEtfSaleTransactionCostsRelative setting) {
+		this.setSetting(userId, setting);
+	}
+
+	@Override
+	public Optional<ClientCalcEtfSaleTransactionCostsRelative> getClientCalcEtfSaleTransactionCostsRelative(
+			final UserID userId) {
+		return this.getSetting(userId, ClientCalcEtfSaleTransactionCostsRelative.class);
 	}
 }

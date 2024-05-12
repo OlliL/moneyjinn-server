@@ -21,7 +21,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("899.500");
 	private final static Long SETTING_ETF_ID = EtfTransportBuilder.ETF_ID_1;
 	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
-	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS = new BigDecimal("0.99");
+	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE = new BigDecimal("0.99");
+	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_RELATIVE = new BigDecimal("0.25");
 
 	@Override
 	protected void loadMethod() {
@@ -36,7 +37,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -55,7 +57,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -72,7 +74,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal(100000));
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
@@ -90,7 +93,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE.negate());
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES.negate());
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -113,9 +117,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		expected.setNewBuyPrice(newBuyPrice);
 		expected.setProfit(new BigDecimal("974.52"));
 		expected.setChargeable(new BigDecimal("668.23"));
-		expected.setTransactionCosts(new BigDecimal("1.98"));
+		expected.setTransactionCostsAbsoluteSell(new BigDecimal("0.99"));
+		expected.setTransactionCostsRelativeSell(new BigDecimal("22.49"));
+		expected.setTransactionCostsAbsoluteBuy(new BigDecimal("0.99"));
+		expected.setTransactionCostsRelativeBuy(new BigDecimal("22.50"));
 		expected.setRebuyLosses(new BigDecimal("5.00"));
-		expected.setOverallCosts(new BigDecimal("6.98"));
+		expected.setOverallCosts(new BigDecimal("51.97"));
 		expected.setPieces(pieces);
 		expected.accumulatedPreliminaryLumpSum(new BigDecimal("19.91"));
 		return expected;
@@ -129,7 +136,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("2"));
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final BigDecimal expectedSum = new BigDecimal("6.19");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -146,7 +154,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("160"));
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		// 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
 		// 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
@@ -167,7 +176,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(new BigDecimal("180"));
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final BigDecimal expectedSum = new BigDecimal("291.06");
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -183,7 +193,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(EtfTransportBuilder.NON_EXISTING_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -199,7 +209,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -214,7 +224,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -229,7 +239,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -244,7 +254,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -275,7 +285,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(EtfTransportBuilder.NON_EXISTING_ID);
 		request.setPieces(BigDecimal.ZERO);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
@@ -293,7 +303,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setBidPrice(SETTING_SALE_BID_PRICE);
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
-		request.setTransactionCosts(SETTING_SALE_TRANSACTION_COSTS);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
 		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);

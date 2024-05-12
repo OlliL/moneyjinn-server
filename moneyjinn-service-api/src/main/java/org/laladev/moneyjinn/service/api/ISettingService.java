@@ -33,7 +33,8 @@ import org.laladev.moneyjinn.model.setting.AbstractSetting;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCosts;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
+import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -186,7 +187,11 @@ public interface ISettingService {
 
 	Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(UserID userId);
 
-	void setClientCalcEtfSaleTransactionCosts(UserID userId, ClientCalcEtfSaleTransactionCosts setting);
+	void setClientCalcEtfSaleTransactionCostsAbsolute(UserID userId, ClientCalcEtfSaleTransactionCostsAbsolute setting);
 
-	Optional<ClientCalcEtfSaleTransactionCosts> getClientCalcEtfSaleTransactionCosts(UserID userId);
+	Optional<ClientCalcEtfSaleTransactionCostsAbsolute> getClientCalcEtfSaleTransactionCostsAbsolute(UserID userId);
+
+	void setClientCalcEtfSaleTransactionCostsRelative(UserID userId, ClientCalcEtfSaleTransactionCostsRelative setting);
+
+	Optional<ClientCalcEtfSaleTransactionCostsRelative> getClientCalcEtfSaleTransactionCostsRelative(UserID userId);
 }
