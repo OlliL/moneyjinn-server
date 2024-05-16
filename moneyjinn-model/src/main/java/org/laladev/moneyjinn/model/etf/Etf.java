@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.model.etf;
 
+import java.math.BigDecimal;
+
 import org.laladev.moneyjinn.model.AbstractEntity;
 import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.IHasUser;
@@ -48,5 +50,9 @@ public class Etf extends AbstractEntity<EtfID> implements IHasUser, IHasGroup {
 	private String wkn;
 	private String ticker;
 	private String chartUrl;
+	private BigDecimal transactionCostsAbsolute;
+	private BigDecimal transactionCostsRelative;
+	private BigDecimal transactionCostsMaximum;
+	private BigDecimal partialTaxExemption;
 
 }

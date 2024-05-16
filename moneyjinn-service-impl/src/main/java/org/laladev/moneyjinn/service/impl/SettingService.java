@@ -32,11 +32,7 @@ import java.util.logging.Level;
 
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -188,26 +184,6 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
-	public void setClientCalcEtfSaleAskPrice(final UserID userId, final ClientCalcEtfSaleAskPrice setting) {
-		this.setSetting(userId, setting);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleAskPrice.class);
-	}
-
-	@Override
-	public void setClientCalcEtfSaleBidPrice(final UserID userId, final ClientCalcEtfSaleBidPrice setting) {
-		this.setSetting(userId, setting);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleBidPrice.class);
-	}
-
-	@Override
 	public void setClientCalcEtfSalePieces(final UserID userId, final ClientCalcEtfSalePieces setting) {
 		this.setSetting(userId, setting);
 	}
@@ -215,29 +191,5 @@ public class SettingService extends AbstractService implements ISettingService {
 	@Override
 	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final UserID userId) {
 		return this.getSetting(userId, ClientCalcEtfSalePieces.class);
-	}
-
-	@Override
-	public void setClientCalcEtfSaleTransactionCostsAbsolute(final UserID userId,
-			final ClientCalcEtfSaleTransactionCostsAbsolute setting) {
-		this.setSetting(userId, setting);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleTransactionCostsAbsolute> getClientCalcEtfSaleTransactionCostsAbsolute(
-			final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleTransactionCostsAbsolute.class);
-	}
-
-	@Override
-	public void setClientCalcEtfSaleTransactionCostsRelative(final UserID userId,
-			final ClientCalcEtfSaleTransactionCostsRelative setting) {
-		this.setSetting(userId, setting);
-	}
-
-	@Override
-	public Optional<ClientCalcEtfSaleTransactionCostsRelative> getClientCalcEtfSaleTransactionCostsRelative(
-			final UserID userId) {
-		return this.getSetting(userId, ClientCalcEtfSaleTransactionCostsRelative.class);
 	}
 }

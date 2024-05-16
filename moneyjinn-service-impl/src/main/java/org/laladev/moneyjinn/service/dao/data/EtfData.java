@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import java.math.BigDecimal;
+
 import lombok.Data;
 
 @Data
@@ -38,4 +40,8 @@ public class EtfData {
 	private String wkn;
 	private String ticker;
 	private String chartUrl;
+	private BigDecimal transCostAbs;
+	private BigDecimal transCostRel;
+	private BigDecimal transCostMax;
+	private BigDecimal partTaxExempt;
 }

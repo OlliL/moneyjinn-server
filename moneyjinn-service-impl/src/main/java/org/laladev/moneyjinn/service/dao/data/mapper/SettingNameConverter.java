@@ -28,11 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -53,14 +49,8 @@ public class SettingNameConverter {
 		tempMap.put(ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format");
 		tempMap.put(ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
 				"client_compare_data_selected_source_is_file");
-		tempMap.put(ClientCalcEtfSaleAskPrice.class.getSimpleName(), "client_calc_etf_sale_ask_price");
-		tempMap.put(ClientCalcEtfSaleBidPrice.class.getSimpleName(), "client_calc_etf_sale_bid_price");
 		tempMap.put(ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid");
 		tempMap.put(ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
-		tempMap.put(ClientCalcEtfSaleTransactionCostsAbsolute.class.getSimpleName(),
-				"client_calc_etf_sale_transaction_costs_absolute");
-		tempMap.put(ClientCalcEtfSaleTransactionCostsRelative.class.getSimpleName(),
-				"client_calc_etf_sale_transaction_costs_relative");
 
 		lookupMap = Collections.unmodifiableMap(tempMap);
 	}

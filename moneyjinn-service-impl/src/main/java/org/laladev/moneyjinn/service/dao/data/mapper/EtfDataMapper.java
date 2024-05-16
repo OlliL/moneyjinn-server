@@ -44,11 +44,19 @@ public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
 	@Mapping(target = "id", source = "etfid")
 	@Mapping(target = "user.id", source = "mauUserId")
 	@Mapping(target = "group.id", source = "magGroupId")
+	@Mapping(target = "transactionCostsAbsolute", source = "transCostAbs")
+	@Mapping(target = "transactionCostsRelative", source = "transCostRel")
+	@Mapping(target = "transactionCostsMaximum", source = "transCostMax")
+	@Mapping(target = "partialTaxExemption", source = "partTaxExempt")
 	Etf mapBToA(EtfData b);
 
 	@Override
 	@Mapping(target = "etfid", source = "id")
 	@Mapping(target = "mauUserId", source = "user.id")
 	@Mapping(target = "magGroupId", source = "group.id")
+	@Mapping(target = "transCostAbs", source = "transactionCostsAbsolute")
+	@Mapping(target = "transCostRel", source = "transactionCostsRelative")
+	@Mapping(target = "transCostMax", source = "transactionCostsMaximum")
+	@Mapping(target = "partTaxExempt", source = "partialTaxExemption")
 	EtfData mapAToB(Etf a);
 }

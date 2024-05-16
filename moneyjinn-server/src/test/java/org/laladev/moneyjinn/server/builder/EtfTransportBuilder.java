@@ -1,6 +1,8 @@
 
 package org.laladev.moneyjinn.server.builder;
 
+import java.math.BigDecimal;
+
 import org.laladev.moneyjinn.server.model.EtfTransport;
 
 public class EtfTransportBuilder extends EtfTransport {
@@ -26,6 +28,10 @@ public class EtfTransportBuilder extends EtfTransport {
 		super.setTicker("TKR0");
 		super.setChartUrl("https://www.lipsum.com/");
 		super.setIsFavorite(1);
+		super.setTransactionCostsAbsolute(new BigDecimal("0.99"));
+		super.setTransactionCostsRelative(new BigDecimal("0.25"));
+		super.setTransactionCostsMaximum(new BigDecimal("69.90"));
+		super.setPartialTaxExemption(new BigDecimal("30.00"));
 		return this;
 	}
 
@@ -82,6 +88,10 @@ public class EtfTransportBuilder extends EtfTransport {
 		transport.setWkn(super.getWkn());
 		transport.setTicker(super.getTicker());
 		transport.setChartUrl(super.getChartUrl());
+		transport.setTransactionCostsAbsolute(this.getTransactionCostsAbsolute());
+		transport.setTransactionCostsRelative(this.getTransactionCostsRelative());
+		transport.setTransactionCostsMaximum(this.getTransactionCostsMaximum());
+		transport.setPartialTaxExemption(this.getPartialTaxExemption());
 		transport.setIsFavorite(super.getIsFavorite());
 		return transport;
 	}

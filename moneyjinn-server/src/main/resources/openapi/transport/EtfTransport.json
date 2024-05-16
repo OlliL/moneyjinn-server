@@ -36,6 +36,18 @@
 		"isFavorite": {
 			"type": "integer",
 			"format": "int32"
-		}
+		},
+		"transactionCostsAbsolute": {
+			"type": "number"
+		},
+		"transactionCostsRelative": {
+			"type": "number"
+		},
+		"transactionCostsMaximum": {
+			"type": "number"
+		},
+		"partialTaxExemption": {
+			"type": "number"
+		}		
 	}
 }

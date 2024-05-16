@@ -30,11 +30,7 @@ import java.util.Optional;
 
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.AbstractSetting;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleAskPrice;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleBidPrice;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsAbsolute;
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSaleTransactionCostsRelative;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
@@ -175,23 +171,8 @@ public interface ISettingService {
 
 	Optional<ClientListEtfDepotDefaultEtfId> getClientListEtfDepotDefaultEtfId(UserID userId);
 
-	void setClientCalcEtfSaleAskPrice(UserID userId, ClientCalcEtfSaleAskPrice setting);
-
-	Optional<ClientCalcEtfSaleAskPrice> getClientCalcEtfSaleAskPrice(UserID userId);
-
-	void setClientCalcEtfSaleBidPrice(UserID userId, ClientCalcEtfSaleBidPrice setting);
-
-	Optional<ClientCalcEtfSaleBidPrice> getClientCalcEtfSaleBidPrice(UserID userId);
-
 	void setClientCalcEtfSalePieces(UserID userId, ClientCalcEtfSalePieces setting);
 
 	Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(UserID userId);
 
-	void setClientCalcEtfSaleTransactionCostsAbsolute(UserID userId, ClientCalcEtfSaleTransactionCostsAbsolute setting);
-
-	Optional<ClientCalcEtfSaleTransactionCostsAbsolute> getClientCalcEtfSaleTransactionCostsAbsolute(UserID userId);
-
-	void setClientCalcEtfSaleTransactionCostsRelative(UserID userId, ClientCalcEtfSaleTransactionCostsRelative setting);
-
-	Optional<ClientCalcEtfSaleTransactionCostsRelative> getClientCalcEtfSaleTransactionCostsRelative(UserID userId);
 }

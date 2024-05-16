@@ -161,6 +161,10 @@ CREATE OR REPLACE VIEW vw_etf (
   ,wkn
   ,ticker
   ,chart_url
+  ,trans_cost_abs
+  ,trans_cost_rel
+  ,trans_cost_max
+  ,part_tax_exempt
   ,maf_validfrom
   ,maf_validtil
   ) AS
@@ -173,6 +177,10 @@ CREATE OR REPLACE VIEW vw_etf (
             ,met.wkn
             ,met.ticker
             ,met.chart_url
+            ,met.trans_cost_abs
+            ,met.trans_cost_rel
+            ,met.trans_cost_max
+            ,met.part_tax_exempt
             ,mar.validfrom maf_validfrom
             ,mar.validtil  maf_validtil
         FROM etf             met

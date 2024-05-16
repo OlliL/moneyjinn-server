@@ -19,6 +19,9 @@
 		},
 		"transactionCostsRelative": {
 			"type": "number"
+		},
+		"transactionCostsMaximum": {
+			"type": "number"
 		}
 	}
 }

@@ -48,6 +48,26 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
+	void test_highOrderValue_maxTransactionCost() throws Exception {
+
+		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
+		request.setAskPrice(new BigDecimal("10000000"));
+		request.setBidPrice(new BigDecimal("10000000"));
+		request.setEtfId(SETTING_ETF_ID);
+		request.setPieces(SETTING_SALE_PIECES);
+		request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
+		request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
+		request.setTransactionCostsMaximum(new BigDecimal("10.00"));
+
+		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+
+		final BigDecimal maxRelative = new BigDecimal("9.01");
+		Assertions.assertEquals(maxRelative, actual.getTransactionCostsRelativeBuy());
+		Assertions.assertEquals(maxRelative, actual.getTransactionCostsRelativeSell());
+
+	}
+
+	@Test
 	void test_etfOwnedByDifferentGroup_EmptyResponse() throws Exception {
 		super.setUsername(UserTransportBuilder.ADMIN_NAME);
 		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
@@ -263,7 +283,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 	}
 
 	@Test
-	void test_transactionCostsNotSet_emptyResponse() throws Exception {
+	void test_transactionCostsNotSet_0assumed() throws Exception {
 
 		final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
 		request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -271,7 +291,13 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 		request.setEtfId(SETTING_ETF_ID);
 		request.setPieces(SETTING_SALE_PIECES);
 
-		final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
+		final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
+		expected.setTransactionCostsAbsoluteBuy(new BigDecimal("0"));
+		expected.setTransactionCostsAbsoluteSell(new BigDecimal("0"));
+		expected.setTransactionCostsRelativeBuy(new BigDecimal("0.00"));
+		expected.setTransactionCostsRelativeSell(new BigDecimal("0.00"));
+		expected.setRebuyLosses(new BigDecimal("5.00"));
+		expected.setOverallCosts(new BigDecimal("5.00"));
 		final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
 		Assertions.assertEquals(expected, actual);

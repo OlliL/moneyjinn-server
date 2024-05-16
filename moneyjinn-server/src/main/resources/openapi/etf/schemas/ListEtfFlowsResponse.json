@@ -18,18 +18,6 @@
 		},
 		"calcEtfSalePieces": {
 			"type": "number"
-		},
-		"calcEtfBidPrice": {
-			"type": "number"
-		},
-		"calcEtfAskPrice": {
-			"type": "number"
-		},
-		"calcEtfTransactionCostsAbsolute": {
-			"type": "number"
-		},
-		"calcEtfTransactionCostsRelative": {
-			"type": "number"
 		}
 	}
 }
