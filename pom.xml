@@ -37,7 +37,7 @@
 		<lombok.version>1.18.32</lombok.version>
 		<mapstruct.version>1.6.0.Beta2</mapstruct.version>
 		<opencsv.version>5.9</opencsv.version>
-		<swagger.version>2.2.21</swagger.version>
+		<swagger.version>2.2.22</swagger.version>
 		<openapi-generator.version>7.5.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
