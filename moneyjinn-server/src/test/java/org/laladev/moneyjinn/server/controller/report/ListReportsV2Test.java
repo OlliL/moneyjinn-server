@@ -128,9 +128,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2008_12_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2008_12_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2008_12_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("10.10"));
 		expected.setAmountBeginOfYear(new BigDecimal("99.90"));
@@ -159,9 +159,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_01_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_01_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_01_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-1.10"));
 		expected.setAmountBeginOfYear(new BigDecimal("110.00"));
@@ -186,9 +186,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("8.90"));
 		expected.setAmountBeginOfYear(new BigDecimal("110.00"));
@@ -215,9 +215,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2009_12_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("8.90"));
 		expected.setAmountBeginOfYear(new BigDecimal("110.00"));
@@ -241,9 +241,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
 		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
@@ -266,9 +266,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		expected.setMoneyflowTransports(moneyflowTransports);
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource4().build());
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_01_Capitalsource1().build());
 		reportTurnoverCapitalsourceTransports
@@ -297,9 +297,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_02_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_02_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_02_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("0.00"));
 		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
@@ -323,9 +323,9 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_03_Capitalsource2().build());
 		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_03_Capitalsource4().build());
-		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_Capitalsource6().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_03_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
 		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
@@ -353,10 +353,10 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		reportTurnoverCapitalsourceTransports.add(transport1);
 		reportTurnoverCapitalsourceTransports
 				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource2().build());
-		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource4().build());
 		reportTurnoverCapitalsourceTransports.add(new ReportTurnoverCapitalsourceTransportBuilder()
 				.forReport_Capitalsource6().withAmountCurrentZero().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource4().build());
 		expected.setReportTurnoverCapitalsourceTransports(reportTurnoverCapitalsourceTransports);
 		expected.setTurnoverEndOfYearCalculated(new BigDecimal("-10.00"));
 		expected.setAmountBeginOfYear(new BigDecimal("118.90"));
@@ -385,10 +385,10 @@ class ListReportsV2Test extends AbstractWebUserControllerTest {
 		moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
 		expected.setMoneyflowTransports(moneyflowTransports);
 		final List<ReportTurnoverCapitalsourceTransport> reportTurnoverCapitalsourceTransports = new ArrayList<>();
-		reportTurnoverCapitalsourceTransports
-				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource4().build());
 		reportTurnoverCapitalsourceTransports.add(new ReportTurnoverCapitalsourceTransportBuilder()
 				.forReport_Capitalsource6().withAmountCurrentZero().build());
+		reportTurnoverCapitalsourceTransports
+				.add(new ReportTurnoverCapitalsourceTransportBuilder().forReport_2010_05_Capitalsource4().build());
 		final ReportTurnoverCapitalsourceTransport transport1 = new ReportTurnoverCapitalsourceTransportBuilder()
 				.forReport_2010_05_Capitalsource1().build();
 		transport1.setAmountCurrent(new BigDecimal("111.00"));

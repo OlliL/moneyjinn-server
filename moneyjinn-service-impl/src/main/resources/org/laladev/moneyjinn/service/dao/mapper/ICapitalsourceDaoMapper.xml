@@ -58,6 +58,7 @@
                    AND validfrom <![CDATA[ <= ]]> #{validTil}
                    AND validtil  <![CDATA[ >= ]]> #{validFrom}
                  ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
+                      ,type
                       ,capitalsourceid
         </select>
                 
