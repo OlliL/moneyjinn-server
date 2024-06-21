@@ -79,33 +79,18 @@ public class AccountMovementMapper {
 		accountMovement.setValueDate(LocalDateTime.ofInstant(instantValueDate, ZoneId.systemDefault()).toLocalDate());
 
 		if (entry.other != null) {
-			if (entry.other.isSEPAAccount() && entry.other.iban != null && !entry.other.iban.isEmpty()) {
+			if (entry.other.iban != null && !entry.other.iban.isEmpty()) {
 				if (Character.isDigit(entry.other.iban.toCharArray()[0])) {
-					// Ikano bank sends an empty blz as bankcode - I've no idea why?!
-					if (entry.other.bic.equals("")) {
-						entry.other.bic = "0";
-					}
-					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.iban));
-					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.bic));
+					this.setAccountnumber(entry.other.iban, entry.other.bic, accountMovement);
 				} else {
-					accountMovement.setOtherIban(entry.other.iban);
-					accountMovement.setOtherBic(entry.other.bic);
+					this.setIbanBic(entry.other.iban, entry.other.bic, accountMovement);
 				}
 
 			} else if (entry.other.number != null && !entry.other.number.isEmpty()) {
 				if (Character.isDigit(entry.other.number.toCharArray()[0])) {
-					// Account Number + Bank Code mode
-					// Ikano bank sends an empty blz as bankcode - I've no idea why?!
-					if (entry.other.blz.equals("")) {
-						entry.other.blz = "0";
-					}
-					accountMovement.setOtherAccountnumber(Long.valueOf(entry.other.number));
-					accountMovement.setOtherBankcode(Integer.valueOf(entry.other.blz));
+					this.setAccountnumber(entry.other.number, entry.other.blz, accountMovement);
 				} else {
-					// IBAN + BIC mode
-					accountMovement.setOtherIban(entry.other.number);
-					final String bic = entry.other.blz == null ? "" : entry.other.blz.trim();
-					accountMovement.setOtherBic(bic);
+					this.setIbanBic(entry.other.number, entry.other.blz, accountMovement);
 				}
 			}
 			if (entry.other.name2 != null) {
@@ -167,6 +152,31 @@ public class AccountMovementMapper {
 		}
 
 		return accountMovement;
+	}
+
+	private void setAccountnumber(final String number, String blz, final AccountMovement accountMovement) {
+		// Ikano bank sends an empty blz as bankcode - I've no idea why?!
+		if (blz.equals("")) {
+			blz = "0";
+		}
+		accountMovement.setOtherAccountnumber(Long.valueOf(number));
+		accountMovement.setOtherBankcode(Integer.valueOf(blz));
+	}
+
+	private void setIbanBic(final String iban, final String bic, final AccountMovement accountMovement) {
+		accountMovement.setOtherIban(this.getIban(iban));
+		final String bicTrimmed = bic == null ? "" : bic.trim();
+		accountMovement.setOtherBic(bicTrimmed);
+	}
+
+	private String getIban(final String iban) {
+		if (iban == null || iban.isBlank())
+			return null;
+
+		if (!iban.contains("/"))
+			return iban;
+
+		return iban.substring(0, iban.indexOf("/"));
 	}
 
 	/**
