@@ -33,7 +33,7 @@
 		<commons.io.version>2.16.1</commons.io.version>
 		<commons.codec.version>1.17.0</commons.codec.version>
 		<apache.tika.version>3.0.0-BETA</apache.tika.version>
-		<jjwt.version>0.12.5</jjwt.version>
+		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.32</lombok.version>
 		<mapstruct.version>1.6.0.Beta2</mapstruct.version>
 		<opencsv.version>5.9</opencsv.version>
