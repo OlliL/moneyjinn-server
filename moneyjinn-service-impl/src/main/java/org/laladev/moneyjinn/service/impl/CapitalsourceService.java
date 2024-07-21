@@ -119,7 +119,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
 		}
 		if (capitalsource.getState() == null) {
-			capitalsource.setState(CapitalsourceState.CACHE);
+			capitalsource.setState(CapitalsourceState.CASH);
 		}
 	}
 

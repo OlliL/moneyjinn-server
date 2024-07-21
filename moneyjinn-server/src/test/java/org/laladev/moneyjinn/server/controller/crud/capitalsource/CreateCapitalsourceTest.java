@@ -197,7 +197,7 @@ class CreateCapitalsourceTest extends AbstractCapitalsourceTest {
 				capitalsourceId);
 		Assertions.assertEquals(CapitalsourceTransportBuilder.NEXT_ID, capitalsource.getId().getId());
 		Assertions.assertEquals(CapitalsourceTransportBuilder.NEWCAPITALSOURCE_COMMENT, capitalsource.getComment());
-		Assertions.assertEquals(CapitalsourceState.CACHE, capitalsource.getState());
+		Assertions.assertEquals(CapitalsourceState.CASH, capitalsource.getState());
 		Assertions.assertEquals(CapitalsourceType.CURRENT_ASSET, capitalsource.getType());
 		Assertions.assertEquals(LocalDate.now(), capitalsource.getValidFrom());
 		Assertions.assertEquals(LocalDate.parse("2999-12-31"), capitalsource.getValidTil());
