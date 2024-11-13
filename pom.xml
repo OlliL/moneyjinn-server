@@ -35,7 +35,7 @@
 		<apache.tika.version>3.0.0</apache.tika.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.34</lombok.version>
-		<mapstruct.version>1.6.2</mapstruct.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<opencsv.version>5.9</opencsv.version>
 		<swagger.version>2.2.25</swagger.version>
 		
@@ -47,7 +47,7 @@
 
 		<!-- Maven Plugins -->
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
