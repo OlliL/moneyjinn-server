@@ -39,7 +39,6 @@
 		<opencsv.version>5.9</opencsv.version>
 		<swagger.version>2.2.26</swagger.version>
 		
-		<!-- 7.9.0 broken because of https://github.com/OpenAPITools/openapi-generator/pull/19715 -->
 		<openapi-generator.version>7.10.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
