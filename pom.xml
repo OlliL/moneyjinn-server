@@ -28,7 +28,7 @@
 		<moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
 		<spring.boot.version>3.4.0</spring.boot.version>
-		<mybatis.version>3.5.16</mybatis.version>
+		<mybatis.version>3.5.17</mybatis.version>
 		<mybatis-spring.version>3.0.4</mybatis-spring.version>
 		<commons.io.version>2.18.0</commons.io.version>
 		<commons.codec.version>1.17.1</commons.codec.version>
