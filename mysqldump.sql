@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.33, for FreeBSD13.2 (amd64)
+-- MySQL dump 10.13  Distrib 9.0.1, for FreeBSD13.3 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	8.0.33
+-- Server version	9.0.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -104,7 +104,7 @@ CREATE TABLE `capitalsources` (
   `validfrom` date NOT NULL DEFAULT '1970-01-01',
   `att_group_use` tinyint unsigned NOT NULL DEFAULT '0',
   `import_allowed` tinyint unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`capitalsourceid`,`mag_groupid`),
+  PRIMARY KEY (`capitalsourceid`) USING BTREE,
   KEY `mcs_mau_pk` (`mau_userid`),
   KEY `mcs_mag_pk` (`mag_groupid`),
   CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -195,6 +195,7 @@ CREATE TABLE `etf` (
   `trans_cost_abs` decimal(5,2) DEFAULT NULL,
   `trans_cost_rel` decimal(5,2) DEFAULT NULL,
   `trans_cost_max` decimal(8,2) DEFAULT NULL,
+  `part_tax_exempt` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`etfid`),
   KEY `met_mau_pk` (`mau_userid`),
   KEY `met_mag_pk` (`mag_groupid`),
@@ -292,11 +293,11 @@ CREATE TABLE `moneyflows` (
   PRIMARY KEY (`moneyflowid`),
   KEY `mmf_mau_pk` (`mau_userid`),
   KEY `mmf_mag_pk` (`mag_groupid`),
-  KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mmf_mcp_pk` (`mcp_contractpartnerid`),
   KEY `mmf_mpa_pk` (`mpa_postingaccountid`),
   KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_i_02` (`mag_groupid`,`bookingdate`),
+  KEY `mmf_mcs_pk` (`mcs_capitalsourceid`) USING BTREE,
   CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -362,8 +363,8 @@ CREATE TABLE `monthlysettlements` (
   PRIMARY KEY (`monthlysettlementid`),
   UNIQUE KEY `mms_i_01` (`month`,`year`,`mcs_capitalsourceid`),
   KEY `mms_mag_pk` (`mag_groupid`),
-  KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mms_mau_pk` (`mau_userid`) USING BTREE,
+  KEY `mms_mcs_pk` (`mcs_capitalsourceid`) USING BTREE,
   CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -572,7 +573,7 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-13  9:53:17
+-- Dump completed on 2024-12-08 12:44:03
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
