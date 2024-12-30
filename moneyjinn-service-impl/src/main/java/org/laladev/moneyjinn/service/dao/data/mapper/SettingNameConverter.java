@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile
 import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 
 public class SettingNameConverter {
 	private static Map<String, String> lookupMap;
@@ -42,6 +43,7 @@ public class SettingNameConverter {
 	static {
 		final Map<String, String> tempMap = new HashMap<>();
 		tempMap.put(ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids");
+		tempMap.put(ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids");
 		tempMap.put(ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
 				"client_reporting_unselected_posting_account_ids");
 		tempMap.put(ClientCompareDataSelectedCapitalsource.class.getSimpleName(),

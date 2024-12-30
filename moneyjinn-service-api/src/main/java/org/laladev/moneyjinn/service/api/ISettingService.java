@@ -37,6 +37,7 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile
 import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 
 /**
  * <p>
@@ -112,6 +113,24 @@ public interface ISettingService {
 	 * @param setting the {@link ClientTrendCapitalsourceIDsSetting}
 	 */
 	void setClientTrendCapitalsourceIDsSetting(final UserID userId, final ClientTrendCapitalsourceIDsSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientTrendEtfIDsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param userId {@link UserID}
+	 * @return {@link ClientTrendEtfIDsSetting}
+	 */
+	Optional<ClientTrendEtfIDsSetting> getClientTrendEtfIDsSetting(final UserID userId);
+
+	/**
+	 * This Service sets the {@link ClientTrendEtfIDsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param userId  {@link UserID}
+	 * @param setting the {@link ClientTrendEtfIDsSetting}
+	 */
+	void setClientTrendEtfIDsSetting(final UserID userId, final ClientTrendEtfIDsSetting setting);
 
 	/**
 	 * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the

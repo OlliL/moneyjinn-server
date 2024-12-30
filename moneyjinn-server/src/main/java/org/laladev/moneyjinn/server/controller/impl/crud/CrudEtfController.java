@@ -24,6 +24,7 @@
 
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +76,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final UserID userId = super.getUserId();
 		final List<Etf> etfs = this.etfService.getAllEtf(userId);
 
-		final List<EtfTransport> transports = super.mapList(etfs, EtfTransport.class);
+		final List<EtfTransport> transports = etfs.stream().sorted(Comparator.comparing(Etf::getName))
+				.map(etf -> super.map(etf, EtfTransport.class)).toList();
 
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());

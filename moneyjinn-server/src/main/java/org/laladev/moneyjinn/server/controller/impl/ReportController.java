@@ -26,7 +26,9 @@ package org.laladev.moneyjinn.server.controller.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -47,12 +49,18 @@ import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
+import org.laladev.moneyjinn.model.etf.Etf;
+import org.laladev.moneyjinn.model.etf.EtfFlow;
+import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
+import org.laladev.moneyjinn.model.etf.EtfID;
+import org.laladev.moneyjinn.model.etf.EtfValue;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceStateMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTypeMapper;
@@ -75,6 +83,7 @@ import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowYearlyReportGraphResponse;
 import org.laladev.moneyjinn.server.model.TrendsTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.api.IImportedBalanceService;
 import org.laladev.moneyjinn.service.api.IMoneyflowReceiptService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
@@ -97,6 +106,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ReportController extends AbstractController implements ReportControllerApi {
+	private final IEtfService etfService;
 	private final IMoneyflowService moneyflowService;
 	private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
 	private final IMoneyflowReceiptService moneyflowReceiptService;
@@ -208,6 +218,9 @@ public class ReportController extends AbstractController implements ReportContro
 		this.settingService.getClientTrendCapitalsourceIDsSetting(userId).ifPresent(s -> response
 				.setSettingTrendCapitalsourceIds(s.getSetting().stream().map(CapitalsourceID::getId).toList()));
 
+		this.settingService.getClientTrendEtfIDsSetting(userId).ifPresent(s -> response
+				.setSettingTrendEtfIds(s.getSetting().stream().map(EtfID::getId).toList()));
+
 		return ResponseEntity.ok(response);
 	}
 
@@ -219,17 +232,26 @@ public class ReportController extends AbstractController implements ReportContro
 				&& !request.getCapitalSourceIds().isEmpty()) {
 			final LocalDate startDate = request.getStartDate();
 			final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
+
+			// Save the selection for the next time the form is shown
 			final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
 					.map(CapitalsourceID::new).toList();
-
 			final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
-			// Save the selection for the next time the form is shown
 			this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
+			final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
+			final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
+			this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
 
 			final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId, startDate, endDate,
 					capitalsourceIds);
 			if (!trendsSettledTransports.isEmpty()) {
 				response.setTrendsSettledTransports(trendsSettledTransports);
+			}
+
+			final List<TrendsTransport> trendsEtfTransports = this.preparEtfTrends(userId, startDate, endDate,
+					etfIds);
+			if (!trendsEtfTransports.isEmpty()) {
+				response.setTrendsEtfTransports(trendsEtfTransports);
 			}
 
 			LocalDate lastSettledDay;
@@ -251,6 +273,47 @@ public class ReportController extends AbstractController implements ReportContro
 			}
 		}
 		return ResponseEntity.ok(response);
+	}
+
+	private List<TrendsTransport> preparEtfTrends(final UserID userId, final LocalDate startDate,
+			final LocalDate endDate,
+			final List<EtfID> etfIds) {
+		final List<Etf> etfs = etfIds.stream().map(etfId -> this.etfService.getEtfById(super.getUserId(), etfId))
+				.toList();
+
+		if (etfs.isEmpty())
+			return Collections.emptyList();
+
+		final List<TrendsTransport> trendsTransportList = new ArrayList<>();
+
+		LocalDate iteratorDate = startDate;
+		while (iteratorDate.isBefore(endDate)) {
+			final Year year = Year.of(iteratorDate.getYear());
+			final Month month = iteratorDate.getMonth();
+			final LocalDateTime endOfMonth = iteratorDate.atTime(23, 59, 59, 999999999)
+					.with(TemporalAdjusters.lastDayOfMonth());
+
+			final double etfSellValue = etfs.stream().mapToDouble(etf -> {
+				final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
+				final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
+				final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId,
+						allEtfFlows);
+
+				return etfFlows.stream()
+						.mapToDouble(etfFlow -> etfFlow.getAmount().multiply(etfValue.getSellPrice()).doubleValue())
+						.sum();
+			}).sum();
+
+			final TrendsTransport trendsTransport = new TrendsTransport();
+			trendsTransport.setYear(year.getValue());
+			trendsTransport.setMonth(month.getValue());
+			trendsTransport.setAmount(BigDecimal.valueOf(etfSellValue));
+			trendsTransportList.add(trendsTransport);
+
+			iteratorDate = iteratorDate.plusMonths(1);
+		}
+
+		return trendsTransportList;
 	}
 
 	private List<TrendsTransport> prepareCalculatedTrends(final UserID userId, final LocalDate startDate,

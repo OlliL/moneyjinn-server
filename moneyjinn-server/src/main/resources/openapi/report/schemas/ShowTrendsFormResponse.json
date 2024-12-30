@@ -19,6 +19,13 @@
 				"type": "integer",
 				"format": "int64"
 			}
+		},
+		"settingTrendEtfIds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
+			}
 		}
 	}
 }

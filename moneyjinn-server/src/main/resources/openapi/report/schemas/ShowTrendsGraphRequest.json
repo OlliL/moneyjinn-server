@@ -8,6 +8,13 @@
 				"format": "int64"
 			}
 		},
+		"etfIds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"format": "int64"
+			}
+		},
 		"startDate": {
 			"type": "string",
 			"format": "date"

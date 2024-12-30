@@ -39,6 +39,7 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile
 import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
@@ -137,6 +138,17 @@ public class SettingService extends AbstractService implements ISettingService {
 	@Override
 	public Optional<ClientTrendCapitalsourceIDsSetting> getClientTrendCapitalsourceIDsSetting(final UserID userId) {
 		return this.getSetting(userId, ClientTrendCapitalsourceIDsSetting.class);
+	}
+
+	@Override
+	public void setClientTrendEtfIDsSetting(final UserID userId,
+			final ClientTrendEtfIDsSetting setting) {
+		this.setSetting(userId, setting);
+	}
+
+	@Override
+	public Optional<ClientTrendEtfIDsSetting> getClientTrendEtfIDsSetting(final UserID userId) {
+		return this.getSetting(userId, ClientTrendEtfIDsSetting.class);
 	}
 
 	@Override

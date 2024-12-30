@@ -12,6 +12,13 @@
 			"items": {
 				"$ref": "../../transport/TrendsTransport.json"
 			}
+		},
+		"trendsEtfTransports": {
+			"type": "array",
+			"items": {
+				"$ref": "../../transport/TrendsTransport.json"
+			}
+			
 		}
 	}
 }
