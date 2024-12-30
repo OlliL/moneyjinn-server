@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.33, for FreeBSD13.2 (amd64)
+-- MySQL dump 10.13  Distrib 9.0.1, for FreeBSD13.3 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	8.0.33
+-- Server version	9.0.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -104,7 +104,7 @@ CREATE TABLE `capitalsources` (
   `validfrom` date NOT NULL DEFAULT '1970-01-01',
   `att_group_use` tinyint unsigned NOT NULL DEFAULT '0',
   `import_allowed` tinyint unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`capitalsourceid`,`mag_groupid`),
+  PRIMARY KEY (`capitalsourceid`),
   KEY `mcs_mau_pk` (`mau_userid`),
   KEY `mcs_mag_pk` (`mag_groupid`),
   CONSTRAINT `mcs_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -293,11 +293,11 @@ CREATE TABLE `moneyflows` (
   PRIMARY KEY (`moneyflowid`),
   KEY `mmf_mau_pk` (`mau_userid`),
   KEY `mmf_mag_pk` (`mag_groupid`),
-  KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mmf_mcp_pk` (`mcp_contractpartnerid`),
   KEY `mmf_mpa_pk` (`mpa_postingaccountid`),
   KEY `mmf_i_01` (`bookingdate`,`mag_groupid`,`moneyflowid`),
   KEY `mmf_i_02` (`mag_groupid`,`bookingdate`),
+  KEY `mmf_mcs_pk` (`mcs_capitalsourceid`),
   CONSTRAINT `mmf_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mmf_mcp_pk` FOREIGN KEY (`mcp_contractpartnerid`) REFERENCES `contractpartners` (`contractpartnerid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -363,8 +363,8 @@ CREATE TABLE `monthlysettlements` (
   PRIMARY KEY (`monthlysettlementid`),
   UNIQUE KEY `mms_i_01` (`month`,`year`,`mcs_capitalsourceid`),
   KEY `mms_mag_pk` (`mag_groupid`),
-  KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
   KEY `mms_mau_pk` (`mau_userid`),
+  KEY `mms_mcs_pk` (`mcs_capitalsourceid`),
   CONSTRAINT `mms_mag_pk` FOREIGN KEY (`mag_groupid`) REFERENCES `access_groups` (`groupid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mau_pk` FOREIGN KEY (`mau_userid`) REFERENCES `access_users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `mms_mcs_pk` FOREIGN KEY (`mcs_capitalsourceid`) REFERENCES `capitalsources` (`capitalsourceid`) ON DELETE RESTRICT ON UPDATE RESTRICT
