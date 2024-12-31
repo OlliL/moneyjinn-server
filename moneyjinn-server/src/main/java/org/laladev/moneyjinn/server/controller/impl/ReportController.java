@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -295,7 +296,11 @@ public class ReportController extends AbstractController implements ReportContro
 
 			final double etfSellValue = etfs.stream().mapToDouble(etf -> {
 				final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
-				final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
+				if (etfValue == null)
+					return 0;
+
+				final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(),
+						endOfMonth);
 				final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId,
 						allEtfFlows);
 
@@ -307,7 +312,7 @@ public class ReportController extends AbstractController implements ReportContro
 			final TrendsTransport trendsTransport = new TrendsTransport();
 			trendsTransport.setYear(year.getValue());
 			trendsTransport.setMonth(month.getValue());
-			trendsTransport.setAmount(BigDecimal.valueOf(etfSellValue));
+			trendsTransport.setAmount(BigDecimal.valueOf(etfSellValue).setScale(2, RoundingMode.HALF_UP));
 			trendsTransportList.add(trendsTransport);
 
 			iteratorDate = iteratorDate.plusMonths(1);

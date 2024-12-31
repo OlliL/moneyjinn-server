@@ -76,7 +76,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		final UserID userId = super.getUserId();
 		final List<Etf> etfs = this.etfService.getAllEtf(userId);
 
-		final List<EtfTransport> transports = etfs.stream().sorted(Comparator.comparing(Etf::getName))
+		final List<EtfTransport> transports = etfs.stream()
+				.sorted(Comparator.comparing(Etf::getName, String.CASE_INSENSITIVE_ORDER))
 				.map(etf -> super.map(etf, EtfTransport.class)).toList();
 
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
