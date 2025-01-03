@@ -40,6 +40,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("1970-01-01"));
 		request.setEndDate(LocalDate.parse("2099-12-31"));
+		request.setSettingTrendCapitalsourcesActive(true);
 		request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
@@ -95,6 +96,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("2009-01-01"));
 		request.setEndDate(LocalDate.parse("2009-12-31"));
+		request.setSettingTrendCapitalsourcesActive(true);
 		request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
@@ -134,6 +136,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("2010-05-01"));
 		request.setEndDate(LocalDate.parse("2010-12-31"));
+		request.setSettingTrendCapitalsourcesActive(true);
 		request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
 				CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
@@ -158,6 +161,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("2010-04-01"));
 		request.setEndDate(LocalDate.parse("2010-12-31"));
+		request.setSettingTrendCapitalsourcesActive(true);
 		request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
 		final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
 		final List<TrendsTransport> trendsSettledTransports = new ArrayList<>();
@@ -178,6 +182,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
 		final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
 		request.setStartDate(LocalDate.parse("2010-04-01"));
 		request.setEndDate(LocalDate.parse("2010-12-31"));
+		request.setSettingTrendCapitalsourcesActive(true);
 		request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
 
 		super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);

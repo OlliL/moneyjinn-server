@@ -26,6 +26,12 @@
 				"type": "integer",
 				"format": "int64"
 			}
+		},
+		"settingTrendEtfsActive": {
+			"type": "boolean"
+		},
+		"settingTrendCapitalsourcesActive": {
+			"type": "boolean"
 		}
 	}
 }

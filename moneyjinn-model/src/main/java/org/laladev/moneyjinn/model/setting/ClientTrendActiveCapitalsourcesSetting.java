@@ -1,7 +1,7 @@
 
 package org.laladev.moneyjinn.model.setting;
 
-//Copyright (c) 2015-2024 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2025 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -25,22 +25,18 @@ package org.laladev.moneyjinn.model.setting;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
-
-import org.laladev.moneyjinn.model.etf.EtfID;
-
 import lombok.NoArgsConstructor;
 
 /**
- * returns a List of {@link EtfID}s the user had chosen the last time when using
- * the <code>Trends</code> functionality.
+ * returns true/false indicating if the Capitalsources toggle is active or not
+ * when using the <code>Trends</code> functionality.
  *
  * @author Oliver Lehmann
  *
  */
 @NoArgsConstructor
-public class ClientTrendEtfIDsSetting extends AbstractSetting<List<EtfID>> {
-	public ClientTrendEtfIDsSetting(final List<EtfID> setting) {
+public class ClientTrendActiveCapitalsourcesSetting extends AbstractSetting<Boolean> {
+	public ClientTrendActiveCapitalsourcesSetting(final Boolean setting) {
 		super.setSetting(setting);
 	}
 }

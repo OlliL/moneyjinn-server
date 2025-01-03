@@ -38,6 +38,8 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveCapitalsourcesSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveEtfsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -152,6 +154,30 @@ public class SettingService extends AbstractService implements ISettingService {
 	}
 
 	@Override
+	public Optional<ClientTrendActiveEtfsSetting> getClientTrendActiveEtfsSetting(final UserID userId) {
+		return this.getSetting(userId, ClientTrendActiveEtfsSetting.class);
+	}
+
+	@Override
+	public void setClientTrendActiveEtfsSetting(final UserID userId, final ClientTrendActiveEtfsSetting setting) {
+		this.setSetting(userId, setting);
+
+	}
+
+	@Override
+	public Optional<ClientTrendActiveCapitalsourcesSetting> getClientTrendActiveCapitalsourcesSetting(
+			final UserID userId) {
+		return this.getSetting(userId, ClientTrendActiveCapitalsourcesSetting.class);
+	}
+
+	@Override
+	public void setClientTrendActiveCapitalsourcesSetting(final UserID userId,
+			final ClientTrendActiveCapitalsourcesSetting setting) {
+		this.setSetting(userId, setting);
+
+	}
+
+	@Override
 	public void setClientCompareDataSelectedCapitalsource(final UserID userId,
 			final ClientCompareDataSelectedCapitalsource setting) {
 		this.setSetting(userId, setting);
@@ -204,4 +230,5 @@ public class SettingService extends AbstractService implements ISettingService {
 	public Optional<ClientCalcEtfSalePieces> getClientCalcEtfSalePieces(final UserID userId) {
 		return this.getSetting(userId, ClientCalcEtfSalePieces.class);
 	}
+
 }

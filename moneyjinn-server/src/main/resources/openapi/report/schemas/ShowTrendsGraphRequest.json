@@ -15,6 +15,12 @@
 				"format": "int64"
 			}
 		},
+		"settingTrendEtfsActive": {
+			"type": "boolean"
+		},
+		"settingTrendCapitalsourcesActive": {
+			"type": "boolean"
+		},
 		"startDate": {
 			"type": "string",
 			"format": "date"

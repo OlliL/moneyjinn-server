@@ -36,6 +36,8 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveCapitalsourcesSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveEtfsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 
@@ -131,6 +133,43 @@ public interface ISettingService {
 	 * @param setting the {@link ClientTrendEtfIDsSetting}
 	 */
 	void setClientTrendEtfIDsSetting(final UserID userId, final ClientTrendEtfIDsSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientTrendActiveEtfsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param userId {@link UserID}
+	 * @return {@link ClientTrendActiveEtfsSetting}
+	 */
+	Optional<ClientTrendActiveEtfsSetting> getClientTrendActiveEtfsSetting(final UserID userId);
+
+	/**
+	 * This Service sets the {@link ClientTrendActiveEtfsSetting} for the given
+	 * {@link UserID}.
+	 *
+	 * @param userId  {@link UserID}
+	 * @param setting the {@link ClientTrendActiveEtfsSetting}
+	 */
+	void setClientTrendActiveEtfsSetting(final UserID userId, final ClientTrendActiveEtfsSetting setting);
+
+	/**
+	 * This Service returns the {@link ClientTrendActiveCapitalsourcesSetting} for
+	 * the given {@link UserID}.
+	 *
+	 * @param userId {@link UserID}
+	 * @return {@link ClientTrendActiveCapitalsourcesSetting}
+	 */
+	Optional<ClientTrendActiveCapitalsourcesSetting> getClientTrendActiveCapitalsourcesSetting(final UserID userId);
+
+	/**
+	 * This Service sets the {@link ClientTrendActiveCapitalsourcesSetting} for the
+	 * given {@link UserID}.
+	 *
+	 * @param userId  {@link UserID}
+	 * @param setting the {@link ClientTrendActiveCapitalsourcesSetting}
+	 */
+	void setClientTrendActiveCapitalsourcesSetting(final UserID userId,
+			final ClientTrendActiveCapitalsourcesSetting setting);
 
 	/**
 	 * This Service sets the {@link ClientCompareDataSelectedCapitalsource} for the

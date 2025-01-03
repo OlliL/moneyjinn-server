@@ -60,6 +60,8 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveCapitalsourcesSetting;
+import org.laladev.moneyjinn.model.setting.ClientTrendActiveEtfsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
 import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
@@ -222,6 +224,12 @@ public class ReportController extends AbstractController implements ReportContro
 		this.settingService.getClientTrendEtfIDsSetting(userId).ifPresent(s -> response
 				.setSettingTrendEtfIds(s.getSetting().stream().map(EtfID::getId).toList()));
 
+		this.settingService.getClientTrendActiveCapitalsourcesSetting(userId).ifPresent(s -> response
+				.settingTrendCapitalsourcesActive(Boolean.TRUE.equals(s.getSetting())));
+
+		this.settingService.getClientTrendActiveEtfsSetting(userId).ifPresent(s -> response
+				.settingTrendEtfsActive(Boolean.TRUE.equals(s.getSetting())));
+
 		return ResponseEntity.ok(response);
 	}
 
@@ -242,35 +250,28 @@ public class ReportController extends AbstractController implements ReportContro
 			final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
 			final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
 			this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
+			final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources = new ClientTrendActiveCapitalsourcesSetting();
+			settingActiveCapitalsources.setSetting(Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
+			this.settingService.setClientTrendActiveCapitalsourcesSetting(userId, settingActiveCapitalsources);
+			final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting();
+			settingActiveEtfs.setSetting(Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
+			this.settingService.setClientTrendActiveEtfsSetting(userId, settingActiveEtfs);
 
-			final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId, startDate, endDate,
-					capitalsourceIds);
-			if (!trendsSettledTransports.isEmpty()) {
+			if (Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive())) {
+				final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId, startDate,
+						endDate,
+						capitalsourceIds);
 				response.setTrendsSettledTransports(trendsSettledTransports);
-			}
 
-			final List<TrendsTransport> trendsEtfTransports = this.preparEtfTrends(userId, startDate, endDate,
-					etfIds);
-			if (!trendsEtfTransports.isEmpty()) {
-				response.setTrendsEtfTransports(trendsEtfTransports);
-			}
-
-			LocalDate lastSettledDay;
-			BigDecimal lastAmount;
-			if (trendsSettledTransports.isEmpty()) {
-				lastSettledDay = startDate.minusMonths(1L).with(TemporalAdjusters.lastDayOfMonth());
-				lastAmount = BigDecimal.ZERO;
-			} else {
-				final TrendsTransport transport = trendsSettledTransports.get(trendsSettledTransports.size() - 1);
-				lastSettledDay = LocalDate.of(transport.getYear(), transport.getMonth(), 1)
-						.with(TemporalAdjusters.lastDayOfMonth());
-				lastAmount = transport.getAmount();
-			}
-
-			final List<TrendsTransport> trendsCalculatedTransports = this.prepareCalculatedTrends(userId,
-					lastSettledDay, endDate, capitalsourceIds, lastAmount);
-			if (!trendsCalculatedTransports.isEmpty()) {
+				final List<TrendsTransport> trendsCalculatedTransports = this.prepareCalculatedTrends(userId, startDate,
+						endDate, capitalsourceIds, trendsSettledTransports);
 				response.setTrendsCalculatedTransports(trendsCalculatedTransports);
+			}
+
+			if (Boolean.TRUE.equals(request.getSettingTrendEtfsActive())) {
+				final List<TrendsTransport> trendsEtfTransports = this.preparEtfTrends(userId, startDate, endDate,
+						etfIds);
+				response.setTrendsEtfTransports(trendsEtfTransports);
 			}
 		}
 		return ResponseEntity.ok(response);
@@ -322,9 +323,22 @@ public class ReportController extends AbstractController implements ReportContro
 	}
 
 	private List<TrendsTransport> prepareCalculatedTrends(final UserID userId, final LocalDate startDate,
-			LocalDate endDate, final List<CapitalsourceID> capitalsourceIds, final BigDecimal lastAmount) {
+			LocalDate endDate, final List<CapitalsourceID> capitalsourceIds,
+			final List<TrendsTransport> trendsSettledTransports) {
 
-		if (!endDate.isAfter(startDate)) {
+		LocalDate lastSettledDay;
+		BigDecimal lastAmount;
+		if (trendsSettledTransports.isEmpty()) {
+			lastSettledDay = startDate.minusMonths(1L).with(TemporalAdjusters.lastDayOfMonth());
+			lastAmount = BigDecimal.ZERO;
+		} else {
+			final TrendsTransport transport = trendsSettledTransports.get(trendsSettledTransports.size() - 1);
+			lastSettledDay = LocalDate.of(transport.getYear(), transport.getMonth(), 1)
+					.with(TemporalAdjusters.lastDayOfMonth());
+			lastAmount = transport.getAmount();
+		}
+
+		if (!endDate.isAfter(lastSettledDay)) {
 			return Collections.emptyList();
 		}
 
@@ -342,7 +356,7 @@ public class ReportController extends AbstractController implements ReportContro
 		final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap = capitalsources.stream()
 				.collect(Collectors.toMap(Capitalsource::getId, Capitalsource::getValidTil));
 
-		LocalDate beginOfMonth = startDate.plusDays(1L);
+		LocalDate beginOfMonth = lastSettledDay.plusDays(1L);
 		LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 		final SortedMap<LocalDate, BigDecimal> moneyflowAmounts = new TreeMap<>();
 
