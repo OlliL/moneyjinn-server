@@ -434,6 +434,10 @@ public class EtfService extends AbstractService implements IEtfService {
 		case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
 		};
 
+		// TODO Test this if statement
+		if (BigDecimal.ZERO.compareTo(amount) == 0)
+			return BigDecimal.ZERO;
+
 		if (month.equals(Month.JANUARY)) {
 			return this.calculatePieceTax(amount, relevantTaxFlows);
 		} else {
