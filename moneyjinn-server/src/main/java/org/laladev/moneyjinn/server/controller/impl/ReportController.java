@@ -313,7 +313,10 @@ public class ReportController extends AbstractController implements ReportContro
 			final TrendsTransport trendsTransport = new TrendsTransport();
 			trendsTransport.setYear(year.getValue());
 			trendsTransport.setMonth(month.getValue());
-			trendsTransport.setAmount(BigDecimal.valueOf(etfSellValue).setScale(2, RoundingMode.HALF_UP));
+			// TODO test this 2 following lines?
+			final BigDecimal etfSellValueTransport = BigDecimal.valueOf(etfSellValue).setScale(2, RoundingMode.HALF_UP);
+			trendsTransport
+					.setAmount(BigDecimal.ZERO.compareTo(etfSellValueTransport) == 0 ? null : etfSellValueTransport);
 			trendsTransportList.add(trendsTransport);
 
 			iteratorDate = iteratorDate.plusMonths(1);
