@@ -27,19 +27,19 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
-		<spring.boot.version>3.4.0</spring.boot.version>
-		<mybatis.version>3.5.17</mybatis.version>
+		<spring.boot.version>3.4.3</spring.boot.version>
+		<mybatis.version>3.5.19</mybatis.version>
 		<mybatis-spring.version>3.0.4</mybatis-spring.version>
 		<commons.io.version>2.18.0</commons.io.version>
-		<commons.codec.version>1.17.1</commons.codec.version>
-		<apache.tika.version>3.0.0</apache.tika.version>
+		<commons.codec.version>1.18.0</commons.codec.version>
+		<apache.tika.version>3.1.0</apache.tika.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
-		<opencsv.version>5.9</opencsv.version>
-		<swagger.version>2.2.26</swagger.version>
+		<opencsv.version>5.10</opencsv.version>
+		<swagger.version>2.2.28</swagger.version>
 		
-		<openapi-generator.version>7.10.0</openapi-generator.version>
+		<openapi-generator.version>7.11.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
@@ -54,8 +54,8 @@
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.11.3</junit.version>
-		<mockito.version>5.14.2</mockito.version>
+		<junit.version>5.12.0</junit.version>
+		<mockito.version>5.15.2</mockito.version>
 		<juniversalchardet.version>2.5.0</juniversalchardet.version>
 
 		<java.version>21</java.version>
