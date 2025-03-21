@@ -53,7 +53,7 @@ import lombok.ToString;
  * billing), but the {@link Contractpartner}, {@link PostingAccount},
  * {@link Capitalsource} and Comment are always the same.<br>
  * <br>
- * It is meant to ease the adding of reoccuring {@link Moneyflow}s.
+ * It is meant to ease the adding of recurring {@link Moneyflow}s.
  *
  * @author Oliver Lehmann
  *
