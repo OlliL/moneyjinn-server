@@ -106,7 +106,8 @@ public final class LalaHBCI {
 
 			for (final Konto account : accounts) {
 
-				if (account.bic == null && account.iban == null && account.number != null && account.blz != null) {
+				if (account.bic == null && account.iban == null && account.number != null
+						&& account.number.length() <= 10 && account.blz != null) {
 					account.iban = HBCIUtils.getIBANForKonto(account);
 				}
 
