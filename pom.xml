@@ -27,12 +27,12 @@
 	<properties>
 		<moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
-		<spring.boot.version>3.4.5</spring.boot.version>
+		<spring.boot.version>3.5.0</spring.boot.version>
 		<mybatis.version>3.5.19</mybatis.version>
 		<mybatis-spring.version>3.0.4</mybatis-spring.version>
 		<commons.io.version>2.19.0</commons.io.version>
 		<commons.codec.version>1.18.0</commons.codec.version>
-		<apache.tika.version>3.1.0</apache.tika.version>
+		<apache.tika.version>3.2.0</apache.tika.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.38</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
@@ -54,8 +54,8 @@
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.13.0-M3</junit.version>
-		<mockito.version>5.17.0</mockito.version>
+		<junit.version>5.13.0</junit.version>
+		<mockito.version>5.18.0</mockito.version>
 		<juniversalchardet.version>2.5.0</juniversalchardet.version>
 
 		<java.version>21</java.version>
