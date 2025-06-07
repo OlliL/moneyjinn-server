@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -41,7 +40,7 @@ import org.springframework.context.ApplicationEventPublisher;
 
 import jakarta.inject.Inject;
 
-public abstract class AbstractService extends AbstractMapperSupport {
+public abstract class AbstractService {
 	private CacheManager cacheManager;
 	private ApplicationEventPublisher applicationEventPublisher;
 

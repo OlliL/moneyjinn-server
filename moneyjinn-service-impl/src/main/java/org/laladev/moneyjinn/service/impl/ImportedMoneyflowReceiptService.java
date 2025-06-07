@@ -45,7 +45,6 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowReceiptDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -64,12 +63,6 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 
 	private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
 	private final ImportedMoneyflowReceiptDataMapper importedMoneyflowReceiptDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedMoneyflowReceiptDataMapper);
-	}
 
 	@Override
 	public ValidationResult validateImportedMoneyflowReceipt(final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
@@ -107,7 +100,7 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 		Assert.notNull(groupId, GROUP_ID_MUST_NOT_BE_NULL);
 		final List<ImportedMoneyflowReceiptData> importedMoneyflowReceipts = this.importedMoneyflowReceiptDao
 				.getAllImportedMoneyflowReceipts(groupId.getId());
-		return super.mapList(importedMoneyflowReceipts, ImportedMoneyflowReceipt.class);
+		return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipts);
 	}
 
 	@Override

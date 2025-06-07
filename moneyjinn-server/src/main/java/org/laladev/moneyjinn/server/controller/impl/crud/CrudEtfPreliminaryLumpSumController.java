@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -57,12 +56,6 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	private final EtfPreliminaryLumpSumTransportMapper etfPreliminaryLumpSumTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.etfPreliminaryLumpSumTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(
 			@PathVariable("etfId") final Long requestEtfId) {
 		final UserID userId = super.getUserId();
@@ -72,7 +65,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 				etfId);
 
 		return etfPreliminaryLumpSums.isEmpty() ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(super.mapList(etfPreliminaryLumpSums, EtfPreliminaryLumpSumTransport.class));
+				: ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSums));
 	}
 
 	@Override

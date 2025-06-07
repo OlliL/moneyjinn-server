@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +55,6 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedBalanceDataMapper importedBalanceDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedBalanceDataMapper);
-	}
 
 	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
 		if (importedBalanceData != null) {

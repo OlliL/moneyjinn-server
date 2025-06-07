@@ -57,7 +57,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.PreDefMoneyflowDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -75,12 +74,6 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 	private final IPostingAccountService postingAccountService;
 	private final PreDefMoneyflowDao preDefMoneyflowDao;
 	private final PreDefMoneyflowDataMapper preDefMoneyflowDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.preDefMoneyflowDataMapper);
-	}
 
 	private final PreDefMoneyflow mapPreDefMoneyflowData(final PreDefMoneyflowData preDefMoneyflowData) {
 		if (preDefMoneyflowData != null) {

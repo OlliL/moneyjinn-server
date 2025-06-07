@@ -46,7 +46,6 @@ import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsourc
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
@@ -67,7 +66,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -79,20 +77,10 @@ public class CompareDataController extends AbstractController implements Compare
 	private final ICompareDataService compareDataService;
 	private final IImportedMoneyflowService importedMoneyflowService;
 
-	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 	private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
 	private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
 	private final MoneyflowTransportMapper moneyflowTransportMapper;
 	private final BooleanToIntegerMapper booleanToIntegerMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.compareDataFormatTransportMapper);
-		super.registerBeanMapper(this.capitalsourceTransportMapper);
-		super.registerBeanMapper(this.moneyflowTransportMapper);
-		super.registerBeanMapper(this.compareDataDatasetTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<ShowCompareDataFormResponse> showCompareDataForm() {
@@ -100,8 +88,8 @@ public class CompareDataController extends AbstractController implements Compare
 		final ShowCompareDataFormResponse response = new ShowCompareDataFormResponse();
 		final List<CompareDataFormat> compareDataFormats = this.compareDataService.getAllCompareDataFormats();
 		if (compareDataFormats != null && !compareDataFormats.isEmpty()) {
-			final List<CompareDataFormatTransport> responseCompareDataFormats = super.mapList(compareDataFormats,
-					CompareDataFormatTransport.class);
+			final List<CompareDataFormatTransport> responseCompareDataFormats = this.compareDataFormatTransportMapper
+					.mapAToB(compareDataFormats);
 			response.setCompareDataFormatTransports(responseCompareDataFormats);
 
 			this.settingService.getClientCompareDataSelectedFormat(userId)

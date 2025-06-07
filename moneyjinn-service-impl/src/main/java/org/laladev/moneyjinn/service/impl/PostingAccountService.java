@@ -47,7 +47,6 @@ import org.laladev.moneyjinn.service.event.EventType;
 import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -61,12 +60,6 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
 	private final PostingAccountDao postingAccountDao;
 	private final PostingAccountDataMapper postingAccountDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.postingAccountDataMapper);
-	}
 
 	@Override
 	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
@@ -103,8 +96,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
 	@Override
 	public List<PostingAccount> getAllPostingAccounts() {
-		final Supplier<List<PostingAccount>> supplier = () -> super.mapList(
-				this.postingAccountDao.getAllPostingAccounts(), PostingAccount.class);
+		final Supplier<List<PostingAccount>> supplier = () -> this.postingAccountDataMapper
+				.mapBToA(this.postingAccountDao.getAllPostingAccounts());
 
 		return super.getListFromCacheOrExecute(CacheNames.ALL_POSTINGACCOUNTS, CacheNames.ALL_POSTINGACCOUNTS,
 				supplier);

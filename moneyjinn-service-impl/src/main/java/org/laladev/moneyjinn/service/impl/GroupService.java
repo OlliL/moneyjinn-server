@@ -45,7 +45,6 @@ import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.data.mapper.GroupDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -59,12 +58,6 @@ public class GroupService extends AbstractService implements IGroupService {
 	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
 	private final GroupDao groupDao;
 	private final GroupDataMapper groupDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.groupDataMapper);
-	}
 
 	@Override
 	public ValidationResult validateGroup(final Group group) {
@@ -99,7 +92,7 @@ public class GroupService extends AbstractService implements IGroupService {
 
 	@Override
 	public List<Group> getAllGroups() {
-		final Supplier<List<Group>> supplier = () -> super.mapList(this.groupDao.getAllGroups(), Group.class);
+		final Supplier<List<Group>> supplier = () -> this.groupDataMapper.mapBToA(this.groupDao.getAllGroups());
 
 		return super.getListFromCacheOrExecute(CacheNames.ALL_GROUPS, CacheNames.ALL_GROUPS, supplier);
 	}

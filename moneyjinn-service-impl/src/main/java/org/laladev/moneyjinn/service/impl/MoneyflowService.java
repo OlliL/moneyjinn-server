@@ -66,12 +66,10 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
 import org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchParamsDataMapper;
-import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchResultDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountAmountDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -92,16 +90,6 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 	private final MoneyflowDataMapper moneyflowDataMapper;
 	private final PostingAccountAmountDataMapper postingAccountAmountDataMapper;
 	private final MoneyflowSearchParamsDataMapper moneyflowSearchParamsDataMapper;
-	private final MoneyflowSearchResultDataMapper moneyflowSearchResultDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.moneyflowDataMapper);
-		super.registerBeanMapper(this.postingAccountAmountDataMapper);
-		super.registerBeanMapper(this.moneyflowSearchParamsDataMapper);
-		super.registerBeanMapper(this.moneyflowSearchResultDataMapper);
-	}
 
 	private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
 		if (moneyflowData != null) {
@@ -124,8 +112,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	private List<PostingAccountAmount> mapPostingAccountAmountDataList(
 			final List<PostingAccountAmountData> postingAccountAmountDatas) {
-		final List<PostingAccountAmount> postingAccountAmounts = super.mapList(postingAccountAmountDatas,
-				PostingAccountAmount.class);
+		final List<PostingAccountAmount> postingAccountAmounts = this.postingAccountAmountDataMapper
+				.mapBToA(postingAccountAmountDatas);
 		for (final PostingAccountAmount postingAccountAmount : postingAccountAmounts) {
 			PostingAccount postingAccount = postingAccountAmount.getPostingAccount();
 			postingAccount = this.postingAccountService.getPostingAccountById(postingAccount.getId());

@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -53,12 +52,6 @@ import lombok.RequiredArgsConstructor;
 public class CrudEtfFlowController extends AbstractController implements CrudEtfFlowControllerApi {
 	private final IEtfService etfService;
 	private final EtfFlowTransportMapper etfFlowTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.etfFlowTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,

@@ -49,7 +49,6 @@ import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.EtfTransportMapper;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleRequest;
 import org.laladev.moneyjinn.server.model.CalcEtfSaleResponse;
 import org.laladev.moneyjinn.server.model.EtfEffectiveFlowTransport;
@@ -66,7 +65,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -77,17 +75,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	private static final BigDecimal BIG_DECIMAL_100 = BigDecimal.valueOf(100);
 	private final IEtfService etfService;
 	private final ISettingService settingService;
-	private final EtfTransportMapper etfTransportMapper;
 	private final EtfFlowTransportMapper etfFlowTransportMapper;
 	private final EtfEffectiveFlowTransportMapper etfEffectiveFlowTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.etfFlowTransportMapper);
-		super.registerBeanMapper(this.etfEffectiveFlowTransportMapper);
-		super.registerBeanMapper(this.etfTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<ListEtfOverviewResponse> listEtfOverview(
@@ -130,14 +119,14 @@ public class EtfController extends AbstractController implements EtfControllerAp
 		final ListEtfFlowsResponse response = new ListEtfFlowsResponse();
 
 		final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, LocalDateTime.now());
-		final List<EtfFlowTransport> etfFlowTransports = super.mapList(etfFlows, EtfFlowTransport.class);
+		final List<EtfFlowTransport> etfFlowTransports = this.etfFlowTransportMapper.mapAToB(etfFlows);
 		response.setEtfFlowTransports(etfFlowTransports);
 
 		final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
 				this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
 		Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
-		final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = super.mapList(etfEffectiveFlows,
-				EtfEffectiveFlowTransport.class);
+		final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = this.etfEffectiveFlowTransportMapper
+				.mapAToB(etfEffectiveFlows);
 		response.setEtfEffectiveFlowTransports(etfEffectiveFlowTransports);
 
 		final EtfValue etfValue = this.etfService.getLatestEtfValue(etf.getIsin());

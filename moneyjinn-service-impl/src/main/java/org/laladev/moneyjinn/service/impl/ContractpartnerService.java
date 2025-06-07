@@ -58,7 +58,6 @@ import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -77,12 +76,6 @@ public class ContractpartnerService extends AbstractService implements IContract
 	private final IPostingAccountService postingAccountService;
 	private final IAccessRelationService accessRelationService;
 	private final ContractpartnerDataMapper contractpartnerDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.contractpartnerDataMapper);
-	}
 
 	private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
 		if (contractpartnerData != null) {

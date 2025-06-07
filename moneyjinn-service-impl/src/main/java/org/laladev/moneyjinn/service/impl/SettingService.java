@@ -51,7 +51,6 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -67,12 +66,6 @@ public class SettingService extends AbstractService implements ISettingService {
 	private static final String ACCESS_ID_MUST_NOT_BE_NULL = "userId must not be null!";
 	private final SettingDao settingDao;
 	private final ObjectMapper objectMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		// no Mapper needed
-	}
 
 	@Override
 	public void deleteSettings(final UserID userId) {

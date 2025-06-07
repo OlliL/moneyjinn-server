@@ -72,7 +72,6 @@ import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountAmountTransportMapper;
 import org.laladev.moneyjinn.server.model.GetAvailableReportMonthResponse;
 import org.laladev.moneyjinn.server.model.ListReportsResponse;
-import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.PostingAccountAmountTransport;
 import org.laladev.moneyjinn.server.model.ReportTurnoverCapitalsourceTransport;
@@ -100,7 +99,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -120,14 +118,6 @@ public class ReportController extends AbstractController implements ReportContro
 	private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
 	private final MoneyflowTransportMapper moneyflowTransportMapper;
 	private final PostingAccountAmountTransportMapper postingAccountAmountTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.moneyflowTransportMapper);
-		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
-		super.registerBeanMapper(this.postingAccountAmountTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<ShowReportingFormResponse> showReportingForm() {
@@ -169,8 +159,8 @@ public class ReportController extends AbstractController implements ReportContro
 			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
 					.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdsYes,
 							startDate, endDate);
-			final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
-					postingAccountAmounts, PostingAccountAmountTransport.class);
+			final List<PostingAccountAmountTransport> responsePostingAccountAmount = this.postingAccountAmountTransportMapper
+					.mapAToB(postingAccountAmounts);
 			response.setPostingAccountAmountTransports(responsePostingAccountAmount);
 		}
 		return ResponseEntity.ok(response);
@@ -197,8 +187,8 @@ public class ReportController extends AbstractController implements ReportContro
 			final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
 					.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdsYes, startDate,
 							endDate);
-			final List<PostingAccountAmountTransport> responsePostingAccountAmount = super.mapList(
-					postingAccountAmounts, PostingAccountAmountTransport.class);
+			final List<PostingAccountAmountTransport> responsePostingAccountAmount = this.postingAccountAmountTransportMapper
+					.mapAToB(postingAccountAmounts);
 			response.setPostingAccountAmountTransports(responsePostingAccountAmount);
 		}
 		return ResponseEntity.ok(response);
@@ -701,7 +691,7 @@ public class ReportController extends AbstractController implements ReportContro
 				final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
 						.flatMap(List::stream).toList();
 				response.setMoneyflowSplitEntryTransports(
-						super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+						this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntryList));
 			}
 			if (!moneyflowIdsWithReceipts.isEmpty()) {
 				final List<Long> moneyflowIdLongs = moneyflowIdsWithReceipts.stream().map(MoneyflowID::getId).toList();

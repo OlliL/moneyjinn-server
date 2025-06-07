@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.GroupTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateGroupRequest;
 import org.laladev.moneyjinn.server.model.CreateGroupResponse;
-import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
 import org.laladev.moneyjinn.server.model.UpdateGroupRequest;
 import org.laladev.moneyjinn.service.api.IGroupService;
@@ -45,7 +44,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -58,18 +56,12 @@ public class GroupController extends AbstractController implements GroupControll
 	private final GroupTransportMapper groupTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.groupTransportMapper);
-	}
-
-	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<ShowGroupListResponse> showGroupList() {
 		final List<Group> groups = this.groupService.getAllGroups();
 		final ShowGroupListResponse response = new ShowGroupListResponse();
 		if (groups != null && !groups.isEmpty()) {
-			response.setGroupTransports(super.mapList(groups, GroupTransport.class));
+			response.setGroupTransports(this.groupTransportMapper.mapAToB(groups));
 		}
 		return ResponseEntity.ok(response);
 	}

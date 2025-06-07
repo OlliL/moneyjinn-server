@@ -55,11 +55,8 @@ import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.ImportedMoneyflowControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportImportedMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
@@ -79,7 +76,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -96,21 +92,8 @@ public class ImportedMoneyflowController extends AbstractController implements I
 	private final IMoneyflowService moneyflowService;
 	private final IImportedMoneyflowService importedMoneyflowService;
 	private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
-	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
-	private final ContractpartnerTransportMapper contractpartnerTransportMapper;
 	private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
 	private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
-	private final PostingAccountTransportMapper postingAccountTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.capitalsourceTransportMapper);
-		super.registerBeanMapper(this.contractpartnerTransportMapper);
-		super.registerBeanMapper(this.postingAccountTransportMapper);
-		super.registerBeanMapper(this.importedMoneyflowTransportMapper);
-		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
-	}
 
 	private ValidationResult checkIfAmountIsEqual(final Moneyflow moneyflow,
 			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
@@ -163,7 +146,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 				}
 
 				response.setImportedMoneyflowTransports(
-						super.mapList(importedMoneyflows, ImportedMoneyflowTransport.class));
+						this.importedMoneyflowTransportMapper.mapAToB(importedMoneyflows));
 			}
 		}
 	}
@@ -299,8 +282,8 @@ public class ImportedMoneyflowController extends AbstractController implements I
 		final UserID userId = super.getUserId();
 		final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowTransportMapper
 				.mapBToA(request.getImportedMoneyflowTransport());
-		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
-				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryTransportMapper
+				.mapBToA(request.getInsertMoneyflowSplitEntryTransports());
 
 		if (importedMoneyflow.getId() == null) {
 			return ResponseEntity.noContent().build();

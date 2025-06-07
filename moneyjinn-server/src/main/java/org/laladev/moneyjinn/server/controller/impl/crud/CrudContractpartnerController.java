@@ -48,7 +48,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -63,17 +62,11 @@ public class CrudContractpartnerController extends AbstractController implements
 	private final ContractpartnerTransportMapper contractpartnerTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.contractpartnerTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<List<ContractpartnerTransport>> readAll() {
 		final UserID userId = super.getUserId();
 		final List<Contractpartner> contractpartners = this.contractpartnerService.getAllContractpartners(userId);
 
-		return ResponseEntity.ok(super.mapList(contractpartners, ContractpartnerTransport.class));
+		return ResponseEntity.ok(this.contractpartnerTransportMapper.mapAToB(contractpartners));
 	}
 
 	@Override

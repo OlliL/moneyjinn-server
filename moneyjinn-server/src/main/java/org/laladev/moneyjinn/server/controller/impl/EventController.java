@@ -42,7 +42,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -53,12 +52,6 @@ public class EventController extends AbstractController implements EventControll
 	private final IMonthlySettlementService monthlySettlementService;
 	private final ICapitalsourceService capitalsourceService;
 	private final IImportedMoneyflowService importedMoneyflowService;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		// No Mapping needed.
-	}
 
 	@Override
 	public ResponseEntity<ShowEventListResponse> showEventList() {

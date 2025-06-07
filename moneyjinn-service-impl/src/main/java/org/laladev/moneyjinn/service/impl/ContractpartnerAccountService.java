@@ -53,7 +53,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerAccountDataM
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -67,13 +66,6 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	private final IAccessRelationService accessRelationService;
 	private final BankAccountDataMapper bankAccountDataMapper;
 	private final ContractpartnerAccountDataMapper contractpartnerAccountDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.contractpartnerAccountDataMapper);
-		super.registerBeanMapper(this.bankAccountDataMapper);
-	}
 
 	@Override
 	public ValidationResult validateContractpartnerAccount(final UserID userId,
@@ -253,7 +245,7 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			final List<BankAccount> bankAccounts) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(bankAccounts, "BankAccounts must not be null!");
-		final List<BankAccountData> bankAccountDatas = super.mapList(bankAccounts, BankAccountData.class);
+		final List<BankAccountData> bankAccountDatas = this.bankAccountDataMapper.mapAToB(bankAccounts);
 		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
 				.getAllContractpartnerByAccounts(bankAccountDatas);
 		return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);

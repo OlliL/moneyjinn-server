@@ -38,7 +38,6 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowReceiptDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +48,6 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final MoneyflowReceiptDao moneyflowReceiptDao;
 	private final MoneyflowReceiptDataMapper moneyflowReceiptDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.moneyflowReceiptDataMapper);
-	}
 
 	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
 		return this.moneyflowReceiptDataMapper.mapBToA(moneyflowReceiptData);

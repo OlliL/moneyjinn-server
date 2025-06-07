@@ -60,7 +60,6 @@ import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -78,12 +77,6 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	private final IGroupService groupService;
 	private final IAccessRelationService accessRelationService;
 	private final CapitalsourceDataMapper capitalsourceDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.capitalsourceDataMapper);
-	}
 
 	private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {
 		if (capitalsourceData != null) {

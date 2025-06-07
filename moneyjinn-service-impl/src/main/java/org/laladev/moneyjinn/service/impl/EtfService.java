@@ -77,7 +77,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -104,15 +103,6 @@ public class EtfService extends AbstractService implements IEtfService {
 	private final IUserService userService;
 	private final IGroupService groupService;
 	private final IAccessRelationService accessRelationService;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.etfFlowDataMapper);
-		super.registerBeanMapper(this.etfValueDataMapper);
-		super.registerBeanMapper(this.etfDataMapper);
-		super.registerBeanMapper(this.etfPreliminaryLumpSumDataMapper);
-	}
 
 	//
 	// Etf
@@ -246,7 +236,7 @@ public class EtfService extends AbstractService implements IEtfService {
 	public List<EtfFlow> getAllEtfFlowsUntil(final UserID userId, final EtfID etfId, final LocalDateTime timeUntil) {
 		if (this.getEtfById(userId, etfId) != null) {
 			final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(etfId.getId(), timeUntil);
-			return super.mapList(etfFlowData, EtfFlow.class);
+			return this.etfFlowDataMapper.mapBToA(etfFlowData);
 		}
 		return Collections.emptyList();
 	}
@@ -534,7 +524,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		final Etf etf = this.getEtfById(userId, etfId);
 		if (etf != null) {
 			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
-			return super.mapList(datas, EtfPreliminaryLumpSum.class);
+			return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
 		} else {
 			return Collections.emptyList();
 		}
@@ -565,7 +555,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		final Etf etf = this.getEtfById(userId, etfId);
 		if (etf != null) {
 			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllEtfPreliminaryLumpSum(etfId.getId());
-			return super.mapList(datas, EtfPreliminaryLumpSum.class);
+			return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
 		} else {
 			return Collections.emptyList();
 		}

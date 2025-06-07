@@ -54,7 +54,6 @@ import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSearchParamsTrans
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowSplitEntryTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateMoneyflowRequest;
-import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsByAmountResponse;
 import org.laladev.moneyjinn.server.model.SearchMoneyflowsRequest;
@@ -77,7 +76,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -98,14 +96,6 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	private final MoneyflowTransportMapper moneyflowTransportMapper;
 
 	private static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.moneyflowTransportMapper);
-		super.registerBeanMapper(this.moneyflowSearchParamsTransportMapper);
-		super.registerBeanMapper(this.moneyflowSplitEntryTransportMapper);
-	}
 
 	/**
 	 * Checks if capitalsource and contractparter are valid on bookingdate -
@@ -211,7 +201,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 					.getMoneyflowSplitEntries(userId, moneyflow.getId());
 			if (!moneyflowSplitEntries.isEmpty()) {
 				response.setMoneyflowSplitEntryTransports(
-						super.mapList(moneyflowSplitEntries, MoneyflowSplitEntryTransport.class));
+						this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntries));
 			}
 			final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
 					.getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
@@ -259,8 +249,8 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	public ResponseEntity<Void> createMoneyflows(@RequestBody final CreateMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
 		final Moneyflow moneyflow = this.moneyflowTransportMapper.mapBToA(request.getMoneyflowTransport());
-		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
-				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryTransportMapper
+				.mapBToA(request.getInsertMoneyflowSplitEntryTransports());
 		final Long preDefMoneyflowIdLong = request.getUsedPreDefMoneyflowId();
 		PreDefMoneyflowID preDefMoneyflowId = preDefMoneyflowIdLong != null
 				? new PreDefMoneyflowID(preDefMoneyflowIdLong)
@@ -332,10 +322,10 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
-		final List<MoneyflowSplitEntry> updateMoneyflowSplitEntries = super.mapList(
-				request.getUpdateMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
-		final List<MoneyflowSplitEntry> insertMoneyflowSplitEntries = super.mapList(
-				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
+		final List<MoneyflowSplitEntry> updateMoneyflowSplitEntries = this.moneyflowSplitEntryTransportMapper
+				.mapBToA(request.getUpdateMoneyflowSplitEntryTransports());
+		final List<MoneyflowSplitEntry> insertMoneyflowSplitEntries = this.moneyflowSplitEntryTransportMapper.mapBToA(
+				request.getInsertMoneyflowSplitEntryTransports());
 		List<MoneyflowSplitEntryID> deleteMoneyflowSplitEntryIds = null;
 		if (request.getDeleteMoneyflowSplitEntryIds() != null) {
 			deleteMoneyflowSplitEntryIds = request.getDeleteMoneyflowSplitEntryIds().stream()
@@ -409,7 +399,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 					.getMoneyflowSplitEntries(userId, moneyflowNew.getId());
 			if (!moneyflowSplitEntriesNew.isEmpty()) {
 				response.setMoneyflowSplitEntryTransports(
-						super.mapList(moneyflowSplitEntriesNew, MoneyflowSplitEntryTransport.class));
+						this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntriesNew));
 			}
 			final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
 					.getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflowNew.getId()));
@@ -464,14 +454,14 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 						.toList();
 				final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
 						.getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
-				final List<MoneyflowTransport> moneyflowTransports = super.mapList(relevantMoneyflows,
-						MoneyflowTransport.class);
+				final List<MoneyflowTransport> moneyflowTransports = this.moneyflowTransportMapper
+						.mapAToB(relevantMoneyflows);
 				response.setMoneyflowTransports(moneyflowTransports);
 				if (!moneyflowSplitEntries.isEmpty()) {
 					final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
 							.flatMap(List::stream).toList();
 					response.setMoneyflowSplitEntryTransports(
-							super.mapList(moneyflowSplitEntryList, MoneyflowSplitEntryTransport.class));
+							this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntryList));
 				}
 				return ResponseEntity.ok(response);
 			}

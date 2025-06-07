@@ -35,7 +35,6 @@ import org.laladev.moneyjinn.server.controller.api.PreDefMoneyflowControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PreDefMoneyflowTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.server.model.CreatePreDefMoneyflowResponse;
-import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowPreDefMoneyflowListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePreDefMoneyflowRequest;
 import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
@@ -46,7 +45,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -58,18 +56,12 @@ public class PreDefMoneyflowController extends AbstractController implements Pre
 	private final PreDefMoneyflowTransportMapper preDefMoneyflowTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.preDefMoneyflowTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<ShowPreDefMoneyflowListResponse> showPreDefMoneyflowList() {
 		final UserID userId = super.getUserId();
 		final List<PreDefMoneyflow> preDefMoneyflows = this.preDefMoneyflowService.getAllPreDefMoneyflows(userId);
 		final ShowPreDefMoneyflowListResponse response = new ShowPreDefMoneyflowListResponse();
 		if (preDefMoneyflows != null && !preDefMoneyflows.isEmpty()) {
-			response.setPreDefMoneyflowTransports(super.mapList(preDefMoneyflows, PreDefMoneyflowTransport.class));
+			response.setPreDefMoneyflowTransports(this.preDefMoneyflowTransportMapper.mapAToB(preDefMoneyflows));
 		}
 		return ResponseEntity.ok(response);
 	}

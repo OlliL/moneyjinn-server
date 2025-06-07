@@ -52,7 +52,6 @@ import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -65,12 +64,6 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	private final AccessRelationDao accessRelationDao;
 	private final IGroupService groupService;
 	private final AccessRelationDataMapper accessRelationDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.accessRelationDataMapper);
-	}
 
 	public LocalDate now() {
 		return LocalDate.now();
@@ -117,8 +110,8 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	public List<AccessRelation> getAllAccessRelationsById(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 
-		final Supplier<List<AccessRelation>> supplier = () -> super.mapList(
-				this.accessRelationDao.getAllAccessRelationsById(userId.getId()), AccessRelation.class);
+		final Supplier<List<AccessRelation>> supplier = () -> this.accessRelationDataMapper.mapBToA(
+				this.accessRelationDao.getAllAccessRelationsById(userId.getId()));
 
 		return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier);
 	}
@@ -172,7 +165,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 	private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId, final LocalDate date) {
 		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
 				.getAllAccessRelationsByIdDate(accessRelationId.getId(), date);
-		return super.mapList(accessRelationDataList, AccessRelation.class);
+		return this.accessRelationDataMapper.mapBToA(accessRelationDataList);
 	}
 
 	private void setAccessRelation(final AccessRelation accessRelation) {

@@ -50,7 +50,6 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSplitEntryDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +61,6 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	private final IPostingAccountService postingAccountService;
 	private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
 	private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.moneyflowSplitEntryDataMapper);
-	}
 
 	private MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
 		if (moneyflowSplitEntryData != null) {

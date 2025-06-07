@@ -47,7 +47,6 @@ import org.laladev.moneyjinn.server.model.AccessRelationTransport;
 import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.CreateUserRequest;
 import org.laladev.moneyjinn.server.model.CreateUserResponse;
-import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.laladev.moneyjinn.server.model.ShowEditUserResponse;
@@ -68,7 +67,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -85,14 +83,6 @@ public class UserController extends AbstractController implements UserController
 	private final AccessRelationTransportMapper accessRelationTransportMapper;
 	private final GroupTransportMapper groupTransportMapper;
 	private final UserTransportMapper userTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.userTransportMapper);
-		this.registerBeanMapper(this.groupTransportMapper);
-		this.registerBeanMapper(this.accessRelationTransportMapper);
-	}
 
 	private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(final LoginRequest request) {
 		final String username = request.getUserName();
@@ -156,8 +146,8 @@ public class UserController extends AbstractController implements UserController
 		if (user != null) {
 			final List<AccessRelation> accessRelations = this.accessRelationService
 					.getAllAccessRelationsById(user.getId());
-			final List<AccessRelationTransport> accessRelationTransports = super.mapList(accessRelations,
-					AccessRelationTransport.class);
+			final List<AccessRelationTransport> accessRelationTransports = this.accessRelationTransportMapper
+					.mapAToB(accessRelations);
 			response.setAccessRelationTransports(accessRelationTransports);
 
 		}
@@ -216,9 +206,9 @@ public class UserController extends AbstractController implements UserController
 					}
 				}
 			}
-			response.setUserTransports(super.mapList(users, UserTransport.class));
-			response.setAccessRelationTransports(super.mapList(accessRelationList, AccessRelationTransport.class));
-			response.setGroupTransports(super.mapList(new ArrayList<>(groupSet), GroupTransport.class));
+			response.setUserTransports(this.userTransportMapper.mapAToB(users));
+			response.setAccessRelationTransports(this.accessRelationTransportMapper.mapAToB(accessRelationList));
+			response.setGroupTransports(this.groupTransportMapper.mapAToB(new ArrayList<>(groupSet)));
 		}
 		return ResponseEntity.ok(response);
 	}

@@ -47,7 +47,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -61,17 +60,11 @@ public class CrudCapitalsourceController extends AbstractController implements C
 	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.capitalsourceTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<List<CapitalsourceTransport>> readAll() {
 		final UserID userId = super.getUserId();
 		final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
 
-		return ResponseEntity.ok(super.mapList(capitalsources, CapitalsourceTransport.class));
+		return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsources));
 	}
 
 	@Override

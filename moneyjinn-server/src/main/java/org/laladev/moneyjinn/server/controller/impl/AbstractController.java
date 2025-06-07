@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -39,7 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public abstract class AbstractController extends AbstractMapperSupport {
+public abstract class AbstractController {
 	protected static final String HEADER_PREFER = "Prefer";
 	private static final String HEADER_PREFERENCE_APPLIED = "Preference-Applied";
 	private static final String RETURN = "return=";

@@ -47,7 +47,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowStatusMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +61,6 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedMoneyflowDataMapper);
-	}
 
 	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
 			final ImportedMoneyflowData importedMoneyflowData) {

@@ -46,7 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -59,12 +58,6 @@ public class ImportedMonthlySettlementController extends AbstractController
 	private final ICapitalsourceService capitalsourceService;
 	private final IImportedMonthlySettlementService importedMonthlySettlementService;
 	private final ImportedMonthlySettlementTransportMapper importedMonthlySettlementTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedMonthlySettlementTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<Void> createImportedMonthlySettlement(

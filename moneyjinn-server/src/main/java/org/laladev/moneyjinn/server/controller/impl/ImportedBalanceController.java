@@ -45,7 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -57,12 +56,6 @@ public class ImportedBalanceController extends AbstractController implements Imp
 	private final ICapitalsourceService capitalsourceService;
 	private final IImportedBalanceService importedBalanceService;
 	private final ImportedBalanceTransportMapper importedBalanceTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedBalanceTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<Void> createImportedBalance(@RequestBody final CreateImportedBalanceRequest request) {

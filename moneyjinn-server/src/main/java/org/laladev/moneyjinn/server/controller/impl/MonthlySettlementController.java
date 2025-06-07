@@ -42,7 +42,6 @@ import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.MonthlySettlementControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.model.GetAvailableMonthlySettlementMonthResponse;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
@@ -62,7 +61,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -76,15 +74,7 @@ public class MonthlySettlementController extends AbstractController implements M
 	private final IMoneyflowService moneyflowService;
 	private final IUserService userService;
 	private final IAccessRelationService accessRelationService;
-	private final ImportedMonthlySettlementTransportMapper importedMonthlySettlementTransportMapper;
 	private final MonthlySettlementTransportMapper monthlySettlementTransportMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.monthlySettlementTransportMapper);
-		this.registerBeanMapper(this.importedMonthlySettlementTransportMapper);
-	}
 
 	@Override
 	public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonth() {
@@ -141,8 +131,8 @@ public class MonthlySettlementController extends AbstractController implements M
 		if (month != null && year != null) {
 			final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
 					.getAllMonthlySettlementsByYearMonth(userId, year, month);
-			final List<MonthlySettlementTransport> monthlySettlementTransports = super.mapList(monthlySettlements,
-					MonthlySettlementTransport.class);
+			final List<MonthlySettlementTransport> monthlySettlementTransports = this.monthlySettlementTransportMapper
+					.mapAToB(monthlySettlements);
 			response.setMonthlySettlementTransports(monthlySettlementTransports);
 		}
 		return ResponseEntity.ok(response);
@@ -310,11 +300,11 @@ public class MonthlySettlementController extends AbstractController implements M
 							monthlySettlement.setAmount(baseAmount.add(movedAmount));
 						}
 					}
-					importedMonthlySettlementTransports = super.mapList(relevantImportedMonthlySettlements,
-							MonthlySettlementTransport.class);
+					importedMonthlySettlementTransports = this.monthlySettlementTransportMapper
+							.mapAToB(relevantImportedMonthlySettlements);
 				}
 			}
-			monthlySettlementTransports = super.mapList(monthlySettlements, MonthlySettlementTransport.class);
+			monthlySettlementTransports = this.monthlySettlementTransportMapper.mapAToB(monthlySettlements);
 		}
 		response.setYear(year);
 		response.setMonth(month.getValue());
@@ -331,8 +321,8 @@ public class MonthlySettlementController extends AbstractController implements M
 	@Override
 	public ResponseEntity<Void> upsertMonthlySettlement(@RequestBody final UpsertMonthlySettlementRequest request) {
 		final UserID userId = super.getUserId();
-		final List<MonthlySettlement> monthlySettlements = super.mapList(request.getMonthlySettlementTransports(),
-				MonthlySettlement.class);
+		final List<MonthlySettlement> monthlySettlements = this.monthlySettlementTransportMapper
+				.mapBToA(request.getMonthlySettlementTransports());
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		for (final MonthlySettlement monthlySettlement : monthlySettlements) {

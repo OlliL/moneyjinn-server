@@ -46,7 +46,6 @@ import org.laladev.moneyjinn.service.dao.data.mapper.UserDataMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +61,6 @@ public class UserService extends AbstractService implements IUserService {
 	private final UserDao userDao;
 	private final UserDataMapper userDataMapper;
 	private final PasswordEncoder passwordEncoder;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.userDataMapper);
-	}
 
 	@Override
 	public ValidationResult validateUser(final User user) {
@@ -102,7 +95,7 @@ public class UserService extends AbstractService implements IUserService {
 	@Override
 	public List<User> getAllUsers() {
 		final List<UserData> userDataList = this.userDao.getAllUsers();
-		return super.mapList(userDataList, User.class);
+		return this.userDataMapper.mapBToA(userDataList);
 	}
 
 	@Override

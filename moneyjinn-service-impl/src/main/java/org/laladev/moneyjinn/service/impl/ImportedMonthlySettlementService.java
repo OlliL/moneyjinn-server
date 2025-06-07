@@ -44,7 +44,6 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -57,12 +56,6 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	private final ICapitalsourceService capitalsourceService;
 	private final IAccessRelationService accessRelationService;
 	private final ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.importedMonthlySettlementDataMapper);
-	}
 
 	private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
 			final ImportedMonthlySettlementData importedMonthlySettlementData) {

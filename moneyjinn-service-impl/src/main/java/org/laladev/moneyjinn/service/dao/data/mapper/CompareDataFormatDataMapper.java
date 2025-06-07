@@ -98,4 +98,14 @@ public class CompareDataFormatDataMapper implements IMapper<CompareDataFormat, C
 	public CompareDataFormatData mapAToB(final CompareDataFormat compareDataFormat) {
 		throw new UnsupportedOperationException("Mapping not supported!");
 	}
+
+	@Override
+	public List<CompareDataFormat> mapBToA(final List<CompareDataFormatData> b) {
+		return b == null ? null : b.stream().map(this::mapBToA).toList();
+	}
+
+	@Override
+	public List<CompareDataFormatData> mapAToB(final List<CompareDataFormat> a) {
+		return a == null ? null : a.stream().map(this::mapAToB).toList();
+	}
 }

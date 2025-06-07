@@ -33,7 +33,6 @@ import org.laladev.moneyjinn.server.controller.api.PostingAccountControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountRequest;
 import org.laladev.moneyjinn.server.model.CreatePostingAccountResponse;
-import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 import org.laladev.moneyjinn.server.model.ShowPostingAccountListResponse;
 import org.laladev.moneyjinn.server.model.UpdatePostingAccountRequest;
 import org.laladev.moneyjinn.service.api.IPostingAccountService;
@@ -45,7 +44,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -57,17 +55,11 @@ public class PostingAccountController extends AbstractController implements Post
 	private final PostingAccountTransportMapper postingAccountTransportMapper;
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.postingAccountTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<ShowPostingAccountListResponse> showPostingAccountList() {
 		final List<PostingAccount> postingAccounts = this.postingAccountService.getAllPostingAccounts();
 		final ShowPostingAccountListResponse response = new ShowPostingAccountListResponse();
 		if (postingAccounts != null && !postingAccounts.isEmpty()) {
-			response.setPostingAccountTransports(super.mapList(postingAccounts, PostingAccountTransport.class));
+			response.setPostingAccountTransports(this.postingAccountTransportMapper.mapAToB(postingAccounts));
 		}
 		return ResponseEntity.ok(response);
 	}

@@ -78,7 +78,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -95,12 +94,6 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.compareDataFormatDataMapper);
-	}
-
-	@Override
 	public CompareDataFormat getCompareDataFormatById(final CompareDataFormatID compareDataFormatId) {
 		final CompareDataFormatData compareDataFormatData = this.compareDataFormatDao
 				.getCompareDataFormatById(compareDataFormatId.getId());
@@ -110,7 +103,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	@Override
 	public List<CompareDataFormat> getAllCompareDataFormats() {
 		final List<CompareDataFormatData> compareDataFormatDatas = this.compareDataFormatDao.getAllCompareDataFormats();
-		return super.mapList(compareDataFormatDatas, CompareDataFormat.class);
+		return this.compareDataFormatDataMapper.mapBToA(compareDataFormatDatas);
 	}
 
 	@Override
@@ -241,8 +234,9 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 			final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
 					.getAllContractpartnerByAccounts(userId,
 							Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
-			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty() && contractpartnerAccounts.getFirst()
-					.getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
+			if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()
+					&& contractpartnerAccounts.getFirst()
+							.getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
 				rating += 50;
 			}
 		}

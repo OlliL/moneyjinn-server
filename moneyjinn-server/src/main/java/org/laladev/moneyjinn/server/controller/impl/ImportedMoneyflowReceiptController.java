@@ -55,7 +55,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -76,20 +75,14 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
 
 	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		this.registerBeanMapper(this.importedMoneyflowReceiptTransportMapper);
-	}
-
-	@Override
 	public ResponseEntity<Void> createImportedMoneyflowReceipts(
 			@RequestBody final CreateImportedMoneyflowReceiptsRequest request) {
 		final UserID userId = super.getUserId();
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ValidationResult validationResult = new ValidationResult();
-		final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = super.mapList(
-				request.getImportedMoneyflowReceiptTransports(), ImportedMoneyflowReceipt.class);
+		final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = this.importedMoneyflowReceiptTransportMapper
+				.mapBToA(request.getImportedMoneyflowReceiptTransports());
 		importedMoneyflowReceipts.stream().forEach(imr -> {
 			imr.setUser(user);
 			imr.setGroup(group);
@@ -113,8 +106,8 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 		final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
 		final List<ImportedMoneyflowReceipt> allImportedMoneyflowReceipts = this.importedMoneyflowReceiptService
 				.getAllImportedMoneyflowReceipts(userId, group.getId());
-		final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = super.mapList(
-				allImportedMoneyflowReceipts, ImportedMoneyflowReceiptTransport.class);
+		final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = this.importedMoneyflowReceiptTransportMapper
+				.mapAToB(allImportedMoneyflowReceipts);
 		response.setImportedMoneyflowReceiptTransports(allImportedMoneyflowReceiptTransports);
 		return ResponseEntity.ok(response);
 	}

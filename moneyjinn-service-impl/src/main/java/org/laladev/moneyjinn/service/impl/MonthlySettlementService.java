@@ -49,7 +49,6 @@ import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MonthlySettlementDataMapper;
 import org.springframework.util.Assert;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
@@ -65,12 +64,6 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 	private final IGroupService groupService;
 	private final ICapitalsourceService capitalsourceService;
 	private final MonthlySettlementDataMapper monthlySettlementDataMapper;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		super.registerBeanMapper(this.monthlySettlementDataMapper);
-	}
 
 	private ValidationResult validateMonthlySettlement(final MonthlySettlement monthlySettlement) {
 		Assert.notNull(monthlySettlement, "monthlySettlement must not be null!");
@@ -175,8 +168,8 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 		final ValidationResult validationResult = new ValidationResult();
 		monthlySettlements.forEach(ms -> validationResult.mergeValidationResult(this.validateMonthlySettlement(ms)));
 		if (validationResult.isValid()) {
-			final List<MonthlySettlementData> monthlySettlementDatas = super.mapList(monthlySettlements,
-					MonthlySettlementData.class);
+			final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDataMapper
+					.mapAToB(monthlySettlements);
 			monthlySettlementDatas.forEach(this.monthlySettlementDao::upsertMonthlySettlement);
 		}
 

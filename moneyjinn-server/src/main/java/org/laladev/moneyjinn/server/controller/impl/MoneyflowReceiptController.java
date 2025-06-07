@@ -41,7 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
@@ -52,12 +51,6 @@ import lombok.RequiredArgsConstructor;
 public class MoneyflowReceiptController extends AbstractController implements MoneyflowReceiptControllerApi {
 	private final IMoneyflowService moneyflowService;
 	private final IMoneyflowReceiptService moneyflowReceiptService;
-
-	@Override
-	@PostConstruct
-	protected void addBeanMapper() {
-		// No mapper needed.
-	}
 
 	@Override
 	public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(

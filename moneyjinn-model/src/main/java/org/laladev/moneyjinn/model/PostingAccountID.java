@@ -37,8 +37,7 @@ public class PostingAccountID extends AbstractEntityID<Long> {
 
 	public PostingAccountID() {
 		// Is needed for Settings recovering from the JSON string which is stored in the
-		// DB (Jackson
-		// Mapper).
+		// DB (Jackson Mapper).
 	}
 
 	public PostingAccountID(final Long id) {
