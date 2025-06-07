@@ -17,12 +17,12 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 
 class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
-	private final static BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("900.000");
-	private final static BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("899.500");
-	private final static Long SETTING_ETF_ID = EtfTransportBuilder.ETF_ID_1;
-	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
-	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE = new BigDecimal("0.99");
-	private final static BigDecimal SETTING_SALE_TRANSACTION_COSTS_RELATIVE = new BigDecimal("0.25");
+	private static final BigDecimal SETTING_SALE_ASK_PRICE = new BigDecimal("900.000");
+	private static final BigDecimal SETTING_SALE_BID_PRICE = new BigDecimal("899.500");
+	private static final Long SETTING_ETF_ID = EtfTransportBuilder.ETF_ID_1;
+	private static final BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
+	private static final BigDecimal SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE = new BigDecimal("0.99");
+	private static final BigDecimal SETTING_SALE_TRANSACTION_COSTS_RELATIVE = new BigDecimal("0.25");
 
 	@Override
 	protected void loadMethod() {

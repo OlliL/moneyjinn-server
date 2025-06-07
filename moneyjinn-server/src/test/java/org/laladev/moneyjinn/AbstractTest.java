@@ -10,14 +10,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import jakarta.inject.Inject;
 
 @SpringBootTest
 @ContextConfiguration(classes = { MoneyjinnTestConfiguration.class })
-@SqlGroup({ @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
-		"classpath:testdata.sql" }) })
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = { "classpath:h2defaults.sql",
+		"classpath:testdata.sql" })
 @ActiveProfiles("test")
 public abstract class AbstractTest {
 	@Inject

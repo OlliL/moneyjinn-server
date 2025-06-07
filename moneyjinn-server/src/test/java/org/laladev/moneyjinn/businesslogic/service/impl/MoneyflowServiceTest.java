@@ -148,9 +148,8 @@ class MoneyflowServiceTest extends AbstractTest {
 		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 		// this caches
-		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
-				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
-		moneyflow = this.moneyflowService.getMoneyflowById(user1Id,
+		this.moneyflowService.getMoneyflowById(user2Id, new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
+		Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user1Id,
 				new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
 		final String comment = String.valueOf(System.currentTimeMillis());
 		moneyflow.getUser().setId(user1Id);

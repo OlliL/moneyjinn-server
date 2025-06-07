@@ -61,7 +61,6 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -80,8 +79,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
 	@Override
 	public ResponseEntity<ListEtfOverviewResponse> listEtfOverview(
-			@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+			final Integer requestYear,
+			final Integer requestMonth) {
 		final Month month = Month.of(requestMonth);
 		final Year year = Year.of(requestYear);
 		final LocalDateTime endOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999)
@@ -107,7 +106,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 	}
 
 	@Override
-	public ResponseEntity<ListEtfFlowsResponse> listEtfFlowsById(@PathVariable("id") final Long id) {
+	public ResponseEntity<ListEtfFlowsResponse> listEtfFlowsById(final Long id) {
 		final UserID userId = this.getUserId();
 		final EtfID etfId = new EtfID(id);
 

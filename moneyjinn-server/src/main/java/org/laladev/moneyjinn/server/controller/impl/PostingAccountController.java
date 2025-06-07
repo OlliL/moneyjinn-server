@@ -40,7 +40,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -99,7 +98,7 @@ public class PostingAccountController extends AbstractController implements Post
 
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
-	public ResponseEntity<Void> deletePostingAccountById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deletePostingAccountById(final Long id) {
 		final PostingAccountID postingAccountId = new PostingAccountID(id);
 		this.postingAccountService.deletePostingAccount(postingAccountId);
 

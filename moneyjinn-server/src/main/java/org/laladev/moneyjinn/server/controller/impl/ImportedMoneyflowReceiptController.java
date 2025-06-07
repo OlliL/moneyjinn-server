@@ -51,7 +51,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -113,7 +112,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteImportedMoneyflowReceiptById(final Long id) {
 		final UserID userId = super.getUserId();
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);
@@ -126,8 +125,8 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<Void> importImportedMoneyflowReceipt(@PathVariable(value = "id") final Long id,
-			@PathVariable(value = "moneyflowid") final Long moneyflowid) {
+	public ResponseEntity<Void> importImportedMoneyflowReceipt(final Long id,
+			final Long moneyflowid) {
 		final UserID userId = super.getUserId();
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ImportedMoneyflowReceiptID importedMoneyflowReceiptId = new ImportedMoneyflowReceiptID(id);

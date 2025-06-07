@@ -43,7 +43,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,7 +69,7 @@ public class CrudContractpartnerController extends AbstractController implements
 	}
 
 	@Override
-	public ResponseEntity<ContractpartnerTransport> readOne(@PathVariable("id") final Long id) {
+	public ResponseEntity<ContractpartnerTransport> readOne(final Long id) {
 		final UserID userId = super.getUserId();
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);
 		final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
@@ -125,7 +124,7 @@ public class CrudContractpartnerController extends AbstractController implements
 	}
 
 	@Override
-	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
+	public ResponseEntity<Void> delete(final Long id) {
 		final UserID userId = super.getUserId();
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(id);

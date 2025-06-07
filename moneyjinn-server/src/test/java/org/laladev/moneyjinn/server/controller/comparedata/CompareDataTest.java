@@ -458,10 +458,7 @@ class CompareDataTest extends AbstractWebUserControllerTest {
 			encoding = "UTF-8";
 		}
 		final String stringFileContents = new String(rawFileContents, encoding);
-		// final String stringFileContents = new String(rawFileContents,
-		// StandardCharsets.ISO_8859_1);
-		final String base64FileContents = Base64.getMimeEncoder().encodeToString(stringFileContents.getBytes());
-		return base64FileContents;
+		return Base64.getMimeEncoder().encodeToString(stringFileContents.getBytes());
 	}
 
 	@Override

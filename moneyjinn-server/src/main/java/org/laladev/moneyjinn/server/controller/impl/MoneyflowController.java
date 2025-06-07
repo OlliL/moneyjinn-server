@@ -72,7 +72,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -124,20 +123,18 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 				if (moneyflow.getCapitalsource() != null) {
 					final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
 							group.getId(), moneyflow.getCapitalsource().getId());
-					if (capitalsource != null) {
-						if (capitalsource.groupUseAllowed(userId)) {
-							final boolean bookingDateIsBeforeValidity = bookingDate
-									.isBefore(capitalsource.getValidFrom());
-							final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
-							if (bookingDateIsBeforeValidity) {
-								capitalsource.setValidFrom(bookingDate);
-							}
-							if (bookingDateIsAfterValidity) {
-								capitalsource.setValidTil(bookingDate);
-							}
-							if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
-								this.capitalsourceService.updateCapitalsource(capitalsource);
-							}
+					if (capitalsource != null && capitalsource.groupUseAllowed(userId)) {
+						final boolean bookingDateIsBeforeValidity = bookingDate
+								.isBefore(capitalsource.getValidFrom());
+						final boolean bookingDateIsAfterValidity = bookingDate.isAfter(capitalsource.getValidTil());
+						if (bookingDateIsBeforeValidity) {
+							capitalsource.setValidFrom(bookingDate);
+						}
+						if (bookingDateIsAfterValidity) {
+							capitalsource.setValidTil(bookingDate);
+						}
+						if (bookingDateIsAfterValidity || bookingDateIsBeforeValidity) {
+							this.capitalsourceService.updateCapitalsource(capitalsource);
 						}
 					}
 				}
@@ -191,7 +188,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	}
 
 	@Override
-	public ResponseEntity<ShowEditMoneyflowResponse> showEditMoneyflow(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<ShowEditMoneyflowResponse> showEditMoneyflow(final Long id) {
 		final UserID userId = super.getUserId();
 		final ShowEditMoneyflowResponse response = new ShowEditMoneyflowResponse();
 		final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, new MoneyflowID(id));
@@ -416,7 +413,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 	 */
 
 	@Override
-	public ResponseEntity<Void> deleteMoneyflowById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteMoneyflowById(final Long id) {
 		final UserID userId = super.getUserId();
 		final MoneyflowID moneyflowId = new MoneyflowID(id);
 
@@ -438,9 +435,9 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 
 	@Override
 	public ResponseEntity<SearchMoneyflowsByAmountResponse> searchMoneyflowsByAmount(
-			@PathVariable(value = "amount") final BigDecimal amount,
-			@PathVariable(value = "dateFromStr") final String dateFromStr,
-			@PathVariable(value = "dateTilStr") final String dateTilStr) {
+			final BigDecimal amount,
+			final String dateFromStr,
+			final String dateTilStr) {
 		final UserID userId = super.getUserId();
 		final SearchMoneyflowsByAmountResponse response = new SearchMoneyflowsByAmountResponse();
 		final LocalDate dateFrom = LocalDate.parse(dateFromStr, SEARCH_DATE_FORMATTER);

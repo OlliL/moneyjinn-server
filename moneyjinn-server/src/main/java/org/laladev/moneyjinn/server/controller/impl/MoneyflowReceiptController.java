@@ -38,7 +38,6 @@ import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.inject.Inject;
@@ -53,8 +52,7 @@ public class MoneyflowReceiptController extends AbstractController implements Mo
 	private final IMoneyflowReceiptService moneyflowReceiptService;
 
 	@Override
-	public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(
-			@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<ShowMoneyflowReceiptResponse> showMoneyflowReceipt(final Long id) {
 		final UserID userId = super.getUserId();
 		final MoneyflowID moneyflowId = new MoneyflowID(id);
 		final ShowMoneyflowReceiptResponse response = new ShowMoneyflowReceiptResponse();
@@ -73,7 +71,7 @@ public class MoneyflowReceiptController extends AbstractController implements Mo
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteMoneyflowReceipt(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteMoneyflowReceipt(final Long id) {
 		final UserID userId = super.getUserId();
 		final MoneyflowID moneyflowId = new MoneyflowID(id);
 

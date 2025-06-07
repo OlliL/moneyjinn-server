@@ -56,9 +56,9 @@ class ContractpartnerServiceTest extends AbstractTest {
 		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 		// this caches
-		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user1Id,
+		this.contractpartnerService.getContractpartnerById(user1Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
-		contractpartner = this.contractpartnerService.getContractpartnerById(user2Id,
+		Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user2Id,
 				new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
 		final String name = String.valueOf(System.currentTimeMillis());
 		contractpartner.getUser().setId(user2Id);

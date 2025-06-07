@@ -46,7 +46,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,7 +70,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 
 		final List<EtfTransport> transports = etfs.stream()
 				.sorted(Comparator.comparing(Etf::getName, String.CASE_INSENSITIVE_ORDER))
-				.map(etf -> this.etfTransportMapper.mapAToB(etf)).toList();
+				.map(this.etfTransportMapper::mapAToB).toList();
 
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());
@@ -85,7 +84,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	}
 
 	@Override
-	public ResponseEntity<EtfTransport> readOne(@PathVariable("id") final Long id) {
+	public ResponseEntity<EtfTransport> readOne(final Long id) {
 		final UserID userId = super.getUserId();
 		final EtfID etfId = new EtfID(id);
 		final Etf etf = this.etfService.getEtfById(userId, etfId);
@@ -154,7 +153,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	}
 
 	@Override
-	public ResponseEntity<Void> delete(@PathVariable("id") final Long id) {
+	public ResponseEntity<Void> delete(final Long id) {
 		final UserID userId = super.getUserId();
 		final EtfID etfId = new EtfID(id);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);

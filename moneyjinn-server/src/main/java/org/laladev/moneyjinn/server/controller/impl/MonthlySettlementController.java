@@ -57,7 +57,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -83,14 +82,14 @@ public class MonthlySettlementController extends AbstractController implements M
 
 	@Override
 	public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonthYear(
-			@PathVariable(value = "year") final Integer year) {
+			final Integer year) {
 		return this.getAvailableMonthYearMonth(year, null);
 	}
 
 	@Override
 	public ResponseEntity<GetAvailableMonthlySettlementMonthResponse> getAvailableMonthYearMonth(
-			@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+			final Integer requestYear,
+			final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		final GetAvailableMonthlySettlementMonthResponse response = new GetAvailableMonthlySettlementMonthResponse();
 		final List<Integer> allYears = this.monthlySettlementService.getAllYears(userId);
@@ -120,8 +119,8 @@ public class MonthlySettlementController extends AbstractController implements M
 
 	@Override
 	public ResponseEntity<ShowMonthlySettlementListResponse> showMonthlySettlementListV2(
-			@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+			final Integer requestYear,
+			final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
 		final Integer year = requestYear;
@@ -145,14 +144,13 @@ public class MonthlySettlementController extends AbstractController implements M
 
 	@Override
 	public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreateYear(
-			@PathVariable(value = "year") final Integer requestYear) {
+			final Integer requestYear) {
 		return this.showMonthlySettlementCreateYearMonth(requestYear, null);
 	}
 
 	@Override
 	public ResponseEntity<ShowMonthlySettlementCreateResponse> showMonthlySettlementCreateYearMonth(
-			@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+			final Integer requestYear, final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		final ShowMonthlySettlementCreateResponse response = new ShowMonthlySettlementCreateResponse();
 		LocalDate lastDate = this.monthlySettlementService.getMaxSettlementDate(userId);
@@ -338,8 +336,8 @@ public class MonthlySettlementController extends AbstractController implements M
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteMonthlySettlement(@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+	public ResponseEntity<Void> deleteMonthlySettlement(final Integer requestYear,
+			final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		this.monthlySettlementService.deleteMonthlySettlement(userId, requestYear, this.getMonth(requestMonth));
 

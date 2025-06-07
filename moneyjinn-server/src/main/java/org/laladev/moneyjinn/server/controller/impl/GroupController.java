@@ -40,7 +40,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -97,7 +96,7 @@ public class GroupController extends AbstractController implements GroupControll
 
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
-	public ResponseEntity<Void> deleteGroupById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteGroupById(final Long id) {
 		final GroupID groupId = new GroupID(id);
 
 		this.groupService.deleteGroup(groupId);

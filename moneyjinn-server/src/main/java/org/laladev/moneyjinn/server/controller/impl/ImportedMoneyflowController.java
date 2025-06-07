@@ -72,7 +72,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -189,7 +188,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteImportedMoneyflowById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteImportedMoneyflowById(final Long id) {
 		final UserID userId = super.getUserId();
 		final ImportedMoneyflowID importedMoneyflowId = new ImportedMoneyflowID(id);
 

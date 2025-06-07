@@ -39,7 +39,6 @@ import org.laladev.moneyjinn.service.api.IEtfService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,8 +55,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	private final EtfPreliminaryLumpSumTransportMapper etfPreliminaryLumpSumTransportMapper;
 
 	@Override
-	public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(
-			@PathVariable("etfId") final Long requestEtfId) {
+	public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(final Long requestEtfId) {
 		final UserID userId = super.getUserId();
 		final EtfID etfId = new EtfID(requestEtfId);
 
@@ -69,7 +67,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(@PathVariable("id") final Long requestId) {
+	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(final Long requestId) {
 		final UserID userId = super.getUserId();
 		final var id = new EtfPreliminaryLumpSumID(requestId);
 
@@ -116,7 +114,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 	}
 
 	@Override
-	public ResponseEntity<Void> delete(@PathVariable("id") final Long requestId) {
+	public ResponseEntity<Void> delete(final Long requestId) {
 		final UserID userId = super.getUserId();
 		final var id = new EtfPreliminaryLumpSumID(requestId);
 

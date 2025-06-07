@@ -16,7 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 class LoginTest extends AbstractControllerTest {
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		super.setUsername(null);
 		super.setPassword(null);
 	}

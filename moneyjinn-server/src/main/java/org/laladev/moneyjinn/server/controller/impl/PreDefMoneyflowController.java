@@ -41,7 +41,6 @@ import org.laladev.moneyjinn.service.api.IPreDefMoneyflowService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -100,7 +99,7 @@ public class PreDefMoneyflowController extends AbstractController implements Pre
 	}
 
 	@Override
-	public ResponseEntity<Void> deletePreDefMoneyflowById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deletePreDefMoneyflowById(final Long id) {
 		final UserID userId = super.getUserId();
 		final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(id);
 

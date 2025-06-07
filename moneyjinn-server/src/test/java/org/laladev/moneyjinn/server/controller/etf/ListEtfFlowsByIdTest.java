@@ -31,7 +31,7 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 	@Inject
 	private ISettingService settingService;
 
-	private final static BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
+	private static final BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
 
 	@Override
 	protected void loadMethod() {

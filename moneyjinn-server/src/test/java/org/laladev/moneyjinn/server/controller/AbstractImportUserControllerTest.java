@@ -7,9 +7,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 public abstract class AbstractImportUserControllerTest extends AbstractControllerTest {
 
-	abstract protected void callUsecaseExpect403ForThisUsecase() throws Exception;
+	protected abstract void callUsecaseExpect403ForThisUsecase() throws Exception;
 
-	abstract protected void callUsecaseEmptyDatabase() throws Exception;
+	protected abstract void callUsecaseEmptyDatabase() throws Exception;
 
 	@BeforeEach
 	public void setUp() {

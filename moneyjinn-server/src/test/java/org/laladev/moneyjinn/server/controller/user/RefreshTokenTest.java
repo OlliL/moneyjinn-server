@@ -36,7 +36,7 @@ class RefreshTokenTest extends AbstractControllerTest {
 	private IUserService userService;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		super.setUsername(null);
 		super.setPassword(null);
 	}
@@ -52,7 +52,7 @@ class RefreshTokenTest extends AbstractControllerTest {
 	 * @throws Exception
 	 */
 	@BeforeEach
-	public void beforeTestClass() throws Exception {
+	void beforeTestClass() throws Exception {
 		final String username = UserTransportBuilder.USER1_NAME;
 		final String password = UserTransportBuilder.USER1_PASSWORD;
 
@@ -66,7 +66,7 @@ class RefreshTokenTest extends AbstractControllerTest {
 				.accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8.name())).andReturn();
 		final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		Assertions.assertNotNull(content);
-		Assertions.assertTrue(content.length() > 0);
+		Assertions.assertFalse(content.isEmpty());
 		final LoginResponse actual = this.objectMapper.readValue(content, LoginResponse.class);
 		super.setOverrideJwtToken(actual.getRefreshToken());
 	}

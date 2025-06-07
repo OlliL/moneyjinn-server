@@ -45,11 +45,12 @@ class ContractpartnerAccountServiceTest extends AbstractTest {
 		final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
 		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 		// this caches
+		this.contractpartnerAccountService.getContractpartnerAccountById(user2Id, new ContractpartnerAccountID(
+				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 		ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(user2Id, new ContractpartnerAccountID(
-						ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
-		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(user1Id,
-				new ContractpartnerAccountID(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
+				.getContractpartnerAccountById(user1Id,
+						new ContractpartnerAccountID(
+								ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID));
 		final String comment = String.valueOf(System.currentTimeMillis());
 		contractpartnerAccount.getBankAccount().setAccountNumber(comment);
 		// this should also modify the cache of user 1!

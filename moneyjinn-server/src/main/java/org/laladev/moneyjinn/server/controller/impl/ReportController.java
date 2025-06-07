@@ -95,7 +95,6 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -416,14 +415,14 @@ public class ReportController extends AbstractController implements ReportContro
 
 	@Override
 	public ResponseEntity<GetAvailableReportMonthResponse> getAvailableMonthYear(
-			@PathVariable(value = "year") final Integer requestYear) {
+			final Integer requestYear) {
 		return this.getAvailableMonthYearMonth(requestYear, null);
 	}
 
 	@Override
 	public ResponseEntity<GetAvailableReportMonthResponse> getAvailableMonthYearMonth(
-			@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+			final Integer requestYear,
+			final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		final GetAvailableReportMonthResponse response = new GetAvailableReportMonthResponse();
 		final List<Integer> allYears = this.moneyflowService.getAllYears(userId);
@@ -508,8 +507,8 @@ public class ReportController extends AbstractController implements ReportContro
 	}
 
 	@Override
-	public ResponseEntity<ListReportsResponse> listReportsV2(@PathVariable(value = "year") final Integer requestYear,
-			@PathVariable(value = "month") final Integer requestMonth) {
+	public ResponseEntity<ListReportsResponse> listReportsV2(final Integer requestYear,
+			final Integer requestMonth) {
 		final UserID userId = super.getUserId();
 		final ListReportsResponse response = new ListReportsResponse();
 		final List<ReportTurnoverCapitalsourceTransport> turnoverCapitalsources = new ArrayList<>();

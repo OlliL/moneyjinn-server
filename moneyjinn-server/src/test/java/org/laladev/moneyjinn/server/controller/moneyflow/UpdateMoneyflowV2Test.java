@@ -623,8 +623,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 		super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 	}
 
-	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_Mse_for_Moneyflow_1()
-			throws Exception {
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_Mse_for_Moneyflow_1() {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID);
 		final List<MoneyflowSplitEntry> moneyflowSplitEntriesMoneyflow1 = this.moneyflowSplitEntryService
@@ -640,8 +639,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 				moneyflowSplitEntriesMoneyflow1.get(1).getAmount());
 	}
 
-	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_Mse_for_Moneyflow_2()
-			throws Exception {
+	private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Validate_Mse_for_Moneyflow_2() {
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final MoneyflowID moneyflowId = new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW2_ID);
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService

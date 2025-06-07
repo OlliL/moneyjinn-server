@@ -1,7 +1,6 @@
 
 package org.laladev.moneyjinn.server.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.inject.Inject;
@@ -118,7 +116,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
 			final String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
 			Assertions.assertNotNull(content);
-			Assertions.assertTrue(content.length() > 0);
+			Assertions.assertFalse(content.isEmpty());
 			Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus(), content);
 
 			final LoginResponse actual = this.objectMapper.readValue(content, LoginResponse.class);
@@ -130,8 +128,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	}
 
 	private <T> T executeCall(final Class<T> clazz, final HttpStatus status,
-			final MockHttpServletRequestBuilder builder)
-			throws Exception, UnsupportedEncodingException, JsonProcessingException, JsonMappingException {
+			final MockHttpServletRequestBuilder builder) throws Exception {
 
 		builder.headers(this.getAuthorizationHeader());
 
@@ -153,10 +150,9 @@ public abstract class AbstractControllerTest extends AbstractTest {
 		Assertions.assertEquals(status.value(), result.getResponse().getStatus(), content);
 
 		if (clazz != null) {
-			Assertions.assertTrue(content.length() > 0,
+			Assertions.assertFalse(content.isEmpty(),
 					"Response is empty, but a deserialisation class was specified!");
-			final T actual = this.objectMapper.readValue(content, clazz);
-			return actual;
+			return this.objectMapper.readValue(content, clazz);
 		}
 
 		Assertions.assertEquals(0, content.length());
@@ -165,19 +161,17 @@ public abstract class AbstractControllerTest extends AbstractTest {
 
 	private String getReturnFromPreferenceAppliedHeader(final MvcResult result) {
 		final List<String> headerPreferenceApplied = result.getResponse().getHeaders(HEADER_PREFERENCE_APPLIED);
-		final String returnHeaderAppliedValue = Optional.ofNullable(headerPreferenceApplied)
+		return Optional.ofNullable(headerPreferenceApplied)
 				.orElse(Collections.emptyList()).stream().map(String::toLowerCase).filter(p -> p.startsWith(RETURN))
 				.findFirst().orElse("");
-		return returnHeaderAppliedValue;
 	}
 
 	private String getReturnFromPreferHeader(final MvcResult result) {
 		final Enumeration<String> headerPrefer = result.getRequest().getHeaders(HEADER_PREFER);
-		final String returnHeaderValue = StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
 				Optional.ofNullable(headerPrefer).orElse(Collections.emptyEnumeration()).asIterator(),
 				Spliterator.ORDERED), false).map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst()
 				.orElse("");
-		return returnHeaderValue;
 	}
 
 	protected <T> T callUsecaseExpect200(final Object body, final Class<T> clazz) throws Exception {

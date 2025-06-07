@@ -67,9 +67,9 @@ class CapitalsourceServiceTest extends AbstractTest {
 		final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
 		final GroupID groupId = new GroupID(GroupTransportBuilder.GROUP1_ID);
 		// this caches
-		Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(user2Id, groupId,
+		this.capitalsourceService.getCapitalsourceById(user2Id, groupId,
 				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
-		capitalsource = this.capitalsourceService.getCapitalsourceById(user1Id, groupId,
+		Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(user1Id, groupId,
 				new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
 		final String comment = String.valueOf(System.currentTimeMillis());
 		capitalsource.getUser().setId(user1Id);

@@ -63,7 +63,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -140,7 +139,7 @@ public class UserController extends AbstractController implements UserController
 
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
-	public ResponseEntity<ShowEditUserResponse> showEditUser(@PathVariable(value = "id") final Long userId) {
+	public ResponseEntity<ShowEditUserResponse> showEditUser(final Long userId) {
 		final ShowEditUserResponse response = new ShowEditUserResponse();
 		final User user = this.userService.getUserById(new UserID(userId));
 		if (user != null) {
@@ -247,7 +246,7 @@ public class UserController extends AbstractController implements UserController
 
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
-	public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") final Long id) {
+	public ResponseEntity<Void> deleteUserById(final Long id) {
 		final UserID userId = new UserID(id);
 
 		this.accessRelationService.deleteAllAccessRelation(userId);
