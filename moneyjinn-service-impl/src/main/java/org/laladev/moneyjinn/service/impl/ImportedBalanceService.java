@@ -65,7 +65,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 
 	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
 		if (importedBalanceData != null) {
-			final ImportedBalance importedBalance = super.map(importedBalanceData, ImportedBalance.class);
+			final ImportedBalance importedBalance = this.importedBalanceDataMapper.mapBToA(importedBalanceData);
 			importedBalance.setUser(new User(userId));
 
 			this.userService.enrichEntity(importedBalance);
@@ -106,7 +106,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	@Override
 	public void upsertImportedBalance(final ImportedBalance importedBalance) {
 		Assert.notNull(importedBalance, "importedBalance must not be null!");
-		final ImportedBalanceData importedBalanceData = super.map(importedBalance, ImportedBalanceData.class);
+		final ImportedBalanceData importedBalanceData = this.importedBalanceDataMapper.mapAToB(importedBalance);
 		this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
 	}
 }

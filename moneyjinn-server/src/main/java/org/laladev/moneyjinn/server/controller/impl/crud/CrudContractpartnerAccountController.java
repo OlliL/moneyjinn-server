@@ -77,8 +77,8 @@ public class CrudContractpartnerAccountController extends AbstractController
 			@RequestBody final ContractpartnerAccountTransport contractpartnerAccountTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountTransport,
-				ContractpartnerAccount.class);
+		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountTransportMapper
+				.mapBToA(contractpartnerAccountTransport);
 		contractpartnerAccount.setId(null);
 		final ValidationResult validationResult = this.contractpartnerAccountService
 				.validateContractpartnerAccount(userId, contractpartnerAccount);
@@ -90,7 +90,8 @@ public class CrudContractpartnerAccountController extends AbstractController
 
 		contractpartnerAccount.setId(contractpartnerAccountId);
 
-		return this.preferedReturn(prefer, contractpartnerAccount, ContractpartnerAccountTransport.class);
+		return this.preferedReturn(prefer,
+				() -> this.contractpartnerAccountTransportMapper.mapAToB(contractpartnerAccount));
 
 	}
 
@@ -99,8 +100,8 @@ public class CrudContractpartnerAccountController extends AbstractController
 			@RequestBody final ContractpartnerAccountTransport contractpartnerAccountTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountTransport,
-				ContractpartnerAccount.class);
+		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountTransportMapper
+				.mapBToA(contractpartnerAccountTransport);
 		final ValidationResult validationResult = this.contractpartnerAccountService
 				.validateContractpartnerAccount(userId, contractpartnerAccount);
 
@@ -108,7 +109,8 @@ public class CrudContractpartnerAccountController extends AbstractController
 
 		this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
 
-		return this.preferedReturn(prefer, contractpartnerAccount, ContractpartnerAccountTransport.class);
+		return this.preferedReturn(prefer,
+				() -> this.contractpartnerAccountTransportMapper.mapAToB(contractpartnerAccount));
 	}
 
 	@Override

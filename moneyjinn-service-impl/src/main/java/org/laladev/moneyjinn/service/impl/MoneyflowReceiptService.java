@@ -57,7 +57,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 	}
 
 	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
-		return super.map(moneyflowReceiptData, MoneyflowReceipt.class);
+		return this.moneyflowReceiptDataMapper.mapBToA(moneyflowReceiptData);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class MoneyflowReceiptService extends AbstractService implements IMoneyfl
 	public void createMoneyflowReceipt(final UserID userId, final MoneyflowReceipt moneyflowReceipt) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		Assert.notNull(moneyflowReceipt, "MoneyflowReceipt must not be null!");
-		final MoneyflowReceiptData moneyflowReceiptData = super.map(moneyflowReceipt, MoneyflowReceiptData.class);
+		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDataMapper.mapAToB(moneyflowReceipt);
 		this.moneyflowReceiptDao.createMoneyflowReceipt(moneyflowReceiptData);
 	}
 }

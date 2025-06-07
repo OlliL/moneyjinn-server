@@ -94,8 +94,7 @@ public class UserService extends AbstractService implements IUserService {
 	public User getUserById(final UserID userId) {
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 
-		final Supplier<User> supplier = () -> super.map(
-				this.userDao.getUserById(userId.getId()), User.class);
+		final Supplier<User> supplier = () -> this.userDataMapper.mapBToA(this.userDao.getUserById(userId.getId()));
 
 		return super.getFromCacheOrExecute(CacheNames.USER_BY_ID, userId, supplier, User.class);
 	}
@@ -110,8 +109,8 @@ public class UserService extends AbstractService implements IUserService {
 	public User getUserByName(final String name) {
 		Assert.notNull(name, "name must not be null!");
 
-		final Supplier<User> supplier = () -> super.map(
-				this.userDao.getUserByName(name), User.class);
+		final Supplier<User> supplier = () -> this.userDataMapper.mapBToA(
+				this.userDao.getUserByName(name));
 
 		return super.getFromCacheOrExecute(CacheNames.USER_BY_NAME, name, supplier, User.class);
 	}
@@ -127,7 +126,7 @@ public class UserService extends AbstractService implements IUserService {
 		}
 		final String cryptedPassword = this.cryptPassword(user.getPassword());
 		user.setPassword(cryptedPassword);
-		final UserData userData = super.map(user, UserData.class);
+		final UserData userData = this.userDataMapper.mapAToB(user);
 		final Long userIdLong = this.userDao.createUser(userData);
 		return new UserID(userIdLong);
 	}
@@ -143,7 +142,7 @@ public class UserService extends AbstractService implements IUserService {
 		final User oldUser = this.getUserById(user.getId());
 		this.evictUserCache(oldUser);
 		this.evictUserCache(user);
-		final UserData userData = super.map(user, UserData.class);
+		final UserData userData = this.userDataMapper.mapAToB(user);
 		this.userDao.updateUser(userData);
 	}
 

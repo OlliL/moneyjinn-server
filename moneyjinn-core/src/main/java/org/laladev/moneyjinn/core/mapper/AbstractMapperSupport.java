@@ -89,7 +89,7 @@ public abstract class AbstractMapperSupport {
 		this.mapperMethods.put(returnType, methodMap);
 	}
 
-	protected <T> T map(final Object args, final Class<T> clazz) {
+	private <T> T map(final Object args, final Class<T> clazz) {
 		if (args != null) {
 			Method method;
 			IMapper<?, ?> obj;

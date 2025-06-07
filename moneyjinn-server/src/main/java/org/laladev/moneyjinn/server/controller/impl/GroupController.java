@@ -77,7 +77,7 @@ public class GroupController extends AbstractController implements GroupControll
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<CreateGroupResponse> createGroup(@RequestBody final CreateGroupRequest request) {
-		final Group group = super.map(request.getGroupTransport(), Group.class);
+		final Group group = this.groupTransportMapper.mapBToA(request.getGroupTransport());
 		group.setId(null);
 		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
@@ -93,7 +93,7 @@ public class GroupController extends AbstractController implements GroupControll
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<Void> updateGroup(@RequestBody final UpdateGroupRequest request) {
-		final Group group = super.map(request.getGroupTransport(), Group.class);
+		final Group group = this.groupTransportMapper.mapBToA(request.getGroupTransport());
 		final ValidationResult validationResult = this.groupService.validateGroup(group);
 
 		this.throwValidationExceptionIfInvalid(validationResult);

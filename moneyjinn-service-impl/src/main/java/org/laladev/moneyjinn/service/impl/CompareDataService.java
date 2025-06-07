@@ -104,7 +104,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 	public CompareDataFormat getCompareDataFormatById(final CompareDataFormatID compareDataFormatId) {
 		final CompareDataFormatData compareDataFormatData = this.compareDataFormatDao
 				.getCompareDataFormatById(compareDataFormatId.getId());
-		return super.map(compareDataFormatData, CompareDataFormat.class);
+		return this.compareDataFormatDataMapper.mapBToA(compareDataFormatData);
 	}
 
 	@Override

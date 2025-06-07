@@ -87,7 +87,7 @@ public class CrudContractpartnerController extends AbstractController implements
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(super.map(contractpartner, ContractpartnerTransport.class));
+		return ResponseEntity.ok(this.contractpartnerTransportMapper.mapAToB(contractpartner));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class CrudContractpartnerController extends AbstractController implements
 			@RequestBody final ContractpartnerTransport contractpartnerTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Contractpartner contractpartner = super.map(contractpartnerTransport, Contractpartner.class);
+		final Contractpartner contractpartner = this.contractpartnerTransportMapper.mapBToA(contractpartnerTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		contractpartner.setId(null);
@@ -109,7 +109,7 @@ public class CrudContractpartnerController extends AbstractController implements
 
 		contractpartner.setId(contractpartnerId);
 
-		return this.preferedReturn(prefer, contractpartner, ContractpartnerTransport.class);
+		return this.preferedReturn(prefer, () -> this.contractpartnerTransportMapper.mapAToB(contractpartner));
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class CrudContractpartnerController extends AbstractController implements
 			@RequestBody final ContractpartnerTransport contractpartnerTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Contractpartner contractpartner = super.map(contractpartnerTransport, Contractpartner.class);
+		final Contractpartner contractpartner = this.contractpartnerTransportMapper.mapBToA(contractpartnerTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		contractpartner.setUser(user);
@@ -128,7 +128,7 @@ public class CrudContractpartnerController extends AbstractController implements
 
 		this.contractpartnerService.updateContractpartner(contractpartner);
 
-		return this.preferedReturn(prefer, contractpartner, ContractpartnerTransport.class);
+		return this.preferedReturn(prefer, () -> this.contractpartnerTransportMapper.mapAToB(contractpartner));
 	}
 
 	@Override

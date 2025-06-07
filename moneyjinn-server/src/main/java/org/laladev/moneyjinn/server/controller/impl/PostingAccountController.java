@@ -76,7 +76,8 @@ public class PostingAccountController extends AbstractController implements Post
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<CreatePostingAccountResponse> createPostingAccount(
 			@RequestBody final CreatePostingAccountRequest request) {
-		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
+		final PostingAccount postingAccount = this.postingAccountTransportMapper
+				.mapBToA(request.getPostingAccountTransport());
 		postingAccount.setId(null);
 		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
@@ -93,7 +94,8 @@ public class PostingAccountController extends AbstractController implements Post
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<Void> updatePostingAccount(@RequestBody final UpdatePostingAccountRequest request) {
-		final PostingAccount postingAccount = super.map(request.getPostingAccountTransport(), PostingAccount.class);
+		final PostingAccount postingAccount = this.postingAccountTransportMapper
+				.mapBToA(request.getPostingAccountTransport());
 		final ValidationResult validationResult = this.postingAccountService.validatePostingAccount(postingAccount);
 
 		this.throwValidationExceptionIfInvalid(validationResult);

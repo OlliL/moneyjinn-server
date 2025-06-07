@@ -128,7 +128,7 @@ public class UserController extends AbstractController implements UserController
 			final List<String> roles = Collections.singletonList(user.getRole().name());
 			final String token = this.jwtTokenProvider.createToken(user.getName(), roles, user.getId().getId());
 			final String refreshToken = this.jwtTokenProvider.createRefreshToken(user.getName(), user.getId().getId());
-			final UserTransport userTransport = super.map(user, UserTransport.class);
+			final UserTransport userTransport = this.userTransportMapper.mapAToB(user);
 			response.setUserTransport(userTransport);
 			response.setToken(token);
 			response.setRefreshToken(refreshToken);
@@ -168,11 +168,12 @@ public class UserController extends AbstractController implements UserController
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<Void> updateUser(@RequestBody final UpdateUserRequest request) {
-		final User user = super.map(request.getUserTransport(), User.class);
+		final User user = this.userTransportMapper.mapBToA(request.getUserTransport());
 		final ValidationResult validationResultUser = this.userService.validateUser(user);
 		final ValidationResult validationResult = new ValidationResult();
 		validationResult.mergeValidationResult(validationResultUser);
-		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
+		final AccessRelation accessRelation = this.accessRelationTransportMapper
+				.mapBToA(request.getAccessRelationTransport());
 		if (accessRelation != null) {
 			final ValidationResult validationResultAccess = this.accessRelationService
 					.validateAccessRelation(accessRelation);
@@ -225,12 +226,13 @@ public class UserController extends AbstractController implements UserController
 	@Override
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	public ResponseEntity<CreateUserResponse> createUser(@RequestBody final CreateUserRequest request) {
-		final User user = super.map(request.getUserTransport(), User.class);
+		final User user = this.userTransportMapper.mapBToA(request.getUserTransport());
 		user.setId(null);
 		final ValidationResult validationResultUser = this.userService.validateUser(user);
 		final ValidationResult validationResult = new ValidationResult();
 		validationResult.mergeValidationResult(validationResultUser);
-		final AccessRelation accessRelation = super.map(request.getAccessRelationTransport(), AccessRelation.class);
+		final AccessRelation accessRelation = this.accessRelationTransportMapper
+				.mapBToA(request.getAccessRelationTransport());
 		if (accessRelation != null) {
 			accessRelation.setId(null);
 			final ValidationResult validationResultAccess = this.accessRelationService

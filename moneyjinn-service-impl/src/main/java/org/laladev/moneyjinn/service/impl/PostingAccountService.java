@@ -94,8 +94,8 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
 		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
 
-		final Supplier<PostingAccount> supplier = () -> super.map(
-				this.postingAccountDao.getPostingAccountById(postingAccountId.getId()), PostingAccount.class);
+		final Supplier<PostingAccount> supplier = () -> this.postingAccountDataMapper.mapBToA(
+				this.postingAccountDao.getPostingAccountById(postingAccountId.getId()));
 
 		return super.getFromCacheOrExecute(CacheNames.POSTINGACCOUNT_BY_ID, postingAccountId, supplier,
 				PostingAccount.class);
@@ -114,7 +114,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	public PostingAccount getPostingAccountByName(final String name) {
 		Assert.notNull(name, "name must not be null!");
 		final PostingAccountData postingAccountData = this.postingAccountDao.getPostingAccountByName(name);
-		return super.map(postingAccountData, PostingAccount.class);
+		return this.postingAccountDataMapper.mapBToA(postingAccountData);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PostingAccount update failed!", validationResultItem.getError());
 		}
-		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
+		final PostingAccountData postingAccountData = this.postingAccountDataMapper.mapAToB(postingAccount);
 		this.postingAccountDao.updatePostingAccount(postingAccountData);
 		this.evictPostingAccountCache(postingAccount.getId());
 
@@ -142,7 +142,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PostingAccount creation failed!", validationResultItem.getError());
 		}
-		final PostingAccountData postingAccountData = super.map(postingAccount, PostingAccountData.class);
+		final PostingAccountData postingAccountData = this.postingAccountDataMapper.mapAToB(postingAccount);
 		final Long postingAccountIdLong = this.postingAccountDao.createPostingAccount(postingAccountData);
 		final PostingAccountID postingAccountId = new PostingAccountID(postingAccountIdLong);
 		postingAccount.setId(postingAccountId);

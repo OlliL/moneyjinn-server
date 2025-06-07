@@ -67,7 +67,7 @@ public class ImportedBalanceController extends AbstractController implements Imp
 	@Override
 	public ResponseEntity<Void> createImportedBalance(@RequestBody final CreateImportedBalanceRequest request) {
 		final ImportedBalanceTransport importedBalanceTransport = request.getImportedBalanceTransport();
-		final ImportedBalance importedBalance = super.map(importedBalanceTransport, ImportedBalance.class);
+		final ImportedBalance importedBalance = this.importedBalanceTransportMapper.mapBToA(importedBalanceTransport);
 		final BankAccount bankAccount = new BankAccount(importedBalanceTransport.getAccountNumberCapitalsource(),
 				importedBalanceTransport.getBankCodeCapitalsource());
 		final LocalDateTime now = importedBalance.getDate();

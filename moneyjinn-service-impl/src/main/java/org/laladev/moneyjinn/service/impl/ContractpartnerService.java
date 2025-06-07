@@ -86,7 +86,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
 	private Contractpartner mapContractpartnerData(final ContractpartnerData contractpartnerData) {
 		if (contractpartnerData != null) {
-			final Contractpartner contractpartner = super.map(contractpartnerData, Contractpartner.class);
+			final Contractpartner contractpartner = this.contractpartnerDataMapper.mapBToA(contractpartnerData);
 
 			this.userService.enrichEntity(contractpartner);
 			this.groupService.enrichEntity(contractpartner);
@@ -204,7 +204,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Contractpartner update failed!", validationResultItem.getError());
 		}
-		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
+		final ContractpartnerData contractpartnerData = this.contractpartnerDataMapper.mapAToB(contractpartner);
 		this.contractpartnerDao.updateContractpartner(contractpartnerData);
 		this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartner.getId());
 		final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.UPDATE,
@@ -221,7 +221,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Contractpartner creation failed!", validationResultItem.getError());
 		}
-		final ContractpartnerData contractpartnerData = super.map(contractpartner, ContractpartnerData.class);
+		final ContractpartnerData contractpartnerData = this.contractpartnerDataMapper.mapAToB(contractpartner);
 
 		final Long contractpartnerIdLong = this.contractpartnerDao.createContractpartner(contractpartnerData);
 		final ContractpartnerID contractpartnerId = new ContractpartnerID(contractpartnerIdLong);

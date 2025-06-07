@@ -179,7 +179,8 @@ public class ImportedMoneyflowController extends AbstractController implements I
 	@Override
 	public ResponseEntity<Void> createImportedMoneyflow(@RequestBody final CreateImportedMoneyflowRequest request) {
 		final ImportedMoneyflowTransport importedMoneyflowTransport = request.getImportedMoneyflowTransport();
-		final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowTransport, ImportedMoneyflow.class);
+		final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowTransportMapper
+				.mapBToA(importedMoneyflowTransport);
 		final BankAccount bankAccount = new BankAccount(importedMoneyflowTransport.getAccountNumberCapitalsource(),
 				importedMoneyflowTransport.getBankCodeCapitalsource());
 		final LocalDateTime now = LocalDateTime.now();
@@ -296,8 +297,8 @@ public class ImportedMoneyflowController extends AbstractController implements I
 	@Override
 	public ResponseEntity<Void> importImportedMoneyflows(@RequestBody final ImportImportedMoneyflowRequest request) {
 		final UserID userId = super.getUserId();
-		final ImportedMoneyflow importedMoneyflow = super.map(request.getImportedMoneyflowTransport(),
-				ImportedMoneyflow.class);
+		final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowTransportMapper
+				.mapBToA(request.getImportedMoneyflowTransport());
 		final List<MoneyflowSplitEntry> moneyflowSplitEntries = super.mapList(
 				request.getInsertMoneyflowSplitEntryTransports(), MoneyflowSplitEntry.class);
 

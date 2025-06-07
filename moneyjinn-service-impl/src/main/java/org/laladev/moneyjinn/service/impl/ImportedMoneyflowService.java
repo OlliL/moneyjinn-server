@@ -72,7 +72,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
 			final ImportedMoneyflowData importedMoneyflowData) {
 		if (importedMoneyflowData != null) {
-			final ImportedMoneyflow importedMoneyflow = super.map(importedMoneyflowData, ImportedMoneyflow.class);
+			final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowDataMapper.mapBToA(importedMoneyflowData);
 			importedMoneyflow.setUser(new User(userId));
 
 			this.userService.enrichEntity(importedMoneyflow);
@@ -160,8 +160,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 	public void createImportedMoneyflow(final ImportedMoneyflow importedMoneyflow) {
 		Assert.notNull(importedMoneyflow, "importedMoneyflow must not be null!");
 		if (!this.checkIfExternalIdAlreadyExists(importedMoneyflow.getExternalId())) {
-			final ImportedMoneyflowData importedMoneyflowData = super.map(importedMoneyflow,
-					ImportedMoneyflowData.class);
+			final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDataMapper
+					.mapAToB(importedMoneyflow);
 			this.importedMoneyflowDao.createImportedMoneyflow(importedMoneyflowData);
 		}
 	}

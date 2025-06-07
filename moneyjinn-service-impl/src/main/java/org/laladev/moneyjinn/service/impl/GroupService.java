@@ -58,12 +58,12 @@ public class GroupService extends AbstractService implements IGroupService {
 	private static final String STILL_REFERENCED = "You may not delete a group while there where/are users assigned to it!";
 	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
 	private final GroupDao groupDao;
-	private final GroupDataMapper croupDataMapper;
+	private final GroupDataMapper groupDataMapper;
 
 	@Override
 	@PostConstruct
 	protected void addBeanMapper() {
-		super.registerBeanMapper(this.croupDataMapper);
+		super.registerBeanMapper(this.groupDataMapper);
 	}
 
 	@Override
@@ -91,7 +91,8 @@ public class GroupService extends AbstractService implements IGroupService {
 	public Group getGroupById(final GroupID groupId) {
 		Assert.notNull(groupId, "groupId must not be null!");
 
-		final Supplier<Group> supplier = () -> super.map(this.groupDao.getGroupById(groupId.getId()), Group.class);
+		final Supplier<Group> supplier = () -> this.groupDataMapper
+				.mapBToA(this.groupDao.getGroupById(groupId.getId()));
 
 		return super.getFromCacheOrExecute(CacheNames.GROUP_BY_ID, groupId, supplier, Group.class);
 	}
@@ -107,7 +108,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	public Group getGroupByName(final String name) {
 		Assert.notNull(name, "name must not be null!");
 		final GroupData groupData = this.groupDao.getGroupByName(name);
-		return super.map(groupData, Group.class);
+		return this.groupDataMapper.mapBToA(groupData);
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class GroupService extends AbstractService implements IGroupService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Group update failed!", validationResultItem.getError());
 		}
-		final GroupData groupData = super.map(group, GroupData.class);
+		final GroupData groupData = this.groupDataMapper.mapAToB(group);
 		this.groupDao.updateGroup(groupData);
 		this.evictGroupCache(group.getId());
 	}
@@ -132,7 +133,7 @@ public class GroupService extends AbstractService implements IGroupService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Group creation failed!", validationResultItem.getError());
 		}
-		final GroupData groupData = super.map(group, GroupData.class);
+		final GroupData groupData = this.groupDataMapper.mapAToB(group);
 		final Long groupId = this.groupDao.createGroup(groupData);
 		this.evictGroupCache(new GroupID(groupId));
 		return new GroupID(groupId);

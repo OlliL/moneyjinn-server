@@ -83,7 +83,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 
 		return etfPreliminaryLumpSum == null ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class));
+				: ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
 	}
 
 	@Override
@@ -91,7 +91,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 			@RequestBody final EtfPreliminaryLumpSumTransport transport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = super.map(transport, EtfPreliminaryLumpSum.class);
+		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
+				.mapBToA(transport);
 		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
 				etfPreliminaryLumpSum);
 
@@ -99,7 +100,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
 		this.etfService.createEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-		return this.preferedReturn(prefer, etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class);
+		return this.preferedReturn(prefer,
+				() -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
 	}
 
 	@Override
@@ -107,7 +109,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 			@RequestBody final EtfPreliminaryLumpSumTransport transport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = super.map(transport, EtfPreliminaryLumpSum.class);
+		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
+				.mapBToA(transport);
 		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
 				etfPreliminaryLumpSum);
 
@@ -115,7 +118,8 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
 		this.etfService.updateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-		return this.preferedReturn(prefer, etfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport.class);
+		return this.preferedReturn(prefer,
+				() -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
 	}
 
 	@Override

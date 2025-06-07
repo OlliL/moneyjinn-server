@@ -71,8 +71,8 @@ public class ImportedMonthlySettlementController extends AbstractController
 			@RequestBody final CreateImportedMonthlySettlementRequest request) {
 		final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = request
 				.getImportedMonthlySettlementTransport();
-		final ImportedMonthlySettlement importedMonthlySettlement = super.map(importedMonthlySettlementTransport,
-				ImportedMonthlySettlement.class);
+		final ImportedMonthlySettlement importedMonthlySettlement = this.importedMonthlySettlementTransportMapper
+				.mapBToA(importedMonthlySettlementTransport);
 		final BankAccount bankAccount = new BankAccount(
 				importedMonthlySettlementTransport.getAccountNumberCapitalsource(),
 				importedMonthlySettlementTransport.getBankCodeCapitalsource());

@@ -87,7 +87,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
 	private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {
 		if (capitalsourceData != null) {
-			final Capitalsource capitalsource = super.map(capitalsourceData, Capitalsource.class);
+			final Capitalsource capitalsource = this.capitalsourceDataMapper.mapBToA(capitalsourceData);
 
 			this.userService.enrichEntity(capitalsource);
 			this.groupService.enrichEntity(capitalsource);
@@ -221,7 +221,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Capitalsource update failed!", validationResultItem.getError());
 		}
-		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
+		final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
 		this.capitalsourceDao.updateCapitalsource(capitalsourceData);
 		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
 				capitalsource.getId());
@@ -238,7 +238,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Capitalsource creation failed!", validationResultItem.getError());
 		}
-		final CapitalsourceData capitalsourceData = super.map(capitalsource, CapitalsourceData.class);
+		final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
 		final Long capitalsourceIdLong = this.capitalsourceDao.createCapitalsource(capitalsourceData);
 		final CapitalsourceID capitalsourceId = new CapitalsourceID(capitalsourceIdLong);
 		capitalsource.setId(capitalsourceId);

@@ -67,8 +67,8 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
 			final ImportedMonthlySettlementData importedMonthlySettlementData) {
 		if (importedMonthlySettlementData != null) {
-			final ImportedMonthlySettlement importedMonthlySettlement = super.map(importedMonthlySettlementData,
-					ImportedMonthlySettlement.class);
+			final ImportedMonthlySettlement importedMonthlySettlement = this.importedMonthlySettlementDataMapper
+					.mapBToA(importedMonthlySettlementData);
 			importedMonthlySettlement.setUser(new User(userId));
 
 			final LocalDate endOfMonth = LocalDate
@@ -110,8 +110,8 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	@Override
 	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
 		Assert.notNull(importedMonthlySettlement, "importedMonthlySettlement must not be null!");
-		final ImportedMonthlySettlementData importedMonthlySettlementData = super.map(importedMonthlySettlement,
-				ImportedMonthlySettlementData.class);
+		final ImportedMonthlySettlementData importedMonthlySettlementData = this.importedMonthlySettlementDataMapper
+				.mapAToB(importedMonthlySettlement);
 		this.importedMonthlySettlementDao.upsertImportedMonthlySettlement(importedMonthlySettlementData);
 	}
 }

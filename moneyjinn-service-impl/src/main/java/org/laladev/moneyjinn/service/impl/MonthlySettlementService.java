@@ -105,7 +105,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
 	private MonthlySettlement mapMonthlySettlementData(final MonthlySettlementData monthlySettlementData) {
 		if (monthlySettlementData != null) {
-			final MonthlySettlement monthlySettlement = super.map(monthlySettlementData, MonthlySettlement.class);
+			final MonthlySettlement monthlySettlement = this.monthlySettlementDataMapper.mapBToA(monthlySettlementData);
 
 			this.userService.enrichEntity(monthlySettlement);
 			this.groupService.enrichEntity(monthlySettlement);

@@ -150,7 +150,7 @@ public class EtfService extends AbstractService implements IEtfService {
 
 	private Etf mapEtfData(final EtfData etfData) {
 		if (etfData != null) {
-			final Etf etf = super.map(etfData, Etf.class);
+			final Etf etf = this.etfDataMapper.mapBToA(etfData);
 
 			this.userService.enrichEntity(etf);
 			this.groupService.enrichEntity(etf);
@@ -199,7 +199,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Etf update failed!", validationResultItem.getError());
 		}
-		final EtfData etfData = super.map(etf, EtfData.class);
+		final EtfData etfData = this.etfDataMapper.mapAToB(etf);
 		this.etfDao.updateEtf(etfData);
 		this.evictEtfCache(etf.getUser().getId(), etf.getId());
 	}
@@ -213,7 +213,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Etf creation failed!", validationResultItem.getError());
 		}
-		final EtfData etfData = super.map(etf, EtfData.class);
+		final EtfData etfData = this.etfDataMapper.mapAToB(etf);
 		final Long etfIdLong = this.etfDao.createEtf(etfData);
 		final EtfID etfId = new EtfID(etfIdLong);
 		etf.setId(etfId);
@@ -290,7 +290,7 @@ public class EtfService extends AbstractService implements IEtfService {
 		Assert.notNull(etfFlowId, "etfFlowId must not be null!");
 		final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
 		if (etfFlowData != null) {
-			final EtfFlow etfFlow = super.map(etfFlowData, EtfFlow.class);
+			final EtfFlow etfFlow = this.etfFlowDataMapper.mapBToA(etfFlowData);
 			if (this.getEtfById(userId, etfFlow.getEtfId()) != null) {
 				return etfFlow;
 			}
@@ -306,7 +306,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
 		}
-		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
+		final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
 		final Long etfFlowId = this.etfDao.createEtfFlow(etfFlowData);
 		return new EtfFlowID(etfFlowId);
 	}
@@ -319,7 +319,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
 		}
-		final EtfFlowData etfFlowData = super.map(etfFlow, EtfFlowData.class);
+		final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
 		this.etfDao.updateEtfFlow(etfFlowData);
 	}
 
@@ -547,7 +547,7 @@ public class EtfService extends AbstractService implements IEtfService {
 
 		final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(id.getId());
 		if (data != null) {
-			final var etfPreliminaryLumpSum = super.map(data, EtfPreliminaryLumpSum.class);
+			final var etfPreliminaryLumpSum = this.etfPreliminaryLumpSumDataMapper.mapBToA(data);
 
 			final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
 			if (etf != null) {
@@ -586,7 +586,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
-		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
+		final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
 		this.etfDao.createPreliminaryLumpSum(data);
 	}
 
@@ -610,7 +610,7 @@ public class EtfService extends AbstractService implements IEtfService {
 			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
 					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
 		}
-		final EtfPreliminaryLumpSumData data = super.map(etfPreliminaryLumpSum, EtfPreliminaryLumpSumData.class);
+		final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
 		this.etfDao.updatePreliminaryLumpSum(data);
 	}
 
@@ -632,12 +632,12 @@ public class EtfService extends AbstractService implements IEtfService {
 	@Override
 	public EtfValue getEtfValueEndOfMonth(final EtfIsin etfIsin, final Year year, final Month month) {
 		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(etfIsin.getId(), year, month);
-		return super.map(etfValueData, EtfValue.class);
+		return this.etfValueDataMapper.mapBToA(etfValueData);
 	}
 
 	@Override
 	public EtfValue getLatestEtfValue(final EtfIsin etfIsin) {
 		final EtfValueData etfValueData = this.etfDao.getLatestEtfValue(etfIsin.getId());
-		return super.map(etfValueData, EtfValue.class);
+		return this.etfValueDataMapper.mapBToA(etfValueData);
 	}
 }

@@ -86,7 +86,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(super.map(capitalsource, CapitalsourceTransport.class));
+		return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsource));
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 			@RequestBody final CapitalsourceTransport capitalsourceTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
+		final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setId(null);
@@ -107,8 +107,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 		final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
 
 		capitalsource.setId(capitalsourceId);
-
-		return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
+		return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
 
 	}
 
@@ -117,7 +116,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 			@RequestBody final CapitalsourceTransport capitalsourceTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Capitalsource capitalsource = super.map(capitalsourceTransport, Capitalsource.class);
+		final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		capitalsource.setUser(user);
@@ -128,7 +127,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 
 		this.capitalsourceService.updateCapitalsource(capitalsource);
 
-		return this.preferedReturn(prefer, capitalsource, CapitalsourceTransport.class);
+		return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
 	}
 
 	@Override

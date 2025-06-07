@@ -77,7 +77,8 @@ public class PreDefMoneyflowController extends AbstractController implements Pre
 	@Override
 	public ResponseEntity<CreatePreDefMoneyflowResponse> createPreDefMoneyflow(
 			@RequestBody final CreatePreDefMoneyflowRequest request) {
-		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowTransportMapper
+				.mapBToA(request.getPreDefMoneyflowTransport());
 		final UserID userId = super.getUserId();
 		preDefMoneyflow.setId(null);
 		preDefMoneyflow.setUser(new User(userId));
@@ -93,7 +94,8 @@ public class PreDefMoneyflowController extends AbstractController implements Pre
 
 	@Override
 	public ResponseEntity<Void> updatePreDefMoneyflow(@RequestBody final UpdatePreDefMoneyflowRequest request) {
-		final PreDefMoneyflow preDefMoneyflow = super.map(request.getPreDefMoneyflowTransport(), PreDefMoneyflow.class);
+		final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowTransportMapper
+				.mapBToA(request.getPreDefMoneyflowTransport());
 		final UserID userId = super.getUserId();
 		preDefMoneyflow.setUser(new User(userId));
 		final ValidationResult validationResult = this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow);

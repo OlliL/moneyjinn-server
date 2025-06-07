@@ -84,7 +84,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 
 	private final PreDefMoneyflow mapPreDefMoneyflowData(final PreDefMoneyflowData preDefMoneyflowData) {
 		if (preDefMoneyflowData != null) {
-			final PreDefMoneyflow preDefMoneyflow = super.map(preDefMoneyflowData, PreDefMoneyflow.class);
+			final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowDataMapper.mapBToA(preDefMoneyflowData);
 
 			this.userService.enrichEntity(preDefMoneyflow);
 			this.postingAccountService.enrichEntity(preDefMoneyflow);
@@ -196,7 +196,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PreDefMoneyflow update failed!", validationResultItem.getError());
 		}
-		final PreDefMoneyflowData preDefMoneyflowData = super.map(preDefMoneyflow, PreDefMoneyflowData.class);
+		final PreDefMoneyflowData preDefMoneyflowData = this.preDefMoneyflowDataMapper.mapAToB(preDefMoneyflow);
 		this.preDefMoneyflowDao.updatePreDefMoneyflow(preDefMoneyflowData);
 		this.evictPreDefMoneyflowCache(preDefMoneyflow.getUser().getId(), preDefMoneyflow.getId());
 	}
@@ -210,7 +210,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("PreDefMoneyflow creation failed!", validationResultItem.getError());
 		}
-		final PreDefMoneyflowData preDefMoneyflowData = super.map(preDefMoneyflow, PreDefMoneyflowData.class);
+		final PreDefMoneyflowData preDefMoneyflowData = this.preDefMoneyflowDataMapper.mapAToB(preDefMoneyflow);
 		final Long preDefMoneyflowId = this.preDefMoneyflowDao.createPreDefMoneyflow(preDefMoneyflowData);
 		this.evictPreDefMoneyflowCache(preDefMoneyflow.getUser().getId(), new PreDefMoneyflowID(preDefMoneyflowId));
 		return new PreDefMoneyflowID(preDefMoneyflowId);

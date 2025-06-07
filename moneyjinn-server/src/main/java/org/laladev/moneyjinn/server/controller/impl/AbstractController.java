@@ -27,11 +27,10 @@ package org.laladev.moneyjinn.server.controller.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.core.mapper.AbstractMapperSupport;
-import org.laladev.moneyjinn.model.AbstractEntity;
-import org.laladev.moneyjinn.model.AbstractEntityID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -64,15 +63,14 @@ public abstract class AbstractController extends AbstractMapperSupport {
 		}
 	}
 
-	protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer,
-			final AbstractEntity<? extends AbstractEntityID<?>> model, final Class<T> transportClass) {
+	protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer, final Supplier<T> transportSupplier) {
 
 		final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList()).stream()
 				.map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
 
 		return switch (returnHeaderValue) {
 		case RETURN_REPRESENTATION -> ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
-				.body(super.map(model, transportClass));
+				.body(transportSupplier.get());
 		case RETURN_MINIMAL -> ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
 		default -> ResponseEntity.noContent().build();
 		};

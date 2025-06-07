@@ -120,8 +120,8 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Imported Moneyflow Receipt creation failed!", validationResultItem.getError());
 		}
-		final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = super.map(importedMoneyflowReceipt,
-				ImportedMoneyflowReceiptData.class);
+		final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = this.importedMoneyflowReceiptDataMapper
+				.mapAToB(importedMoneyflowReceipt);
 		this.importedMoneyflowReceiptDao.createImportedMoneyflowReceipt(importedMoneyflowReceiptData);
 		return new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId());
 	}
@@ -144,6 +144,6 @@ public class ImportedMoneyflowReceiptService extends AbstractService implements 
 		Assert.notNull(importedMoneyflowReceiptId, "ImportedMoneyflowReceiptID must not be null!");
 		final ImportedMoneyflowReceiptData importedMoneyflowReceipt = this.importedMoneyflowReceiptDao
 				.getImportedMoneyflowReceiptById(groupId.getId(), importedMoneyflowReceiptId.getId());
-		return super.map(importedMoneyflowReceipt, ImportedMoneyflowReceipt.class);
+		return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipt);
 	}
 }

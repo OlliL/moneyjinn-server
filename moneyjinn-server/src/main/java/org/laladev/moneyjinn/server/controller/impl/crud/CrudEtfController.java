@@ -78,7 +78,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 
 		final List<EtfTransport> transports = etfs.stream()
 				.sorted(Comparator.comparing(Etf::getName, String.CASE_INSENSITIVE_ORDER))
-				.map(etf -> super.map(etf, EtfTransport.class)).toList();
+				.map(etf -> this.etfTransportMapper.mapAToB(etf)).toList();
 
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());
@@ -101,7 +101,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 			return ResponseEntity.notFound().build();
 		}
 
-		final EtfTransport transport = super.map(etf, EtfTransport.class);
+		final EtfTransport transport = this.etfTransportMapper.mapAToB(etf);
 
 		final Optional<ClientListEtfDepotDefaultEtfId> setting = this.settingService
 				.getClientListEtfDepotDefaultEtfId(this.getUserId());
@@ -119,7 +119,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	public ResponseEntity<EtfTransport> create(@RequestBody final EtfTransport etfTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Etf etf = super.map(etfTransport, Etf.class);
+		final Etf etf = this.etfTransportMapper.mapBToA(etfTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		etf.setId(null);
@@ -135,7 +135,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 		if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
 			this.settingService.setClientListEtfDepotDefaultEtfId(userId, new ClientListEtfDepotDefaultEtfId(etfId));
 
-		return this.preferedReturn(prefer, etf, EtfTransport.class);
+		return this.preferedReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
 
 	}
 
@@ -143,7 +143,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 	public ResponseEntity<EtfTransport> update(@RequestBody final EtfTransport etfTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final Etf etf = super.map(etfTransport, Etf.class);
+		final Etf etf = this.etfTransportMapper.mapBToA(etfTransport);
 		final User user = this.userService.getUserById(userId);
 		final Group group = this.accessRelationService.getCurrentGroup(userId);
 		etf.setUser(user);
@@ -157,7 +157,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 			this.settingService.setClientListEtfDepotDefaultEtfId(userId,
 					new ClientListEtfDepotDefaultEtfId(etf.getId()));
 
-		return this.preferedReturn(prefer, etf, EtfTransport.class);
+		return this.preferedReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
 	}
 
 	@Override

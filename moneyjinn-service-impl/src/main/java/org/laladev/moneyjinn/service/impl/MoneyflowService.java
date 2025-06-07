@@ -105,7 +105,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
 	private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
 		if (moneyflowData != null) {
-			final Moneyflow moneyflow = super.map(moneyflowData, Moneyflow.class);
+			final Moneyflow moneyflow = this.moneyflowDataMapper.mapBToA(moneyflowData);
 
 			this.userService.enrichEntity(moneyflow);
 			this.groupService.enrichEntity(moneyflow);
@@ -240,7 +240,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
 		}
-		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
+		final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
 		final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);
 		this.evictMoneyflowCache(moneyflow.getUser().getId(), new MoneyflowID(moneyflowId));
 		return new MoneyflowID(moneyflowId);
@@ -254,7 +254,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
 		}
-		final MoneyflowData moneyflowData = super.map(moneyflow, MoneyflowData.class);
+		final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
 		this.moneyflowDao.updateMoneyflow(moneyflowData);
 		this.evictMoneyflowCache(moneyflow.getUser().getId(), moneyflow.getId());
 	}
@@ -442,8 +442,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 		if (moneyflowSearchParams.getEndDate() == null) {
 			moneyflowSearchParams.setEndDate(LocalDate.of(9999, Month.DECEMBER, 31));
 		}
-		final MoneyflowSearchParamsData moneyflowSearchParamsData = super.map(moneyflowSearchParams,
-				MoneyflowSearchParamsData.class);
+		final MoneyflowSearchParamsData moneyflowSearchParamsData = this.moneyflowSearchParamsDataMapper
+				.mapAToB(moneyflowSearchParams);
 		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflows(userId.getId(),
 				moneyflowSearchParamsData);
 		return this.mapMoneyflowDataList(moneyflowDatas);

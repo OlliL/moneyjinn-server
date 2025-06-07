@@ -50,7 +50,6 @@ import org.laladev.moneyjinn.server.controller.mapper.CapitalsourceTransportMapp
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
 import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
 import org.laladev.moneyjinn.server.model.CompareDataMatchingTransport;
 import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
@@ -58,7 +57,6 @@ import org.laladev.moneyjinn.server.model.CompareDataNotInFileTransport;
 import org.laladev.moneyjinn.server.model.CompareDataRequest;
 import org.laladev.moneyjinn.server.model.CompareDataResponse;
 import org.laladev.moneyjinn.server.model.CompareDataWrongCapitalsourceTransport;
-import org.laladev.moneyjinn.server.model.MoneyflowTransport;
 import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
@@ -158,8 +156,9 @@ public class CompareDataController extends AbstractController implements Compare
 					final List<CompareDataNotInDatabaseTransport> transports = new ArrayList<>();
 					for (final CompareDataNotInDatabase compareDataNotInDatabase : compareDataNotInDatabaseList) {
 						final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
-						compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(super.map(
-								compareDataNotInDatabase.getCompareDataDataset(), CompareDataDatasetTransport.class));
+						compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
+								this.compareDataDatasetTransportMapper
+										.mapAToB(compareDataNotInDatabase.getCompareDataDataset()));
 						transports.add(compareDataNotInDatabaseTransport);
 					}
 					response.setCompareDataNotInDatabaseTransports(transports);
@@ -168,10 +167,11 @@ public class CompareDataController extends AbstractController implements Compare
 					final List<CompareDataMatchingTransport> transports = new ArrayList<>();
 					for (final CompareDataMatching compareDataMatching : compareDataMatchingList) {
 						final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
-						compareDataMatchingTransport.setCompareDataDatasetTransport(super.map(
-								compareDataMatching.getCompareDataDataset(), CompareDataDatasetTransport.class));
+						compareDataMatchingTransport
+								.setCompareDataDatasetTransport(this.compareDataDatasetTransportMapper
+										.mapAToB(compareDataMatching.getCompareDataDataset()));
 						compareDataMatchingTransport.setMoneyflowTransport(
-								super.map(compareDataMatching.getMoneyflow(), MoneyflowTransport.class));
+								this.moneyflowTransportMapper.mapAToB(compareDataMatching.getMoneyflow()));
 						transports.add(compareDataMatchingTransport);
 					}
 					response.setCompareDataMatchingTransports(transports);
@@ -182,10 +182,10 @@ public class CompareDataController extends AbstractController implements Compare
 					for (final CompareDataWrongCapitalsource compareDataWrongCapitalsource : compareDataWrongCapitalsourceList) {
 						final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
 						compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
-								super.map(compareDataWrongCapitalsource.getCompareDataDataset(),
-										CompareDataDatasetTransport.class));
+								this.compareDataDatasetTransportMapper
+										.mapAToB(compareDataWrongCapitalsource.getCompareDataDataset()));
 						compareDataWrongCapitalsourceTransport.setMoneyflowTransport(
-								super.map(compareDataWrongCapitalsource.getMoneyflow(), MoneyflowTransport.class));
+								this.moneyflowTransportMapper.mapAToB(compareDataWrongCapitalsource.getMoneyflow()));
 						transports.add(compareDataWrongCapitalsourceTransport);
 					}
 					response.setCompareDataWrongCapitalsourceTransports(transports);
@@ -195,7 +195,7 @@ public class CompareDataController extends AbstractController implements Compare
 					for (final CompareDataNotInFile compareDataNotInFile : compareDataNotInFileList) {
 						final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
 						compareDataNotInFileTransport.setMoneyflowTransport(
-								super.map(compareDataNotInFile.getMoneyflow(), MoneyflowTransport.class));
+								this.moneyflowTransportMapper.mapAToB(compareDataNotInFile.getMoneyflow()));
 						transports.add(compareDataNotInFileTransport);
 					}
 					response.setCompareDataNotInFileTransports(transports);

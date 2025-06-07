@@ -71,8 +71,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 
 	private MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
 		if (moneyflowSplitEntryData != null) {
-			final MoneyflowSplitEntry moneyflowSplitEntry = super.map(moneyflowSplitEntryData,
-					MoneyflowSplitEntry.class);
+			final MoneyflowSplitEntry moneyflowSplitEntry = this.moneyflowSplitEntryDataMapper
+					.mapBToA(moneyflowSplitEntryData);
 
 			this.postingAccountService.enrichEntity(moneyflowSplitEntry);
 
@@ -161,8 +161,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 			throw new BusinessException("MoneyflowsSplitEntry creation failed!", validationResultItem.getError());
 		}
 		for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
-			final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry,
-					MoneyflowSplitEntryData.class);
+			final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
+					.mapAToB(moneyflowSplitEntry);
 			this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
 		}
 	}
@@ -175,8 +175,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
 			throw new BusinessException("MoneyflowSplitEntry update failed!", validationResultItem.getError());
 		}
-		final MoneyflowSplitEntryData moneyflowSplitEntryData = super.map(moneyflowSplitEntry,
-				MoneyflowSplitEntryData.class);
+		final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
+				.mapAToB(moneyflowSplitEntry);
 		this.moneyflowSplitEntryDao.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
 	}
 

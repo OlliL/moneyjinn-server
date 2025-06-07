@@ -115,8 +115,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	private ContractpartnerAccount mapContractpartnerAccountData(final UserID userId,
 			final ContractpartnerAccountData contractpartnerAccountData) {
 		if (contractpartnerAccountData != null) {
-			final ContractpartnerAccount contractpartnerAccount = super.map(contractpartnerAccountData,
-					ContractpartnerAccount.class);
+			final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountDataMapper
+					.mapBToA(contractpartnerAccountData);
 			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
 					contractpartnerAccount.getContractpartner().getId());
 			// this secures the Account - a user which has no access to the partner may not
@@ -184,8 +184,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 			throw new BusinessException("ContractpartnerAccount creation failed!", validationResultItem.getError());
 		}
 
-		final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
-				ContractpartnerAccountData.class);
+		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
+				.mapAToB(contractpartnerAccount);
 		final Long contractpartnerAccountId = this.contractpartnerAccountDao
 				.createContractpartnerAccount(contractpartnerAccountData);
 		final ContractpartnerAccountID id = new ContractpartnerAccountID(contractpartnerAccountId);
@@ -208,8 +208,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 		final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,
 				contractpartnerAccount.getId());
 		if (contractpartnerAccountOld != null) {
-			final ContractpartnerAccountData contractpartnerAccountData = super.map(contractpartnerAccount,
-					ContractpartnerAccountData.class);
+			final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
+					.mapAToB(contractpartnerAccount);
 			this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);
 			this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
 					contractpartnerAccount.getContractpartner().getId());

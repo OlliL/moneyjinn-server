@@ -152,7 +152,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
 		final AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(userId.getId(),
 				this.now());
-		return super.map(accessRelationData, AccessRelation.class);
+		return this.accessRelationDataMapper.mapBToA(accessRelationData);
 	}
 
 	@Override
@@ -303,12 +303,12 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 					accessRelationItem.getValidFrom());
 		}
 		for (final AccessRelation accessRelationItem : updateAccessRelationItems) {
-			final AccessRelationData accessRelationData = super.map(accessRelationItem, AccessRelationData.class);
+			final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(accessRelationItem);
 			this.accessRelationDao.updateAccessRelation(accessRelationItem.getId().getId(),
 					accessRelationItem.getValidFrom(), accessRelationData);
 		}
 		if (addAccessRelation) {
-			final AccessRelationData accessRelationData = super.map(insertAccessRelation, AccessRelationData.class);
+			final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(insertAccessRelation);
 			this.accessRelationDao.createAccessRelation(accessRelationData);
 		}
 	}

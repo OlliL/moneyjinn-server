@@ -64,7 +64,7 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 	public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final EtfFlow etfFlow = super.map(etfFlowTransport, EtfFlow.class);
+		final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
 		etfFlow.setId(null);
 		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
@@ -74,7 +74,7 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
 		etfFlow.setId(etfId);
 
-		return this.preferedReturn(prefer, etfFlow, EtfFlowTransport.class);
+		return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
 
 	}
 
@@ -82,14 +82,14 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 	public ResponseEntity<EtfFlowTransport> update(@RequestBody final EtfFlowTransport etfFlowTransport,
 			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
 		final UserID userId = super.getUserId();
-		final EtfFlow etfFlow = super.map(etfFlowTransport, EtfFlow.class);
+		final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
 		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
 		this.throwValidationExceptionIfInvalid(validationResult);
 
 		this.etfService.updateEtfFlow(userId, etfFlow);
 
-		return this.preferedReturn(prefer, etfFlow, EtfFlowTransport.class);
+		return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
 	}
 
 	@Override

@@ -695,7 +695,7 @@ public class ReportController extends AbstractController implements ReportContro
 		}
 		if (moneyflows != null && !moneyflows.isEmpty()) {
 			final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream().filter(mf -> mf.isVisible(userId))
-					.map(mf -> super.map(mf, MoneyflowTransport.class)).toList();
+					.map(this.moneyflowTransportMapper::mapAToB).toList();
 			response.setMoneyflowTransports(moneyflowTransports);
 			if (!moneyflowSplitEntries.isEmpty()) {
 				final List<MoneyflowSplitEntry> moneyflowSplitEntryList = moneyflowSplitEntries.values().stream()
