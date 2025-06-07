@@ -60,17 +60,13 @@ class DeleteContractpartnerAccountTest extends AbstractContractpartnerAccountTes
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
 				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
-		// Uncommented because of Cache eviction does not work right now for differing
-		// users
-		// ContractpartnerAccount contractpartnerAccount =
-		// this.contractpartnerAccountService
-		// .getContractpartnerAccountById(userId, contractpartnerAccountId);
-		//
-		// Assertions.assertNotNull(contractpartnerAccount);
+		ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+				.getContractpartnerAccountById(userId, contractpartnerAccountId);
+		Assertions.assertNotNull(contractpartnerAccount);
 
 		super.callUsecaseExpect204WithUriVariables(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
 
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+		contractpartnerAccount = this.contractpartnerAccountService
 				.getContractpartnerAccountById(userId, contractpartnerAccountId);
 		Assertions.assertNull(contractpartnerAccount);
 	}
@@ -82,18 +78,14 @@ class DeleteContractpartnerAccountTest extends AbstractContractpartnerAccountTes
 		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
 		final ContractpartnerAccountID contractpartnerAccountId = new ContractpartnerAccountID(
 				ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
-		// Uncommented because of Cache eviction does not work right now for differing
-		// users
-		// ContractpartnerAccount contractpartnerAccount =
-		// this.contractpartnerAccountService
-		// .getContractpartnerAccountById(userId, contractpartnerAccountId);
-		//
-		// Assertions.assertNotNull(contractpartnerAccount);
+		ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+				.getContractpartnerAccountById(userId, contractpartnerAccountId);
+		Assertions.assertNotNull(contractpartnerAccount);
 
 		super.callUsecaseExpect204WithUriVariables(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
 
-		final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
-				.getContractpartnerAccountById(userId, contractpartnerAccountId);
+		contractpartnerAccount = this.contractpartnerAccountService.getContractpartnerAccountById(userId,
+				contractpartnerAccountId);
 		Assertions.assertNotNull(contractpartnerAccount);
 	}
 
