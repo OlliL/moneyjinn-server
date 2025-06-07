@@ -38,7 +38,7 @@ jobs:
       contents: read
       
       # jacoco-reporter
-      # checks: write
+      checks: write
 
     strategy:
       fail-fast: false
