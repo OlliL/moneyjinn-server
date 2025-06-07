@@ -280,11 +280,14 @@
             	<configuration>
               				<!-- Exclude generated code -->
               				<excludes>
+              				    <!-- Mapstruct generated mapper -->
               					<exclude>org/laladev/moneyjinn/converter/*Impl.class</exclude>
-              					<exclude>org/laladev/moneyjinn/server/model/**/*</exclude>
-              					<exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
+              					<exclude>org/laladev/moneyjinn/converter/javatypes/*Impl.class</exclude>
               					<exclude>org/laladev/moneyjinn/server/controller/mapper/*Impl.class</exclude>
               					<exclude>org/laladev/moneyjinn/service/dao/data/mapper/*Impl.class</exclude>
+              					<!-- OpenAPI generated code -->
+              					<exclude>org/laladev/moneyjinn/server/model/*</exclude>
+              					<exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
               				</excludes>            	
             	</configuration>
             	<executions>
