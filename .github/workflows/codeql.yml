@@ -121,3 +121,8 @@ jobs:
         name: code-coverage-report-markdown
         path: "*/coverage-results.md"
         retention-days: 1  
+
+    - name: Setup tmate session
+      uses: actions/checkout@v4
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
