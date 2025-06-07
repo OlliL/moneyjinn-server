@@ -15,3 +15,7 @@
 - execute mysqlext.sql
 	- `mysql -u root -p<password> -h <dbhost> <dbname> < mysqlext.sql`
 - configure client (see <a href="https://github.com/OlliL/moneyjinn-client/blob/main/README.md">Client README</a>)
+
+# Notes
+- execute piest for moneyjinn-server:
+	- `mvn test-compile org.pitest:pitest-maven:mutationCoverage -Dverbose`

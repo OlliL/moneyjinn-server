@@ -55,6 +55,8 @@
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
 		<coveralls-maven-plugin.version>4.7.0</coveralls-maven-plugin.version>
+		<pitest-maven.version>1.19.4</pitest-maven.version>
+		<pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
 
 		<!-- Test Scope -->
 		<junit.version>5.13.1</junit.version>
@@ -255,6 +257,18 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>${maven-assembly-plugin.version}</version>
+				</plugin>
+				<plugin>
+    				<groupId>org.pitest</groupId>
+    				<artifactId>pitest-maven</artifactId>
+    				<version>${pitest-maven.version}</version>
+    				<dependencies>
+          				<dependency>
+            				<groupId>org.pitest</groupId>
+            				<artifactId>pitest-junit5-plugin</artifactId>
+            				<version>${pitest-junit5-plugin.version}</version>
+          				</dependency>
+    				</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
