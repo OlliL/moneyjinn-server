@@ -30,7 +30,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 class CompareDataTest extends AbstractWebUserControllerTest {
-	@Value("classpath:comparedata/postbank_online.csv")
+	@Value("classpath:comparedata/postbank.csv")
 	private Resource postbankOnlineResource;
 	@Value("classpath:comparedata/sparda_bank.csv")
 	private Resource spardaBankResource;
