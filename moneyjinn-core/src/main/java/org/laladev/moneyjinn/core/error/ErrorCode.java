@@ -101,13 +101,4 @@ public enum ErrorCode {
 	public int getErrorCode() {
 		return this.code;
 	}
-
-	public static ErrorCode byId(final int code) {
-		for (final ErrorCode errorCodeEnum : ErrorCode.values()) {
-			if (errorCodeEnum.getErrorCode() == code) {
-				return errorCodeEnum;
-			}
-		}
-		return ErrorCode.UNKNOWN;
-	}
 }
