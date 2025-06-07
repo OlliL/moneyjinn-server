@@ -1,4 +1,4 @@
-//Copyright (c) 2023-2024 Oliver Lehmann <lehmann@ans-netz.de>
+//Copyright (c) 2023-2025 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
