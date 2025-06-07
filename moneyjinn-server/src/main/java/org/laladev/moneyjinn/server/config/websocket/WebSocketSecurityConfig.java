@@ -50,8 +50,8 @@ public class WebSocketSecurityConfig {
 
 	/**
 	 * When using Cookie bases CSRF Protection, the raw CSRF Token is used and not
-	 * the Xored protected form. For Websockets, the default ChannelInterceptor
-	 * expects the Xored form of the token, so wie have to make the system use the
+	 * the Xored protected form. For websockets, the default ChannelInterceptor
+	 * expects the Xored form of the token, so we have to make the system uses the
 	 * interceptor which expects the raw token. See
 	 * {@link org.springframework.security.config.annotation.web.socket.WebSocketMessageBrokerSecurityConfiguration#CSRF_CHANNEL_INTERCEPTOR_BEAN_NAME}
 	 * on how its applied.

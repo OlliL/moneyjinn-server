@@ -29,7 +29,6 @@ package org.laladev.moneyjinn.server.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.laladev.moneyjinn.model.access.UserRole;
@@ -79,8 +78,6 @@ public class SecurityConfig {
 
 	private static final String API_ROOT = "/moneyflow/server";
 
-	private static final String LOGIN_ENDPOINT = API_ROOT + "/user/login";
-
 	@Bean
 	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
@@ -90,47 +87,50 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		final CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(this.allowedOrigins);
-		configuration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name(),
-				HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
 		configuration.setAllowCredentials(true);
+		configuration.setAllowedOrigins(this.allowedOrigins);
+		configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
+				HttpMethod.DELETE.name()));
 		configuration.setAllowedHeaders(
-				Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
+				List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
+
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration(API_ROOT + "/**", configuration);
 		return source;
 	}
 
+	//@formatter:off
 	@Bean
 	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
-		final PathPatternRequestMatcher.Builder mvc = PathPatternRequestMatcher.withDefaults();
-	//@formatter:off
-    http.logout(logout -> {logout.logoutUrl(API_ROOT + "/logout"); logout.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)));})
-        .httpBasic(AbstractHttpConfigurer::disable)
-        .cors(withDefaults())
-        .csrf(configurer -> {
-          configurer.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
-          configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-          configurer.ignoringRequestMatchers(mvc.matcher(LOGIN_ENDPOINT));
-        })
-        .authorizeHttpRequests(auth -> auth
-          .requestMatchers(mvc.matcher(LOGIN_ENDPOINT)).permitAll()
-          .requestMatchers(mvc.matcher("/websocket")).permitAll()
-          .requestMatchers(mvc.matcher("/actuator/**")).permitAll()
-          .requestMatchers(mvc.matcher(API_ROOT + "/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
-          .requestMatchers(mvc.matcher(API_ROOT + "/importedbalance/createImportedBalance")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
-          .requestMatchers(mvc.matcher(API_ROOT + "/importedmoneyflow/createImportedMoneyflow")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
-          .requestMatchers(mvc.matcher(API_ROOT + "/importedmonthlysettlement/createImportedMonthlySettlement")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
-          .requestMatchers(mvc.matcher(API_ROOT + "/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
-          // Whatever else you trying: deny
-          .requestMatchers(mvc.matcher("/**")).denyAll()
-          .anyRequest().authenticated()
-        )
-        .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-        .with(new JwtConfigurer(this.jwtTokenProvider), withDefaults());
-    //@formatter:on
+		final var root = PathPatternRequestMatcher.withDefaults();
+		final var api = root.basePath(API_ROOT);
+		
+		http.logout(logout -> logout
+				.logoutUrl(API_ROOT + "/logout")
+				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)))
+        	.httpBasic(AbstractHttpConfigurer::disable)
+        	.cors(withDefaults())
+        	.csrf(configurer -> configurer
+        		.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+        		.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        		.ignoringRequestMatchers(api.matcher("/user/login")))
+        	.authorizeHttpRequests(auth -> auth
+        		.requestMatchers(root.matcher("/websocket")).permitAll()
+        		.requestMatchers(root.matcher("/actuator/**")).permitAll()
+        		.requestMatchers(api.matcher("/user/login")).permitAll()
+        		.requestMatchers(api.matcher("/user/refreshToken")).hasAuthority(RefreshOnlyGrantedAuthority.ROLE)
+        		.requestMatchers(api.matcher("/importedbalance/createImportedBalance")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
+        		.requestMatchers(api.matcher("/importedmoneyflow/createImportedMoneyflow")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
+        		.requestMatchers(api.matcher("/importedmonthlysettlement/createImportedMonthlySettlement")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
+        		.requestMatchers(api.matcher("/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
+        		// Whatever else you trying: deny
+        		.requestMatchers(root.matcher("/**")).denyAll()
+        		.anyRequest().authenticated())
+        	.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+        	.with(new JwtConfigurer(this.jwtTokenProvider), withDefaults());
 		return http.build();
 	}
+	//@formatter:on
 
 	private static final class CsrfCookieFilter extends OncePerRequestFilter {
 

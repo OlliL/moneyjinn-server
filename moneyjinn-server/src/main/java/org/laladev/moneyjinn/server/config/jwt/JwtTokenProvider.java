@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import javax.crypto.SecretKey;
@@ -103,10 +104,12 @@ public class JwtTokenProvider {
 		if (token == null)
 			return null;
 
-		final Claims validatedToken = this.getValidatedToken(token);
+		final var validatedTokenOptional = this.getValidatedToken(token);
 
-		if (validatedToken == null)
+		if (validatedTokenOptional.isEmpty())
 			return null;
+
+		final var validatedToken = validatedTokenOptional.get();
 
 		final String username = this.getUsername(validatedToken);
 		final Long userId = this.getUserId(validatedToken);
@@ -166,18 +169,18 @@ public class JwtTokenProvider {
 		return null;
 	}
 
-	private Claims getValidatedToken(final String token) {
+	private Optional<Claims> getValidatedToken(final String token) {
 		try {
-			return Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload();
+			return Optional.of(Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload());
 		} catch (final MalformedJwtException e) {
 			log.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
 		} catch (final ExpiredJwtException e) {
 			log.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
 		} catch (final UnsupportedJwtException e) {
 			log.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
-		} catch (final IllegalArgumentException e) {
+		} catch (final IllegalArgumentException | NullPointerException e) {
 			log.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
 		}
-		return null;
+		return Optional.empty();
 	}
 }

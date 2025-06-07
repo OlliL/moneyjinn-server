@@ -61,7 +61,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		config.enableSimpleBroker("/topic").setTaskScheduler(te)
 				.setHeartbeatValue(new long[] { this.heartbeatServer, this.heartbeatClient });
 		config.setApplicationDestinationPrefixes("/app");
-
 	}
 
 	@Override
