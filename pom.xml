@@ -36,7 +36,7 @@
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.38</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
-		<opencsv.version>5.11</opencsv.version>
+		<opencsv.version>5.11.1</opencsv.version>
 		<swagger.version>2.2.32</swagger.version>
 		
 		<openapi-generator.version>7.13.0</openapi-generator.version>
@@ -50,11 +50,11 @@
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
-		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.13.0</junit.version>
+		<junit.version>5.13.1</junit.version>
 		<mockito.version>5.18.0</mockito.version>
 		<juniversalchardet.version>2.5.0</juniversalchardet.version>
 
