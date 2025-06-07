@@ -163,9 +163,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Dfile.encoding=UTF-8</argLine>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -218,6 +215,6 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
-	</build>
+	</plugins>
+  </build>
 </project>

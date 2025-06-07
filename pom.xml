@@ -16,6 +16,7 @@
 		<module>moneyjinn-service-api</module>
 		<module>moneyjinn-service-impl</module>
 		<module>moneyjinn-server</module>
+		<module>coverage-module</module>
 	</modules>
 
 	<scm>
@@ -52,6 +53,7 @@
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
 		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
 
 		<!-- Test Scope -->
 		<junit.version>5.13.1</junit.version>
@@ -271,6 +273,40 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>${build-helper-maven-plugin.version}</version>
 			</plugin>
+	        <plugin>
+            	<groupId>org.jacoco</groupId>
+            	<artifactId>jacoco-maven-plugin</artifactId>
+            	<version>${jacoco-maven-plugin.version}</version>
+            	<configuration>
+              				<!-- Exclude generated code -->
+              				<excludes>
+              					<exclude>org/laladev/moneyjinn/server/model/**/*</exclude>
+              					<exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
+              					<exclude>org/laladev/moneyjinn/server/controller/mapper/*Impl.class</exclude>
+              					<exclude>org/laladev/moneyjinn/service/dao/data/mapper/*Impl.class</exclude>
+              				</excludes>            	
+            	</configuration>
+            	<executions>
+	                <execution>
+    	                <goals>
+                        	<goal>prepare-agent</goal>
+                    	</goals>
+                	</execution>
+	                <execution>
+                    	<id>report</id>
+                    	<phase>test</phase>
+                    	<goals>
+	                        <goal>report</goal>
+                    	</goals>
+			            <configuration>
+              				<formats>
+                				<format>XML</format>
+                				<format>CSV</format>
+              				</formats>
+            			</configuration>
+                	</execution>
+            	</executions>
+        	</plugin>
 		</plugins>
 	</build>
 </project>
