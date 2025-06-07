@@ -54,6 +54,7 @@
 		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+		<coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
 
 		<!-- Test Scope -->
 		<junit.version>5.13.1</junit.version>
@@ -316,27 +317,10 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
+                <version>${coveralls-maven-plugin.version}</version>
                 <configuration>
                     <jacocoReports>${project.basedir}/coverage-module/target/site/jacoco-aggregate/jacoco.xml</jacocoReports>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-core</artifactId>
-                        <version>2.3.0.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-impl</artifactId>
-                        <version>2.3.2</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 		</plugins>
 	</build>
