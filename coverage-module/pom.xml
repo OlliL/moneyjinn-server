@@ -45,7 +45,7 @@
     <executions>
         <execution>
             <id>jacoco-site-aggregate</id>
-            <phase>verify</phase>
+            <phase>package</phase>
             <goals>
                 <goal>report-aggregate</goal>
             </goals>
