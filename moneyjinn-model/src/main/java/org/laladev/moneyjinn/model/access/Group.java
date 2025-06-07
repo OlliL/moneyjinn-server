@@ -43,8 +43,4 @@ public class Group extends AbstractAccess<GroupID> {
 	public Group(final GroupID id) {
 		super(id);
 	}
-
-	public Group(final GroupID id, final String name) {
-		super(id, name);
-	}
 }

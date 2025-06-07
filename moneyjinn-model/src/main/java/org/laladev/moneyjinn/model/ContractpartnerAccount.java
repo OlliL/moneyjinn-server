@@ -40,12 +40,4 @@ public class ContractpartnerAccount extends AbstractEntity<ContractpartnerAccoun
 	private static final long serialVersionUID = 1L;
 	private Contractpartner contractpartner;
 	private BankAccount bankAccount;
-
-	public ContractpartnerAccount(final ContractpartnerAccountID contractpartnerAccountId,
-			final Contractpartner contractpartner, final BankAccount bankAccount) {
-		super();
-		super.setId(contractpartnerAccountId);
-		this.contractpartner = contractpartner;
-		this.bankAccount = bankAccount;
-	}
 }

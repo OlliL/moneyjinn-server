@@ -38,13 +38,4 @@ import lombok.ToString;
 public class PostingAccount extends AbstractEntity<PostingAccountID> {
 	private static final long serialVersionUID = 1L;
 	private String name;
-
-	public PostingAccount(final PostingAccountID postingAccountId) {
-		super.setId(postingAccountId);
-	}
-
-	public PostingAccount(final PostingAccountID postingAccountId, final String name) {
-		super.setId(postingAccountId);
-		this.name = name;
-	}
 }

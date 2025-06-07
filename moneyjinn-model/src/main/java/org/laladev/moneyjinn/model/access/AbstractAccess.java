@@ -46,9 +46,4 @@ public class AbstractAccess<I extends AccessID> extends AbstractEntity<I> implem
 	public AbstractAccess(final I id) {
 		super.setId(id);
 	}
-
-	public AbstractAccess(final I id, final String name) {
-		super.setId(id);
-		this.name = name;
-	}
 }

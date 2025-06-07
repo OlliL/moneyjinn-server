@@ -250,11 +250,11 @@ public class ReportController extends AbstractController implements ReportContro
 			final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
 			final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
 			this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
-			final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources = new ClientTrendActiveCapitalsourcesSetting();
-			settingActiveCapitalsources.setSetting(Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
+			final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources = new ClientTrendActiveCapitalsourcesSetting(
+					Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
 			this.settingService.setClientTrendActiveCapitalsourcesSetting(userId, settingActiveCapitalsources);
-			final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting();
-			settingActiveEtfs.setSetting(Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
+			final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting(
+					Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
 			this.settingService.setClientTrendActiveEtfsSetting(userId, settingActiveEtfs);
 
 			if (Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive())) {

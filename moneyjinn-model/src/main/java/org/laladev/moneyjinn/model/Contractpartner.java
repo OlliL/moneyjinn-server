@@ -50,8 +50,4 @@ public class Contractpartner extends AbstractValidPeriodEntity<ContractpartnerID
 	private String country;
 	private String moneyflowComment;
 	private PostingAccount postingAccount;
-
-	public Contractpartner(final ContractpartnerID contractpartnerID) {
-		super.setId(contractpartnerID);
-	}
 }

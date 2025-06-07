@@ -43,20 +43,11 @@ public class AccessRelation extends AbstractValidPeriodEntity<UserID> {
 	private static final long serialVersionUID = 1L;
 	private GroupID groupID;
 
-	public AccessRelation(final UserID id) {
-		super.setId(id);
-	}
-
 	public AccessRelation(final UserID id, final GroupID groupID, final LocalDate validFrom, final LocalDate validTil) {
 		super.setId(id);
 		this.groupID = groupID;
 		super.setValidFrom(validFrom);
 		super.setValidTil(validTil);
-	}
-
-	public AccessRelation(final UserID id, final GroupID groupID) {
-		super.setId(id);
-		this.groupID = groupID;
 	}
 
 	public AccessRelation(final AccessRelation accessRelation) {

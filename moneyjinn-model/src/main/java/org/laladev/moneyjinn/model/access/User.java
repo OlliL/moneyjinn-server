@@ -53,12 +53,4 @@ public class User extends AbstractAccess<UserID> {
 	public User(final UserID id) {
 		super(id);
 	}
-
-	public User(final UserID id, final String name, final String password, final Collection<UserAttribute> attributes,
-			final UserRole role) {
-		super(id, name);
-		this.password = password;
-		this.attributes = attributes;
-		this.role = role;
-	}
 }
