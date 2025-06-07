@@ -85,10 +85,19 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@v2
-      with:
-        file: coverage-module/target/site/jacoco-aggregate/jacoco.xml
+#    - name: Coveralls
+#      uses: coverallsapp/github-action@v2
+#      with:
+#        file: coverage-module/target/site/jacoco-aggregate/jacoco.xml
+
+    - name: Send to Coveralls
+      run: mvn coveralls:report -DrepoToken=${COVERALLS_REPO_TOKEN}
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        COVERALLS_SERVICE_NAME: github
+        COVERALLS_SERVICE_JOB_ID: ${{ github.run_id }}
+        COVERALLS_GIT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref_name }}
+        COVERALLS_SERVICE_PULL_REQUEST: ${{ github.event.pull_request.number || '' }}
 
 #     generates coverage-report.md and publishes as checkrun
 #    - name: JaCoCo Code Coverage Report
