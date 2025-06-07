@@ -288,6 +288,7 @@
               					<!-- OpenAPI generated code -->
               					<exclude>org/laladev/moneyjinn/server/model/*</exclude>
               					<exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
+              					<exclude>org/laladev/moneyjinn/hbci/backend/**/*</exclude>
               				</excludes>            	
             	</configuration>
             	<executions>
