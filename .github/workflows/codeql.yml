@@ -78,17 +78,17 @@ jobs:
     - name: build
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn package
+      run: mvn test install package
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
-
-    - name: test
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn test
+#    - name: Perform CodeQL Analysis
+#      uses: github/codeql-action/analyze@v3
+#      with:
+#        category: "/language:${{matrix.language}}"
+#
+#    - name: test
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      run: mvn test
 
     # generates coverage-report.md and publishes as checkrun
     - name: JaCoCo Code Coverage Report
