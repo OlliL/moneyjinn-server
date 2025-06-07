@@ -87,6 +87,8 @@ jobs:
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
+      with:
+        file: coverage-module/target/site/jacoco-aggregate/jacoco.xml
 
 #     generates coverage-report.md and publishes as checkrun
 #    - name: JaCoCo Code Coverage Report
