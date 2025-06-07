@@ -85,6 +85,11 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
+    - name: test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: mvn test
+
     # generates coverage-report.md and publishes as checkrun
     - name: JaCoCo Code Coverage Report
       id: jacoco_reporter
