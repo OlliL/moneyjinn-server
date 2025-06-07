@@ -80,15 +80,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mvn package
 
-#    - name: Perform CodeQL Analysis
-#      uses: github/codeql-action/analyze@v3
-#      with:
-#        category: "/language:${{matrix.language}}"
-#
-#    - name: test
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      run: mvn test
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
 
     # generates coverage-report.md and publishes as checkrun
     - name: JaCoCo Code Coverage Report
@@ -100,19 +95,19 @@ jobs:
         coverage_report_title: JaCoCo
         github_token: ${{ secrets.GITHUB_TOKEN }}
         skip_check_run: false
-        minimum_coverage: 80
-        fail_below_threshold: false
-        publish_only_summary: false
+        minimum_coverage: 90
+        fail_below_threshold: true
+        publish_only_summary: true
      
     # Publish Coverage Job Summary  # Optional
-    - name: Add Jacocoo report to workflow run summary
-      run: |
-        echo "| Outcome | Value |" >> $GITHUB_STEP_SUMMARY
-        echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-        echo "| Code Coverage % | ${{ steps.jacoco_reporter.outputs.coverage_percentage }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| :heavy_check_mark: Number of Lines Covered | ${{ steps.jacoco_reporter.outputs.covered_lines }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| :x: Number of Lines Missed | ${{ steps.jacoco_reporter.outputs.missed_lines }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| Total Number of Lines | ${{ steps.jacoco_reporter.outputs.total_lines }} |" >> $GITHUB_STEP_SUMMARY
+#    - name: Add Jacocoo report to workflow run summary
+#      run: |
+#        echo "| Outcome | Value |" >> $GITHUB_STEP_SUMMARY
+#        echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+#        echo "| Code Coverage % | ${{ steps.jacoco_reporter.outputs.coverage_percentage }} |" >> $GITHUB_STEP_SUMMARY
+#        echo "| :heavy_check_mark: Number of Lines Covered | ${{ steps.jacoco_reporter.outputs.covered_lines }} |" >> $GITHUB_STEP_SUMMARY
+#        echo "| :x: Number of Lines Missed | ${{ steps.jacoco_reporter.outputs.missed_lines }} |" >> $GITHUB_STEP_SUMMARY
+#        echo "| Total Number of Lines | ${{ steps.jacoco_reporter.outputs.total_lines }} |" >> $GITHUB_STEP_SUMMARY
         
     # uploads the coverage-report.md artifact  # Optional
     - name: Upload Code Coverage Artifacts
@@ -122,6 +117,6 @@ jobs:
         path: "*/coverage-results.md"
         retention-days: 1  
 
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
+#    - name: Setup tmate session
+#      if: ${{ failure() }}
+#      uses: mxschmitt/action-tmate@v3
