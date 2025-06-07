@@ -319,7 +319,6 @@
                 <version>4.3.0</version>
                 <configuration>
                     <jacocoReports>${project.basedir}/coverage-module/target/site/jacoco-aggregate/jacoco.xml</jacocoReports>
-                    <scanForSources>true</scanForSources>
                 </configuration>
                 <dependencies>
                     <dependency>
