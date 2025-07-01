@@ -37,10 +37,10 @@
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.38</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
-		<opencsv.version>5.11.1</opencsv.version>
+		<opencsv.version>5.11.2</opencsv.version>
 		<swagger.version>2.2.34</swagger.version>
 		
-		<openapi-generator.version>7.13.0</openapi-generator.version>
+		<openapi-generator.version>7.14.0</openapi-generator.version>
 
 		<!--for hbci-batch only-->
 		<hbci4j-core.version>4.0.0</hbci4j-core.version>
@@ -60,7 +60,7 @@
 		<pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
 		<!-- Test Scope -->
-		<junit.version>5.13.1</junit.version>
+		<junit.version>6.0.0-M1</junit.version>
 		<mockito.version>5.18.0</mockito.version>
 		<juniversalchardet.version>2.5.0</juniversalchardet.version>
 
