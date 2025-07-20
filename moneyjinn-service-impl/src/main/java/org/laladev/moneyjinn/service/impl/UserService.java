@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import static org.springframework.util.Assert.isTrue;
+
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -44,10 +46,10 @@ import org.laladev.moneyjinn.service.dao.UserDao;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 import org.laladev.moneyjinn.service.dao.data.mapper.UserDataMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -56,16 +58,12 @@ import lombok.extern.java.Log;
 @Log
 public class UserService extends AbstractService implements IUserService {
 	private static final String STILL_REFERENCED = "This user has already entered data and may therefore not be deleted!";
-	private static final String USER_MUST_NOT_BE_NULL = "user must not be null!";
-	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final UserDao userDao;
 	private final UserDataMapper userDataMapper;
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public ValidationResult validateUser(final User user) {
-		Assert.notNull(user, USER_MUST_NOT_BE_NULL);
-
+	public ValidationResult validateUser(@NonNull final User user) {
 		final ValidationResult validationResult = new ValidationResult();
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(user.getId(), errorCode));
@@ -84,9 +82,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public User getUserById(final UserID userId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-
+	public User getUserById(@NonNull final UserID userId) {
 		final Supplier<User> supplier = () -> this.userDataMapper.mapBToA(this.userDao.getUserById(userId.getId()));
 
 		return super.getFromCacheOrExecute(CacheNames.USER_BY_ID, userId, supplier, User.class);
@@ -99,9 +95,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public User getUserByName(final String name) {
-		Assert.notNull(name, "name must not be null!");
-
+	public User getUserByName(@NonNull final String name) {
 		final Supplier<User> supplier = () -> this.userDataMapper.mapBToA(
 				this.userDao.getUserByName(name));
 
@@ -109,8 +103,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public UserID createUser(final User user) {
-		Assert.notNull(user, USER_MUST_NOT_BE_NULL);
+	public UserID createUser(@NonNull final User user) {
 		user.setId(null);
 		final ValidationResult validationResult = this.validateUser(user);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -125,8 +118,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public void updateUser(final User user) {
-		Assert.notNull(user, USER_MUST_NOT_BE_NULL);
+	public void updateUser(@NonNull final User user) {
 		final ValidationResult validationResult = this.validateUser(user);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -140,12 +132,10 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public void setPassword(final UserID userId, final String password, final String oldPassword) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(password, "Password must not be null!");
-		Assert.notNull(oldPassword, "Old password must not be null!");
-		Assert.isTrue(!password.isBlank(), "Password must not be empty!");
-		Assert.isTrue(!oldPassword.isBlank(), "Old password must not be empty!");
+	public void setPassword(@NonNull final UserID userId, @NonNull final String password,
+			@NonNull final String oldPassword) {
+		isTrue(!password.isBlank(), "Password must not be empty!");
+		isTrue(!oldPassword.isBlank(), "Old password must not be empty!");
 
 		final User user = this.getUserById(userId);
 		if (!this.passwordMatches(oldPassword, user.getPassword())) {
@@ -159,9 +149,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public void resetPassword(final UserID userId, final String password) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(password, "password must not be null!");
+	public void resetPassword(@NonNull final UserID userId, @NonNull final String password) {
 		final User user = this.getUserById(userId);
 		this.evictUserCache(user);
 		final String cryptedPassword = this.cryptPassword(password);
@@ -169,8 +157,7 @@ public class UserService extends AbstractService implements IUserService {
 	}
 
 	@Override
-	public void deleteUser(final UserID userId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
+	public void deleteUser(@NonNull final UserID userId) {
 		try {
 			final User user = this.getUserById(userId);
 			this.evictUserCache(user);

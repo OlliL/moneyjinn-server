@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import static org.springframework.util.Assert.notNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
@@ -58,10 +60,10 @@ import org.laladev.moneyjinn.service.dao.data.mapper.CapitalsourceDataMapper;
 import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -70,8 +72,6 @@ import lombok.extern.java.Log;
 @Log
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
 	private static final String STILL_REFERENCED = "You may not delete a source of capital while it is referenced by a flow of money!";
-	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
-	private static final String CAPITALSOURCE_MUST_NOT_BE_NULL = "Capitalsource must not be null!";
 	private final CapitalsourceDao capitalsourceDao;
 	private final IUserService userService;
 	private final IGroupService groupService;
@@ -117,12 +117,11 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public ValidationResult validateCapitalsource(final Capitalsource capitalsource) {
-		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
-		Assert.notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
-		Assert.notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
-		Assert.notNull(capitalsource.getGroup(), "Capitalsource.group must not be null!");
-		Assert.notNull(capitalsource.getGroup().getId(), "Capitalsource.group.id must not be null!");
+	public ValidationResult validateCapitalsource(@NonNull final Capitalsource capitalsource) {
+		notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
+		notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
+		notNull(capitalsource.getGroup(), "Capitalsource.group must not be null!");
+		notNull(capitalsource.getGroup().getId(), "Capitalsource.group.id must not be null!");
 
 		this.prepareCapitalsource(capitalsource);
 
@@ -162,12 +161,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public Capitalsource getCapitalsourceById(final UserID userId, final GroupID groupId,
-			final CapitalsourceID capitalsourceId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(groupId, "GroupId must not be null!");
-		Assert.notNull(capitalsourceId, "CapitalsourceId must not be null!");
-
+	public Capitalsource getCapitalsourceById(@NonNull final UserID userId, @NonNull final GroupID groupId,
+			@NonNull final CapitalsourceID capitalsourceId) {
 		final Supplier<Capitalsource> supplier = () -> this.mapCapitalsourceData(
 				this.capitalsourceDao.getCapitalsourceById(userId.getId(), groupId.getId(), capitalsourceId.getId()));
 
@@ -176,9 +171,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public List<Capitalsource> getAllCapitalsources(final UserID userId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-
+	public List<Capitalsource> getAllCapitalsources(@NonNull final UserID userId) {
 		final Supplier<List<Capitalsource>> supplier = () -> this
 				.mapCapitalsourceDataList(this.capitalsourceDao.getAllCapitalsources(userId.getId()));
 
@@ -186,29 +179,23 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public List<Capitalsource> getAllCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(validFrom, "ValidFrom must not be null!");
-		Assert.notNull(validTil, "ValidTil must not be null!");
+	public List<Capitalsource> getAllCapitalsourcesByDateRange(@NonNull final UserID userId,
+			@NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
 		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
 				.getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
 		return this.mapCapitalsourceDataList(capitalsourceDataList);
 	}
 
 	@Override
-	public Capitalsource getCapitalsourceByComment(final UserID userId, final String name, final LocalDate date) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(date, "Date must not be null!");
-		Assert.notNull(name, "Name must not be null!");
+	public Capitalsource getCapitalsourceByComment(@NonNull final UserID userId, @NonNull final String name,
+			@NonNull final LocalDate date) {
 		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
 				name, date);
 		return this.mapCapitalsourceData(capitalsourceData);
 	}
 
 	@Override
-	public void updateCapitalsource(final Capitalsource capitalsource) {
-		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
+	public void updateCapitalsource(@NonNull final Capitalsource capitalsource) {
 		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -223,8 +210,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public CapitalsourceID createCapitalsource(final Capitalsource capitalsource) {
-		Assert.notNull(capitalsource, CAPITALSOURCE_MUST_NOT_BE_NULL);
+	public CapitalsourceID createCapitalsource(@NonNull final Capitalsource capitalsource) {
 		capitalsource.setId(null);
 		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -246,11 +232,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public void deleteCapitalsource(final UserID userId, final GroupID groupId, final CapitalsourceID capitalsourceId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(groupId, "GroupId must not be null!");
-		Assert.notNull(capitalsourceId, "CapitalsourceId must not be null!");
-
+	public void deleteCapitalsource(@NonNull final UserID userId, @NonNull final GroupID groupId,
+			@NonNull final CapitalsourceID capitalsourceId) {
 		final Capitalsource capitalsource = this.getCapitalsourceById(userId, groupId, capitalsourceId);
 		if (capitalsource != null) {
 			try {
@@ -277,12 +260,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 	}
 
 	@Override
-	public List<Capitalsource> getGroupCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(validFrom, "ValidFrom must not be null!");
-		Assert.notNull(validTil, "ValidTil must not be null!");
-
+	public List<Capitalsource> getGroupCapitalsourcesByDateRange(@NonNull final UserID userId,
+			@NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
 		final Supplier<List<Capitalsource>> supplier = () -> this.mapCapitalsourceDataList(
 				this.capitalsourceDao.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil));
 

@@ -43,10 +43,10 @@ import org.laladev.moneyjinn.service.api.IGroupService;
 import org.laladev.moneyjinn.service.dao.GroupDao;
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 import org.laladev.moneyjinn.service.dao.data.mapper.GroupDataMapper;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -55,14 +55,11 @@ import lombok.extern.java.Log;
 @Log
 public class GroupService extends AbstractService implements IGroupService {
 	private static final String STILL_REFERENCED = "You may not delete a group while there where/are users assigned to it!";
-	private static final String GROUP_MUST_NOT_BE_NULL = "group must not be null!";
 	private final GroupDao groupDao;
 	private final GroupDataMapper groupDataMapper;
 
 	@Override
-	public ValidationResult validateGroup(final Group group) {
-		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
-
+	public ValidationResult validateGroup(@NonNull final Group group) {
 		final ValidationResult validationResult = new ValidationResult();
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(group.getId(), errorCode));
@@ -81,9 +78,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	public Group getGroupById(final GroupID groupId) {
-		Assert.notNull(groupId, "groupId must not be null!");
-
+	public Group getGroupById(@NonNull final GroupID groupId) {
 		final Supplier<Group> supplier = () -> this.groupDataMapper
 				.mapBToA(this.groupDao.getGroupById(groupId.getId()));
 
@@ -98,15 +93,13 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	public Group getGroupByName(final String name) {
-		Assert.notNull(name, "name must not be null!");
+	public Group getGroupByName(@NonNull final String name) {
 		final GroupData groupData = this.groupDao.getGroupByName(name);
 		return this.groupDataMapper.mapBToA(groupData);
 	}
 
 	@Override
-	public void updateGroup(final Group group) {
-		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
+	public void updateGroup(@NonNull final Group group) {
 		final ValidationResult validationResult = this.validateGroup(group);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -118,8 +111,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	public GroupID createGroup(final Group group) {
-		Assert.notNull(group, GROUP_MUST_NOT_BE_NULL);
+	public GroupID createGroup(@NonNull final Group group) {
 		group.setId(null);
 		final ValidationResult validationResult = this.validateGroup(group);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -133,8 +125,7 @@ public class GroupService extends AbstractService implements IGroupService {
 	}
 
 	@Override
-	public void deleteGroup(final GroupID groupId) {
-		Assert.notNull(groupId, "groupId must not be null!");
+	public void deleteGroup(@NonNull final GroupID groupId) {
 		try {
 			this.groupDao.deleteGroup(groupId.getId());
 			this.evictGroupCache(groupId);

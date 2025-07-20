@@ -51,16 +51,15 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerAccountDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountService extends AbstractService implements IContractpartnerAccountService {
-	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final IContractpartnerService contractpartnerService;
 	private final ContractpartnerAccountDao contractpartnerAccountDao;
 	private final IAccessRelationService accessRelationService;
@@ -127,21 +126,16 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 				.map(element -> this.mapContractpartnerAccountData(userId, element)).toList();
 	}
 
-	private ContractpartnerAccount getContractpartnerAccountByBankAccount(final UserID userId,
-			final BankAccount bankAccount) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(bankAccount, "BankAccount must not be null!");
+	private ContractpartnerAccount getContractpartnerAccountByBankAccount(@NonNull final UserID userId,
+			@NonNull final BankAccount bankAccount) {
 		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
 				.getContractpartnerAccountByBankAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber());
 		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
 	}
 
 	@Override
-	public ContractpartnerAccount getContractpartnerAccountById(final UserID userId,
-			final ContractpartnerAccountID contractpartnerAccountId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerAccountId, "ContractpartnerAccountId must not be null!");
-
+	public ContractpartnerAccount getContractpartnerAccountById(@NonNull final UserID userId,
+			@NonNull final ContractpartnerAccountID contractpartnerAccountId) {
 		final Supplier<ContractpartnerAccount> supplier = () -> this.mapContractpartnerAccountData(userId,
 				this.contractpartnerAccountDao.getContractpartnerAccountById(contractpartnerAccountId.getId()));
 
@@ -150,11 +144,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public List<ContractpartnerAccount> getContractpartnerAccounts(final UserID userId,
-			final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerId, "ContractpartnerId must not be null!");
-
+	public List<ContractpartnerAccount> getContractpartnerAccounts(@NonNull final UserID userId,
+			@NonNull final ContractpartnerID contractpartnerId) {
 		final Supplier<List<ContractpartnerAccount>> supplier = () -> this.mapContractpartnerAccountDataList(userId,
 				this.contractpartnerAccountDao.getContractpartnerAccounts(contractpartnerId.getId()));
 
@@ -164,10 +155,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public ContractpartnerAccountID createContractpartnerAccount(final UserID userId,
-			final ContractpartnerAccount contractpartnerAccount) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
+	public ContractpartnerAccountID createContractpartnerAccount(@NonNull final UserID userId,
+			@NonNull final ContractpartnerAccount contractpartnerAccount) {
 		contractpartnerAccount.setId(null);
 
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
@@ -189,9 +178,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public void updateContractpartnerAccount(final UserID userId, final ContractpartnerAccount contractpartnerAccount) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerAccount, "ContractpartnerAccount must not be null!");
+	public void updateContractpartnerAccount(@NonNull final UserID userId,
+			@NonNull final ContractpartnerAccount contractpartnerAccount) {
 		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -214,10 +202,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public void deleteContractpartnerAccountById(final UserID userId,
-			final ContractpartnerAccountID contractpartnerAccountId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerAccountId, "ContractpartnerAccountId must not be null!");
+	public void deleteContractpartnerAccountById(@NonNull final UserID userId,
+			@NonNull final ContractpartnerAccountID contractpartnerAccountId) {
 		final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
 				contractpartnerAccountId);
 		if (contractpartnerAccount != null) {
@@ -228,9 +214,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public void deleteContractpartnerAccounts(final UserID userId, final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerId, "ContractpartnerId must not be null!");
+	public void deleteContractpartnerAccounts(@NonNull final UserID userId,
+			@NonNull final ContractpartnerID contractpartnerId) {
 		final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
 				contractpartnerId);
 		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
@@ -241,10 +226,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
 	}
 
 	@Override
-	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(final UserID userId,
-			final List<BankAccount> bankAccounts) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(bankAccounts, "BankAccounts must not be null!");
+	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(@NonNull final UserID userId,
+			@NonNull final List<BankAccount> bankAccounts) {
 		final List<BankAccountData> bankAccountDatas = this.bankAccountDataMapper.mapAToB(bankAccounts);
 		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
 				.getAllContractpartnerByAccounts(bankAccountDatas);

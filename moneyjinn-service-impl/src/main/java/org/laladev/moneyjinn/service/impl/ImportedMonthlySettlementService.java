@@ -42,10 +42,10 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ImportedMonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Named
@@ -90,19 +90,16 @@ public class ImportedMonthlySettlementService extends AbstractService implements
 	}
 
 	@Override
-	public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(final UserID userId, final Integer year,
-			final Month month) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(year, "year must not be null!");
-		Assert.notNull(month, "month must not be null!");
+	public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(@NonNull final UserID userId,
+			@NonNull final Integer year,
+			@NonNull final Month month) {
 		final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
 				.getImportedMonthlySettlementsByMonth(year, month.getValue());
 		return this.mapImportedMonthlySettlementDataList(userId, importedMonthlySettlementDataList);
 	}
 
 	@Override
-	public void upsertImportedMonthlySettlement(final ImportedMonthlySettlement importedMonthlySettlement) {
-		Assert.notNull(importedMonthlySettlement, "importedMonthlySettlement must not be null!");
+	public void upsertImportedMonthlySettlement(@NonNull final ImportedMonthlySettlement importedMonthlySettlement) {
 		final ImportedMonthlySettlementData importedMonthlySettlementData = this.importedMonthlySettlementDataMapper
 				.mapAToB(importedMonthlySettlement);
 		this.importedMonthlySettlementDao.upsertImportedMonthlySettlement(importedMonthlySettlementData);

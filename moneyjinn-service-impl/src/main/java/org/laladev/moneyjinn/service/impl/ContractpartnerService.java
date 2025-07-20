@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import static org.springframework.util.Assert.notNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
@@ -56,10 +58,10 @@ import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerDataMapper;
 import org.laladev.moneyjinn.service.event.ContractpartnerChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -68,8 +70,6 @@ import lombok.extern.java.Log;
 @Log
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
 	private static final String STILL_REFERENCED = "You may not delete a contractual partner who is still referenced by a flow of money!";
-	private static final String CONTRACTPARTNER_MUST_NOT_BE_NULL = "contractpartner must not be null!";
-	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final ContractpartnerDao contractpartnerDao;
 	private final IUserService userService;
 	private final IGroupService groupService;
@@ -110,12 +110,11 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public ValidationResult validateContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartner.getUser(), "contractpartner.user must not be null!");
-		Assert.notNull(contractpartner.getUser().getId(), "contractpartner.user.id must not be null!");
-		Assert.notNull(contractpartner.getGroup(), "contractpartner.group must not be null!");
-		Assert.notNull(contractpartner.getGroup().getId(), "contractpartner.group.id must not be null!");
+	public ValidationResult validateContractpartner(@NonNull final Contractpartner contractpartner) {
+		notNull(contractpartner.getUser(), "contractpartner.user must not be null!");
+		notNull(contractpartner.getUser().getId(), "contractpartner.user.id must not be null!");
+		notNull(contractpartner.getGroup(), "contractpartner.group must not be null!");
+		notNull(contractpartner.getGroup().getId(), "contractpartner.group.id must not be null!");
 
 		this.prepareContractpartner(contractpartner);
 
@@ -159,10 +158,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public Contractpartner getContractpartnerById(final UserID userId, final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
-
+	public Contractpartner getContractpartnerById(@NonNull final UserID userId,
+			@NonNull final ContractpartnerID contractpartnerId) {
 		final Supplier<Contractpartner> supplier = () -> this.mapContractpartnerData(
 				this.contractpartnerDao.getContractpartnerById(userId.getId(), contractpartnerId.getId()));
 
@@ -171,9 +168,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public List<Contractpartner> getAllContractpartners(final UserID userId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-
+	public List<Contractpartner> getAllContractpartners(@NonNull final UserID userId) {
 		final Supplier<List<Contractpartner>> supplier = () -> this.mapContractpartnerDataList(
 				this.contractpartnerDao.getAllContractpartners(userId.getId()));
 
@@ -181,17 +176,14 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public Contractpartner getContractpartnerByName(final UserID userId, final String name) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(name, "name must not be null!");
+	public Contractpartner getContractpartnerByName(@NonNull final UserID userId, @NonNull final String name) {
 		final ContractpartnerData contractpartnerData = this.contractpartnerDao.getContractpartnerByName(userId.getId(),
 				name);
 		return this.mapContractpartnerData(contractpartnerData);
 	}
 
 	@Override
-	public void updateContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
+	public void updateContractpartner(@NonNull final Contractpartner contractpartner) {
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -206,8 +198,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public ContractpartnerID createContractpartner(final Contractpartner contractpartner) {
-		Assert.notNull(contractpartner, CONTRACTPARTNER_MUST_NOT_BE_NULL);
+	public ContractpartnerID createContractpartner(@NonNull final Contractpartner contractpartner) {
 		contractpartner.setId(null);
 		final ValidationResult validationResult = this.validateContractpartner(contractpartner);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -230,12 +221,8 @@ public class ContractpartnerService extends AbstractService implements IContract
 	}
 
 	@Override
-	public void deleteContractpartner(final UserID userId, final GroupID groupId,
-			final ContractpartnerID contractpartnerId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(groupId, "groupId must not be null!");
-		Assert.notNull(contractpartnerId, "contractpartnerId must not be null!");
-
+	public void deleteContractpartner(@NonNull final UserID userId, @NonNull final GroupID groupId,
+			@NonNull final ContractpartnerID contractpartnerId) {
 		final Contractpartner contractpartner = this.getContractpartnerById(userId, contractpartnerId);
 		if (contractpartner != null) {
 			try {

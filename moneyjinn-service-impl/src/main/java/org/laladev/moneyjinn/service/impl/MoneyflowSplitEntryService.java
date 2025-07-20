@@ -48,16 +48,15 @@ import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.dao.MoneyflowSplitEntryDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSplitEntryDataMapper;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryService extends AbstractService implements IMoneyflowSplitEntryService {
-	private static final String USER_ID_MUST_NOT_BE_NULL = "UserId must not be null!";
 	private final IPostingAccountService postingAccountService;
 	private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
 	private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
@@ -80,9 +79,7 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public ValidationResult validateMoneyflowSplitEntry(final MoneyflowSplitEntry moneyflowSplitEntry) {
-		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
-
+	public ValidationResult validateMoneyflowSplitEntry(@NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
 		final ValidationResult validationResult = new ValidationResult();
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(moneyflowSplitEntry.getId(), errorCode));
@@ -120,10 +117,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(final UserID userId,
-			final List<MoneyflowID> moneyflowIds) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(moneyflowIds, "moneyflowIds must not be null!");
+	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(@NonNull final UserID userId,
+			@NonNull final List<MoneyflowID> moneyflowIds) {
 		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
 		final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao
 				.getMoneyflowSplitEntries(moneyflowIdLongs);
@@ -143,9 +138,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public void createMoneyflowSplitEntries(final UserID userId,
-			final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-		Assert.notNull(moneyflowSplitEntries, "moneyflowSplitEntries must not be null!");
+	public void createMoneyflowSplitEntries(@NonNull final UserID userId,
+			@NonNull final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
 		final ValidationResult validationResult = new ValidationResult();
 		moneyflowSplitEntries
 				.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
@@ -161,8 +155,8 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public void updateMoneyflowSplitEntry(final UserID userId, final MoneyflowSplitEntry moneyflowSplitEntry) {
-		Assert.notNull(moneyflowSplitEntry, "moneyflowSplitEntry must not be null!");
+	public void updateMoneyflowSplitEntry(@NonNull final UserID userId,
+			@NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
 		final ValidationResult validationResult = this.validateMoneyflowSplitEntry(moneyflowSplitEntry);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -174,17 +168,13 @@ public class MoneyflowSplitEntryService extends AbstractService implements IMone
 	}
 
 	@Override
-	public void deleteMoneyflowSplitEntry(final UserID userId, final MoneyflowID moneyflowId,
+	public void deleteMoneyflowSplitEntry(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId,
 			final MoneyflowSplitEntryID moneyflowSplitEntryId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(moneyflowSplitEntryId, "moneyflowSplitEntryId must not be null!");
 		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(), moneyflowSplitEntryId.getId());
 	}
 
 	@Override
-	public void deleteMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
-		Assert.notNull(userId, USER_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(moneyflowId, "moneyflowId must not be null!");
+	public void deleteMoneyflowSplitEntries(@NonNull final UserID userId, final @NonNull MoneyflowID moneyflowId) {
 		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
 	}
 }

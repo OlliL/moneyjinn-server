@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.service.impl;
 
+import static org.springframework.util.Assert.notNull;
+
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -46,13 +48,13 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.SettingNameConverter;
-import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -62,29 +64,22 @@ import lombok.extern.java.Log;
 public class SettingService extends AbstractService implements ISettingService {
 
 	private static final String SETTING_GET_SETTING_MUST_NOT_BE_NULL = "setting.getSetting() must not be null!";
-	private static final String SETTING_MUST_NOT_BE_NULL = "setting must not be null!";
-	private static final String ACCESS_ID_MUST_NOT_BE_NULL = "userId must not be null!";
 	private final SettingDao settingDao;
 	private final ObjectMapper objectMapper;
 
 	@Override
-	public void deleteSettings(final UserID userId) {
-		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
+	public void deleteSettings(@NonNull final UserID userId) {
 		this.settingDao.deleteSettings(userId.getId());
 	}
 
 	@Override
-	public void deleteSetting(final UserID userId, final AbstractSetting<?> setting) {
-		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(setting, SETTING_MUST_NOT_BE_NULL);
+	public void deleteSetting(@NonNull final UserID userId, @NonNull final AbstractSetting<?> setting) {
 		this.settingDao.deleteSetting(userId.getId(),
 				SettingNameConverter.getSettingNameByClassName(setting.getClass().getSimpleName()));
 	}
 
-	private void setSetting(final UserID userId, final AbstractSetting<?> setting) {
-		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
-		Assert.notNull(setting, SETTING_MUST_NOT_BE_NULL);
-		Assert.notNull(setting.getSetting(), SETTING_GET_SETTING_MUST_NOT_BE_NULL);
+	private void setSetting(@NonNull final UserID userId, @NonNull final AbstractSetting<?> setting) {
+		notNull(setting.getSetting(), SETTING_GET_SETTING_MUST_NOT_BE_NULL);
 
 		try {
 			final String settingString = this.objectMapper.writeValueAsString(setting);
@@ -97,8 +92,7 @@ public class SettingService extends AbstractService implements ISettingService {
 		}
 	}
 
-	private <T> Optional<T> getSetting(final UserID userId, final Class<T> clazz) {
-		Assert.notNull(userId, ACCESS_ID_MUST_NOT_BE_NULL);
+	private <T> Optional<T> getSetting(@NonNull final UserID userId, final Class<T> clazz) {
 		final SettingData settingData = this.settingDao.getSetting(userId.getId(),
 				SettingNameConverter.getSettingNameByClassName(clazz.getSimpleName()));
 		if (settingData != null) {

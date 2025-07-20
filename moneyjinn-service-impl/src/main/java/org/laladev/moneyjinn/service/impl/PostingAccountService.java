@@ -45,10 +45,10 @@ import org.laladev.moneyjinn.service.dao.data.PostingAccountData;
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountDataMapper;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -57,14 +57,11 @@ import lombok.extern.java.Log;
 @Log
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
 	private static final String STILL_REFERENCED = "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!";
-	private static final String POSTING_ACCOUNT_MUST_NOT_BE_NULL = "postingAccount must not be null!";
 	private final PostingAccountDao postingAccountDao;
 	private final PostingAccountDataMapper postingAccountDataMapper;
 
 	@Override
-	public ValidationResult validatePostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
-
+	public ValidationResult validatePostingAccount(@NonNull final PostingAccount postingAccount) {
 		final ValidationResult validationResult = new ValidationResult();
 		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
 				new ValidationResultItem(postingAccount.getId(), errorCode));
@@ -84,9 +81,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	public PostingAccount getPostingAccountById(final PostingAccountID postingAccountId) {
-		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
-
+	public PostingAccount getPostingAccountById(@NonNull final PostingAccountID postingAccountId) {
 		final Supplier<PostingAccount> supplier = () -> this.postingAccountDataMapper.mapBToA(
 				this.postingAccountDao.getPostingAccountById(postingAccountId.getId()));
 
@@ -104,15 +99,13 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	public PostingAccount getPostingAccountByName(final String name) {
-		Assert.notNull(name, "name must not be null!");
+	public PostingAccount getPostingAccountByName(@NonNull final String name) {
 		final PostingAccountData postingAccountData = this.postingAccountDao.getPostingAccountByName(name);
 		return this.postingAccountDataMapper.mapBToA(postingAccountData);
 	}
 
 	@Override
-	public void updatePostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+	public void updatePostingAccount(@NonNull final PostingAccount postingAccount) {
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
 			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
@@ -127,8 +120,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	public PostingAccountID createPostingAccount(final PostingAccount postingAccount) {
-		Assert.notNull(postingAccount, POSTING_ACCOUNT_MUST_NOT_BE_NULL);
+	public PostingAccountID createPostingAccount(@NonNull final PostingAccount postingAccount) {
 		postingAccount.setId(null);
 		final ValidationResult validationResult = this.validatePostingAccount(postingAccount);
 		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
@@ -149,8 +141,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 	}
 
 	@Override
-	public void deletePostingAccount(final PostingAccountID postingAccountId) {
-		Assert.notNull(postingAccountId, "postingAccountId must not be null!");
+	public void deletePostingAccount(@NonNull final PostingAccountID postingAccountId) {
 		final PostingAccount postingAccount = this.getPostingAccountById(postingAccountId);
 		if (postingAccount != null) {
 			try {

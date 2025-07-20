@@ -41,10 +41,10 @@ import org.laladev.moneyjinn.service.api.IUserService;
 import org.laladev.moneyjinn.service.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
-import org.springframework.util.Assert;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Named
@@ -81,10 +81,8 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	}
 
 	@Override
-	public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(final UserID userId,
-			final List<CapitalsourceID> capitalsourceIds) {
-		Assert.notNull(userId, "UserId must not be null!");
-		Assert.notNull(capitalsourceIds, "capitalsourceIds must not be null!");
+	public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(@NonNull final UserID userId,
+			@NonNull final List<CapitalsourceID> capitalsourceIds) {
 
 		if (capitalsourceIds.isEmpty()) {
 			return Collections.emptyList();
@@ -97,8 +95,7 @@ public class ImportedBalanceService extends AbstractService implements IImported
 	}
 
 	@Override
-	public void upsertImportedBalance(final ImportedBalance importedBalance) {
-		Assert.notNull(importedBalance, "importedBalance must not be null!");
+	public void upsertImportedBalance(@NonNull final ImportedBalance importedBalance) {
 		final ImportedBalanceData importedBalanceData = this.importedBalanceDataMapper.mapAToB(importedBalance);
 		this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
 	}
