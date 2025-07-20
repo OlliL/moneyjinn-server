@@ -31,9 +31,9 @@
 		<spring.boot.version>3.5.3</spring.boot.version>
 		<mybatis.version>3.5.19</mybatis.version>
 		<mybatis-spring.version>3.0.5</mybatis-spring.version>
-		<commons.io.version>2.19.0</commons.io.version>
+		<commons.io.version>2.20.0</commons.io.version>
 		<commons.codec.version>1.18.0</commons.codec.version>
-		<apache.tika.version>3.2.0</apache.tika.version>
+		<apache.tika.version>3.2.1</apache.tika.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<lombok.version>1.18.38</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
