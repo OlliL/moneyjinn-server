@@ -29,8 +29,8 @@ class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 		final ListEtfOverviewResponse expected = new ListEtfOverviewResponse();
 
 		final EtfSummaryTransport transport = new EtfSummaryTransport();
-		final BigDecimal amount = new BigDecimal("93.23400");
-		final BigDecimal spentValue = new BigDecimal("73212.34878200");
+		final BigDecimal amount = new BigDecimal("93.234000");
+		final BigDecimal spentValue = new BigDecimal("73212.348782000");
 		transport.setEtfId(etf.getEtfId());
 		transport.setName(etf.getName());
 		transport.setChartUrl(etf.getChartUrl());

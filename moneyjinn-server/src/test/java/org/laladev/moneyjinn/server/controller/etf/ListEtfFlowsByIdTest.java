@@ -73,8 +73,8 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
 
 		final EtfTransport etf = new EtfTransportBuilder().forEtf1().build();
 		final EtfSummaryTransport transport = new EtfSummaryTransport();
-		final BigDecimal amount = new BigDecimal("193.23400");
-		final BigDecimal spentValue = new BigDecimal("149583.30078200");
+		final BigDecimal amount = new BigDecimal("193.234000");
+		final BigDecimal spentValue = new BigDecimal("149583.300782000");
 		transport.setEtfId(etf.getEtfId());
 		transport.setName(etf.getName());
 		transport.setChartUrl(etf.getChartUrl());

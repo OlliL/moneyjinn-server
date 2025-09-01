@@ -215,7 +215,7 @@ CREATE TABLE `etfflows` (
   `etfflowid` int unsigned NOT NULL AUTO_INCREMENT,
   `met_etfid` int unsigned NOT NULL,
   `flowdate` datetime(6) NOT NULL,
-  `amount` decimal(12,5) NOT NULL,
+  `amount` decimal(12,6) NOT NULL,
   `price` decimal(8,3) NOT NULL,
   PRIMARY KEY (`etfflowid`),
   KEY `mef_i_01` (`met_etfid`,`flowdate`) USING BTREE,
