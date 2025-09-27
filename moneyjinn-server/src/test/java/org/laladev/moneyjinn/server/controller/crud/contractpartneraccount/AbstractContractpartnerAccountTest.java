@@ -5,7 +5,7 @@ import org.laladev.moneyjinn.server.controller.api.CrudContractpartnerAccountCon
 
 abstract class AbstractContractpartnerAccountTest extends AbstractWebUserControllerTest {
 
-	protected CrudContractpartnerAccountControllerApi getMock() {
-		return super.getMock(CrudContractpartnerAccountControllerApi.class);
-	}
+    protected CrudContractpartnerAccountControllerApi getMock() {
+        return super.getMock(CrudContractpartnerAccountControllerApi.class);
+    }
 }

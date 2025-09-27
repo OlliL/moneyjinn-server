@@ -1,35 +1,35 @@
 {
-	"type": "object",
-	"required": [
-		"etfflowid",
-		"etfId",
-		"timestamp",
-		"nanoseconds",
-		"amount",
-		"price"
-	],
-	"properties": {
-		"etfflowid": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"timestamp": {
-			"type": "string",
-			"format": "date-time"
-		},
-		"nanoseconds": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"amount": {
-			"type": "number"
-		},
-		"price": {
-			"type": "number"
-		}
-	}
+  "type": "object",
+  "required": [
+    "etfflowid",
+    "etfId",
+    "timestamp",
+    "nanoseconds",
+    "amount",
+    "price"
+  ],
+  "properties": {
+    "etfflowid": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nanoseconds": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "price": {
+      "type": "number"
+    }
+  }
 }

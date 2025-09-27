@@ -35,18 +35,18 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerAccountIdMapper.class, ContractpartnerIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerAccountIdMapper.class, ContractpartnerIdMapper.class})
 public interface ContractpartnerAccountDataMapper
-		extends IMapstructMapper<ContractpartnerAccount, ContractpartnerAccountData> {
+        extends IMapstructMapper<ContractpartnerAccount, ContractpartnerAccountData> {
 
-	@Override
-	@Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
-	@Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-	@Mapping(target = "bankAccount.bankCode", source = "bankCode")
-	ContractpartnerAccount mapBToA(final ContractpartnerAccountData b);
+    @Override
+    @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+    @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
+    @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+    ContractpartnerAccount mapBToA(final ContractpartnerAccountData b);
 
-	@Override
-	@Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
-	@Mapping(target = ".", source = "bankAccount")
-	ContractpartnerAccountData mapAToB(final ContractpartnerAccount a);
+    @Override
+    @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+    @Mapping(target = ".", source = "bankAccount")
+    ContractpartnerAccountData mapAToB(final ContractpartnerAccount a);
 }

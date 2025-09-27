@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.server.event;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.controller.mapper.ContractpartnerTransportMapper;
 import org.laladev.moneyjinn.server.model.wsevent.ContractpartnerChangedEventTransport;
 import org.laladev.moneyjinn.service.event.ContractpartnerChangedEvent;
@@ -33,25 +35,22 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
-
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerChangedEventListener implements ApplicationListener<ContractpartnerChangedEvent> {
 
-	private final SimpMessagingTemplate simpMessagingTemplate;
-	private final ContractpartnerTransportMapper contractpartnerTransportMapper;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ContractpartnerTransportMapper contractpartnerTransportMapper;
 
-	@Override
-	public void onApplicationEvent(final ContractpartnerChangedEvent event) {
-		final ContractpartnerChangedEventTransport eventTransport = new ContractpartnerChangedEventTransport();
+    @Override
+    public void onApplicationEvent(final ContractpartnerChangedEvent event) {
+        final ContractpartnerChangedEventTransport eventTransport = new ContractpartnerChangedEventTransport();
 
-		eventTransport.setEventType(event.getEventType().name());
-		eventTransport
-				.setContractpartnerTransport(this.contractpartnerTransportMapper.mapAToB(event.getContractpartner()));
+        eventTransport.setEventType(event.getEventType().name());
+        eventTransport
+                .setContractpartnerTransport(this.contractpartnerTransportMapper.mapAToB(event.getContractpartner()));
 
-		this.simpMessagingTemplate.convertAndSend("/topic/contractpartnerChanged", eventTransport);
-	}
+        this.simpMessagingTemplate.convertAndSend("/topic/contractpartnerChanged", eventTransport);
+    }
 
 }

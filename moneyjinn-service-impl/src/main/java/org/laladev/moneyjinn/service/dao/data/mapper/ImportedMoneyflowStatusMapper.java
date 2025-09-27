@@ -31,34 +31,33 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 
 public class ImportedMoneyflowStatusMapper {
-	private static final int CREATED_INT = 0;
-	private static final int PROCESSED_INT = 1;
-	private static final int IGNORED_INT = 2;
+    private static final int CREATED_INT = 0;
+    private static final int PROCESSED_INT = 1;
+    private static final int IGNORED_INT = 2;
 
-	private ImportedMoneyflowStatusMapper() {
-	}
+    private ImportedMoneyflowStatusMapper() {
+    }
 
-	public static ImportedMoneyflowStatus map(final Integer type) {
-		if (type != null) {
-			return switch (type) {
-			case CREATED_INT -> ImportedMoneyflowStatus.CREATED;
-			case PROCESSED_INT -> ImportedMoneyflowStatus.PROCESSED;
-			case IGNORED_INT -> ImportedMoneyflowStatus.IGNORED;
-			default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			};
-		}
-		return null;
-	}
+    public static ImportedMoneyflowStatus map(final Integer type) {
+        if (type != null) {
+            return switch (type) {
+                case CREATED_INT -> ImportedMoneyflowStatus.CREATED;
+                case PROCESSED_INT -> ImportedMoneyflowStatus.PROCESSED;
+                case IGNORED_INT -> ImportedMoneyflowStatus.IGNORED;
+                default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+            };
+        }
+        return null;
+    }
 
-	public static Integer map(final ImportedMoneyflowStatus type) {
-		if (type != null) {
-			return switch (type) {
-			case CREATED -> CREATED_INT;
-			case PROCESSED -> PROCESSED_INT;
-			case IGNORED -> IGNORED_INT;
-			default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-			};
-		}
-		return null;
-	}
+    public static Integer map(final ImportedMoneyflowStatus type) {
+        if (type != null) {
+            return switch (type) {
+                case CREATED -> CREATED_INT;
+                case PROCESSED -> PROCESSED_INT;
+                case IGNORED -> IGNORED_INT;
+            };
+        }
+        return null;
+    }
 }

@@ -26,37 +26,33 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import org.laladev.moneyjinn.converter.EtfIdMapper;
-import org.laladev.moneyjinn.converter.EtfIsinMapper;
-import org.laladev.moneyjinn.converter.GroupIdMapper;
-import org.laladev.moneyjinn.converter.IMapstructMapper;
-import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.*;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { EtfIsinMapper.class, EtfIdMapper.class, UserIdMapper.class,
-		GroupIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {EtfIsinMapper.class, EtfIdMapper.class, UserIdMapper.class,
+        GroupIdMapper.class})
 public interface EtfDataMapper extends IMapstructMapper<Etf, EtfData> {
-	@Override
-	@Mapping(target = "id", source = "etfid")
-	@Mapping(target = "user.id", source = "mauUserId")
-	@Mapping(target = "group.id", source = "magGroupId")
-	@Mapping(target = "transactionCostsAbsolute", source = "transCostAbs")
-	@Mapping(target = "transactionCostsRelative", source = "transCostRel")
-	@Mapping(target = "transactionCostsMaximum", source = "transCostMax")
-	@Mapping(target = "partialTaxExemption", source = "partTaxExempt")
-	Etf mapBToA(EtfData b);
+    @Override
+    @Mapping(target = "id", source = "etfid")
+    @Mapping(target = "user.id", source = "mauUserId")
+    @Mapping(target = "group.id", source = "magGroupId")
+    @Mapping(target = "transactionCostsAbsolute", source = "transCostAbs")
+    @Mapping(target = "transactionCostsRelative", source = "transCostRel")
+    @Mapping(target = "transactionCostsMaximum", source = "transCostMax")
+    @Mapping(target = "partialTaxExemption", source = "partTaxExempt")
+    Etf mapBToA(EtfData b);
 
-	@Override
-	@Mapping(target = "etfid", source = "id")
-	@Mapping(target = "mauUserId", source = "user.id")
-	@Mapping(target = "magGroupId", source = "group.id")
-	@Mapping(target = "transCostAbs", source = "transactionCostsAbsolute")
-	@Mapping(target = "transCostRel", source = "transactionCostsRelative")
-	@Mapping(target = "transCostMax", source = "transactionCostsMaximum")
-	@Mapping(target = "partTaxExempt", source = "partialTaxExemption")
-	EtfData mapAToB(Etf a);
+    @Override
+    @Mapping(target = "etfid", source = "id")
+    @Mapping(target = "mauUserId", source = "user.id")
+    @Mapping(target = "magGroupId", source = "group.id")
+    @Mapping(target = "transCostAbs", source = "transactionCostsAbsolute")
+    @Mapping(target = "transCostRel", source = "transactionCostsRelative")
+    @Mapping(target = "transCostMax", source = "transactionCostsMaximum")
+    @Mapping(target = "partTaxExempt", source = "partialTaxExemption")
+    EtfData mapAToB(Etf a);
 }

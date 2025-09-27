@@ -26,21 +26,21 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import lombok.Data;
-
 @Data
 public class PreDefMoneyflowData {
-	private Long id;
-	private Long mauUserId;
-	private BigDecimal amount;
-	private Long mcsCapitalsourceId;
-	private Long mcpContractpartnerId;
-	private String comment;
-	private LocalDate createdate;
-	private boolean onceAMonth;
-	private LocalDate lastUsed;
-	private Long mpaPostingAccountId;
+    private Long id;
+    private Long mauUserId;
+    private BigDecimal amount;
+    private Long mcsCapitalsourceId;
+    private Long mcpContractpartnerId;
+    private String comment;
+    private LocalDate createdate;
+    private boolean onceAMonth;
+    private LocalDate lastUsed;
+    private Long mpaPostingAccountId;
 }

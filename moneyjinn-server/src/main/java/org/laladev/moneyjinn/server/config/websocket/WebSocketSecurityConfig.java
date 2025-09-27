@@ -39,28 +39,28 @@ import org.springframework.security.messaging.web.csrf.CsrfChannelInterceptor;
 @EnableWebSocketSecurity
 public class WebSocketSecurityConfig {
 
-	@Bean
-	AuthorizationManager<Message<?>> messageAuthorizationManager(
-			final MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-		messages.nullDestMatcher().authenticated();
-		messages.anyMessage().authenticated();
+    @Bean
+    AuthorizationManager<Message<?>> messageAuthorizationManager(
+            final MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+        messages.nullDestMatcher().authenticated();
+        messages.anyMessage().authenticated();
 
-		return messages.build();
-	}
+        return messages.build();
+    }
 
-	/**
-	 * When using Cookie bases CSRF Protection, the raw CSRF Token is used and not
-	 * the Xored protected form. For websockets, the default ChannelInterceptor
-	 * expects the Xored form of the token, so we have to make the system uses the
-	 * interceptor which expects the raw token. See
-	 * {@link org.springframework.security.config.annotation.web.socket.WebSocketMessageBrokerSecurityConfiguration#CSRF_CHANNEL_INTERCEPTOR_BEAN_NAME}
-	 * on how its applied.
-	 *
-	 * @return CsrfChannelInterceptor
-	 */
-	@Bean
-	public ChannelInterceptor csrfChannelInterceptor() {
-		return new CsrfChannelInterceptor();
-	}
+    /**
+     * When using Cookie bases CSRF Protection, the raw CSRF Token is used and not
+     * the Xored protected form. For websockets, the default ChannelInterceptor
+     * expects the Xored form of the token, so we have to make the system uses the
+     * interceptor which expects the raw token. See
+     * {@link org.springframework.security.config.annotation.web.socket.WebSocketMessageBrokerSecurityConfiguration#CSRF_CHANNEL_INTERCEPTOR_BEAN_NAME}
+     * on how its applied.
+     *
+     * @return CsrfChannelInterceptor
+     */
+    @Bean
+    public ChannelInterceptor csrfChannelInterceptor() {
+        return new CsrfChannelInterceptor();
+    }
 
 }

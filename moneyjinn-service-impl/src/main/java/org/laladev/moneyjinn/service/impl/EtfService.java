@@ -26,39 +26,15 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import static org.springframework.util.Assert.notNull;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.etf.Etf;
-import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.model.etf.EtfFlowComparator;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
-import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
-import org.laladev.moneyjinn.model.etf.EtfID;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumType;
-import org.laladev.moneyjinn.model.etf.EtfValue;
+import org.laladev.moneyjinn.model.etf.*;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
@@ -78,520 +54,526 @@ import org.laladev.moneyjinn.service.dao.data.mapper.EtfPreliminaryLumpSumDataMa
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.*;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
+import static org.springframework.util.Assert.notNull;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class EtfService extends AbstractService implements IEtfService {
-	private static final String STILL_REFERENCED = "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
-	private static final BigDecimal BIG_DECIMAL_11 = new BigDecimal(11);
-	private static final BigDecimal BIG_DECIMAL_12 = new BigDecimal(12);
-
-	private final EtfDao etfDao;
-	private final EtfFlowDataMapper etfFlowDataMapper;
-	private final EtfValueDataMapper etfValueDataMapper;
-	private final EtfDataMapper etfDataMapper;
-	private final EtfPreliminaryLumpSumDataMapper etfPreliminaryLumpSumDataMapper;
-
-	private final IUserService userService;
-	private final IGroupService groupService;
-	private final IAccessRelationService accessRelationService;
-
-	//
-	// Etf
-	//
-
-	@Override
-	public ValidationResult validateEtf(@NonNull final Etf etf) {
-		notNull(etf.getUser(), "etf.user must not be null!");
-		notNull(etf.getUser().getId(), "etf.user.id must not be null!");
-		notNull(etf.getGroup(), "etf.group must not be null!");
-		notNull(etf.getGroup().getId(), "etf.group.id must not be null!");
-
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(etf.getId(), errorCode));
-
-		if (etf.getIsin() == null || etf.getIsin().getId().isBlank()) {
-			addResult.accept(ErrorCode.ISIN_MUST_NOT_BE_EMPTY);
-		}
-		if (etf.getWkn() == null || etf.getWkn().isBlank()) {
-			addResult.accept(ErrorCode.WKN_MUST_NOT_BE_EMPTY);
-		}
-		if (etf.getTicker() == null || etf.getTicker().isBlank()) {
-			addResult.accept(ErrorCode.TICKER_MUST_NOT_BE_EMPTY);
-		}
-		if (etf.getName() == null || etf.getName().isBlank()) {
-			addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
-		}
-		if (etf.getChartUrl() != null && etf.getChartUrl().isBlank())
-			etf.setChartUrl(null);
-
-		return validationResult;
-	}
-
-	private Etf mapEtfData(final EtfData etfData) {
-		if (etfData != null) {
-			final Etf etf = this.etfDataMapper.mapBToA(etfData);
-
-			this.userService.enrichEntity(etf);
-			this.groupService.enrichEntity(etf);
-
-			return etf;
-		}
-		return null;
-	}
-
-	private List<Etf> mapEtfDataList(final List<EtfData> etfDataList) {
-		return etfDataList.stream().map(this::mapEtfData).toList();
-	}
-
-	@Override
-	public List<Etf> getAllEtf(@NonNull final UserID userId) {
-		final List<EtfData> etfData = this.etfDao.getAllEtf(userId.getId());
-		return this.mapEtfDataList(etfData);
-	}
-
-	private void evictEtfCache(final UserID userId, final EtfID etfId) {
-		if (etfId != null) {
-			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(
-					evictingUserId -> super.evictFromCache(CacheNames.ETF_BY_ID, new SimpleKey(evictingUserId, etfId))
-			);
-		}
-	}
-
-	@Override
-	public Etf getEtfById(@NonNull final UserID userId, @NonNull final EtfID etfId) {
-		final Supplier<Etf> supplier = () -> this.mapEtfData(
-				this.etfDao.getEtfById(userId.getId(), etfId.getId()));
-
-		return super.getFromCacheOrExecute(CacheNames.ETF_BY_ID, new SimpleKey(userId, etfId), supplier, Etf.class);
-	}
-
-	@Override
-	public void updateEtf(@NonNull final Etf etf) {
-		final ValidationResult validationResult = this.validateEtf(etf);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Etf update failed!", validationResultItem.getError());
-		}
-		final EtfData etfData = this.etfDataMapper.mapAToB(etf);
-		this.etfDao.updateEtf(etfData);
-		this.evictEtfCache(etf.getUser().getId(), etf.getId());
-	}
-
-	@Override
-	public EtfID createEtf(@NonNull final Etf etf) {
-		etf.setId(null);
-		final ValidationResult validationResult = this.validateEtf(etf);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Etf creation failed!", validationResultItem.getError());
-		}
-		final EtfData etfData = this.etfDataMapper.mapAToB(etf);
-		final Long etfIdLong = this.etfDao.createEtf(etfData);
-		final EtfID etfId = new EtfID(etfIdLong);
-		etf.setId(etfId);
-		return etfId;
-	}
-
-	@Override
-	public void deleteEtf(@NonNull final UserID userId, @NonNull final GroupID groupId, @NonNull final EtfID etfId) {
-		final Etf etf = this.getEtfById(userId, etfId);
-		if (etf != null) {
-			try {
-				this.etfDao.deleteEtf(groupId.getId(), etfId.getId());
-				this.evictEtfCache(userId, etfId);
-			} catch (final Exception e) {
-				log.log(Level.INFO, STILL_REFERENCED, e);
-				throw new BusinessException(STILL_REFERENCED, ErrorCode.ETF_STILL_REFERENCED);
-			}
-		}
-	}
-
-	//
-	// EtfFlow
-	//
-
-	@Override
-	public List<EtfFlow> getAllEtfFlowsUntil(@NonNull final UserID userId, @NonNull final EtfID etfId,
-			final LocalDateTime timeUntil) {
-		if (this.getEtfById(userId, etfId) != null) {
-			final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(etfId.getId(), timeUntil);
-			return this.etfFlowDataMapper.mapBToA(etfFlowData);
-		}
-		return Collections.emptyList();
-	}
-
-	@Override
-	public ValidationResult validateEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(etfFlow.getId(), errorCode));
-
-		if (etfFlow.getTime() == null) {
-			addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
-		}
-
-		if (etfFlow.getAmount() == null || etfFlow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-			addResult.accept(ErrorCode.PIECES_NOT_SET);
-		}
-
-		if (etfFlow.getPrice() == null || etfFlow.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-			addResult.accept(ErrorCode.PRICE_NOT_SET);
-		}
-
-		if (etfFlow.getEtfId() == null || etfFlow.getEtfId().getId() == null) {
-			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-		} else {
-			final Etf etf = this.getEtfById(userId, etfFlow.getEtfId());
-			if (etf == null) {
-				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-			}
-		}
-
-		return validationResult;
-	}
-
-	@Override
-	public EtfFlow getEtfFlowById(@NonNull final UserID userId, @NonNull final EtfFlowID etfFlowId) {
-		final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
-		if (etfFlowData != null) {
-			final EtfFlow etfFlow = this.etfFlowDataMapper.mapBToA(etfFlowData);
-			if (this.getEtfById(userId, etfFlow.getEtfId()) != null) {
-				return etfFlow;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public EtfFlowID createEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
-		final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
-		}
-		final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
-		final Long etfFlowId = this.etfDao.createEtfFlow(etfFlowData);
-		return new EtfFlowID(etfFlowId);
-	}
-
-	@Override
-	public void updateEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
-		final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
-		}
-		final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
-		this.etfDao.updateEtfFlow(etfFlowData);
-	}
-
-	@Override
-	public void deleteEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlowID etfFlowId) {
-		final EtfFlow etfFlow = this.getEtfFlowById(userId, etfFlowId);
-		if (etfFlow != null) {
-			this.etfDao.deleteEtfFlow(etfFlowId.getId());
-		}
-	}
-
-	@Override
-	public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final UserID userId, final List<EtfFlow> allEtfFlows) {
-		final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
-		final Map<EtfID, List<EtfFlow>> etfFlowsByEtfIdMap = allEtfFlows.stream()
-				.collect(Collectors.groupingBy(EtfFlow::getEtfId));
-
-		final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
-		for (final var etfFlowsByEtfIdMapEntry : etfFlowsByEtfIdMap.entrySet()) {
-			final var etfFlows = etfFlowsByEtfIdMapEntry.getValue();
-			final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(userId,
-					etfFlowsByEtfIdMapEntry.getKey());
-			final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
-
-			// initialize accumulated preliminary lump sum to 0 for each effective flow
-			final List<EtfFlowWithTaxInfo> etfFlowWithTaxInfos = etfBuyFlows.stream().map(ef -> {
-				final EtfFlowWithTaxInfo etfFlowWithTaxInfo = new EtfFlowWithTaxInfo(ef);
-				etfFlowWithTaxInfo.setAccumulatedPreliminaryLumpSum(BigDecimal.ZERO);
-				return etfFlowWithTaxInfo;
-			}).toList();
-
-			// delete all preliminary lump sums older than the earliest effective flow
-			final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getFirst().getTime());
-			etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
-
-			for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
-				for (final Month month : Month.values()) {
-					final BigDecimal pieceTax = switch (etfPreliminaryLumpSum.getType()) {
-					case AMOUNT_PER_MONTH -> this.getPieceTaxAmountPerMonth(month, etfPreliminaryLumpSum, allEtfFlows);
-					case AMOUNT_PER_PIECE -> this.getPieceTaxAmountPerPiece(month, etfPreliminaryLumpSum);
-					};
-
-					final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
-							.atTime(LocalTime.MAX);
-
-					if (month.equals(Month.JANUARY)) {
-						etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
-								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
-										efwti.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount()
-												.multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
-					} else {
-						final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
-								.atStartOfDay();
-
-						etfFlowWithTaxInfos.stream().filter(
-								efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
-								.forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
-										.getAccumulatedPreliminaryLumpSum()
-										.add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
-					}
-				}
-			}
-
-			relevantEtfFlows.addAll(etfFlowWithTaxInfos);
-		}
-
-		return relevantEtfFlows;
-	}
-
-	private BigDecimal getPieceTaxAmountPerPiece(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
-		final var fullAmount = etfPreliminaryLumpSum.getAmountPerPiece();
-		final var oneTwelfthAmount = fullAmount.divide(BIG_DECIMAL_12, 10, RoundingMode.HALF_UP);
-
-		return switch (month) {
-		case JANUARY -> fullAmount;
-		case FEBRUARY -> oneTwelfthAmount.multiply(BIG_DECIMAL_11);
-		case MARCH -> oneTwelfthAmount.multiply(BigDecimal.valueOf(10));
-		case APRIL -> oneTwelfthAmount.multiply(BigDecimal.valueOf(9));
-		case MAY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(8));
-		case JUNE -> oneTwelfthAmount.multiply(BigDecimal.valueOf(7));
-		case JULY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(6));
-		case AUGUST -> oneTwelfthAmount.multiply(BigDecimal.valueOf(5));
-		case SEPTEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(4));
-		case OCTOBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(3));
-		case NOVEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(2));
-		case DECEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(1));
-		};
-	}
-
-	private BigDecimal getPieceTaxAmountPerMonth(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum,
-			final List<EtfFlow> allEtfFlows) {
-		final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1).atStartOfDay();
-		final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
-				.atTime(LocalTime.MAX);
-		final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
-
-		final BigDecimal amount = switch (month) {
-		case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
-		case FEBRUARY -> etfPreliminaryLumpSum.getAmountFebruary();
-		case MARCH -> etfPreliminaryLumpSum.getAmountMarch();
-		case APRIL -> etfPreliminaryLumpSum.getAmountApril();
-		case MAY -> etfPreliminaryLumpSum.getAmountMay();
-		case JUNE -> etfPreliminaryLumpSum.getAmountJune();
-		case JULY -> etfPreliminaryLumpSum.getAmountJuly();
-		case AUGUST -> etfPreliminaryLumpSum.getAmountAugust();
-		case SEPTEMBER -> etfPreliminaryLumpSum.getAmountSeptember();
-		case OCTOBER -> etfPreliminaryLumpSum.getAmountOctober();
-		case NOVEMBER -> etfPreliminaryLumpSum.getAmountNovember();
-		case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
-		};
-
-		// TODO Test this if statement
-		if (BigDecimal.ZERO.compareTo(amount) == 0)
-			return BigDecimal.ZERO;
-
-		if (month.equals(Month.JANUARY)) {
-			return this.calculatePieceTax(amount, relevantTaxFlows);
-		} else {
-			final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
-					.filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
-			if (!relevantTaxFlowsForThisMonth.isEmpty()) {
-				return this.calculatePieceTax(amount, relevantTaxFlowsForThisMonth);
-			}
-		}
-
-		return BigDecimal.ZERO;
-
-	}
-
-	private BigDecimal calculatePieceTax(final BigDecimal amount, final List<EtfFlow> relevantTaxFlows) {
-		final BigDecimal amountSum = relevantTaxFlows.stream().map(EtfFlow::getAmount).reduce(BigDecimal.ZERO,
-				BigDecimal::add);
-		return amount.divide(amountSum, 10, RoundingMode.HALF_UP);
-	}
-
-	private List<EtfFlow> calculateEffectiveEtfFlowsUntil(final List<EtfFlow> etfFlows, final LocalDateTime until) {
-		Collections.sort(etfFlows, new EtfFlowComparator());
-		final List<EtfFlow> etfSalesFlows = etfFlows.stream()
-				.filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).filter(ef -> ef.getTime().isBefore(until))
-				.toList();
-		@SuppressWarnings("java:S6204") // list gets modified
-		final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
-				.filter(ef -> ef.getTime().isBefore(until)).collect(Collectors.toList());
-		for (final EtfFlow etfSalesFlow : etfSalesFlows) {
-			BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
-			final ListIterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.listIterator();
-			while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
-				final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
-				if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
-					etfBuyFlowsIterator.remove();
-					salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
-				} else {
-					final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
-					// Don't modify the elements in the parameterlist - create a new object instead.
-					final EtfFlow firstAndReducedEtfFlow = new EtfFlow(etfBuyFlow);
-					firstAndReducedEtfFlow.setAmount(newAmount);
-					etfBuyFlowsIterator.set(firstAndReducedEtfFlow);
-					salesAmount = BigDecimal.ZERO;
-				}
-			}
-		}
-		return etfBuyFlows;
-	}
-
-	//
-	// Etf Preliminary Lump Sum
-	//
-
-	@Override
-	public ValidationResult validateEtfPreliminaryLumpSum(@NonNull final UserID userId,
-			@NonNull final EtfPreliminaryLumpSum mep) {
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(null, errorCode));
-
-		if (mep.getEtfId() == null || mep.getEtfId().getId() == null) {
-			addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-		} else {
-			final Etf etf = this.getEtfById(userId, mep.getEtfId());
-			if (etf == null) {
-				addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
-			}
-		}
-
-		if (mep.getYear() == null) {
-			addResult.accept(ErrorCode.YEAR_NOT_SET);
-		}
-
-		if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH && mep.getAmountPerPiece() != null) {
-			addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_PIECE_PRICE_MUST_BE_NULL);
-		} else if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE && (mep.getAmountJanuary() != null
-				|| mep.getAmountFebruary() != null || mep.getAmountMarch() != null || mep.getAmountApril() != null
-				|| mep.getAmountMay() != null || mep.getAmountJune() != null || mep.getAmountJuly() != null
-				|| mep.getAmountAugust() != null || mep.getAmountSeptember() != null || mep.getAmountOctober() != null
-				|| mep.getAmountNovember() != null || mep.getAmountDecember() != null)) {
-			addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_MONTHLY_PRICES_MUST_BE_NULL);
-
-		}
-
-		return validationResult;
-	}
-
-	private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(@NonNull final UserID userId,
-			@NonNull final EtfID etfId) {
-		final Etf etf = this.getEtfById(userId, etfId);
-		if (etf != null) {
-			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
-			return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
-		} else {
-			return Collections.emptyList();
-		}
-	}
-
-	@Override
-	public EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(@NonNull final UserID userId,
-			@NonNull final EtfPreliminaryLumpSumID id) {
-		final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(id.getId());
-		if (data != null) {
-			final var etfPreliminaryLumpSum = this.etfPreliminaryLumpSumDataMapper.mapBToA(data);
-
-			final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
-			if (etf != null) {
-				return etfPreliminaryLumpSum;
-			}
-		}
-		return null;
-
-	}
-
-	@Override
-	public List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(@NonNull final UserID userId,
-			@NonNull final EtfID etfId) {
-		final Etf etf = this.getEtfById(userId, etfId);
-		if (etf != null) {
-			final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllEtfPreliminaryLumpSum(etfId.getId());
-			return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
-		} else {
-			return Collections.emptyList();
-		}
-	}
-
-	@Override
-	public void createEtfPreliminaryLumpSum(@NonNull final UserID userId,
-			@NonNull final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
-		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
-		}
-		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
-				etfPreliminaryLumpSum.getYear().getValue());
-		if (idLong != null) {
-			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
-					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
-		}
-		final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
-		this.etfDao.createPreliminaryLumpSum(data);
-	}
-
-	@Override
-	public void updateEtfPreliminaryLumpSum(@NonNull final UserID userId,
-			@NonNull final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
-		final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
-		}
-		final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum.getId());
-		if (etfPreliminaryLumpSumExists == null) {
-			throw new BusinessException("EtfPreliminaryLumpSum does not exist!",
-					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST);
-		}
-		final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
-				etfPreliminaryLumpSum.getYear().getValue());
-		if (idLong != null && !idLong.equals(etfPreliminaryLumpSum.getId().getId())) {
-			throw new BusinessException("EtfPreliminaryLumpSum already exists!",
-					ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
-		}
-		final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
-		this.etfDao.updatePreliminaryLumpSum(data);
-	}
-
-	@Override
-	public void deleteEtfPreliminaryLumpSum(@NonNull final UserID userId, @NonNull final EtfPreliminaryLumpSumID id) {
-		if (this.getEtfPreliminaryLumpSum(userId, id) != null) {
-			this.etfDao.deletePreliminaryLumpSum(id.getId());
-		}
-	}
-
-	//
-	// ETF value
-	//
-
-	@Override
-	public EtfValue getEtfValueEndOfMonth(final EtfIsin etfIsin, final Year year, final Month month) {
-		final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(etfIsin.getId(), year, month);
-		return this.etfValueDataMapper.mapBToA(etfValueData);
-	}
-
-	@Override
-	public EtfValue getLatestEtfValue(final EtfIsin etfIsin) {
-		final EtfValueData etfValueData = this.etfDao.getLatestEtfValue(etfIsin.getId());
-		return this.etfValueDataMapper.mapBToA(etfValueData);
-	}
+    private static final String STILL_REFERENCED = "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
+    private static final BigDecimal BIG_DECIMAL_11 = new BigDecimal(11);
+    private static final BigDecimal BIG_DECIMAL_12 = new BigDecimal(12);
+
+    private final EtfDao etfDao;
+    private final EtfFlowDataMapper etfFlowDataMapper;
+    private final EtfValueDataMapper etfValueDataMapper;
+    private final EtfDataMapper etfDataMapper;
+    private final EtfPreliminaryLumpSumDataMapper etfPreliminaryLumpSumDataMapper;
+
+    private final IUserService userService;
+    private final IGroupService groupService;
+    private final IAccessRelationService accessRelationService;
+
+    //
+    // Etf
+    //
+
+    @Override
+    public ValidationResult validateEtf(@NonNull final Etf etf) {
+        notNull(etf.getUser(), "etf.user must not be null!");
+        notNull(etf.getUser().getId(), "etf.user.id must not be null!");
+        notNull(etf.getGroup(), "etf.group must not be null!");
+        notNull(etf.getGroup().getId(), "etf.group.id must not be null!");
+
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(etf.getId(), errorCode));
+
+        if (etf.getIsin() == null || etf.getIsin().getId().isBlank()) {
+            addResult.accept(ErrorCode.ISIN_MUST_NOT_BE_EMPTY);
+        }
+        if (etf.getWkn() == null || etf.getWkn().isBlank()) {
+            addResult.accept(ErrorCode.WKN_MUST_NOT_BE_EMPTY);
+        }
+        if (etf.getTicker() == null || etf.getTicker().isBlank()) {
+            addResult.accept(ErrorCode.TICKER_MUST_NOT_BE_EMPTY);
+        }
+        if (etf.getName() == null || etf.getName().isBlank()) {
+            addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
+        }
+        if (etf.getChartUrl() != null && etf.getChartUrl().isBlank())
+            etf.setChartUrl(null);
+
+        return validationResult;
+    }
+
+    private Etf mapEtfData(final EtfData etfData) {
+        if (etfData != null) {
+            final Etf etf = this.etfDataMapper.mapBToA(etfData);
+
+            this.userService.enrichEntity(etf);
+            this.groupService.enrichEntity(etf);
+
+            return etf;
+        }
+        return null;
+    }
+
+    private List<Etf> mapEtfDataList(final List<EtfData> etfDataList) {
+        return etfDataList.stream().map(this::mapEtfData).toList();
+    }
+
+    @Override
+    public List<Etf> getAllEtf(@NonNull final UserID userId) {
+        final List<EtfData> etfData = this.etfDao.getAllEtf(userId.getId());
+        return this.mapEtfDataList(etfData);
+    }
+
+    private void evictEtfCache(final UserID userId, final EtfID etfId) {
+        if (etfId != null) {
+            this.accessRelationService.getAllUserWithSameGroup(userId).forEach(
+                    evictingUserId -> super.evictFromCache(CacheNames.ETF_BY_ID, new SimpleKey(evictingUserId, etfId))
+            );
+        }
+    }
+
+    @Override
+    public Etf getEtfById(@NonNull final UserID userId, @NonNull final EtfID etfId) {
+        final Supplier<Etf> supplier = () -> this.mapEtfData(
+                this.etfDao.getEtfById(userId.getId(), etfId.getId()));
+
+        return super.getFromCacheOrExecute(CacheNames.ETF_BY_ID, new SimpleKey(userId, etfId), supplier, Etf.class);
+    }
+
+    @Override
+    public void updateEtf(@NonNull final Etf etf) {
+        final ValidationResult validationResult = this.validateEtf(etf);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Etf update failed!", validationResultItem.getError());
+        }
+        final EtfData etfData = this.etfDataMapper.mapAToB(etf);
+        this.etfDao.updateEtf(etfData);
+        this.evictEtfCache(etf.getUser().getId(), etf.getId());
+    }
+
+    @Override
+    public EtfID createEtf(@NonNull final Etf etf) {
+        etf.setId(null);
+        final ValidationResult validationResult = this.validateEtf(etf);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Etf creation failed!", validationResultItem.getError());
+        }
+        final EtfData etfData = this.etfDataMapper.mapAToB(etf);
+        final Long etfIdLong = this.etfDao.createEtf(etfData);
+        final EtfID etfId = new EtfID(etfIdLong);
+        etf.setId(etfId);
+        return etfId;
+    }
+
+    @Override
+    public void deleteEtf(@NonNull final UserID userId, @NonNull final GroupID groupId, @NonNull final EtfID etfId) {
+        final Etf etf = this.getEtfById(userId, etfId);
+        if (etf != null) {
+            try {
+                this.etfDao.deleteEtf(groupId.getId(), etfId.getId());
+                this.evictEtfCache(userId, etfId);
+            } catch (final Exception e) {
+                log.log(Level.INFO, STILL_REFERENCED, e);
+                throw new BusinessException(STILL_REFERENCED, ErrorCode.ETF_STILL_REFERENCED);
+            }
+        }
+    }
+
+    //
+    // EtfFlow
+    //
+
+    @Override
+    public List<EtfFlow> getAllEtfFlowsUntil(@NonNull final UserID userId, @NonNull final EtfID etfId,
+                                             final LocalDateTime timeUntil) {
+        if (this.getEtfById(userId, etfId) != null) {
+            final List<EtfFlowData> etfFlowData = this.etfDao.getAllFlowsUntil(etfId.getId(), timeUntil);
+            return this.etfFlowDataMapper.mapBToA(etfFlowData);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public ValidationResult validateEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(etfFlow.getId(), errorCode));
+
+        if (etfFlow.getTime() == null) {
+            addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
+        }
+
+        if (etfFlow.getAmount() == null || etfFlow.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+            addResult.accept(ErrorCode.PIECES_NOT_SET);
+        }
+
+        if (etfFlow.getPrice() == null || etfFlow.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+            addResult.accept(ErrorCode.PRICE_NOT_SET);
+        }
+
+        if (etfFlow.getEtfId() == null || etfFlow.getEtfId().getId() == null) {
+            addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+        } else {
+            final Etf etf = this.getEtfById(userId, etfFlow.getEtfId());
+            if (etf == null) {
+                addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+            }
+        }
+
+        return validationResult;
+    }
+
+    @Override
+    public EtfFlow getEtfFlowById(@NonNull final UserID userId, @NonNull final EtfFlowID etfFlowId) {
+        final EtfFlowData etfFlowData = this.etfDao.getEtfFowById(etfFlowId.getId());
+        if (etfFlowData != null) {
+            final EtfFlow etfFlow = this.etfFlowDataMapper.mapBToA(etfFlowData);
+            if (this.getEtfById(userId, etfFlow.getEtfId()) != null) {
+                return etfFlow;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public EtfFlowID createEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
+        final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("EtfFlow creation failed!", validationResultItem.getError());
+        }
+        final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
+        final Long etfFlowId = this.etfDao.createEtfFlow(etfFlowData);
+        return new EtfFlowID(etfFlowId);
+    }
+
+    @Override
+    public void updateEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlow etfFlow) {
+        final ValidationResult validationResult = this.validateEtfFlow(userId, etfFlow);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("EtfFlow update failed!", validationResultItem.getError());
+        }
+        final EtfFlowData etfFlowData = this.etfFlowDataMapper.mapAToB(etfFlow);
+        this.etfDao.updateEtfFlow(etfFlowData);
+    }
+
+    @Override
+    public void deleteEtfFlow(@NonNull final UserID userId, @NonNull final EtfFlowID etfFlowId) {
+        final EtfFlow etfFlow = this.getEtfFlowById(userId, etfFlowId);
+        if (etfFlow != null) {
+            this.etfDao.deleteEtfFlow(etfFlowId.getId());
+        }
+    }
+
+    @Override
+    public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final UserID userId, final List<EtfFlow> allEtfFlows) {
+        final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+        final Map<EtfID, List<EtfFlow>> etfFlowsByEtfIdMap = allEtfFlows.stream()
+                .collect(Collectors.groupingBy(EtfFlow::getEtfId));
+
+        final List<EtfFlowWithTaxInfo> relevantEtfFlows = new ArrayList<>();
+        for (final var etfFlowsByEtfIdMapEntry : etfFlowsByEtfIdMap.entrySet()) {
+            final var etfFlows = etfFlowsByEtfIdMapEntry.getValue();
+            final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(userId,
+                    etfFlowsByEtfIdMapEntry.getKey());
+            final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
+
+            // initialize accumulated preliminary lump sum to 0 for each effective flow
+            final List<EtfFlowWithTaxInfo> etfFlowWithTaxInfos = etfBuyFlows.stream().map(ef -> {
+                final EtfFlowWithTaxInfo etfFlowWithTaxInfo = new EtfFlowWithTaxInfo(ef);
+                etfFlowWithTaxInfo.setAccumulatedPreliminaryLumpSum(BigDecimal.ZERO);
+                return etfFlowWithTaxInfo;
+            }).toList();
+
+            // delete all preliminary lump sums older than the earliest effective flow
+            final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getFirst().getTime());
+            etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
+
+            for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
+                for (final Month month : Month.values()) {
+                    final BigDecimal pieceTax = switch (etfPreliminaryLumpSum.getType()) {
+                        case AMOUNT_PER_MONTH ->
+                                this.getPieceTaxAmountPerMonth(month, etfPreliminaryLumpSum, allEtfFlows);
+                        case AMOUNT_PER_PIECE -> this.getPieceTaxAmountPerPiece(month, etfPreliminaryLumpSum);
+                    };
+
+                    final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
+                            .atTime(LocalTime.MAX);
+
+                    if (month.equals(Month.JANUARY)) {
+                        etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
+                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
+                                        efwti.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount()
+                                                .multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
+                    } else {
+                        final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
+                                .atStartOfDay();
+
+                        etfFlowWithTaxInfos.stream().filter(
+                                        efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
+                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
+                                        .getAccumulatedPreliminaryLumpSum()
+                                        .add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
+                    }
+                }
+            }
+
+            relevantEtfFlows.addAll(etfFlowWithTaxInfos);
+        }
+
+        return relevantEtfFlows;
+    }
+
+    private BigDecimal getPieceTaxAmountPerPiece(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+        final var fullAmount = etfPreliminaryLumpSum.getAmountPerPiece();
+        final var oneTwelfthAmount = fullAmount.divide(BIG_DECIMAL_12, 10, RoundingMode.HALF_UP);
+
+        return switch (month) {
+            case JANUARY -> fullAmount;
+            case FEBRUARY -> oneTwelfthAmount.multiply(BIG_DECIMAL_11);
+            case MARCH -> oneTwelfthAmount.multiply(BigDecimal.valueOf(10));
+            case APRIL -> oneTwelfthAmount.multiply(BigDecimal.valueOf(9));
+            case MAY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(8));
+            case JUNE -> oneTwelfthAmount.multiply(BigDecimal.valueOf(7));
+            case JULY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(6));
+            case AUGUST -> oneTwelfthAmount.multiply(BigDecimal.valueOf(5));
+            case SEPTEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(4));
+            case OCTOBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(3));
+            case NOVEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(2));
+            case DECEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(1));
+        };
+    }
+
+    private BigDecimal getPieceTaxAmountPerMonth(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum,
+                                                 final List<EtfFlow> allEtfFlows) {
+        final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1).atStartOfDay();
+        final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
+                .atTime(LocalTime.MAX);
+        final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
+
+        final BigDecimal amount = switch (month) {
+            case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
+            case FEBRUARY -> etfPreliminaryLumpSum.getAmountFebruary();
+            case MARCH -> etfPreliminaryLumpSum.getAmountMarch();
+            case APRIL -> etfPreliminaryLumpSum.getAmountApril();
+            case MAY -> etfPreliminaryLumpSum.getAmountMay();
+            case JUNE -> etfPreliminaryLumpSum.getAmountJune();
+            case JULY -> etfPreliminaryLumpSum.getAmountJuly();
+            case AUGUST -> etfPreliminaryLumpSum.getAmountAugust();
+            case SEPTEMBER -> etfPreliminaryLumpSum.getAmountSeptember();
+            case OCTOBER -> etfPreliminaryLumpSum.getAmountOctober();
+            case NOVEMBER -> etfPreliminaryLumpSum.getAmountNovember();
+            case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
+        };
+
+        // TODO Test this if statement
+        if (BigDecimal.ZERO.compareTo(amount) == 0)
+            return BigDecimal.ZERO;
+
+        if (month.equals(Month.JANUARY)) {
+            return this.calculatePieceTax(amount, relevantTaxFlows);
+        } else {
+            final List<EtfFlow> relevantTaxFlowsForThisMonth = relevantTaxFlows.stream()
+                    .filter(rtf -> !startOfMonth.isAfter(rtf.getTime())).toList();
+            if (!relevantTaxFlowsForThisMonth.isEmpty()) {
+                return this.calculatePieceTax(amount, relevantTaxFlowsForThisMonth);
+            }
+        }
+
+        return BigDecimal.ZERO;
+
+    }
+
+    private BigDecimal calculatePieceTax(final BigDecimal amount, final List<EtfFlow> relevantTaxFlows) {
+        final BigDecimal amountSum = relevantTaxFlows.stream().map(EtfFlow::getAmount).reduce(BigDecimal.ZERO,
+                BigDecimal::add);
+        return amount.divide(amountSum, 10, RoundingMode.HALF_UP);
+    }
+
+    private List<EtfFlow> calculateEffectiveEtfFlowsUntil(final List<EtfFlow> etfFlows, final LocalDateTime until) {
+        Collections.sort(etfFlows, new EtfFlowComparator());
+        final List<EtfFlow> etfSalesFlows = etfFlows.stream()
+                .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).filter(ef -> ef.getTime().isBefore(until))
+                .toList();
+        @SuppressWarnings("java:S6204") // list gets modified
+        final List<EtfFlow> etfBuyFlows = etfFlows.stream().filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) > -1)
+                .filter(ef -> ef.getTime().isBefore(until)).collect(Collectors.toList());
+        for (final EtfFlow etfSalesFlow : etfSalesFlows) {
+            BigDecimal salesAmount = etfSalesFlow.getAmount().negate();
+            final ListIterator<EtfFlow> etfBuyFlowsIterator = etfBuyFlows.listIterator();
+            while (etfBuyFlowsIterator.hasNext() && salesAmount.compareTo(BigDecimal.ZERO) > 0) {
+                final EtfFlow etfBuyFlow = etfBuyFlowsIterator.next();
+                if (salesAmount.compareTo(etfBuyFlow.getAmount()) >= 0) {
+                    etfBuyFlowsIterator.remove();
+                    salesAmount = salesAmount.subtract(etfBuyFlow.getAmount());
+                } else {
+                    final BigDecimal newAmount = etfBuyFlow.getAmount().subtract(salesAmount);
+                    // Don't modify the elements in the parameterlist - create a new object instead.
+                    final EtfFlow firstAndReducedEtfFlow = new EtfFlow(etfBuyFlow);
+                    firstAndReducedEtfFlow.setAmount(newAmount);
+                    etfBuyFlowsIterator.set(firstAndReducedEtfFlow);
+                    salesAmount = BigDecimal.ZERO;
+                }
+            }
+        }
+        return etfBuyFlows;
+    }
+
+    //
+    // Etf Preliminary Lump Sum
+    //
+
+    @Override
+    public ValidationResult validateEtfPreliminaryLumpSum(@NonNull final UserID userId,
+                                                          @NonNull final EtfPreliminaryLumpSum mep) {
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(null, errorCode));
+
+        if (mep.getEtfId() == null || mep.getEtfId().getId() == null) {
+            addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+        } else {
+            final Etf etf = this.getEtfById(userId, mep.getEtfId());
+            if (etf == null) {
+                addResult.accept(ErrorCode.NO_ETF_SPECIFIED);
+            }
+        }
+
+        if (mep.getYear() == null) {
+            addResult.accept(ErrorCode.YEAR_NOT_SET);
+        }
+
+        if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH && mep.getAmountPerPiece() != null) {
+            addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_PIECE_PRICE_MUST_BE_NULL);
+        } else if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE && (mep.getAmountJanuary() != null
+                || mep.getAmountFebruary() != null || mep.getAmountMarch() != null || mep.getAmountApril() != null
+                || mep.getAmountMay() != null || mep.getAmountJune() != null || mep.getAmountJuly() != null
+                || mep.getAmountAugust() != null || mep.getAmountSeptember() != null || mep.getAmountOctober() != null
+                || mep.getAmountNovember() != null || mep.getAmountDecember() != null)) {
+            addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_MONTHLY_PRICES_MUST_BE_NULL);
+
+        }
+
+        return validationResult;
+    }
+
+    private List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSums(@NonNull final UserID userId,
+                                                                     @NonNull final EtfID etfId) {
+        final Etf etf = this.getEtfById(userId, etfId);
+        if (etf != null) {
+            final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllPreliminaryLumpSum(etfId.getId());
+            return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(@NonNull final UserID userId,
+                                                          @NonNull final EtfPreliminaryLumpSumID id) {
+        final EtfPreliminaryLumpSumData data = this.etfDao.getPreliminaryLumpSum(id.getId());
+        if (data != null) {
+            final var etfPreliminaryLumpSum = this.etfPreliminaryLumpSumDataMapper.mapBToA(data);
+
+            final Etf etf = this.getEtfById(userId, etfPreliminaryLumpSum.getEtfId());
+            if (etf != null) {
+                return etfPreliminaryLumpSum;
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(@NonNull final UserID userId,
+                                                                   @NonNull final EtfID etfId) {
+        final Etf etf = this.getEtfById(userId, etfId);
+        if (etf != null) {
+            final List<EtfPreliminaryLumpSumData> datas = this.etfDao.getAllEtfPreliminaryLumpSum(etfId.getId());
+            return this.etfPreliminaryLumpSumDataMapper.mapBToA(datas);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void createEtfPreliminaryLumpSum(@NonNull final UserID userId,
+                                            @NonNull final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+        final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
+        }
+        final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
+                etfPreliminaryLumpSum.getYear().getValue());
+        if (idLong != null) {
+            throw new BusinessException("EtfPreliminaryLumpSum already exists!",
+                    ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
+        }
+        final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
+        this.etfDao.createPreliminaryLumpSum(data);
+    }
+
+    @Override
+    public void updateEtfPreliminaryLumpSum(@NonNull final UserID userId,
+                                            @NonNull final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+        final ValidationResult validationResult = this.validateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("EtfPreliminaryLumpSum creation failed!", validationResultItem.getError());
+        }
+        final var etfPreliminaryLumpSumExists = this.getEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum.getId());
+        if (etfPreliminaryLumpSumExists == null) {
+            throw new BusinessException("EtfPreliminaryLumpSum does not exist!",
+                    ErrorCode.ETF_PRELIMINARY_LUMP_SUM_DOES_NOT_EXIST);
+        }
+        final var idLong = this.etfDao.getPreliminaryLumpSumId(etfPreliminaryLumpSum.getEtfId().getId(),
+                etfPreliminaryLumpSum.getYear().getValue());
+        if (idLong != null && !idLong.equals(etfPreliminaryLumpSum.getId().getId())) {
+            throw new BusinessException("EtfPreliminaryLumpSum already exists!",
+                    ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ALREADY_EXISTS);
+        }
+        final EtfPreliminaryLumpSumData data = this.etfPreliminaryLumpSumDataMapper.mapAToB(etfPreliminaryLumpSum);
+        this.etfDao.updatePreliminaryLumpSum(data);
+    }
+
+    @Override
+    public void deleteEtfPreliminaryLumpSum(@NonNull final UserID userId, @NonNull final EtfPreliminaryLumpSumID id) {
+        if (this.getEtfPreliminaryLumpSum(userId, id) != null) {
+            this.etfDao.deletePreliminaryLumpSum(id.getId());
+        }
+    }
+
+    //
+    // ETF value
+    //
+
+    @Override
+    public EtfValue getEtfValueEndOfMonth(final EtfIsin etfIsin, final Year year, final Month month) {
+        final EtfValueData etfValueData = this.etfDao.getEtfValueForMonth(etfIsin.getId(), year, month);
+        return this.etfValueDataMapper.mapBToA(etfValueData);
+    }
+
+    @Override
+    public EtfValue getLatestEtfValue(final EtfIsin etfIsin) {
+        final EtfValueData etfValueData = this.etfDao.getLatestEtfValue(etfIsin.getId());
+        return this.etfValueDataMapper.mapBToA(etfValueData);
+    }
 }

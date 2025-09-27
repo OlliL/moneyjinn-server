@@ -1,7 +1,7 @@
 package org.laladev.moneyjinn.model;
 
 public interface IHasPostingAccount {
-	PostingAccount getPostingAccount();
+    PostingAccount getPostingAccount();
 
-	void setPostingAccount(PostingAccount postingAccount);
+    void setPostingAccount(PostingAccount postingAccount);
 }

@@ -1,17 +1,17 @@
 {
-	"type": "object",
-	"properties": {
-		"moneyflowTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/MoneyflowTransport.json"
-			}
-		},
-		"moneyflowSplitEntryTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "properties": {
+    "moneyflowTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/MoneyflowTransport.json"
+      }
+    },
+    "moneyflowSplitEntryTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/MoneyflowSplitEntryTransport.json"
+      }
+    }
+  }
 }

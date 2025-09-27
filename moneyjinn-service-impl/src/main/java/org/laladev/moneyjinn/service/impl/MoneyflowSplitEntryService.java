@@ -26,14 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -49,132 +45,131 @@ import org.laladev.moneyjinn.service.dao.MoneyflowSplitEntryDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSplitEntryDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowSplitEntryService extends AbstractService implements IMoneyflowSplitEntryService {
-	private final IPostingAccountService postingAccountService;
-	private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
-	private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
+    private final IPostingAccountService postingAccountService;
+    private final MoneyflowSplitEntryDao moneyflowSplitEntryDao;
+    private final MoneyflowSplitEntryDataMapper moneyflowSplitEntryDataMapper;
 
-	private MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
-		if (moneyflowSplitEntryData != null) {
-			final MoneyflowSplitEntry moneyflowSplitEntry = this.moneyflowSplitEntryDataMapper
-					.mapBToA(moneyflowSplitEntryData);
+    private MoneyflowSplitEntry mapMoneyflowSplitEntryData(final MoneyflowSplitEntryData moneyflowSplitEntryData) {
+        if (moneyflowSplitEntryData != null) {
+            final MoneyflowSplitEntry moneyflowSplitEntry = this.moneyflowSplitEntryDataMapper
+                    .mapBToA(moneyflowSplitEntryData);
 
-			this.postingAccountService.enrichEntity(moneyflowSplitEntry);
+            this.postingAccountService.enrichEntity(moneyflowSplitEntry);
 
-			return moneyflowSplitEntry;
-		}
-		return null;
-	}
+            return moneyflowSplitEntry;
+        }
+        return null;
+    }
 
-	private List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(
-			final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
-		return moneyflowSplitEntryDataList.stream().map(this::mapMoneyflowSplitEntryData).toList();
-	}
+    private List<MoneyflowSplitEntry> mapMoneyflowSplitEntryDataList(
+            final List<MoneyflowSplitEntryData> moneyflowSplitEntryDataList) {
+        return moneyflowSplitEntryDataList.stream().map(this::mapMoneyflowSplitEntryData).toList();
+    }
 
-	@Override
-	public ValidationResult validateMoneyflowSplitEntry(@NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(moneyflowSplitEntry.getId(), errorCode));
+    @Override
+    public ValidationResult validateMoneyflowSplitEntry(@NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(moneyflowSplitEntry.getId(), errorCode));
 
-		if (moneyflowSplitEntry.getComment() == null || moneyflowSplitEntry.getComment().isBlank()) {
-			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
-		}
+        if (moneyflowSplitEntry.getComment() == null || moneyflowSplitEntry.getComment().isBlank()) {
+            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
+        }
 
-		final BigDecimal amount = moneyflowSplitEntry.getAmount();
-		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
-			addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
-		}
+        final BigDecimal amount = moneyflowSplitEntry.getAmount();
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
+            addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
+        }
 
-		if (moneyflowSplitEntry.getPostingAccount() == null) {
-			addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-		} else {
-			final PostingAccount postingAccount = this.postingAccountService
-					.getPostingAccountById(moneyflowSplitEntry.getPostingAccount().getId());
-			if (postingAccount == null) {
-				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-			}
-		}
+        if (moneyflowSplitEntry.getPostingAccount() == null) {
+            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+        } else {
+            final PostingAccount postingAccount = this.postingAccountService
+                    .getPostingAccountById(moneyflowSplitEntry.getPostingAccount().getId());
+            if (postingAccount == null) {
+                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+            }
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	@Override
-	public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
-		List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Collections.singletonList(moneyflowId))
-				.get(moneyflowId);
-		if (list == null) {
-			list = new ArrayList<>();
-		}
-		return list;
-	}
+    @Override
+    public List<MoneyflowSplitEntry> getMoneyflowSplitEntries(final UserID userId, final MoneyflowID moneyflowId) {
+        List<MoneyflowSplitEntry> list = this.getMoneyflowSplitEntries(userId, Collections.singletonList(moneyflowId))
+                .get(moneyflowId);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        return list;
+    }
 
-	@Override
-	public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(@NonNull final UserID userId,
-			@NonNull final List<MoneyflowID> moneyflowIds) {
-		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
-		final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao
-				.getMoneyflowSplitEntries(moneyflowIdLongs);
-		final List<MoneyflowSplitEntry> mapMoneyflowSplitEntries = this
-				.mapMoneyflowSplitEntryDataList(moneyflowSplitEntriesData);
-		final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntryMap = new HashMap<>();
-		for (final MoneyflowSplitEntry moneyflowSplitEntry : mapMoneyflowSplitEntries) {
-			final MoneyflowID moneyflowId = moneyflowSplitEntry.getMoneyflowId();
-			List<MoneyflowSplitEntry> mapList = moneyflowSplitEntryMap.get(moneyflowId);
-			if (mapList == null) {
-				mapList = new ArrayList<>();
-			}
-			mapList.add(moneyflowSplitEntry);
-			moneyflowSplitEntryMap.put(moneyflowId, mapList);
-		}
-		return moneyflowSplitEntryMap;
-	}
+    @Override
+    public Map<MoneyflowID, List<MoneyflowSplitEntry>> getMoneyflowSplitEntries(@NonNull final UserID userId,
+                                                                                @NonNull final List<MoneyflowID> moneyflowIds) {
+        final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
+        final List<MoneyflowSplitEntryData> moneyflowSplitEntriesData = this.moneyflowSplitEntryDao
+                .getMoneyflowSplitEntries(moneyflowIdLongs);
+        final List<MoneyflowSplitEntry> mapMoneyflowSplitEntries = this
+                .mapMoneyflowSplitEntryDataList(moneyflowSplitEntriesData);
+        final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntryMap = new HashMap<>();
+        for (final MoneyflowSplitEntry moneyflowSplitEntry : mapMoneyflowSplitEntries) {
+            final MoneyflowID moneyflowId = moneyflowSplitEntry.getMoneyflowId();
+            List<MoneyflowSplitEntry> mapList = moneyflowSplitEntryMap.get(moneyflowId);
+            if (mapList == null) {
+                mapList = new ArrayList<>();
+            }
+            mapList.add(moneyflowSplitEntry);
+            moneyflowSplitEntryMap.put(moneyflowId, mapList);
+        }
+        return moneyflowSplitEntryMap;
+    }
 
-	@Override
-	public void createMoneyflowSplitEntries(@NonNull final UserID userId,
-			@NonNull final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
-		final ValidationResult validationResult = new ValidationResult();
-		moneyflowSplitEntries
-				.forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("MoneyflowsSplitEntry creation failed!", validationResultItem.getError());
-		}
-		for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
-			final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
-					.mapAToB(moneyflowSplitEntry);
-			this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
-		}
-	}
+    @Override
+    public void createMoneyflowSplitEntries(@NonNull final UserID userId,
+                                            @NonNull final List<MoneyflowSplitEntry> moneyflowSplitEntries) {
+        final ValidationResult validationResult = new ValidationResult();
+        moneyflowSplitEntries
+                .forEach(mf -> validationResult.mergeValidationResult(this.validateMoneyflowSplitEntry(mf)));
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("MoneyflowsSplitEntry creation failed!", validationResultItem.getError());
+        }
+        for (final MoneyflowSplitEntry moneyflowSplitEntry : moneyflowSplitEntries) {
+            final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
+                    .mapAToB(moneyflowSplitEntry);
+            this.moneyflowSplitEntryDao.createMoneyflowSplitEntry(moneyflowSplitEntryData);
+        }
+    }
 
-	@Override
-	public void updateMoneyflowSplitEntry(@NonNull final UserID userId,
-			@NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
-		final ValidationResult validationResult = this.validateMoneyflowSplitEntry(moneyflowSplitEntry);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("MoneyflowSplitEntry update failed!", validationResultItem.getError());
-		}
-		final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
-				.mapAToB(moneyflowSplitEntry);
-		this.moneyflowSplitEntryDao.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
-	}
+    @Override
+    public void updateMoneyflowSplitEntry(@NonNull final UserID userId,
+                                          @NonNull final MoneyflowSplitEntry moneyflowSplitEntry) {
+        final ValidationResult validationResult = this.validateMoneyflowSplitEntry(moneyflowSplitEntry);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("MoneyflowSplitEntry update failed!", validationResultItem.getError());
+        }
+        final MoneyflowSplitEntryData moneyflowSplitEntryData = this.moneyflowSplitEntryDataMapper
+                .mapAToB(moneyflowSplitEntry);
+        this.moneyflowSplitEntryDao.updateMoneyflowSplitEntry(moneyflowSplitEntryData);
+    }
 
-	@Override
-	public void deleteMoneyflowSplitEntry(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId,
-			final MoneyflowSplitEntryID moneyflowSplitEntryId) {
-		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(), moneyflowSplitEntryId.getId());
-	}
+    @Override
+    public void deleteMoneyflowSplitEntry(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId,
+                                          final MoneyflowSplitEntryID moneyflowSplitEntryId) {
+        this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntry(moneyflowId.getId(), moneyflowSplitEntryId.getId());
+    }
 
-	@Override
-	public void deleteMoneyflowSplitEntries(@NonNull final UserID userId, final @NonNull MoneyflowID moneyflowId) {
-		this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
-	}
+    @Override
+    public void deleteMoneyflowSplitEntries(@NonNull final UserID userId, final @NonNull MoneyflowID moneyflowId) {
+        this.moneyflowSplitEntryDao.deleteMoneyflowSplitEntries(moneyflowId.getId());
+    }
 }

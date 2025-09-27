@@ -1,40 +1,40 @@
 {
-	"put": {
-		"tags": [
-			"compare-data-controller"
-		],
-		"operationId": "compareData",
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../schemas/CompareDataRequest.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/CompareDataResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "put": {
+    "tags": [
+      "compare-data-controller"
+    ],
+    "operationId": "compareData",
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/CompareDataRequest.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/CompareDataResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

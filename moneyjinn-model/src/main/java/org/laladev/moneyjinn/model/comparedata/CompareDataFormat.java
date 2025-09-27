@@ -26,34 +26,35 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.laladev.moneyjinn.model.AbstractEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractEntity;
+
+import java.io.Serial;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
-	private static final long serialVersionUID = 1L;
-	private CompareDataFormatType type;
-	private String name;
-	private List<String> startTrigger;
-	private Character delimiter;
-	private Integer positionDate;
-	private Integer positionPartner;
-	private Integer positionAmount;
-	private Integer positionComment;
-	private String formatDate;
-	private Character formatAmountDecimal;
-	private Character formatAmountThousand;
-	private Integer positionPartnerAlternative;
-	private Integer partnerAlternativeIndicatorPosition;
-	private Pattern partnerAlternativeIndicator;
-	private Integer positionCreditDebitIndicator;
-	private Pattern creditIndicator;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private CompareDataFormatType type;
+    private String name;
+    private List<String> startTrigger;
+    private Character delimiter;
+    private Integer positionDate;
+    private Integer positionPartner;
+    private Integer positionAmount;
+    private Integer positionComment;
+    private String formatDate;
+    private Character formatAmountDecimal;
+    private Character formatAmountThousand;
+    private Integer positionPartnerAlternative;
+    private Integer partnerAlternativeIndicatorPosition;
+    private Pattern partnerAlternativeIndicator;
+    private Integer positionCreditDebitIndicator;
+    private Pattern creditIndicator;
 }

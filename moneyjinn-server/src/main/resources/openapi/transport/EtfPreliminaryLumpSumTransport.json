@@ -1,66 +1,66 @@
 {
-	"type": "object",
-	"required": [
-		"id",
-		"etfId",
-		"year",
-		"type"
-	],
-	"properties": {
-		"id": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"year": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"type": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"amountPerPiece": {
-			"type": "number"
-		},
-		"amountJanuary": {
-			"type": "number"
-		},
-		"amountFebruary": {
-			"type": "number"
-		},
-		"amountMarch": {
-			"type": "number"
-		},
-		"amountApril": {
-			"type": "number"
-		},
-		"amountMay": {
-			"type": "number"
-		},
-		"amountJune": {
-			"type": "number"
-		},
-		"amountJuly": {
-			"type": "number"
-		},
-		"amountAugust": {
-			"type": "number"
-		},
-		"amountSeptember": {
-			"type": "number"
-		},
-		"amountOctober": {
-			"type": "number"
-		},
-		"amountNovember": {
-			"type": "number"
-		},
-		"amountDecember": {
-			"type": "number"
-		}
-	}
+  "type": "object",
+  "required": [
+    "id",
+    "etfId",
+    "year",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "year": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "type": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "amountPerPiece": {
+      "type": "number"
+    },
+    "amountJanuary": {
+      "type": "number"
+    },
+    "amountFebruary": {
+      "type": "number"
+    },
+    "amountMarch": {
+      "type": "number"
+    },
+    "amountApril": {
+      "type": "number"
+    },
+    "amountMay": {
+      "type": "number"
+    },
+    "amountJune": {
+      "type": "number"
+    },
+    "amountJuly": {
+      "type": "number"
+    },
+    "amountAugust": {
+      "type": "number"
+    },
+    "amountSeptember": {
+      "type": "number"
+    },
+    "amountOctober": {
+      "type": "number"
+    },
+    "amountNovember": {
+      "type": "number"
+    },
+    "amountDecember": {
+      "type": "number"
+    }
+  }
 }

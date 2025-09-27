@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"importedMonthlySettlementTransport": {
-			"$ref": "../../transport/ImportedMonthlySettlementTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "importedMonthlySettlementTransport": {
+      "$ref": "../../transport/ImportedMonthlySettlementTransport.json"
+    }
+  }
 }

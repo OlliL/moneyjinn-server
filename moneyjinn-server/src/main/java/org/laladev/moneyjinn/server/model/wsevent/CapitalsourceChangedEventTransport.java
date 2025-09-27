@@ -1,4 +1,3 @@
-
 //
 //Copyright (c) 2023-2025 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -27,12 +26,11 @@
 
 package org.laladev.moneyjinn.server.model.wsevent;
 
-import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
-
 import lombok.Data;
+import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
 
 @Data
 public class CapitalsourceChangedEventTransport {
-	private String eventType;
-	private CapitalsourceTransport capitalsourceTransport;
+    private String eventType;
+    private CapitalsourceTransport capitalsourceTransport;
 }

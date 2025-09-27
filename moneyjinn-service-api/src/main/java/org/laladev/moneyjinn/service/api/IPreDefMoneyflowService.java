@@ -26,13 +26,13 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -52,71 +52,70 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  * @author Oliver Lehmann
  * @since 0.0.1
- *
  */
 public interface IPreDefMoneyflowService {
-	/**
-	 * Checks the validity of the given {@link PreDefMoneyflow}.
-	 *
-	 * @param preDefMoneyflow the {@link PreDefMoneyflow}
-	 * @return {@link ValidationResult}
-	 */
-	ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+    /**
+     * Checks the validity of the given {@link PreDefMoneyflow}.
+     *
+     * @param preDefMoneyflow the {@link PreDefMoneyflow}
+     * @return {@link ValidationResult}
+     */
+    ValidationResult validatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
-	/**
-	 * Returns the {@link PreDefMoneyflow} for the given {@link PreDefMoneyflowID}.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param preDefMoneyflowId the {@link PreDefMoneyflowID}
-	 * @return
-	 */
-	PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+    /**
+     * Returns the {@link PreDefMoneyflow} for the given {@link PreDefMoneyflowID}.
+     *
+     * @param userId            {@link UserID}
+     * @param preDefMoneyflowId the {@link PreDefMoneyflowID}
+     * @return
+     */
+    PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
-	/**
-	 * This Service returns all existing {@link PreDefMoneyflow}s.
-	 *
-	 * @param userId {@link UserID}
-	 * @return list of all {@link PreDefMoneyflow}s
-	 */
-	List<PreDefMoneyflow> getAllPreDefMoneyflows(UserID userId);
+    /**
+     * This Service returns all existing {@link PreDefMoneyflow}s.
+     *
+     * @param userId {@link UserID}
+     * @return list of all {@link PreDefMoneyflow}s
+     */
+    List<PreDefMoneyflow> getAllPreDefMoneyflows(UserID userId);
 
-	/**
-	 * This service creates a {@link PreDefMoneyflow}. Before the
-	 * {@link PreDefMoneyflow} is created it is validated for correctness.
-	 *
-	 * @param preDefMoneyflow the {@link PreDefMoneyflow} to be created
-	 * @throws BusinessException If the validation of the given
-	 *                           {@link PreDefMoneyflow} failed.
-	 */
-	PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+    /**
+     * This service creates a {@link PreDefMoneyflow}. Before the
+     * {@link PreDefMoneyflow} is created it is validated for correctness.
+     *
+     * @param preDefMoneyflow the {@link PreDefMoneyflow} to be created
+     * @throws BusinessException If the validation of the given
+     *                           {@link PreDefMoneyflow} failed.
+     */
+    PreDefMoneyflowID createPreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
-	/**
-	 * This service changes a {@link PreDefMoneyflow}. Before the
-	 * {@link PreDefMoneyflow} is changed, the new values are validated for
-	 * correctness.
-	 *
-	 * @param preDefMoneyflow the new {@link PreDefMoneyflow} attributes
-	 * @throws BusinessException If the validation of the given
-	 *                           {@link PreDefMoneyflow} failed.
-	 */
-	void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
+    /**
+     * This service changes a {@link PreDefMoneyflow}. Before the
+     * {@link PreDefMoneyflow} is changed, the new values are validated for
+     * correctness.
+     *
+     * @param preDefMoneyflow the new {@link PreDefMoneyflow} attributes
+     * @throws BusinessException If the validation of the given
+     *                           {@link PreDefMoneyflow} failed.
+     */
+    void updatePreDefMoneyflow(PreDefMoneyflow preDefMoneyflow);
 
-	/**
-	 * This service deletes a {@link PreDefMoneyflow} from the system.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param preDefMoneyflowId The {@link PreDefMoneyflowID} of the to-be-deleted
-	 *                          {@link PreDefMoneyflow}
-	 */
-	void deletePreDefMoneyflow(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+    /**
+     * This service deletes a {@link PreDefMoneyflow} from the system.
+     *
+     * @param userId            {@link UserID}
+     * @param preDefMoneyflowId The {@link PreDefMoneyflowID} of the to-be-deleted
+     *                          {@link PreDefMoneyflow}
+     */
+    void deletePreDefMoneyflow(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
-	/**
-	 * Updates the "lastUsedDate" information for a {@link PreDefMoneyflow}. It is
-	 * meant to be called whenever a moneyflow gets created based on a
-	 * {@link PreDefMoneyflow}.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param preDefMoneyflowId
-	 */
-	void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
+    /**
+     * Updates the "lastUsedDate" information for a {@link PreDefMoneyflow}. It is
+     * meant to be called whenever a moneyflow gets created based on a
+     * {@link PreDefMoneyflow}.
+     *
+     * @param userId            {@link UserID}
+     * @param preDefMoneyflowId
+     */
+    void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 }

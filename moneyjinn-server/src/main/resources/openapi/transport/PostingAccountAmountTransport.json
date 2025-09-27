@@ -1,25 +1,25 @@
 {
-	"type": "object",
-	"required": [
-		"date",
-		"amount",
-		"postingaccountid",
-		"postingaccountname"
-	],
-	"properties": {
-		"date": {
-			"type": "string",
-			"format": "date"
-		},
-		"amount": {
-			"type": "number"
-		},
-		"postingaccountid": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"postingaccountname": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "date",
+    "amount",
+    "postingaccountid",
+    "postingaccountname"
+  ],
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "postingaccountid": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "postingaccountname": {
+      "type": "string"
+    }
+  }
 }

@@ -26,6 +26,15 @@
 
 package org.laladev.moneyjinn.service.dao;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.EtfData;
+import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
+import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
+import org.laladev.moneyjinn.service.dao.data.EtfValueData;
+import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -33,98 +42,88 @@ import java.time.Year;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
-import org.laladev.moneyjinn.service.dao.data.EtfData;
-import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
-import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
-import org.laladev.moneyjinn.service.dao.data.EtfValueData;
-import org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.RequiredArgsConstructor;
-
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class EtfDao {
-	private final IEtfDaoMapper mapper;
+    private final IEtfDaoMapper mapper;
 
-	public List<EtfData> getAllEtf(final Long userId) {
-		return this.mapper.getAllEtf(userId);
-	}
+    public List<EtfData> getAllEtf(final Long userId) {
+        return this.mapper.getAllEtf(userId);
+    }
 
-	public EtfData getEtfById(final Long userId, final Long etfId) {
-		return this.mapper.getEtfById(userId, etfId);
-	}
+    public EtfData getEtfById(final Long userId, final Long etfId) {
+        return this.mapper.getEtfById(userId, etfId);
+    }
 
-	public Long createEtf(final EtfData etfData) {
-		this.mapper.createEtf(etfData);
-		return etfData.getEtfid();
-	}
+    public Long createEtf(final EtfData etfData) {
+        this.mapper.createEtf(etfData);
+        return etfData.getEtfid();
+    }
 
-	public void updateEtf(final EtfData etfData) {
-		this.mapper.updateEtf(etfData);
-	}
+    public void updateEtf(final EtfData etfData) {
+        this.mapper.updateEtf(etfData);
+    }
 
-	public void deleteEtf(final Long groupId, final Long etfId) {
-		this.mapper.deleteEtf(groupId, etfId);
-	}
+    public void deleteEtf(final Long groupId, final Long etfId) {
+        this.mapper.deleteEtf(groupId, etfId);
+    }
 
-	public EtfValueData getEtfValueForMonth(final String etfIsin, final Year year, final Month month) {
-		final LocalDate startDate = year.atMonth(month).atDay(1);
-		final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-		return this.mapper.getEtfValueForMonth(etfIsin, startDate, endDate);
-	}
+    public EtfValueData getEtfValueForMonth(final String etfIsin, final Year year, final Month month) {
+        final LocalDate startDate = year.atMonth(month).atDay(1);
+        final LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+        return this.mapper.getEtfValueForMonth(etfIsin, startDate, endDate);
+    }
 
-	public EtfValueData getLatestEtfValue(final String etfIsin) {
-		return this.mapper.getLatestEtfValue(etfIsin);
-	}
+    public EtfValueData getLatestEtfValue(final String etfIsin) {
+        return this.mapper.getLatestEtfValue(etfIsin);
+    }
 
-	public List<EtfFlowData> getAllFlowsUntil(final Long etfId, final LocalDateTime timeUntil) {
-		return this.mapper.getAllFlowsUntil(etfId, timeUntil);
-	}
+    public List<EtfFlowData> getAllFlowsUntil(final Long etfId, final LocalDateTime timeUntil) {
+        return this.mapper.getAllFlowsUntil(etfId, timeUntil);
+    }
 
-	public EtfFlowData getEtfFowById(final Long etfFlowId) {
-		return this.mapper.getEtfFlowById(etfFlowId);
-	}
+    public EtfFlowData getEtfFowById(final Long etfFlowId) {
+        return this.mapper.getEtfFlowById(etfFlowId);
+    }
 
-	public Long createEtfFlow(final EtfFlowData etfFlowData) {
-		this.mapper.createEtfFlow(etfFlowData);
-		return etfFlowData.getEtfflowid();
-	}
+    public Long createEtfFlow(final EtfFlowData etfFlowData) {
+        this.mapper.createEtfFlow(etfFlowData);
+        return etfFlowData.getEtfflowid();
+    }
 
-	public void updateEtfFlow(final EtfFlowData etfFlowData) {
-		this.mapper.updateEtfFlow(etfFlowData);
-	}
+    public void updateEtfFlow(final EtfFlowData etfFlowData) {
+        this.mapper.updateEtfFlow(etfFlowData);
+    }
 
-	public void deleteEtfFlow(final Long etfFlowId) {
-		this.mapper.deleteEtfFlow(etfFlowId);
-	}
+    public void deleteEtfFlow(final Long etfFlowId) {
+        this.mapper.deleteEtfFlow(etfFlowId);
+    }
 
-	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final Long etfId) {
-		return this.mapper.getAllPreliminaryLumpSum(etfId);
-	}
+    public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(final Long etfId) {
+        return this.mapper.getAllPreliminaryLumpSum(etfId);
+    }
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
-		return this.mapper.getPreliminaryLumpSum(etfPreliminaryLumpSumId);
-	}
+    public EtfPreliminaryLumpSumData getPreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
+        return this.mapper.getPreliminaryLumpSum(etfPreliminaryLumpSumId);
+    }
 
-	public Long getPreliminaryLumpSumId(final Long etfId, final Integer year) {
-		return this.mapper.getPreliminaryLumpSumId(etfId, year);
-	}
+    public Long getPreliminaryLumpSumId(final Long etfId, final Integer year) {
+        return this.mapper.getPreliminaryLumpSumId(etfId, year);
+    }
 
-	public List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(final Long etfId) {
-		return this.mapper.getAllEtfPreliminaryLumpSum(etfId);
-	}
+    public List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(final Long etfId) {
+        return this.mapper.getAllEtfPreliminaryLumpSum(etfId);
+    }
 
-	public void createPreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
-		this.mapper.createPreliminaryLumpSum(data);
-	}
+    public void createPreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
+        this.mapper.createPreliminaryLumpSum(data);
+    }
 
-	public void updatePreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
-		this.mapper.updatePreliminaryLumpSum(data);
-	}
+    public void updatePreliminaryLumpSum(final EtfPreliminaryLumpSumData data) {
+        this.mapper.updatePreliminaryLumpSum(data);
+    }
 
-	public void deletePreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
-		this.mapper.deletePreliminaryLumpSum(etfPreliminaryLumpSumId);
-	}
+    public void deletePreliminaryLumpSum(final Long etfPreliminaryLumpSumId) {
+        this.mapper.deletePreliminaryLumpSum(etfPreliminaryLumpSumId);
+    }
 }

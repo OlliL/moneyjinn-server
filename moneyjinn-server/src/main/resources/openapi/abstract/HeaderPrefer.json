@@ -1,12 +1,12 @@
 {
-	"name": "Prefer",
-	"in": "header",
-	"required": false,
-	"description": "<br>The RFC7240 Prefer header indicates that a particular server behavior<br>is preferred by the client but is not required for successful completion<br>of the request (see <a href='https://tools.ietf.org/html/rfc7240'>RFC 7240</a>.<br>The following behaviors are supported by this API:<br><br><ul><li><b>return=minimal|representation</b> is used to suggest the server to<br>return using 204 without resource (minimal) or using 200 or 201 with<br>resource (representation) in the response body on success.</li></ul>",
-	"schema": {
-		"type": "array",
-		"items": {
-			"type": "string"
-		}
-	}
+  "name": "Prefer",
+  "in": "header",
+  "required": false,
+  "description": "<br>The RFC7240 Prefer header indicates that a particular server behavior<br>is preferred by the client but is not required for successful completion<br>of the request (see <a href='https://tools.ietf.org/html/rfc7240'>RFC 7240</a>.<br>The following behaviors are supported by this API:<br><br><ul><li><b>return=minimal|representation</b> is used to suggest the server to<br>return using 204 without resource (minimal) or using 200 or 201 with<br>resource (representation) in the response body on success.</li></ul>",
+  "schema": {
+    "type": "array",
+    "items": {
+      "type": "string"
+    }
+  }
 }

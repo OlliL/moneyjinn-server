@@ -5,7 +5,7 @@ import org.laladev.moneyjinn.server.controller.api.CrudCapitalsourceControllerAp
 
 abstract class AbstractCapitalsourceTest extends AbstractWebUserControllerTest {
 
-	protected CrudCapitalsourceControllerApi getMock() {
-		return super.getMock(CrudCapitalsourceControllerApi.class);
-	}
+    protected CrudCapitalsourceControllerApi getMock() {
+        return super.getMock(CrudCapitalsourceControllerApi.class);
+    }
 }

@@ -26,12 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import static org.springframework.util.Assert.notNull;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.GroupID;
@@ -46,90 +44,91 @@ import org.laladev.moneyjinn.service.dao.ImportedMoneyflowReceiptDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowReceiptDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+
+import static org.springframework.util.Assert.notNull;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowReceiptService extends AbstractService implements IImportedMoneyflowReceiptService {
-	private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
-	private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
-	private static final List<String> SUPPORTED_MEDIA_TYPES = Arrays.asList(MEDIA_TYPE_APPLICATION_PDF,
-			MEDIA_TYPE_IMAGE_JPEG);
+    private static final String MEDIA_TYPE_IMAGE_JPEG = "image/jpeg";
+    private static final String MEDIA_TYPE_APPLICATION_PDF = "application/pdf";
+    private static final List<String> SUPPORTED_MEDIA_TYPES = Arrays.asList(MEDIA_TYPE_APPLICATION_PDF,
+            MEDIA_TYPE_IMAGE_JPEG);
 
-	private final Tika tika = new Tika();
+    private final Tika tika = new Tika();
 
-	private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
-	private final ImportedMoneyflowReceiptDataMapper importedMoneyflowReceiptDataMapper;
+    private final ImportedMoneyflowReceiptDao importedMoneyflowReceiptDao;
+    private final ImportedMoneyflowReceiptDataMapper importedMoneyflowReceiptDataMapper;
 
-	@Override
-	public ValidationResult validateImportedMoneyflowReceipt(
-			@NonNull final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-		notNull(importedMoneyflowReceipt.getUser(), "Imported Moneyflow Receipt.user must not be null!");
-		notNull(importedMoneyflowReceipt.getUser().getId(),
-				"Imported Moneyflow Receipt.user.id must not be null!");
-		notNull(importedMoneyflowReceipt.getGroup(), "Imported Moneyflow Receipt.access must not be null!");
-		notNull(importedMoneyflowReceipt.getGroup().getId(),
-				"Imported Moneyflow Receipt.access.id must not be null!");
-		notNull(importedMoneyflowReceipt.getReceipt(), "Imported Moneyflow Receipt.receipt must not be null!");
-		notNull(importedMoneyflowReceipt.getFilename(), "Imported Moneyflow Receipt.filename must not be null!");
+    @Override
+    public ValidationResult validateImportedMoneyflowReceipt(
+            @NonNull final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
+        notNull(importedMoneyflowReceipt.getUser(), "Imported Moneyflow Receipt.user must not be null!");
+        notNull(importedMoneyflowReceipt.getUser().getId(),
+                "Imported Moneyflow Receipt.user.id must not be null!");
+        notNull(importedMoneyflowReceipt.getGroup(), "Imported Moneyflow Receipt.access must not be null!");
+        notNull(importedMoneyflowReceipt.getGroup().getId(),
+                "Imported Moneyflow Receipt.access.id must not be null!");
+        notNull(importedMoneyflowReceipt.getReceipt(), "Imported Moneyflow Receipt.receipt must not be null!");
+        notNull(importedMoneyflowReceipt.getFilename(), "Imported Moneyflow Receipt.filename must not be null!");
 
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(importedMoneyflowReceipt.getId(), errorCode));
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(importedMoneyflowReceipt.getId(), errorCode));
 
-		this.prepareImportedMoneyflowReceipt(importedMoneyflowReceipt);
+        this.prepareImportedMoneyflowReceipt(importedMoneyflowReceipt);
 
-		if (!SUPPORTED_MEDIA_TYPES.contains(importedMoneyflowReceipt.getMediaType())) {
-			addResult.accept(ErrorCode.UNSUPPORTED_MEDIA_TYPE);
-		}
+        if (!SUPPORTED_MEDIA_TYPES.contains(importedMoneyflowReceipt.getMediaType())) {
+            addResult.accept(ErrorCode.UNSUPPORTED_MEDIA_TYPE);
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	private void prepareImportedMoneyflowReceipt(final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-		final String mediaType = this.tika.detect(importedMoneyflowReceipt.getReceipt());
-		importedMoneyflowReceipt.setMediaType(mediaType);
-	}
+    private void prepareImportedMoneyflowReceipt(final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
+        final String mediaType = this.tika.detect(importedMoneyflowReceipt.getReceipt());
+        importedMoneyflowReceipt.setMediaType(mediaType);
+    }
 
-	@Override
-	public List<ImportedMoneyflowReceipt> getAllImportedMoneyflowReceipts(@NonNull final UserID userId,
-			@NonNull final GroupID groupId) {
-		final List<ImportedMoneyflowReceiptData> importedMoneyflowReceipts = this.importedMoneyflowReceiptDao
-				.getAllImportedMoneyflowReceipts(groupId.getId());
-		return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipts);
-	}
+    @Override
+    public List<ImportedMoneyflowReceipt> getAllImportedMoneyflowReceipts(@NonNull final UserID userId,
+                                                                          @NonNull final GroupID groupId) {
+        final List<ImportedMoneyflowReceiptData> importedMoneyflowReceipts = this.importedMoneyflowReceiptDao
+                .getAllImportedMoneyflowReceipts(groupId.getId());
+        return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipts);
+    }
 
-	@Override
-	public ImportedMoneyflowReceiptID createImportedMoneyflowReceipt(
-			@NonNull final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
-		importedMoneyflowReceipt.setId(null);
-		final ValidationResult validationResult = this.validateImportedMoneyflowReceipt(importedMoneyflowReceipt);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Imported Moneyflow Receipt creation failed!", validationResultItem.getError());
-		}
-		final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = this.importedMoneyflowReceiptDataMapper
-				.mapAToB(importedMoneyflowReceipt);
-		this.importedMoneyflowReceiptDao.createImportedMoneyflowReceipt(importedMoneyflowReceiptData);
-		return new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId());
-	}
+    @Override
+    public ImportedMoneyflowReceiptID createImportedMoneyflowReceipt(
+            @NonNull final ImportedMoneyflowReceipt importedMoneyflowReceipt) {
+        importedMoneyflowReceipt.setId(null);
+        final ValidationResult validationResult = this.validateImportedMoneyflowReceipt(importedMoneyflowReceipt);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Imported Moneyflow Receipt creation failed!", validationResultItem.getError());
+        }
+        final ImportedMoneyflowReceiptData importedMoneyflowReceiptData = this.importedMoneyflowReceiptDataMapper
+                .mapAToB(importedMoneyflowReceipt);
+        this.importedMoneyflowReceiptDao.createImportedMoneyflowReceipt(importedMoneyflowReceiptData);
+        return new ImportedMoneyflowReceiptID(importedMoneyflowReceiptData.getId());
+    }
 
-	@Override
-	public void deleteImportedMoneyflowReceipt(@NonNull final UserID userId, @NonNull final GroupID groupId,
-			@NonNull final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
-		this.importedMoneyflowReceiptDao.deleteImportedMoneyflowReceipt(groupId.getId(),
-				importedMoneyflowReceiptId.getId());
-	}
+    @Override
+    public void deleteImportedMoneyflowReceipt(@NonNull final UserID userId, @NonNull final GroupID groupId,
+                                               @NonNull final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
+        this.importedMoneyflowReceiptDao.deleteImportedMoneyflowReceipt(groupId.getId(),
+                importedMoneyflowReceiptId.getId());
+    }
 
-	@Override
-	public ImportedMoneyflowReceipt getImportedMoneyflowReceiptById(@NonNull final UserID userId,
-			@NonNull final GroupID groupId,
-			@NonNull final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
-		final ImportedMoneyflowReceiptData importedMoneyflowReceipt = this.importedMoneyflowReceiptDao
-				.getImportedMoneyflowReceiptById(groupId.getId(), importedMoneyflowReceiptId.getId());
-		return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipt);
-	}
+    @Override
+    public ImportedMoneyflowReceipt getImportedMoneyflowReceiptById(@NonNull final UserID userId,
+                                                                    @NonNull final GroupID groupId,
+                                                                    @NonNull final ImportedMoneyflowReceiptID importedMoneyflowReceiptId) {
+        final ImportedMoneyflowReceiptData importedMoneyflowReceipt = this.importedMoneyflowReceiptDao
+                .getImportedMoneyflowReceiptById(groupId.getId(), importedMoneyflowReceiptId.getId());
+        return this.importedMoneyflowReceiptDataMapper.mapBToA(importedMoneyflowReceipt);
+    }
 }

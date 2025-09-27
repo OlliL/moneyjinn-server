@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.server.config.jwt;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.service.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,28 +36,31 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
-	private final IUserService userService;
+    private final IUserService userService;
 
-	@Autowired
-	public CustomUserDetailsService(final IUserService userService) {
-		super();
-		this.userService = userService;
-	}
+    @Autowired
+    public CustomUserDetailsService(final IUserService userService) {
+        super();
+        this.userService = userService;
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final User user = this.userService.getUserByName(username);
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        final User user = this.userService.getUserByName(username);
 
-		if (user == null) {
-			return null;
-		}
+        if (user == null) {
+            return null;
+        }
 
-		final List<? extends GrantedAuthority> grantedAuthorities = Collections
-				.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        final List<? extends GrantedAuthority> grantedAuthorities = Collections
+                .singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-				grantedAuthorities);
-	}
+        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
+                grantedAuthorities);
+    }
 }

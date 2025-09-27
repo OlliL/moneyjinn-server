@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.server.event;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.server.controller.mapper.PostingAccountTransportMapper;
 import org.laladev.moneyjinn.server.model.wsevent.PostingAccountChangedEventTransport;
 import org.laladev.moneyjinn.service.event.PostingAccountChangedEvent;
@@ -33,25 +35,22 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
-
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PostingAccountChangedEventListener implements ApplicationListener<PostingAccountChangedEvent> {
 
-	private final SimpMessagingTemplate simpMessagingTemplate;
-	private final PostingAccountTransportMapper postingAccountTransportMapper;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final PostingAccountTransportMapper postingAccountTransportMapper;
 
-	@Override
-	public void onApplicationEvent(final PostingAccountChangedEvent event) {
-		final PostingAccountChangedEventTransport eventTransport = new PostingAccountChangedEventTransport();
+    @Override
+    public void onApplicationEvent(final PostingAccountChangedEvent event) {
+        final PostingAccountChangedEventTransport eventTransport = new PostingAccountChangedEventTransport();
 
-		eventTransport.setEventType(event.getEventType().name());
-		eventTransport
-				.setPostingAccountTransport(this.postingAccountTransportMapper.mapAToB(event.getPostingAccount()));
+        eventTransport.setEventType(event.getEventType().name());
+        eventTransport
+                .setPostingAccountTransport(this.postingAccountTransportMapper.mapAToB(event.getPostingAccount()));
 
-		this.simpMessagingTemplate.convertAndSend("/topic/postingAccountChanged", eventTransport);
-	}
+        this.simpMessagingTemplate.convertAndSend("/topic/postingAccountChanged", eventTransport);
+    }
 
 }

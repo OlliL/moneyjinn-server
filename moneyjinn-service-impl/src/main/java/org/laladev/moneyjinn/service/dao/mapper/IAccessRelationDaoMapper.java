@@ -26,28 +26,28 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
-
 public interface IAccessRelationDaoMapper {
-	public AccessRelationData getAccessRelationById(@Param("id") Long id, @Param("date") LocalDate date);
+    AccessRelationData getAccessRelationById(@Param("id") Long id, @Param("date") LocalDate date);
 
-	public List<AccessRelationData> getAllAccessRelationsById(Long id);
+    List<AccessRelationData> getAllAccessRelationsById(Long id);
 
-	public List<AccessRelationData> getAllAccessRelationsByIdDate(@Param("id") Long id, @Param("date") LocalDate date);
+    List<AccessRelationData> getAllAccessRelationsByIdDate(@Param("id") Long id, @Param("date") LocalDate date);
 
-	public void deleteAllAccessRelation(Long id);
+    void deleteAllAccessRelation(Long id);
 
-	public void deleteAccessRelationByDate(@Param("id") Long id, @Param("date") LocalDate date);
+    void deleteAccessRelationByDate(@Param("id") Long id, @Param("date") LocalDate date);
 
-	public void updateAccessRelation(@Param("id") Long id, @Param("date") LocalDate date,
-			@Param("accessRelationData") AccessRelationData accessRelationData);
+    void updateAccessRelation(@Param("id") Long id, @Param("date") LocalDate date,
+                              @Param("accessRelationData") AccessRelationData accessRelationData);
 
-	public void createAccessRelation(AccessRelationData accessRelationData);
+    void createAccessRelation(AccessRelationData accessRelationData);
 
-	public Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
+    Set<Long> getAllUserWithSameGroup(@Param("id") Long id);
 }

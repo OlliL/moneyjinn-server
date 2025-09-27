@@ -1,54 +1,54 @@
 {
-	"type": "object",
-	"required": [
-		"id",
-		"userid",
-		"name",
-		"validTil",
-		"validFrom"
-	],
-	"properties": {
-		"id": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"userid": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"name": {
-			"type": "string"
-		},
-		"street": {
-			"type": "string"
-		},
-		"postcode": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"town": {
-			"type": "string"
-		},
-		"validTil": {
-			"type": "string",
-			"format": "date"
-		},
-		"validFrom": {
-			"type": "string",
-			"format": "date"
-		},
-		"country": {
-			"type": "string"
-		},
-		"moneyflowComment": {
-			"type": "string"
-		},
-		"postingAccountName": {
-			"type": "string"
-		},
-		"postingAccountId": {
-			"type": "integer",
-			"format": "int64"
-		}
-	}
+  "type": "object",
+  "required": [
+    "id",
+    "userid",
+    "name",
+    "validTil",
+    "validFrom"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "userid": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "type": "string"
+    },
+    "street": {
+      "type": "string"
+    },
+    "postcode": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "town": {
+      "type": "string"
+    },
+    "validTil": {
+      "type": "string",
+      "format": "date"
+    },
+    "validFrom": {
+      "type": "string",
+      "format": "date"
+    },
+    "country": {
+      "type": "string"
+    },
+    "moneyflowComment": {
+      "type": "string"
+    },
+    "postingAccountName": {
+      "type": "string"
+    },
+    "postingAccountId": {
+      "type": "integer",
+      "format": "int64"
+    }
+  }
 }

@@ -3,7 +3,7 @@ package org.laladev.moneyjinn.model;
 import org.laladev.moneyjinn.model.access.Group;
 
 public interface IHasGroup {
-	Group getGroup();
+    Group getGroup();
 
-	void setGroup(Group group);
+    void setGroup(Group group);
 }

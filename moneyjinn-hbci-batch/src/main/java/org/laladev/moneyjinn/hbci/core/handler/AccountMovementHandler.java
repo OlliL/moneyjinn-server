@@ -26,21 +26,14 @@
 
 package org.laladev.moneyjinn.hbci.core.handler;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.util.List;
-
 import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnConnectionHolder;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 
+import java.sql.*;
+import java.util.List;
+
 public class AccountMovementHandler extends AbstractHandler {
-	// @formatter:off
+    // @formatter:off
 	private static final String STATEMENT =
 			"   INSERT "
 			+ "   INTO account_movements "
@@ -111,93 +104,93 @@ public class AccountMovementHandler extends AbstractHandler {
 			+ "      ) ";
 	// @formatter:on
 
-	private final List<AccountMovement> accountMovements;
+    private final List<AccountMovement> accountMovements;
 
-	public AccountMovementHandler(final List<AccountMovement> accountMovements) {
-		this.accountMovements = accountMovements;
-	}
+    public AccountMovementHandler(final List<AccountMovement> accountMovements) {
+        this.accountMovements = accountMovements;
+    }
 
-	@Override
-	public void handle() {
-		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
-			for (final AccountMovement accountMovement : this.accountMovements) {
-				stmt.setTimestamp(1, Timestamp.valueOf(accountMovement.getCreationTime()));
-				stmt.setString(2, accountMovement.getMyIban());
-				stmt.setString(3, accountMovement.getMyBic());
-				stmt.setLong(4, accountMovement.getMyAccountnumber());
-				stmt.setInt(5, accountMovement.getMyBankcode());
-				stmt.setDate(6, Date.valueOf(accountMovement.getBookingDate()));
-				stmt.setDate(7, Date.valueOf(accountMovement.getValueDate()));
-				stmt.setTimestamp(8, accountMovement.getInvoiceTimestamp() == null ? null
-						: Timestamp.valueOf(accountMovement.getInvoiceTimestamp()));
-				stmt.setString(9, accountMovement.getOtherIban());
-				stmt.setString(10, accountMovement.getOtherBic());
+    @Override
+    public void handle() {
+        final Connection con = MoneyjinnConnectionHolder.getConnection();
+        try (final PreparedStatement stmt = con.prepareStatement(STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
+            for (final AccountMovement accountMovement : this.accountMovements) {
+                stmt.setTimestamp(1, Timestamp.valueOf(accountMovement.getCreationTime()));
+                stmt.setString(2, accountMovement.getMyIban());
+                stmt.setString(3, accountMovement.getMyBic());
+                stmt.setLong(4, accountMovement.getMyAccountnumber());
+                stmt.setInt(5, accountMovement.getMyBankcode());
+                stmt.setDate(6, Date.valueOf(accountMovement.getBookingDate()));
+                stmt.setDate(7, Date.valueOf(accountMovement.getValueDate()));
+                stmt.setTimestamp(8, accountMovement.getInvoiceTimestamp() == null ? null
+                        : Timestamp.valueOf(accountMovement.getInvoiceTimestamp()));
+                stmt.setString(9, accountMovement.getOtherIban());
+                stmt.setString(10, accountMovement.getOtherBic());
 
-				if (accountMovement.getOtherAccountnumber() == null)
-					stmt.setNull(11, Types.BIGINT);
-				else
-					stmt.setLong(11, accountMovement.getOtherAccountnumber());
+                if (accountMovement.getOtherAccountnumber() == null)
+                    stmt.setNull(11, Types.BIGINT);
+                else
+                    stmt.setLong(11, accountMovement.getOtherAccountnumber());
 
-				if (accountMovement.getOtherBankcode() == null)
-					stmt.setNull(12, Types.INTEGER);
-				else
-					stmt.setLong(12, accountMovement.getOtherBankcode());
+                if (accountMovement.getOtherBankcode() == null)
+                    stmt.setNull(12, Types.INTEGER);
+                else
+                    stmt.setLong(12, accountMovement.getOtherBankcode());
 
-				stmt.setString(13, accountMovement.getOtherName());
+                stmt.setString(13, accountMovement.getOtherName());
 
-				if (accountMovement.getChargeValue() == null)
-					stmt.setNull(14, Types.DECIMAL);
-				else
-					stmt.setBigDecimal(14, accountMovement.getChargeValue());
+                if (accountMovement.getChargeValue() == null)
+                    stmt.setNull(14, Types.DECIMAL);
+                else
+                    stmt.setBigDecimal(14, accountMovement.getChargeValue());
 
-				stmt.setString(15, accountMovement.getChargeCurrency());
+                stmt.setString(15, accountMovement.getChargeCurrency());
 
-				if (accountMovement.getOriginalValue() == null)
-					stmt.setNull(16, Types.DECIMAL);
-				else
-					stmt.setBigDecimal(16, accountMovement.getOriginalValue());
+                if (accountMovement.getOriginalValue() == null)
+                    stmt.setNull(16, Types.DECIMAL);
+                else
+                    stmt.setBigDecimal(16, accountMovement.getOriginalValue());
 
-				stmt.setString(17, accountMovement.getOriginalCurrency());
-				stmt.setBigDecimal(18, accountMovement.getMovementValue());
-				stmt.setString(19, accountMovement.getMovementCurrency());
-				stmt.setString(20, accountMovement.getMovementReason());
-				stmt.setInt(21, accountMovement.getMovementTypeCode());
-				stmt.setString(22, accountMovement.getMovementTypeText());
-				stmt.setString(23, accountMovement.getCustomerReference());
-				stmt.setString(24, accountMovement.getBankReference());
-				stmt.setInt(25, Boolean.TRUE.equals(accountMovement.getCancellation()) ? 1 : 0);
-				stmt.setString(26, accountMovement.getAdditionalInformation());
+                stmt.setString(17, accountMovement.getOriginalCurrency());
+                stmt.setBigDecimal(18, accountMovement.getMovementValue());
+                stmt.setString(19, accountMovement.getMovementCurrency());
+                stmt.setString(20, accountMovement.getMovementReason());
+                stmt.setInt(21, accountMovement.getMovementTypeCode());
+                stmt.setString(22, accountMovement.getMovementTypeText());
+                stmt.setString(23, accountMovement.getCustomerReference());
+                stmt.setString(24, accountMovement.getBankReference());
+                stmt.setInt(25, Boolean.TRUE.equals(accountMovement.getCancellation()) ? 1 : 0);
+                stmt.setString(26, accountMovement.getAdditionalInformation());
 
-				if (accountMovement.getAdditionalKey() == null)
-					stmt.setNull(27, Types.INTEGER);
-				else
-					stmt.setInt(27, accountMovement.getAdditionalKey());
+                if (accountMovement.getAdditionalKey() == null)
+                    stmt.setNull(27, Types.INTEGER);
+                else
+                    stmt.setInt(27, accountMovement.getAdditionalKey());
 
-				stmt.setString(28, accountMovement.getPrimaNota());
-				stmt.setDate(29, Date.valueOf(accountMovement.getBalanceDate()));
-				stmt.setBigDecimal(30, accountMovement.getBalanceValue());
-				stmt.setString(31, accountMovement.getBalanceCurrency());
+                stmt.setString(28, accountMovement.getPrimaNota());
+                stmt.setDate(29, Date.valueOf(accountMovement.getBalanceDate()));
+                stmt.setBigDecimal(30, accountMovement.getBalanceValue());
+                stmt.setString(31, accountMovement.getBalanceCurrency());
 
-				try {
-					final int rowCount = stmt.executeUpdate();
-					if (rowCount == 1) {
-						final ResultSet rs = stmt.getGeneratedKeys();
-						if (rs.next()) {
-							accountMovement.setId(rs.getInt(1));
-						}
-					}
-					con.commit();
+                try {
+                    final int rowCount = stmt.executeUpdate();
+                    if (rowCount == 1) {
+                        final ResultSet rs = stmt.getGeneratedKeys();
+                        if (rs.next()) {
+                            accountMovement.setId(rs.getInt(1));
+                        }
+                    }
+                    con.commit();
 
-					this.notifyObservers(accountMovement);
-				} catch (final SQLException e) {
-					// ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
-					if (e.getErrorCode() != 1062)
-						e.printStackTrace();
-				}
-			}
-		} catch (final SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
+                    this.notifyObservers(accountMovement);
+                } catch (final SQLException e) {
+                    // ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
+                    if (e.getErrorCode() != 1062)
+                        e.printStackTrace();
+                }
+            }
+        } catch (final SQLException e1) {
+            e1.printStackTrace();
+        }
+    }
 }

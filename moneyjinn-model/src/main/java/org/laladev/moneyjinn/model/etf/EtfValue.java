@@ -26,17 +26,17 @@
 
 package org.laladev.moneyjinn.model.etf;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import lombok.Data;
-
 @Data
 public class EtfValue {
-	private EtfIsin isin;
-	private LocalDate date;
-	private BigDecimal buyPrice;
-	private BigDecimal sellPrice;
-	private LocalDateTime changeDate;
+    private EtfIsin isin;
+    private LocalDate date;
+    private BigDecimal buyPrice;
+    private BigDecimal sellPrice;
+    private LocalDateTime changeDate;
 }

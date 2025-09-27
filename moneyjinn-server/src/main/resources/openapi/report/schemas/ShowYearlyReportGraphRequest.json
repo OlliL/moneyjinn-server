@@ -1,27 +1,27 @@
 {
-	"type": "object",
-	"properties": {
-		"postingAccountIdsYes": {
-			"type": "array",
-			"items": {
-				"type": "integer",
-				"format": "int64"
-			}
-		},
-		"postingAccountIdsNo": {
-			"type": "array",
-			"items": {
-				"type": "integer",
-				"format": "int64"
-			}
-		},
-		"startDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"endDate": {
-			"type": "string",
-			"format": "date"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "postingAccountIdsYes": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "postingAccountIdsNo": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    }
+  }
 }

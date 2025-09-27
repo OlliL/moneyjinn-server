@@ -1,30 +1,30 @@
 {
-	"get": {
-		"tags": [
-			"monthly-settlement-controller"
-		],
-		"operationId": "getAvailableMonth",
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/GetAvailableMonthlySettlementMonthResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "get": {
+    "tags": [
+      "monthly-settlement-controller"
+    ],
+    "operationId": "getAvailableMonth",
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/GetAvailableMonthlySettlementMonthResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

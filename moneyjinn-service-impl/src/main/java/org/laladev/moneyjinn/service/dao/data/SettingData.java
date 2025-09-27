@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SettingData {
-	private Long mauUserId;
-	private String name;
-	private String value;
+    private Long mauUserId;
+    private String name;
+    private String value;
 }

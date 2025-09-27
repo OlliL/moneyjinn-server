@@ -1,10 +1,10 @@
 {
-	"description": "Generic Client Error",
-	"content": {
-		"application/json": {
-			"schema": {
-				"$ref": "ErrorResponse.json"
-			}
-		}
-	}
+  "description": "Generic Client Error",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "ErrorResponse.json"
+      }
+    }
+  }
 }

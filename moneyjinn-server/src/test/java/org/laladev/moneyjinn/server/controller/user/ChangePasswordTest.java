@@ -1,10 +1,6 @@
-
 package org.laladev.moneyjinn.server.controller.user;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.User;
@@ -16,76 +12,76 @@ import org.laladev.moneyjinn.server.model.ChangePasswordRequest;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.service.api.IUserService;
 
-import jakarta.inject.Inject;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ChangePasswordTest extends AbstractWebUserControllerTest {
-	@Inject
-	private IUserService userService;
+    @Inject
+    private IUserService userService;
 
-	@Override
-	protected void loadMethod() {
-		super.getMock(UserControllerApi.class).changePassword(null);
-	}
+    @Override
+    protected void loadMethod() {
+        super.getMock(UserControllerApi.class).changePassword(null);
+    }
 
-	@Test
-	void test_OldPasswordMatchingNewPasswordProvided_Successfull() throws Exception {
-		final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-		final String newPassword = UserTransportBuilder.USER1_PASSWORD + "new";
+    @Test
+    void test_OldPasswordMatchingNewPasswordProvided_Successfull() throws Exception {
+        final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+        final String newPassword = UserTransportBuilder.USER1_PASSWORD + "new";
 
-		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(UserTransportBuilder.USER1_PASSWORD);
-		request.setPassword(newPassword);
+        final ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword(UserTransportBuilder.USER1_PASSWORD);
+        request.setPassword(newPassword);
 
-		User user = this.userService.getUserById(userId);
-		assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER1_PASSWORD, user.getPassword()));
+        User user = this.userService.getUserById(userId);
+        assertTrue(this.userService.passwordMatches(UserTransportBuilder.USER1_PASSWORD, user.getPassword()));
 
-		super.callUsecaseExpect204(request);
+        super.callUsecaseExpect204(request);
 
-		user = this.userService.getUserById(userId);
-		assertTrue(this.userService.passwordMatches(newPassword, user.getPassword()));
-	}
+        user = this.userService.getUserById(userId);
+        assertTrue(this.userService.passwordMatches(newPassword, user.getPassword()));
+    }
 
-	@Test
-	void test_OldPasswordMatchingNewPasswordEmpty_errorRaised() throws Exception {
-		super.setUsername(UserTransportBuilder.USER3_NAME);
-		super.setPassword(UserTransportBuilder.USER3_PASSWORD);
+    @Test
+    void test_OldPasswordMatchingNewPasswordEmpty_errorRaised() throws Exception {
+        super.setUsername(UserTransportBuilder.USER3_NAME);
+        super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 
-		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(UserTransportBuilder.USER3_PASSWORD);
-		request.setPassword("");
+        final ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword(UserTransportBuilder.USER3_PASSWORD);
+        request.setPassword("");
 
-		final ErrorResponse expected = new ErrorResponse();
-		expected.setCode(ErrorCode.UNKNOWN.getErrorCode());
-		expected.setMessage("Password must not be empty!");
+        final ErrorResponse expected = new ErrorResponse();
+        expected.setCode(ErrorCode.UNKNOWN.getErrorCode());
+        expected.setMessage("Password must not be empty!");
 
-		final ErrorResponse actual = super.callUsecaseExpect500(request, ErrorResponse.class);
+        final ErrorResponse actual = super.callUsecaseExpect500(request, ErrorResponse.class);
 
-		assertEquals(expected, actual);
-	}
+        assertEquals(expected, actual);
+    }
 
-	@Test
-	void test_OldPasswordNotMatching_errorRaised() throws Exception {
-		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword("wrongPassword");
-		request.setPassword("hugo");
+    @Test
+    void test_OldPasswordNotMatching_errorRaised() throws Exception {
+        final ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword("wrongPassword");
+        request.setPassword("hugo");
 
-		final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-		assertNotNull(actual);
-		assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
+        final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
+        assertNotNull(actual);
+        assertEquals(actual.getCode(), ErrorCode.PASSWORD_NOT_MATCHING.getErrorCode());
 
-	}
+    }
 
-	@Override
-	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
-		super.callUsecaseExpect403(new ChangePasswordRequest());
-	}
+    @Override
+    protected void callUsecaseExpect403ForThisUsecase() throws Exception {
+        super.callUsecaseExpect403(new ChangePasswordRequest());
+    }
 
-	@Override
-	protected void callUsecaseEmptyDatabase() throws Exception {
-		final ChangePasswordRequest request = new ChangePasswordRequest();
-		request.setOldPassword(UserTransportBuilder.ADMIN_PASSWORD);
-		request.setPassword(UserTransportBuilder.ADMIN_PASSWORD + "new");
+    @Override
+    protected void callUsecaseEmptyDatabase() throws Exception {
+        final ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword(UserTransportBuilder.ADMIN_PASSWORD);
+        request.setPassword(UserTransportBuilder.ADMIN_PASSWORD + "new");
 
-		super.callUsecaseExpect204(request);
-	}
+        super.callUsecaseExpect204(request);
+    }
 }

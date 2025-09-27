@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -40,64 +37,67 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserTransportMapper extends IMapstructMapper<User, UserTransport> {
-	@Override
-	@Mapping(target = "attributes", source = ".", qualifiedByName = "mapUserAttributesToEntity")
-	@Mapping(target = "role", source = "role", qualifiedByName = "mapUserRoleToEntity")
-	@Mapping(target = "name", source = "userName")
-	@Mapping(target = "password", source = "userPassword")
-	User mapBToA(UserTransport b);
+    @Override
+    @Mapping(target = "attributes", source = "b", qualifiedByName = "mapUserAttributesToEntity")
+    @Mapping(target = "role", source = "role", qualifiedByName = "mapUserRoleToEntity")
+    @Mapping(target = "name", source = "userName")
+    @Mapping(target = "password", source = "userPassword")
+    User mapBToA(UserTransport b);
 
-	default boolean isTrue(final Integer property) {
-		return property != null && property.equals(1);
-	}
+    default boolean isTrue(final Integer property) {
+        return property != null && property.equals(1);
+    }
 
-	@Named("mapUserAttributesToEntity")
-	default Collection<UserAttribute> mapUserAttributesToEntity(final UserTransport b) {
-		final Collection<UserAttribute> attributes = new ArrayList<>();
-		if (this.isTrue(b.getUserIsNew())) {
-			attributes.add(UserAttribute.IS_NEW);
-		}
-		if (attributes.isEmpty()) {
-			attributes.add(UserAttribute.NONE);
-		}
-		return attributes;
-	}
+    @Named("mapUserAttributesToEntity")
+    default Collection<UserAttribute> mapUserAttributesToEntity(final UserTransport b) {
+        final Collection<UserAttribute> attributes = new ArrayList<>();
+        if (this.isTrue(b.getUserIsNew())) {
+            attributes.add(UserAttribute.IS_NEW);
+        }
+        if (attributes.isEmpty()) {
+            attributes.add(UserAttribute.NONE);
+        }
+        return attributes;
+    }
 
-	@Named("mapUserRoleToEntity")
-	default UserRole mapUserRoleToEntity(final UserTransport.RoleEnum b) {
-		return switch (b) {
-		case ADMIN -> UserRole.ADMIN;
-		case IMPORT -> UserRole.IMPORT;
-		case INACTIVE -> UserRole.INACTIVE;
-		case STANDARD -> UserRole.STANDARD;
-		};
-	}
+    @Named("mapUserRoleToEntity")
+    default UserRole mapUserRoleToEntity(final UserTransport.RoleEnum b) {
+        return switch (b) {
+            case ADMIN -> UserRole.ADMIN;
+            case IMPORT -> UserRole.IMPORT;
+            case INACTIVE -> UserRole.INACTIVE;
+            case STANDARD -> UserRole.STANDARD;
+        };
+    }
 
-	@Override
-	@Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
-	@Mapping(target = "role", source = "role", qualifiedByName = "mapUserRolesToTransport")
-	@Mapping(target = "userName", source = "name")
-	@Mapping(target = "userPassword", ignore = true)
-	UserTransport mapAToB(User a);
+    @Override
+    @Mapping(target = "userIsNew", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToTransport")
+    @Mapping(target = "role", source = "role", qualifiedByName = "mapUserRolesToTransport")
+    @Mapping(target = "userName", source = "name")
+    @Mapping(target = "userPassword", ignore = true)
+    UserTransport mapAToB(User a);
 
-	@Named("mapUserAttributeIsNewToTransport")
-	default Integer mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
-		if (a != null && a.contains(UserAttribute.IS_NEW)) {
-			return 1;
-		}
-		return null;
-	}
+    @Named("mapUserAttributeIsNewToTransport")
+    default Integer mapUserAttributeIsNewToTransport(final Collection<UserAttribute> a) {
+        if (a != null && a.contains(UserAttribute.IS_NEW)) {
+            return 1;
+        }
+        return null;
+    }
 
-	@Named("mapUserRolesToTransport")
-	default UserTransport.RoleEnum mapUserRolesToEntity(final UserRole b) {
-		return switch (b) {
-		case ADMIN -> UserTransport.RoleEnum.ADMIN;
-		case IMPORT -> UserTransport.RoleEnum.IMPORT;
-		case INACTIVE -> UserTransport.RoleEnum.INACTIVE;
-		case STANDARD -> UserTransport.RoleEnum.STANDARD;
-		};
-	}
+    @Named("mapUserRolesToTransport")
+    default UserTransport.RoleEnum mapUserRolesToEntity(final UserRole b) {
+        return switch (b) {
+            case ADMIN -> UserTransport.RoleEnum.ADMIN;
+            case IMPORT -> UserTransport.RoleEnum.IMPORT;
+            case INACTIVE -> UserTransport.RoleEnum.INACTIVE;
+            case STANDARD -> UserTransport.RoleEnum.STANDARD;
+        };
+    }
 
 }

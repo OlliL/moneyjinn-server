@@ -24,11 +24,6 @@
 
 package org.laladev.moneyjinn.server.controller.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
@@ -38,40 +33,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 public abstract class AbstractController {
-	protected static final String HEADER_PREFER = "Prefer";
-	private static final String HEADER_PREFERENCE_APPLIED = "Preference-Applied";
-	private static final String RETURN = "return=";
-	private static final String RETURN_MINIMAL = RETURN + "minimal";
-	private static final String RETURN_REPRESENTATION = RETURN + "representation";
-	protected static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
+    protected static final String HEADER_PREFER = "Prefer";
+    protected static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
+    private static final String HEADER_PREFERENCE_APPLIED = "Preference-Applied";
+    private static final String RETURN = "return=";
+    private static final String RETURN_MINIMAL = RETURN + "minimal";
+    private static final String RETURN_REPRESENTATION = RETURN + "representation";
 
-	protected UserID getUserId() {
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		final Object authenticationDetails = authentication.getDetails();
-		if (authenticationDetails instanceof final Long userId) {
-			return new UserID(userId);
-		}
+    protected UserID getUserId() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Object authenticationDetails = authentication != null ? authentication.getDetails() : null;
+        if (authenticationDetails instanceof final Long userId) {
+            return new UserID(userId);
+        }
 
-		throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
-	}
+        throw new TechnicalException("UserId must not be null!", ErrorCode.UNKNOWN);
+    }
 
-	protected void throwValidationExceptionIfInvalid(final ValidationResult validationResult) {
-		if (!validationResult.isValid()) {
-			throw new ValidationException(validationResult);
-		}
-	}
+    protected void throwValidationExceptionIfInvalid(final ValidationResult validationResult) {
+        if (!validationResult.isValid()) {
+            throw new ValidationException(validationResult);
+        }
+    }
 
-	protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer, final Supplier<T> transportSupplier) {
+    protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer, final Supplier<T> transportSupplier) {
 
-		final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList()).stream()
-				.map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
+        final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList()).stream()
+                .map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");
 
-		return switch (returnHeaderValue) {
-		case RETURN_REPRESENTATION -> ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
-				.body(transportSupplier.get());
-		case RETURN_MINIMAL -> ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
-		default -> ResponseEntity.noContent().build();
-		};
-	}
+        return switch (returnHeaderValue) {
+            case RETURN_REPRESENTATION -> ResponseEntity.ok().header(HEADER_PREFERENCE_APPLIED, RETURN_REPRESENTATION)
+                    .body(transportSupplier.get());
+            case RETURN_MINIMAL -> ResponseEntity.noContent().header(HEADER_PREFERENCE_APPLIED, RETURN_MINIMAL).build();
+            default -> ResponseEntity.noContent().build();
+        };
+    }
 }

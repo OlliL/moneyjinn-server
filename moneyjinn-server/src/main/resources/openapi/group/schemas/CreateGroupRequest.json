@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"groupTransport": {
-			"$ref": "../../transport/GroupTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "groupTransport": {
+      "$ref": "../../transport/GroupTransport.json"
+    }
+  }
 }

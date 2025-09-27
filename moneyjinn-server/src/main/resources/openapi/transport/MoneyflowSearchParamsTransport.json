@@ -1,40 +1,40 @@
 {
-	"type": "object",
-	"properties": {
-		"startDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"endDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"searchString": {
-			"type": "string"
-		},
-		"featureEqual": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"featureRegexp": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"featureCaseSensitive": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"featureOnlyMinusAmounts": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"contractpartnerId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"postingAccountId": {
-			"type": "integer",
-			"format": "int64"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "searchString": {
+      "type": "string"
+    },
+    "featureEqual": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "featureRegexp": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "featureCaseSensitive": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "featureOnlyMinusAmounts": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "contractpartnerId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "postingAccountId": {
+      "type": "integer",
+      "format": "int64"
+    }
+  }
 }

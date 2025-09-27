@@ -1,29 +1,29 @@
 {
-	"type": "object",
-	"required": [
-		"bookingDate",
-		"invoiceDate",
-		"amount",
-		"partner",
-		"comment"
-	],
-	"properties": {
-		"bookingDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"invoiceDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"amount": {
-			"type": "number"
-		},
-		"partner": {
-			"type": "string"
-		},
-		"comment": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "bookingDate",
+    "invoiceDate",
+    "amount",
+    "partner",
+    "comment"
+  ],
+  "properties": {
+    "bookingDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "partner": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    }
+  }
 }

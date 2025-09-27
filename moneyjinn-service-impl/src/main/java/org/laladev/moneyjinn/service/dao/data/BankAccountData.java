@@ -30,6 +30,6 @@ import lombok.Data;
 
 @Data
 public class BankAccountData {
-	private String accountNumber;
-	private String bankCode;
+    private String accountNumber;
+    private String bankCode;
 }

@@ -26,16 +26,15 @@
 
 package org.laladev.moneyjinn.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * A pre defined Moneyflow is a Moneyflow where certain attributes are
@@ -56,21 +55,20 @@ import lombok.ToString;
  * It is meant to ease the adding of recurring {@link Moneyflow}s.
  *
  * @author Oliver Lehmann
- *
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID>
-		implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
-	private static final long serialVersionUID = 1L;
-	private User user;
-	private BigDecimal amount;
-	private Capitalsource capitalsource;
-	private Contractpartner contractpartner;
-	private String comment;
-	private LocalDate creationDate;
-	private boolean onceAMonth;
-	private LocalDate lastUsedDate;
-	private PostingAccount postingAccount;
+        implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
+    private static final long serialVersionUID = 1L;
+    private User user;
+    private BigDecimal amount;
+    private Capitalsource capitalsource;
+    private Contractpartner contractpartner;
+    private String comment;
+    private LocalDate creationDate;
+    private boolean onceAMonth;
+    private LocalDate lastUsedDate;
+    private PostingAccount postingAccount;
 }

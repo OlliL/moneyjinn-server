@@ -35,13 +35,13 @@ import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.server.model.MoneyflowSearchParamsTransport;
 import org.mapstruct.Mapper;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, PostingAccountIdMapper.class,
-		BooleanToIntegerMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerIdMapper.class, PostingAccountIdMapper.class,
+        BooleanToIntegerMapper.class})
 public interface MoneyflowSearchParamsTransportMapper
-		extends IMapstructMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
+        extends IMapstructMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
 
-	@Override
-	default MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
+    @Override
+    default MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
+        throw new UnsupportedOperationException("Mapping not supported!");
+    }
 }

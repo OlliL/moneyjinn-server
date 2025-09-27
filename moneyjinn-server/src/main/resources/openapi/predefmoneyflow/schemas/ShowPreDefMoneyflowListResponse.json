@@ -1,11 +1,11 @@
 {
-	"type": "object",
-	"properties": {
-		"preDefMoneyflowTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/PreDefMoneyflowTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "properties": {
+    "preDefMoneyflowTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/PreDefMoneyflowTransport.json"
+      }
+    }
+  }
 }

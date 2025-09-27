@@ -26,9 +26,6 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.UserIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -36,53 +33,52 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserAttribute;
 import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.service.dao.data.UserData;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.Named;
-import org.mapstruct.ValueMapping;
+import org.mapstruct.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Mapper(config = MapStructConfig.class, uses = UserIdMapper.class)
 public interface UserDataMapper extends IMapstructMapper<User, UserData> {
-	@Override
-	@Mapping(target = "attributes", source = "changePassword", qualifiedByName = "mapUserAttributesToEntity")
-	@Mapping(target = "role", source = "role")
-	@Mapping(target = "id", source = "userid")
-	User mapBToA(UserData b);
+    @Override
+    @Mapping(target = "attributes", source = "changePassword", qualifiedByName = "mapUserAttributesToEntity")
+    @Mapping(target = "role", source = "role")
+    @Mapping(target = "id", source = "userid")
+    User mapBToA(UserData b);
 
-	@Named("mapUserAttributesToEntity")
-	default Collection<UserAttribute> mapUserAttributesToEntity(final boolean changePassword) {
-		final Collection<UserAttribute> attributes = new ArrayList<>();
-		if (changePassword) {
-			attributes.add(UserAttribute.IS_NEW);
-		}
-		if (attributes.isEmpty()) {
-			attributes.add(UserAttribute.NONE);
-		}
-		return attributes;
-	}
+    @Named("mapUserAttributesToEntity")
+    default Collection<UserAttribute> mapUserAttributesToEntity(final boolean changePassword) {
+        final Collection<UserAttribute> attributes = new ArrayList<>();
+        if (changePassword) {
+            attributes.add(UserAttribute.IS_NEW);
+        }
+        if (attributes.isEmpty()) {
+            attributes.add(UserAttribute.NONE);
+        }
+        return attributes;
+    }
 
-	@ValueMapping(target = "ADMIN", source = "ADMIN")
-	@ValueMapping(target = "STANDARD", source = "STANDARD")
-	@ValueMapping(target = "IMPORT", source = "IMPORT")
-	@ValueMapping(target = "INACTIVE", source = "INACTIVE")
-	@ValueMapping(target = MappingConstants.THROW_EXCEPTION, source = MappingConstants.ANY_REMAINING)
-	UserRole mapUserRoleToEntity(String role);
+    @ValueMapping(target = "ADMIN", source = "ADMIN")
+    @ValueMapping(target = "STANDARD", source = "STANDARD")
+    @ValueMapping(target = "IMPORT", source = "IMPORT")
+    @ValueMapping(target = "INACTIVE", source = "INACTIVE")
+    @ValueMapping(target = MappingConstants.THROW_EXCEPTION, source = MappingConstants.ANY_REMAINING)
+    UserRole mapUserRoleToEntity(String role);
 
-	@ValueMapping(target = "ADMIN", source = "ADMIN")
-	@ValueMapping(target = "STANDARD", source = "STANDARD")
-	@ValueMapping(target = "IMPORT", source = "IMPORT")
-	@ValueMapping(target = "INACTIVE", source = "INACTIVE")
-	String mapEntityToUserRole(UserRole role);
+    @ValueMapping(target = "ADMIN", source = "ADMIN")
+    @ValueMapping(target = "STANDARD", source = "STANDARD")
+    @ValueMapping(target = "IMPORT", source = "IMPORT")
+    @ValueMapping(target = "INACTIVE", source = "INACTIVE")
+    String mapEntityToUserRole(UserRole role);
 
-	@Override
-	@Mapping(target = "changePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
-	@Mapping(target = "role", source = "role")
-	@Mapping(target = "userid", source = "id")
-	UserData mapAToB(User a);
+    @Override
+    @Mapping(target = "changePassword", source = "attributes", qualifiedByName = "mapUserAttributeIsNewToData")
+    @Mapping(target = "role", source = "role")
+    @Mapping(target = "userid", source = "id")
+    UserData mapAToB(User a);
 
-	@Named("mapUserAttributeIsNewToData")
-	default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
-		return (a != null && a.contains(UserAttribute.IS_NEW));
-	}
+    @Named("mapUserAttributeIsNewToData")
+    default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
+        return (a != null && a.contains(UserAttribute.IS_NEW));
+    }
 }

@@ -35,36 +35,36 @@ import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceDailyMapper;
 
 public class BalanceDailyCollector {
-	public BalanceDaily collect(final HBCIHandler hbciHandler, final Konto account) {
-		final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
-		BalanceDaily balanceDaily = null;
-		final HBCIJob hbciJob = hbciHandler.newJob("SaldoReq");
-		hbciJob.setParam("my", account);
-		hbciJob.addToQueue();
+    public BalanceDaily collect(final HBCIHandler hbciHandler, final Konto account) {
+        final BalanceDailyMapper balanceDailyMapper = new BalanceDailyMapper();
+        BalanceDaily balanceDaily = null;
+        final HBCIJob hbciJob = hbciHandler.newJob("SaldoReq");
+        hbciJob.setParam("my", account);
+        hbciJob.addToQueue();
 
-		final HBCIExecStatus ret = hbciHandler.execute();
-		final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
+        final HBCIExecStatus ret = hbciHandler.execute();
+        final GVRSaldoReq saldoResult = (GVRSaldoReq) hbciJob.getJobResult();
 
-		if (saldoResult.isOK() && saldoResult.getEntries() != null && saldoResult.getEntries().length > 0) {
+        if (saldoResult.isOK() && saldoResult.getEntries() != null && saldoResult.getEntries().length > 0) {
 
-			final Info balanceInfo = saldoResult.getEntries()[0];
-			if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
-				final BalanceDaily balanceDailyTmp = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
-						account);
-				if (balanceDailyTmp != null && ((balanceDailyTmp.getMyIban() != null
-						&& balanceDailyTmp.getMyBic() != null)
-						|| (balanceDailyTmp.getMyAccountnumber() != null && balanceDailyTmp.getMyBankcode() != null))) {
-					balanceDaily = balanceDailyTmp;
-				}
-			}
+            final Info balanceInfo = saldoResult.getEntries()[0];
+            if (balanceInfo.ready != null && balanceInfo.ready.value != null) {
+                final BalanceDaily balanceDailyTmp = balanceDailyMapper.map(balanceInfo.ready, balanceInfo.kredit,
+                        account);
+                if (balanceDailyTmp != null && ((balanceDailyTmp.getMyIban() != null
+                        && balanceDailyTmp.getMyBic() != null)
+                        || (balanceDailyTmp.getMyAccountnumber() != null && balanceDailyTmp.getMyBankcode() != null))) {
+                    balanceDaily = balanceDailyTmp;
+                }
+            }
 
-		} else {
-			System.out.println("Job-Error");
-			System.out.println(saldoResult.getJobStatus().getErrorString());
-			System.out.println("Global Error");
-			System.out.println(ret.getErrorString());
-		}
-		return balanceDaily;
-	}
+        } else {
+            System.out.println("Job-Error");
+            System.out.println(saldoResult.getJobStatus().getErrorString());
+            System.out.println("Global Error");
+            System.out.println(ret.getErrorString());
+        }
+        return balanceDaily;
+    }
 
 }

@@ -1,16 +1,16 @@
 {
-	"type": "object",
-	"required": [
-		"formatId",
-		"name"
-	],
-	"properties": {
-		"formatId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"name": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "formatId",
+    "name"
+  ],
+  "properties": {
+    "formatId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
 }

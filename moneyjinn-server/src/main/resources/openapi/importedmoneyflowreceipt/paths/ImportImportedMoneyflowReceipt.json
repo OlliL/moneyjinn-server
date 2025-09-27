@@ -1,43 +1,43 @@
 {
-	"post": {
-		"tags": [
-			"imported-moneyflow-receipt-controller"
-		],
-		"operationId": "importImportedMoneyflowReceipt",
-		"parameters": [
-			{
-				"name": "id",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int64"
-				}
-			},
-			{
-				"name": "moneyflowid",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int64"
-				}
-			}
-		],
-		"responses": {
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "post": {
+    "tags": [
+      "imported-moneyflow-receipt-controller"
+    ],
+    "operationId": "importImportedMoneyflowReceipt",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      {
+        "name": "moneyflowid",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    ],
+    "responses": {
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

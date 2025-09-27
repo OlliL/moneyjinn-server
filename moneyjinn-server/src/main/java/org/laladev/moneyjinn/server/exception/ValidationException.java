@@ -26,15 +26,17 @@
 
 package org.laladev.moneyjinn.server.exception;
 
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.io.Serial;
 
 @RequiredArgsConstructor
 @Getter
 public class ValidationException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
-	private final ValidationResult validationResult;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private final ValidationResult validationResult;
 
 }

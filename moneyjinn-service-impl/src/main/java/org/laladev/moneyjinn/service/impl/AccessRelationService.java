@@ -26,22 +26,14 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.IHasGroup;
 import org.laladev.moneyjinn.model.IHasUser;
-import org.laladev.moneyjinn.model.access.AccessID;
-import org.laladev.moneyjinn.model.access.AccessRelation;
-import org.laladev.moneyjinn.model.access.Group;
-import org.laladev.moneyjinn.model.access.User;
-import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.access.*;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
@@ -51,130 +43,133 @@ import org.laladev.moneyjinn.service.dao.AccessRelationDao;
 import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.laladev.moneyjinn.service.dao.data.mapper.AccessRelationDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AccessRelationService extends AbstractService implements IAccessRelationService {
-	private final AccessRelationDao accessRelationDao;
-	private final IGroupService groupService;
-	private final AccessRelationDataMapper accessRelationDataMapper;
+    private final AccessRelationDao accessRelationDao;
+    private final IGroupService groupService;
+    private final AccessRelationDataMapper accessRelationDataMapper;
 
-	public LocalDate now() {
-		return LocalDate.now();
-	}
+    public LocalDate now() {
+        return LocalDate.now();
+    }
 
-	@Override
-	public ValidationResult validateAccessRelation(@NonNull final AccessRelation accessRelation) {
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(accessRelation.getId(), errorCode));
+    @Override
+    public ValidationResult validateAccessRelation(@NonNull final AccessRelation accessRelation) {
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(accessRelation.getId(), errorCode));
 
-		if (accessRelation.getGroupID() == null) {
-			addResult.accept(ErrorCode.GROUP_MUST_BE_SPECIFIED);
-		}
+        if (accessRelation.getGroupID() == null) {
+            addResult.accept(ErrorCode.GROUP_MUST_BE_SPECIFIED);
+        }
 
-		if (accessRelation.getValidFrom() == null) {
-			addResult.accept(ErrorCode.VALIDFROM_NOT_DEFINED);
-		}
+        if (accessRelation.getValidFrom() == null) {
+            addResult.accept(ErrorCode.VALIDFROM_NOT_DEFINED);
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	@Override
-	public Group getCurrentGroup(final UserID userId) {
-		return this.getGroup(userId, this.now());
-	}
+    @Override
+    public Group getCurrentGroup(final UserID userId) {
+        return this.getGroup(userId, this.now());
+    }
 
-	@Override
-	public Group getGroup(@NonNull final UserID userId, @NonNull final LocalDate date) {
-		final List<AccessRelation> accessRelations = this.getAllAccessRelationsById(userId);
-		for (final AccessRelation accessRelation : accessRelations) {
-			if (!(date.isBefore(accessRelation.getValidFrom()) || date.isAfter(accessRelation.getValidTil()))) {
-				return this.groupService.getGroupById(accessRelation.getGroupID());
-			}
-		}
-		return null;
-	}
+    @Override
+    public Group getGroup(@NonNull final UserID userId, @NonNull final LocalDate date) {
+        final List<AccessRelation> accessRelations = this.getAllAccessRelationsById(userId);
+        for (final AccessRelation accessRelation : accessRelations) {
+            if (!(date.isBefore(accessRelation.getValidFrom()) || date.isAfter(accessRelation.getValidTil()))) {
+                return this.groupService.getGroupById(accessRelation.getGroupID());
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public List<AccessRelation> getAllAccessRelationsById(@NonNull final UserID userId) {
-		final Supplier<List<AccessRelation>> supplier = () -> this.accessRelationDataMapper.mapBToA(
-				this.accessRelationDao.getAllAccessRelationsById(userId.getId()));
+    @Override
+    public List<AccessRelation> getAllAccessRelationsById(@NonNull final UserID userId) {
+        final Supplier<List<AccessRelation>> supplier = () -> this.accessRelationDataMapper.mapBToA(
+                this.accessRelationDao.getAllAccessRelationsById(userId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier);
-	}
+        return super.getListFromCacheOrExecute(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId, supplier);
+    }
 
-	@Override
-	public ValidationResult setAccessRelationForExistingUser(@NonNull final AccessRelation accessRelation) {
-		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-		if (accessRelation.getValidFrom().isBefore(this.now())) {
-			validationResult.addValidationResultItem(
-					new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_EARLIER_THAN_TOMORROW));
-		}
-		if (validationResult.isValid()) {
-			this.setAccessRelation(accessRelation);
-		}
-		return validationResult;
-	}
+    @Override
+    public ValidationResult setAccessRelationForExistingUser(@NonNull final AccessRelation accessRelation) {
+        final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
+        if (accessRelation.getValidFrom().isBefore(this.now())) {
+            validationResult.addValidationResultItem(
+                    new ValidationResultItem(accessRelation.getId(), ErrorCode.VALIDFROM_EARLIER_THAN_TOMORROW));
+        }
+        if (validationResult.isValid()) {
+            this.setAccessRelation(accessRelation);
+        }
+        return validationResult;
+    }
 
-	@Override
-	public ValidationResult setAccessRelationForNewUser(@NonNull final AccessRelation accessRelation) {
-		final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
-		if (validationResult.isValid()) {
-			this.setAccessRelation(accessRelation);
-		}
-		return validationResult;
-	}
+    @Override
+    public ValidationResult setAccessRelationForNewUser(@NonNull final AccessRelation accessRelation) {
+        final ValidationResult validationResult = this.validateAccessRelation(accessRelation);
+        if (validationResult.isValid()) {
+            this.setAccessRelation(accessRelation);
+        }
+        return validationResult;
+    }
 
-	@Override
-	public AccessRelation getCurrentAccessRelationById(@NonNull final UserID userId) {
-		final AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(userId.getId(),
-				this.now());
-		return this.accessRelationDataMapper.mapBToA(accessRelationData);
-	}
+    @Override
+    public AccessRelation getCurrentAccessRelationById(@NonNull final UserID userId) {
+        final AccessRelationData accessRelationData = this.accessRelationDao.getAccessRelationById(userId.getId(),
+                this.now());
+        return this.accessRelationDataMapper.mapBToA(accessRelationData);
+    }
 
-	@Override
-	public void deleteAllAccessRelation(@NonNull final UserID useriId) {
-		this.evictAccessRelationCache(useriId);
-		this.accessRelationDao.deleteAllAccessRelation(useriId.getId());
-	}
+    @Override
+    public void deleteAllAccessRelation(@NonNull final UserID useriId) {
+        this.evictAccessRelationCache(useriId);
+        this.accessRelationDao.deleteAllAccessRelation(useriId.getId());
+    }
 
-	@Override
-	public Set<UserID> getAllUserWithSameGroup(@NonNull final UserID userId) {
-		final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
-		return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
-	}
+    @Override
+    public Set<UserID> getAllUserWithSameGroup(@NonNull final UserID userId) {
+        final Set<Long> accessIdList = this.accessRelationDao.getAllUserWithSameGroup(userId.getId());
+        return accessIdList.stream().map(UserID::new).collect(Collectors.toSet());
+    }
 
-	private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId, final LocalDate date) {
-		final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
-				.getAllAccessRelationsByIdDate(accessRelationId.getId(), date);
-		return this.accessRelationDataMapper.mapBToA(accessRelationDataList);
-	}
+    private List<AccessRelation> getAllAccessRelationsByIdDate(final AccessID accessRelationId, final LocalDate date) {
+        final List<AccessRelationData> accessRelationDataList = this.accessRelationDao
+                .getAllAccessRelationsByIdDate(accessRelationId.getId(), date);
+        return this.accessRelationDataMapper.mapBToA(accessRelationDataList);
+    }
 
-	private void setAccessRelation(final AccessRelation accessRelation) {
-		this.evictAccessRelationCache(accessRelation.getId());
-		if (accessRelation.getValidTil() == null) {
-			accessRelation.setValidTil(MAX_DATE);
-		}
-		LocalDate previousValidTil = accessRelation.getValidFrom().minusDays(1);
-		final List<AccessRelation> currentAccessRelations = this.getAllAccessRelationsByIdDate(accessRelation.getId(),
-				previousValidTil);
-		final List<AccessRelation> updateAccessRelationItems = new ArrayList<>();
-		final List<AccessRelation> deleteAccessRelationItems = new ArrayList<>();
-		AccessRelation previousCurrentAccessRelation = null;
-		final AccessRelation insertAccessRelation = new AccessRelation(accessRelation);
+    private void setAccessRelation(final AccessRelation accessRelation) {
+        this.evictAccessRelationCache(accessRelation.getId());
+        if (accessRelation.getValidTil() == null) {
+            accessRelation.setValidTil(MAX_DATE);
+        }
+        LocalDate previousValidTil = accessRelation.getValidFrom().minusDays(1);
+        final List<AccessRelation> currentAccessRelations = this.getAllAccessRelationsByIdDate(accessRelation.getId(),
+                previousValidTil);
+        final List<AccessRelation> updateAccessRelationItems = new ArrayList<>();
+        final List<AccessRelation> deleteAccessRelationItems = new ArrayList<>();
+        AccessRelation previousCurrentAccessRelation = null;
+        final AccessRelation insertAccessRelation = new AccessRelation(accessRelation);
 
-		// new user, no existing relations
-		boolean addAccessRelation = true;
-		if (!currentAccessRelations.isEmpty()) {
-			// existing user
-			addAccessRelation = false;
+        // new user, no existing relations
+        boolean addAccessRelation = true;
+        if (!currentAccessRelations.isEmpty()) {
+            // existing user
+            addAccessRelation = false;
 
-			// @formatter:off
+            // @formatter:off
 			// @non-java-start
       /**
        *============================================================================================
@@ -223,86 +218,86 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 			// @non-java-end
 			// @formatter:on
 
-			for (final AccessRelation currentAccessRelation : currentAccessRelations) {
-				final LocalDate nextValidFrom = insertAccessRelation.getValidTil().plusDays(1);
-				previousValidTil = insertAccessRelation.getValidFrom().minusDays(1);
-				if (currentAccessRelation.getValidFrom().isEqual(accessRelation.getValidFrom())) {
-					// if there is already a relation which starts at the same day, our new relation
-					// gets the same Valid-Til as the original relation has
-					if (previousCurrentAccessRelation != null
-							&& previousCurrentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
-						// (d, h) if the access relation which was valid straight before the new
-						// access relation is for the same RefId, remove the previous and current
-						// relation and modify the new relation to start at the previous and end at
-						// the current relation
-						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
-						insertAccessRelation.setValidFrom(previousCurrentAccessRelation.getValidFrom());
-						deleteAccessRelationItems.add(previousCurrentAccessRelation);
-						deleteAccessRelationItems.add(currentAccessRelation);
-						addAccessRelation = true;
-					} else if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
-						// (e) if the new relation starts at the same day than the currently checked
-						// one and is also for the same RefId - just ignore it
-						addAccessRelation = false;
-						break;
-					} else {
-						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
-						// (i) if the groups of the previous relation is different and the current
-						// relation is also different from the new one, insert a new relation and
-						// delete the current relation
-						addAccessRelation = true;
-						deleteAccessRelationItems.add(currentAccessRelation);
-					}
-				} else if (currentAccessRelation.getValidFrom().isBefore(accessRelation.getValidFrom())) {
-					// (a, b, f, g) if the checked relation starts before the new relation, modify
-					// its validtil to just straight before the new one starts if the RefId is
-					// different
-					if (!currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
+            for (final AccessRelation currentAccessRelation : currentAccessRelations) {
+                final LocalDate nextValidFrom = insertAccessRelation.getValidTil().plusDays(1);
+                previousValidTil = insertAccessRelation.getValidFrom().minusDays(1);
+                if (currentAccessRelation.getValidFrom().isEqual(accessRelation.getValidFrom())) {
+                    // if there is already a relation which starts at the same day, our new relation
+                    // gets the same Valid-Til as the original relation has
+                    if (previousCurrentAccessRelation != null
+                            && previousCurrentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
+                        // (d, h) if the access relation which was valid straight before the new
+                        // access relation is for the same RefId, remove the previous and current
+                        // relation and modify the new relation to start at the previous and end at
+                        // the current relation
+                        insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
+                        insertAccessRelation.setValidFrom(previousCurrentAccessRelation.getValidFrom());
+                        deleteAccessRelationItems.add(previousCurrentAccessRelation);
+                        deleteAccessRelationItems.add(currentAccessRelation);
+                        addAccessRelation = true;
+                    } else if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
+                        // (e) if the new relation starts at the same day than the currently checked
+                        // one and is also for the same RefId - just ignore it
+                        addAccessRelation = false;
+                        break;
+                    } else {
+                        insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
+                        // (i) if the groups of the previous relation is different and the current
+                        // relation is also different from the new one, insert a new relation and
+                        // delete the current relation
+                        addAccessRelation = true;
+                        deleteAccessRelationItems.add(currentAccessRelation);
+                    }
+                } else if (currentAccessRelation.getValidFrom().isBefore(accessRelation.getValidFrom())) {
+                    // (a, b, f, g) if the checked relation starts before the new relation, modify
+                    // its validtil to just straight before the new one starts if the RefId is
+                    // different
+                    if (!currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 
-						AccessRelation updateAccessRelationItem;
-						updateAccessRelationItem = new AccessRelation(currentAccessRelation);
-						updateAccessRelationItem.setValidTil(previousValidTil);
-						updateAccessRelationItems.add(updateAccessRelationItem);
+                        final AccessRelation updateAccessRelationItem;
+                        updateAccessRelationItem = new AccessRelation(currentAccessRelation);
+                        updateAccessRelationItem.setValidTil(previousValidTil);
+                        updateAccessRelationItems.add(updateAccessRelationItem);
 
-						insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
-						addAccessRelation = true;
-					}
-					// (c) nothing to do
-				} else if (currentAccessRelation.getValidFrom().isEqual(nextValidFrom) &&
-				// (f, i) if the next item after the new access relation has the same refId,
-				// delete it and prolong our new item
-						currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
-					insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
-					deleteAccessRelationItems.add(currentAccessRelation);
-				}
-				previousCurrentAccessRelation = currentAccessRelation;
-			}
-		}
-		for (final AccessRelation accessRelationItem : deleteAccessRelationItems) {
-			this.accessRelationDao.deleteAccessRelationByDate(accessRelationItem.getId().getId(),
-					accessRelationItem.getValidFrom());
-		}
-		for (final AccessRelation accessRelationItem : updateAccessRelationItems) {
-			final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(accessRelationItem);
-			this.accessRelationDao.updateAccessRelation(accessRelationItem.getId().getId(),
-					accessRelationItem.getValidFrom(), accessRelationData);
-		}
-		if (addAccessRelation) {
-			final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(insertAccessRelation);
-			this.accessRelationDao.createAccessRelation(accessRelationData);
-		}
-	}
+                        insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
+                        addAccessRelation = true;
+                    }
+                    // (c) nothing to do
+                } else if (currentAccessRelation.getValidFrom().isEqual(nextValidFrom) &&
+                        // (f, i) if the next item after the new access relation has the same refId,
+                        // delete it and prolong our new item
+                        currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
+                    insertAccessRelation.setValidTil(currentAccessRelation.getValidTil());
+                    deleteAccessRelationItems.add(currentAccessRelation);
+                }
+                previousCurrentAccessRelation = currentAccessRelation;
+            }
+        }
+        for (final AccessRelation accessRelationItem : deleteAccessRelationItems) {
+            this.accessRelationDao.deleteAccessRelationByDate(accessRelationItem.getId().getId(),
+                    accessRelationItem.getValidFrom());
+        }
+        for (final AccessRelation accessRelationItem : updateAccessRelationItems) {
+            final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(accessRelationItem);
+            this.accessRelationDao.updateAccessRelation(accessRelationItem.getId().getId(),
+                    accessRelationItem.getValidFrom(), accessRelationData);
+        }
+        if (addAccessRelation) {
+            final AccessRelationData accessRelationData = this.accessRelationDataMapper.mapAToB(insertAccessRelation);
+            this.accessRelationDao.createAccessRelation(accessRelationData);
+        }
+    }
 
-	private void evictAccessRelationCache(final UserID userId) {
-		super.evictFromCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId);
-	}
+    private void evictAccessRelationCache(final UserID userId) {
+        super.evictFromCache(CacheNames.ALL_ACCESS_RELATIONS_BY_USER_ID, userId);
+    }
 
-	@Override
-	public <T extends IHasGroup & IHasUser> void enrichEntity(final T entity, final LocalDate date) {
-		final User user = entity.getUser();
-		if (user != null && date != null) {
-			final var fullMag = this.getGroup(user.getId(), date);
-			entity.setGroup(fullMag);
-		}
-	}
+    @Override
+    public <T extends IHasGroup & IHasUser> void enrichEntity(final T entity, final LocalDate date) {
+        final User user = entity.getUser();
+        if (user != null && date != null) {
+            final var fullMag = this.getGroup(user.getId(), date);
+            entity.setGroup(fullMag);
+        }
+    }
 }

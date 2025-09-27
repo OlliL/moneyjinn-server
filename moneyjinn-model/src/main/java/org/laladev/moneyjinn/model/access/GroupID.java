@@ -26,16 +26,18 @@
 
 package org.laladev.moneyjinn.model.access;
 
+import java.io.Serial;
+
 /**
  * The unique ID of {@link Group}.
  *
  * @author Oliver Lehmann
- *
  */
 public class GroupID extends AccessID {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public GroupID(final Long id) {
-		super(id);
-	}
+    public GroupID(final Long id) {
+        super(id);
+    }
 }

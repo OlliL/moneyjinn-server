@@ -26,6 +26,15 @@
 
 package org.laladev.moneyjinn.hbci.batch.main;
 
+import org.laladev.moneyjinn.hbci.backend.ApiException;
+import org.laladev.moneyjinn.hbci.backend.api.UserControllerApi;
+import org.laladev.moneyjinn.hbci.backend.model.LoginRequest;
+import org.laladev.moneyjinn.hbci.backend.model.LoginResponse;
+import org.laladev.moneyjinn.hbci.batch.subscriber.AccountMovementObserver;
+import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceDailyObserver;
+import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceMonthlyObserver;
+import org.laladev.moneyjinn.hbci.core.LalaHBCI;
+
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,64 +45,55 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.laladev.moneyjinn.hbci.backend.ApiException;
-import org.laladev.moneyjinn.hbci.backend.api.UserControllerApi;
-import org.laladev.moneyjinn.hbci.backend.model.LoginRequest;
-import org.laladev.moneyjinn.hbci.backend.model.LoginResponse;
-import org.laladev.moneyjinn.hbci.batch.subscriber.AccountMovementObserver;
-import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceDailyObserver;
-import org.laladev.moneyjinn.hbci.batch.subscriber.BalanceMonthlyObserver;
-import org.laladev.moneyjinn.hbci.core.LalaHBCI;
-
 public final class Main {
-	public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
 
-		final Properties properties = new Properties();
-		try (final FileInputStream propertyFile = new FileInputStream(
-				System.getProperty("user.home") + File.separator + "hbci_pass.properties")) {
-			properties.load(propertyFile);
-		}
+        final Properties properties = new Properties();
+        try (final FileInputStream propertyFile = new FileInputStream(
+                System.getProperty("user.home") + File.separator + "hbci_pass.properties")) {
+            properties.load(propertyFile);
+        }
 
-		final List<PropertyChangeListener> observers = new ArrayList<>(1);
-		observers.add(new AccountMovementObserver());
-		observers.add(new BalanceMonthlyObserver());
-		observers.add(new BalanceDailyObserver());
+        final List<PropertyChangeListener> observers = new ArrayList<>(1);
+        observers.add(new AccountMovementObserver());
+        observers.add(new BalanceMonthlyObserver());
+        observers.add(new BalanceDailyObserver());
 
-		final LalaHBCI lalaHBCI = new LalaHBCI(properties);
-		final List<String> passports = new ArrayList<>();
-		final String[] passportFiles = properties.getProperty("hbci.passport.files").split(",");
-		for (final String passportFile : passportFiles) {
-			passports.add(System.getProperty("user.home") + File.separator + passportFile);
-		}
+        final LalaHBCI lalaHBCI = new LalaHBCI(properties);
+        final List<String> passports = new ArrayList<>();
+        final String[] passportFiles = properties.getProperty("hbci.passport.files").split(",");
+        for (final String passportFile : passportFiles) {
+            passports.add(System.getProperty("user.home") + File.separator + passportFile);
+        }
 
-		try (final Connection con = connectToDatabase(properties.getProperty("hbci.database.url"),
-				properties.getProperty("hbci.database.username"), properties.getProperty("hbci.database.password"))) {
-			login(properties.getProperty("hbci.server.username"), properties.getProperty("hbci.server.password"));
+        try (final Connection con = connectToDatabase(properties.getProperty("hbci.database.url"),
+                properties.getProperty("hbci.database.username"), properties.getProperty("hbci.database.password"))) {
+            login(properties.getProperty("hbci.server.username"), properties.getProperty("hbci.server.password"));
 
-			lalaHBCI.main(passports, observers);
-		}
-	}
+            lalaHBCI.process(passports, observers);
+        }
+    }
 
-	private static Connection connectToDatabase(final String url, final String username, final String password)
-			throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
+    private static Connection connectToDatabase(final String url, final String username, final String password)
+            throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-		final Connection con = DriverManager.getConnection(url, username, password);
-		con.setAutoCommit(false);
+        final Connection con = DriverManager.getConnection(url, username, password);
+        con.setAutoCommit(false);
 
-		MoneyjinnConnectionHolder.setConnection(con);
+        MoneyjinnConnectionHolder.setConnection(con);
 
-		return con;
-	}
+        return con;
+    }
 
-	private static void login(final String username, final String password) throws ApiException {
-		MoneyjinnApiClient.initialize();
-		final UserControllerApi userControllerApi = new UserControllerApi(MoneyjinnApiClient.getApiClient());
-		final LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setUserName(username);
-		loginRequest.setUserPassword(password);
+    private static void login(final String username, final String password) throws ApiException {
+        MoneyjinnApiClient.initialize();
+        final UserControllerApi userControllerApi = new UserControllerApi(MoneyjinnApiClient.getApiClient());
+        final LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUserName(username);
+        loginRequest.setUserPassword(password);
 
-		final LoginResponse loginResponse = userControllerApi.login(loginRequest);
-		MoneyjinnApiClient.setJwtToken(loginResponse.getToken());
-	}
+        final LoginResponse loginResponse = userControllerApi.login(loginRequest);
+        MoneyjinnApiClient.setJwtToken(loginResponse.getToken());
+    }
 }

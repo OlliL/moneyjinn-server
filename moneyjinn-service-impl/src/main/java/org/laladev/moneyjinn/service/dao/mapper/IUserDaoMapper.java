@@ -26,25 +26,25 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.UserData;
 
+import java.util.List;
+
 public interface IUserDaoMapper {
-	public List<UserData> getAllUsers();
+    List<UserData> getAllUsers();
 
-	public UserData getUserById(Long userid);
+    UserData getUserById(Long userid);
 
-	public UserData getUserByName(String name);
+    UserData getUserByName(String name);
 
-	public void createUser(UserData userData);
+    void createUser(UserData userData);
 
-	public void updateUser(UserData userData);
+    void updateUser(UserData userData);
 
-	public void deleteUser(Long userid);
+    void deleteUser(Long userid);
 
-	public void setPassword(@Param("userid") Long userid, @Param("password") String password);
+    void setPassword(@Param("userid") Long userid, @Param("password") String password);
 
-	public void resetPassword(@Param("userid") Long userid, @Param("password") String password);
+    void resetPassword(@Param("userid") Long userid, @Param("password") String password);
 }

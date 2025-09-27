@@ -1,53 +1,53 @@
 {
-	"parameters": [
-		{
-			"name": "id",
-			"in": "path",
-			"required": true,
-			"schema": {
-				"type": "integer",
-				"format": "int64"
-			}
-		}
-	],
-	"get": {
-		"tags": [
-			"crud-etf-controller"
-		],
-		"operationId": "readOne",
-		"description": "Returns the etf specified by the id.",
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/EtfTransport.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"404": {
-				"description": "Etf not found"
-			}
-		}
-	},
-	"delete": {
-		"tags": [
-			"crud-etf-controller"
-		],
-		"operationId": "delete",
-		"description": "Deletes the etf specified by the id.",
-		"responses": {
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			}
-		}
-	}
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  ],
+  "get": {
+    "tags": [
+      "crud-etf-controller"
+    ],
+    "operationId": "readOne",
+    "description": "Returns the etf specified by the id.",
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/EtfTransport.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "404": {
+        "description": "Etf not found"
+      }
+    }
+  },
+  "delete": {
+    "tags": [
+      "crud-etf-controller"
+    ],
+    "operationId": "delete",
+    "description": "Deletes the etf specified by the id.",
+    "responses": {
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      }
+    }
+  }
 }

@@ -1,11 +1,11 @@
 {
-	"type": "object",
-	"required": [
-		"compareDataDatasetTransport"
-	],
-	"properties": {
-		"compareDataDatasetTransport": {
-			"$ref": "./CompareDataDatasetTransport.json"
-		}
-	}
+  "type": "object",
+  "required": [
+    "compareDataDatasetTransport"
+  ],
+  "properties": {
+    "compareDataDatasetTransport": {
+      "$ref": "./CompareDataDatasetTransport.json"
+    }
+  }
 }

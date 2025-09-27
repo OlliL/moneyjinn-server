@@ -26,82 +26,74 @@
 
 package org.laladev.moneyjinn.service.api;
 
+import org.laladev.moneyjinn.model.access.GroupID;
+import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.etf.*;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
 
-import org.laladev.moneyjinn.model.access.GroupID;
-import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.etf.Etf;
-import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.model.etf.EtfFlowID;
-import org.laladev.moneyjinn.model.etf.EtfFlowWithTaxInfo;
-import org.laladev.moneyjinn.model.etf.EtfID;
-import org.laladev.moneyjinn.model.etf.EtfIsin;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
-import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumID;
-import org.laladev.moneyjinn.model.etf.EtfValue;
-import org.laladev.moneyjinn.model.validation.ValidationResult;
-
 public interface IEtfService {
 
-	//
-	// ETF
-	//
+    //
+    // ETF
+    //
 
-	List<Etf> getAllEtf(UserID userId);
+    List<Etf> getAllEtf(UserID userId);
 
-	Etf getEtfById(UserID userId, EtfID etfId);
+    Etf getEtfById(UserID userId, EtfID etfId);
 
-	ValidationResult validateEtf(Etf etf);
+    ValidationResult validateEtf(Etf etf);
 
-	EtfID createEtf(Etf etf);
+    EtfID createEtf(Etf etf);
 
-	void updateEtf(Etf etf);
+    void updateEtf(Etf etf);
 
-	void deleteEtf(UserID userId, GroupID groupId, EtfID etfId);
+    void deleteEtf(UserID userId, GroupID groupId, EtfID etfId);
 
-	//
-	// ETF Flows
-	//
+    //
+    // ETF Flows
+    //
 
-	List<EtfFlow> getAllEtfFlowsUntil(UserID userId, EtfID etfId, LocalDateTime timeUntil);
+    List<EtfFlow> getAllEtfFlowsUntil(UserID userId, EtfID etfId, LocalDateTime timeUntil);
 
-	EtfFlow getEtfFlowById(UserID userId, EtfFlowID etfFlowId);
+    EtfFlow getEtfFlowById(UserID userId, EtfFlowID etfFlowId);
 
-	ValidationResult validateEtfFlow(UserID userId, EtfFlow etfFlow);
+    ValidationResult validateEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	EtfFlowID createEtfFlow(UserID userId, EtfFlow etfFlow);
+    EtfFlowID createEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	void updateEtfFlow(UserID userId, EtfFlow etfFlow);
+    void updateEtfFlow(UserID userId, EtfFlow etfFlow);
 
-	void deleteEtfFlow(UserID userId, EtfFlowID etfFlowId);
+    void deleteEtfFlow(UserID userId, EtfFlowID etfFlowId);
 
-	List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(UserID userId, List<EtfFlow> etfFlows);
+    List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(UserID userId, List<EtfFlow> etfFlows);
 
-	//
-	// ETF Preliminary Lump Sum
-	//
+    //
+    // ETF Preliminary Lump Sum
+    //
 
-	EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
+    EtfPreliminaryLumpSum getEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
 
-	List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(UserID userId, EtfID etfId);
+    List<EtfPreliminaryLumpSum> getAllEtfPreliminaryLumpSum(UserID userId, EtfID etfId);
 
-	ValidationResult validateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+    ValidationResult validateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void createEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+    void createEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void updateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
+    void updateEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 
-	void deleteEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
+    void deleteEtfPreliminaryLumpSum(UserID userId, EtfPreliminaryLumpSumID id);
 
-	//
-	// ETF value
-	//
+    //
+    // ETF value
+    //
 
-	EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
+    EtfValue getEtfValueEndOfMonth(EtfIsin etfIsin, Year year, Month month);
 
-	EtfValue getLatestEtfValue(EtfIsin etfIsin);
+    EtfValue getLatestEtfValue(EtfIsin etfIsin);
 
 }

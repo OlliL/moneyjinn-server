@@ -26,19 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import static org.springframework.util.Assert.notEmpty;
-import static org.springframework.util.Assert.notNull;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.Period;
-import java.time.temporal.TemporalAdjusters;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.PostingAccount;
@@ -56,13 +47,7 @@ import org.laladev.moneyjinn.model.moneyflow.search.MoneyflowSearchParams;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.CacheNames;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IContractpartnerService;
-import org.laladev.moneyjinn.service.api.IGroupService;
-import org.laladev.moneyjinn.service.api.IMoneyflowService;
-import org.laladev.moneyjinn.service.api.IPostingAccountService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.service.api.*;
 import org.laladev.moneyjinn.service.dao.MoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData;
@@ -72,341 +57,349 @@ import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowSearchParamsDataMa
 import org.laladev.moneyjinn.service.dao.data.mapper.PostingAccountAmountDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static org.springframework.util.Assert.notEmpty;
+import static org.springframework.util.Assert.notNull;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowService extends AbstractService implements IMoneyflowService {
-	private final IUserService userService;
-	private final IGroupService groupService;
-	private final ICapitalsourceService capitalsourceService;
-	private final IContractpartnerService contractpartnerService;
-	private final IAccessRelationService accessRelationService;
-	private final IPostingAccountService postingAccountService;
-	private final MoneyflowDao moneyflowDao;
-	private final MoneyflowDataMapper moneyflowDataMapper;
-	private final PostingAccountAmountDataMapper postingAccountAmountDataMapper;
-	private final MoneyflowSearchParamsDataMapper moneyflowSearchParamsDataMapper;
+    private final IUserService userService;
+    private final IGroupService groupService;
+    private final ICapitalsourceService capitalsourceService;
+    private final IContractpartnerService contractpartnerService;
+    private final IAccessRelationService accessRelationService;
+    private final IPostingAccountService postingAccountService;
+    private final MoneyflowDao moneyflowDao;
+    private final MoneyflowDataMapper moneyflowDataMapper;
+    private final PostingAccountAmountDataMapper postingAccountAmountDataMapper;
+    private final MoneyflowSearchParamsDataMapper moneyflowSearchParamsDataMapper;
 
-	private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
-		if (moneyflowData != null) {
-			final Moneyflow moneyflow = this.moneyflowDataMapper.mapBToA(moneyflowData);
+    private Moneyflow mapMoneyflowData(final MoneyflowData moneyflowData) {
+        if (moneyflowData != null) {
+            final Moneyflow moneyflow = this.moneyflowDataMapper.mapBToA(moneyflowData);
 
-			this.userService.enrichEntity(moneyflow);
-			this.groupService.enrichEntity(moneyflow);
-			this.postingAccountService.enrichEntity(moneyflow);
-			this.capitalsourceService.enrichEntity(moneyflow);
-			this.contractpartnerService.enrichEntity(moneyflow);
+            this.userService.enrichEntity(moneyflow);
+            this.groupService.enrichEntity(moneyflow);
+            this.postingAccountService.enrichEntity(moneyflow);
+            this.capitalsourceService.enrichEntity(moneyflow);
+            this.contractpartnerService.enrichEntity(moneyflow);
 
-			return moneyflow;
-		}
-		return null;
-	}
+            return moneyflow;
+        }
+        return null;
+    }
 
-	private List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
-		return moneyflowDataList.stream().map(this::mapMoneyflowData).toList();
-	}
+    private List<Moneyflow> mapMoneyflowDataList(final List<MoneyflowData> moneyflowDataList) {
+        return moneyflowDataList.stream().map(this::mapMoneyflowData).toList();
+    }
 
-	private List<PostingAccountAmount> mapPostingAccountAmountDataList(
-			final List<PostingAccountAmountData> postingAccountAmountDatas) {
-		final List<PostingAccountAmount> postingAccountAmounts = this.postingAccountAmountDataMapper
-				.mapBToA(postingAccountAmountDatas);
-		for (final PostingAccountAmount postingAccountAmount : postingAccountAmounts) {
-			PostingAccount postingAccount = postingAccountAmount.getPostingAccount();
-			postingAccount = this.postingAccountService.getPostingAccountById(postingAccount.getId());
-			postingAccountAmount.setPostingAccount(postingAccount);
-		}
-		return postingAccountAmounts;
-	}
+    private List<PostingAccountAmount> mapPostingAccountAmountDataList(
+            final List<PostingAccountAmountData> postingAccountAmountDatas) {
+        final List<PostingAccountAmount> postingAccountAmounts = this.postingAccountAmountDataMapper
+                .mapBToA(postingAccountAmountDatas);
+        for (final PostingAccountAmount postingAccountAmount : postingAccountAmounts) {
+            PostingAccount postingAccount = postingAccountAmount.getPostingAccount();
+            postingAccount = this.postingAccountService.getPostingAccountById(postingAccount.getId());
+            postingAccountAmount.setPostingAccount(postingAccount);
+        }
+        return postingAccountAmounts;
+    }
 
-	private void prepareMoneyflow(final Moneyflow moneyflow) {
-		if (moneyflow.getInvoiceDate() == null && moneyflow.getBookingDate() != null) {
-			moneyflow.setInvoiceDate(moneyflow.getBookingDate());
-		}
-	}
+    private void prepareMoneyflow(final Moneyflow moneyflow) {
+        if (moneyflow.getInvoiceDate() == null && moneyflow.getBookingDate() != null) {
+            moneyflow.setInvoiceDate(moneyflow.getBookingDate());
+        }
+    }
 
-	@Override
-	public ValidationResult validateMoneyflow(@NonNull final Moneyflow moneyflow) {
-		notNull(moneyflow.getUser(), "Moneyflow.user must not be null!");
-		notNull(moneyflow.getUser().getId(), "Moneyflow.user.id must not be null!");
-		notNull(moneyflow.getGroup(), "Moneyflow.group must not be null!");
-		notNull(moneyflow.getGroup().getId(), "Moneyflow.group.id must not be null!");
+    @Override
+    public ValidationResult validateMoneyflow(@NonNull final Moneyflow moneyflow) {
+        notNull(moneyflow.getUser(), "Moneyflow.user must not be null!");
+        notNull(moneyflow.getUser().getId(), "Moneyflow.user.id must not be null!");
+        notNull(moneyflow.getGroup(), "Moneyflow.group must not be null!");
+        notNull(moneyflow.getGroup().getId(), "Moneyflow.group.id must not be null!");
 
-		this.prepareMoneyflow(moneyflow);
+        this.prepareMoneyflow(moneyflow);
 
-		final UserID userId = moneyflow.getUser().getId();
-		final LocalDate bookingDate = moneyflow.getBookingDate();
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(moneyflow.getId(), errorCode));
+        final UserID userId = moneyflow.getUser().getId();
+        final LocalDate bookingDate = moneyflow.getBookingDate();
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(moneyflow.getId(), errorCode));
 
-		if (bookingDate == null) {
-			addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
-		} else {
-			final AccessRelation accessRelation = this.accessRelationService
-					.getCurrentAccessRelationById(moneyflow.getUser().getId());
-			// if this check is removed, make sure the group is evaluated for the
-			// bookingdate, not for today otherwise it will be created with the wrong
-			// group
-			if (!accessRelation.dateIsInValidPeriod(bookingDate)) {
-				addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
-			}
-		}
+        if (bookingDate == null) {
+            addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
+        } else {
+            final AccessRelation accessRelation = this.accessRelationService
+                    .getCurrentAccessRelationById(moneyflow.getUser().getId());
+            // if this check is removed, make sure the group is evaluated for the
+            // bookingdate, not for today otherwise it will be created with the wrong
+            // group
+            if (!accessRelation.dateIsInValidPeriod(bookingDate)) {
+                addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
+            }
+        }
 
-		if (moneyflow.getCapitalsource() == null) {
-			addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
-		} else {
-			final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
-					moneyflow.getGroup().getId(), moneyflow.getCapitalsource().getId());
-			if (capitalsource == null) {
-				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
-			} else if (!capitalsource.groupUseAllowed(userId)) {
-				addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
-			} else if (!capitalsource.dateIsInValidPeriod(bookingDate)) {
-				addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
-			} else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
-				addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
-			}
-		}
+        if (moneyflow.getCapitalsource() == null) {
+            addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
+        } else {
+            final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId,
+                    moneyflow.getGroup().getId(), moneyflow.getCapitalsource().getId());
+            if (capitalsource == null) {
+                addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+            } else if (!capitalsource.groupUseAllowed(userId)) {
+                addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+            } else if (!capitalsource.dateIsInValidPeriod(bookingDate)) {
+                addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
+            } else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
+                addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
+            }
+        }
 
-		if (moneyflow.getContractpartner() == null) {
-			addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
-		} else {
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-					moneyflow.getContractpartner().getId());
-			if (contractpartner == null) {
-				addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-			} else if (!contractpartner.dateIsInValidPeriod(bookingDate)) {
-				addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
-			}
-		}
+        if (moneyflow.getContractpartner() == null) {
+            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+        } else {
+            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+                    moneyflow.getContractpartner().getId());
+            if (contractpartner == null) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+            } else if (!contractpartner.dateIsInValidPeriod(bookingDate)) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
+            }
+        }
 
-		if (moneyflow.getComment() == null || moneyflow.getComment().isBlank()) {
-			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
-		}
+        if (moneyflow.getComment() == null || moneyflow.getComment().isBlank()) {
+            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
+        }
 
-		final BigDecimal amount = moneyflow.getAmount();
-		if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
-			addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
-		} else if (amount.precision() - amount.scale() > 6) {
-			addResult.accept(ErrorCode.AMOUNT_TO_BIG);
-		}
+        final BigDecimal amount = moneyflow.getAmount();
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
+            addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
+        } else if (amount.precision() - amount.scale() > 6) {
+            addResult.accept(ErrorCode.AMOUNT_TO_BIG);
+        }
 
-		if (moneyflow.getPostingAccount() == null) {
-			addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-		} else {
-			final PostingAccount postingAccount = this.postingAccountService
-					.getPostingAccountById(moneyflow.getPostingAccount().getId());
-			if (postingAccount == null) {
-				addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-			}
-		}
+        if (moneyflow.getPostingAccount() == null) {
+            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+        } else {
+            final PostingAccount postingAccount = this.postingAccountService
+                    .getPostingAccountById(moneyflow.getPostingAccount().getId());
+            if (postingAccount == null) {
+                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+            }
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	@Override
-	public Moneyflow getMoneyflowById(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
-		final Supplier<Moneyflow> supplier = () -> this.mapMoneyflowData(
-				this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId()));
+    @Override
+    public Moneyflow getMoneyflowById(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
+        final Supplier<Moneyflow> supplier = () -> this.mapMoneyflowData(
+                this.moneyflowDao.getMoneyflowById(userId.getId(), moneyflowId.getId()));
 
-		return super.getFromCacheOrExecute(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(userId, moneyflowId), supplier,
-				Moneyflow.class);
-	}
+        return super.getFromCacheOrExecute(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(userId, moneyflowId), supplier,
+                Moneyflow.class);
+    }
 
-	@Override
-	public MoneyflowID createMoneyflow(final Moneyflow moneyflow) {
-		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
-		}
-		final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
-		final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);
-		this.evictMoneyflowCache(moneyflow.getUser().getId(), new MoneyflowID(moneyflowId));
-		return new MoneyflowID(moneyflowId);
-	}
+    @Override
+    public MoneyflowID createMoneyflow(final Moneyflow moneyflow) {
+        final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Moneyflow creation failed!", validationResultItem.getError());
+        }
+        final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
+        final Long moneyflowId = this.moneyflowDao.createMoneyflow(moneyflowData);
+        this.evictMoneyflowCache(moneyflow.getUser().getId(), new MoneyflowID(moneyflowId));
+        return new MoneyflowID(moneyflowId);
+    }
 
-	@Override
-	public void updateMoneyflow(@NonNull final Moneyflow moneyflow) {
-		final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
-		}
-		final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
-		this.moneyflowDao.updateMoneyflow(moneyflowData);
-		this.evictMoneyflowCache(moneyflow.getUser().getId(), moneyflow.getId());
-	}
+    @Override
+    public void updateMoneyflow(@NonNull final Moneyflow moneyflow) {
+        final ValidationResult validationResult = this.validateMoneyflow(moneyflow);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Moneyflow update failed!", validationResultItem.getError());
+        }
+        final MoneyflowData moneyflowData = this.moneyflowDataMapper.mapAToB(moneyflow);
+        this.moneyflowDao.updateMoneyflow(moneyflowData);
+        this.evictMoneyflowCache(moneyflow.getUser().getId(), moneyflow.getId());
+    }
 
-	@Override
-	public void deleteMoneyflow(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
-		this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
-		this.evictMoneyflowCache(userId, moneyflowId);
-	}
+    @Override
+    public void deleteMoneyflow(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
+        this.moneyflowDao.deleteMoneyflow(userId.getId(), moneyflowId.getId());
+        this.evictMoneyflowCache(userId, moneyflowId);
+    }
 
-	private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
-		if (moneyflowId != null) {
-			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
-				super.evictFromCache(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(evictingUserId, moneyflowId));
-				super.evictFromCache(CacheNames.MONEYFLOW_YEARS, evictingUserId);
-				super.clearCache(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, evictingUserId.getId()));
-			});
-		}
-	}
+    private void evictMoneyflowCache(final UserID userId, final MoneyflowID moneyflowId) {
+        if (moneyflowId != null) {
+            this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+                super.evictFromCache(CacheNames.MONEYFLOW_BY_ID, new SimpleKey(evictingUserId, moneyflowId));
+                super.evictFromCache(CacheNames.MONEYFLOW_YEARS, evictingUserId);
+                super.clearCache(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, evictingUserId.getId()));
+            });
+        }
+    }
 
-	@Override
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
-			final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
-		return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
-				Collections.singletonList(capitalsourceId));
-	}
+    @Override
+    public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
+                                                                final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+        return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
+                Collections.singletonList(capitalsourceId));
+    }
 
-	@Override
-	public List<Integer> getAllYears(@NonNull final UserID userId) {
-		final Supplier<List<Integer>> supplier = () -> this.moneyflowDao.getAllYears(userId.getId());
+    @Override
+    public List<Integer> getAllYears(@NonNull final UserID userId) {
+        final Supplier<List<Integer>> supplier = () -> this.moneyflowDao.getAllYears(userId.getId());
 
-		return super.getListFromCacheOrExecute(CacheNames.MONEYFLOW_YEARS, userId, supplier);
+        return super.getListFromCacheOrExecute(CacheNames.MONEYFLOW_YEARS, userId, supplier);
 
-	}
+    }
 
-	@Override
-	public List<Month> getAllMonth(@NonNull final UserID userId, @NonNull final Integer year) {
-		final Supplier<List<Month>> supplier = () -> {
-			final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
-			final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
-			final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
-			return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
-		};
+    @Override
+    public List<Month> getAllMonth(@NonNull final UserID userId, @NonNull final Integer year) {
+        final Supplier<List<Month>> supplier = () -> {
+            final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
+            final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
+            final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
+            return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
+        };
 
-		return super.getListFromCacheOrExecute(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, userId.getId()),
-				year, supplier);
+        return super.getListFromCacheOrExecute(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, userId.getId()),
+                year, supplier);
 
-	}
+    }
 
-	@Override
-	public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(@NonNull final UserID userId,
-			@NonNull final LocalDate dateFrom,
-			@NonNull final LocalDate dateTil) {
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeIncludingPrivate(userId.getId(), dateFrom, dateTil);
-		return this.mapMoneyflowDataList(moneyflowDatas);
-	}
+    @Override
+    public List<Moneyflow> getAllMoneyflowsByDateRangeIncludingPrivate(@NonNull final UserID userId,
+                                                                       @NonNull final LocalDate dateFrom,
+                                                                       @NonNull final LocalDate dateTil) {
+        final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+                .getAllMoneyflowsByDateRangeIncludingPrivate(userId.getId(), dateFrom, dateTil);
+        return this.mapMoneyflowDataList(moneyflowDatas);
+    }
 
-	@Override
-	public boolean monthHasMoneyflows(@NonNull final UserID userId, @NonNull final Integer year,
-			@NonNull final Month month) {
-		final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
-		final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-		return this.moneyflowDao.monthHasMoneyflows(userId.getId(), beginOfMonth, endOfMonth);
-	}
+    @Override
+    public boolean monthHasMoneyflows(@NonNull final UserID userId, @NonNull final Integer year,
+                                      @NonNull final Month month) {
+        final LocalDate beginOfMonth = LocalDate.of(year, month, 1);
+        final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+        return this.moneyflowDao.monthHasMoneyflows(userId.getId(), beginOfMonth, endOfMonth);
+    }
 
-	@Override
-	public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(@NonNull final UserID userId,
-			@NonNull final LocalDate dateFrom,
-			@NonNull final LocalDate dateTil, @NonNull final List<CapitalsourceID> capitalsourceIds) {
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
-		return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil,
-				capitalsourceIdLongs);
-	}
+    @Override
+    public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(@NonNull final UserID userId,
+                                                                 @NonNull final LocalDate dateFrom,
+                                                                 @NonNull final LocalDate dateTil, @NonNull final List<CapitalsourceID> capitalsourceIds) {
+        final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
+        return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil,
+                capitalsourceIdLongs);
+    }
 
-	@Override
-	public LocalDate getMinMoneyflowDate(@NonNull final UserID userId) {
-		return this.moneyflowDao.getMinMoneyflowDate(userId.getId());
-	}
+    @Override
+    public LocalDate getMinMoneyflowDate(@NonNull final UserID userId) {
+        return this.moneyflowDao.getMinMoneyflowDate(userId.getId());
+    }
 
-	@Override
-	public LocalDate getMaxMoneyflowDate(@NonNull final UserID userId) {
-		return this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
-	}
+    @Override
+    public LocalDate getMaxMoneyflowDate(@NonNull final UserID userId) {
+        return this.moneyflowDao.getMaxMoneyflowDate(userId.getId());
+    }
 
-	@Override
-	public LocalDate getPreviousMoneyflowDate(@NonNull final UserID userId, @NonNull final LocalDate date) {
-		return this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), date);
-	}
+    @Override
+    public LocalDate getPreviousMoneyflowDate(@NonNull final UserID userId, @NonNull final LocalDate date) {
+        return this.moneyflowDao.getPreviousMoneyflowDate(userId.getId(), date);
+    }
 
-	@Override
-	public LocalDate getNextMoneyflowDate(@NonNull final UserID userId, @NonNull final LocalDate date) {
-		return this.moneyflowDao.getNextMoneyflowDate(userId.getId(), date);
-	}
+    @Override
+    public LocalDate getNextMoneyflowDate(@NonNull final UserID userId, @NonNull final LocalDate date) {
+        return this.moneyflowDao.getNextMoneyflowDate(userId.getId(), date);
+    }
 
-	@Override
-	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
-			@NonNull final UserID userId, @NonNull final List<PostingAccountID> postingAccountIds,
-			@NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
-		notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
-		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).toList();
-		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs,
-						dateFrom, dateTil);
-		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
-	}
+    @Override
+    public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(
+            @NonNull final UserID userId, @NonNull final List<PostingAccountID> postingAccountIds,
+            @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
+        notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
+        final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).toList();
+        final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
+                .getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId.getId(), postingAccountIdLongs,
+                        dateFrom, dateTil);
+        return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
+    }
 
-	@Override
-	public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
-			@NonNull final UserID userId, @NonNull final List<PostingAccountID> postingAccountIds,
-			@NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
-		notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
-		final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).toList();
-		final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom,
-						dateTil);
-		return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
-	}
+    @Override
+    public List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(
+            @NonNull final UserID userId, @NonNull final List<PostingAccountID> postingAccountIds,
+            @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
+        notEmpty(postingAccountIds, "PsostingAccountIds must not be null!");
+        final List<Long> postingAccountIdLongs = postingAccountIds.stream().map(PostingAccountID::getId).toList();
+        final List<PostingAccountAmountData> postingAccountAmountDatas = this.moneyflowDao
+                .getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId.getId(), postingAccountIdLongs, dateFrom,
+                        dateTil);
+        return this.mapPostingAccountAmountDataList(postingAccountAmountDatas);
+    }
 
-	@Override
-	public List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(@NonNull final UserID userId,
-			@NonNull final BigDecimal amount,
-			@NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
-				.searchMoneyflowsByAbsoluteAmountDate(userId.getId(), dateFrom, dateTil, amount);
-		return this.mapMoneyflowDataList(moneyflowDatas);
-	}
+    @Override
+    public List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(@NonNull final UserID userId,
+                                                                @NonNull final BigDecimal amount,
+                                                                @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
+        final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+                .searchMoneyflowsByAbsoluteAmountDate(userId.getId(), dateFrom, dateTil, amount);
+        return this.mapMoneyflowDataList(moneyflowDatas);
+    }
 
-	@Override
-	public List<Moneyflow> searchMoneyflowsByAmountDate(@NonNull final UserID userId,
-			@NonNull final LocalDate bookingDate,
-			@NonNull final BigDecimal amount, @NonNull final Period searchPeriod) {
-		final LocalDate beginOfMonth = bookingDate.with(TemporalAdjusters.firstDayOfMonth());
-		final LocalDate endOfMonth = bookingDate.with(TemporalAdjusters.lastDayOfMonth());
-		LocalDate dateFrom = bookingDate.minus(searchPeriod);
-		if (dateFrom.isBefore(beginOfMonth)) {
-			dateFrom = beginOfMonth;
-		}
-		LocalDate dateTil = bookingDate.plus(searchPeriod);
-		if (dateTil.isAfter(endOfMonth)) {
-			dateTil = endOfMonth;
-		}
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflowsByAmountDate(userId.getId(),
-				dateFrom, dateTil, amount);
-		return this.mapMoneyflowDataList(moneyflowDatas);
-	}
+    @Override
+    public List<Moneyflow> searchMoneyflowsByAmountDate(@NonNull final UserID userId,
+                                                        @NonNull final LocalDate bookingDate,
+                                                        @NonNull final BigDecimal amount, @NonNull final Period searchPeriod) {
+        final LocalDate beginOfMonth = bookingDate.with(TemporalAdjusters.firstDayOfMonth());
+        final LocalDate endOfMonth = bookingDate.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate dateFrom = bookingDate.minus(searchPeriod);
+        if (dateFrom.isBefore(beginOfMonth)) {
+            dateFrom = beginOfMonth;
+        }
+        LocalDate dateTil = bookingDate.plus(searchPeriod);
+        if (dateTil.isAfter(endOfMonth)) {
+            dateTil = endOfMonth;
+        }
+        final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflowsByAmountDate(userId.getId(),
+                dateFrom, dateTil, amount);
+        return this.mapMoneyflowDataList(moneyflowDatas);
+    }
 
-	@Override
-	public List<Moneyflow> searchMoneyflows(@NonNull final UserID userId,
-			@NonNull final MoneyflowSearchParams moneyflowSearchParams) {
-		if (moneyflowSearchParams.getStartDate() == null) {
-			moneyflowSearchParams.setStartDate(LocalDate.of(0, Month.JANUARY, 1));
-		}
-		if (moneyflowSearchParams.getEndDate() == null) {
-			moneyflowSearchParams.setEndDate(LocalDate.of(9999, Month.DECEMBER, 31));
-		}
-		final MoneyflowSearchParamsData moneyflowSearchParamsData = this.moneyflowSearchParamsDataMapper
-				.mapAToB(moneyflowSearchParams);
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflows(userId.getId(),
-				moneyflowSearchParamsData);
-		return this.mapMoneyflowDataList(moneyflowDatas);
-	}
+    @Override
+    public List<Moneyflow> searchMoneyflows(@NonNull final UserID userId,
+                                            @NonNull final MoneyflowSearchParams moneyflowSearchParams) {
+        if (moneyflowSearchParams.getStartDate() == null) {
+            moneyflowSearchParams.setStartDate(LocalDate.of(0, Month.JANUARY, 1));
+        }
+        if (moneyflowSearchParams.getEndDate() == null) {
+            moneyflowSearchParams.setEndDate(LocalDate.of(9999, Month.DECEMBER, 31));
+        }
+        final MoneyflowSearchParamsData moneyflowSearchParamsData = this.moneyflowSearchParamsDataMapper
+                .mapAToB(moneyflowSearchParams);
+        final List<MoneyflowData> moneyflowDatas = this.moneyflowDao.searchMoneyflows(userId.getId(),
+                moneyflowSearchParamsData);
+        return this.mapMoneyflowDataList(moneyflowDatas);
+    }
 
-	@Override
-	public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(@NonNull final UserID userId,
-			@NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil,
-			@NonNull final CapitalsourceID capitalsourceId) {
-		final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
-				.getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil, capitalsourceId.getId());
-		return this.mapMoneyflowDataList(moneyflowDatas);
-	}
+    @Override
+    public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(@NonNull final UserID userId,
+                                                                      @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil,
+                                                                      @NonNull final CapitalsourceID capitalsourceId) {
+        final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
+                .getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil, capitalsourceId.getId());
+        return this.mapMoneyflowDataList(moneyflowDatas);
+    }
 }

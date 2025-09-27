@@ -1,41 +1,41 @@
 {
-	"get": {
-		"tags": [
-			"moneyflow-controller"
-		],
-		"operationId": "showEditMoneyflow",
-		"parameters": [
-			{
-				"name": "id",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int64"
-				}
-			}
-		],
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/ShowEditMoneyflowResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "get": {
+    "tags": [
+      "moneyflow-controller"
+    ],
+    "operationId": "showEditMoneyflow",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/ShowEditMoneyflowResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

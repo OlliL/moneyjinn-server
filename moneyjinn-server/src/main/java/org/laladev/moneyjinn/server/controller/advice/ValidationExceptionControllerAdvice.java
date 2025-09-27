@@ -26,8 +26,8 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
-import java.util.logging.Level;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.mapper.ValidationItemTransportMapper;
 import org.laladev.moneyjinn.server.exception.ValidationException;
@@ -38,26 +38,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import java.util.logging.Level;
 
 @ControllerAdvice
 @RequiredArgsConstructor
 @Log
 public class ValidationExceptionControllerAdvice extends ResponseEntityExceptionHandler {
-	private final ValidationItemTransportMapper mapper;
+    private final ValidationItemTransportMapper mapper;
 
-	@ExceptionHandler(ValidationException.class)
-	@ResponseBody
-	ResponseEntity<Object> handleControllerException(final ValidationException ex) {
-		final ValidationResult result = ex.getValidationResult();
-		final ValidationResponse response = new ValidationResponse();
+    @ExceptionHandler(ValidationException.class)
+    @ResponseBody
+    ResponseEntity<Object> handleControllerException(final ValidationException ex) {
+        final ValidationResult result = ex.getValidationResult();
+        final ValidationResponse response = new ValidationResponse();
 
-		response.setResult(false);
-		response.setValidationItemTransports(
-				result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
+        response.setResult(false);
+        response.setValidationItemTransports(
+                result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
 
-		log.log(Level.SEVERE, "Validation error", ex);
-		return ResponseEntity.unprocessableEntity().body(response);
-	}
+        log.log(Level.SEVERE, "Validation error", ex);
+        return ResponseEntity.unprocessableEntity().body(response);
+    }
 }

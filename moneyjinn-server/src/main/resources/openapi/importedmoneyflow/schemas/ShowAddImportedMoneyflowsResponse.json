@@ -1,11 +1,11 @@
 {
-	"type": "object",
-	"properties": {
-		"importedMoneyflowTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/ImportedMoneyflowTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "properties": {
+    "importedMoneyflowTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/ImportedMoneyflowTransport.json"
+      }
+    }
+  }
 }

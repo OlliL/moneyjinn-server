@@ -26,11 +26,7 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
+import jakarta.inject.Inject;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.springframework.cache.Cache;
@@ -38,76 +34,77 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
-import jakarta.inject.Inject;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class AbstractService {
-	private CacheManager cacheManager;
-	private ApplicationEventPublisher applicationEventPublisher;
+    static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
+    private CacheManager cacheManager;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-	@Inject
-	public void setApplicationEventPublisher(final ApplicationEventPublisher applicationEventPublisher) {
-		this.applicationEventPublisher = applicationEventPublisher;
-	}
+    @Inject
+    public void setApplicationEventPublisher(final ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 
-	@Inject
-	public void setCacheManager(final CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
+    @Inject
+    public void setCacheManager(final CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
 
-	static final LocalDate MAX_DATE = LocalDate.parse("2999-12-31");
+    protected String getCombinedCacheName(final Object... cacheNameParts) {
+        return String.join("#", Arrays.toString(cacheNameParts));
+    }
 
-	protected String getCombinedCacheName(final Object... cacheNameParts) {
-		return String.join("#", Arrays.toString(cacheNameParts));
-	}
+    protected void evictFromCache(final String cacheName, final Object key) {
+        final var cache = this.cacheManager.getCache(cacheName);
+        if (cache != null)
+            cache.evict(key);
+    }
 
-	protected void evictFromCache(final String cacheName, final Object key) {
-		final var cache = this.cacheManager.getCache(cacheName);
-		if (cache != null)
-			cache.evict(key);
-	}
+    protected void clearCache(final String cacheName) {
+        final var cache = this.cacheManager.getCache(cacheName);
+        if (cache != null)
+            cache.clear();
+    }
 
-	protected void clearCache(final String cacheName) {
-		final var cache = this.cacheManager.getCache(cacheName);
-		if (cache != null)
-			cache.clear();
-	}
+    protected <T> T getFromCacheOrExecute(final String cacheName, final Object key, final Supplier<T> supplier,
+                                          final Class<T> clazz) {
+        final Cache cache = this.cacheManager.getCache(cacheName);
 
-	protected <T> T getFromCacheOrExecute(final String cacheName, final Object key, final Supplier<T> supplier,
-			final Class<T> clazz) {
-		final Cache cache = this.cacheManager.getCache(cacheName);
+        if (cache == null)
+            throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
 
-		if (cache == null)
-			throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
+        final T cacheValue = cache.get(key, clazz);
+        if (cacheValue != null) {
+            return cacheValue;
+        }
 
-		final T cacheValue = cache.get(key, clazz);
-		if (cacheValue != null) {
-			return cacheValue;
-		}
+        final T value = supplier.get();
+        cache.put(key, value);
+        return value;
+    }
 
-		final T value = supplier.get();
-		cache.put(key, value);
-		return value;
-	}
+    protected <T> List<T> getListFromCacheOrExecute(final String cacheName, final Object key,
+                                                    final Supplier<List<T>> supplier) {
+        final Cache cache = this.cacheManager.getCache(cacheName);
 
-	protected <T> List<T> getListFromCacheOrExecute(final String cacheName, final Object key,
-			final Supplier<List<T>> supplier) {
-		final Cache cache = this.cacheManager.getCache(cacheName);
+        if (cache == null)
+            throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
 
-		if (cache == null)
-			throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
+        @SuppressWarnings("unchecked") final List<T> cacheValue = cache.get(key, List.class);
+        if (cacheValue != null) {
+            return cacheValue;
+        }
 
-		@SuppressWarnings("unchecked")
-		final List<T> cacheValue = cache.get(key, List.class);
-		if (cacheValue != null) {
-			return cacheValue;
-		}
+        final List<T> value = supplier.get();
+        cache.put(key, value);
+        return value;
+    }
 
-		final List<T> value = supplier.get();
-		cache.put(key, value);
-		return value;
-	}
-
-	protected void publishEvent(final ApplicationEvent event) {
-		this.applicationEventPublisher.publishEvent(event);
-	}
+    protected void publishEvent(final ApplicationEvent event) {
+        this.applicationEventPublisher.publishEvent(event);
+    }
 }

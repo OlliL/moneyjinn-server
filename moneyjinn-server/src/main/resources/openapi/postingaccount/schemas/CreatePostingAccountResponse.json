@@ -1,12 +1,12 @@
 {
-	"type": "object",
-	"required": [
-		"postingAccountId"
-	],
-	"properties": {
-		"postingAccountId": {
-			"type": "integer",
-			"format": "int64"
-		}
-	}
+  "type": "object",
+  "required": [
+    "postingAccountId"
+  ],
+  "properties": {
+    "postingAccountId": {
+      "type": "integer",
+      "format": "int64"
+    }
+  }
 }

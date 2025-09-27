@@ -7,46 +7,46 @@ import org.springframework.test.context.jdbc.Sql;
 
 public abstract class AbstractAdminUserControllerTest extends AbstractControllerTest {
 
-	protected abstract void callUsecaseExpect403ForThisUsecase() throws Exception;
+    protected abstract void callUsecaseExpect403ForThisUsecase() throws Exception;
 
-	protected abstract void callUsecaseEmptyDatabase() throws Exception;
+    protected abstract void callUsecaseEmptyDatabase() throws Exception;
 
-	@BeforeEach
-	public void setUp() {
-		super.setUsername(UserTransportBuilder.ADMIN_NAME);
-		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
-	}
+    @BeforeEach
+    public void setUp() {
+        super.setUsername(UserTransportBuilder.ADMIN_NAME);
+        super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+    }
 
-	@Test
-	void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
-		super.setUsername(UserTransportBuilder.IMPORTUSER_NAME);
-		super.setPassword(UserTransportBuilder.IMPORTUSER_PASSWORD);
+    @Test
+    void test_ImportRoleNotAllowed_ErrorResponse() throws Exception {
+        super.setUsername(UserTransportBuilder.IMPORTUSER_NAME);
+        super.setPassword(UserTransportBuilder.IMPORTUSER_PASSWORD);
 
-		this.callUsecaseExpect403ForThisUsecase();
-	}
+        this.callUsecaseExpect403ForThisUsecase();
+    }
 
-	@Test
-	void test_WebRoleNotAllowed_ErrorResponse() throws Exception {
-		super.setUsername(UserTransportBuilder.USER1_NAME);
-		super.setPassword(UserTransportBuilder.USER1_PASSWORD);
+    @Test
+    void test_WebRoleNotAllowed_ErrorResponse() throws Exception {
+        super.setUsername(UserTransportBuilder.USER1_NAME);
+        super.setPassword(UserTransportBuilder.USER1_PASSWORD);
 
-		this.callUsecaseExpect403ForThisUsecase();
-	}
+        this.callUsecaseExpect403ForThisUsecase();
+    }
 
-	@Test
-	void test_AuthorizationRequired_Error() throws Exception {
-		super.setUsername(null);
-		super.setPassword(null);
+    @Test
+    void test_AuthorizationRequired_Error() throws Exception {
+        super.setUsername(null);
+        super.setPassword(null);
 
-		this.callUsecaseExpect403ForThisUsecase();
-	}
+        this.callUsecaseExpect403ForThisUsecase();
+    }
 
-	@Test
-	@Sql("classpath:h2defaults.sql")
-	void test_emptyDatabase_noException() throws Exception {
-		super.setUsername(UserTransportBuilder.ADMIN_NAME);
-		super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
+    @Test
+    @Sql("classpath:h2defaults.sql")
+    void test_emptyDatabase_noException() throws Exception {
+        super.setUsername(UserTransportBuilder.ADMIN_NAME);
+        super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
 
-		this.callUsecaseEmptyDatabase();
-	}
+        this.callUsecaseEmptyDatabase();
+    }
 }

@@ -1,41 +1,41 @@
 {
-	"type": "object",
-	"required": [
-		"etfId",
-		"name",
-		"chartUrl",
-		"amount",
-		"spentValue",
-		"buyPrice",
-		"sellPrice",
-		"pricesTimestamp"
-	],
-	"properties": {
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"name": {
-			"type": "string"
-		},
-		"chartUrl": {
-			"type": "string"
-		},
-		"amount": {
-			"type": "number"
-		},
-		"spentValue": {
-			"type": "number"
-		},
-		"buyPrice": {
-			"type": "number"
-		},
-		"sellPrice": {
-			"type": "number"
-		},
-		"pricesTimestamp": {
-			"type": "string",
-			"format": "date-time"
-		}
-	}
+  "type": "object",
+  "required": [
+    "etfId",
+    "name",
+    "chartUrl",
+    "amount",
+    "spentValue",
+    "buyPrice",
+    "sellPrice",
+    "pricesTimestamp"
+  ],
+  "properties": {
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "type": "string"
+    },
+    "chartUrl": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "spentValue": {
+      "type": "number"
+    },
+    "buyPrice": {
+      "type": "number"
+    },
+    "sellPrice": {
+      "type": "number"
+    },
+    "pricesTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
 }

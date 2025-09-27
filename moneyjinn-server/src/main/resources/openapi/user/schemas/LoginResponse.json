@@ -1,19 +1,19 @@
 {
-	"type": "object",
-	"required": [
-		"userTransport",
-		"token",
-		"refreshToken"
-	],
-	"properties": {
-		"userTransport": {
-			"$ref": "../../transport/UserTransport.json"
-		},
-		"token": {
-			"type": "string"
-		},
-		"refreshToken": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "userTransport",
+    "token",
+    "refreshToken"
+  ],
+  "properties": {
+    "userTransport": {
+      "$ref": "../../transport/UserTransport.json"
+    },
+    "token": {
+      "type": "string"
+    },
+    "refreshToken": {
+      "type": "string"
+    }
+  }
 }

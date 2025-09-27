@@ -26,18 +26,20 @@
 
 package org.laladev.moneyjinn.model.moneyflow;
 
-import org.laladev.moneyjinn.model.AbstractEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractEntity;
+
+import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class MoneyflowReceipt extends AbstractEntity<MoneyflowReceiptID> {
-	private static final long serialVersionUID = 1L;
-	private MoneyflowID moneyflowId;
-	private byte[] receipt;
-	private MoneyflowReceiptType moneyflowReceiptType;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private MoneyflowID moneyflowId;
+    private byte[] receipt;
+    private MoneyflowReceiptType moneyflowReceiptType;
 }

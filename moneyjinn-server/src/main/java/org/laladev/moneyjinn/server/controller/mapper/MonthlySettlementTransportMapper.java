@@ -38,21 +38,21 @@ import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
-		CapitalsourceIdMapper.class, UserIdMapper.class, CapitalsourceTypeMapper.class, BooleanToIntegerMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {MonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
+        CapitalsourceIdMapper.class, UserIdMapper.class, CapitalsourceTypeMapper.class, BooleanToIntegerMapper.class})
 public interface MonthlySettlementTransportMapper
-		extends IMapstructMapper<MonthlySettlement, MonthlySettlementTransport> {
-	@Override
-	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "group", ignore = true)
-	@Mapping(target = "capitalsource.id", source = "capitalsourceid")
-	MonthlySettlement mapBToA(MonthlySettlementTransport monthlySettlementTransport);
+        extends IMapstructMapper<MonthlySettlement, MonthlySettlementTransport> {
+    @Override
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "group", ignore = true)
+    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
+    MonthlySettlement mapBToA(MonthlySettlementTransport monthlySettlementTransport);
 
-	@Override
-	@Mapping(target = "userid", source = "user.id")
-	@Mapping(target = "capitalsourceid", source = "capitalsource.id")
-	@Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
-	@Mapping(target = "capitalsourcegroupuse", source = "capitalsource.groupUse")
-	@Mapping(target = "capitalsourcetype", source = "capitalsource.type")
-	MonthlySettlementTransport mapAToB(MonthlySettlement monthlySettlement);
+    @Override
+    @Mapping(target = "userid", source = "user.id")
+    @Mapping(target = "capitalsourceid", source = "capitalsource.id")
+    @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+    @Mapping(target = "capitalsourcegroupuse", source = "capitalsource.groupUse")
+    @Mapping(target = "capitalsourcetype", source = "capitalsource.type")
+    MonthlySettlementTransport mapAToB(MonthlySettlement monthlySettlement);
 }

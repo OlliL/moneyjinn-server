@@ -26,11 +26,12 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
-import java.io.IOException;
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserRole;
 import org.laladev.moneyjinn.server.config.jwt.JwtConfigurer;
 import org.laladev.moneyjinn.server.config.jwt.JwtTokenProvider;
@@ -59,47 +60,43 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.inject.Inject;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SecurityConfig {
-	private final JwtTokenProvider jwtTokenProvider;
+    private static final String API_ROOT = "/moneyflow/server";
+    private final JwtTokenProvider jwtTokenProvider;
+    @Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
+    private List<String> allowedOrigins;
 
-	@Value("#{'${org.laladev.moneyjinn.server.cors.allowed-origins}'.split(',')}")
-	private List<String> allowedOrigins;
+    @Bean
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
-	private static final String API_ROOT = "/moneyflow/server";
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(this.allowedOrigins);
+        configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name()));
+        configuration.setAllowedHeaders(
+                List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
 
-	@Bean
-	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(API_ROOT + "/**", configuration);
+        return source;
+    }
 
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		final CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowCredentials(true);
-		configuration.setAllowedOrigins(this.allowedOrigins);
-		configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
-				HttpMethod.DELETE.name()));
-		configuration.setAllowedHeaders(
-				List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, "x-csrf-token", "x-xsrf-token"));
-
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration(API_ROOT + "/**", configuration);
-		return source;
-	}
-
-	//@formatter:off
+    //@formatter:off
 	@Bean
 	public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
 		final var root = PathPatternRequestMatcher.withDefaults();
@@ -132,17 +129,17 @@ public class SecurityConfig {
 	}
 	//@formatter:on
 
-	private static final class CsrfCookieFilter extends OncePerRequestFilter {
+    private static final class CsrfCookieFilter extends OncePerRequestFilter {
 
-		@Override
-		protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-				final FilterChain filterChain) throws ServletException, IOException {
-			final CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-			// Render the token value to a cookie by causing the deferred token to be loaded
-			csrfToken.getToken();
+        @Override
+        protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+                                        final FilterChain filterChain) throws ServletException, IOException {
+            final CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+            // Render the token value to a cookie by causing the deferred token to be loaded
+            csrfToken.getToken();
 
-			filterChain.doFilter(request, response);
-		}
+            filterChain.doFilter(request, response);
+        }
 
-	}
+    }
 }

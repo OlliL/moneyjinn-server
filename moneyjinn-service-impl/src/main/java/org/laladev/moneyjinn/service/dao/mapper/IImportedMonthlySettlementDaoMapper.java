@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 
-public interface IImportedMonthlySettlementDaoMapper {
-	List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(@Param("year") Integer year,
-			@Param("month") Integer month);
+import java.util.List;
 
-	void upsertImportedMonthlySettlement(ImportedMonthlySettlementData importedMonthlySettlementData);
+public interface IImportedMonthlySettlementDaoMapper {
+    List<ImportedMonthlySettlementData> getImportedMonthlySettlementsByMonth(@Param("year") Integer year,
+                                                                             @Param("month") Integer month);
+
+    void upsertImportedMonthlySettlement(ImportedMonthlySettlementData importedMonthlySettlementData);
 }

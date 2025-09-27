@@ -1,19 +1,21 @@
 {
-	"type": "object",
-	"required": ["error"],
-	"properties": {
-		"key": {
-			"type": "string"
-		},
-		"error": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"variableArray": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		}
-	}
+  "type": "object",
+  "required": [
+    "error"
+  ],
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "error": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "variableArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
 }

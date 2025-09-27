@@ -1,4 +1,3 @@
-
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2015-2025 Oliver Lehmann <lehmann@ans-netz.de>
@@ -25,22 +24,20 @@ package org.laladev.moneyjinn.model.setting;
 //OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //SUCH DAMAGE.
 
-import java.util.List;
-
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.PostingAccountID;
 
-import lombok.NoArgsConstructor;
+import java.util.List;
 
 /**
  * returns a List of {@link PostingAccountID}s the user had chosen the last time
  * when using the <code>Reporting</code> functionality.
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientReportingUnselectedPostingAccountIdsSetting extends AbstractSetting<List<PostingAccountID>> {
-	public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
-		super.setSetting(setting);
-	}
+    public ClientReportingUnselectedPostingAccountIdsSetting(final List<PostingAccountID> setting) {
+        super.setSetting(setting);
+    }
 }

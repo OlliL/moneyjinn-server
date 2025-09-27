@@ -26,16 +26,18 @@
 
 package org.laladev.moneyjinn.model.access;
 
+import java.io.Serial;
+
 /**
  * The unique ID of {@link User}.
  *
  * @author Oliver Lehmann
- *
  */
 public class UserID extends AccessID {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public UserID(final Long id) {
-		super(id);
-	}
+    public UserID(final Long id) {
+        super(id);
+    }
 }

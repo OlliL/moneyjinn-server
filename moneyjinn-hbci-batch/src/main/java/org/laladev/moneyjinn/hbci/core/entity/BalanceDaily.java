@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.hbci.core.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,90 +34,89 @@ import java.time.LocalDateTime;
 
 public class BalanceDaily extends AbstractAccountEntitiy implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private LocalDate balanceDate;
-	private LocalDateTime lastTransactionDate;
-	private BigDecimal balanceAvailableValue;
-	private BigDecimal lineOfCreditValue;
-	private String balanceCurrency;
-	private LocalDateTime lastBalanceUpdate;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private LocalDate balanceDate;
+    private LocalDateTime lastTransactionDate;
+    private BigDecimal balanceAvailableValue;
+    private BigDecimal lineOfCreditValue;
+    private String balanceCurrency;
+    private LocalDateTime lastBalanceUpdate;
 
-	public LocalDate getBalanceDate() {
-		return this.balanceDate;
-	}
+    public LocalDate getBalanceDate() {
+        return this.balanceDate;
+    }
 
-	public void setBalanceDate(final LocalDate balanceDate) {
-		this.balanceDate = balanceDate;
-	}
+    public void setBalanceDate(final LocalDate balanceDate) {
+        this.balanceDate = balanceDate;
+    }
 
-	public LocalDateTime getLastTransactionDate() {
-		return this.lastTransactionDate;
-	}
+    public LocalDateTime getLastTransactionDate() {
+        return this.lastTransactionDate;
+    }
 
-	public void setLastTransactionDate(final LocalDateTime lastTransactionDate) {
-		this.lastTransactionDate = lastTransactionDate;
-	}
+    public void setLastTransactionDate(final LocalDateTime lastTransactionDate) {
+        this.lastTransactionDate = lastTransactionDate;
+    }
 
-	public BigDecimal getBalanceAvailableValue() {
-		return this.balanceAvailableValue;
-	}
+    public BigDecimal getBalanceAvailableValue() {
+        return this.balanceAvailableValue;
+    }
 
-	public void setBalanceAvailableValue(final BigDecimal balanceAvailableValue) {
-		this.balanceAvailableValue = balanceAvailableValue;
-	}
+    public void setBalanceAvailableValue(final BigDecimal balanceAvailableValue) {
+        this.balanceAvailableValue = balanceAvailableValue;
+    }
 
-	public BigDecimal getLineOfCreditValue() {
-		return this.lineOfCreditValue;
-	}
+    public BigDecimal getLineOfCreditValue() {
+        return this.lineOfCreditValue;
+    }
 
-	public void setLineOfCreditValue(final BigDecimal lineOfCreditValue) {
-		this.lineOfCreditValue = lineOfCreditValue;
-	}
+    public void setLineOfCreditValue(final BigDecimal lineOfCreditValue) {
+        this.lineOfCreditValue = lineOfCreditValue;
+    }
 
-	public String getBalanceCurrency() {
-		return this.balanceCurrency;
-	}
+    public String getBalanceCurrency() {
+        return this.balanceCurrency;
+    }
 
-	public void setBalanceCurrency(final String balanceCurrency) {
-		this.balanceCurrency = balanceCurrency;
-	}
+    public void setBalanceCurrency(final String balanceCurrency) {
+        this.balanceCurrency = balanceCurrency;
+    }
 
-	public LocalDateTime getLastBalanceUpdate() {
-		return this.lastBalanceUpdate;
-	}
+    public LocalDateTime getLastBalanceUpdate() {
+        return this.lastBalanceUpdate;
+    }
 
-	public void setLastBalanceUpdate(final LocalDateTime lastBalanceUpdate) {
-		this.lastBalanceUpdate = lastBalanceUpdate;
-	}
+    public void setLastBalanceUpdate(final LocalDateTime lastBalanceUpdate) {
+        this.lastBalanceUpdate = lastBalanceUpdate;
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (!(o instanceof BalanceDaily)) {
-			return false;
-		}
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final BalanceDaily that)) {
+            return false;
+        }
 
-		final BalanceDaily that = (BalanceDaily) o;
+        return super.equals(that);
+    }
 
-		return super.equals(that);
-	}
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + this.balanceDate.hashCode();
+        return result;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + this.balanceDate.hashCode();
-		return result;
-	}
-
-	@Override
-	public String toString() {
-		return "BalanceDaily{" + "id=" + super.getId() + ", myIban='" + super.getMyIban() + '\'' + ", myBic='"
-				+ super.getMyBic() + '\'' + ", myAccountnumber=" + super.getMyAccountnumber() + ", myBankcode="
-				+ super.getMyBankcode() + ", balanceDate=" + this.balanceDate + ", lastTransactionDate="
-				+ this.lastTransactionDate + ", balanceAvailableValue=" + this.balanceAvailableValue
-				+ ", lineOfCreditValue=" + this.lineOfCreditValue + ", balanceCurrency='" + this.balanceCurrency + '\''
-				+ ", lastBalanceUpdate=" + this.lastBalanceUpdate + '}';
-	}
+    @Override
+    public String toString() {
+        return "BalanceDaily{" + "id=" + super.getId() + ", myIban='" + super.getMyIban() + '\'' + ", myBic='"
+                + super.getMyBic() + '\'' + ", myAccountnumber=" + super.getMyAccountnumber() + ", myBankcode="
+                + super.getMyBankcode() + ", balanceDate=" + this.balanceDate + ", lastTransactionDate="
+                + this.lastTransactionDate + ", balanceAvailableValue=" + this.balanceAvailableValue
+                + ", lineOfCreditValue=" + this.lineOfCreditValue + ", balanceCurrency='" + this.balanceCurrency + '\''
+                + ", lastBalanceUpdate=" + this.lastBalanceUpdate + '}';
+    }
 }

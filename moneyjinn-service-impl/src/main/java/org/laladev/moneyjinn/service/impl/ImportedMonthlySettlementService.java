@@ -26,11 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
@@ -43,65 +42,65 @@ import org.laladev.moneyjinn.service.dao.ImportedMonthlySettlementDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMonthlySettlementDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMonthlySettlementService extends AbstractService implements IImportedMonthlySettlementService {
-	private final ImportedMonthlySettlementDao importedMonthlySettlementDao;
-	private final IUserService userService;
-	private final ICapitalsourceService capitalsourceService;
-	private final IAccessRelationService accessRelationService;
-	private final ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
+    private final ImportedMonthlySettlementDao importedMonthlySettlementDao;
+    private final IUserService userService;
+    private final ICapitalsourceService capitalsourceService;
+    private final IAccessRelationService accessRelationService;
+    private final ImportedMonthlySettlementDataMapper importedMonthlySettlementDataMapper;
 
-	private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
-			final ImportedMonthlySettlementData importedMonthlySettlementData) {
-		if (importedMonthlySettlementData != null) {
-			final ImportedMonthlySettlement importedMonthlySettlement = this.importedMonthlySettlementDataMapper
-					.mapBToA(importedMonthlySettlementData);
-			importedMonthlySettlement.setUser(new User(userId));
+    private ImportedMonthlySettlement mapImportedMonthlySettlementData(final UserID userId,
+                                                                       final ImportedMonthlySettlementData importedMonthlySettlementData) {
+        if (importedMonthlySettlementData != null) {
+            final ImportedMonthlySettlement importedMonthlySettlement = this.importedMonthlySettlementDataMapper
+                    .mapBToA(importedMonthlySettlementData);
+            importedMonthlySettlement.setUser(new User(userId));
 
-			final LocalDate endOfMonth = LocalDate
-					.of(importedMonthlySettlement.getYear(), importedMonthlySettlement.getMonth(), 1)
-					.with(TemporalAdjusters.lastDayOfMonth());
+            final LocalDate endOfMonth = LocalDate
+                    .of(importedMonthlySettlement.getYear(), importedMonthlySettlement.getMonth(), 1)
+                    .with(TemporalAdjusters.lastDayOfMonth());
 
-			this.userService.enrichEntity(importedMonthlySettlement);
-			this.accessRelationService.enrichEntity(importedMonthlySettlement, endOfMonth);
-			this.capitalsourceService.enrichEntity(importedMonthlySettlement);
+            this.userService.enrichEntity(importedMonthlySettlement);
+            this.accessRelationService.enrichEntity(importedMonthlySettlement, endOfMonth);
+            this.capitalsourceService.enrichEntity(importedMonthlySettlement);
 
-			return importedMonthlySettlement;
-		}
-		return null;
-	}
+            return importedMonthlySettlement;
+        }
+        return null;
+    }
 
-	private List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
-			final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList) {
-		return importedMonthlySettlementDataList.stream()
-				.map(element -> this.mapImportedMonthlySettlementData(userId, element)).toList();
-	}
+    private List<ImportedMonthlySettlement> mapImportedMonthlySettlementDataList(final UserID userId,
+                                                                                 final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList) {
+        return importedMonthlySettlementDataList.stream()
+                .map(element -> this.mapImportedMonthlySettlementData(userId, element)).toList();
+    }
 
-	@Override
-	public ValidationResult validateImportedMonthlySettlement(
-			final ImportedMonthlySettlement importedMonthlySettlement) {
-		return new ValidationResult();
-	}
+    @Override
+    public ValidationResult validateImportedMonthlySettlement(
+            final ImportedMonthlySettlement importedMonthlySettlement) {
+        return new ValidationResult();
+    }
 
-	@Override
-	public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(@NonNull final UserID userId,
-			@NonNull final Integer year,
-			@NonNull final Month month) {
-		final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
-				.getImportedMonthlySettlementsByMonth(year, month.getValue());
-		return this.mapImportedMonthlySettlementDataList(userId, importedMonthlySettlementDataList);
-	}
+    @Override
+    public List<ImportedMonthlySettlement> getImportedMonthlySettlementsByMonth(@NonNull final UserID userId,
+                                                                                @NonNull final Integer year,
+                                                                                @NonNull final Month month) {
+        final List<ImportedMonthlySettlementData> importedMonthlySettlementDataList = this.importedMonthlySettlementDao
+                .getImportedMonthlySettlementsByMonth(year, month.getValue());
+        return this.mapImportedMonthlySettlementDataList(userId, importedMonthlySettlementDataList);
+    }
 
-	@Override
-	public void upsertImportedMonthlySettlement(@NonNull final ImportedMonthlySettlement importedMonthlySettlement) {
-		final ImportedMonthlySettlementData importedMonthlySettlementData = this.importedMonthlySettlementDataMapper
-				.mapAToB(importedMonthlySettlement);
-		this.importedMonthlySettlementDao.upsertImportedMonthlySettlement(importedMonthlySettlementData);
-	}
+    @Override
+    public void upsertImportedMonthlySettlement(@NonNull final ImportedMonthlySettlement importedMonthlySettlement) {
+        final ImportedMonthlySettlementData importedMonthlySettlementData = this.importedMonthlySettlementDataMapper
+                .mapAToB(importedMonthlySettlement);
+        this.importedMonthlySettlementDao.upsertImportedMonthlySettlement(importedMonthlySettlementData);
+    }
 }

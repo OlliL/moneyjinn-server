@@ -1,88 +1,88 @@
 {
-	"post": {
-		"tags": [
-			"crud-contractpartner-account-controller"
-		],
-		"operationId": "create",
-		"description": "Creates the given contractpartneraccount.",
-		"parameters": [
-			{
-				"$ref": "../../abstract/HeaderPrefer.json"
-			}
-		],
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../../transport/ContractpartnerAccountTransport.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"201": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/ContractpartnerAccountTransport.json"
-						}
-					}
-				}
-			},
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"422": {
-				"$ref": "../../abstract/422_ValidationError.json"
-			}
-		}
-	},
-	"put": {
-		"tags": [
-			"crud-contractpartner-account-controller"
-		],
-		"operationId": "update",
-		"description": "Updates the given contractpartneraccount.",
-		"parameters": [
-			{
-				"$ref": "../../abstract/HeaderPrefer.json"
-			}
-		],
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../../transport/ContractpartnerAccountTransport.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/ContractpartnerAccountTransport.json"
-						}
-					}
-				}
-			},
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"422": {
-				"$ref": "../../abstract/422_ValidationError.json"
-			}
-		}
-	}
+  "post": {
+    "tags": [
+      "crud-contractpartner-account-controller"
+    ],
+    "operationId": "create",
+    "description": "Creates the given contractpartneraccount.",
+    "parameters": [
+      {
+        "$ref": "../../abstract/HeaderPrefer.json"
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../../transport/ContractpartnerAccountTransport.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "201": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/ContractpartnerAccountTransport.json"
+            }
+          }
+        }
+      },
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "422": {
+        "$ref": "../../abstract/422_ValidationError.json"
+      }
+    }
+  },
+  "put": {
+    "tags": [
+      "crud-contractpartner-account-controller"
+    ],
+    "operationId": "update",
+    "description": "Updates the given contractpartneraccount.",
+    "parameters": [
+      {
+        "$ref": "../../abstract/HeaderPrefer.json"
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../../transport/ContractpartnerAccountTransport.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/ContractpartnerAccountTransport.json"
+            }
+          }
+        }
+      },
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "422": {
+        "$ref": "../../abstract/422_ValidationError.json"
+      }
+    }
+  }
 }

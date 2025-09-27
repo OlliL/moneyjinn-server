@@ -26,42 +26,41 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
-import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
-import org.laladev.moneyjinn.service.dao.mapper.IPreDefMoneyflowDaoMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
+import org.laladev.moneyjinn.service.dao.mapper.IPreDefMoneyflowDaoMapper;
+
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PreDefMoneyflowDao {
-	private final IPreDefMoneyflowDaoMapper mapper;
+    private final IPreDefMoneyflowDaoMapper mapper;
 
-	public List<PreDefMoneyflowData> getAllPreDefMoneyflows(final Long userId) {
-		return this.mapper.getAllPreDefMoneyflows(userId);
-	}
+    public List<PreDefMoneyflowData> getAllPreDefMoneyflows(final Long userId) {
+        return this.mapper.getAllPreDefMoneyflows(userId);
+    }
 
-	public PreDefMoneyflowData getPreDefMoneyflowById(final Long userId, final Long id) {
-		return this.mapper.getPreDefMoneyflowById(userId, id);
-	}
+    public PreDefMoneyflowData getPreDefMoneyflowById(final Long userId, final Long id) {
+        return this.mapper.getPreDefMoneyflowById(userId, id);
+    }
 
-	public Long createPreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
-		this.mapper.createPreDefMoneyflow(preDefMoneyflowData);
-		return preDefMoneyflowData.getId();
-	}
+    public Long createPreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
+        this.mapper.createPreDefMoneyflow(preDefMoneyflowData);
+        return preDefMoneyflowData.getId();
+    }
 
-	public void updatePreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
-		this.mapper.updatePreDefMoneyflow(preDefMoneyflowData);
-	}
+    public void updatePreDefMoneyflow(final PreDefMoneyflowData preDefMoneyflowData) {
+        this.mapper.updatePreDefMoneyflow(preDefMoneyflowData);
+    }
 
-	public void deletePreDefMoneyflow(final Long userId, final Long id) {
-		this.mapper.deletePreDefMoneyflow(userId, id);
-	}
+    public void deletePreDefMoneyflow(final Long userId, final Long id) {
+        this.mapper.deletePreDefMoneyflow(userId, id);
+    }
 
-	public void setLastUsed(final Long userId, final Long id) {
-		this.mapper.setLastUsed(userId, id);
-	}
+    public void setLastUsed(final Long userId, final Long id) {
+        this.mapper.setLastUsed(userId, id);
+    }
 }

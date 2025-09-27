@@ -26,47 +26,46 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
-import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
+import org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowDao {
-	private final IImportedMoneyflowDaoMapper mapper;
+    private final IImportedMoneyflowDaoMapper mapper;
 
-	public Integer countImportedMoneyflows(final List<Long> capitalsourceIdLongs, final Integer status) {
-		return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
-	}
+    public Integer countImportedMoneyflows(final List<Long> capitalsourceIdLongs, final Integer status) {
+        return this.mapper.countImportedMoneyflows(capitalsourceIdLongs, status);
+    }
 
-	public ImportedMoneyflowData getImportedMoneyflowById(final Long id) {
-		return this.mapper.getImportedMoneyflowById(id);
-	}
+    public ImportedMoneyflowData getImportedMoneyflowById(final Long id) {
+        return this.mapper.getImportedMoneyflowById(id);
+    }
 
-	public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final List<Long> capitalsourceIdLongs,
-			final Integer status, final LocalDate dateFrom, final LocalDate dateTil) {
-		return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status, dateFrom, dateTil);
-	}
+    public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final List<Long> capitalsourceIdLongs,
+                                                                                  final Integer status, final LocalDate dateFrom, final LocalDate dateTil) {
+        return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status, dateFrom, dateTil);
+    }
 
-	public void updateImportedMoneyflowStatus(final Long importedMoneyflowId, final Integer status) {
-		this.mapper.updateImportedMoneyflowStatus(importedMoneyflowId, status);
-	}
+    public void updateImportedMoneyflowStatus(final Long importedMoneyflowId, final Integer status) {
+        this.mapper.updateImportedMoneyflowStatus(importedMoneyflowId, status);
+    }
 
-	public void deleteImportedMoneyflowById(final Long importedMoneyflowId) {
-		this.mapper.deleteImportedMoneyflowById(importedMoneyflowId);
-	}
+    public void deleteImportedMoneyflowById(final Long importedMoneyflowId) {
+        this.mapper.deleteImportedMoneyflowById(importedMoneyflowId);
+    }
 
-	public void createImportedMoneyflow(final ImportedMoneyflowData importedMoneyflowData) {
-		this.mapper.createImportedMoneyflow(importedMoneyflowData);
-	}
+    public void createImportedMoneyflow(final ImportedMoneyflowData importedMoneyflowData) {
+        this.mapper.createImportedMoneyflow(importedMoneyflowData);
+    }
 
-	public boolean checkIfExternalIdAlreadyExists(final String externalId) {
-		return Boolean.TRUE.equals(this.mapper.checkIfExternalIdAlreadyExists(externalId));
-	}
+    public boolean checkIfExternalIdAlreadyExists(final String externalId) {
+        return Boolean.TRUE.equals(this.mapper.checkIfExternalIdAlreadyExists(externalId));
+    }
 }

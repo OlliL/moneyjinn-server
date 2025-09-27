@@ -1,19 +1,19 @@
 {
-	"type": "object",
-	"required": [
-		"balance",
-		"accountNumberCapitalsource",
-		"bankCodeCapitalsource"
-	],
-	"properties": {
-		"balance": {
-			"type": "number"
-		},
-		"accountNumberCapitalsource": {
-			"type": "string"
-		},
-		"bankCodeCapitalsource": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "balance",
+    "accountNumberCapitalsource",
+    "bankCodeCapitalsource"
+  ],
+  "properties": {
+    "balance": {
+      "type": "number"
+    },
+    "accountNumberCapitalsource": {
+      "type": "string"
+    },
+    "bankCodeCapitalsource": {
+      "type": "string"
+    }
+  }
 }

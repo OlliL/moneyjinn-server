@@ -1,4 +1,3 @@
-
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2025 Oliver Lehmann <lehmann@ans-netz.de>
@@ -32,11 +31,10 @@ import lombok.NoArgsConstructor;
  * the <code>Trends</code> functionality.
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientTrendActiveEtfsSetting extends AbstractSetting<Boolean> {
-	public ClientTrendActiveEtfsSetting(final Boolean setting) {
-		super.setSetting(setting);
-	}
+    public ClientTrendActiveEtfsSetting(final Boolean setting) {
+        super.setSetting(setting);
+    }
 }

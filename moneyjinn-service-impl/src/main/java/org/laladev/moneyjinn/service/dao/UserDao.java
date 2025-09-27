@@ -26,50 +26,49 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.util.List;
-
-import org.laladev.moneyjinn.service.dao.data.UserData;
-import org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.UserData;
+import org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper;
+
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserDao {
-	private final IUserDaoMapper mapper;
+    private final IUserDaoMapper mapper;
 
-	public UserData getUserById(final Long id) {
-		return this.mapper.getUserById(id);
-	}
+    public UserData getUserById(final Long id) {
+        return this.mapper.getUserById(id);
+    }
 
-	public List<UserData> getAllUsers() {
-		return this.mapper.getAllUsers();
-	}
+    public List<UserData> getAllUsers() {
+        return this.mapper.getAllUsers();
+    }
 
-	public UserData getUserByName(final String name) {
-		return this.mapper.getUserByName(name);
-	}
+    public UserData getUserByName(final String name) {
+        return this.mapper.getUserByName(name);
+    }
 
-	public Long createUser(final UserData userData) {
-		this.mapper.createUser(userData);
-		return userData.getUserid();
-	}
+    public Long createUser(final UserData userData) {
+        this.mapper.createUser(userData);
+        return userData.getUserid();
+    }
 
-	public void updateUser(final UserData userData) {
-		this.mapper.updateUser(userData);
-	}
+    public void updateUser(final UserData userData) {
+        this.mapper.updateUser(userData);
+    }
 
-	public void setPassword(final Long userId, final String password) {
-		this.mapper.setPassword(userId, password);
-	}
+    public void setPassword(final Long userId, final String password) {
+        this.mapper.setPassword(userId, password);
+    }
 
-	public void resetPassword(final Long userId, final String password) {
-		this.mapper.resetPassword(userId, password);
-	}
+    public void resetPassword(final Long userId, final String password) {
+        this.mapper.resetPassword(userId, password);
+    }
 
-	public void deleteUser(final Long userId) {
-		this.mapper.deleteUser(userId);
-	}
+    public void deleteUser(final Long userId) {
+        this.mapper.deleteUser(userId);
+    }
 }

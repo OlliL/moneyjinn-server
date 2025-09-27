@@ -26,12 +26,12 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 
-public interface ICompareDataFormatDaoMapper {
-	public CompareDataFormatData getCompareDataFormatById(Long id);
+import java.util.List;
 
-	public List<CompareDataFormatData> getAllCompareDataFormats();
+public interface ICompareDataFormatDaoMapper {
+    CompareDataFormatData getCompareDataFormatById(Long id);
+
+    List<CompareDataFormatData> getAllCompareDataFormats();
 }

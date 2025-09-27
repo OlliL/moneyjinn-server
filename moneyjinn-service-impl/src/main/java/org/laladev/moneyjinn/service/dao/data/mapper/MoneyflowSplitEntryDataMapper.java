@@ -36,16 +36,16 @@ import org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class,
-		PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class,
+        PostingAccountIdMapper.class})
 public interface MoneyflowSplitEntryDataMapper extends IMapstructMapper<MoneyflowSplitEntry, MoneyflowSplitEntryData> {
-	@Override
-	@Mapping(target = "moneyflowId", source = "mmfMoneyflowId")
-	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-	MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryData moneyflowSplitEntryData);
+    @Override
+    @Mapping(target = "moneyflowId", source = "mmfMoneyflowId")
+    @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+    MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryData moneyflowSplitEntryData);
 
-	@Override
-	@Mapping(target = "mmfMoneyflowId", source = "moneyflowId")
-	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-	MoneyflowSplitEntryData mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
+    @Override
+    @Mapping(target = "mmfMoneyflowId", source = "moneyflowId")
+    @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+    MoneyflowSplitEntryData mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
 }

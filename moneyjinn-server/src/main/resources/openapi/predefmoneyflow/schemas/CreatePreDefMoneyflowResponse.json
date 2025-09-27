@@ -1,12 +1,12 @@
 {
-	"type": "object",
-	"required": [
-		"preDefMoneyflowId"
-	],
-	"properties": {
-		"preDefMoneyflowId": {
-			"type": "integer",
-			"format": "int64"
-		}
-	}
+  "type": "object",
+  "required": [
+    "preDefMoneyflowId"
+  ],
+  "properties": {
+    "preDefMoneyflowId": {
+      "type": "integer",
+      "format": "int64"
+    }
+  }
 }

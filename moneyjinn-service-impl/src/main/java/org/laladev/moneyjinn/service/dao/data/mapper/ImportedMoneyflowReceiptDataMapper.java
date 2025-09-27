@@ -36,17 +36,17 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ImportedMoneyflowReceiptIdMapper.class, UserIdMapper.class,
-		GroupIdMapper.class, MoneyflowReceiptTypeMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ImportedMoneyflowReceiptIdMapper.class, UserIdMapper.class,
+        GroupIdMapper.class, MoneyflowReceiptTypeMapper.class})
 public interface ImportedMoneyflowReceiptDataMapper
-		extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
-	@Override
-	@Mapping(target = "user.id", source = "mauUserId")
-	@Mapping(target = "group.id", source = "magGroupId")
-	ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
+        extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptData> {
+    @Override
+    @Mapping(target = "user.id", source = "mauUserId")
+    @Mapping(target = "group.id", source = "magGroupId")
+    ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptData importedMoneyflowReceiptData);
 
-	@Override
-	@Mapping(target = "mauUserId", source = "user.id")
-	@Mapping(target = "magGroupId", source = "group.id")
-	ImportedMoneyflowReceiptData mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
+    @Override
+    @Mapping(target = "mauUserId", source = "user.id")
+    @Mapping(target = "magGroupId", source = "group.id")
+    ImportedMoneyflowReceiptData mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
 }

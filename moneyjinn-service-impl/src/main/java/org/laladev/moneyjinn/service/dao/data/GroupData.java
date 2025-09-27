@@ -30,6 +30,6 @@ import lombok.Data;
 
 @Data
 public class GroupData {
-	private Long groupid;
-	private String name;
+    private Long groupid;
+    private String name;
 }

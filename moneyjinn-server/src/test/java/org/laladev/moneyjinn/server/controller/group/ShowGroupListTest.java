@@ -1,8 +1,4 @@
-
 package org.laladev.moneyjinn.server.controller.group;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,39 +8,42 @@ import org.laladev.moneyjinn.server.controller.api.GroupControllerApi;
 import org.laladev.moneyjinn.server.model.GroupTransport;
 import org.laladev.moneyjinn.server.model.ShowGroupListResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class ShowGroupListTest extends AbstractAdminUserControllerTest {
-	@Override
-	protected void loadMethod() {
-		super.getMock(GroupControllerApi.class).showGroupList();
-	}
+    @Override
+    protected void loadMethod() {
+        super.getMock(GroupControllerApi.class).showGroupList();
+    }
 
-	private ShowGroupListResponse getCompleteResponse() {
-		final ShowGroupListResponse expected = new ShowGroupListResponse();
-		final List<GroupTransport> groupTransports = new ArrayList<>();
-		groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
-		groupTransports.add(new GroupTransportBuilder().forGroup1().build());
-		groupTransports.add(new GroupTransportBuilder().forGroup2().build());
-		groupTransports.add(new GroupTransportBuilder().forGroup3().build());
-		expected.setGroupTransports(groupTransports);
-		return expected;
-	}
+    private ShowGroupListResponse getCompleteResponse() {
+        final ShowGroupListResponse expected = new ShowGroupListResponse();
+        final List<GroupTransport> groupTransports = new ArrayList<>();
+        groupTransports.add(new GroupTransportBuilder().forAdminGroup().build());
+        groupTransports.add(new GroupTransportBuilder().forGroup1().build());
+        groupTransports.add(new GroupTransportBuilder().forGroup2().build());
+        groupTransports.add(new GroupTransportBuilder().forGroup3().build());
+        expected.setGroupTransports(groupTransports);
+        return expected;
+    }
 
-	@Test
-	void test_default_FullResponseObject() throws Exception {
-		final ShowGroupListResponse expected = this.getCompleteResponse();
+    @Test
+    void test_default_FullResponseObject() throws Exception {
+        final ShowGroupListResponse expected = this.getCompleteResponse();
 
-		final ShowGroupListResponse actual = super.callUsecaseExpect200(ShowGroupListResponse.class);
+        final ShowGroupListResponse actual = super.callUsecaseExpect200(ShowGroupListResponse.class);
 
-		Assertions.assertEquals(expected, actual);
-	}
+        Assertions.assertEquals(expected, actual);
+    }
 
-	@Override
-	protected void callUsecaseExpect403ForThisUsecase() throws Exception {
-		super.callUsecaseExpect403();
-	}
+    @Override
+    protected void callUsecaseExpect403ForThisUsecase() throws Exception {
+        super.callUsecaseExpect403();
+    }
 
-	@Override
-	protected void callUsecaseEmptyDatabase() throws Exception {
-		// Groups are always there.
-	}
+    @Override
+    protected void callUsecaseEmptyDatabase() throws Exception {
+        // Groups are always there.
+    }
 }

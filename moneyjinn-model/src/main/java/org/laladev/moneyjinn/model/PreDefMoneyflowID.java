@@ -26,16 +26,18 @@
 
 package org.laladev.moneyjinn.model;
 
+import java.io.Serial;
+
 /**
  * The unique ID of a {@link PreDefMoneyflow}.
  *
  * @author Oliver Lehmann
- *
  */
 public class PreDefMoneyflowID extends AbstractEntityID<Long> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public PreDefMoneyflowID(final Long id) {
-		super(id);
-	}
+    public PreDefMoneyflowID(final Long id) {
+        super(id);
+    }
 }

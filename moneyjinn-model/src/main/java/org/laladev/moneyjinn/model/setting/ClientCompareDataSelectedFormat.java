@@ -1,9 +1,7 @@
-
 package org.laladev.moneyjinn.model.setting;
 
-import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
-
 import lombok.NoArgsConstructor;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
 
 /**
  * <p>
@@ -12,11 +10,10 @@ import lombok.NoArgsConstructor;
  * </p>
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientCompareDataSelectedFormat extends AbstractSetting<CompareDataFormatID> {
-	public ClientCompareDataSelectedFormat(final CompareDataFormatID setting) {
-		super.setSetting(setting);
-	}
+    public ClientCompareDataSelectedFormat(final CompareDataFormatID setting) {
+        super.setSetting(setting);
+    }
 }

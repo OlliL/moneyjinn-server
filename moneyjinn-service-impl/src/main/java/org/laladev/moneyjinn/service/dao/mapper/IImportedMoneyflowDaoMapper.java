@@ -26,27 +26,27 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface IImportedMoneyflowDaoMapper {
-	Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
-			@Param("status") Integer status);
+    Integer countImportedMoneyflows(@Param("capitalsourceIds") List<Long> capitalsourceIds,
+                                    @Param("status") Integer status);
 
-	ImportedMoneyflowData getImportedMoneyflowById(@Param("id") Long importedMoneyflowId);
+    ImportedMoneyflowData getImportedMoneyflowById(@Param("id") Long importedMoneyflowId);
 
-	List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
-			@Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Integer status,
-			@Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
+    List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(
+            @Param("capitalsourceIds") List<Long> capitalsourceIds, @Param("status") Integer status,
+            @Param("dateFrom") LocalDate dateFrom, @Param("dateTil") LocalDate dateTil);
 
-	void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Integer status);
+    void updateImportedMoneyflowStatus(@Param("id") Long impMoneyflowId, @Param("status") Integer status);
 
-	void deleteImportedMoneyflowById(Long impMoneyflowId);
+    void deleteImportedMoneyflowById(Long impMoneyflowId);
 
-	void createImportedMoneyflow(ImportedMoneyflowData importedMoneyflowData);
+    void createImportedMoneyflow(ImportedMoneyflowData importedMoneyflowData);
 
-	Boolean checkIfExternalIdAlreadyExists(String externalId);
+    Boolean checkIfExternalIdAlreadyExists(String externalId);
 }

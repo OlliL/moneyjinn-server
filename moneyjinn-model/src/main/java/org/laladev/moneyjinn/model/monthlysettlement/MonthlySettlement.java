@@ -24,6 +24,9 @@
 
 package org.laladev.moneyjinn.model.monthlysettlement;
 
+import java.io.Serial;
+
 public class MonthlySettlement extends AbstractMonthlySettlement<MonthlySettlementID> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 }

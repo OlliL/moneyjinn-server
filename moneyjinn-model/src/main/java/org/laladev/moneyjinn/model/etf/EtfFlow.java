@@ -26,32 +26,33 @@
 
 package org.laladev.moneyjinn.model.etf;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import org.laladev.moneyjinn.model.AbstractEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractEntity;
+
+import java.io.Serial;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class EtfFlow extends AbstractEntity<EtfFlowID> {
-	private static final long serialVersionUID = 1L;
-	private EtfID etfId;
-	private LocalDateTime time;
-	private BigDecimal amount;
-	private BigDecimal price;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private EtfID etfId;
+    private LocalDateTime time;
+    private BigDecimal amount;
+    private BigDecimal price;
 
-	public EtfFlow(final EtfFlow etfFlow) {
-		super.setId(etfFlow.getId());
-		this.setEtfId(etfFlow.getEtfId());
-		this.setAmount(etfFlow.getAmount());
-		this.setPrice(etfFlow.getPrice());
-		this.setTime(etfFlow.getTime());
-	}
+    public EtfFlow(final EtfFlow etfFlow) {
+        super.setId(etfFlow.getId());
+        this.setEtfId(etfFlow.getEtfId());
+        this.setAmount(etfFlow.getAmount());
+        this.setPrice(etfFlow.getPrice());
+        this.setTime(etfFlow.getTime());
+    }
 }

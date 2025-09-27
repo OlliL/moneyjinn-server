@@ -1,59 +1,59 @@
 {
-	"get": {
-		"tags": [
-			"moneyflow-controller"
-		],
-		"operationId": "searchMoneyflowsByAmount",
-		"parameters": [
-			{
-				"name": "amount",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "number"
-				}
-			},
-			{
-				"name": "dateFromStr",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "string"
-				}
-			},
-			{
-				"name": "dateTilStr",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "string"
-				}
-			}
-		],
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/SearchMoneyflowsByAmountResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			},
-			"204": {
-				"description": "nothing found"
-			}
-		}
-	}
+  "get": {
+    "tags": [
+      "moneyflow-controller"
+    ],
+    "operationId": "searchMoneyflowsByAmount",
+    "parameters": [
+      {
+        "name": "amount",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "dateFromStr",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "dateTilStr",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/SearchMoneyflowsByAmountResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      },
+      "204": {
+        "description": "nothing found"
+      }
+    }
+  }
 }

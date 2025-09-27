@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"moneyflowSearchParamsTransport": {
-			"$ref": "../../transport/MoneyflowSearchParamsTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "moneyflowSearchParamsTransport": {
+      "$ref": "../../transport/MoneyflowSearchParamsTransport.json"
+    }
+  }
 }

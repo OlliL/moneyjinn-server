@@ -1,53 +1,53 @@
 {
-	"type": "object",
-	"required": [
-		"etfId",
-		"userid",
-		"isin",
-		"name",
-		"wkn",
-		"ticker",
-		"chartUrl"
-	],
-	"properties": {
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"userid": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"isin": {
-			"type": "string"
-		},
-		"name": {
-			"type": "string"
-		},
-		"wkn": {
-			"type": "string"
-		},
-		"ticker": {
-			"type": "string"
-		},
-		"chartUrl": {
-			"type": "string"
-		},
-		"isFavorite": {
-			"type": "integer",
-			"format": "int32"
-		},
-		"transactionCostsAbsolute": {
-			"type": "number"
-		},
-		"transactionCostsRelative": {
-			"type": "number"
-		},
-		"transactionCostsMaximum": {
-			"type": "number"
-		},
-		"partialTaxExemption": {
-			"type": "number"
-		}		
-	}
+  "type": "object",
+  "required": [
+    "etfId",
+    "userid",
+    "isin",
+    "name",
+    "wkn",
+    "ticker",
+    "chartUrl"
+  ],
+  "properties": {
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "userid": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "isin": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "wkn": {
+      "type": "string"
+    },
+    "ticker": {
+      "type": "string"
+    },
+    "chartUrl": {
+      "type": "string"
+    },
+    "isFavorite": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "transactionCostsAbsolute": {
+      "type": "number"
+    },
+    "transactionCostsRelative": {
+      "type": "number"
+    },
+    "transactionCostsMaximum": {
+      "type": "number"
+    },
+    "partialTaxExemption": {
+      "type": "number"
+    }
+  }
 }

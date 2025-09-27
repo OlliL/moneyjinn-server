@@ -1,4 +1,3 @@
-
 package org.laladev.moneyjinn.model.setting;
 
 import lombok.NoArgsConstructor;
@@ -9,11 +8,10 @@ import lombok.NoArgsConstructor;
  * </p>
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientCompareDataSelectedSourceIsFile extends AbstractSetting<Boolean> {
-	public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
-		super.setSetting(setting);
-	}
+    public ClientCompareDataSelectedSourceIsFile(final Boolean setting) {
+        super.setSetting(setting);
+    }
 }

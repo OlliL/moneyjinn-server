@@ -17,47 +17,47 @@ jobs:
       security-events: write
       actions: read
       contents: read
-      
+
     strategy:
       fail-fast: false
       matrix:
         language: [ 'java-kotlin' ]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: 21
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
 
-    - name: Configure GitHub maven repository
-      uses: s4u/maven-settings-action@v3.1.0
-      with:
-        repositories: '[{"id":"github","name":"moneyjinn-sepa-camt repo","url":"https://maven.pkg.github.com/OlliL/moneyjinn-sepa-camt","snapshots":{"enabled":true}}]'
-    
-    - name: Build
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn package
+      - name: Configure GitHub maven repository
+        uses: s4u/maven-settings-action@v3.1.0
+        with:
+          repositories: '[{"id":"github","name":"moneyjinn-sepa-camt repo","url":"https://maven.pkg.github.com/OlliL/moneyjinn-sepa-camt","snapshots":{"enabled":true}}]'
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn package
 
-    - name: Send to Coveralls
-      run: mvn coveralls:report -DrepoToken=${COVERALLS_REPO_TOKEN}
-      env:
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        COVERALLS_SERVICE_NAME: github
-        COVERALLS_SERVICE_JOB_ID: ${{ github.run_id }}
-        COVERALLS_GIT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref_name }}
-        COVERALLS_SERVICE_PULL_REQUEST: ${{ github.event.pull_request.number || '' }}
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+      - name: Send to Coveralls
+        run: mvn coveralls:report -DrepoToken=${COVERALLS_REPO_TOKEN}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          COVERALLS_SERVICE_NAME: github
+          COVERALLS_SERVICE_JOB_ID: ${{ github.run_id }}
+          COVERALLS_GIT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref_name }}
+          COVERALLS_SERVICE_PULL_REQUEST: ${{ github.event.pull_request.number || '' }}

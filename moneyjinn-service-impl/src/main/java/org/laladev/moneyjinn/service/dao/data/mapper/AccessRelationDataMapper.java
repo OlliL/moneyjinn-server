@@ -35,15 +35,15 @@ import org.laladev.moneyjinn.service.dao.data.AccessRelationData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { UserIdMapper.class, GroupIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {UserIdMapper.class, GroupIdMapper.class})
 public interface AccessRelationDataMapper extends IMapstructMapper<AccessRelation, AccessRelationData> {
-	@Override
-	@Mapping(target = "groupID", source = "magGroupId")
-	@Mapping(target = "id", source = "mauUserId")
-	AccessRelation mapBToA(AccessRelationData accessRelationData);
+    @Override
+    @Mapping(target = "groupID", source = "magGroupId")
+    @Mapping(target = "id", source = "mauUserId")
+    AccessRelation mapBToA(AccessRelationData accessRelationData);
 
-	@Override
-	@Mapping(target = "magGroupId", source = "groupID")
-	@Mapping(target = "mauUserId", source = "id")
-	AccessRelationData mapAToB(AccessRelation accessRelation);
+    @Override
+    @Mapping(target = "magGroupId", source = "groupID")
+    @Mapping(target = "mauUserId", source = "id")
+    AccessRelationData mapAToB(AccessRelation accessRelation);
 }

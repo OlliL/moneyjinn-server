@@ -1,27 +1,27 @@
 {
-	"type": "object",
-	"properties": {
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"pieces": {
-			"type": "number"
-		},
-		"bidPrice": {
-			"type": "number"
-		},
-		"askPrice": {
-			"type": "number"
-		},
-		"transactionCostsAbsolute": {
-			"type": "number"
-		},
-		"transactionCostsRelative": {
-			"type": "number"
-		},
-		"transactionCostsMaximum": {
-			"type": "number"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "pieces": {
+      "type": "number"
+    },
+    "bidPrice": {
+      "type": "number"
+    },
+    "askPrice": {
+      "type": "number"
+    },
+    "transactionCostsAbsolute": {
+      "type": "number"
+    },
+    "transactionCostsRelative": {
+      "type": "number"
+    },
+    "transactionCostsMaximum": {
+      "type": "number"
+    }
+  }
 }

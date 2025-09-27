@@ -1,11 +1,11 @@
 {
-	"type": "object",
-	"properties": {
-		"monthlySettlementTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/MonthlySettlementTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "properties": {
+    "monthlySettlementTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/MonthlySettlementTransport.json"
+      }
+    }
+  }
 }

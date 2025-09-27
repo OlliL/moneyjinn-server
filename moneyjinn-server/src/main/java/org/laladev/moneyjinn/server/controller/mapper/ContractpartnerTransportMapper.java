@@ -26,29 +26,25 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
-import org.laladev.moneyjinn.converter.GroupIdMapper;
-import org.laladev.moneyjinn.converter.IMapstructMapper;
-import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
-import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.*;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.server.model.ContractpartnerTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
-		PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+        PostingAccountIdMapper.class})
 public interface ContractpartnerTransportMapper extends IMapstructMapper<Contractpartner, ContractpartnerTransport> {
-	@Override
-	@Mapping(target = "user.id", source = "userid")
-	@Mapping(target = "group", ignore = true)
-	@Mapping(target = "postingAccount.id", source = "postingAccountId")
-	Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
+    @Override
+    @Mapping(target = "user.id", source = "userid")
+    @Mapping(target = "group", ignore = true)
+    @Mapping(target = "postingAccount.id", source = "postingAccountId")
+    Contractpartner mapBToA(ContractpartnerTransport contractpartnerTransport);
 
-	@Override
-	@Mapping(target = "userid", source = "user.id")
-	@Mapping(target = "postingAccountId", source = "postingAccount.id")
-	@Mapping(target = "postingAccountName", source = "postingAccount.name")
-	ContractpartnerTransport mapAToB(Contractpartner contractpartner);
+    @Override
+    @Mapping(target = "userid", source = "user.id")
+    @Mapping(target = "postingAccountId", source = "postingAccount.id")
+    @Mapping(target = "postingAccountName", source = "postingAccount.name")
+    ContractpartnerTransport mapAToB(Contractpartner contractpartner);
 }

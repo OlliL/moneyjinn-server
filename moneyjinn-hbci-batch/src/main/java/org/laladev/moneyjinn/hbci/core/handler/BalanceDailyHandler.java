@@ -27,17 +27,13 @@
 
 package org.laladev.moneyjinn.hbci.core.handler;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-
 import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnConnectionHolder;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
+import java.sql.*;
+
 public class BalanceDailyHandler extends AbstractHandler {
-	// @formatter:off
+    // @formatter:off
 	private static final String STATEMENT =
 			"   INSERT "
 			+ "   INTO balance_daily "
@@ -72,36 +68,36 @@ public class BalanceDailyHandler extends AbstractHandler {
 			+ "      , last_balance_update     = VALUES (last_balance_update) " ;
 	// @formatter:on
 
-	private final BalanceDaily balanceDaily;
+    private final BalanceDaily balanceDaily;
 
-	public BalanceDailyHandler(final BalanceDaily balanceDaily) {
-		this.balanceDaily = balanceDaily;
-	}
+    public BalanceDailyHandler(final BalanceDaily balanceDaily) {
+        this.balanceDaily = balanceDaily;
+    }
 
-	@Override
-	public void handle() {
-		if (this.balanceDaily == null)
-			return;
+    @Override
+    public void handle() {
+        if (this.balanceDaily == null)
+            return;
 
-		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		try (final PreparedStatement stmt = con.prepareStatement(STATEMENT)) {
-			stmt.setString(1, this.balanceDaily.getMyIban());
-			stmt.setString(2, this.balanceDaily.getMyBic());
-			stmt.setLong(3, this.balanceDaily.getMyAccountnumber());
-			stmt.setInt(4, this.balanceDaily.getMyBankcode());
-			stmt.setDate(5, Date.valueOf(this.balanceDaily.getBalanceDate()));
-			stmt.setTimestamp(6, Timestamp.valueOf(this.balanceDaily.getLastTransactionDate()));
-			stmt.setBigDecimal(7, this.balanceDaily.getBalanceAvailableValue());
-			stmt.setBigDecimal(8, this.balanceDaily.getLineOfCreditValue());
-			stmt.setString(9, this.balanceDaily.getBalanceCurrency());
-			stmt.setTimestamp(10, Timestamp.valueOf(this.balanceDaily.getLastBalanceUpdate()));
+        final Connection con = MoneyjinnConnectionHolder.getConnection();
+        try (final PreparedStatement stmt = con.prepareStatement(STATEMENT)) {
+            stmt.setString(1, this.balanceDaily.getMyIban());
+            stmt.setString(2, this.balanceDaily.getMyBic());
+            stmt.setLong(3, this.balanceDaily.getMyAccountnumber());
+            stmt.setInt(4, this.balanceDaily.getMyBankcode());
+            stmt.setDate(5, Date.valueOf(this.balanceDaily.getBalanceDate()));
+            stmt.setTimestamp(6, Timestamp.valueOf(this.balanceDaily.getLastTransactionDate()));
+            stmt.setBigDecimal(7, this.balanceDaily.getBalanceAvailableValue());
+            stmt.setBigDecimal(8, this.balanceDaily.getLineOfCreditValue());
+            stmt.setString(9, this.balanceDaily.getBalanceCurrency());
+            stmt.setTimestamp(10, Timestamp.valueOf(this.balanceDaily.getLastBalanceUpdate()));
 
-			stmt.executeUpdate();
-			con.commit();
+            stmt.executeUpdate();
+            con.commit();
 
-			this.notifyObservers(this.balanceDaily);
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
-	}
+            this.notifyObservers(this.balanceDaily);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

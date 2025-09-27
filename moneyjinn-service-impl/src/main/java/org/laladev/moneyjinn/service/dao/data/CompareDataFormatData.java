@@ -30,23 +30,23 @@ import lombok.Data;
 
 @Data
 public class CompareDataFormatData {
-	private Long formatId;
-	private String name;
-	private String startTrigger0;
-	private String startTrigger1;
-	private String startTrigger2;
-	private String startline;
-	private String delimiter;
-	private Integer posDate;
-	private Integer posPartner;
-	private Integer posAmount;
-	private Integer posComment;
-	private String fmtDate;
-	private String fmtAmountDecimal;
-	private String fmtAmountThousand;
-	private Integer posPartnerAlt;
-	private Integer posPartnerAltPosKey;
-	private String posPartnerAltKeyword;
-	private Integer posCreditDebitIndicator;
-	private String creditIndicator;
+    private Long formatId;
+    private String name;
+    private String startTrigger0;
+    private String startTrigger1;
+    private String startTrigger2;
+    private String startline;
+    private String delimiter;
+    private Integer posDate;
+    private Integer posPartner;
+    private Integer posAmount;
+    private Integer posComment;
+    private String fmtDate;
+    private String fmtAmountDecimal;
+    private String fmtAmountThousand;
+    private Integer posPartnerAlt;
+    private Integer posPartnerAltPosKey;
+    private String posPartnerAltKeyword;
+    private Integer posCreditDebitIndicator;
+    private String creditIndicator;
 }

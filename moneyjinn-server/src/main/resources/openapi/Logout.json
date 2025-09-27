@@ -1,13 +1,13 @@
 {
-	"post": {
-		"tags": [
-			"logout"
-		],
-		"operationId": "logout",
-		"responses": {
-			"204": {
-				"description": "OK"
-			}
-		}
-	}
+  "post": {
+    "tags": [
+      "logout"
+    ],
+    "operationId": "logout",
+    "responses": {
+      "204": {
+        "description": "OK"
+      }
+    }
+  }
 }

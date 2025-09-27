@@ -1,24 +1,23 @@
 {
-	"type": "object",
-	"properties": {
-		"trendsSettledTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/TrendsTransport.json"
-			}
-		},
-		"trendsCalculatedTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/TrendsTransport.json"
-			}
-		},
-		"trendsEtfTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/TrendsTransport.json"
-			}
-			
-		}
-	}
+  "type": "object",
+  "properties": {
+    "trendsSettledTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/TrendsTransport.json"
+      }
+    },
+    "trendsCalculatedTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/TrendsTransport.json"
+      }
+    },
+    "trendsEtfTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/TrendsTransport.json"
+      }
+    }
+  }
 }

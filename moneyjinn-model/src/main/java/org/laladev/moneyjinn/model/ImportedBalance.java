@@ -26,20 +26,19 @@
 
 package org.laladev.moneyjinn.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
+import lombok.Data;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 
-import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class ImportedBalance implements IHasCapitalsource, IHasUser, IHasGroup {
-	private User user;
-	private Group group;
-	private Capitalsource capitalsource;
-	private LocalDateTime date;
-	private BigDecimal balance;
+    private User user;
+    private Group group;
+    private Capitalsource capitalsource;
+    private LocalDateTime date;
+    private BigDecimal balance;
 }

@@ -27,9 +27,6 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedBalanceControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedBalanceRequest;
@@ -37,30 +34,33 @@ import org.laladev.moneyjinn.hbci.backend.model.ImportedBalanceTransport;
 import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnApiClient;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 public class BalanceDailyObserver implements PropertyChangeListener {
 
-	@Override
-	public void propertyChange(final PropertyChangeEvent event) {
-		if (event.getNewValue() instanceof final BalanceDaily balanceDaily) {
-			this.notify(balanceDaily);
-		}
+    @Override
+    public void propertyChange(final PropertyChangeEvent event) {
+        if (event.getNewValue() instanceof final BalanceDaily balanceDaily) {
+            this.notify(balanceDaily);
+        }
 
-	}
+    }
 
-	private void notify(final BalanceDaily balanceDaily) {
-		final ImportedBalanceTransport transport = new ImportedBalanceTransport();
-		transport.setAccountNumberCapitalsource(balanceDaily.getMyIban());
-		transport.setBankCodeCapitalsource(balanceDaily.getMyBic());
-		transport.setBalance(balanceDaily.getBalanceAvailableValue());
+    private void notify(final BalanceDaily balanceDaily) {
+        final ImportedBalanceTransport transport = new ImportedBalanceTransport();
+        transport.setAccountNumberCapitalsource(balanceDaily.getMyIban());
+        transport.setBankCodeCapitalsource(balanceDaily.getMyBic());
+        transport.setBalance(balanceDaily.getBalanceAvailableValue());
 
-		final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
-		request.setImportedBalanceTransport(transport);
+        final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
+        request.setImportedBalanceTransport(transport);
 
-		try {
-			new ImportedBalanceControllerApi(MoneyjinnApiClient.getApiClient()).createImportedBalance(request);
-		} catch (final ApiException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            new ImportedBalanceControllerApi(MoneyjinnApiClient.getApiClient()).createImportedBalance(request);
+        } catch (final ApiException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

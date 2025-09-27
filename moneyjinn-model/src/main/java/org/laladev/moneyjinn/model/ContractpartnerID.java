@@ -26,16 +26,18 @@
 
 package org.laladev.moneyjinn.model;
 
+import java.io.Serial;
+
 /**
  * The unique ID of a {@link Contractpartner}.
  *
  * @author Oliver Lehmann
- *
  */
 public class ContractpartnerID extends AbstractEntityID<Long> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public ContractpartnerID(final Long id) {
-		super(id);
-	}
+    public ContractpartnerID(final Long id) {
+        super(id);
+    }
 }

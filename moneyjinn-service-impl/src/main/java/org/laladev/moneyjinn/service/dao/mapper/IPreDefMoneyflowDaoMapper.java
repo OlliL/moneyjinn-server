@@ -26,21 +26,21 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData;
 
+import java.util.List;
+
 public interface IPreDefMoneyflowDaoMapper {
-	public List<PreDefMoneyflowData> getAllPreDefMoneyflows(Long userId);
+    List<PreDefMoneyflowData> getAllPreDefMoneyflows(Long userId);
 
-	public PreDefMoneyflowData getPreDefMoneyflowById(@Param("userId") Long userId, @Param("id") Long id);
+    PreDefMoneyflowData getPreDefMoneyflowById(@Param("userId") Long userId, @Param("id") Long id);
 
-	public void createPreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
+    void createPreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
 
-	public void updatePreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
+    void updatePreDefMoneyflow(PreDefMoneyflowData preDefMoneyflowData);
 
-	public void deletePreDefMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
+    void deletePreDefMoneyflow(@Param("userId") Long userId, @Param("id") Long id);
 
-	public void setLastUsed(@Param("userId") Long userId, @Param("id") Long id);
+    void setLastUsed(@Param("userId") Long userId, @Param("id") Long id);
 }

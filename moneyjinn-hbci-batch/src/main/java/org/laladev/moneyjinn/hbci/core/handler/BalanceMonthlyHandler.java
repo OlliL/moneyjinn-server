@@ -26,23 +26,19 @@
 
 package org.laladev.moneyjinn.hbci.core.handler;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnConnectionHolder;
+import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
+import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
+import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnConnectionHolder;
-import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
-import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
-import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
-import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
 
 /**
  * This Handler determines the monthly balance of all previous month. This is
@@ -52,10 +48,9 @@ import org.laladev.moneyjinn.hbci.core.entity.mapper.BalanceMonthlyMapper;
  * the current balance is.
  *
  * @author Oliver Lehmann
- *
  */
 public class BalanceMonthlyHandler extends AbstractHandler {
-	// @formatter:off
+    // @formatter:off
 	private static final String INSERT_STATEMENT =
 			"   INSERT "
 			+ "   INTO balance_monthly "
@@ -96,160 +91,160 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			+ "  LIMIT 1";	
 	// @formatter:on
 
-	private final BalanceDaily balanceDaily;
-	private final List<AccountMovement> accountMovements;
-	private final BalanceMonthlyMapper mapper;
+    private final BalanceDaily balanceDaily;
+    private final List<AccountMovement> accountMovements;
+    private final BalanceMonthlyMapper mapper;
 
-	public BalanceMonthlyHandler(final BalanceDaily balanceDaily, final List<AccountMovement> accountMovements) {
-		this.accountMovements = accountMovements;
-		this.balanceDaily = balanceDaily;
-		this.mapper = new BalanceMonthlyMapper();
+    public BalanceMonthlyHandler(final BalanceDaily balanceDaily, final List<AccountMovement> accountMovements) {
+        this.accountMovements = accountMovements;
+        this.balanceDaily = balanceDaily;
+        this.mapper = new BalanceMonthlyMapper();
 
-	}
+    }
 
-	@Override
-	public void handle() {
-		final List<BalanceMonthly> balanceMonthlies = this.getBalanceMonthlyList(this.accountMovements,
-				this.balanceDaily);
-		balanceMonthlies.stream().forEach(this::insertBalanceMonthly);
-	}
+    @Override
+    public void handle() {
+        final List<BalanceMonthly> balanceMonthlies = this.getBalanceMonthlyList(this.accountMovements,
+                this.balanceDaily);
+        balanceMonthlies.stream().forEach(this::insertBalanceMonthly);
+    }
 
-	List<BalanceMonthly> getBalanceMonthlyList(final List<AccountMovement> accountMovements,
-			final BalanceDaily balanceDaily) {
-		final List<BalanceMonthly> balanceMonthlies = new ArrayList<>();
+    List<BalanceMonthly> getBalanceMonthlyList(final List<AccountMovement> accountMovements,
+                                               final BalanceDaily balanceDaily) {
+        final List<BalanceMonthly> balanceMonthlies = new ArrayList<>();
 
-		if (accountMovements != null && !accountMovements.isEmpty()) {
+        if (accountMovements != null && !accountMovements.isEmpty()) {
 
-			// First step - remove all AccountMovements which are in the future
-			final List<AccountMovement> movementsUntilToday = accountMovements.stream()
-					.filter(am -> am.getBalanceDate().isBefore(LocalDate.now())).toList();
+            // First step - remove all AccountMovements which are in the future
+            final List<AccountMovement> movementsUntilToday = accountMovements.stream()
+                    .filter(am -> am.getBalanceDate().isBefore(LocalDate.now())).toList();
 
-			// Now remove all AccountMovements which have a balanceDate and bookingDate off
-			// by a month.
-			// Example: bookingDate=2022-10-27, valueDate=2023-2025-03-31,
-			// balanceDate=2022-10-27
-			// (wrong year on balanceDate!)
-			final List<AccountMovement> movementsWithoutInvalid = movementsUntilToday.stream().filter(
-					am -> java.time.temporal.ChronoUnit.DAYS.between(am.getBalanceDate(), am.getValueDate()) < 30)
-					.toList();
+            // Now remove all AccountMovements which have a balanceDate and bookingDate off
+            // by a month.
+            // Example: bookingDate=2022-10-27, valueDate=2023-2025-03-31,
+            // balanceDate=2022-10-27
+            // (wrong year on balanceDate!)
+            final List<AccountMovement> movementsWithoutInvalid = movementsUntilToday.stream().filter(
+                            am -> java.time.temporal.ChronoUnit.DAYS.between(am.getBalanceDate(), am.getValueDate()) < 30)
+                    .toList();
 
-			// Now generate BalanceMonthly entries for each AccountMovement
-			final Iterator<AccountMovement> movementsIterator = movementsWithoutInvalid.iterator();
+            // Now generate BalanceMonthly entries for each AccountMovement
+            final Iterator<AccountMovement> movementsIterator = movementsWithoutInvalid.iterator();
 
-			if (movementsIterator.hasNext()) {
-				AccountMovement accountMovementPrev = movementsIterator.next();
-				YearMonth yearMonthPrev = YearMonth.from(accountMovementPrev.getBalanceDate());
+            if (movementsIterator.hasNext()) {
+                AccountMovement accountMovementPrev = movementsIterator.next();
+                YearMonth yearMonthPrev = YearMonth.from(accountMovementPrev.getBalanceDate());
 
-				while (movementsIterator.hasNext()) {
-					final AccountMovement accountMovement = movementsIterator.next();
-					final YearMonth yearMonth = YearMonth.from(accountMovement.getBalanceDate());
+                while (movementsIterator.hasNext()) {
+                    final AccountMovement accountMovement = movementsIterator.next();
+                    final YearMonth yearMonth = YearMonth.from(accountMovement.getBalanceDate());
 
-					/*
-					 * The month of the current movement is different from the month of the previous
-					 * movement so we can be sure that the previous movement was the last one for
-					 * that month and we can save the "end of month" balance. It's also possible,
-					 * that the current movement is not in the next month of the previous movement
-					 * but farer away. In this case, we can assume that the "end of month" balance
-					 * of the previous month is the same as for all the following month until we
-					 * reach the month of the current movement. Example: the previous movement was
-					 * from 2015-01-21. The current movement is from 2015-03-03 -> we save the
-					 * "end of month" balance for January and February with the same value
-					 */
-					while (yearMonth.isAfter(yearMonthPrev)) {
-						final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
-								accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
-						balanceMonthlies.add(bm);
+                    /*
+                     * The month of the current movement is different from the month of the previous
+                     * movement so we can be sure that the previous movement was the last one for
+                     * that month and we can save the "end of month" balance. It's also possible,
+                     * that the current movement is not in the next month of the previous movement
+                     * but farer away. In this case, we can assume that the "end of month" balance
+                     * of the previous month is the same as for all the following month until we
+                     * reach the month of the current movement. Example: the previous movement was
+                     * from 2015-01-21. The current movement is from 2015-03-03 -> we save the
+                     * "end of month" balance for January and February with the same value
+                     */
+                    while (yearMonth.isAfter(yearMonthPrev)) {
+                        final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
+                                accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
+                        balanceMonthlies.add(bm);
 
-						yearMonthPrev = yearMonthPrev.plusMonths(1L);
-					}
+                        yearMonthPrev = yearMonthPrev.plusMonths(1L);
+                    }
 
-					accountMovementPrev = accountMovement;
-					yearMonthPrev = yearMonth;
-				}
+                    accountMovementPrev = accountMovement;
+                    yearMonthPrev = yearMonth;
+                }
 
-				/*
-				 * If the last processed movement is not from the current month, we can assume
-				 * that for the month of the last movement, the end of month balance can be
-				 * written.
-				 */
-				final YearMonth yearMonth = YearMonth.now();
-				while (yearMonth.isAfter(yearMonthPrev)) {
-					final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
-							accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
-					balanceMonthlies.add(bm);
+                /*
+                 * If the last processed movement is not from the current month, we can assume
+                 * that for the month of the last movement, the end of month balance can be
+                 * written.
+                 */
+                final YearMonth yearMonth = YearMonth.now();
+                while (yearMonth.isAfter(yearMonthPrev)) {
+                    final BalanceMonthly bm = this.mapper.map(accountMovementPrev, yearMonthPrev,
+                            accountMovementPrev.getBalanceCurrency(), accountMovementPrev.getBalanceValue());
+                    balanceMonthlies.add(bm);
 
-					yearMonthPrev = yearMonthPrev.plusMonths(1L);
-				}
-			}
-		} else if (balanceDaily != null) {
-			final LocalDateTime yesterdayEndOfDay = LocalDate.now().atStartOfDay().minusNanos(1L);
+                    yearMonthPrev = yearMonthPrev.plusMonths(1L);
+                }
+            }
+        } else if (balanceDaily != null) {
+            final LocalDateTime yesterdayEndOfDay = LocalDate.now().atStartOfDay().minusNanos(1L);
 
-			/*
-			 * some banks always send the current day as balance date. some banks send the
-			 * date of the last booking. If thats the case, and we fetch the data often
-			 * enough we can have luck here.
-			 */
-			if (balanceDaily.getLastTransactionDate().isBefore(yesterdayEndOfDay)) {
-				final YearMonth yearMonth = YearMonth.now();
-				YearMonth yearMonthBalance = YearMonth.from(balanceDaily.getLastTransactionDate());
+            /*
+             * some banks always send the current day as balance date. some banks send the
+             * date of the last booking. If thats the case, and we fetch the data often
+             * enough we can have luck here.
+             */
+            if (balanceDaily.getLastTransactionDate().isBefore(yesterdayEndOfDay)) {
+                final YearMonth yearMonth = YearMonth.now();
+                YearMonth yearMonthBalance = YearMonth.from(balanceDaily.getLastTransactionDate());
 
-				while (yearMonth.isAfter(yearMonthBalance)) {
-					final BalanceMonthly bm = this.mapper.map(balanceDaily, yearMonthBalance,
-							balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
-					balanceMonthlies.add(bm);
+                while (yearMonth.isAfter(yearMonthBalance)) {
+                    final BalanceMonthly bm = this.mapper.map(balanceDaily, yearMonthBalance,
+                            balanceDaily.getBalanceCurrency(), balanceDaily.getBalanceAvailableValue());
+                    balanceMonthlies.add(bm);
 
-					yearMonthBalance = yearMonthBalance.plusMonths(1L);
-				}
-			}
-		}
+                    yearMonthBalance = yearMonthBalance.plusMonths(1L);
+                }
+            }
+        }
 
-		return balanceMonthlies;
+        return balanceMonthlies;
 
-	}
+    }
 
-	private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
-		final Connection con = MoneyjinnConnectionHolder.getConnection();
-		try (final PreparedStatement stmt = con.prepareStatement(INSERT_STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
-			stmt.setString(1, balanceMonthly.getMyIban());
-			stmt.setString(2, balanceMonthly.getMyBic());
-			stmt.setLong(3, balanceMonthly.getMyAccountnumber());
-			stmt.setInt(4, balanceMonthly.getMyBankcode());
-			stmt.setInt(5, balanceMonthly.getBalanceYear());
-			stmt.setInt(6, balanceMonthly.getBalanceMonth());
-			stmt.setBigDecimal(7, balanceMonthly.getBalanceValue());
-			stmt.setString(8, balanceMonthly.getBalanceCurrency());
+    private void insertBalanceMonthly(final BalanceMonthly balanceMonthly) {
+        final Connection con = MoneyjinnConnectionHolder.getConnection();
+        try (final PreparedStatement stmt = con.prepareStatement(INSERT_STATEMENT, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, balanceMonthly.getMyIban());
+            stmt.setString(2, balanceMonthly.getMyBic());
+            stmt.setLong(3, balanceMonthly.getMyAccountnumber());
+            stmt.setInt(4, balanceMonthly.getMyBankcode());
+            stmt.setInt(5, balanceMonthly.getBalanceYear());
+            stmt.setInt(6, balanceMonthly.getBalanceMonth());
+            stmt.setBigDecimal(7, balanceMonthly.getBalanceValue());
+            stmt.setString(8, balanceMonthly.getBalanceCurrency());
 
-			final int rowCount = stmt.executeUpdate();
-			if (rowCount == 1) {
-				final ResultSet rs = stmt.getGeneratedKeys();
-				if (rs.next()) {
-					balanceMonthly.setId(rs.getInt(1));
-				}
+            final int rowCount = stmt.executeUpdate();
+            if (rowCount == 1) {
+                final ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    balanceMonthly.setId(rs.getInt(1));
+                }
 
-				this.notifyObservers(balanceMonthly);
-			} else if (rowCount == 2) {
-				try (final PreparedStatement stmt2 = con.prepareStatement(SELECT_STATEMENT)) {
-					stmt2.setString(1, balanceMonthly.getMyIban());
-					stmt2.setString(2, balanceMonthly.getMyBic());
-					stmt2.setLong(3, balanceMonthly.getMyAccountnumber());
-					stmt2.setInt(4, balanceMonthly.getMyBankcode());
-					stmt2.setInt(5, balanceMonthly.getBalanceYear());
-					stmt2.setInt(6, balanceMonthly.getBalanceMonth());
+                this.notifyObservers(balanceMonthly);
+            } else if (rowCount == 2) {
+                try (final PreparedStatement stmt2 = con.prepareStatement(SELECT_STATEMENT)) {
+                    stmt2.setString(1, balanceMonthly.getMyIban());
+                    stmt2.setString(2, balanceMonthly.getMyBic());
+                    stmt2.setLong(3, balanceMonthly.getMyAccountnumber());
+                    stmt2.setInt(4, balanceMonthly.getMyBankcode());
+                    stmt2.setInt(5, balanceMonthly.getBalanceYear());
+                    stmt2.setInt(6, balanceMonthly.getBalanceMonth());
 
-					final ResultSet rs = stmt2.executeQuery();
-					if (rs.next()) {
-						balanceMonthly.setId(rs.getInt(1));
+                    final ResultSet rs = stmt2.executeQuery();
+                    if (rs.next()) {
+                        balanceMonthly.setId(rs.getInt(1));
 
-						this.notifyObservers(balanceMonthly);
-					}
-				}
-			}
-			con.commit();
+                        this.notifyObservers(balanceMonthly);
+                    }
+                }
+            }
+            con.commit();
 
-		} catch (final SQLException e) {
-			// ignore: Column 'balance_value' cannot be null
-			if (e.getErrorCode() != 1048)
-				e.printStackTrace();
-		}
-	}
+        } catch (final SQLException e) {
+            // ignore: Column 'balance_value' cannot be null
+            if (e.getErrorCode() != 1048)
+                e.printStackTrace();
+        }
+    }
 }

@@ -26,22 +26,24 @@
 
 package org.laladev.moneyjinn.model;
 
-import java.time.LocalDate;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import java.io.Serial;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class AbstractValidPeriodEntity<I extends AbstractEntityID<?>> extends AbstractEntity<I> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	private LocalDate validTil;
-	private LocalDate validFrom;
+    private LocalDate validTil;
+    private LocalDate validFrom;
 
-	public boolean dateIsInValidPeriod(final LocalDate date) {
-		return date == null || !(date.isBefore(this.validFrom)) && !date.isAfter(this.validTil);
-	}
+    public boolean dateIsInValidPeriod(final LocalDate date) {
+        return date == null || !(date.isBefore(this.validFrom)) && !date.isAfter(this.validTil);
+    }
 }

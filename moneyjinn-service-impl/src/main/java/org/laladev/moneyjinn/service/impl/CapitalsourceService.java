@@ -26,14 +26,11 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import static org.springframework.util.Assert.notNull;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.IHasCapitalsource;
@@ -61,250 +58,252 @@ import org.laladev.moneyjinn.service.event.CapitalsourceChangedEvent;
 import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+
+import static org.springframework.util.Assert.notNull;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
-	private static final String STILL_REFERENCED = "You may not delete a source of capital while it is referenced by a flow of money!";
-	private final CapitalsourceDao capitalsourceDao;
-	private final IUserService userService;
-	private final IGroupService groupService;
-	private final IAccessRelationService accessRelationService;
-	private final CapitalsourceDataMapper capitalsourceDataMapper;
+    private static final String STILL_REFERENCED = "You may not delete a source of capital while it is referenced by a flow of money!";
+    private final CapitalsourceDao capitalsourceDao;
+    private final IUserService userService;
+    private final IGroupService groupService;
+    private final IAccessRelationService accessRelationService;
+    private final CapitalsourceDataMapper capitalsourceDataMapper;
 
-	private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {
-		if (capitalsourceData != null) {
-			final Capitalsource capitalsource = this.capitalsourceDataMapper.mapBToA(capitalsourceData);
+    private Capitalsource mapCapitalsourceData(final CapitalsourceData capitalsourceData) {
+        if (capitalsourceData != null) {
+            final Capitalsource capitalsource = this.capitalsourceDataMapper.mapBToA(capitalsourceData);
 
-			this.userService.enrichEntity(capitalsource);
-			this.groupService.enrichEntity(capitalsource);
+            this.userService.enrichEntity(capitalsource);
+            this.groupService.enrichEntity(capitalsource);
 
-			return capitalsource;
-		}
-		return null;
-	}
+            return capitalsource;
+        }
+        return null;
+    }
 
-	private List<Capitalsource> mapCapitalsourceDataList(final List<CapitalsourceData> capitalsourceDataList) {
-		return capitalsourceDataList.stream().map(this::mapCapitalsourceData).toList();
-	}
+    private List<Capitalsource> mapCapitalsourceDataList(final List<CapitalsourceData> capitalsourceDataList) {
+        return capitalsourceDataList.stream().map(this::mapCapitalsourceData).toList();
+    }
 
-	/**
-	 * This method takes a Capitalsource as argument and sets the properties
-	 * validFrom and validTil if they are NULL to default values as well as type and
-	 * state.
-	 *
-	 * @param capitalsource {@link Capitalsource}
-	 */
-	private void prepareCapitalsource(final Capitalsource capitalsource) {
-		if (capitalsource.getValidFrom() == null) {
-			capitalsource.setValidFrom(LocalDate.now());
-		}
-		if (capitalsource.getValidTil() == null) {
-			capitalsource.setValidTil(MAX_DATE);
-		}
-		if (capitalsource.getType() == null) {
-			capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
-		}
-		if (capitalsource.getState() == null) {
-			capitalsource.setState(CapitalsourceState.CASH);
-		}
-	}
+    /**
+     * This method takes a Capitalsource as argument and sets the properties
+     * validFrom and validTil if they are NULL to default values as well as type and
+     * state.
+     *
+     * @param capitalsource {@link Capitalsource}
+     */
+    private void prepareCapitalsource(final Capitalsource capitalsource) {
+        if (capitalsource.getValidFrom() == null) {
+            capitalsource.setValidFrom(LocalDate.now());
+        }
+        if (capitalsource.getValidTil() == null) {
+            capitalsource.setValidTil(MAX_DATE);
+        }
+        if (capitalsource.getType() == null) {
+            capitalsource.setType(CapitalsourceType.CURRENT_ASSET);
+        }
+        if (capitalsource.getState() == null) {
+            capitalsource.setState(CapitalsourceState.CASH);
+        }
+    }
 
-	@Override
-	public ValidationResult validateCapitalsource(@NonNull final Capitalsource capitalsource) {
-		notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
-		notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
-		notNull(capitalsource.getGroup(), "Capitalsource.group must not be null!");
-		notNull(capitalsource.getGroup().getId(), "Capitalsource.group.id must not be null!");
+    @Override
+    public ValidationResult validateCapitalsource(@NonNull final Capitalsource capitalsource) {
+        notNull(capitalsource.getUser(), "Capitalsource.user must not be null!");
+        notNull(capitalsource.getUser().getId(), "Capitalsource.user.id must not be null!");
+        notNull(capitalsource.getGroup(), "Capitalsource.group must not be null!");
+        notNull(capitalsource.getGroup().getId(), "Capitalsource.group.id must not be null!");
 
-		this.prepareCapitalsource(capitalsource);
+        this.prepareCapitalsource(capitalsource);
 
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(capitalsource.getId(), errorCode));
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(capitalsource.getId(), errorCode));
 
-		if (capitalsource.getValidTil().isBefore(capitalsource.getValidFrom())) {
-			addResult.accept(ErrorCode.VALIDFROM_AFTER_VALIDTIL);
-		} else if (capitalsource.getId() != null) {
-			// update existing Capitalsource
-			final boolean checkCapitalsourceInUseOutOfDate = this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(
-					capitalsource.getUser().getId().getId(), capitalsource.getId().getId(),
-					capitalsource.getValidFrom(), capitalsource.getValidTil());
-			if (checkCapitalsourceInUseOutOfDate) {
-				addResult.accept(ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
-			}
-		}
+        if (capitalsource.getValidTil().isBefore(capitalsource.getValidFrom())) {
+            addResult.accept(ErrorCode.VALIDFROM_AFTER_VALIDTIL);
+        } else if (capitalsource.getId() != null) {
+            // update existing Capitalsource
+            final boolean checkCapitalsourceInUseOutOfDate = this.capitalsourceDao.checkCapitalsourceInUseOutOfDate(
+                    capitalsource.getUser().getId().getId(), capitalsource.getId().getId(),
+                    capitalsource.getValidFrom(), capitalsource.getValidTil());
+            if (checkCapitalsourceInUseOutOfDate) {
+                addResult.accept(ErrorCode.CAPITALSOURCE_IN_USE_PERIOD);
+            }
+        }
 
-		if (capitalsource.getComment() == null || capitalsource.getComment().isBlank()) {
-			addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
-		} else {
-			final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
-					capitalsource.getComment(), capitalsource.getValidFrom());
-			if (checkCapitalsource != null
-					&& (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId()))) {
-				// new Capitalsource || update existing Capitalsource
-				addResult.accept(ErrorCode.NAME_ALREADY_EXISTS);
-			}
-		}
+        if (capitalsource.getComment() == null || capitalsource.getComment().isBlank()) {
+            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
+        } else {
+            final Capitalsource checkCapitalsource = this.getCapitalsourceByComment(capitalsource.getUser().getId(),
+                    capitalsource.getComment(), capitalsource.getValidFrom());
+            if (checkCapitalsource != null
+                    && (capitalsource.getId() == null || !checkCapitalsource.getId().equals(capitalsource.getId()))) {
+                // new Capitalsource || update existing Capitalsource
+                addResult.accept(ErrorCode.NAME_ALREADY_EXISTS);
+            }
+        }
 
-		if (capitalsource.getBankAccount() != null) {
-			capitalsource.getBankAccount().checkValidity().forEach(addResult);
-		}
+        if (capitalsource.getBankAccount() != null) {
+            capitalsource.getBankAccount().checkValidity().forEach(addResult);
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	@Override
-	public Capitalsource getCapitalsourceById(@NonNull final UserID userId, @NonNull final GroupID groupId,
-			@NonNull final CapitalsourceID capitalsourceId) {
-		final Supplier<Capitalsource> supplier = () -> this.mapCapitalsourceData(
-				this.capitalsourceDao.getCapitalsourceById(userId.getId(), groupId.getId(), capitalsourceId.getId()));
+    @Override
+    public Capitalsource getCapitalsourceById(@NonNull final UserID userId, @NonNull final GroupID groupId,
+                                              @NonNull final CapitalsourceID capitalsourceId) {
+        final Supplier<Capitalsource> supplier = () -> this.mapCapitalsourceData(
+                this.capitalsourceDao.getCapitalsourceById(userId.getId(), groupId.getId(), capitalsourceId.getId()));
 
-		return super.getFromCacheOrExecute(CacheNames.CAPITALSOURCE_BY_ID,
-				new SimpleKey(userId, groupId, capitalsourceId), supplier, Capitalsource.class);
-	}
+        return super.getFromCacheOrExecute(CacheNames.CAPITALSOURCE_BY_ID,
+                new SimpleKey(userId, groupId, capitalsourceId), supplier, Capitalsource.class);
+    }
 
-	@Override
-	public List<Capitalsource> getAllCapitalsources(@NonNull final UserID userId) {
-		final Supplier<List<Capitalsource>> supplier = () -> this
-				.mapCapitalsourceDataList(this.capitalsourceDao.getAllCapitalsources(userId.getId()));
+    @Override
+    public List<Capitalsource> getAllCapitalsources(@NonNull final UserID userId) {
+        final Supplier<List<Capitalsource>> supplier = () -> this
+                .mapCapitalsourceDataList(this.capitalsourceDao.getAllCapitalsources(userId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.ALL_CAPITALSOURCES, userId, supplier);
-	}
+        return super.getListFromCacheOrExecute(CacheNames.ALL_CAPITALSOURCES, userId, supplier);
+    }
 
-	@Override
-	public List<Capitalsource> getAllCapitalsourcesByDateRange(@NonNull final UserID userId,
-			@NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
-		final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
-				.getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
-		return this.mapCapitalsourceDataList(capitalsourceDataList);
-	}
+    @Override
+    public List<Capitalsource> getAllCapitalsourcesByDateRange(@NonNull final UserID userId,
+                                                               @NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
+        final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
+                .getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
+        return this.mapCapitalsourceDataList(capitalsourceDataList);
+    }
 
-	@Override
-	public Capitalsource getCapitalsourceByComment(@NonNull final UserID userId, @NonNull final String name,
-			@NonNull final LocalDate date) {
-		final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
-				name, date);
-		return this.mapCapitalsourceData(capitalsourceData);
-	}
+    @Override
+    public Capitalsource getCapitalsourceByComment(@NonNull final UserID userId, @NonNull final String name,
+                                                   @NonNull final LocalDate date) {
+        final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
+                name, date);
+        return this.mapCapitalsourceData(capitalsourceData);
+    }
 
-	@Override
-	public void updateCapitalsource(@NonNull final Capitalsource capitalsource) {
-		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Capitalsource update failed!", validationResultItem.getError());
-		}
-		final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
-		this.capitalsourceDao.updateCapitalsource(capitalsourceData);
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
-				capitalsource.getId());
-		final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
-		super.publishEvent(event);
-	}
+    @Override
+    public void updateCapitalsource(@NonNull final Capitalsource capitalsource) {
+        final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Capitalsource update failed!", validationResultItem.getError());
+        }
+        final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
+        this.capitalsourceDao.updateCapitalsource(capitalsourceData);
+        this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
+                capitalsource.getId());
+        final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
+        super.publishEvent(event);
+    }
 
-	@Override
-	public CapitalsourceID createCapitalsource(@NonNull final Capitalsource capitalsource) {
-		capitalsource.setId(null);
-		final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("Capitalsource creation failed!", validationResultItem.getError());
-		}
-		final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
-		final Long capitalsourceIdLong = this.capitalsourceDao.createCapitalsource(capitalsourceData);
-		final CapitalsourceID capitalsourceId = new CapitalsourceID(capitalsourceIdLong);
-		capitalsource.setId(capitalsourceId);
+    @Override
+    public CapitalsourceID createCapitalsource(@NonNull final Capitalsource capitalsource) {
+        capitalsource.setId(null);
+        final ValidationResult validationResult = this.validateCapitalsource(capitalsource);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("Capitalsource creation failed!", validationResultItem.getError());
+        }
+        final CapitalsourceData capitalsourceData = this.capitalsourceDataMapper.mapAToB(capitalsource);
+        final Long capitalsourceIdLong = this.capitalsourceDao.createCapitalsource(capitalsourceData);
+        final CapitalsourceID capitalsourceId = new CapitalsourceID(capitalsourceIdLong);
+        capitalsource.setId(capitalsourceId);
 
-		this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
-				capitalsourceId);
+        this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
+                capitalsourceId);
 
-		final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
-		super.publishEvent(event);
+        final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
+        super.publishEvent(event);
 
-		return capitalsourceId;
-	}
+        return capitalsourceId;
+    }
 
-	@Override
-	public void deleteCapitalsource(@NonNull final UserID userId, @NonNull final GroupID groupId,
-			@NonNull final CapitalsourceID capitalsourceId) {
-		final Capitalsource capitalsource = this.getCapitalsourceById(userId, groupId, capitalsourceId);
-		if (capitalsource != null) {
-			try {
-				this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
+    @Override
+    public void deleteCapitalsource(@NonNull final UserID userId, @NonNull final GroupID groupId,
+                                    @NonNull final CapitalsourceID capitalsourceId) {
+        final Capitalsource capitalsource = this.getCapitalsourceById(userId, groupId, capitalsourceId);
+        if (capitalsource != null) {
+            try {
+                this.capitalsourceDao.deleteCapitalsource(userId.getId(), groupId.getId(), capitalsourceId.getId());
 
-				this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
+                this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
 
-				final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.DELETE,
-						capitalsource);
-				super.publishEvent(event);
+                final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.DELETE,
+                        capitalsource);
+                super.publishEvent(event);
 
-			} catch (final Exception e) {
-				log.log(Level.INFO, STILL_REFERENCED, e);
-				throw new BusinessException(STILL_REFERENCED, ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
-			}
-		}
-	}
+            } catch (final Exception e) {
+                log.log(Level.INFO, STILL_REFERENCED, e);
+                throw new BusinessException(STILL_REFERENCED, ErrorCode.CAPITALSOURCE_STILL_REFERENCED);
+            }
+        }
+    }
 
-	@Override
-	public List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
-			final LocalDate validTil) {
-		final List<Capitalsource> capitalsources = this.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
-		return capitalsources.stream().filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT)).toList();
-	}
+    @Override
+    public List<Capitalsource> getGroupBookableCapitalsourcesByDateRange(final UserID userId, final LocalDate validFrom,
+                                                                         final LocalDate validTil) {
+        final List<Capitalsource> capitalsources = this.getGroupCapitalsourcesByDateRange(userId, validFrom, validTil);
+        return capitalsources.stream().filter(cs -> !cs.getType().equals(CapitalsourceType.CREDIT)).toList();
+    }
 
-	@Override
-	public List<Capitalsource> getGroupCapitalsourcesByDateRange(@NonNull final UserID userId,
-			@NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
-		final Supplier<List<Capitalsource>> supplier = () -> this.mapCapitalsourceDataList(
-				this.capitalsourceDao.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil));
+    @Override
+    public List<Capitalsource> getGroupCapitalsourcesByDateRange(@NonNull final UserID userId,
+                                                                 @NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
+        final Supplier<List<Capitalsource>> supplier = () -> this.mapCapitalsourceDataList(
+                this.capitalsourceDao.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil));
 
-		return super.getListFromCacheOrExecute(
-				super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId()),
-				new SimpleKey(validFrom, validTil), supplier);
-	}
+        return super.getListFromCacheOrExecute(
+                super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, userId.getId()),
+                new SimpleKey(validFrom, validTil), supplier);
+    }
 
-	@Override
-	public Capitalsource getCapitalsourceByAccount(final UserID userId, final BankAccount bankAccount,
-			final LocalDate date) {
-		final CapitalsourceData capitalsourceData = this.capitalsourceDao
-				.getCapitalsourceByAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber(), date);
-		return this.mapCapitalsourceData(capitalsourceData);
-	}
+    @Override
+    public Capitalsource getCapitalsourceByAccount(final UserID userId, final BankAccount bankAccount,
+                                                   final LocalDate date) {
+        final CapitalsourceData capitalsourceData = this.capitalsourceDao
+                .getCapitalsourceByAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber(), date);
+        return this.mapCapitalsourceData(capitalsourceData);
+    }
 
-	private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
-			final CapitalsourceID capitalsourceId) {
-		if (capitalsourceId != null) {
-			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
-				super.evictFromCache(CacheNames.CAPITALSOURCE_BY_ID,
-						new SimpleKey(evictingUserId, groupId, capitalsourceId));
-				super.evictFromCache(CacheNames.ALL_CAPITALSOURCES, evictingUserId);
-				super.clearCache(
-						super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, evictingUserId.getId()));
-			});
-		}
-	}
+    private void evictCapitalsourceCache(final UserID userId, final GroupID groupId,
+                                         final CapitalsourceID capitalsourceId) {
+        if (capitalsourceId != null) {
+            this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+                super.evictFromCache(CacheNames.CAPITALSOURCE_BY_ID,
+                        new SimpleKey(evictingUserId, groupId, capitalsourceId));
+                super.evictFromCache(CacheNames.ALL_CAPITALSOURCES, evictingUserId);
+                super.clearCache(
+                        super.getCombinedCacheName(CacheNames.GROUP_CAPITALSOURCES_BY_DATE, evictingUserId.getId()));
+            });
+        }
+    }
 
-	@Override
-	public <T extends IHasCapitalsource & IHasUser> void enrichEntity(final T entity) {
-		final User user = entity.getUser();
-		final Capitalsource capitalsource = entity.getCapitalsource();
+    @Override
+    public <T extends IHasCapitalsource & IHasUser> void enrichEntity(final T entity) {
+        final User user = entity.getUser();
+        final Capitalsource capitalsource = entity.getCapitalsource();
 
-		if (capitalsource != null && user != null) {
-			final GroupID groupId;
-			if (entity instanceof final IHasGroup hasGroup && hasGroup.getGroup() != null) {
-				groupId = hasGroup.getGroup().getId();
-			} else {
-				groupId = this.accessRelationService.getCurrentGroup(user.getId()).getId();
-			}
-			final var fullMcs = this.getCapitalsourceById(user.getId(), groupId, capitalsource.getId());
-			entity.setCapitalsource(fullMcs);
-		}
-	}
+        if (capitalsource != null && user != null) {
+            final GroupID groupId;
+            if (entity instanceof final IHasGroup hasGroup && hasGroup.getGroup() != null) {
+                groupId = hasGroup.getGroup().getId();
+            } else {
+                groupId = this.accessRelationService.getCurrentGroup(user.getId()).getId();
+            }
+            final var fullMcs = this.getCapitalsourceById(user.getId(), groupId, capitalsource.getId());
+            entity.setCapitalsource(fullMcs);
+        }
+    }
 }

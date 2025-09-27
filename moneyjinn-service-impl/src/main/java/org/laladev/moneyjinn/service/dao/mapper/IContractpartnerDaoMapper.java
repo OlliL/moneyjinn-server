@@ -26,25 +26,25 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface IContractpartnerDaoMapper {
-	public List<ContractpartnerData> getAllContractpartners(@Param("userId") Long userId);
+    List<ContractpartnerData> getAllContractpartners(@Param("userId") Long userId);
 
-	public ContractpartnerData getContractpartnerById(@Param("userId") Long userId, @Param("id") Long id);
+    ContractpartnerData getContractpartnerById(@Param("userId") Long userId, @Param("id") Long id);
 
-	public ContractpartnerData getContractpartnerByName(@Param("userId") Long userId, @Param("name") String name);
+    ContractpartnerData getContractpartnerByName(@Param("userId") Long userId, @Param("name") String name);
 
-	public void createContractpartner(ContractpartnerData contractpartnerData);
+    void createContractpartner(ContractpartnerData contractpartnerData);
 
-	public void updateContractpartner(ContractpartnerData contractpartnerData);
+    void updateContractpartner(ContractpartnerData contractpartnerData);
 
-	public void deleteContractpartner(@Param("groupId") Long groupId, @Param("id") Long id);
+    void deleteContractpartner(@Param("groupId") Long groupId, @Param("id") Long id);
 
-	public Boolean checkContractpartnerInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
-			@Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+    Boolean checkContractpartnerInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
+                                               @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
 }

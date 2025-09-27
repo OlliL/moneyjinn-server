@@ -1,4 +1,3 @@
-
 package org.laladev.moneyjinn.model.setting;
 
 import lombok.Data;
@@ -28,5 +27,5 @@ import lombok.Data;
 //SUCH DAMAGE.
 @Data
 public abstract class AbstractSetting<T> {
-	private T setting;
+    private T setting;
 }

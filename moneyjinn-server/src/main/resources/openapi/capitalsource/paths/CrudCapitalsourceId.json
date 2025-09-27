@@ -1,53 +1,53 @@
 {
-	"parameters": [
-		{
-			"name": "id",
-			"in": "path",
-			"required": true,
-			"schema": {
-				"type": "integer",
-				"format": "int64"
-			}
-		}
-	],
-	"get": {
-		"tags": [
-			"crud-capitalsource-controller"
-		],
-		"operationId": "readOne",
-		"description": "Returns the capitalsource specified by the id.",
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/CapitalsourceTransport.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"404": {
-				"description": "Capitalsource not found"
-			}
-		}
-	},
-	"delete": {
-		"tags": [
-			"crud-capitalsource-controller"
-		],
-		"operationId": "delete",
-		"description": "Deletes the capitalsource specified by the id.",
-		"responses": {
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			}
-		}
-	}
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  ],
+  "get": {
+    "tags": [
+      "crud-capitalsource-controller"
+    ],
+    "operationId": "readOne",
+    "description": "Returns the capitalsource specified by the id.",
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/CapitalsourceTransport.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "404": {
+        "description": "Capitalsource not found"
+      }
+    }
+  },
+  "delete": {
+    "tags": [
+      "crud-capitalsource-controller"
+    ],
+    "operationId": "delete",
+    "description": "Deletes the capitalsource specified by the id.",
+    "responses": {
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      }
+    }
+  }
 }

@@ -1,9 +1,8 @@
-
 package org.laladev.moneyjinn.model.setting;
 
-import java.math.BigDecimal;
-
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -11,11 +10,10 @@ import lombok.NoArgsConstructor;
  * </p>
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientCalcEtfSalePieces extends AbstractSetting<BigDecimal> {
-	public ClientCalcEtfSalePieces(final BigDecimal setting) {
-		super.setSetting(setting);
-	}
+    public ClientCalcEtfSalePieces(final BigDecimal setting) {
+        super.setSetting(setting);
+    }
 }

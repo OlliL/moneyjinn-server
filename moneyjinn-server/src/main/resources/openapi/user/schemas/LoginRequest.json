@@ -1,15 +1,15 @@
 {
-	"type": "object",
-	"required": [
-		"userName",
-		"userPassword"
-	],
-	"properties": {
-		"userName": {
-			"type": "string"
-		},
-		"userPassword": {
-			"type": "string"
-		}
-	}
+  "type": "object",
+  "required": [
+    "userName",
+    "userPassword"
+  ],
+  "properties": {
+    "userName": {
+      "type": "string"
+    },
+    "userPassword": {
+      "type": "string"
+    }
+  }
 }

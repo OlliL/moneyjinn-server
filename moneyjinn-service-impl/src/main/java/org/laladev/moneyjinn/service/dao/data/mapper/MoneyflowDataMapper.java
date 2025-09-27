@@ -26,40 +26,34 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
-import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
-import org.laladev.moneyjinn.converter.GroupIdMapper;
-import org.laladev.moneyjinn.converter.IMapstructMapper;
-import org.laladev.moneyjinn.converter.MoneyflowIdMapper;
-import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
-import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.*;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MoneyflowIdMapper.class, CapitalsourceIdMapper.class,
-		ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {MoneyflowIdMapper.class, CapitalsourceIdMapper.class,
+        ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class})
 public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, MoneyflowData> {
-	@Override
-	@Mapping(target = "bookingDate", source = "bookingdate")
-	@Mapping(target = "invoiceDate", source = "invoicedate")
-	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-	@Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
-	@Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
-	@Mapping(target = "user.id", source = "mauUserId")
-	@Mapping(target = "group.id", source = "magGroupId")
-	@Mapping(target = "moneyflowSplitEntries", ignore = true)
-	Moneyflow mapBToA(MoneyflowData moneyflowData);
+    @Override
+    @Mapping(target = "bookingDate", source = "bookingdate")
+    @Mapping(target = "invoiceDate", source = "invoicedate")
+    @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+    @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+    @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+    @Mapping(target = "user.id", source = "mauUserId")
+    @Mapping(target = "group.id", source = "magGroupId")
+    @Mapping(target = "moneyflowSplitEntries", ignore = true)
+    Moneyflow mapBToA(MoneyflowData moneyflowData);
 
-	@Override
-	@Mapping(target = "bookingdate", source = "bookingDate")
-	@Mapping(target = "invoicedate", source = "invoiceDate")
-	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-	@Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
-	@Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
-	@Mapping(target = "mauUserId", source = "user.id")
-	@Mapping(target = "magGroupId", source = "group.id")
-	public MoneyflowData mapAToB(Moneyflow moneyflow);
+    @Override
+    @Mapping(target = "bookingdate", source = "bookingDate")
+    @Mapping(target = "invoicedate", source = "invoiceDate")
+    @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+    @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+    @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+    @Mapping(target = "mauUserId", source = "user.id")
+    @Mapping(target = "magGroupId", source = "group.id")
+    public MoneyflowData mapAToB(Moneyflow moneyflow);
 }

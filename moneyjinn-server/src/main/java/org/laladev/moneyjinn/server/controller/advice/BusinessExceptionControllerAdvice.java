@@ -26,8 +26,7 @@
 
 package org.laladev.moneyjinn.server.controller.advice;
 
-import java.util.logging.Level;
-
+import lombok.extern.java.Log;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.server.model.ErrorResponse;
@@ -38,27 +37,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import lombok.extern.java.Log;
+import java.util.logging.Level;
 
 @ControllerAdvice
 @Log
 public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(BusinessException.class)
-	@ResponseBody
-	ResponseEntity<Object> handleControllerException(final BusinessException ex) {
-		final ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setCode(ex.getErrorCode().getErrorCode());
-		errorResponse.setMessage(ex.getErrorMessage());
-		HttpStatus httpStatus;
-		if (ex.getErrorCode() == ErrorCode.USERNAME_PASSWORD_WRONG
-				|| ex.getErrorCode() == ErrorCode.ACCOUNT_IS_LOCKED) {
-			httpStatus = HttpStatus.FORBIDDEN;
-		} else {
-			httpStatus = HttpStatus.BAD_REQUEST;
-		}
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    ResponseEntity<Object> handleControllerException(final BusinessException ex) {
+        final ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(ex.getErrorCode().getErrorCode());
+        errorResponse.setMessage(ex.getErrorMessage());
+        HttpStatus httpStatus;
+        if (ex.getErrorCode() == ErrorCode.USERNAME_PASSWORD_WRONG
+                || ex.getErrorCode() == ErrorCode.ACCOUNT_IS_LOCKED) {
+            httpStatus = HttpStatus.FORBIDDEN;
+        } else {
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
 
-		log.log(Level.SEVERE, ex.getErrorMessage(), ex);
-		return new ResponseEntity<>(errorResponse, httpStatus);
-	}
+        log.log(Level.SEVERE, ex.getErrorMessage(), ex);
+        return new ResponseEntity<>(errorResponse, httpStatus);
+    }
 }

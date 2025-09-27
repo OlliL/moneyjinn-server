@@ -1,4 +1,3 @@
-
 //
 //Copyright (c) 2023-2025 Oliver Lehmann <lehmann@ans-netz.de>
 //All rights reserved.
@@ -27,12 +26,11 @@
 
 package org.laladev.moneyjinn.server.model.wsevent;
 
-import org.laladev.moneyjinn.server.model.PostingAccountTransport;
-
 import lombok.Data;
+import org.laladev.moneyjinn.server.model.PostingAccountTransport;
 
 @Data
 public class PostingAccountChangedEventTransport {
-	private String eventType;
-	private PostingAccountTransport postingAccountTransport;
+    private String eventType;
+    private PostingAccountTransport postingAccountTransport;
 }

@@ -29,45 +29,45 @@ import org.kapott.hbci.callback.HBCICallbackConsole;
 import org.kapott.hbci.passport.HBCIPassport;
 
 public class LalaHBCICallback extends HBCICallbackConsole {
-	private String pin;
-	private String passportPassword;
+    private String pin;
+    private String passportPassword;
 
-	public LalaHBCICallback() {
-	}
+    public LalaHBCICallback() {
+    }
 
-	public final void setPin(final String pin) {
-		this.pin = pin;
-	}
+    public final void setPin(final String pin) {
+        this.pin = pin;
+    }
 
-	public final void setPassportPassword(final String passportPassword) {
-		this.passportPassword = passportPassword;
-	}
+    public final void setPassportPassword(final String passportPassword) {
+        this.passportPassword = passportPassword;
+    }
 
-	@Override
-	public void callback(final HBCIPassport passport, final int reason, final String msg, final int dataType,
-			final StringBuffer retData) {
-		switch (reason) {
-		case NEED_PASSPHRASE_LOAD, NEED_PASSPHRASE_SAVE:
-			retData.replace(0, retData.length(), this.passportPassword);
-			break;
-		case NEED_PT_PIN:
-			if (passport != null && passport.getAccounts().length > 0) {
-				retData.replace(0, retData.length(), this.pin);
-			} else {
-				super.callback(passport, reason, msg, dataType, retData);
+    @Override
+    public void callback(final HBCIPassport passport, final int reason, final String msg, final int dataType,
+                         final StringBuffer retData) {
+        switch (reason) {
+            case NEED_PASSPHRASE_LOAD, NEED_PASSPHRASE_SAVE:
+                retData.replace(0, retData.length(), this.passportPassword);
+                break;
+            case NEED_PT_PIN:
+                if (passport != null && passport.getAccounts().length > 0) {
+                    retData.replace(0, retData.length(), this.pin);
+                } else {
+                    super.callback(passport, reason, msg, dataType, retData);
 
-			}
-			break;
-		case NEED_CONNECTION, CLOSE_CONNECTION, HAVE_INST_MSG:
-			break;
-		default:
-			super.callback(passport, reason, msg, dataType, retData);
-		}
-	}
+                }
+                break;
+            case NEED_CONNECTION, CLOSE_CONNECTION, HAVE_INST_MSG:
+                break;
+            default:
+                super.callback(passport, reason, msg, dataType, retData);
+        }
+    }
 
-	@Override
-	public synchronized void status(final HBCIPassport passport, final int statusTag, final Object[] o) {
-		if (statusTag != STATUS_MSG_RAW_RECV && statusTag != STATUS_MSG_RAW_SEND)
-			super.status(passport, statusTag, o);
-	}
+    @Override
+    public synchronized void status(final HBCIPassport passport, final int statusTag, final Object[] o) {
+        if (statusTag != STATUS_MSG_RAW_RECV && statusTag != STATUS_MSG_RAW_SEND)
+            super.status(passport, statusTag, o);
+    }
 }

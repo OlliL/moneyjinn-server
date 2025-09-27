@@ -26,27 +26,27 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class EtfPreliminaryLumpSumData {
-	private Long etfPreliminaryLumpSumId;
-	private Long metEtfid;
-	private Integer year;
-	private Integer type;
-	private BigDecimal amountPerPiece;
-	private BigDecimal amountJanuary;
-	private BigDecimal amountFebruary;
-	private BigDecimal amountMarch;
-	private BigDecimal amountApril;
-	private BigDecimal amountMay;
-	private BigDecimal amountJune;
-	private BigDecimal amountJuly;
-	private BigDecimal amountAugust;
-	private BigDecimal amountSeptember;
-	private BigDecimal amountOctober;
-	private BigDecimal amountNovember;
-	private BigDecimal amountDecember;
+    private Long etfPreliminaryLumpSumId;
+    private Long metEtfid;
+    private Integer year;
+    private Integer type;
+    private BigDecimal amountPerPiece;
+    private BigDecimal amountJanuary;
+    private BigDecimal amountFebruary;
+    private BigDecimal amountMarch;
+    private BigDecimal amountApril;
+    private BigDecimal amountMay;
+    private BigDecimal amountJune;
+    private BigDecimal amountJuly;
+    private BigDecimal amountAugust;
+    private BigDecimal amountSeptember;
+    private BigDecimal amountOctober;
+    private BigDecimal amountNovember;
+    private BigDecimal amountDecember;
 }

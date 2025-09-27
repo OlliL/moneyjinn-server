@@ -26,55 +26,55 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.EtfData;
 import org.laladev.moneyjinn.service.dao.data.EtfFlowData;
 import org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData;
 import org.laladev.moneyjinn.service.dao.data.EtfValueData;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface IEtfDaoMapper {
-	public List<EtfData> getAllEtf(@Param("mauUserId") Long userId);
+    List<EtfData> getAllEtf(@Param("mauUserId") Long userId);
 
-	public EtfData getEtfById(@Param("mauUserId") Long userId, @Param("etfid") Long etfId);
+    EtfData getEtfById(@Param("mauUserId") Long userId, @Param("etfid") Long etfId);
 
-	public Long createEtf(EtfData data);
+    Long createEtf(EtfData data);
 
-	public void updateEtf(EtfData data);
+    void updateEtf(EtfData data);
 
-	public void deleteEtf(@Param("magGroupId") Long magGroupId, @Param("etfid") Long etfid);
+    void deleteEtf(@Param("magGroupId") Long magGroupId, @Param("etfid") Long etfid);
 
-	public List<EtfFlowData> getAllFlowsUntil(@Param("metEtfid") Long etfId,
-			@Param("dateUntil") LocalDateTime timeUntil);
+    List<EtfFlowData> getAllFlowsUntil(@Param("metEtfid") Long etfId,
+                                       @Param("dateUntil") LocalDateTime timeUntil);
 
-	public EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("startDate") LocalDate startDate,
-			@Param("endDate") LocalDate endDate);
+    EtfValueData getEtfValueForMonth(@Param("isin") String isin, @Param("startDate") LocalDate startDate,
+                                     @Param("endDate") LocalDate endDate);
 
-	public EtfValueData getLatestEtfValue(@Param("isin") String isin);
+    EtfValueData getLatestEtfValue(@Param("isin") String isin);
 
-	public EtfFlowData getEtfFlowById(@Param("id") Long id);
+    EtfFlowData getEtfFlowById(@Param("id") Long id);
 
-	public Long createEtfFlow(EtfFlowData data);
+    Long createEtfFlow(EtfFlowData data);
 
-	public void updateEtfFlow(EtfFlowData data);
+    void updateEtfFlow(EtfFlowData data);
 
-	public void deleteEtfFlow(@Param("id") Long id);
+    void deleteEtfFlow(@Param("id") Long id);
 
-	public List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("metEtfid") Long etfId);
+    List<EtfPreliminaryLumpSumData> getAllPreliminaryLumpSum(@Param("metEtfid") Long etfId);
 
-	public EtfPreliminaryLumpSumData getPreliminaryLumpSum(
-			@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
+    EtfPreliminaryLumpSumData getPreliminaryLumpSum(
+            @Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
 
-	public Long getPreliminaryLumpSumId(@Param("metEtfid") Long etfId, @Param("year") Integer year);
+    Long getPreliminaryLumpSumId(@Param("metEtfid") Long etfId, @Param("year") Integer year);
 
-	public List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(@Param("metEtfid") Long etfId);
+    List<EtfPreliminaryLumpSumData> getAllEtfPreliminaryLumpSum(@Param("metEtfid") Long etfId);
 
-	public void createPreliminaryLumpSum(EtfPreliminaryLumpSumData data);
+    void createPreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 
-	public void updatePreliminaryLumpSum(EtfPreliminaryLumpSumData data);
+    void updatePreliminaryLumpSum(EtfPreliminaryLumpSumData data);
 
-	public void deletePreliminaryLumpSum(@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
+    void deletePreliminaryLumpSum(@Param("etfPreliminaryLumpSumId") Long etfPreliminaryLumpSumId);
 }

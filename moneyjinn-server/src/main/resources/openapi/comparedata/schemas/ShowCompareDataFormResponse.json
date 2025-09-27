@@ -1,23 +1,23 @@
 {
-	"type": "object",
-	"properties": {
-		"compareDataFormatTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/CompareDataFormatTransport.json"
-			}
-		},
-		"selectedCapitalsourceId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"selectedDataFormat": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"selectedSourceIsFile": {
-			"type": "integer",
-			"format": "int32"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "compareDataFormatTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/CompareDataFormatTransport.json"
+      }
+    },
+    "selectedCapitalsourceId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "selectedDataFormat": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "selectedSourceIsFile": {
+      "type": "integer",
+      "format": "int32"
+    }
+  }
 }

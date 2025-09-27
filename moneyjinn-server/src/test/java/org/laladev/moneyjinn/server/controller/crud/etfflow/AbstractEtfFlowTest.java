@@ -5,7 +5,7 @@ import org.laladev.moneyjinn.server.controller.api.CrudEtfFlowControllerApi;
 
 abstract class AbstractEtfFlowTest extends AbstractWebUserControllerTest {
 
-	protected CrudEtfFlowControllerApi getMock() {
-		return super.getMock(CrudEtfFlowControllerApi.class);
-	}
+    protected CrudEtfFlowControllerApi getMock() {
+        return super.getMock(CrudEtfFlowControllerApi.class);
+    }
 }

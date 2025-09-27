@@ -26,15 +26,17 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
-import lombok.NoArgsConstructor;
+import java.io.Serial;
 
 @NoArgsConstructor
 public class CompareDataFormatID extends AbstractEntityID<Long> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public CompareDataFormatID(final Long id) {
-		super(id);
-	}
+    public CompareDataFormatID(final Long id) {
+        super(id);
+    }
 }

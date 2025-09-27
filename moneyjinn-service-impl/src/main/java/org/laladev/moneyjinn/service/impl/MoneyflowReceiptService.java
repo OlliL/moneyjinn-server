@@ -26,9 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceipt;
@@ -37,49 +38,47 @@ import org.laladev.moneyjinn.service.dao.MoneyflowReceiptDao;
 import org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData;
 import org.laladev.moneyjinn.service.dao.data.mapper.MoneyflowReceiptDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Collections;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MoneyflowReceiptService extends AbstractService implements IMoneyflowReceiptService {
-	private final MoneyflowReceiptDao moneyflowReceiptDao;
-	private final MoneyflowReceiptDataMapper moneyflowReceiptDataMapper;
+    private final MoneyflowReceiptDao moneyflowReceiptDao;
+    private final MoneyflowReceiptDataMapper moneyflowReceiptDataMapper;
 
-	private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
-		return this.moneyflowReceiptDataMapper.mapBToA(moneyflowReceiptData);
-	}
+    private MoneyflowReceipt mapMoneyflowReceiptData(final MoneyflowReceiptData moneyflowReceiptData) {
+        return this.moneyflowReceiptDataMapper.mapBToA(moneyflowReceiptData);
+    }
 
-	@Override
-	public MoneyflowReceipt getMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
-		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
-				.getMoneyflowReceipt(moneyflowId.getId());
-		return this.mapMoneyflowReceiptData(moneyflowReceiptData);
-	}
+    @Override
+    public MoneyflowReceipt getMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
+        final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDao
+                .getMoneyflowReceipt(moneyflowId.getId());
+        return this.mapMoneyflowReceiptData(moneyflowReceiptData);
+    }
 
-	@Override
-	public List<MoneyflowID> getMoneyflowIdsWithReceipt(@NonNull final UserID userId,
-			@NonNull final List<MoneyflowID> moneyflowIds) {
-		final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
-		final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
-				.getMoneyflowIdsWithReceipt(moneyflowIdLongs);
-		if (moneyflowIdsWithReceipt != null) {
-			return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new).toList();
-		} else {
-			return Collections.emptyList();
-		}
-	}
+    @Override
+    public List<MoneyflowID> getMoneyflowIdsWithReceipt(@NonNull final UserID userId,
+                                                        @NonNull final List<MoneyflowID> moneyflowIds) {
+        final List<Long> moneyflowIdLongs = moneyflowIds.stream().map(MoneyflowID::getId).toList();
+        final List<Long> moneyflowIdsWithReceipt = this.moneyflowReceiptDao
+                .getMoneyflowIdsWithReceipt(moneyflowIdLongs);
+        if (moneyflowIdsWithReceipt != null) {
+            return moneyflowIdsWithReceipt.stream().map(MoneyflowID::new).toList();
+        } else {
+            return Collections.emptyList();
+        }
+    }
 
-	@Override
-	public void deleteMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
-		this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
-	}
+    @Override
+    public void deleteMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowID moneyflowId) {
+        this.moneyflowReceiptDao.deleteMoneyflowReceipt(moneyflowId.getId());
+    }
 
-	@Override
-	public void createMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowReceipt moneyflowReceipt) {
-		final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDataMapper.mapAToB(moneyflowReceipt);
-		this.moneyflowReceiptDao.createMoneyflowReceipt(moneyflowReceiptData);
-	}
+    @Override
+    public void createMoneyflowReceipt(@NonNull final UserID userId, @NonNull final MoneyflowReceipt moneyflowReceipt) {
+        final MoneyflowReceiptData moneyflowReceiptData = this.moneyflowReceiptDataMapper.mapAToB(moneyflowReceipt);
+        this.moneyflowReceiptDao.createMoneyflowReceipt(moneyflowReceiptData);
+    }
 }

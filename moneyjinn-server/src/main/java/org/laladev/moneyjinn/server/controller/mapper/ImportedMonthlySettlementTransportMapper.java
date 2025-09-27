@@ -37,25 +37,25 @@ import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ImportedMonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
-		CapitalsourceIdMapper.class, UserIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ImportedMonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
+        CapitalsourceIdMapper.class, UserIdMapper.class})
 public interface ImportedMonthlySettlementTransportMapper
-		extends IMapstructMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
-	@Override
-	@Mapping(target = "capitalsource.id", source = "capitalsourceid")
-	@Mapping(target = "externalId", source = "externalid")
-	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "group", ignore = true)
-	ImportedMonthlySettlement mapBToA(ImportedMonthlySettlementTransport importedMonthlySettlementTransport);
+        extends IMapstructMapper<ImportedMonthlySettlement, ImportedMonthlySettlementTransport> {
+    @Override
+    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
+    @Mapping(target = "externalId", source = "externalid")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "group", ignore = true)
+    ImportedMonthlySettlement mapBToA(ImportedMonthlySettlementTransport importedMonthlySettlementTransport);
 
-	@Override
-	@Mapping(target = "accountNumberCapitalsource", source = "capitalsource.bankAccount.accountNumber")
-	@Mapping(target = "bankCodeCapitalsource", source = "capitalsource.bankAccount.bankCode")
-	@Mapping(target = "capitalsourceid", source = "capitalsource.id")
-	@Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
-	@Mapping(target = "capitalsourcegroupuse", ignore = true)
-	@Mapping(target = "capitalsourcetype", ignore = true)
-	@Mapping(target = "externalid", source = "externalId")
-	@Mapping(target = "userid", source = "user.id")
-	ImportedMonthlySettlementTransport mapAToB(ImportedMonthlySettlement importedMonthlySettlement);
+    @Override
+    @Mapping(target = "accountNumberCapitalsource", source = "capitalsource.bankAccount.accountNumber")
+    @Mapping(target = "bankCodeCapitalsource", source = "capitalsource.bankAccount.bankCode")
+    @Mapping(target = "capitalsourceid", source = "capitalsource.id")
+    @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+    @Mapping(target = "capitalsourcegroupuse", ignore = true)
+    @Mapping(target = "capitalsourcetype", ignore = true)
+    @Mapping(target = "externalid", source = "externalId")
+    @Mapping(target = "userid", source = "user.id")
+    ImportedMonthlySettlementTransport mapAToB(ImportedMonthlySettlement importedMonthlySettlement);
 }

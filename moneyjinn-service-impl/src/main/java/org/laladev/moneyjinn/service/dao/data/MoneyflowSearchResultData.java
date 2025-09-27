@@ -26,15 +26,15 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class MoneyflowSearchResultData {
-	private Integer year;
-	private Integer month;
-	private BigDecimal amount;
-	private Long contractpartnerid;
-	private String comment;
+    private Integer year;
+    private Integer month;
+    private BigDecimal amount;
+    private Long contractpartnerid;
+    private String comment;
 }

@@ -28,13 +28,16 @@ package org.laladev.moneyjinn.server.config.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serial;
+
 public class RefreshOnlyGrantedAuthority implements GrantedAuthority {
 
-	private static final long serialVersionUID = 1L;
-	public static final String ROLE = "refreshOnly";
+    public static final String ROLE = "refreshOnly";
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public String getAuthority() {
-		return ROLE;
-	}
+    @Override
+    public String getAuthority() {
+        return ROLE;
+    }
 }

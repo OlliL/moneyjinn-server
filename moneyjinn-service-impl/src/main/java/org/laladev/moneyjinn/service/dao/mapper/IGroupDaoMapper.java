@@ -26,20 +26,20 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.service.dao.data.GroupData;
 
+import java.util.List;
+
 public interface IGroupDaoMapper {
-	public List<GroupData> getAllGroups();
+    List<GroupData> getAllGroups();
 
-	public GroupData getGroupById(Long groupid);
+    GroupData getGroupById(Long groupid);
 
-	public GroupData getGroupByName(String name);
+    GroupData getGroupByName(String name);
 
-	public void createGroup(GroupData groupData);
+    void createGroup(GroupData groupData);
 
-	public void updateGroup(GroupData groupData);
+    void updateGroup(GroupData groupData);
 
-	public void deleteGroup(Long groupid);
+    void deleteGroup(Long groupid);
 }

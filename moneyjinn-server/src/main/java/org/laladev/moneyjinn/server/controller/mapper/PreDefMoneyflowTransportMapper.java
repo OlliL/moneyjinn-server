@@ -26,12 +26,7 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.converter.CapitalsourceIdMapper;
-import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
-import org.laladev.moneyjinn.converter.IMapstructMapper;
-import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
-import org.laladev.moneyjinn.converter.PreDefMoneyflowIdMapper;
-import org.laladev.moneyjinn.converter.UserIdMapper;
+import org.laladev.moneyjinn.converter.*;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
@@ -39,27 +34,27 @@ import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
-		PostingAccountIdMapper.class, PreDefMoneyflowIdMapper.class, BooleanToIntegerMapper.class, UserIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
+        PostingAccountIdMapper.class, PreDefMoneyflowIdMapper.class, BooleanToIntegerMapper.class, UserIdMapper.class})
 public interface PreDefMoneyflowTransportMapper extends IMapstructMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
-	@Override
-	@Mapping(target = "capitalsource.id", source = "capitalsourceid")
-	@Mapping(target = "contractpartner.id", source = "contractpartnerid")
-	@Mapping(target = "postingAccount.id", source = "postingaccountid")
-	@Mapping(target = "creationDate", source = "createdate")
-	@Mapping(target = "lastUsedDate", source = "lastUsed")
-	@Mapping(target = "user", ignore = true)
-	PreDefMoneyflow mapBToA(PreDefMoneyflowTransport preDefMoneyflowTransport);
+    @Override
+    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
+    @Mapping(target = "contractpartner.id", source = "contractpartnerid")
+    @Mapping(target = "postingAccount.id", source = "postingaccountid")
+    @Mapping(target = "creationDate", source = "createdate")
+    @Mapping(target = "lastUsedDate", source = "lastUsed")
+    @Mapping(target = "user", ignore = true)
+    PreDefMoneyflow mapBToA(PreDefMoneyflowTransport preDefMoneyflowTransport);
 
-	@Override
-	@Mapping(target = "capitalsourceid", source = "capitalsource.id")
-	@Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
-	@Mapping(target = "contractpartnerid", source = "contractpartner.id")
-	@Mapping(target = "contractpartnername", source = "contractpartner.name")
-	@Mapping(target = "postingaccountid", source = "postingAccount.id")
-	@Mapping(target = "postingaccountname", source = "postingAccount.name")
-	@Mapping(target = "createdate", source = "creationDate")
-	@Mapping(target = "lastUsed", source = "lastUsedDate")
-	@Mapping(target = "userid", source = "user.id")
-	PreDefMoneyflowTransport mapAToB(PreDefMoneyflow preDefMoneyflow);
+    @Override
+    @Mapping(target = "capitalsourceid", source = "capitalsource.id")
+    @Mapping(target = "capitalsourcecomment", source = "capitalsource.comment")
+    @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+    @Mapping(target = "contractpartnername", source = "contractpartner.name")
+    @Mapping(target = "postingaccountid", source = "postingAccount.id")
+    @Mapping(target = "postingaccountname", source = "postingAccount.name")
+    @Mapping(target = "createdate", source = "creationDate")
+    @Mapping(target = "lastUsed", source = "lastUsedDate")
+    @Mapping(target = "userid", source = "user.id")
+    PreDefMoneyflowTransport mapAToB(PreDefMoneyflow preDefMoneyflow);
 }

@@ -26,37 +26,39 @@
 
 package org.laladev.moneyjinn.model.moneyflow;
 
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.IHasBankAccount;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.BankAccount;
+import org.laladev.moneyjinn.model.IHasBankAccount;
+
+import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class ImportedMoneyflow extends AbstractMoneyflow<ImportedMoneyflowID> implements IHasBankAccount {
-	private static final long serialVersionUID = 1L;
-	private String externalId;
-	private String name;
-	private BankAccount bankAccount;
-	private String usage;
-	private ImportedMoneyflowStatus status;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private String externalId;
+    private String name;
+    private BankAccount bankAccount;
+    private String usage;
+    private ImportedMoneyflowStatus status;
 
-	public Moneyflow getMoneyflow() {
-		final Moneyflow moneyflow = new Moneyflow();
-		moneyflow.setUser(super.getUser());
-		moneyflow.setGroup(super.getGroup());
-		moneyflow.setBookingDate(super.getBookingDate());
-		moneyflow.setInvoiceDate(super.getInvoiceDate());
-		moneyflow.setAmount(super.getAmount());
-		moneyflow.setCapitalsource(super.getCapitalsource());
-		moneyflow.setContractpartner(super.getContractpartner());
-		moneyflow.setComment(super.getComment());
-		moneyflow.setPrivat(super.isPrivat());
-		moneyflow.setPostingAccount(super.getPostingAccount());
-		return moneyflow;
-	}
+    public Moneyflow getMoneyflow() {
+        final Moneyflow moneyflow = new Moneyflow();
+        moneyflow.setUser(super.getUser());
+        moneyflow.setGroup(super.getGroup());
+        moneyflow.setBookingDate(super.getBookingDate());
+        moneyflow.setInvoiceDate(super.getInvoiceDate());
+        moneyflow.setAmount(super.getAmount());
+        moneyflow.setCapitalsource(super.getCapitalsource());
+        moneyflow.setContractpartner(super.getContractpartner());
+        moneyflow.setComment(super.getComment());
+        moneyflow.setPrivat(super.isPrivat());
+        moneyflow.setPostingAccount(super.getPostingAccount());
+        return moneyflow;
+    }
 
 }

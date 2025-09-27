@@ -26,34 +26,35 @@
 
 package org.laladev.moneyjinn.model.etf;
 
-import java.math.BigDecimal;
-import java.time.Year;
-
-import org.laladev.moneyjinn.model.AbstractEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractEntity;
+
+import java.io.Serial;
+import java.math.BigDecimal;
+import java.time.Year;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class EtfPreliminaryLumpSum extends AbstractEntity<EtfPreliminaryLumpSumID> {
-	private static final long serialVersionUID = 1L;
-	private EtfID etfId;
-	private Year year;
-	private EtfPreliminaryLumpSumType type;
-	private BigDecimal amountPerPiece;
-	private BigDecimal amountJanuary;
-	private BigDecimal amountFebruary;
-	private BigDecimal amountMarch;
-	private BigDecimal amountApril;
-	private BigDecimal amountMay;
-	private BigDecimal amountJune;
-	private BigDecimal amountJuly;
-	private BigDecimal amountAugust;
-	private BigDecimal amountSeptember;
-	private BigDecimal amountOctober;
-	private BigDecimal amountNovember;
-	private BigDecimal amountDecember;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private EtfID etfId;
+    private Year year;
+    private EtfPreliminaryLumpSumType type;
+    private BigDecimal amountPerPiece;
+    private BigDecimal amountJanuary;
+    private BigDecimal amountFebruary;
+    private BigDecimal amountMarch;
+    private BigDecimal amountApril;
+    private BigDecimal amountMay;
+    private BigDecimal amountJune;
+    private BigDecimal amountJuly;
+    private BigDecimal amountAugust;
+    private BigDecimal amountSeptember;
+    private BigDecimal amountOctober;
+    private BigDecimal amountNovember;
+    private BigDecimal amountDecember;
 }

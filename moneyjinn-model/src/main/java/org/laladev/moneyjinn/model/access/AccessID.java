@@ -28,10 +28,13 @@ package org.laladev.moneyjinn.model.access;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
-public abstract class AccessID extends AbstractEntityID<Long> {
-	private static final long serialVersionUID = 1L;
+import java.io.Serial;
 
-	protected AccessID(final Long id) {
-		super(id);
-	}
+public abstract class AccessID extends AbstractEntityID<Long> {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    protected AccessID(final Long id) {
+        super(id);
+    }
 }

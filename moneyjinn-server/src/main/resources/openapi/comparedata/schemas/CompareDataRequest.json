@@ -1,33 +1,33 @@
 {
-	"type": "object",
-	"required": [
-		"capitalsourceId",
-		"startDate",
-		"endDate"
-	],
-	"properties": {
-		"formatId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"capitalsourceId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"startDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"endDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"fileContents": {
-			"type": "string"
-		},
-		"useImportedData": {
-			"type": "integer",
-			"format": "int32"
-		}
-	}
+  "type": "object",
+  "required": [
+    "capitalsourceId",
+    "startDate",
+    "endDate"
+  ],
+  "properties": {
+    "formatId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "capitalsourceId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "fileContents": {
+      "type": "string"
+    },
+    "useImportedData": {
+      "type": "integer",
+      "format": "int32"
+    }
+  }
 }

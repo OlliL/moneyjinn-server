@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.server.config.websocket;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -37,40 +39,37 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSocketMessageBroker
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-	private final AuthChannelInterceptorAdapter authChannelInterceptorAdapter;
-	@Value("${org.laladev.moneyjinn.server.websocket.heartbeat.server}")
-	private long heartbeatServer;
-	@Value("${org.laladev.moneyjinn.server.websocket.heartbeat.client}")
-	private long heartbeatClient;
+    private final AuthChannelInterceptorAdapter authChannelInterceptorAdapter;
+    @Value("${org.laladev.moneyjinn.server.websocket.heartbeat.server}")
+    private long heartbeatServer;
+    @Value("${org.laladev.moneyjinn.server.websocket.heartbeat.client}")
+    private long heartbeatClient;
 
-	@Override
-	public void configureMessageBroker(final MessageBrokerRegistry config) {
-		final ThreadPoolTaskScheduler te = new ThreadPoolTaskScheduler();
-		te.setPoolSize(1);
-		te.setThreadNamePrefix("wss-heartbeat-thread-");
-		te.initialize();
+    @Override
+    public void configureMessageBroker(final MessageBrokerRegistry config) {
+        final ThreadPoolTaskScheduler te = new ThreadPoolTaskScheduler();
+        te.setPoolSize(1);
+        te.setThreadNamePrefix("wss-heartbeat-thread-");
+        te.initialize();
 
-		config.enableSimpleBroker("/topic").setTaskScheduler(te)
-				.setHeartbeatValue(new long[] { this.heartbeatServer, this.heartbeatClient });
-		config.setApplicationDestinationPrefixes("/app");
-	}
+        config.enableSimpleBroker("/topic").setTaskScheduler(te)
+                .setHeartbeatValue(new long[]{this.heartbeatServer, this.heartbeatClient});
+        config.setApplicationDestinationPrefixes("/app");
+    }
 
-	@Override
-	public void registerStompEndpoints(final StompEndpointRegistry registry) {
-		registry.addEndpoint("/websocket").setAllowedOrigins("*");
-	}
+    @Override
+    public void registerStompEndpoints(final StompEndpointRegistry registry) {
+        registry.addEndpoint("/websocket").setAllowedOrigins("*");
+    }
 
-	@Override
-	public void configureClientInboundChannel(final ChannelRegistration registration) {
-		registration.interceptors(this.authChannelInterceptorAdapter);
-	}
+    @Override
+    public void configureClientInboundChannel(final ChannelRegistration registration) {
+        registration.interceptors(this.authChannelInterceptorAdapter);
+    }
 
 }

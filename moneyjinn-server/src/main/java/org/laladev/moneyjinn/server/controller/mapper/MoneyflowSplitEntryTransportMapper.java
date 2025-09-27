@@ -36,18 +36,18 @@ import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class,
-		PostingAccountIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {MoneyflowSplitEntryIdMapper.class, MoneyflowIdMapper.class,
+        PostingAccountIdMapper.class})
 public interface MoneyflowSplitEntryTransportMapper
-		extends IMapstructMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
-	@Override
-	@Mapping(target = "moneyflowId", source = "moneyflowid")
-	@Mapping(target = "postingAccount.id", source = "postingaccountid")
-	MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryTransport moneyflowSplitEntryTransport);
+        extends IMapstructMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
+    @Override
+    @Mapping(target = "moneyflowId", source = "moneyflowid")
+    @Mapping(target = "postingAccount.id", source = "postingaccountid")
+    MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryTransport moneyflowSplitEntryTransport);
 
-	@Override
-	@Mapping(target = "moneyflowid", source = "moneyflowId")
-	@Mapping(target = "postingaccountid", source = "postingAccount.id")
-	@Mapping(target = "postingaccountname", source = "postingAccount.name")
-	MoneyflowSplitEntryTransport mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
+    @Override
+    @Mapping(target = "moneyflowid", source = "moneyflowId")
+    @Mapping(target = "postingaccountid", source = "postingAccount.id")
+    @Mapping(target = "postingaccountname", source = "postingAccount.name")
+    MoneyflowSplitEntryTransport mapAToB(MoneyflowSplitEntry moneyflowSplitEntry);
 }

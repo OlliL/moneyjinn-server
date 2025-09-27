@@ -24,8 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
-import java.util.List;
-
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfID;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSum;
@@ -43,83 +43,82 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CrudEtfPreliminaryLumpSumController extends AbstractController
-		implements CrudEtfPreliminaryLumpSumControllerApi {
-	private final IEtfService etfService;
-	private final EtfPreliminaryLumpSumTransportMapper etfPreliminaryLumpSumTransportMapper;
+        implements CrudEtfPreliminaryLumpSumControllerApi {
+    private final IEtfService etfService;
+    private final EtfPreliminaryLumpSumTransportMapper etfPreliminaryLumpSumTransportMapper;
 
-	@Override
-	public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(final Long requestEtfId) {
-		final UserID userId = super.getUserId();
-		final EtfID etfId = new EtfID(requestEtfId);
+    @Override
+    public ResponseEntity<List<EtfPreliminaryLumpSumTransport>> getAllForEtf(final Long requestEtfId) {
+        final UserID userId = super.getUserId();
+        final EtfID etfId = new EtfID(requestEtfId);
 
-		final List<EtfPreliminaryLumpSum> etfPreliminaryLumpSums = this.etfService.getAllEtfPreliminaryLumpSum(userId,
-				etfId);
+        final List<EtfPreliminaryLumpSum> etfPreliminaryLumpSums = this.etfService.getAllEtfPreliminaryLumpSum(userId,
+                etfId);
 
-		return etfPreliminaryLumpSums.isEmpty() ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSums));
-	}
+        return etfPreliminaryLumpSums.isEmpty() ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSums));
+    }
 
-	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(final Long requestId) {
-		final UserID userId = super.getUserId();
-		final var id = new EtfPreliminaryLumpSumID(requestId);
+    @Override
+    public ResponseEntity<EtfPreliminaryLumpSumTransport> readOne(final Long requestId) {
+        final UserID userId = super.getUserId();
+        final var id = new EtfPreliminaryLumpSumID(requestId);
 
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
+        final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfService.getEtfPreliminaryLumpSum(userId, id);
 
-		return etfPreliminaryLumpSum == null ? ResponseEntity.notFound().build()
-				: ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
-	}
+        return etfPreliminaryLumpSum == null ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
+    }
 
-	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> create(
-			@RequestBody final EtfPreliminaryLumpSumTransport transport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
-				.mapBToA(transport);
-		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
-				etfPreliminaryLumpSum);
+    @Override
+    public ResponseEntity<EtfPreliminaryLumpSumTransport> create(
+            @RequestBody final EtfPreliminaryLumpSumTransport transport,
+            @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
+                .mapBToA(transport);
+        final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
+                etfPreliminaryLumpSum);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		this.etfService.createEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
+        this.etfService.createEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-		return this.preferedReturn(prefer,
-				() -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
-	}
+        return this.preferedReturn(prefer,
+                () -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
+    }
 
-	@Override
-	public ResponseEntity<EtfPreliminaryLumpSumTransport> update(
-			@RequestBody final EtfPreliminaryLumpSumTransport transport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
-				.mapBToA(transport);
-		final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
-				etfPreliminaryLumpSum);
+    @Override
+    public ResponseEntity<EtfPreliminaryLumpSumTransport> update(
+            @RequestBody final EtfPreliminaryLumpSumTransport transport,
+            @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final EtfPreliminaryLumpSum etfPreliminaryLumpSum = this.etfPreliminaryLumpSumTransportMapper
+                .mapBToA(transport);
+        final ValidationResult validationResult = this.etfService.validateEtfPreliminaryLumpSum(userId,
+                etfPreliminaryLumpSum);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		this.etfService.updateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
+        this.etfService.updateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-		return this.preferedReturn(prefer,
-				() -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
-	}
+        return this.preferedReturn(prefer,
+                () -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
+    }
 
-	@Override
-	public ResponseEntity<Void> delete(final Long requestId) {
-		final UserID userId = super.getUserId();
-		final var id = new EtfPreliminaryLumpSumID(requestId);
+    @Override
+    public ResponseEntity<Void> delete(final Long requestId) {
+        final UserID userId = super.getUserId();
+        final var id = new EtfPreliminaryLumpSumID(requestId);
 
-		this.etfService.deleteEtfPreliminaryLumpSum(userId, id);
+        this.etfService.deleteEtfPreliminaryLumpSum(userId, id);
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 }

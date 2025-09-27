@@ -28,16 +28,18 @@ package org.laladev.moneyjinn.model.moneyflow;
 
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
+import java.io.Serial;
+
 /**
- * The unique ID of a {@link MoneyflowReceipty}.
+ * The unique ID of a {@link MoneyflowReceipt}.
  *
  * @author Oliver Lehmann
- *
  */
 public class MoneyflowReceiptID extends AbstractEntityID<Long> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public MoneyflowReceiptID(final Long id) {
-		super(id);
-	}
+    public MoneyflowReceiptID(final Long id) {
+        super(id);
+    }
 }

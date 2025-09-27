@@ -26,19 +26,18 @@
 
 package org.laladev.moneyjinn.model.moneyflow.search;
 
-import java.math.BigDecimal;
-import java.time.Month;
-
+import lombok.Data;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.IHasContractpartner;
 
-import lombok.Data;
+import java.math.BigDecimal;
+import java.time.Month;
 
 @Data
 public class MoneyflowSearchResult implements IHasContractpartner {
-	private Integer year;
-	private Month month;
-	private BigDecimal amount;
-	private Contractpartner contractpartner;
-	private String comment;
+    private Integer year;
+    private Month month;
+    private BigDecimal amount;
+    private Contractpartner contractpartner;
+    private String comment;
 }

@@ -5,14 +5,14 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
 
 public interface IFixHasBankAccount {
-	// work around https://github.com/mapstruct/mapstruct/issues/1166
-	@AfterMapping
-	default void fixHasBankAccount(@MappingTarget final IHasBankAccount entity) {
-		if (entity != null && entity.getBankAccount() != null
-				&& (entity.getBankAccount().getAccountNumber() == null
-						|| entity.getBankAccount().getAccountNumber().isBlank())
-				&& (entity.getBankAccount().getBankCode() == null || entity.getBankAccount().getBankCode().isBlank())) {
-			entity.setBankAccount(null);
-		}
-	}
+    // work around https://github.com/mapstruct/mapstruct/issues/1166
+    @AfterMapping
+    default void fixHasBankAccount(@MappingTarget final IHasBankAccount entity) {
+        if (entity != null && entity.getBankAccount() != null
+                && (entity.getBankAccount().getAccountNumber() == null
+                || entity.getBankAccount().getAccountNumber().isBlank())
+                && (entity.getBankAccount().getBankCode() == null || entity.getBankAccount().getBankCode().isBlank())) {
+            entity.setBankAccount(null);
+        }
+    }
 }

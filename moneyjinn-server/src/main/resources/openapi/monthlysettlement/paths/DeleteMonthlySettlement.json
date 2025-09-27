@@ -1,43 +1,43 @@
 {
-	"delete": {
-		"tags": [
-			"monthly-settlement-controller"
-		],
-		"operationId": "deleteMonthlySettlement",
-		"parameters": [
-			{
-				"name": "year",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			{
-				"name": "month",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int32"
-				}
-			}
-		],
-		"responses": {
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "delete": {
+    "tags": [
+      "monthly-settlement-controller"
+    ],
+    "operationId": "deleteMonthlySettlement",
+    "parameters": [
+      {
+        "name": "year",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      {
+        "name": "month",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    ],
+    "responses": {
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

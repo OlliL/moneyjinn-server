@@ -1,15 +1,15 @@
 {
-	"type": "object",
-	"required": [
-		"moneyflowTransport",
-		"compareDataDatasetTransport"
-	],
-	"properties": {
-		"moneyflowTransport": {
-			"$ref": "./MoneyflowTransport.json"
-		},
-		"compareDataDatasetTransport": {
-			"$ref": "./CompareDataDatasetTransport.json"
-		}
-	}
+  "type": "object",
+  "required": [
+    "moneyflowTransport",
+    "compareDataDatasetTransport"
+  ],
+  "properties": {
+    "moneyflowTransport": {
+      "$ref": "./MoneyflowTransport.json"
+    },
+    "compareDataDatasetTransport": {
+      "$ref": "./CompareDataDatasetTransport.json"
+    }
+  }
 }

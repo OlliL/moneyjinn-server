@@ -1,18 +1,18 @@
 {
-	"type": "object",
-	"required": [
-		"result",
-		"validationItemTransports"
-	],
-	"properties": {
-		"result": {
-			"type": "boolean"
-		},
-		"validationItemTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../transport/ValidationItemTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "required": [
+    "result",
+    "validationItemTransports"
+  ],
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "validationItemTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../transport/ValidationItemTransport.json"
+      }
+    }
+  }
 }

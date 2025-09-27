@@ -26,9 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.ImportedBalance;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -42,61 +43,59 @@ import org.laladev.moneyjinn.service.dao.ImportedBalanceDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedBalanceData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedBalanceDataMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Collections;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedBalanceService extends AbstractService implements IImportedBalanceService {
-	private final ImportedBalanceDao importedBalanceDao;
-	private final IUserService userService;
-	private final ICapitalsourceService capitalsourceService;
-	private final IAccessRelationService accessRelationService;
-	private final ImportedBalanceDataMapper importedBalanceDataMapper;
+    private final ImportedBalanceDao importedBalanceDao;
+    private final IUserService userService;
+    private final ICapitalsourceService capitalsourceService;
+    private final IAccessRelationService accessRelationService;
+    private final ImportedBalanceDataMapper importedBalanceDataMapper;
 
-	private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
-		if (importedBalanceData != null) {
-			final ImportedBalance importedBalance = this.importedBalanceDataMapper.mapBToA(importedBalanceData);
-			importedBalance.setUser(new User(userId));
+    private ImportedBalance mapImportedBalanceData(final UserID userId, final ImportedBalanceData importedBalanceData) {
+        if (importedBalanceData != null) {
+            final ImportedBalance importedBalance = this.importedBalanceDataMapper.mapBToA(importedBalanceData);
+            importedBalance.setUser(new User(userId));
 
-			this.userService.enrichEntity(importedBalance);
-			this.accessRelationService.enrichEntity(importedBalance, importedBalance.getDate().toLocalDate());
-			this.capitalsourceService.enrichEntity(importedBalance);
+            this.userService.enrichEntity(importedBalance);
+            this.accessRelationService.enrichEntity(importedBalance, importedBalance.getDate().toLocalDate());
+            this.capitalsourceService.enrichEntity(importedBalance);
 
-			return importedBalance;
-		}
-		return null;
-	}
+            return importedBalance;
+        }
+        return null;
+    }
 
-	private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
-			final List<ImportedBalanceData> importedBalanceDataList) {
-		return importedBalanceDataList.stream().map(element -> this.mapImportedBalanceData(userId, element)).toList();
-	}
+    private List<ImportedBalance> mapImportedBalanceDataList(final UserID userId,
+                                                             final List<ImportedBalanceData> importedBalanceDataList) {
+        return importedBalanceDataList.stream().map(element -> this.mapImportedBalanceData(userId, element)).toList();
+    }
 
-	@Override
-	public ValidationResult validateImportedBalance(final ImportedBalance importedBalance) {
-		return new ValidationResult();
-	}
+    @Override
+    public ValidationResult validateImportedBalance(final ImportedBalance importedBalance) {
+        return new ValidationResult();
+    }
 
-	@Override
-	public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(@NonNull final UserID userId,
-			@NonNull final List<CapitalsourceID> capitalsourceIds) {
+    @Override
+    public List<ImportedBalance> getAllImportedBalancesByCapitalsourceIds(@NonNull final UserID userId,
+                                                                          @NonNull final List<CapitalsourceID> capitalsourceIds) {
 
-		if (capitalsourceIds.isEmpty()) {
-			return Collections.emptyList();
-		}
+        if (capitalsourceIds.isEmpty()) {
+            return Collections.emptyList();
+        }
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
-		final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
-				.getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
-		return this.mapImportedBalanceDataList(userId, importedBalanceDataList);
-	}
+        final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
+        final List<ImportedBalanceData> importedBalanceDataList = this.importedBalanceDao
+                .getAllImportedBalancesByCapitalsourceIds(capitalsourceIdLongs);
+        return this.mapImportedBalanceDataList(userId, importedBalanceDataList);
+    }
 
-	@Override
-	public void upsertImportedBalance(@NonNull final ImportedBalance importedBalance) {
-		final ImportedBalanceData importedBalanceData = this.importedBalanceDataMapper.mapAToB(importedBalance);
-		this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
-	}
+    @Override
+    public void upsertImportedBalance(@NonNull final ImportedBalance importedBalance) {
+        final ImportedBalanceData importedBalanceData = this.importedBalanceDataMapper.mapAToB(importedBalance);
+        this.importedBalanceDao.upsertImportedBalance(importedBalanceData);
+    }
 }

@@ -1,10 +1,10 @@
 {
-	"description": "Validation Error",
-	"content": {
-		"application/json": {
-			"schema": {
-				"$ref": "ValidationResponse.json"
-			}
-		}
-	}
+  "description": "Validation Error",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "ValidationResponse.json"
+      }
+    }
+  }
 }

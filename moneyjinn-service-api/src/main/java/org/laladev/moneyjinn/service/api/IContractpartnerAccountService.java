@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -53,79 +53,78 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  * @author Oliver Lehmann
  * @since 0.0.1
- *
  */
 public interface IContractpartnerAccountService {
-	/**
-	 * This service validates a given {@link ContractpartnerAccount} for
-	 * correctness.
-	 *
-	 * @param userId                 {@link UserID}
-	 * @param contractpartnerAccount {@link ContractpartnerAccount}
-	 * @return {@link ValidationResult}
-	 */
-	ValidationResult validateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
+    /**
+     * This service validates a given {@link ContractpartnerAccount} for
+     * correctness.
+     *
+     * @param userId                 {@link UserID}
+     * @param contractpartnerAccount {@link ContractpartnerAccount}
+     * @return {@link ValidationResult}
+     */
+    ValidationResult validateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
-	/**
-	 * This service returns the {@link ContractpartnerAccount} specified by its Id.
-	 *
-	 * @param userId                   {@link UserID}
-	 * @param contractpartnerAccountId {@link ContractpartnerAccountID}
-	 * @return {@link ContractpartnerAccount}
-	 */
-	ContractpartnerAccount getContractpartnerAccountById(UserID userId,
-			ContractpartnerAccountID contractpartnerAccountId);
+    /**
+     * This service returns the {@link ContractpartnerAccount} specified by its Id.
+     *
+     * @param userId                   {@link UserID}
+     * @param contractpartnerAccountId {@link ContractpartnerAccountID}
+     * @return {@link ContractpartnerAccount}
+     */
+    ContractpartnerAccount getContractpartnerAccountById(UserID userId,
+                                                         ContractpartnerAccountID contractpartnerAccountId);
 
-	/**
-	 * This service returns the {@link ContractpartnerAccount}s assigned to a given
-	 * {@link ContractpartnerID}.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param contractpartnerId {@link ContractpartnerID}
-	 * @return list of {@link ContractpartnerAccount}s
-	 */
-	List<ContractpartnerAccount> getContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
+    /**
+     * This service returns the {@link ContractpartnerAccount}s assigned to a given
+     * {@link ContractpartnerID}.
+     *
+     * @param userId            {@link UserID}
+     * @param contractpartnerId {@link ContractpartnerID}
+     * @return list of {@link ContractpartnerAccount}s
+     */
+    List<ContractpartnerAccount> getContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
-	/**
-	 * This service persists (creates) the given {@link ContractpartnerAccount}.
-	 *
-	 * @param userId                 {@link UserID}
-	 * @param contractpartnerAccount {@link ContractpartnerAccount}
-	 */
-	ContractpartnerAccountID createContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
+    /**
+     * This service persists (creates) the given {@link ContractpartnerAccount}.
+     *
+     * @param userId                 {@link UserID}
+     * @param contractpartnerAccount {@link ContractpartnerAccount}
+     */
+    ContractpartnerAccountID createContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
-	/**
-	 * This method persists (updates) the given {@link ContractpartnerAccount}.
-	 *
-	 * @param userId                 {@link UserID}
-	 * @param contractpartnerAccount {@link ContractpartnerAccount}
-	 */
-	void updateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
+    /**
+     * This method persists (updates) the given {@link ContractpartnerAccount}.
+     *
+     * @param userId                 {@link UserID}
+     * @param contractpartnerAccount {@link ContractpartnerAccount}
+     */
+    void updateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
-	/**
-	 * This method deletes the given {@link ContractpartnerAccountID}.
-	 *
-	 * @param userId                   {@link UserID}
-	 * @param contractpartnerAccountId {@link ContractpartnerAccountID}
-	 */
-	void deleteContractpartnerAccountById(UserID userId, ContractpartnerAccountID contractpartnerAccountId);
+    /**
+     * This method deletes the given {@link ContractpartnerAccountID}.
+     *
+     * @param userId                   {@link UserID}
+     * @param contractpartnerAccountId {@link ContractpartnerAccountID}
+     */
+    void deleteContractpartnerAccountById(UserID userId, ContractpartnerAccountID contractpartnerAccountId);
 
-	/**
-	 * This method deletes the {@link ContractpartnerAccount}s assigned to a given
-	 * {@link ContractpartnerID}.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param contractpartnerId {@link ContractpartnerID}
-	 */
-	void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
+    /**
+     * This method deletes the {@link ContractpartnerAccount}s assigned to a given
+     * {@link ContractpartnerID}.
+     *
+     * @param userId            {@link UserID}
+     * @param contractpartnerId {@link ContractpartnerID}
+     */
+    void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
-	/**
-	 * This method selects all {@link ContractpartnerAccount}s for the given
-	 * {@link BankAccount}s.
-	 *
-	 * @param userId       {@link UserID}
-	 * @param bankAccounts List of {@link BankAccount}
-	 * @return List of all found {@link ContractpartnerAccount}
-	 */
-	List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
+    /**
+     * This method selects all {@link ContractpartnerAccount}s for the given
+     * {@link BankAccount}s.
+     *
+     * @param userId       {@link UserID}
+     * @param bankAccounts List of {@link BankAccount}
+     * @return List of all found {@link ContractpartnerAccount}
+     */
+    List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
 }

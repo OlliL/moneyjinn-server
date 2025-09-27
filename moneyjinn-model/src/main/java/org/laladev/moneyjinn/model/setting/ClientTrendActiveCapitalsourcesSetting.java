@@ -1,4 +1,3 @@
-
 package org.laladev.moneyjinn.model.setting;
 
 //Copyright (c) 2025 Oliver Lehmann <lehmann@ans-netz.de>
@@ -32,11 +31,10 @@ import lombok.NoArgsConstructor;
  * when using the <code>Trends</code> functionality.
  *
  * @author Oliver Lehmann
- *
  */
 @NoArgsConstructor
 public class ClientTrendActiveCapitalsourcesSetting extends AbstractSetting<Boolean> {
-	public ClientTrendActiveCapitalsourcesSetting(final Boolean setting) {
-		super.setSetting(setting);
-	}
+    public ClientTrendActiveCapitalsourcesSetting(final Boolean setting) {
+        super.setSetting(setting);
+    }
 }

@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"importedBalanceTransport": {
-			"$ref": "../../transport/ImportedBalanceTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "importedBalanceTransport": {
+      "$ref": "../../transport/ImportedBalanceTransport.json"
+    }
+  }
 }

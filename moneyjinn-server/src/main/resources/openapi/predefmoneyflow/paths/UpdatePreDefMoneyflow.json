@@ -1,43 +1,43 @@
 {
-	"put": {
-		"tags": [
-			"pre-def-moneyflow-controller"
-		],
-		"operationId": "updatePreDefMoneyflow",
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../schemas/UpdatePreDefMoneyflowRequest.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			},
-			"422": {
-				"description": "Validation Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ValidationResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "put": {
+    "tags": [
+      "pre-def-moneyflow-controller"
+    ],
+    "operationId": "updatePreDefMoneyflow",
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/UpdatePreDefMoneyflowRequest.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ValidationResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

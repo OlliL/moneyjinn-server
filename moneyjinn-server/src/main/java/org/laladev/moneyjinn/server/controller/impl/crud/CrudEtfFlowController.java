@@ -24,8 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
-import java.util.List;
-
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.etf.EtfFlow;
 import org.laladev.moneyjinn.model.etf.EtfFlowID;
@@ -42,55 +42,54 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CrudEtfFlowController extends AbstractController implements CrudEtfFlowControllerApi {
-	private final IEtfService etfService;
-	private final EtfFlowTransportMapper etfFlowTransportMapper;
+    private final IEtfService etfService;
+    private final EtfFlowTransportMapper etfFlowTransportMapper;
 
-	@Override
-	public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
-		etfFlow.setId(null);
-		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
+    @Override
+    public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,
+                                                   @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
+        etfFlow.setId(null);
+        final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		final EtfFlowID etfId = this.etfService.createEtfFlow(userId, etfFlow);
+        final EtfFlowID etfId = this.etfService.createEtfFlow(userId, etfFlow);
 
-		etfFlow.setId(etfId);
+        etfFlow.setId(etfId);
 
-		return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
+        return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
 
-	}
+    }
 
-	@Override
-	public ResponseEntity<EtfFlowTransport> update(@RequestBody final EtfFlowTransport etfFlowTransport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
-		final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
+    @Override
+    public ResponseEntity<EtfFlowTransport> update(@RequestBody final EtfFlowTransport etfFlowTransport,
+                                                   @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
+        final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		this.etfService.updateEtfFlow(userId, etfFlow);
+        this.etfService.updateEtfFlow(userId, etfFlow);
 
-		return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
-	}
+        return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
+    }
 
-	@Override
-	public ResponseEntity<Void> delete(final Long id) {
-		final UserID userId = super.getUserId();
-		final EtfFlowID etfFlowId = new EtfFlowID(id);
+    @Override
+    public ResponseEntity<Void> delete(final Long id) {
+        final UserID userId = super.getUserId();
+        final EtfFlowID etfFlowId = new EtfFlowID(id);
 
-		this.etfService.deleteEtfFlow(userId, etfFlowId);
+        this.etfService.deleteEtfFlow(userId, etfFlowId);
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 }

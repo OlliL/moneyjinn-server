@@ -30,9 +30,8 @@ package org.laladev.moneyjinn.model.access;
  * A list of Attributes a {@link User} can have.
  *
  * @author Oliver Lehmann
- *
  */
 public enum UserAttribute {
-	NONE,
-	IS_NEW;
+    NONE,
+    IS_NEW
 }

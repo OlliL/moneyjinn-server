@@ -1,16 +1,16 @@
 <configuration>
-        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-                <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-                        by default -->
-                <encoder>
-                        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n</pattern>
-                </encoder>
-        </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder
+                by default -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n</pattern>
+        </encoder>
+    </appender>
 
-        <root level="INFO">
-                <appender-ref ref="STDOUT" />
-        </root>
-        <logger name="org.springframework.jdbc.datasource.init" level="ERROR" />
-        <logger name="org.springframework.test.context.web" level="ERROR" />
-        <logger name="org.laladev.moneyjinn" level="ERROR" />
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <logger name="org.springframework.jdbc.datasource.init" level="ERROR"/>
+    <logger name="org.springframework.test.context.web" level="ERROR"/>
+    <logger name="org.laladev.moneyjinn" level="ERROR"/>
 </configuration>

@@ -26,9 +26,10 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -46,126 +47,124 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowStatusMapper;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImportedMoneyflowService extends AbstractService implements IImportedMoneyflowService {
-	private final ImportedMoneyflowDao importedMoneyflowDao;
-	private final IUserService userService;
-	private final ICapitalsourceService capitalsourceService;
-	private final IAccessRelationService accessRelationService;
-	private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
+    private final ImportedMoneyflowDao importedMoneyflowDao;
+    private final IUserService userService;
+    private final ICapitalsourceService capitalsourceService;
+    private final IAccessRelationService accessRelationService;
+    private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
 
-	private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
-			final ImportedMoneyflowData importedMoneyflowData) {
-		if (importedMoneyflowData != null) {
-			final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowDataMapper.mapBToA(importedMoneyflowData);
-			importedMoneyflow.setUser(new User(userId));
+    private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
+                                                       final ImportedMoneyflowData importedMoneyflowData) {
+        if (importedMoneyflowData != null) {
+            final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowDataMapper.mapBToA(importedMoneyflowData);
+            importedMoneyflow.setUser(new User(userId));
 
-			this.userService.enrichEntity(importedMoneyflow);
-			this.accessRelationService.enrichEntity(importedMoneyflow, importedMoneyflow.getBookingDate());
-			this.capitalsourceService.enrichEntity(importedMoneyflow);
+            this.userService.enrichEntity(importedMoneyflow);
+            this.accessRelationService.enrichEntity(importedMoneyflow, importedMoneyflow.getBookingDate());
+            this.capitalsourceService.enrichEntity(importedMoneyflow);
 
-			return importedMoneyflow;
-		}
-		return null;
-	}
+            return importedMoneyflow;
+        }
+        return null;
+    }
 
-	private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
-			final List<ImportedMoneyflowData> importedMoneyflowDataList) {
-		return importedMoneyflowDataList.stream().map(element -> this.mapImportedMoneyflowData(userId, element))
-				.toList();
-	}
+    private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
+                                                                       final List<ImportedMoneyflowData> importedMoneyflowDataList) {
+        return importedMoneyflowDataList.stream().map(element -> this.mapImportedMoneyflowData(userId, element))
+                .toList();
+    }
 
-	@Override
-	public ValidationResult validateImportedMoneyflow(final ImportedMoneyflow importedMoneyflow) {
-		return new ValidationResult();
-	}
+    @Override
+    public ValidationResult validateImportedMoneyflow(final ImportedMoneyflow importedMoneyflow) {
+        return new ValidationResult();
+    }
 
-	@Override
-	public ImportedMoneyflow getImportedMoneyflowById(@NonNull final UserID userId,
-			@NonNull final ImportedMoneyflowID importedMoneyflowId) {
-		final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDao
-				.getImportedMoneyflowById(importedMoneyflowId.getId());
-		return this.mapImportedMoneyflowData(userId, importedMoneyflowData);
-	}
+    @Override
+    public ImportedMoneyflow getImportedMoneyflowById(@NonNull final UserID userId,
+                                                      @NonNull final ImportedMoneyflowID importedMoneyflowId) {
+        final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDao
+                .getImportedMoneyflowById(importedMoneyflowId.getId());
+        return this.mapImportedMoneyflowData(userId, importedMoneyflowData);
+    }
 
-	@Override
-	public Integer countImportedMoneyflows(@NonNull final UserID userId,
-			@NonNull final List<CapitalsourceID> capitalsourceIds,
-			final ImportedMoneyflowStatus status) {
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
-		return this.importedMoneyflowDao.countImportedMoneyflows(capitalsourceIdLongs,
-				ImportedMoneyflowStatusMapper.map(status));
-	}
+    @Override
+    public Integer countImportedMoneyflows(@NonNull final UserID userId,
+                                           @NonNull final List<CapitalsourceID> capitalsourceIds,
+                                           final ImportedMoneyflowStatus status) {
+        final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
+        return this.importedMoneyflowDao.countImportedMoneyflows(capitalsourceIdLongs,
+                ImportedMoneyflowStatusMapper.map(status));
+    }
 
-	@Override
-	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
-			final List<CapitalsourceID> capitalsourceIds, final LocalDate dateFrom, final LocalDate dateTil) {
-		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null, dateFrom, dateTil);
-	}
+    @Override
+    public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+                                                                              final List<CapitalsourceID> capitalsourceIds, final LocalDate dateFrom, final LocalDate dateTil) {
+        return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null, dateFrom, dateTil);
+    }
 
-	@Override
-	public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
-			final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
-		return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, status, null, null);
-	}
+    @Override
+    public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
+                                                                              final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
+        return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, status, null, null);
+    }
 
-	private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(@NonNull final UserID userId,
-			@NonNull final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
-			final LocalDate dateFrom, final LocalDate dateTil) {
-		final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
+    private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(@NonNull final UserID userId,
+                                                                               @NonNull final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
+                                                                               final LocalDate dateFrom, final LocalDate dateTil) {
+        final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
 
-		LocalDate firewalledDateFrom;
-		LocalDate firewalledDateTil;
-		if (dateFrom == null) {
-			firewalledDateFrom = accessRelation.getValidFrom();
-		} else {
-			firewalledDateFrom = accessRelation.getValidFrom().isAfter(dateFrom) ? accessRelation.getValidFrom()
-					: dateFrom;
-		}
-		if (dateTil == null) {
-			firewalledDateTil = accessRelation.getValidTil();
-		} else {
-			firewalledDateTil = dateTil.isAfter(accessRelation.getValidTil()) ? accessRelation.getValidTil() : dateTil;
-		}
+        final LocalDate firewalledDateFrom;
+        final LocalDate firewalledDateTil;
+        if (dateFrom == null) {
+            firewalledDateFrom = accessRelation.getValidFrom();
+        } else {
+            firewalledDateFrom = accessRelation.getValidFrom().isAfter(dateFrom) ? accessRelation.getValidFrom()
+                    : dateFrom;
+        }
+        if (dateTil == null) {
+            firewalledDateTil = accessRelation.getValidTil();
+        } else {
+            firewalledDateTil = dateTil.isAfter(accessRelation.getValidTil()) ? accessRelation.getValidTil() : dateTil;
+        }
 
-		final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
-		final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
-				.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs,
-						ImportedMoneyflowStatusMapper.map(status), firewalledDateFrom, firewalledDateTil);
-		return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
-	}
+        final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
+        final List<ImportedMoneyflowData> importedMoneyflowDatas = this.importedMoneyflowDao
+                .getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs,
+                        ImportedMoneyflowStatusMapper.map(status), firewalledDateFrom, firewalledDateTil);
+        return this.mapImportedMoneyflowDataList(userId, importedMoneyflowDatas);
+    }
 
-	@Override
-	public void createImportedMoneyflow(@NonNull final ImportedMoneyflow importedMoneyflow) {
-		if (!this.checkIfExternalIdAlreadyExists(importedMoneyflow.getExternalId())) {
-			final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDataMapper
-					.mapAToB(importedMoneyflow);
-			this.importedMoneyflowDao.createImportedMoneyflow(importedMoneyflowData);
-		}
-	}
+    @Override
+    public void createImportedMoneyflow(@NonNull final ImportedMoneyflow importedMoneyflow) {
+        if (!this.checkIfExternalIdAlreadyExists(importedMoneyflow.getExternalId())) {
+            final ImportedMoneyflowData importedMoneyflowData = this.importedMoneyflowDataMapper
+                    .mapAToB(importedMoneyflow);
+            this.importedMoneyflowDao.createImportedMoneyflow(importedMoneyflowData);
+        }
+    }
 
-	@Override
-	public boolean checkIfExternalIdAlreadyExists(@NonNull final String externalId) {
-		return this.importedMoneyflowDao.checkIfExternalIdAlreadyExists(externalId);
-	}
+    @Override
+    public boolean checkIfExternalIdAlreadyExists(@NonNull final String externalId) {
+        return this.importedMoneyflowDao.checkIfExternalIdAlreadyExists(externalId);
+    }
 
-	@Override
-	public void updateImportedMoneyflowStatus(@NonNull final UserID userId,
-			@NonNull final ImportedMoneyflowID importedMoneyflowId,
-			@NonNull final ImportedMoneyflowStatus status) {
-		this.importedMoneyflowDao.updateImportedMoneyflowStatus(importedMoneyflowId.getId(),
-				ImportedMoneyflowStatusMapper.map(status));
-	}
+    @Override
+    public void updateImportedMoneyflowStatus(@NonNull final UserID userId,
+                                              @NonNull final ImportedMoneyflowID importedMoneyflowId,
+                                              @NonNull final ImportedMoneyflowStatus status) {
+        this.importedMoneyflowDao.updateImportedMoneyflowStatus(importedMoneyflowId.getId(),
+                ImportedMoneyflowStatusMapper.map(status));
+    }
 
-	@Override
-	public void deleteImportedMoneyflowById(@NonNull final UserID userId,
-			@NonNull final ImportedMoneyflowID importedMoneyflowId) {
-		this.importedMoneyflowDao.deleteImportedMoneyflowById(importedMoneyflowId.getId());
-	}
+    @Override
+    public void deleteImportedMoneyflowById(@NonNull final UserID userId,
+                                            @NonNull final ImportedMoneyflowID importedMoneyflowId) {
+        this.importedMoneyflowDao.deleteImportedMoneyflowById(importedMoneyflowId.getId());
+    }
 }

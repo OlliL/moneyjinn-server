@@ -1,23 +1,23 @@
 {
-	"type": "object",
-	"properties": {
-		"etfFlowTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/EtfFlowTransport.json"
-			}
-		},
-		"etfEffectiveFlowTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/EtfEffectiveFlowTransport.json"
-			}
-		},
-		"etfSummaryTransport": {
-			"$ref": "../../transport/EtfSummaryTransport.json"
-		},
-		"calcEtfSalePieces": {
-			"type": "number"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "etfFlowTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/EtfFlowTransport.json"
+      }
+    },
+    "etfEffectiveFlowTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/EtfEffectiveFlowTransport.json"
+      }
+    },
+    "etfSummaryTransport": {
+      "$ref": "../../transport/EtfSummaryTransport.json"
+    },
+    "calcEtfSalePieces": {
+      "type": "number"
+    }
+  }
 }

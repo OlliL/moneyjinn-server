@@ -1,243 +1,243 @@
 {
-	"openapi": "3.0.1",
-	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
-	},
-	"servers": [
-		{
-			"url": "http://localhost:8080",
-			"description": "Generated server url"
-		}
-	],
-	"paths": {
-		"/moneyflow/server/capitalsources": {
-			"$ref": "openapi/capitalsource/paths/CrudCapitalsource.json"
-		},
-		"/moneyflow/server/capitalsources/{id}": {
-			"$ref": "openapi/capitalsource/paths/CrudCapitalsourceId.json"
-		},
-		"/moneyflow/server/contractpartners": {
-			"$ref": "openapi/contractpartner/paths/CrudContractpartner.json"
-		},
-		"/moneyflow/server/contractpartners/{id}": {
-			"$ref": "openapi/contractpartner/paths/CrudContractpartnerId.json"
-		},
-		"/moneyflow/server/contractpartneraccounts": {
-			"$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccount.json"
-		},
-		"/moneyflow/server/contractpartneraccounts/{id}": {
-			"$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccountId.json"
-		},
-		"/moneyflow/server/etf": {
-			"$ref": "openapi/etf/paths/CrudEtf.json"
-		},
-		"/moneyflow/server/etf/{id}": {
-			"$ref": "openapi/etf/paths/CrudEtfId.json"
-		},
-		"/moneyflow/server/etfflow": {
-			"$ref": "openapi/etf/paths/CrudEtfFlow.json"
-		},
-		"/moneyflow/server/etfflow/{id}": {
-			"$ref": "openapi/etf/paths/CrudEtfFlowId.json"
-		},
-		"/moneyflow/server/etfpreliminarylumpsumps": {
-			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
-		},
-		"/moneyflow/server/etfpreliminarylumpsumps/getAllForEtf/{etfId}": {
-			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumEtfId.json"
-		},
-		"/moneyflow/server/etfpreliminarylumpsumps/{id}": {
-			"$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumId.json"
-		},
-		"/moneyflow/server/user/changePassword": {
-			"$ref": "openapi/user/paths/ChangePassword.json"
-		},
-		"/moneyflow/server/user/createUser": {
-			"$ref": "openapi/user/paths/CreateUser.json"
-		},
-		"/moneyflow/server/user/deleteUserById/{id}": {
-			"$ref": "openapi/user/paths/DeleteUserById.json"
-		},
-		"/moneyflow/server/user/login": {
-			"$ref": "openapi/user/paths/Login.json"
-		},
-		"/moneyflow/server/user/refreshToken": {
-			"$ref": "openapi/user/paths/RefreshToken.json"
-		},
-		"/moneyflow/server/user/showUserList": {
-			"$ref": "openapi/user/paths/ShowUserList.json"
-		},
-		"/moneyflow/server/user/showEditUser/{id}": {
-			"$ref": "openapi/user/paths/ShowEditUser.json"
-		},
-		"/moneyflow/server/user/updateUser": {
-			"$ref": "openapi/user/paths/UpdateUser.json"
-		},
-		"/moneyflow/server/comparedata/compareData": {
-			"$ref": "openapi/comparedata/paths/CompareData.json"
-		},
-		"/moneyflow/server/comparedata/showCompareDataForm": {
-			"$ref": "openapi/comparedata/paths/ShowCompareDataForm.json"
-		},
-		"/moneyflow/server/etf/calcEtfSale": {
-			"$ref": "openapi/etf/paths/CalcEtfSale.json"
-		},
-		"/moneyflow/server/etf/listEtfOverview/{year}/{month}": {
-			"$ref": "openapi/etf/paths/ListEtfOverview.json"
-		},
-		"/moneyflow/server/etf/listEtfFlows/{id}": {
-			"$ref": "openapi/etf/paths/ListEtfFlowsId.json"
-		},
-		"/moneyflow/server/event/showEventList": {
-			"$ref": "openapi/event/paths/ShowEventList.json"
-		},
-		"/moneyflow/server/group/createGroup": {
-			"$ref": "openapi/group/paths/CreateGroup.json"
-		},
-		"/moneyflow/server/group/deleteGroupById/{id}": {
-			"$ref": "openapi/group/paths/DeleteGroupById.json"
-		},
-		"/moneyflow/server/group/showGroupList": {
-			"$ref": "openapi/group/paths/ShowGroupList.json"
-		},
-		"/moneyflow/server/group/updateGroup": {
-			"$ref": "openapi/group/paths/UpdateGroup.json"
-		},
-		"/moneyflow/server/importedbalance/createImportedBalance": {
-			"$ref": "openapi/importedbalance/paths/CreateImportedBalance.json"
-		},
-		"/moneyflow/server/importedmoneyflowreceipt/createImportedMoneyflowReceipts": {
-			"$ref": "openapi/importedmoneyflowreceipt/paths/CreateImportedMoneyflowReceipts.json"
-		},
-		"/moneyflow/server/importedmoneyflowreceipt/deleteImportedMoneyflowReceiptById/{id}": {
-			"$ref": "openapi/importedmoneyflowreceipt/paths/DeleteImportedMoneyflowReceiptById.json"
-		},
-		"/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}": {
-			"$ref": "openapi/importedmoneyflowreceipt/paths/ImportImportedMoneyflowReceipt.json"
-		},
-		"/moneyflow/server/importedmoneyflowreceipt/showImportImportedMoneyflowReceipts": {
-			"$ref": "openapi/importedmoneyflowreceipt/paths/ShowImportImportedMoneyflowReceipts.json"
-		},
-		"/moneyflow/server/importedmoneyflow/createImportedMoneyflow": {
-			"$ref": "openapi/importedmoneyflow/paths/CreateImportedMoneyflow.json"
-		},
-		"/moneyflow/server/importedmoneyflow/deleteImportedMoneyflowById/{id}": {
-			"$ref": "openapi/importedmoneyflow/paths/DeleteImportedMoneyflowById.json"
-		},
-		"/moneyflow/server/importedmoneyflow/importImportedMoneyflows": {
-			"$ref": "openapi/importedmoneyflow/paths/ImportImportedMoneyflows.json"
-		},
-		"/moneyflow/server/importedmoneyflow/showAddImportedMoneyflows": {
-			"$ref": "openapi/importedmoneyflow/paths/ShowAddImportedMoneyflows.json"
-		},
-		"/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement": {
-			"$ref": "openapi/importedmonthlysettlement/paths/CreateImportedMonthlySettlement.json"
-		},
-		"/moneyflow/server/moneyflow/createMoneyflow": {
-			"$ref": "openapi/moneyflow/paths/CreateMoneyflow.json"
-		},
-		"/moneyflow/server/moneyflow/deleteMoneyflowById/{id}": {
-			"$ref": "openapi/moneyflow/paths/DeleteMoneyflowById.json"
-		},
-		"/moneyflow/server/moneyflow/searchMoneyflows": {
-			"$ref": "openapi/moneyflow/paths/SearchMoneyflows.json"
-		},
-		"/moneyflow/server/moneyflow/searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}": {
-			"$ref": "openapi/moneyflow/paths/SearchMoneyflowsByAmount.json"
-		},
-		"/moneyflow/server/moneyflow/showEditMoneyflow/{id}": {
-			"$ref": "openapi/moneyflow/paths/ShowEditMoneyflow.json"
-		},
-		"/moneyflow/server/moneyflow/updateMoneyflowV2": {
-			"$ref": "openapi/moneyflow/paths/UpdateMoneyflowV2.json"
-		},
-		"/moneyflow/server/moneyflowreceipt/deleteMoneyflowReceipt/{id}": {
-			"$ref": "openapi/moneyflowreceipt/paths/DeleteMoneyflowReceipt.json"
-		},
-		"/moneyflow/server/moneyflowreceipt/showMoneyflowReceipt/{id}": {
-			"$ref": "openapi/moneyflowreceipt/paths/ShowMoneyflowReceipt.json"
-		},
-		"/moneyflow/server/monthlysettlement/deleteMonthlySettlement/{year}/{month}": {
-			"$ref": "openapi/monthlysettlement/paths/DeleteMonthlySettlement.json"
-		},
-		"/moneyflow/server/monthlysettlement/getAvailableMonth": {
-			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonth.json"
-		},
-		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}": {
-			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYear.json"
-		},
-		"/moneyflow/server/monthlysettlement/getAvailableMonth/{year}/{month}": {
-			"$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYearMonth.json"
-		},
-		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate": {
-			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreate.json"
-		},
-		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}": {
-			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYear.json"
-		},
-		"/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}/{month}": {
-			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYearMonth.json"
-		},
-		"/moneyflow/server/monthlysettlement/showMonthlySettlementListV2/{year}/{month}": {
-			"$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementListV2.json"
-		},
-		"/moneyflow/server/monthlysettlement/upsertMonthlySettlement": {
-			"$ref": "openapi/monthlysettlement/paths/UpsertMonthlySettlement.json"
-		},
-		"/moneyflow/server/postingaccount/createPostingAccount": {
-			"$ref": "openapi/postingaccount/paths/CreatePostingAccount.json"
-		},
-		"/moneyflow/server/postingaccount/deletePostingAccountById/{id}": {
-			"$ref": "openapi/postingaccount/paths/DeletePostingAccountById.json"
-		},
-		"/moneyflow/server/postingaccount/showPostingAccountList": {
-			"$ref": "openapi/postingaccount/paths/ShowPostingAccountList.json"
-		},
-		"/moneyflow/server/postingaccount/updatePostingAccount": {
-			"$ref": "openapi/postingaccount/paths/UpdatePostingAccount.json"
-		},
-		"/moneyflow/server/predefmoneyflow/createPreDefMoneyflow": {
-			"$ref": "openapi/predefmoneyflow/paths/CreatePreDefMoneyflow.json"
-		},
-		"/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
-			"$ref": "openapi/predefmoneyflow/paths/DeletePreDefMoneyflow.json"
-		},
-		"/moneyflow/server/predefmoneyflow/showPreDefMoneyflowList": {
-			"$ref": "openapi/predefmoneyflow/paths/ShowPreDefMoneyflowList.json"
-		},
-		"/moneyflow/server/predefmoneyflow/updatePreDefMoneyflow": {
-			"$ref": "openapi/predefmoneyflow/paths/UpdatePreDefMoneyflow.json"
-		},
-		"/moneyflow/server/report/getAvailableMonth": {
-			"$ref": "openapi/report/paths/GetAvailableMonth.json"
-		},
-		"/moneyflow/server/report/getAvailableMonth/{year}": {
-			"$ref": "openapi/report/paths/GetAvailableMonthYear.json"
-		},
-		"/moneyflow/server/report/getAvailableMonth/{year}/{month}": {
-			"$ref": "openapi/report/paths/GetAvailableMonthYearMonth.json"
-		},
-		"/moneyflow/server/report/listReportsV2/{year}/{month}": {
-			"$ref": "openapi/report/paths/ListReportsV2.json"
-		},
-		"/moneyflow/server/report/showMonthlyReportGraph": {
-			"$ref": "openapi/report/paths/ShowMonthlyReportGraph.json"
-		},
-		"/moneyflow/server/report/showReportingForm": {
-			"$ref": "openapi/report/paths/ShowReportingForm.json"
-		},
-		"/moneyflow/server/report/showTrendsForm": {
-			"$ref": "openapi/report/paths/ShowTrendsForm.json"
-		},
-		"/moneyflow/server/report/showTrendsGraph": {
-			"$ref": "openapi/report/paths/ShowTrendsGraph.json"
-		},
-		"/moneyflow/server/report/showYearlyReportGraph": {
-			"$ref": "openapi/report/paths/ShowYearlyReportGraph.json"
-		},
-		"/moneyflow/server/logout": {
-			"$ref": "openapi/Logout.json"
-		}
-	}
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/moneyflow/server/capitalsources": {
+      "$ref": "openapi/capitalsource/paths/CrudCapitalsource.json"
+    },
+    "/moneyflow/server/capitalsources/{id}": {
+      "$ref": "openapi/capitalsource/paths/CrudCapitalsourceId.json"
+    },
+    "/moneyflow/server/contractpartners": {
+      "$ref": "openapi/contractpartner/paths/CrudContractpartner.json"
+    },
+    "/moneyflow/server/contractpartners/{id}": {
+      "$ref": "openapi/contractpartner/paths/CrudContractpartnerId.json"
+    },
+    "/moneyflow/server/contractpartneraccounts": {
+      "$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccount.json"
+    },
+    "/moneyflow/server/contractpartneraccounts/{id}": {
+      "$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccountId.json"
+    },
+    "/moneyflow/server/etf": {
+      "$ref": "openapi/etf/paths/CrudEtf.json"
+    },
+    "/moneyflow/server/etf/{id}": {
+      "$ref": "openapi/etf/paths/CrudEtfId.json"
+    },
+    "/moneyflow/server/etfflow": {
+      "$ref": "openapi/etf/paths/CrudEtfFlow.json"
+    },
+    "/moneyflow/server/etfflow/{id}": {
+      "$ref": "openapi/etf/paths/CrudEtfFlowId.json"
+    },
+    "/moneyflow/server/etfpreliminarylumpsumps": {
+      "$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSum.json"
+    },
+    "/moneyflow/server/etfpreliminarylumpsumps/getAllForEtf/{etfId}": {
+      "$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumEtfId.json"
+    },
+    "/moneyflow/server/etfpreliminarylumpsumps/{id}": {
+      "$ref": "openapi/etf/paths/CrudEtfPreliminaryLumpSumId.json"
+    },
+    "/moneyflow/server/user/changePassword": {
+      "$ref": "openapi/user/paths/ChangePassword.json"
+    },
+    "/moneyflow/server/user/createUser": {
+      "$ref": "openapi/user/paths/CreateUser.json"
+    },
+    "/moneyflow/server/user/deleteUserById/{id}": {
+      "$ref": "openapi/user/paths/DeleteUserById.json"
+    },
+    "/moneyflow/server/user/login": {
+      "$ref": "openapi/user/paths/Login.json"
+    },
+    "/moneyflow/server/user/refreshToken": {
+      "$ref": "openapi/user/paths/RefreshToken.json"
+    },
+    "/moneyflow/server/user/showUserList": {
+      "$ref": "openapi/user/paths/ShowUserList.json"
+    },
+    "/moneyflow/server/user/showEditUser/{id}": {
+      "$ref": "openapi/user/paths/ShowEditUser.json"
+    },
+    "/moneyflow/server/user/updateUser": {
+      "$ref": "openapi/user/paths/UpdateUser.json"
+    },
+    "/moneyflow/server/comparedata/compareData": {
+      "$ref": "openapi/comparedata/paths/CompareData.json"
+    },
+    "/moneyflow/server/comparedata/showCompareDataForm": {
+      "$ref": "openapi/comparedata/paths/ShowCompareDataForm.json"
+    },
+    "/moneyflow/server/etf/calcEtfSale": {
+      "$ref": "openapi/etf/paths/CalcEtfSale.json"
+    },
+    "/moneyflow/server/etf/listEtfOverview/{year}/{month}": {
+      "$ref": "openapi/etf/paths/ListEtfOverview.json"
+    },
+    "/moneyflow/server/etf/listEtfFlows/{id}": {
+      "$ref": "openapi/etf/paths/ListEtfFlowsId.json"
+    },
+    "/moneyflow/server/event/showEventList": {
+      "$ref": "openapi/event/paths/ShowEventList.json"
+    },
+    "/moneyflow/server/group/createGroup": {
+      "$ref": "openapi/group/paths/CreateGroup.json"
+    },
+    "/moneyflow/server/group/deleteGroupById/{id}": {
+      "$ref": "openapi/group/paths/DeleteGroupById.json"
+    },
+    "/moneyflow/server/group/showGroupList": {
+      "$ref": "openapi/group/paths/ShowGroupList.json"
+    },
+    "/moneyflow/server/group/updateGroup": {
+      "$ref": "openapi/group/paths/UpdateGroup.json"
+    },
+    "/moneyflow/server/importedbalance/createImportedBalance": {
+      "$ref": "openapi/importedbalance/paths/CreateImportedBalance.json"
+    },
+    "/moneyflow/server/importedmoneyflowreceipt/createImportedMoneyflowReceipts": {
+      "$ref": "openapi/importedmoneyflowreceipt/paths/CreateImportedMoneyflowReceipts.json"
+    },
+    "/moneyflow/server/importedmoneyflowreceipt/deleteImportedMoneyflowReceiptById/{id}": {
+      "$ref": "openapi/importedmoneyflowreceipt/paths/DeleteImportedMoneyflowReceiptById.json"
+    },
+    "/moneyflow/server/importedmoneyflowreceipt/importImportedMoneyflowReceipt/{id}/{moneyflowid}": {
+      "$ref": "openapi/importedmoneyflowreceipt/paths/ImportImportedMoneyflowReceipt.json"
+    },
+    "/moneyflow/server/importedmoneyflowreceipt/showImportImportedMoneyflowReceipts": {
+      "$ref": "openapi/importedmoneyflowreceipt/paths/ShowImportImportedMoneyflowReceipts.json"
+    },
+    "/moneyflow/server/importedmoneyflow/createImportedMoneyflow": {
+      "$ref": "openapi/importedmoneyflow/paths/CreateImportedMoneyflow.json"
+    },
+    "/moneyflow/server/importedmoneyflow/deleteImportedMoneyflowById/{id}": {
+      "$ref": "openapi/importedmoneyflow/paths/DeleteImportedMoneyflowById.json"
+    },
+    "/moneyflow/server/importedmoneyflow/importImportedMoneyflows": {
+      "$ref": "openapi/importedmoneyflow/paths/ImportImportedMoneyflows.json"
+    },
+    "/moneyflow/server/importedmoneyflow/showAddImportedMoneyflows": {
+      "$ref": "openapi/importedmoneyflow/paths/ShowAddImportedMoneyflows.json"
+    },
+    "/moneyflow/server/importedmonthlysettlement/createImportedMonthlySettlement": {
+      "$ref": "openapi/importedmonthlysettlement/paths/CreateImportedMonthlySettlement.json"
+    },
+    "/moneyflow/server/moneyflow/createMoneyflow": {
+      "$ref": "openapi/moneyflow/paths/CreateMoneyflow.json"
+    },
+    "/moneyflow/server/moneyflow/deleteMoneyflowById/{id}": {
+      "$ref": "openapi/moneyflow/paths/DeleteMoneyflowById.json"
+    },
+    "/moneyflow/server/moneyflow/searchMoneyflows": {
+      "$ref": "openapi/moneyflow/paths/SearchMoneyflows.json"
+    },
+    "/moneyflow/server/moneyflow/searchMoneyflowsByAmount/{amount}/{dateFromStr}/{dateTilStr}": {
+      "$ref": "openapi/moneyflow/paths/SearchMoneyflowsByAmount.json"
+    },
+    "/moneyflow/server/moneyflow/showEditMoneyflow/{id}": {
+      "$ref": "openapi/moneyflow/paths/ShowEditMoneyflow.json"
+    },
+    "/moneyflow/server/moneyflow/updateMoneyflowV2": {
+      "$ref": "openapi/moneyflow/paths/UpdateMoneyflowV2.json"
+    },
+    "/moneyflow/server/moneyflowreceipt/deleteMoneyflowReceipt/{id}": {
+      "$ref": "openapi/moneyflowreceipt/paths/DeleteMoneyflowReceipt.json"
+    },
+    "/moneyflow/server/moneyflowreceipt/showMoneyflowReceipt/{id}": {
+      "$ref": "openapi/moneyflowreceipt/paths/ShowMoneyflowReceipt.json"
+    },
+    "/moneyflow/server/monthlysettlement/deleteMonthlySettlement/{year}/{month}": {
+      "$ref": "openapi/monthlysettlement/paths/DeleteMonthlySettlement.json"
+    },
+    "/moneyflow/server/monthlysettlement/getAvailableMonth": {
+      "$ref": "openapi/monthlysettlement/paths/GetAvailableMonth.json"
+    },
+    "/moneyflow/server/monthlysettlement/getAvailableMonth/{year}": {
+      "$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYear.json"
+    },
+    "/moneyflow/server/monthlysettlement/getAvailableMonth/{year}/{month}": {
+      "$ref": "openapi/monthlysettlement/paths/GetAvailableMonthYearMonth.json"
+    },
+    "/moneyflow/server/monthlysettlement/showMonthlySettlementCreate": {
+      "$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreate.json"
+    },
+    "/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}": {
+      "$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYear.json"
+    },
+    "/moneyflow/server/monthlysettlement/showMonthlySettlementCreate/{year}/{month}": {
+      "$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementCreateYearMonth.json"
+    },
+    "/moneyflow/server/monthlysettlement/showMonthlySettlementListV2/{year}/{month}": {
+      "$ref": "openapi/monthlysettlement/paths/ShowMonthlySettlementListV2.json"
+    },
+    "/moneyflow/server/monthlysettlement/upsertMonthlySettlement": {
+      "$ref": "openapi/monthlysettlement/paths/UpsertMonthlySettlement.json"
+    },
+    "/moneyflow/server/postingaccount/createPostingAccount": {
+      "$ref": "openapi/postingaccount/paths/CreatePostingAccount.json"
+    },
+    "/moneyflow/server/postingaccount/deletePostingAccountById/{id}": {
+      "$ref": "openapi/postingaccount/paths/DeletePostingAccountById.json"
+    },
+    "/moneyflow/server/postingaccount/showPostingAccountList": {
+      "$ref": "openapi/postingaccount/paths/ShowPostingAccountList.json"
+    },
+    "/moneyflow/server/postingaccount/updatePostingAccount": {
+      "$ref": "openapi/postingaccount/paths/UpdatePostingAccount.json"
+    },
+    "/moneyflow/server/predefmoneyflow/createPreDefMoneyflow": {
+      "$ref": "openapi/predefmoneyflow/paths/CreatePreDefMoneyflow.json"
+    },
+    "/moneyflow/server/predefmoneyflow/deletePreDefMoneyflow/{id}": {
+      "$ref": "openapi/predefmoneyflow/paths/DeletePreDefMoneyflow.json"
+    },
+    "/moneyflow/server/predefmoneyflow/showPreDefMoneyflowList": {
+      "$ref": "openapi/predefmoneyflow/paths/ShowPreDefMoneyflowList.json"
+    },
+    "/moneyflow/server/predefmoneyflow/updatePreDefMoneyflow": {
+      "$ref": "openapi/predefmoneyflow/paths/UpdatePreDefMoneyflow.json"
+    },
+    "/moneyflow/server/report/getAvailableMonth": {
+      "$ref": "openapi/report/paths/GetAvailableMonth.json"
+    },
+    "/moneyflow/server/report/getAvailableMonth/{year}": {
+      "$ref": "openapi/report/paths/GetAvailableMonthYear.json"
+    },
+    "/moneyflow/server/report/getAvailableMonth/{year}/{month}": {
+      "$ref": "openapi/report/paths/GetAvailableMonthYearMonth.json"
+    },
+    "/moneyflow/server/report/listReportsV2/{year}/{month}": {
+      "$ref": "openapi/report/paths/ListReportsV2.json"
+    },
+    "/moneyflow/server/report/showMonthlyReportGraph": {
+      "$ref": "openapi/report/paths/ShowMonthlyReportGraph.json"
+    },
+    "/moneyflow/server/report/showReportingForm": {
+      "$ref": "openapi/report/paths/ShowReportingForm.json"
+    },
+    "/moneyflow/server/report/showTrendsForm": {
+      "$ref": "openapi/report/paths/ShowTrendsForm.json"
+    },
+    "/moneyflow/server/report/showTrendsGraph": {
+      "$ref": "openapi/report/paths/ShowTrendsGraph.json"
+    },
+    "/moneyflow/server/report/showYearlyReportGraph": {
+      "$ref": "openapi/report/paths/ShowYearlyReportGraph.json"
+    },
+    "/moneyflow/server/logout": {
+      "$ref": "openapi/Logout.json"
+    }
+  }
 }

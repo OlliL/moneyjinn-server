@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import lombok.Data;
-
 @Data
 public class PostingAccountAmountData {
-	private LocalDate date;
-	private BigDecimal amount;
-	private Long mpaPostingAccountId;
+    private LocalDate date;
+    private BigDecimal amount;
+    private Long mpaPostingAccountId;
 }

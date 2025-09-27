@@ -26,28 +26,28 @@
 
 package org.laladev.moneyjinn.service.dao.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.BankAccountData;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData;
 
+import java.util.List;
+
 public interface IContractpartnerAccountDaoMapper {
-	public ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
-			@Param("accountNumber") String accountNumber);
+    ContractpartnerAccountData getContractpartnerAccountByBankAccount(@Param("bankCode") String bankCode,
+                                                                      @Param("accountNumber") String accountNumber);
 
-	public ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
+    ContractpartnerAccountData getContractpartnerAccountById(@Param("id") Long id);
 
-	public List<ContractpartnerAccountData> getContractpartnerAccounts(
-			@Param("contractpartnerId") Long contractpartnerId);
+    List<ContractpartnerAccountData> getContractpartnerAccounts(
+            @Param("contractpartnerId") Long contractpartnerId);
 
-	public void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
+    void createContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
 
-	public void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
+    void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
 
-	public void deleteContractpartnerAccount(@Param("id") Long id);
+    void deleteContractpartnerAccount(@Param("id") Long id);
 
-	public void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
+    void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);
 
-	public List<ContractpartnerAccountData> getAllContractpartnerByAccounts(List<BankAccountData> bankAccountDatas);
+    List<ContractpartnerAccountData> getAllContractpartnerByAccounts(List<BankAccountData> bankAccountDatas);
 }

@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"postingAccountTransport": {
-			"$ref": "../../transport/PostingAccountTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "postingAccountTransport": {
+      "$ref": "../../transport/PostingAccountTransport.json"
+    }
+  }
 }

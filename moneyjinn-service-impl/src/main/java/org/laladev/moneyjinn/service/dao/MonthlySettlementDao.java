@@ -26,58 +26,57 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
-import org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.MonthlySettlementData;
+import org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MonthlySettlementDao {
-	private final IMonthlySettlementDaoMapper mapper;
+    private final IMonthlySettlementDaoMapper mapper;
 
-	public List<Integer> getAllYears(final Long userId) {
-		return this.mapper.getAllYears(userId);
-	}
+    public List<Integer> getAllYears(final Long userId) {
+        return this.mapper.getAllYears(userId);
+    }
 
-	public List<Integer> getAllMonth(final Long userId, final Integer year) {
-		return this.mapper.getAllMonth(userId, year);
-	}
+    public List<Integer> getAllMonth(final Long userId, final Integer year) {
+        return this.mapper.getAllMonth(userId, year);
+    }
 
-	public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final Long userId, final Integer year,
-			final Integer month) {
-		return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
-	}
+    public List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(final Long userId, final Integer year,
+                                                                           final Integer month) {
+        return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
+    }
 
-	public LocalDate getMaxSettlementDate(final Long userId) {
-		return this.mapper.getMaxSettlementDate(userId);
-	}
+    public LocalDate getMaxSettlementDate(final Long userId) {
+        return this.mapper.getMaxSettlementDate(userId);
+    }
 
-	public LocalDate getMinSettlementDate(final Long userId) {
-		return this.mapper.getMinSettlementDate(userId);
-	}
+    public LocalDate getMinSettlementDate(final Long userId) {
+        return this.mapper.getMinSettlementDate(userId);
+    }
 
-	public boolean checkMonthlySettlementsExists(final Long userId, final Integer year, final Integer month) {
-		return Boolean.TRUE.equals(this.mapper.checkMonthlySettlementsExists(userId, year, month));
-	}
+    public boolean checkMonthlySettlementsExists(final Long userId, final Integer year, final Integer month) {
+        return Boolean.TRUE.equals(this.mapper.checkMonthlySettlementsExists(userId, year, month));
+    }
 
-	public void upsertMonthlySettlement(final MonthlySettlementData monthlySettlementData) {
-		this.mapper.upsertMonthlySettlement(monthlySettlementData);
-	}
+    public void upsertMonthlySettlement(final MonthlySettlementData monthlySettlementData) {
+        this.mapper.upsertMonthlySettlement(monthlySettlementData);
+    }
 
-	public void deleteMonthlySettlement(final Long userId, final Integer year, final Integer month) {
-		this.mapper.deleteMonthlySettlement(userId, year, month);
-	}
+    public void deleteMonthlySettlement(final Long userId, final Integer year, final Integer month) {
+        this.mapper.deleteMonthlySettlement(userId, year, month);
+    }
 
-	public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(final Long user,
-			final int startYear, final int startMonth, final int endYear, final int endMonth,
-			final List<Long> capitalsourceIdLongs) {
-		return this.mapper.getAllMonthlySettlementsByRangeAndCapitalsource(user, startYear, startMonth, endYear,
-				endMonth, capitalsourceIdLongs);
-	}
+    public List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(final Long user,
+                                                                                       final int startYear, final int startMonth, final int endYear, final int endMonth,
+                                                                                       final List<Long> capitalsourceIdLongs) {
+        return this.mapper.getAllMonthlySettlementsByRangeAndCapitalsource(user, startYear, startMonth, endYear,
+                endMonth, capitalsourceIdLongs);
+    }
 }

@@ -1,33 +1,33 @@
 {
-	"type": "object",
-	"properties": {
-		"capitalSourceIds": {
-			"type": "array",
-			"items": {
-				"type": "integer",
-				"format": "int64"
-			}
-		},
-		"etfIds": {
-			"type": "array",
-			"items": {
-				"type": "integer",
-				"format": "int64"
-			}
-		},
-		"settingTrendEtfsActive": {
-			"type": "boolean"
-		},
-		"settingTrendCapitalsourcesActive": {
-			"type": "boolean"
-		},
-		"startDate": {
-			"type": "string",
-			"format": "date"
-		},
-		"endDate": {
-			"type": "string",
-			"format": "date"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "capitalSourceIds": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "etfIds": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "settingTrendEtfsActive": {
+      "type": "boolean"
+    },
+    "settingTrendCapitalsourcesActive": {
+      "type": "boolean"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    }
+  }
 }

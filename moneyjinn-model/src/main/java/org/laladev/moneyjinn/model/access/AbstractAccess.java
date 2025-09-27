@@ -26,24 +26,25 @@
 
 package org.laladev.moneyjinn.model.access;
 
-import java.io.Serializable;
-
-import org.laladev.moneyjinn.model.AbstractEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractEntity;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class AbstractAccess<I extends AccessID> extends AbstractEntity<I> implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String name;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private String name;
 
-	public AbstractAccess(final I id) {
-		super.setId(id);
-	}
+    public AbstractAccess(final I id) {
+        super.setId(id);
+    }
 }

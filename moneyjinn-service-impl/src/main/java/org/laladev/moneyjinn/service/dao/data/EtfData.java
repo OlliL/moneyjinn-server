@@ -26,22 +26,22 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class EtfData {
-	private Long etfid;
-	private Long mauUserId;
-	private Long magGroupId;
-	private String isin;
-	private String name;
-	private String wkn;
-	private String ticker;
-	private String chartUrl;
-	private BigDecimal transCostAbs;
-	private BigDecimal transCostRel;
-	private BigDecimal transCostMax;
-	private BigDecimal partTaxExempt;
+    private Long etfid;
+    private Long mauUserId;
+    private Long magGroupId;
+    private String isin;
+    private String name;
+    private String wkn;
+    private String ticker;
+    private String chartUrl;
+    private BigDecimal transCostAbs;
+    private BigDecimal transCostRel;
+    private BigDecimal transCostMax;
+    private BigDecimal partTaxExempt;
 }

@@ -1,50 +1,50 @@
 {
-	"put": {
-		"tags": [
-			"moneyflow-controller"
-		],
-		"operationId": "updateMoneyflowV2",
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../schemas/UpdateMoneyflowRequest.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/UpdateMoneyflowResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			},
-			"422": {
-				"description": "Validation Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ValidationResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "put": {
+    "tags": [
+      "moneyflow-controller"
+    ],
+    "operationId": "updateMoneyflowV2",
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/UpdateMoneyflowRequest.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/UpdateMoneyflowResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ValidationResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

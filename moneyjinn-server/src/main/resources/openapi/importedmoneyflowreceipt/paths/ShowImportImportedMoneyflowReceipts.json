@@ -1,40 +1,40 @@
 {
-	"get": {
-		"tags": [
-			"imported-moneyflow-receipt-controller"
-		],
-		"operationId": "showImportImportedMoneyflowReceipts",
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/ShowImportImportedMoneyflowReceiptsResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			},
-			"422": {
-				"description": "Validation Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ValidationResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
-},
+  "get": {
+    "tags": [
+      "imported-moneyflow-receipt-controller"
+    ],
+    "operationId": "showImportImportedMoneyflowReceipts",
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/ShowImportImportedMoneyflowReceiptsResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ValidationResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}

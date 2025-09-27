@@ -1,16 +1,16 @@
 {
-	"type": "object",
-	"required": [
-		"receipt",
-		"receiptType"
-	],
-	"properties": {
-		"receipt": {
-			"type": "string"
-		},
-		"receiptType": {
-			"type": "integer",
-			"format": "int32"
-		}
-	}
+  "type": "object",
+  "required": [
+    "receipt",
+    "receiptType"
+  ],
+  "properties": {
+    "receipt": {
+      "type": "string"
+    },
+    "receiptType": {
+      "type": "integer",
+      "format": "int32"
+    }
+  }
 }

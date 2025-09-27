@@ -36,17 +36,17 @@ import org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = { ImportedMonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
-		CapitalsourceIdMapper.class })
+@Mapper(config = MapStructConfig.class, uses = {ImportedMonthlySettlementIdMapper.class, MonthToIntegerMapper.class,
+        CapitalsourceIdMapper.class})
 public interface ImportedMonthlySettlementDataMapper
-		extends IMapstructMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {
-	@Override
-	@Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
-	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "group", ignore = true)
-	ImportedMonthlySettlement mapBToA(ImportedMonthlySettlementData importedMonthlySettlementData);
+        extends IMapstructMapper<ImportedMonthlySettlement, ImportedMonthlySettlementData> {
+    @Override
+    @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "group", ignore = true)
+    ImportedMonthlySettlement mapBToA(ImportedMonthlySettlementData importedMonthlySettlementData);
 
-	@Override
-	@Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
-	ImportedMonthlySettlementData mapAToB(ImportedMonthlySettlement importedMonthlySettlement);
+    @Override
+    @Mapping(target = "mcsCapitalsourceId", source = "capitalsource.id")
+    ImportedMonthlySettlementData mapAToB(ImportedMonthlySettlement importedMonthlySettlement);
 }

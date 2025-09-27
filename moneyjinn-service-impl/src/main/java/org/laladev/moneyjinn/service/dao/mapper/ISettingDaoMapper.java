@@ -34,14 +34,13 @@ import org.laladev.moneyjinn.service.dao.data.SettingData;
  * <code>settings</code>.
  *
  * @author Oliver Lehmann
- *
  */
 public interface ISettingDaoMapper {
-	public SettingData getSetting(@Param("mauUserId") Long mauUserId, @Param("name") String name);
+    SettingData getSetting(@Param("mauUserId") Long mauUserId, @Param("name") String name);
 
-	public void setSetting(SettingData settingData);
+    void setSetting(SettingData settingData);
 
-	public void deleteSetting(@Param("mauUserId") Long mauUserId, @Param("name") String name);
+    void deleteSetting(@Param("mauUserId") Long mauUserId, @Param("name") String name);
 
-	public void deleteSettings(Long id);
+    void deleteSettings(Long id);
 }

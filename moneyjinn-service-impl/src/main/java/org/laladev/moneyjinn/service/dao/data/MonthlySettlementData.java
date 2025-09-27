@@ -26,17 +26,17 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class MonthlySettlementData {
-	private Long id;
-	private Long mauUserId;
-	private Long magGroupId;
-	private Long mcsCapitalsourceId;
-	private Integer month;
-	private Integer year;
-	private BigDecimal amount;
+    private Long id;
+    private Long mauUserId;
+    private Long magGroupId;
+    private Long mcsCapitalsourceId;
+    private Integer month;
+    private Integer year;
+    private BigDecimal amount;
 }

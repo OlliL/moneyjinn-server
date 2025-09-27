@@ -1,50 +1,50 @@
 {
-	"post": {
-		"tags": [
-			"pre-def-moneyflow-controller"
-		],
-		"operationId": "createPreDefMoneyflow",
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../schemas/CreatePreDefMoneyflowRequest.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/CreatePreDefMoneyflowResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			},
-			"422": {
-				"description": "Validation Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ValidationResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "post": {
+    "tags": [
+      "pre-def-moneyflow-controller"
+    ],
+    "operationId": "createPreDefMoneyflow",
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../schemas/CreatePreDefMoneyflowRequest.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/CreatePreDefMoneyflowResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ValidationResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

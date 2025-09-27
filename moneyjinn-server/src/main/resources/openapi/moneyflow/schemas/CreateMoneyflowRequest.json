@@ -1,22 +1,22 @@
 {
-	"type": "object",
-	"properties": {
-		"moneyflowTransport": {
-			"$ref": "../../transport/MoneyflowTransport.json"
-		},
-		"insertMoneyflowSplitEntryTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/MoneyflowSplitEntryTransport.json"
-			}
-		},
-		"usedPreDefMoneyflowId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"saveAsPreDefMoneyflow": {
-			"type": "integer",
-			"format": "int32"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "moneyflowTransport": {
+      "$ref": "../../transport/MoneyflowTransport.json"
+    },
+    "insertMoneyflowSplitEntryTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/MoneyflowSplitEntryTransport.json"
+      }
+    },
+    "usedPreDefMoneyflowId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "saveAsPreDefMoneyflow": {
+      "type": "integer",
+      "format": "int32"
+    }
+  }
 }

@@ -1,41 +1,41 @@
 {
-	"get": {
-		"tags": [
-			"monthly-settlement-controller"
-		],
-		"operationId": "showMonthlySettlementCreateYear",
-		"parameters": [
-			{
-				"name": "year",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int32"
-				}
-			}
-		],
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/ShowMonthlySettlementCreateResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "get": {
+    "tags": [
+      "monthly-settlement-controller"
+    ],
+    "operationId": "showMonthlySettlementCreateYear",
+    "parameters": [
+      {
+        "name": "year",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/ShowMonthlySettlementCreateResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

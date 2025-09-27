@@ -1,64 +1,64 @@
 {
-	"type": "object",
-	"required": [
-		"etfId",
-		"originalBuyPrice",
-		"sellPrice",
-		"newBuyPrice",
-		"profit",
-		"accumulatedPreliminaryLumpSum",
-		"chargeable",
-		"transactionCostsAbsoluteSell",
-		"transactionCostsRelativeSell",
-		"transactionCostsAbsoluteBuy",
-		"transactionCostsRelativeBuy",
-		"rebuyLosses",
-		"overallCosts",
-		"pieces"
-	],
-	"properties": {
-		"etfId": {
-			"type": "integer",
-			"format": "int64"
-		},
-		"originalBuyPrice": {
-			"type": "number"
-		},
-		"sellPrice": {
-			"type": "number"
-		},
-		"newBuyPrice": {
-			"type": "number"
-		},
-		"profit": {
-			"type": "number"
-		},
-		"accumulatedPreliminaryLumpSum": {
-			"type": "number"
-		},
-		"chargeable": {
-			"type": "number"
-		},
-		"transactionCostsAbsoluteSell": {
-			"type": "number"
-		},
-		"transactionCostsRelativeSell": {
-			"type": "number"
-		},
-		"transactionCostsAbsoluteBuy": {
-			"type": "number"
-		},
-		"transactionCostsRelativeBuy": {
-			"type": "number"
-		},
-		"rebuyLosses": {
-			"type": "number"
-		},
-		"overallCosts": {
-			"type": "number"
-		},
-		"pieces": {
-			"type": "number"
-		}
-	}
+  "type": "object",
+  "required": [
+    "etfId",
+    "originalBuyPrice",
+    "sellPrice",
+    "newBuyPrice",
+    "profit",
+    "accumulatedPreliminaryLumpSum",
+    "chargeable",
+    "transactionCostsAbsoluteSell",
+    "transactionCostsRelativeSell",
+    "transactionCostsAbsoluteBuy",
+    "transactionCostsRelativeBuy",
+    "rebuyLosses",
+    "overallCosts",
+    "pieces"
+  ],
+  "properties": {
+    "etfId": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "originalBuyPrice": {
+      "type": "number"
+    },
+    "sellPrice": {
+      "type": "number"
+    },
+    "newBuyPrice": {
+      "type": "number"
+    },
+    "profit": {
+      "type": "number"
+    },
+    "accumulatedPreliminaryLumpSum": {
+      "type": "number"
+    },
+    "chargeable": {
+      "type": "number"
+    },
+    "transactionCostsAbsoluteSell": {
+      "type": "number"
+    },
+    "transactionCostsRelativeSell": {
+      "type": "number"
+    },
+    "transactionCostsAbsoluteBuy": {
+      "type": "number"
+    },
+    "transactionCostsRelativeBuy": {
+      "type": "number"
+    },
+    "rebuyLosses": {
+      "type": "number"
+    },
+    "overallCosts": {
+      "type": "number"
+    },
+    "pieces": {
+      "type": "number"
+    }
+  }
 }

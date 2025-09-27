@@ -1,88 +1,88 @@
 {
-	"post": {
-		"tags": [
-			"crud-etf-preliminary-lump-sum-controller"
-		],
-		"operationId": "create",
-		"description": "Creates the given preliminary lump sum.",
-		"parameters": [
-			{
-				"$ref": "../../abstract/HeaderPrefer.json"
-			}
-		],
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"201": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
-						}
-					}
-				}
-			},
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"422": {
-				"$ref": "../../abstract/422_ValidationError.json"
-			}
-		}
-	},
-	"put": {
-		"tags": [
-			"crud-etf-preliminary-lump-sum-controller"
-		],
-		"operationId": "update",
-		"description": "Updates the given preliminary lump sum.",
-		"parameters": [
-			{
-				"$ref": "../../abstract/HeaderPrefer.json"
-			}
-		],
-		"requestBody": {
-			"content": {
-				"application/json": {
-					"schema": {
-						"$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
-					}
-				}
-			},
-			"required": true
-		},
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
-						}
-					}
-				}
-			},
-			"204": {
-				"description": "OK"
-			},
-			"400": {
-				"$ref": "../../abstract/400_GenericClientError.json"
-			},
-			"422": {
-				"$ref": "../../abstract/422_ValidationError.json"
-			}
-		}
-	}
+  "post": {
+    "tags": [
+      "crud-etf-preliminary-lump-sum-controller"
+    ],
+    "operationId": "create",
+    "description": "Creates the given preliminary lump sum.",
+    "parameters": [
+      {
+        "$ref": "../../abstract/HeaderPrefer.json"
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "201": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
+            }
+          }
+        }
+      },
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "422": {
+        "$ref": "../../abstract/422_ValidationError.json"
+      }
+    }
+  },
+  "put": {
+    "tags": [
+      "crud-etf-preliminary-lump-sum-controller"
+    ],
+    "operationId": "update",
+    "description": "Updates the given preliminary lump sum.",
+    "parameters": [
+      {
+        "$ref": "../../abstract/HeaderPrefer.json"
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../transport/EtfPreliminaryLumpSumTransport.json"
+            }
+          }
+        }
+      },
+      "204": {
+        "description": "OK"
+      },
+      "400": {
+        "$ref": "../../abstract/400_GenericClientError.json"
+      },
+      "422": {
+        "$ref": "../../abstract/422_ValidationError.json"
+      }
+    }
+  }
 }

@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import lombok.Data;
-
 @Data
 public class ImportedBalanceData {
-	private Long mcsCapitalsourceId;
-	private LocalDateTime changedate;
-	private BigDecimal balance;
+    private Long mcsCapitalsourceId;
+    private LocalDateTime changedate;
+    private BigDecimal balance;
 }

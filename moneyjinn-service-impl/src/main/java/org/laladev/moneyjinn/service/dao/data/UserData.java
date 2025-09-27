@@ -30,9 +30,9 @@ import lombok.Data;
 
 @Data
 public class UserData {
-	private Long userid;
-	private String name;
-	private String password;
-	private String role;
-	private boolean changePassword;
+    private Long userid;
+    private String name;
+    private String password;
+    private String role;
+    private boolean changePassword;
 }

@@ -29,18 +29,20 @@ package org.laladev.moneyjinn.model.access;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serial;
+
 /**
  * Describes a Group in the System specifically its ID and name.
  *
  * @author Oliver Lehmann
- *
  */
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class Group extends AbstractAccess<GroupID> {
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public Group(final GroupID id) {
-		super(id);
-	}
+    public Group(final GroupID id) {
+        super(id);
+    }
 }

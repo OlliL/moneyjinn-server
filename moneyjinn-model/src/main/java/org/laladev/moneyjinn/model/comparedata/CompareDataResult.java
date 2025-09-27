@@ -26,32 +26,32 @@
 
 package org.laladev.moneyjinn.model.comparedata;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
-
 @Data
 public class CompareDataResult {
-	private final List<CompareDataMatching> compareDataMatching = new ArrayList<>();
-	private final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsource = new ArrayList<>();
-	private final List<CompareDataNotInFile> compareDataNotInFile = new ArrayList<>();
-	private final List<CompareDataNotInDatabase> compareDataNotInDatabase = new ArrayList<>();
+    private final List<CompareDataMatching> compareDataMatching = new ArrayList<>();
+    private final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsource = new ArrayList<>();
+    private final List<CompareDataNotInFile> compareDataNotInFile = new ArrayList<>();
+    private final List<CompareDataNotInDatabase> compareDataNotInDatabase = new ArrayList<>();
 
-	public final void addCompareDataMatching(final CompareDataMatching compareDataMatching) {
-		this.compareDataMatching.add(compareDataMatching);
-	}
+    public final void addCompareDataMatching(final CompareDataMatching compareDataMatching) {
+        this.compareDataMatching.add(compareDataMatching);
+    }
 
-	public final void addCompareDataWrongCapitalsource(
-			final CompareDataWrongCapitalsource compareDataWrongCapitalsource) {
-		this.compareDataWrongCapitalsource.add(compareDataWrongCapitalsource);
-	}
+    public final void addCompareDataWrongCapitalsource(
+            final CompareDataWrongCapitalsource compareDataWrongCapitalsource) {
+        this.compareDataWrongCapitalsource.add(compareDataWrongCapitalsource);
+    }
 
-	public final void addCompareDataNotInFile(final CompareDataNotInFile compareDataNotInFile) {
-		this.compareDataNotInFile.add(compareDataNotInFile);
-	}
+    public final void addCompareDataNotInFile(final CompareDataNotInFile compareDataNotInFile) {
+        this.compareDataNotInFile.add(compareDataNotInFile);
+    }
 
-	public final void addCompareDataNotInDatabase(final CompareDataNotInDatabase compareDataNotInDatabase) {
-		this.compareDataNotInDatabase.add(compareDataNotInDatabase);
-	}
+    public final void addCompareDataNotInDatabase(final CompareDataNotInDatabase compareDataNotInDatabase) {
+        this.compareDataNotInDatabase.add(compareDataNotInDatabase);
+    }
 }

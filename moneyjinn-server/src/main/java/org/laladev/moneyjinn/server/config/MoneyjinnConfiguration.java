@@ -30,8 +30,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(value = { "org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
-		"org.laladev.moneyjinn.server" })
+@ComponentScan(value = {"org.laladev.moneyjinn.converter", "org.laladev.moneyjinn.service",
+        "org.laladev.moneyjinn.server"})
 @EnableAutoConfiguration
 @EnableCaching
 public class MoneyjinnConfiguration {

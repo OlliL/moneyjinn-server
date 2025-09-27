@@ -5,7 +5,7 @@ import org.laladev.moneyjinn.server.controller.api.CrudEtfPreliminaryLumpSumCont
 
 abstract class AbstractEtfPreliminaryLumpSumTest extends AbstractWebUserControllerTest {
 
-	protected CrudEtfPreliminaryLumpSumControllerApi getMock() {
-		return super.getMock(CrudEtfPreliminaryLumpSumControllerApi.class);
-	}
+    protected CrudEtfPreliminaryLumpSumControllerApi getMock() {
+        return super.getMock(CrudEtfPreliminaryLumpSumControllerApi.class);
+    }
 }

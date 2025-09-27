@@ -30,11 +30,10 @@ package org.laladev.moneyjinn.model.access;
  * A list of roles a {@link User} can have.
  *
  * @author Oliver Lehmann
- *
  */
 public enum UserRole {
-	INACTIVE,
-	STANDARD,
-	IMPORT,
-	ADMIN;
+    INACTIVE,
+    STANDARD,
+    IMPORT,
+    ADMIN
 }

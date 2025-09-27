@@ -26,48 +26,47 @@
 
 package org.laladev.moneyjinn.service.dao;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
-import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.service.dao.data.ContractpartnerData;
+import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerDao {
-	private final IContractpartnerDaoMapper mapper;
+    private final IContractpartnerDaoMapper mapper;
 
-	public List<ContractpartnerData> getAllContractpartners(final Long userId) {
-		return this.mapper.getAllContractpartners(userId);
-	}
+    public List<ContractpartnerData> getAllContractpartners(final Long userId) {
+        return this.mapper.getAllContractpartners(userId);
+    }
 
-	public ContractpartnerData getContractpartnerById(final Long userId, final Long id) {
-		return this.mapper.getContractpartnerById(userId, id);
-	}
+    public ContractpartnerData getContractpartnerById(final Long userId, final Long id) {
+        return this.mapper.getContractpartnerById(userId, id);
+    }
 
-	public ContractpartnerData getContractpartnerByName(final Long userId, final String name) {
-		return this.mapper.getContractpartnerByName(userId, name);
-	}
+    public ContractpartnerData getContractpartnerByName(final Long userId, final String name) {
+        return this.mapper.getContractpartnerByName(userId, name);
+    }
 
-	public Long createContractpartner(final ContractpartnerData contractpartnerData) {
-		this.mapper.createContractpartner(contractpartnerData);
-		return contractpartnerData.getId();
-	}
+    public Long createContractpartner(final ContractpartnerData contractpartnerData) {
+        this.mapper.createContractpartner(contractpartnerData);
+        return contractpartnerData.getId();
+    }
 
-	public void updateContractpartner(final ContractpartnerData contractpartnerData) {
-		this.mapper.updateContractpartner(contractpartnerData);
-	}
+    public void updateContractpartner(final ContractpartnerData contractpartnerData) {
+        this.mapper.updateContractpartner(contractpartnerData);
+    }
 
-	public void deleteContractpartner(final Long groupId, final Long id) {
-		this.mapper.deleteContractpartner(groupId, id);
-	}
+    public void deleteContractpartner(final Long groupId, final Long id) {
+        this.mapper.deleteContractpartner(groupId, id);
+    }
 
-	public boolean checkContractpartnerInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
-			final LocalDate validTil) {
-		return Boolean.TRUE.equals(this.mapper.checkContractpartnerInUseOutOfDate(userId, id, validFrom, validTil));
-	}
+    public boolean checkContractpartnerInUseOutOfDate(final Long userId, final Long id, final LocalDate validFrom,
+                                                      final LocalDate validTil) {
+        return Boolean.TRUE.equals(this.mapper.checkContractpartnerInUseOutOfDate(userId, id, validFrom, validTil));
+    }
 }

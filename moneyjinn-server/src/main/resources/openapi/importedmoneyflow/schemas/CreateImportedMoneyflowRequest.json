@@ -1,8 +1,8 @@
 {
-	"type": "object",
-	"properties": {
-		"importedMoneyflowTransport": {
-			"$ref": "../../transport/ImportedMoneyflowTransport.json"
-		}
-	}
+  "type": "object",
+  "properties": {
+    "importedMoneyflowTransport": {
+      "$ref": "../../transport/ImportedMoneyflowTransport.json"
+    }
+  }
 }

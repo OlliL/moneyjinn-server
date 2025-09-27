@@ -29,18 +29,18 @@ package org.laladev.moneyjinn.hbci.batch.main;
 import java.sql.Connection;
 
 public class MoneyjinnConnectionHolder {
-	private static Connection connection;
+    private static Connection connection;
 
-	private MoneyjinnConnectionHolder() {
+    private MoneyjinnConnectionHolder() {
 
-	}
+    }
 
-	public static void setConnection(final Connection con) {
-		connection = con;
-	}
+    public static Connection getConnection() {
+        return connection;
+    }
 
-	public static Connection getConnection() {
-		return connection;
-	}
+    public static void setConnection(final Connection con) {
+        connection = con;
+    }
 
 }

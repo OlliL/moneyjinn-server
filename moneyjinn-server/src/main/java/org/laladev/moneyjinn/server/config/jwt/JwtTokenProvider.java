@@ -26,17 +26,9 @@
 
 package org.laladev.moneyjinn.server.config.jwt;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-
-import javax.crypto.SecretKey;
-
+import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
@@ -46,141 +38,138 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.java.Log;
+import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.util.*;
+import java.util.logging.Level;
 
 @Component
 @Log
 public class JwtTokenProvider {
-	private static final String CLAIM_USERID = "uid";
-	private static final String CLAIM_ROLES = "roles";
-	private final SecretKey secretKey = Jwts.SIG.HS512.key().build();
-	@Value("${security.jwt.token.expiration-time-in-ms}")
-	private long validityInMilliseconds;
-	@Value("${security.jwt.token.refresh-expiration-time-in-ms}")
-	private long refreshValidityInMilliseconds;
+    private static final String CLAIM_USERID = "uid";
+    private static final String CLAIM_ROLES = "roles";
+    private final SecretKey secretKey = Jwts.SIG.HS512.key().build();
+    @Value("${security.jwt.token.expiration-time-in-ms}")
+    private long validityInMilliseconds;
+    @Value("${security.jwt.token.refresh-expiration-time-in-ms}")
+    private long refreshValidityInMilliseconds;
 
-	public String createToken(final String username, final List<String> roles, final Long userId) {
-		final Claims claims = Jwts.claims()//
-				.subject(username)//
-				.add(CLAIM_ROLES, roles)//
-				.add(CLAIM_USERID, userId)//
-				.build();
+    public String createToken(final String username, final List<String> roles, final Long userId) {
+        final Claims claims = Jwts.claims()//
+                .subject(username)//
+                .add(CLAIM_ROLES, roles)//
+                .add(CLAIM_USERID, userId)//
+                .build();
 
-		final Instant now = Instant.now();
-		final Instant expiration = now.plusMillis(this.validityInMilliseconds);
+        final Instant now = Instant.now();
+        final Instant expiration = now.plusMillis(this.validityInMilliseconds);
 
-		return Jwts.builder()//
-				.claims(claims)//
-				.issuedAt(Date.from(now))//
-				.expiration(Date.from(expiration))//
-				.signWith(this.secretKey)//
-				.compact();
-	}
+        return Jwts.builder()//
+                .claims(claims)//
+                .issuedAt(Date.from(now))//
+                .expiration(Date.from(expiration))//
+                .signWith(this.secretKey)//
+                .compact();
+    }
 
-	public String createRefreshToken(final String username, final Long userId) {
-		final Claims claims = Jwts.claims().subject(username)//
-				.add(CLAIM_ROLES, Arrays.asList(RefreshOnlyGrantedAuthority.ROLE))//
-				.add(CLAIM_USERID, userId)//
-				.build();
+    public String createRefreshToken(final String username, final Long userId) {
+        final Claims claims = Jwts.claims().subject(username)//
+                .add(CLAIM_ROLES, Arrays.asList(RefreshOnlyGrantedAuthority.ROLE))//
+                .add(CLAIM_USERID, userId)//
+                .build();
 
-		final Instant now = Instant.now();
-		final Instant expiration = now.plusMillis(this.refreshValidityInMilliseconds);
+        final Instant now = Instant.now();
+        final Instant expiration = now.plusMillis(this.refreshValidityInMilliseconds);
 
-		return Jwts.builder()//
-				.claims(claims)//
-				.issuedAt(Date.from(now))//
-				.expiration(Date.from(expiration))//
-				.signWith(this.secretKey)//
-				.compact();
-	}
+        return Jwts.builder()//
+                .claims(claims)//
+                .issuedAt(Date.from(now))//
+                .expiration(Date.from(expiration))//
+                .signWith(this.secretKey)//
+                .compact();
+    }
 
-	public Authentication getAuthentication(final String token) {
-		if (token == null)
-			return null;
+    public Authentication getAuthentication(final String token) {
+        if (token == null)
+            return null;
 
-		final var validatedTokenOptional = this.getValidatedToken(token);
+        final var validatedTokenOptional = this.getValidatedToken(token);
 
-		if (validatedTokenOptional.isEmpty())
-			return null;
+        if (validatedTokenOptional.isEmpty())
+            return null;
 
-		final var validatedToken = validatedTokenOptional.get();
+        final var validatedToken = validatedTokenOptional.get();
 
-		final String username = this.getUsername(validatedToken);
-		final Long userId = this.getUserId(validatedToken);
+        final String username = this.getUsername(validatedToken);
+        final Long userId = this.getUserId(validatedToken);
 
-		if (username == null || userId == null)
-			return null;
+        if (username == null || userId == null)
+            return null;
 
-		final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		if (this.isRefreshToken(validatedToken)) {
-			grantedAuthorities.add(new RefreshOnlyGrantedAuthority());
-		} else {
-			this.getRoles(validatedToken).forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p)));
-		}
+        final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        if (this.isRefreshToken(validatedToken)) {
+            grantedAuthorities.add(new RefreshOnlyGrantedAuthority());
+        } else {
+            this.getRoles(validatedToken).forEach(p -> grantedAuthorities.add(new SimpleGrantedAuthority(p)));
+        }
 
-		final var userDetails = new org.springframework.security.core.userdetails.User(username, "",
-				grantedAuthorities);
+        final var userDetails = new org.springframework.security.core.userdetails.User(username, "",
+                grantedAuthorities);
 
-		final var authenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, "",
-				userDetails.getAuthorities());
-		authenticationToken.setDetails(userId);
+        final var authenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, "",
+                userDetails.getAuthorities());
+        authenticationToken.setDetails(userId);
 
-		return authenticationToken;
-	}
+        return authenticationToken;
+    }
 
-	private String getUsername(final Claims payload) {
-		return payload.getSubject();
-	}
+    private String getUsername(final Claims payload) {
+        return payload.getSubject();
+    }
 
-	@SuppressWarnings("unchecked")
-	private List<String> getRoles(final Claims payload) {
-		return payload.get(CLAIM_ROLES, List.class);
-	}
+    @SuppressWarnings("unchecked")
+    private List<String> getRoles(final Claims payload) {
+        return payload.get(CLAIM_ROLES, List.class);
+    }
 
-	private Long getUserId(final Claims payload) {
-		return payload.get(CLAIM_USERID, Long.class);
-	}
+    private Long getUserId(final Claims payload) {
+        return payload.get(CLAIM_USERID, Long.class);
+    }
 
-	private boolean isRefreshToken(final Claims payload) {
-		final Collection<?> roles = payload.get(CLAIM_ROLES, Collection.class);
-		return (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE));
-	}
+    private boolean isRefreshToken(final Claims payload) {
+        final Collection<?> roles = payload.get(CLAIM_ROLES, Collection.class);
+        return (roles != null && roles.contains(RefreshOnlyGrantedAuthority.ROLE));
+    }
 
-	public String resolveToken(final HttpServletRequest req) {
-		final String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
-		return this.extractFromHeader(bearerToken);
-	}
+    public String resolveToken(final HttpServletRequest req) {
+        final String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
+        return this.extractFromHeader(bearerToken);
+    }
 
-	public String resolveToken(final NativeMessageHeaderAccessor accessor) {
-		final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
-		return this.extractFromHeader(bearerToken);
-	}
+    public String resolveToken(final NativeMessageHeaderAccessor accessor) {
+        final String bearerToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+        return this.extractFromHeader(bearerToken);
+    }
 
-	private String extractFromHeader(final String bearerToken) {
-		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring(7, bearerToken.length());
-		}
-		return null;
-	}
+    private String extractFromHeader(final String bearerToken) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length());
+        }
+        return null;
+    }
 
-	private Optional<Claims> getValidatedToken(final String token) {
-		try {
-			return Optional.of(Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload());
-		} catch (final MalformedJwtException e) {
-			log.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
-		} catch (final ExpiredJwtException e) {
-			log.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
-		} catch (final UnsupportedJwtException e) {
-			log.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
-		} catch (final IllegalArgumentException | NullPointerException e) {
-			log.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
-		}
-		return Optional.empty();
-	}
+    private Optional<Claims> getValidatedToken(final String token) {
+        try {
+            return Optional.of(Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token).getPayload());
+        } catch (final MalformedJwtException e) {
+            log.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
+        } catch (final ExpiredJwtException e) {
+            log.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
+        } catch (final UnsupportedJwtException e) {
+            log.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
+        } catch (final IllegalArgumentException | NullPointerException e) {
+            log.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
+        }
+        return Optional.empty();
+    }
 }

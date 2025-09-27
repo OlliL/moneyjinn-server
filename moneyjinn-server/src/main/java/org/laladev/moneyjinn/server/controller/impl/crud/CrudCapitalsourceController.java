@@ -24,8 +24,8 @@
 
 package org.laladev.moneyjinn.server.controller.impl.crud;
 
-import java.util.List;
-
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -46,90 +46,89 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CrudCapitalsourceController extends AbstractController implements CrudCapitalsourceControllerApi {
-	private final IAccessRelationService accessRelationService;
-	private final ICapitalsourceService capitalsourceService;
-	private final IUserService userService;
-	private final CapitalsourceTransportMapper capitalsourceTransportMapper;
+    private final IAccessRelationService accessRelationService;
+    private final ICapitalsourceService capitalsourceService;
+    private final IUserService userService;
+    private final CapitalsourceTransportMapper capitalsourceTransportMapper;
 
-	@Override
-	public ResponseEntity<List<CapitalsourceTransport>> readAll() {
-		final UserID userId = super.getUserId();
-		final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
+    @Override
+    public ResponseEntity<List<CapitalsourceTransport>> readAll() {
+        final UserID userId = super.getUserId();
+        final List<Capitalsource> capitalsources = this.capitalsourceService.getAllCapitalsources(userId);
 
-		return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsources));
-	}
+        return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsources));
+    }
 
-	@Override
-	public ResponseEntity<CapitalsourceTransport> readOne(final Long id) {
-		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentGroup(userId);
-		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
-		final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
-				capitalsourceId);
+    @Override
+    public ResponseEntity<CapitalsourceTransport> readOne(final Long id) {
+        final UserID userId = super.getUserId();
+        final Group group = this.accessRelationService.getCurrentGroup(userId);
+        final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
+        final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceById(userId, group.getId(),
+                capitalsourceId);
 
-		if (capitalsource == null) {
-			return ResponseEntity.notFound().build();
-		}
+        if (capitalsource == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-		return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsource));
-	}
+        return ResponseEntity.ok(this.capitalsourceTransportMapper.mapAToB(capitalsource));
+    }
 
-	@Override
-	public ResponseEntity<CapitalsourceTransport> create(
-			@RequestBody final CapitalsourceTransport capitalsourceTransport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
-		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentGroup(userId);
-		capitalsource.setId(null);
-		capitalsource.setUser(user);
-		capitalsource.setGroup(group);
-		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
+    @Override
+    public ResponseEntity<CapitalsourceTransport> create(
+            @RequestBody final CapitalsourceTransport capitalsourceTransport,
+            @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
+        final User user = this.userService.getUserById(userId);
+        final Group group = this.accessRelationService.getCurrentGroup(userId);
+        capitalsource.setId(null);
+        capitalsource.setUser(user);
+        capitalsource.setGroup(group);
+        final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
+        final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
 
-		capitalsource.setId(capitalsourceId);
-		return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
+        capitalsource.setId(capitalsourceId);
+        return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
 
-	}
+    }
 
-	@Override
-	public ResponseEntity<CapitalsourceTransport> update(
-			@RequestBody final CapitalsourceTransport capitalsourceTransport,
-			@RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
-		final UserID userId = super.getUserId();
-		final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
-		final User user = this.userService.getUserById(userId);
-		final Group group = this.accessRelationService.getCurrentGroup(userId);
-		capitalsource.setUser(user);
-		capitalsource.setGroup(group);
-		final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
+    @Override
+    public ResponseEntity<CapitalsourceTransport> update(
+            @RequestBody final CapitalsourceTransport capitalsourceTransport,
+            @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+        final UserID userId = super.getUserId();
+        final Capitalsource capitalsource = this.capitalsourceTransportMapper.mapBToA(capitalsourceTransport);
+        final User user = this.userService.getUserById(userId);
+        final Group group = this.accessRelationService.getCurrentGroup(userId);
+        capitalsource.setUser(user);
+        capitalsource.setGroup(group);
+        final ValidationResult validationResult = this.capitalsourceService.validateCapitalsource(capitalsource);
 
-		this.throwValidationExceptionIfInvalid(validationResult);
+        this.throwValidationExceptionIfInvalid(validationResult);
 
-		this.capitalsourceService.updateCapitalsource(capitalsource);
+        this.capitalsourceService.updateCapitalsource(capitalsource);
 
-		return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
-	}
+        return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
+    }
 
-	@Override
-	public ResponseEntity<Void> delete(final Long id) {
-		final UserID userId = super.getUserId();
-		final Group group = this.accessRelationService.getCurrentGroup(userId);
-		final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
+    @Override
+    public ResponseEntity<Void> delete(final Long id) {
+        final UserID userId = super.getUserId();
+        final Group group = this.accessRelationService.getCurrentGroup(userId);
+        final CapitalsourceID capitalsourceId = new CapitalsourceID(id);
 
-		this.capitalsourceService.deleteCapitalsource(userId, group.getId(), capitalsourceId);
+        this.capitalsourceService.deleteCapitalsource(userId, group.getId(), capitalsourceId);
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 }

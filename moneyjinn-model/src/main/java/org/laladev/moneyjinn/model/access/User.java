@@ -26,31 +26,32 @@
 
 package org.laladev.moneyjinn.model.access;
 
-import java.util.Collection;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serial;
+import java.util.Collection;
 
 /**
  * Describes a User in the System, its ID, name, password,
  * {@link UserAttribute}s and {@link UserRole}s.
  *
  * @author Oliver Lehmann
- *
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractAccess<UserID> {
-	private static final long serialVersionUID = 1L;
-	private String password;
-	private Collection<UserAttribute> attributes;
-	private UserRole role;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private String password;
+    private Collection<UserAttribute> attributes;
+    private UserRole role;
 
-	public User(final UserID id) {
-		super(id);
-	}
+    public User(final UserID id) {
+        super(id);
+    }
 }

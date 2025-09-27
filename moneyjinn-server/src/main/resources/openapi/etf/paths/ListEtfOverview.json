@@ -1,50 +1,50 @@
 {
-	"get": {
-		"tags": [
-			"etf-controller"
-		],
-		"operationId": "listEtfOverview",
-		"parameters": [
-			{
-				"name": "year",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			{
-				"name": "month",
-				"in": "path",
-				"required": true,
-				"schema": {
-					"type": "integer",
-					"format": "int32"
-				}
-			}
-		],
-		"responses": {
-			"200": {
-				"description": "OK",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../schemas/ListEtfOverviewResponse.json"
-						}
-					}
-				}
-			},
-			"400": {
-				"description": "Generic Client Error",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "../../abstract/ErrorResponse.json"
-						}
-					}
-				}
-			}
-		}
-	}
+  "get": {
+    "tags": [
+      "etf-controller"
+    ],
+    "operationId": "listEtfOverview",
+    "parameters": [
+      {
+        "name": "year",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      {
+        "name": "month",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../schemas/ListEtfOverviewResponse.json"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Generic Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../abstract/ErrorResponse.json"
+            }
+          }
+        }
+      }
+    }
+  }
 }

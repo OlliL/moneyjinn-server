@@ -1,11 +1,11 @@
 {
-	"type": "object",
-	"properties": {
-		"postingAccountTransports": {
-			"type": "array",
-			"items": {
-				"$ref": "../../transport/PostingAccountTransport.json"
-			}
-		}
-	}
+  "type": "object",
+  "properties": {
+    "postingAccountTransports": {
+      "type": "array",
+      "items": {
+        "$ref": "../../transport/PostingAccountTransport.json"
+      }
+    }
+  }
 }

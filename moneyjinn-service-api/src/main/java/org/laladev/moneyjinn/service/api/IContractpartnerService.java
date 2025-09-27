@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.api;
 
-import java.util.List;
-
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerID;
 import org.laladev.moneyjinn.model.IHasContractpartner;
@@ -36,6 +34,8 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -55,79 +55,78 @@ import org.laladev.moneyjinn.model.validation.ValidationResult;
  *
  * @author Oliver Lehmann
  * @since 0.0.1
- *
  */
 public interface IContractpartnerService {
-	/**
-	 * This method validates a given {@link Contractpartner} for correctness.
-	 * <ul>
-	 * <li>check that the given valid-from is before the given valid-til</li>
-	 * <li>check that the name of the <code>Contractpartner</code> is not empty</li>
-	 * <li>check that the specified name is unique and not already used by a
-	 * different <code>Contractpartner</code></li>
-	 * <li>check that when there are no recorded <code>Moneyflow</code>s outside the
-	 * new validty period changing an existing <code>Contractpartner</code></li>
-	 * </ul>
-	 *
-	 * @param contractpartner the {@link Contractpartner} to validate
-	 * @return ValidationResult
-	 */
-	ValidationResult validateContractpartner(Contractpartner contractpartner);
+    /**
+     * This method validates a given {@link Contractpartner} for correctness.
+     * <ul>
+     * <li>check that the given valid-from is before the given valid-til</li>
+     * <li>check that the name of the <code>Contractpartner</code> is not empty</li>
+     * <li>check that the specified name is unique and not already used by a
+     * different <code>Contractpartner</code></li>
+     * <li>check that when there are no recorded <code>Moneyflow</code>s outside the
+     * new validty period changing an existing <code>Contractpartner</code></li>
+     * </ul>
+     *
+     * @param contractpartner the {@link Contractpartner} to validate
+     * @return ValidationResult
+     */
+    ValidationResult validateContractpartner(Contractpartner contractpartner);
 
-	/**
-	 * This service returns the {@link Contractpartner} specified by its Id.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param contractpartnerId {@link ContractpartnerID}
-	 * @return {@link Contractpartner}
-	 */
-	Contractpartner getContractpartnerById(UserID userId, ContractpartnerID contractpartnerId);
+    /**
+     * This service returns the {@link Contractpartner} specified by its Id.
+     *
+     * @param userId            {@link UserID}
+     * @param contractpartnerId {@link ContractpartnerID}
+     * @return {@link Contractpartner}
+     */
+    Contractpartner getContractpartnerById(UserID userId, ContractpartnerID contractpartnerId);
 
-	/**
-	 * This service returns all {@link Contractpartner}s where the given user has
-	 * reading permissions.
-	 *
-	 * @param userId {@link UserID}
-	 * @return a list of {@link Contractpartner}s
-	 */
-	List<Contractpartner> getAllContractpartners(UserID userId);
+    /**
+     * This service returns all {@link Contractpartner}s where the given user has
+     * reading permissions.
+     *
+     * @param userId {@link UserID}
+     * @return a list of {@link Contractpartner}s
+     */
+    List<Contractpartner> getAllContractpartners(UserID userId);
 
-	/**
-	 * This service looks the {@link Contractpartner} up which is valid on the given
-	 * date and has the specified comment.
-	 *
-	 * @param userId {@link UserID}
-	 * @param name
-	 * @return {@link Contractpartner}
-	 */
-	Contractpartner getContractpartnerByName(UserID userId, String name);
+    /**
+     * This service looks the {@link Contractpartner} up which is valid on the given
+     * date and has the specified comment.
+     *
+     * @param userId {@link UserID}
+     * @param name
+     * @return {@link Contractpartner}
+     */
+    Contractpartner getContractpartnerByName(UserID userId, String name);
 
-	/**
-	 * This method persists (updates) the given {@link Contractpartner}.
-	 *
-	 * @param contractpartner {@link Contractpartner}
-	 * @throws BusinessException
-	 */
-	void updateContractpartner(Contractpartner contractpartner);
+    /**
+     * This method persists (updates) the given {@link Contractpartner}.
+     *
+     * @param contractpartner {@link Contractpartner}
+     * @throws BusinessException
+     */
+    void updateContractpartner(Contractpartner contractpartner);
 
-	/**
-	 * This method persists (creates) the given {@link Contractpartner}.
-	 *
-	 * @param contractpartner {@link Contractpartner}
-	 * @return The {@link ContractpartnerID} of the created {@link Contractpartner}
-	 * @throws BusinessException
-	 */
-	ContractpartnerID createContractpartner(Contractpartner contractpartner);
+    /**
+     * This method persists (creates) the given {@link Contractpartner}.
+     *
+     * @param contractpartner {@link Contractpartner}
+     * @return The {@link ContractpartnerID} of the created {@link Contractpartner}
+     * @throws BusinessException
+     */
+    ContractpartnerID createContractpartner(Contractpartner contractpartner);
 
-	/**
-	 * This method deletes the {@link Contractpartner} specified by its Id.
-	 *
-	 * @param userId            {@link UserID}
-	 * @param groupId           {@link GroupID}
-	 * @param contractpartnerId {@link ContractpartnerID}
-	 * @throws BusinessException
-	 */
-	void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
+    /**
+     * This method deletes the {@link Contractpartner} specified by its Id.
+     *
+     * @param userId            {@link UserID}
+     * @param groupId           {@link GroupID}
+     * @param contractpartnerId {@link ContractpartnerID}
+     * @throws BusinessException
+     */
+    void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
 
-	<T extends IHasContractpartner & IHasUser> void enrichEntity(T entity);
+    <T extends IHasContractpartner & IHasUser> void enrichEntity(T entity);
 }

@@ -26,14 +26,14 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
-import java.time.LocalDate;
-
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class AccessRelationData {
-	private Long mauUserId;
-	private Long magGroupId;
-	private LocalDate validFrom;
-	private LocalDate validTil;
+    private Long mauUserId;
+    private Long magGroupId;
+    private LocalDate validFrom;
+    private LocalDate validTil;
 }

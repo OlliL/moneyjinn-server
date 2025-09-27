@@ -26,17 +26,12 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
-import org.laladev.moneyjinn.model.ContractpartnerAccount;
-import org.laladev.moneyjinn.model.ContractpartnerAccountID;
-import org.laladev.moneyjinn.model.ContractpartnerID;
+import org.laladev.moneyjinn.model.*;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
@@ -52,197 +47,197 @@ import org.laladev.moneyjinn.service.dao.data.mapper.BankAccountDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerAccountDataMapper;
 import org.springframework.cache.interceptor.SimpleKey;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerAccountService extends AbstractService implements IContractpartnerAccountService {
-	private final IContractpartnerService contractpartnerService;
-	private final ContractpartnerAccountDao contractpartnerAccountDao;
-	private final IAccessRelationService accessRelationService;
-	private final BankAccountDataMapper bankAccountDataMapper;
-	private final ContractpartnerAccountDataMapper contractpartnerAccountDataMapper;
+    private final IContractpartnerService contractpartnerService;
+    private final ContractpartnerAccountDao contractpartnerAccountDao;
+    private final IAccessRelationService accessRelationService;
+    private final BankAccountDataMapper bankAccountDataMapper;
+    private final ContractpartnerAccountDataMapper contractpartnerAccountDataMapper;
 
-	@Override
-	public ValidationResult validateContractpartnerAccount(final UserID userId,
-			final ContractpartnerAccount contractpartnerAccount) {
+    @Override
+    public ValidationResult validateContractpartnerAccount(final UserID userId,
+                                                           final ContractpartnerAccount contractpartnerAccount) {
 
-		final ValidationResult validationResult = new ValidationResult();
-		final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
-				new ValidationResultItem(contractpartnerAccount.getId(), errorCode));
+        final ValidationResult validationResult = new ValidationResult();
+        final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
+                new ValidationResultItem(contractpartnerAccount.getId(), errorCode));
 
-		if (contractpartnerAccount.getBankAccount() == null) {
-			addResult.accept(ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
-			addResult.accept(ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
-		} else {
-			contractpartnerAccount.getBankAccount().checkValidity().forEach(addResult);
+        if (contractpartnerAccount.getBankAccount() == null) {
+            addResult.accept(ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
+            addResult.accept(ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS_OR_IS_EMPTY);
+        } else {
+            contractpartnerAccount.getBankAccount().checkValidity().forEach(addResult);
 
-			final ContractpartnerAccount contractpartnerAccountChecked = this
-					.getContractpartnerAccountByBankAccount(userId, contractpartnerAccount.getBankAccount());
-			if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
-					|| !contractpartnerAccountChecked.getId().equals(contractpartnerAccount.getId()))) {
-				validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
-						ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
-						Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
-			}
-		}
+            final ContractpartnerAccount contractpartnerAccountChecked = this
+                    .getContractpartnerAccountByBankAccount(userId, contractpartnerAccount.getBankAccount());
+            if (contractpartnerAccountChecked != null && (contractpartnerAccount.getId() == null
+                    || !contractpartnerAccountChecked.getId().equals(contractpartnerAccount.getId()))) {
+                validationResult.addValidationResultItem(new ValidationResultItem(contractpartnerAccount.getId(),
+                        ErrorCode.ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER,
+                        Collections.singletonList(contractpartnerAccountChecked.getContractpartner().getName())));
+            }
+        }
 
-		if (contractpartnerAccount.getContractpartner() == null) {
-			addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
-		} else {
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-					contractpartnerAccount.getContractpartner().getId());
-			if (contractpartner == null) {
-				addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-			}
-		}
+        if (contractpartnerAccount.getContractpartner() == null) {
+            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+        } else {
+            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+                    contractpartnerAccount.getContractpartner().getId());
+            if (contractpartner == null) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+            }
+        }
 
-		return validationResult;
-	}
+        return validationResult;
+    }
 
-	private ContractpartnerAccount mapContractpartnerAccountData(final UserID userId,
-			final ContractpartnerAccountData contractpartnerAccountData) {
-		if (contractpartnerAccountData != null) {
-			final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountDataMapper
-					.mapBToA(contractpartnerAccountData);
-			final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-					contractpartnerAccount.getContractpartner().getId());
-			// this secures the Account - a user which has no access to the partner may not
-			// modify its accounts
-			if (contractpartner != null) {
-				contractpartnerAccount.setContractpartner(contractpartner);
-				return contractpartnerAccount;
-			}
-		}
-		return null;
-	}
+    private ContractpartnerAccount mapContractpartnerAccountData(final UserID userId,
+                                                                 final ContractpartnerAccountData contractpartnerAccountData) {
+        if (contractpartnerAccountData != null) {
+            final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountDataMapper
+                    .mapBToA(contractpartnerAccountData);
+            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+                    contractpartnerAccount.getContractpartner().getId());
+            // this secures the Account - a user which has no access to the partner may not
+            // modify its accounts
+            if (contractpartner != null) {
+                contractpartnerAccount.setContractpartner(contractpartner);
+                return contractpartnerAccount;
+            }
+        }
+        return null;
+    }
 
-	private List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
-			final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
-		return contractpartnerAccountDataList.stream()
-				.map(element -> this.mapContractpartnerAccountData(userId, element)).toList();
-	}
+    private List<ContractpartnerAccount> mapContractpartnerAccountDataList(final UserID userId,
+                                                                           final List<ContractpartnerAccountData> contractpartnerAccountDataList) {
+        return contractpartnerAccountDataList.stream()
+                .map(element -> this.mapContractpartnerAccountData(userId, element)).toList();
+    }
 
-	private ContractpartnerAccount getContractpartnerAccountByBankAccount(@NonNull final UserID userId,
-			@NonNull final BankAccount bankAccount) {
-		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
-				.getContractpartnerAccountByBankAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber());
-		return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
-	}
+    private ContractpartnerAccount getContractpartnerAccountByBankAccount(@NonNull final UserID userId,
+                                                                          @NonNull final BankAccount bankAccount) {
+        final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDao
+                .getContractpartnerAccountByBankAccount(bankAccount.getBankCode(), bankAccount.getAccountNumber());
+        return this.mapContractpartnerAccountData(userId, contractpartnerAccountData);
+    }
 
-	@Override
-	public ContractpartnerAccount getContractpartnerAccountById(@NonNull final UserID userId,
-			@NonNull final ContractpartnerAccountID contractpartnerAccountId) {
-		final Supplier<ContractpartnerAccount> supplier = () -> this.mapContractpartnerAccountData(userId,
-				this.contractpartnerAccountDao.getContractpartnerAccountById(contractpartnerAccountId.getId()));
+    @Override
+    public ContractpartnerAccount getContractpartnerAccountById(@NonNull final UserID userId,
+                                                                @NonNull final ContractpartnerAccountID contractpartnerAccountId) {
+        final Supplier<ContractpartnerAccount> supplier = () -> this.mapContractpartnerAccountData(userId,
+                this.contractpartnerAccountDao.getContractpartnerAccountById(contractpartnerAccountId.getId()));
 
-		return super.getFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
-				new SimpleKey(userId, contractpartnerAccountId), supplier, ContractpartnerAccount.class);
-	}
+        return super.getFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
+                new SimpleKey(userId, contractpartnerAccountId), supplier, ContractpartnerAccount.class);
+    }
 
-	@Override
-	public List<ContractpartnerAccount> getContractpartnerAccounts(@NonNull final UserID userId,
-			@NonNull final ContractpartnerID contractpartnerId) {
-		final Supplier<List<ContractpartnerAccount>> supplier = () -> this.mapContractpartnerAccountDataList(userId,
-				this.contractpartnerAccountDao.getContractpartnerAccounts(contractpartnerId.getId()));
+    @Override
+    public List<ContractpartnerAccount> getContractpartnerAccounts(@NonNull final UserID userId,
+                                                                   @NonNull final ContractpartnerID contractpartnerId) {
+        final Supplier<List<ContractpartnerAccount>> supplier = () -> this.mapContractpartnerAccountDataList(userId,
+                this.contractpartnerAccountDao.getContractpartnerAccounts(contractpartnerId.getId()));
 
-		return super.getListFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
-				new SimpleKey(userId, contractpartnerId), supplier);
+        return super.getListFromCacheOrExecute(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
+                new SimpleKey(userId, contractpartnerId), supplier);
 
-	}
+    }
 
-	@Override
-	public ContractpartnerAccountID createContractpartnerAccount(@NonNull final UserID userId,
-			@NonNull final ContractpartnerAccount contractpartnerAccount) {
-		contractpartnerAccount.setId(null);
+    @Override
+    public ContractpartnerAccountID createContractpartnerAccount(@NonNull final UserID userId,
+                                                                 @NonNull final ContractpartnerAccount contractpartnerAccount) {
+        contractpartnerAccount.setId(null);
 
-		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("ContractpartnerAccount creation failed!", validationResultItem.getError());
-		}
+        final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("ContractpartnerAccount creation failed!", validationResultItem.getError());
+        }
 
-		final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
-				.mapAToB(contractpartnerAccount);
-		final Long contractpartnerAccountId = this.contractpartnerAccountDao
-				.createContractpartnerAccount(contractpartnerAccountData);
-		final ContractpartnerAccountID id = new ContractpartnerAccountID(contractpartnerAccountId);
+        final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
+                .mapAToB(contractpartnerAccount);
+        final Long contractpartnerAccountId = this.contractpartnerAccountDao
+                .createContractpartnerAccount(contractpartnerAccountData);
+        final ContractpartnerAccountID id = new ContractpartnerAccountID(contractpartnerAccountId);
 
-		this.evictContractpartnerAccountCache(userId, id, contractpartnerAccount.getContractpartner().getId());
+        this.evictContractpartnerAccountCache(userId, id, contractpartnerAccount.getContractpartner().getId());
 
-		contractpartnerAccount.setId(id);
-		return id;
-	}
+        contractpartnerAccount.setId(id);
+        return id;
+    }
 
-	@Override
-	public void updateContractpartnerAccount(@NonNull final UserID userId,
-			@NonNull final ContractpartnerAccount contractpartnerAccount) {
-		final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
-		if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
-			final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
-			throw new BusinessException("ContractpartnerAccount update failed!", validationResultItem.getError());
-		}
-		final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,
-				contractpartnerAccount.getId());
-		if (contractpartnerAccountOld != null) {
-			final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
-					.mapAToB(contractpartnerAccount);
-			this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);
-			this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
-					contractpartnerAccount.getContractpartner().getId());
-			if (!contractpartnerAccountOld.getContractpartner().getId()
-					.equals(contractpartnerAccount.getContractpartner().getId())) {
-				this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
-						contractpartnerAccountOld.getContractpartner().getId());
-			}
-		}
-	}
+    @Override
+    public void updateContractpartnerAccount(@NonNull final UserID userId,
+                                             @NonNull final ContractpartnerAccount contractpartnerAccount) {
+        final ValidationResult validationResult = this.validateContractpartnerAccount(userId, contractpartnerAccount);
+        if (!validationResult.isValid() && !validationResult.getValidationResultItems().isEmpty()) {
+            final ValidationResultItem validationResultItem = validationResult.getValidationResultItems().getFirst();
+            throw new BusinessException("ContractpartnerAccount update failed!", validationResultItem.getError());
+        }
+        final ContractpartnerAccount contractpartnerAccountOld = this.getContractpartnerAccountById(userId,
+                contractpartnerAccount.getId());
+        if (contractpartnerAccountOld != null) {
+            final ContractpartnerAccountData contractpartnerAccountData = this.contractpartnerAccountDataMapper
+                    .mapAToB(contractpartnerAccount);
+            this.contractpartnerAccountDao.updateContractpartnerAccount(contractpartnerAccountData);
+            this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
+                    contractpartnerAccount.getContractpartner().getId());
+            if (!contractpartnerAccountOld.getContractpartner().getId()
+                    .equals(contractpartnerAccount.getContractpartner().getId())) {
+                this.evictContractpartnerAccountCache(userId, contractpartnerAccount.getId(),
+                        contractpartnerAccountOld.getContractpartner().getId());
+            }
+        }
+    }
 
-	@Override
-	public void deleteContractpartnerAccountById(@NonNull final UserID userId,
-			@NonNull final ContractpartnerAccountID contractpartnerAccountId) {
-		final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
-				contractpartnerAccountId);
-		if (contractpartnerAccount != null) {
-			this.contractpartnerAccountDao.deleteContractpartnerAccount(contractpartnerAccountId.getId());
-			this.evictContractpartnerAccountCache(userId, contractpartnerAccountId,
-					contractpartnerAccount.getContractpartner().getId());
-		}
-	}
+    @Override
+    public void deleteContractpartnerAccountById(@NonNull final UserID userId,
+                                                 @NonNull final ContractpartnerAccountID contractpartnerAccountId) {
+        final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
+                contractpartnerAccountId);
+        if (contractpartnerAccount != null) {
+            this.contractpartnerAccountDao.deleteContractpartnerAccount(contractpartnerAccountId.getId());
+            this.evictContractpartnerAccountCache(userId, contractpartnerAccountId,
+                    contractpartnerAccount.getContractpartner().getId());
+        }
+    }
 
-	@Override
-	public void deleteContractpartnerAccounts(@NonNull final UserID userId,
-			@NonNull final ContractpartnerID contractpartnerId) {
-		final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
-				contractpartnerId);
-		if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
-			this.contractpartnerAccountDao.deleteContractpartnerAccounts(contractpartnerId.getId());
-			contractpartnerAccounts.forEach(
-					ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));
-		}
-	}
+    @Override
+    public void deleteContractpartnerAccounts(@NonNull final UserID userId,
+                                              @NonNull final ContractpartnerID contractpartnerId) {
+        final List<ContractpartnerAccount> contractpartnerAccounts = this.getContractpartnerAccounts(userId,
+                contractpartnerId);
+        if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()) {
+            this.contractpartnerAccountDao.deleteContractpartnerAccounts(contractpartnerId.getId());
+            contractpartnerAccounts.forEach(
+                    ca -> this.evictContractpartnerAccountCache(userId, ca.getId(), ca.getContractpartner().getId()));
+        }
+    }
 
-	@Override
-	public List<ContractpartnerAccount> getAllContractpartnerByAccounts(@NonNull final UserID userId,
-			@NonNull final List<BankAccount> bankAccounts) {
-		final List<BankAccountData> bankAccountDatas = this.bankAccountDataMapper.mapAToB(bankAccounts);
-		final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
-				.getAllContractpartnerByAccounts(bankAccountDatas);
-		return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
-	}
+    @Override
+    public List<ContractpartnerAccount> getAllContractpartnerByAccounts(@NonNull final UserID userId,
+                                                                        @NonNull final List<BankAccount> bankAccounts) {
+        final List<BankAccountData> bankAccountDatas = this.bankAccountDataMapper.mapAToB(bankAccounts);
+        final List<ContractpartnerAccountData> contractpartnerAccountData = this.contractpartnerAccountDao
+                .getAllContractpartnerByAccounts(bankAccountDatas);
+        return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
+    }
 
-	private void evictContractpartnerAccountCache(final UserID userId,
-			final ContractpartnerAccountID contractpartnerAccountIDd, final ContractpartnerID contractpartnerId) {
-		if (contractpartnerAccountIDd != null) {
-			this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
-				super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
-						new SimpleKey(evictingUserId, contractpartnerId));
-				super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
-						new SimpleKey(evictingUserId, contractpartnerAccountIDd));
-			});
-		}
-	}
+    private void evictContractpartnerAccountCache(final UserID userId,
+                                                  final ContractpartnerAccountID contractpartnerAccountIDd, final ContractpartnerID contractpartnerId) {
+        if (contractpartnerAccountIDd != null) {
+            this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
+                super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,
+                        new SimpleKey(evictingUserId, contractpartnerId));
+                super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNT_BY_ID,
+                        new SimpleKey(evictingUserId, contractpartnerAccountIDd));
+            });
+        }
+    }
 }

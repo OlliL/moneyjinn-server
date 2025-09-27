@@ -24,8 +24,8 @@
 
 package org.laladev.moneyjinn.server.config;
 
-import javax.sql.DataSource;
-
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -35,27 +35,26 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
 
 @Configuration
 @MapperScan("org.laladev.moneyjinn.service.dao.mapper")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DatabaseConfiguration {
-	private final DataSource pool;
+    private final DataSource pool;
 
-	@Bean
-	public SqlSessionFactory sqlSessionFactoryBean() throws Exception {
-		final SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(this.pool);
-		final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		sqlSessionFactoryBean
-				.setMapperLocations(resolver.getResources("classpath:org/laladev/moneyjinn/service/dao/mapper/*.xml"));
-		return sqlSessionFactoryBean.getObject();
-	}
+    @Bean
+    public SqlSessionFactory sqlSessionFactoryBean() throws Exception {
+        final SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(this.pool);
+        final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean
+                .setMapperLocations(resolver.getResources("classpath:org/laladev/moneyjinn/service/dao/mapper/*.xml"));
+        return sqlSessionFactoryBean.getObject();
+    }
 
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager(this.pool);
-	}
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(this.pool);
+    }
 }

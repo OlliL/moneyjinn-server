@@ -24,48 +24,39 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import org.laladev.moneyjinn.model.setting.*;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
-import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
-import org.laladev.moneyjinn.model.setting.ClientListEtfDepotDefaultEtfId;
-import org.laladev.moneyjinn.model.setting.ClientReportingUnselectedPostingAccountIdsSetting;
-import org.laladev.moneyjinn.model.setting.ClientTrendActiveCapitalsourcesSetting;
-import org.laladev.moneyjinn.model.setting.ClientTrendActiveEtfsSetting;
-import org.laladev.moneyjinn.model.setting.ClientTrendCapitalsourceIDsSetting;
-import org.laladev.moneyjinn.model.setting.ClientTrendEtfIDsSetting;
-
 public class SettingNameConverter {
-	private static Map<String, String> lookupMap;
+    private static final Map<String, String> lookupMap;
 
-	static {
-		final Map<String, String> tempMap = new HashMap<>();
-		tempMap.put(ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids");
-		tempMap.put(ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids");
-		tempMap.put(ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources");
-		tempMap.put(ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs");
-		tempMap.put(ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
-				"client_reporting_unselected_posting_account_ids");
-		tempMap.put(ClientCompareDataSelectedCapitalsource.class.getSimpleName(),
-				"client_compare_data_selected_capitalsource");
-		tempMap.put(ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format");
-		tempMap.put(ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
-				"client_compare_data_selected_source_is_file");
-		tempMap.put(ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid");
-		tempMap.put(ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
+    static {
+        final Map<String, String> tempMap = new HashMap<>();
+        tempMap.put(ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids");
+        tempMap.put(ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids");
+        tempMap.put(ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources");
+        tempMap.put(ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs");
+        tempMap.put(ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
+                "client_reporting_unselected_posting_account_ids");
+        tempMap.put(ClientCompareDataSelectedCapitalsource.class.getSimpleName(),
+                "client_compare_data_selected_capitalsource");
+        tempMap.put(ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format");
+        tempMap.put(ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
+                "client_compare_data_selected_source_is_file");
+        tempMap.put(ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid");
+        tempMap.put(ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
 
-		lookupMap = Collections.unmodifiableMap(tempMap);
-	}
+        lookupMap = Collections.unmodifiableMap(tempMap);
+    }
 
-	private SettingNameConverter() {
-	}
+    private SettingNameConverter() {
+    }
 
-	public static String getSettingNameByClassName(final String settingClassName) {
-		return lookupMap.get(settingClassName);
-	}
+    public static String getSettingNameByClassName(final String settingClassName) {
+        return lookupMap.get(settingClassName);
+    }
 
 }

@@ -31,36 +31,36 @@ import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
 public class CapitalsourceImportMapper {
-	private static final int NOT_ALLOWED_INT = 0;
-	private static final int ALL_ALLOWED_INT = 1;
-	private static final int BALANCE_ALLOWED_INT = 2;
+    private static final int NOT_ALLOWED_INT = 0;
+    private static final int ALL_ALLOWED_INT = 1;
+    private static final int BALANCE_ALLOWED_INT = 2;
 
-	private CapitalsourceImportMapper() {
-	}
+    private CapitalsourceImportMapper() {
+    }
 
-	public static CapitalsourceImport map(final Integer capitalsourceImport) {
-		if (capitalsourceImport != null) {
-			return switch (capitalsourceImport) {
-			case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
-			case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
-			case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
-			default ->
-				throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
-			};
-		}
-		return null;
-	}
+    public static CapitalsourceImport map(final Integer capitalsourceImport) {
+        if (capitalsourceImport != null) {
+            return switch (capitalsourceImport) {
+                case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
+                case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
+                case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
+                default ->
+                        throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
+            };
+        }
+        return null;
+    }
 
-	public static Integer map(final CapitalsourceImport capitalsourceImport) {
-		if (capitalsourceImport != null) {
-			return switch (capitalsourceImport) {
-			case NOT_ALLOWED -> NOT_ALLOWED_INT;
-			case ALL_ALLOWED -> ALL_ALLOWED_INT;
-			case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
-			default ->
-				throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
-			};
-		}
-		return null;
-	}
+    public static Integer map(final CapitalsourceImport capitalsourceImport) {
+        if (capitalsourceImport != null) {
+            return switch (capitalsourceImport) {
+                case NOT_ALLOWED -> NOT_ALLOWED_INT;
+                case ALL_ALLOWED -> ALL_ALLOWED_INT;
+                case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
+                default ->
+                        throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
+            };
+        }
+        return null;
+    }
 }

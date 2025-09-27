@@ -29,12 +29,12 @@ package org.laladev.moneyjinn.core.mapper;
 import java.util.List;
 
 public interface IMapper<A, B> {
-	A mapBToA(B b);
+    A mapBToA(B b);
 
-	List<A> mapBToA(List<B> b);
+    List<A> mapBToA(List<B> b);
 
-	B mapAToB(A a);
+    B mapAToB(A a);
 
-	List<B> mapAToB(List<A> a);
+    List<B> mapAToB(List<A> a);
 
 }

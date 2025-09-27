@@ -26,36 +26,37 @@
 
 package org.laladev.moneyjinn.model.access;
 
-import java.time.LocalDate;
-
-import org.laladev.moneyjinn.model.AbstractValidPeriodEntity;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.laladev.moneyjinn.model.AbstractValidPeriodEntity;
+
+import java.io.Serial;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class AccessRelation extends AbstractValidPeriodEntity<UserID> {
-	private static final long serialVersionUID = 1L;
-	private GroupID groupID;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private GroupID groupID;
 
-	public AccessRelation(final UserID id, final GroupID groupID, final LocalDate validFrom, final LocalDate validTil) {
-		super.setId(id);
-		this.groupID = groupID;
-		super.setValidFrom(validFrom);
-		super.setValidTil(validTil);
-	}
+    public AccessRelation(final UserID id, final GroupID groupID, final LocalDate validFrom, final LocalDate validTil) {
+        super.setId(id);
+        this.groupID = groupID;
+        super.setValidFrom(validFrom);
+        super.setValidTil(validTil);
+    }
 
-	public AccessRelation(final AccessRelation accessRelation) {
-		if (accessRelation != null) {
-			this.setId(new UserID(accessRelation.getId().getId()));
-			super.setValidFrom(accessRelation.getValidFrom());
-			super.setValidTil(accessRelation.getValidTil());
-			this.setGroupID(new GroupID(accessRelation.getGroupID().getId()));
-		}
-	}
+    public AccessRelation(final AccessRelation accessRelation) {
+        if (accessRelation != null) {
+            this.setId(new UserID(accessRelation.getId().getId()));
+            super.setValidFrom(accessRelation.getValidFrom());
+            super.setValidTil(accessRelation.getValidTil());
+            this.setGroupID(new GroupID(accessRelation.getGroupID().getId()));
+        }
+    }
 }

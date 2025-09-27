@@ -26,16 +26,16 @@
 
 package org.laladev.moneyjinn.service.dao.data;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import lombok.Data;
-
 @Data
 public class EtfFlowData {
-	private Long etfflowid;
-	private Long metEtfid;
-	private LocalDateTime flowdate;
-	private BigDecimal amount;
-	private BigDecimal price;
+    private Long etfflowid;
+    private Long metEtfid;
+    private LocalDateTime flowdate;
+    private BigDecimal amount;
+    private BigDecimal price;
 }

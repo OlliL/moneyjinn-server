@@ -36,14 +36,14 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
 public interface PostingAccountAmountTransportMapper
-		extends IMapstructMapper<PostingAccountAmount, PostingAccountAmountTransport> {
-	@Override
-	default PostingAccountAmount mapBToA(final PostingAccountAmountTransport postingAccountAmountTransport) {
-		throw new UnsupportedOperationException("Mapping not supported!");
-	}
+        extends IMapstructMapper<PostingAccountAmount, PostingAccountAmountTransport> {
+    @Override
+    default PostingAccountAmount mapBToA(final PostingAccountAmountTransport postingAccountAmountTransport) {
+        throw new UnsupportedOperationException("Mapping not supported!");
+    }
 
-	@Override
-	@Mapping(target = "postingaccountid", source = "postingAccount.id")
-	@Mapping(target = "postingaccountname", source = "postingAccount.name")
-	PostingAccountAmountTransport mapAToB(PostingAccountAmount postingAccountAmount);
+    @Override
+    @Mapping(target = "postingaccountid", source = "postingAccount.id")
+    @Mapping(target = "postingaccountname", source = "postingAccount.name")
+    PostingAccountAmountTransport mapAToB(PostingAccountAmount postingAccountAmount);
 }

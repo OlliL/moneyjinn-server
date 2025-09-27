@@ -26,57 +26,58 @@
 
 package org.laladev.moneyjinn.model;
 
+import lombok.Data;
+import org.laladev.moneyjinn.core.error.ErrorCode;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.laladev.moneyjinn.core.error.ErrorCode;
-
-import lombok.Data;
-
 @Data
 public class BankAccount implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private static final Integer ACCOUNT_NUMBER_MAX_LENGTH = 34;
-	private static final Integer BANK_CODE_MAX_LENGTH = 11;
-	private String accountNumber;
-	private String bankCode;
-	private static final Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private static final Integer ACCOUNT_NUMBER_MAX_LENGTH = 34;
+    private static final Integer BANK_CODE_MAX_LENGTH = 11;
+    private static final Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+    private String accountNumber;
+    private String bankCode;
 
-	public BankAccount(final String accountNumber, final String bankCode) {
-		super();
-		this.accountNumber = accountNumber;
-		this.setBankCode(bankCode);
-	}
+    public BankAccount(final String accountNumber, final String bankCode) {
+        super();
+        this.accountNumber = accountNumber;
+        this.setBankCode(bankCode);
+    }
 
-	public final void setBankCode(final String bankCode) {
-		// Always fill 8 digits BIC to 11 digits BIC!
-		if (bankCode != null && bankCode.length() == 8 && !bankCode.matches("^\\d+$")) {
-			this.bankCode = bankCode + "XXX";
-		} else {
-			this.bankCode = bankCode;
-		}
-	}
+    public final void setBankCode(final String bankCode) {
+        // Always fill 8 digits BIC to 11 digits BIC!
+        if (bankCode != null && bankCode.length() == 8 && !bankCode.matches("^\\d+$")) {
+            this.bankCode = bankCode + "XXX";
+        } else {
+            this.bankCode = bankCode;
+        }
+    }
 
-	public List<ErrorCode> checkValidity() {
-		final List<ErrorCode> errorCodes = new ArrayList<>();
-		if (this.accountNumber != null) {
-			if (this.accountNumber.length() > BankAccount.ACCOUNT_NUMBER_MAX_LENGTH) {
-				errorCodes.add(ErrorCode.ACCOUNT_NUMBER_TO_LONG);
-			}
-			if (pattern.matcher(this.accountNumber).find()) {
-				errorCodes.add(ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS);
-			}
-		}
-		if (this.bankCode != null) {
-			if (this.bankCode.length() > BankAccount.BANK_CODE_MAX_LENGTH) {
-				errorCodes.add(ErrorCode.BANK_CODE_TO_LONG);
-			}
-			if (pattern.matcher(this.bankCode).find()) {
-				errorCodes.add(ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS);
-			}
-		}
-		return errorCodes;
-	}
+    public List<ErrorCode> checkValidity() {
+        final List<ErrorCode> errorCodes = new ArrayList<>();
+        if (this.accountNumber != null) {
+            if (this.accountNumber.length() > BankAccount.ACCOUNT_NUMBER_MAX_LENGTH) {
+                errorCodes.add(ErrorCode.ACCOUNT_NUMBER_TO_LONG);
+            }
+            if (pattern.matcher(this.accountNumber).find()) {
+                errorCodes.add(ErrorCode.ACCOUNT_NUMBER_CONTAINS_ILLEGAL_CHARS);
+            }
+        }
+        if (this.bankCode != null) {
+            if (this.bankCode.length() > BankAccount.BANK_CODE_MAX_LENGTH) {
+                errorCodes.add(ErrorCode.BANK_CODE_TO_LONG);
+            }
+            if (pattern.matcher(this.bankCode).find()) {
+                errorCodes.add(ErrorCode.BANK_CODE_CONTAINS_ILLEGAL_CHARS);
+            }
+        }
+        return errorCodes;
+    }
 }

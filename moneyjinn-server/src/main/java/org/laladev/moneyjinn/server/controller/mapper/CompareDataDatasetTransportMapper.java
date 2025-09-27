@@ -35,11 +35,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class)
 public interface CompareDataDatasetTransportMapper
-		extends IMapstructMapper<CompareDataDataset, CompareDataDatasetTransport> {
-	@Override
-	@Mapping(target = "partnerBankAccount", ignore = true)
-	CompareDataDataset mapBToA(CompareDataDatasetTransport compareDataDatasetTransport);
+        extends IMapstructMapper<CompareDataDataset, CompareDataDatasetTransport> {
+    @Override
+    @Mapping(target = "partnerBankAccount", ignore = true)
+    CompareDataDataset mapBToA(CompareDataDatasetTransport compareDataDatasetTransport);
 
-	@Override
-	CompareDataDatasetTransport mapAToB(CompareDataDataset compareDataDataset);
+    @Override
+    CompareDataDatasetTransport mapAToB(CompareDataDataset compareDataDataset);
 }

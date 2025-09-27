@@ -31,11 +31,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serial;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class PostingAccount extends AbstractEntity<PostingAccountID> {
-	private static final long serialVersionUID = 1L;
-	private String name;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private String name;
 }

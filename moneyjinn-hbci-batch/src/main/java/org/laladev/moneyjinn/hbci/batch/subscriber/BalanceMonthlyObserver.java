@@ -27,9 +27,6 @@
 //
 package org.laladev.moneyjinn.hbci.batch.subscriber;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.laladev.moneyjinn.hbci.backend.ApiException;
 import org.laladev.moneyjinn.hbci.backend.api.ImportedMonthlySettlementControllerApi;
 import org.laladev.moneyjinn.hbci.backend.model.CreateImportedMonthlySettlementRequest;
@@ -37,35 +34,38 @@ import org.laladev.moneyjinn.hbci.backend.model.ImportedMonthlySettlementTranspo
 import org.laladev.moneyjinn.hbci.batch.main.MoneyjinnApiClient;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 public class BalanceMonthlyObserver implements PropertyChangeListener {
 
-	@Override
-	public void propertyChange(final PropertyChangeEvent event) {
-		if (event.getNewValue() instanceof final BalanceMonthly balanceMonthly) {
-			this.notify(balanceMonthly);
-		}
+    @Override
+    public void propertyChange(final PropertyChangeEvent event) {
+        if (event.getNewValue() instanceof final BalanceMonthly balanceMonthly) {
+            this.notify(balanceMonthly);
+        }
 
-	}
+    }
 
-	private void notify(final BalanceMonthly balanceMonthly) {
-		final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransport();
-		transport.setAccountNumberCapitalsource(balanceMonthly.getMyIban());
-		transport.setBankCodeCapitalsource(balanceMonthly.getMyBic());
-		transport.setExternalid(balanceMonthly.getId().toString());
-		transport.setMonth(balanceMonthly.getBalanceMonth());
-		transport.setYear(balanceMonthly.getBalanceYear());
-		transport.setAmount(balanceMonthly.getBalanceValue());
+    private void notify(final BalanceMonthly balanceMonthly) {
+        final ImportedMonthlySettlementTransport transport = new ImportedMonthlySettlementTransport();
+        transport.setAccountNumberCapitalsource(balanceMonthly.getMyIban());
+        transport.setBankCodeCapitalsource(balanceMonthly.getMyBic());
+        transport.setExternalid(balanceMonthly.getId().toString());
+        transport.setMonth(balanceMonthly.getBalanceMonth());
+        transport.setYear(balanceMonthly.getBalanceYear());
+        transport.setAmount(balanceMonthly.getBalanceValue());
 
-		final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
-		request.setImportedMonthlySettlementTransport(transport);
+        final CreateImportedMonthlySettlementRequest request = new CreateImportedMonthlySettlementRequest();
+        request.setImportedMonthlySettlementTransport(transport);
 
-		try {
-			new ImportedMonthlySettlementControllerApi(MoneyjinnApiClient.getApiClient())
-					.createImportedMonthlySettlement(request);
-		} catch (final ApiException e) {
-			e.printStackTrace();
-		}
+        try {
+            new ImportedMonthlySettlementControllerApi(MoneyjinnApiClient.getApiClient())
+                    .createImportedMonthlySettlement(request);
+        } catch (final ApiException e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }
