@@ -107,18 +107,14 @@ class MoneyflowServiceTest extends AbstractTest {
     void test_validateNullUser_raisesException() {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            this.moneyflowService.validateMoneyflow(moneyflow);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> this.moneyflowService.validateMoneyflow(moneyflow));
     }
 
     @Test
     void test_validateNullGroup_raisesException() {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            this.moneyflowService.validateMoneyflow(moneyflow);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> this.moneyflowService.validateMoneyflow(moneyflow));
     }
 
     @Test
@@ -126,9 +122,7 @@ class MoneyflowServiceTest extends AbstractTest {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> {
-            this.moneyflowService.createMoneyflow(moneyflow);
-        });
+        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowService.createMoneyflow(moneyflow));
     }
 
     @Test
@@ -136,9 +130,7 @@ class MoneyflowServiceTest extends AbstractTest {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> {
-            this.moneyflowService.updateMoneyflow(moneyflow);
-        });
+        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowService.updateMoneyflow(moneyflow));
     }
 
     @Test

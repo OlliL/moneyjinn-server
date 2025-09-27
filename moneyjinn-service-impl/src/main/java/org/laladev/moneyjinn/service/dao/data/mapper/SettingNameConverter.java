@@ -26,30 +26,24 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 
 import org.laladev.moneyjinn.model.setting.*;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 public class SettingNameConverter {
     private static final Map<String, String> lookupMap;
 
     static {
-        final Map<String, String> tempMap = new HashMap<>();
-        tempMap.put(ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids");
-        tempMap.put(ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids");
-        tempMap.put(ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources");
-        tempMap.put(ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs");
-        tempMap.put(ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
-                "client_reporting_unselected_posting_account_ids");
-        tempMap.put(ClientCompareDataSelectedCapitalsource.class.getSimpleName(),
-                "client_compare_data_selected_capitalsource");
-        tempMap.put(ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format");
-        tempMap.put(ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
-                "client_compare_data_selected_source_is_file");
-        tempMap.put(ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid");
-        tempMap.put(ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
 
-        lookupMap = Collections.unmodifiableMap(tempMap);
+        lookupMap = Map.of(
+                ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids",
+                ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids",
+                ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources",
+                ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs",
+                ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(), "client_reporting_unselected_posting_account_ids",
+                ClientCompareDataSelectedCapitalsource.class.getSimpleName(), "client_compare_data_selected_capitalsource",
+                ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format",
+                ClientCompareDataSelectedSourceIsFile.class.getSimpleName(), "client_compare_data_selected_source_is_file",
+                ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid",
+                ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
     }
 
     private SettingNameConverter() {

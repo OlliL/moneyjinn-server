@@ -120,7 +120,7 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
     public List<Month> getAllMonth(@NonNull final UserID userId, @NonNull final Integer year) {
         final List<Integer> allMonths = this.monthlySettlementDao.getAllMonth(userId.getId(), year);
         if (allMonths != null) {
-            return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
+            return allMonths.stream().map(Month::of).toList();
         }
         return Collections.emptyList();
     }

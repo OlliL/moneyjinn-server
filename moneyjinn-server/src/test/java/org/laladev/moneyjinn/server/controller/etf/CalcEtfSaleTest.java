@@ -124,8 +124,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
     private CalcEtfSaleResponse getStandardRequestExpected() {
         final BigDecimal pieces = SETTING_SALE_PIECES;
-        final BigDecimal sellPrice = SETTING_SALE_BID_PRICE.multiply(pieces).setScale(2);
-        final BigDecimal newBuyPrice = SETTING_SALE_ASK_PRICE.multiply(pieces).setScale(2);
+        final BigDecimal sellPrice = SETTING_SALE_BID_PRICE.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
+        final BigDecimal newBuyPrice = SETTING_SALE_ASK_PRICE.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
         final BigDecimal originalBuyPrice = new BigDecimal("8020.482782").setScale(2, RoundingMode.HALF_UP);
 
         final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();

@@ -33,6 +33,7 @@ import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.moneyflow.Moneyflow;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -61,6 +62,7 @@ import java.time.LocalDate;
 @ToString(callSuper = true)
 public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID>
         implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser {
+    @Serial
     private static final long serialVersionUID = 1L;
     private User user;
     private BigDecimal amount;

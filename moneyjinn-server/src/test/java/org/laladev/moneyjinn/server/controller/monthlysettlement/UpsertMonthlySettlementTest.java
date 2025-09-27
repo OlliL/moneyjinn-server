@@ -21,7 +21,7 @@ import org.laladev.moneyjinn.service.api.IMonthlySettlementService;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
@@ -53,11 +53,11 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
         final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forNewMonthlySettlement().build();
-        request.setMonthlySettlementTransports(Arrays.asList(monthlySettlementTransport));
+        request.setMonthlySettlementTransports(Collections.singletonList(monthlySettlementTransport));
         super.callUsecaseExpect204(request);
         final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
                 .getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransport.getYear(),
-                        Month.of(monthlySettlementTransport.getMonth().intValue()));
+                        Month.of(monthlySettlementTransport.getMonth()));
         Assertions.assertNotNull(monthlySettlements);
         Assertions.assertEquals(1, monthlySettlements.size());
         Assertions.assertEquals(monthlySettlementTransport.getYear(), monthlySettlements.getFirst().getYear());
@@ -69,7 +69,7 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
     void test_MonthlySettlementForOtherUserUpdate_Error() throws Exception {
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forMonthlySettlement3().build();
-        this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+        this.testError(Collections.singletonList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
     }
 
     @Test
@@ -77,7 +77,7 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forMonthlySettlement1().build();
         monthlySettlementTransport.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE3_ID);
-        this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+        this.testError(List.of(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
     }
 
     @Test
@@ -85,7 +85,7 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forMonthlySettlement1().build();
         monthlySettlementTransport.setAmount(new BigDecimal(9999999));
-        this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.AMOUNT_TO_BIG);
+        this.testError(List.of(monthlySettlementTransport), ErrorCode.AMOUNT_TO_BIG);
     }
 
     @Test
@@ -93,11 +93,11 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forMonthlySettlement1().build();
         monthlySettlementTransport.setAmount(null);
-        this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED);
+        this.testError(List.of(monthlySettlementTransport), ErrorCode.AMOUNT_HAS_TO_BE_SPECIFIED);
     }
 
     @Test
-    void test_regularMonthlySettlementUpdate_SuccessfullNoContent() throws Exception {
+    void test_regularMonthlySettlementUpdate_SuccessfulNoContent() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
         final UpsertMonthlySettlementRequest request = new UpsertMonthlySettlementRequest();
         final List<MonthlySettlementTransport> monthlySettlementTransports = new ArrayList<>();
@@ -111,7 +111,7 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
         super.callUsecaseExpect204(request);
         final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
                 .getAllMonthlySettlementsByYearMonth(userId, monthlySettlementTransports.getFirst().getYear(),
-                        Month.of(monthlySettlementTransports.getFirst().getMonth().intValue()));
+                        Month.of(monthlySettlementTransports.getFirst().getMonth()));
         Assertions.assertNotNull(monthlySettlements);
         Assertions.assertEquals(3, monthlySettlements.size());
         Assertions.assertEquals(0,
@@ -131,6 +131,6 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
     protected void callUsecaseEmptyDatabase() throws Exception {
         final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
                 .forMonthlySettlement3().build();
-        this.testError(Arrays.asList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+        this.testError(Collections.singletonList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
     }
 }

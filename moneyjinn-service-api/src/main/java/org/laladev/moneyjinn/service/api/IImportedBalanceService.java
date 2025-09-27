@@ -69,7 +69,7 @@ public interface IImportedBalanceService {
     void upsertImportedBalance(ImportedBalance importedBalance);
 
     /**
-     * Retrives all {@link ImportedBalance}s for the given {@link CapitalsourceID}s.
+     * Retrieves all {@link ImportedBalance}s for the given {@link CapitalsourceID}s.
      *
      * @param userId           The {@link UserID}
      * @param capitalsourceIds The {@link ImportedBalance}

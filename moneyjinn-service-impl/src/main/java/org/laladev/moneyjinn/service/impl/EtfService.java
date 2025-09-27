@@ -408,7 +408,7 @@ public class EtfService extends AbstractService implements IEtfService {
     }
 
     private List<EtfFlow> calculateEffectiveEtfFlowsUntil(final List<EtfFlow> etfFlows, final LocalDateTime until) {
-        Collections.sort(etfFlows, new EtfFlowComparator());
+        etfFlows.sort(new EtfFlowComparator());
         final List<EtfFlow> etfSalesFlows = etfFlows.stream()
                 .filter(ef -> ef.getAmount().compareTo(BigDecimal.ZERO) < 0).filter(ef -> ef.getTime().isBefore(until))
                 .toList();

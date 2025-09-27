@@ -32,7 +32,6 @@ import org.laladev.moneyjinn.model.IHasContractpartner;
 import org.laladev.moneyjinn.model.IHasUser;
 import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
 import java.util.List;
@@ -96,7 +95,6 @@ public interface IContractpartnerService {
      * date and has the specified comment.
      *
      * @param userId {@link UserID}
-     * @param name
      * @return {@link Contractpartner}
      */
     Contractpartner getContractpartnerByName(UserID userId, String name);
@@ -105,7 +103,6 @@ public interface IContractpartnerService {
      * This method persists (updates) the given {@link Contractpartner}.
      *
      * @param contractpartner {@link Contractpartner}
-     * @throws BusinessException
      */
     void updateContractpartner(Contractpartner contractpartner);
 
@@ -114,7 +111,6 @@ public interface IContractpartnerService {
      *
      * @param contractpartner {@link Contractpartner}
      * @return The {@link ContractpartnerID} of the created {@link Contractpartner}
-     * @throws BusinessException
      */
     ContractpartnerID createContractpartner(Contractpartner contractpartner);
 
@@ -124,7 +120,6 @@ public interface IContractpartnerService {
      * @param userId            {@link UserID}
      * @param groupId           {@link GroupID}
      * @param contractpartnerId {@link ContractpartnerID}
-     * @throws BusinessException
      */
     void deleteContractpartner(UserID userId, GroupID groupId, ContractpartnerID contractpartnerId);
 

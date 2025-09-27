@@ -126,13 +126,8 @@ public class AbstractAccountEntitiy {
             return false;
         }
         if (this.myIban == null) {
-            if (other.myIban != null) {
-                return false;
-            }
-        } else if (!this.myIban.equals(other.myIban)) {
-            return false;
-        }
-        return true;
+            return other.myIban == null;
+        } else return this.myIban.equals(other.myIban);
     }
 
 }

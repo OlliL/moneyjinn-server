@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 
     public String createRefreshToken(final String username, final Long userId) {
         final Claims claims = Jwts.claims().subject(username)//
-                .add(CLAIM_ROLES, Arrays.asList(RefreshOnlyGrantedAuthority.ROLE))//
+                .add(CLAIM_ROLES, List.of(RefreshOnlyGrantedAuthority.ROLE))//
                 .add(CLAIM_USERID, userId)//
                 .build();
 
@@ -153,7 +153,7 @@ public class JwtTokenProvider {
 
     private String extractFromHeader(final String bearerToken) {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }

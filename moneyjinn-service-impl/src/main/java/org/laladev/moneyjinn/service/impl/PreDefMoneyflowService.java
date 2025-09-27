@@ -68,7 +68,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
     private final PreDefMoneyflowDao preDefMoneyflowDao;
     private final PreDefMoneyflowDataMapper preDefMoneyflowDataMapper;
 
-    private final PreDefMoneyflow mapPreDefMoneyflowData(final PreDefMoneyflowData preDefMoneyflowData) {
+    private PreDefMoneyflow mapPreDefMoneyflowData(final PreDefMoneyflowData preDefMoneyflowData) {
         if (preDefMoneyflowData != null) {
             final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowDataMapper.mapBToA(preDefMoneyflowData);
 
@@ -107,7 +107,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
                 addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
             } else if (!capitalsource.groupUseAllowed(userId)) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
-            } else if (!capitalsource.dateIsInValidPeriod(today)) {
+            } else if (capitalsource.dateIsOutsideValidPeriod(today)) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
             } else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
@@ -121,7 +121,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
                     preDefMoneyflow.getContractpartner().getId());
             if (contractpartner == null) {
                 addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-            } else if (!contractpartner.dateIsInValidPeriod(today)) {
+            } else if (contractpartner.dateIsOutsideValidPeriod(today)) {
                 addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
             }
         }

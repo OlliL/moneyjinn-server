@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
@@ -384,7 +385,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry1().build();
         mseTransport.setAmount(BigDecimal.TEN);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, null,
+        this.testError(transport, null, List.of(mseTransport), null, null,
                 ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
     }
 
@@ -393,7 +394,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry1().build();
-        this.testError(transport, null, null, Arrays.asList(mseTransport), null,
+        this.testError(transport, null, null, Collections.singletonList(mseTransport), null,
                 ErrorCode.SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT);
     }
 
@@ -403,7 +404,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setComment("");
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.COMMENT_IS_NOT_SET);
     }
 
@@ -413,7 +414,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setAmount(BigDecimal.ZERO);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -424,7 +425,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setAmount(new BigDecimal("0.00000"));
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -434,7 +435,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setComment(null);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.COMMENT_IS_NOT_SET);
     }
 
@@ -444,7 +445,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setAmount(null);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -454,7 +455,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setPostingaccountid(null);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
@@ -464,7 +465,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
-        this.testError(transport, null, Arrays.asList(mseTransport), null, mseTransport.getId(),
+        this.testError(transport, null, List.of(mseTransport), null, mseTransport.getId(),
                 ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
@@ -474,7 +475,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setComment("");
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.COMMENT_IS_NOT_SET);
     }
 
@@ -484,7 +485,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setAmount(BigDecimal.ZERO);
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -495,7 +496,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setAmount(new BigDecimal("0.00000"));
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -505,7 +506,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setComment(null);
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.COMMENT_IS_NOT_SET);
     }
 
@@ -515,7 +516,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setAmount(null);
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.AMOUNT_IS_ZERO);
     }
 
@@ -525,7 +526,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setPostingaccountid(null);
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
@@ -535,7 +536,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowSplitEntryTransport mseTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forNewMoneyflowSplitEntry().build();
         mseTransport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
-        this.testError(transport, null, null, Arrays.asList(mseTransport), mseTransport.getId(),
+        this.testError(transport, null, null, List.of(mseTransport), mseTransport.getId(),
                 ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
@@ -545,16 +546,16 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
         request.setMoneyflowTransport(transport);
         request.setDeleteMoneyflowSplitEntryIds(
-                Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+                List.of(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
         final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         updateTransport.setAmount(new BigDecimal("-0.60"));
-        request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+        request.setUpdateMoneyflowSplitEntryTransports(List.of(updateTransport));
         final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry1().build();
         insertTransport.setAmount(new BigDecimal("-0.50"));
         insertTransport.setComment("inserted");
-        request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+        request.setInsertMoneyflowSplitEntryTransports(List.of(insertTransport));
 
         final UpdateMoneyflowResponse response = super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 
@@ -572,11 +573,11 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
         request.setMoneyflowTransport(transport);
         request.setDeleteMoneyflowSplitEntryIds(
-                Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+                List.of(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
         final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         updateTransport.setAmount(new BigDecimal("-1.10"));
-        request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+        request.setUpdateMoneyflowSplitEntryTransports(List.of(updateTransport));
 
         super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 
@@ -584,7 +585,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
                 .getMoneyflowSplitEntries(userId, moneyflowId);
         Assertions.assertEquals(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY2_ID,
                 moneyflowSplitEntries.getFirst().getId().getId());
-        Assertions.assertEquals(moneyflowSplitEntries.getFirst().getAmount(), new BigDecimal("-1.10"));
+        Assertions.assertEquals(new BigDecimal("-1.10"), moneyflowSplitEntries.getFirst().getAmount());
     }
 
     private void test_SplitEntries_DeleteUpdate_With_Wrong_MoneyflowId_Corrected_Create_Mse_for_Moneyflow_2()
@@ -634,7 +635,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         Assertions.assertEquals(0, moneyflowSplitEntries.getFirst().getAmount().compareTo(new BigDecimal(".10")));
         Assertions.assertEquals("inserted1", moneyflowSplitEntries.getFirst().getComment());
         Assertions.assertEquals(moneyflowSplitEntries.get(1).getId().getId(),
-                Long.valueOf(Long.sum(MoneyflowSplitEntryTransportBuilder.NEXT_ID.longValue(), 1L)));
+                Long.valueOf(Long.sum(MoneyflowSplitEntryTransportBuilder.NEXT_ID, 1L)));
         Assertions.assertEquals(0, moneyflowSplitEntries.get(1).getAmount().compareTo(BigDecimal.TEN));
         Assertions.assertEquals("inserted2", moneyflowSplitEntries.get(1).getComment());
     }
@@ -646,12 +647,12 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         request.setMoneyflowTransport(transport);
         // This belongs to Moneyflow 1 (must remain there)
         request.setDeleteMoneyflowSplitEntryIds(
-                Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+                List.of(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
         // This belongs to Moneyflow 1 (must remain untouched)
         final MoneyflowSplitEntryTransport updateTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry2().build();
         updateTransport.setAmount(new BigDecimal("-5.10"));
-        request.setUpdateMoneyflowSplitEntryTransports(Arrays.asList(updateTransport));
+        request.setUpdateMoneyflowSplitEntryTransports(List.of(updateTransport));
 
         super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
     }
@@ -688,12 +689,12 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow1().build();
         request.setMoneyflowTransport(transport);
         request.setDeleteMoneyflowSplitEntryIds(
-                Arrays.asList(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
+                List.of(MoneyflowSplitEntryTransportBuilder.MONEYFLOW_SPLIT_ENTRY1_ID));
         final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry1().build();
         insertTransport.setAmount(new BigDecimal("-1.00"));
         insertTransport.setComment("inserted");
-        request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+        request.setInsertMoneyflowSplitEntryTransports(List.of(insertTransport));
 
         super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 
@@ -720,7 +721,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         insertTransport.setAmount(new BigDecimal("10.10"));
         insertTransport.setComment("inserted");
         insertTransport.setMoneyflowid(moneyflowId.getId());
-        request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+        request.setInsertMoneyflowSplitEntryTransports(List.of(insertTransport));
 
         super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 
@@ -746,7 +747,7 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
                 .forMoneyflowSplitEntry1().build();
         insertTransport.setAmount(new BigDecimal("10.10"));
         insertTransport.setComment("inserted");
-        request.setInsertMoneyflowSplitEntryTransports(Arrays.asList(insertTransport));
+        request.setInsertMoneyflowSplitEntryTransports(List.of(insertTransport));
 
         super.callUsecaseExpect200(request, UpdateMoneyflowResponse.class);
 

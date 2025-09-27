@@ -97,7 +97,7 @@ public interface IMonthlySettlementService {
     LocalDate getMinSettlementDate(UserID userId);
 
     /**
-     * Checks if at the given year and month, the also given {@link UserId} has
+     * Checks if at the given year and month, the also given {@link UserID} has
      * already created a {@link MonthlySettlement}.
      */
     boolean checkMonthlySettlementsExists(UserID userId, Integer year, Month month);

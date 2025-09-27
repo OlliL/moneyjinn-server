@@ -160,7 +160,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         request.setStartDate(LocalDate.parse("2010-04-01"));
         request.setEndDate(LocalDate.parse("2010-12-31"));
         request.setSettingTrendCapitalsourcesActive(true);
-        request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
+        request.setCapitalSourceIds(List.of(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
         final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
         final List<TrendsTransport> trendsSettledTransports = new ArrayList<>();
         trendsSettledTransports
@@ -181,7 +181,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         request.setStartDate(LocalDate.parse("2010-04-01"));
         request.setEndDate(LocalDate.parse("2010-12-31"));
         request.setSettingTrendCapitalsourcesActive(true);
-        request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
+        request.setCapitalSourceIds(List.of(CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
 
         super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
     }

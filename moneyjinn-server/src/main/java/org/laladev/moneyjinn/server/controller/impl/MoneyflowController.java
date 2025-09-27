@@ -58,7 +58,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -185,7 +185,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
                         this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntries));
             }
             final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
-                    .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflow.getId()));
+                    .getMoneyflowIdsWithReceipt(userId, Collections.singletonList(moneyflow.getId()));
             response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
         }
         return ResponseEntity.ok(response);
@@ -247,7 +247,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 
         final ValidationResult validationResult = this.moneyflowService.validateMoneyflow(moneyflow);
         if (validationResult.isValid() && !moneyflowSplitEntries.isEmpty()) {
-            moneyflowSplitEntries.stream().forEach(mse -> validationResult
+            moneyflowSplitEntries.forEach(mse -> validationResult
                     .mergeValidationResult(this.moneyflowSplitEntryService.validateMoneyflowSplitEntry(mse)));
             if (validationResult.isValid()) {
                 validationResult.mergeValidationResult(this.checkIfAmountIsEqual(moneyflow, moneyflowSplitEntries));
@@ -258,7 +258,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 
         final MoneyflowID moneyflowId = this.moneyflowService.createMoneyflow(moneyflow);
         if (!moneyflowSplitEntries.isEmpty()) {
-            moneyflowSplitEntries.stream().forEach(mse -> mse.setMoneyflowId(moneyflowId));
+            moneyflowSplitEntries.forEach(mse -> mse.setMoneyflowId(moneyflowId));
             this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
         }
 
@@ -325,11 +325,10 @@ public class MoneyflowController extends AbstractController implements Moneyflow
             if (deleteMoneyflowSplitEntryIds != null && deleteMoneyflowSplitEntryIds.contains(entry.getId())) {
                 entryIterator.remove();
             } else {
-                final MoneyflowSplitEntry matchingUpdateEntry = updateMoneyflowSplitEntries.stream()
-                        .filter(mse -> mse.getId().equals(entry.getId())).findAny().orElse(null);
-                if (matchingUpdateEntry != null) {
-                    entryIterator.set(matchingUpdateEntry);
-                }
+                updateMoneyflowSplitEntries.stream()
+                        .filter(mse -> mse.getId().equals(entry.getId()))
+                        .findAny()
+                        .ifPresent(entryIterator::set);
             }
         }
         moneyflowSplitEntries.addAll(insertMoneyflowSplitEntries);
@@ -372,8 +371,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         }
         this.moneyflowService.updateMoneyflow(moneyflow);
 
-        final Moneyflow moneyflowNew = this.moneyflowService.getMoneyflowById(userId,
-                new MoneyflowID(request.getMoneyflowTransport().getId()));
+        final Moneyflow moneyflowNew = this.moneyflowService.getMoneyflowById(userId, moneyflow.getId());
         if (moneyflowNew != null && moneyflowNew.getUser().getId().equals(userId)) {
             response.setMoneyflowTransport(this.moneyflowTransportMapper.mapAToB(moneyflowNew));
             final List<MoneyflowSplitEntry> moneyflowSplitEntriesNew = this.moneyflowSplitEntryService
@@ -383,7 +381,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
                         this.moneyflowSplitEntryTransportMapper.mapAToB(moneyflowSplitEntriesNew));
             }
             final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
-                    .getMoneyflowIdsWithReceipt(userId, Arrays.asList(moneyflowNew.getId()));
+                    .getMoneyflowIdsWithReceipt(userId, Collections.singletonList(moneyflowNew.getId()));
             response.setHasReceipt(moneyflowIdsWithReceipts.size() == 1);
         }
 
@@ -430,7 +428,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
                 dateFrom, dateTil);
         if (moneyflows != null && !moneyflows.isEmpty()) {
             final List<Moneyflow> relevantMoneyflows = moneyflows.stream().filter(mf -> mf.isVisible(userId)).toList();
-            if (relevantMoneyflows != null && !relevantMoneyflows.isEmpty()) {
+            if (!relevantMoneyflows.isEmpty()) {
                 final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
                         .toList();
                 final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService

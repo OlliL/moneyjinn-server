@@ -55,5 +55,5 @@ public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, Moneyfl
     @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
     @Mapping(target = "mauUserId", source = "user.id")
     @Mapping(target = "magGroupId", source = "group.id")
-    public MoneyflowData mapAToB(Moneyflow moneyflow);
+    MoneyflowData mapAToB(Moneyflow moneyflow);
 }

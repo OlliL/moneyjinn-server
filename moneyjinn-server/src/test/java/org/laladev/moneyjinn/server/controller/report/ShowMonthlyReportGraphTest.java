@@ -104,7 +104,7 @@ class ShowMonthlyReportGraphTest extends AbstractWebUserControllerTest {
         request.setEndDate(LocalDate.parse("2099-12-31"));
         request.setPostingAccountIdsYes(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID,
                 PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID));
-        request.setPostingAccountIdsNo(Arrays.asList(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
+        request.setPostingAccountIdsNo(List.of(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID));
         Optional<ClientReportingUnselectedPostingAccountIdsSetting> setting = this.settingService
                 .getClientReportingUnselectedPostingAccountIdsSetting(userId);
         Assertions.assertFalse(setting.isPresent());

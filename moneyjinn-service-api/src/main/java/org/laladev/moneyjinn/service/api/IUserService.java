@@ -111,7 +111,7 @@ public interface IUserService {
      *
      * @param userId      The {@link UserID} for which the password has to be set
      * @param password    The new User-Password
-     * @param oldPAssword The old User-Password
+     * @param oldPassword The old User-Password
      */
     void setPassword(final UserID userId, final String password, String oldPassword);
 

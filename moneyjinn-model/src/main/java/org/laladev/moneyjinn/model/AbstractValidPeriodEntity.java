@@ -43,7 +43,7 @@ public abstract class AbstractValidPeriodEntity<I extends AbstractEntityID<?>> e
     private LocalDate validTil;
     private LocalDate validFrom;
 
-    public boolean dateIsInValidPeriod(final LocalDate date) {
-        return date == null || !(date.isBefore(this.validFrom)) && !date.isAfter(this.validTil);
+    public boolean dateIsOutsideValidPeriod(final LocalDate date) {
+        return date != null && (date.isBefore(this.validFrom) || date.isAfter(this.validTil));
     }
 }

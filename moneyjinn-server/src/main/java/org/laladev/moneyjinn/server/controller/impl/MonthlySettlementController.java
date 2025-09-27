@@ -48,10 +48,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -91,7 +88,7 @@ public class MonthlySettlementController extends AbstractController implements M
             // validate if settlements are recorded for the given year, if not fall back to
             // the last recorded one
             if (year == null || !allYears.contains(year)) {
-                year = allYears.get(allYears.size() - 1);
+                year = allYears.getLast();
                 month = null;
             }
             final List<Month> allMonth = this.monthlySettlementService.getAllMonth(userId, year);
@@ -113,13 +110,12 @@ public class MonthlySettlementController extends AbstractController implements M
             final Integer requestMonth) {
         final UserID userId = super.getUserId();
         final ShowMonthlySettlementListResponse response = new ShowMonthlySettlementListResponse();
-        final Integer year = requestYear;
         final Month month = this.getMonth(requestMonth);
 
         // only continue if settlements where made at all
-        if (month != null && year != null) {
+        if (month != null && requestYear != null) {
             final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
-                    .getAllMonthlySettlementsByYearMonth(userId, year, month);
+                    .getAllMonthlySettlementsByYearMonth(userId, requestYear, month);
             final List<MonthlySettlementTransport> monthlySettlementTransports = this.monthlySettlementTransportMapper
                     .mapAToB(monthlySettlements);
             response.setMonthlySettlementTransports(monthlySettlementTransports);
@@ -145,8 +141,8 @@ public class MonthlySettlementController extends AbstractController implements M
         final ShowMonthlySettlementCreateResponse response = new ShowMonthlySettlementCreateResponse();
         LocalDate lastDate = this.monthlySettlementService.getMaxSettlementDate(userId);
         boolean previousSettlementExists = false;
-        Integer nextYear;
-        Month nextMonth;
+        final int nextYear;
+        final Month nextMonth;
         if (lastDate != null) {
             final LocalDate nextDateBegin = lastDate.plusMonths(1).withDayOfMonth(1);
             nextYear = nextDateBegin.getYear();
@@ -157,17 +153,13 @@ public class MonthlySettlementController extends AbstractController implements M
             nextYear = lastDate.getYear();
             nextMonth = lastDate.getMonth();
         }
-        Integer year;
+        final Integer year;
         Month month;
         if (requestYear == null && requestMonth == null) {
             year = nextYear;
             month = nextMonth;
         } else {
-            if (requestYear != null) {
-                year = requestYear;
-            } else {
-                year = nextYear;
-            }
+            year = Objects.requireNonNullElse(requestYear, nextYear);
             month = this.getMonth(requestMonth);
             if (month == null) {
                 if (year.equals(nextYear)) {
@@ -237,15 +229,16 @@ public class MonthlySettlementController extends AbstractController implements M
                     }
                 }
                 if (selectedMonthIsNextSettlementMonth && previousSettlementExists) {
-                    final List<ImportedMonthlySettlement> importedMonthlySettlements = new ArrayList<>(
-                            this.importedMonthlySettlementService.getImportedMonthlySettlementsByMonth(userId, year,
-                                    month));
+                    final List<ImportedMonthlySettlement> importedMonthlySettlements =
+                            new ArrayList<>(this.importedMonthlySettlementService
+                                    .getImportedMonthlySettlementsByMonth(userId, year, month));
                     final List<MonthlySettlement> relevantImportedMonthlySettlements = new ArrayList<>();
                     // prefill Amount if the selected month is the next one
                     final Integer lastYear = lastDate.getYear();
                     final Month lastMonth = lastDate.getMonth();
-                    final List<MonthlySettlement> lastMonthlySettlements = new ArrayList<>(this.monthlySettlementService
-                            .getAllMonthlySettlementsByYearMonth(userId, lastYear, lastMonth));
+                    final List<MonthlySettlement> lastMonthlySettlements =
+                            new ArrayList<>(this.monthlySettlementService
+                                    .getAllMonthlySettlementsByYearMonth(userId, lastYear, lastMonth));
                     final Iterator<MonthlySettlement> iteratorMonthlySettlements = monthlySettlements.iterator();
                     while (iteratorMonthlySettlements.hasNext()) {
                         final MonthlySettlement monthlySettlement = iteratorMonthlySettlements.next();
@@ -253,12 +246,10 @@ public class MonthlySettlementController extends AbstractController implements M
                         // try to find the amount to settle at first in the array of imported
                         // end-of-month amounts.
                         boolean imported = false;
-                        if (importedMonthlySettlements != null) {
-                            final Iterator<ImportedMonthlySettlement> iteratorImportedMonthlySettlements = importedMonthlySettlements
-                                    .iterator();
+                        if (!importedMonthlySettlements.isEmpty()) {
+                            final var iteratorImportedMonthlySettlements = importedMonthlySettlements.iterator();
                             while (iteratorImportedMonthlySettlements.hasNext()) {
-                                final ImportedMonthlySettlement importedMonthlySettlement = iteratorImportedMonthlySettlements
-                                        .next();
+                                final var importedMonthlySettlement = iteratorImportedMonthlySettlements.next();
                                 if (importedMonthlySettlement.getCapitalsource().getId().equals(capitalsourceId)) {
                                     imported = true;
                                     monthlySettlement.setAmount(importedMonthlySettlement.getAmount());
@@ -335,8 +326,7 @@ public class MonthlySettlementController extends AbstractController implements M
     }
 
     private Month getMonth(final Integer requestMonth) {
-        return requestMonth != null && requestMonth >= 1 && requestMonth <= 12 ? Month.of(requestMonth.intValue())
-                : null;
+        return requestMonth != null && requestMonth >= 1 && requestMonth <= 12 ? Month.of(requestMonth) : null;
     }
 
     private List<MonthlySettlement> getMyEditableMonthlySettlements(final UserID userId, final Integer year,

@@ -144,7 +144,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
             // if this check is removed, make sure the group is evaluated for the
             // bookingdate, not for today otherwise it will be created with the wrong
             // group
-            if (!accessRelation.dateIsInValidPeriod(bookingDate)) {
+            if (accessRelation.dateIsOutsideValidPeriod(bookingDate)) {
                 addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
             }
         }
@@ -158,7 +158,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
                 addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
             } else if (!capitalsource.groupUseAllowed(userId)) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
-            } else if (!capitalsource.dateIsInValidPeriod(bookingDate)) {
+            } else if (capitalsource.dateIsOutsideValidPeriod(bookingDate)) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_USE_OUT_OF_VALIDITY);
             } else if (capitalsource.getType() == CapitalsourceType.CREDIT) {
                 addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
@@ -172,7 +172,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
                     moneyflow.getContractpartner().getId());
             if (contractpartner == null) {
                 addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-            } else if (!contractpartner.dateIsInValidPeriod(bookingDate)) {
+            } else if (contractpartner.dateIsOutsideValidPeriod(bookingDate)) {
                 addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
             }
         }
@@ -272,7 +272,7 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
             final LocalDate beginOfYear = LocalDate.of(year, Month.JANUARY, 1);
             final LocalDate endOfYear = LocalDate.of(year, Month.DECEMBER, 31);
             final List<Integer> allMonths = this.moneyflowDao.getAllMonth(userId.getId(), beginOfYear, endOfYear);
-            return allMonths.stream().map(m -> Month.of(m.intValue())).toList();
+            return allMonths.stream().map(Month::of).toList();
         };
 
         return super.getListFromCacheOrExecute(super.getCombinedCacheName(CacheNames.MONEYFLOW_MONTH, userId.getId()),

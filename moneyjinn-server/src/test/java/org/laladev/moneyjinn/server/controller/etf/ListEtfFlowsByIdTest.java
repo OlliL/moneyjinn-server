@@ -76,7 +76,7 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
         // latest etfvalues table entry
         transport.setBuyPrice(new BigDecimal("666.000"));
         transport.setSellPrice(new BigDecimal("666.543"));
-        transport.setPricesTimestamp(ZonedDateTime.of(2012, 01, 16, 22, 5, 2, 0, ZoneId.systemDefault()).toInstant()
+        transport.setPricesTimestamp(ZonedDateTime.of(2012, 1, 16, 22, 5, 2, 0, ZoneId.systemDefault()).toInstant()
                 .atOffset(ZoneOffset.UTC));
         expected.setEtfSummaryTransport(transport);
 

@@ -62,7 +62,6 @@ public class CapitalsourceTypeMapper {
                 case RESERVE_ASSET -> RESERVE_ASSET_INT;
                 case PROVISION_ASSET -> PROVISION_ASSET_INT;
                 case CREDIT -> CREDIT_INT;
-                default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
             };
         }
         return null;

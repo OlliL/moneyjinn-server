@@ -64,15 +64,12 @@ public interface ICompareDataService {
      * Returns the {@link CompareDataFormat} specified by the given
      * {@link CompareDataFormatID}.
      *
-     * @param compareDataFormatId
-     * @return
      */
     CompareDataFormat getCompareDataFormatById(CompareDataFormatID compareDataFormatId);
 
     /**
      * Returns all existing {@link CompareDataFormat}s.
      *
-     * @return
      */
     List<CompareDataFormat> getAllCompareDataFormats();
 
@@ -82,13 +79,6 @@ public interface ICompareDataService {
      * {@link CompareDataDataset}s to stored {@link Moneyflow}s during the specified
      * timeframe. The response object contains the comparison results.
      *
-     * @param userId
-     * @param compareDataFormatId
-     * @param capitalsourceId
-     * @param startDate
-     * @param endDate
-     * @param fileContents
-     * @return
      */
     CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
                                       CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
@@ -98,11 +88,6 @@ public interface ICompareDataService {
      * {@link Moneyflow}s during the specified timeframe. The response object
      * contains the comparison results.
      *
-     * @param userId
-     * @param capitalsourceId
-     * @param startDate
-     * @param endDate
-     * @return
      */
     CompareDataResult compareDataImport(UserID userId, CapitalsourceID capitalsourceId, LocalDate startDate,
                                         LocalDate endDate, List<ImportedMoneyflow> importedMoneyflows);

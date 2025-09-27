@@ -27,7 +27,6 @@
 package org.laladev.moneyjinn.service.api;
 
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntryID;
@@ -68,7 +67,6 @@ public interface IMoneyflowSplitEntryService {
      * This method persists (creates) the given {@link MoneyflowSplitEntry}s.
      *
      * @param moneyflowSplitEntries {@link MoneyflowSplitEntry}s
-     * @throws BusinessException
      */
     void createMoneyflowSplitEntries(UserID userId, List<MoneyflowSplitEntry> moneyflowSplitEntries);
 
@@ -115,7 +113,7 @@ public interface IMoneyflowSplitEntryService {
 
     /**
      * This service deletes the {@link MoneyflowSplitEntry}s for a given
-     * {@link MoneyflowyID} from the system.
+     * {@link MoneyflowID} from the system.
      *
      * @param userId      {@link UserID}
      * @param moneyflowId The {@link MoneyflowID} of the to-be-deleted

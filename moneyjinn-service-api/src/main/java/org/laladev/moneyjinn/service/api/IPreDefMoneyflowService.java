@@ -67,7 +67,6 @@ public interface IPreDefMoneyflowService {
      *
      * @param userId            {@link UserID}
      * @param preDefMoneyflowId the {@link PreDefMoneyflowID}
-     * @return
      */
     PreDefMoneyflow getPreDefMoneyflowById(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 
@@ -114,8 +113,6 @@ public interface IPreDefMoneyflowService {
      * meant to be called whenever a moneyflow gets created based on a
      * {@link PreDefMoneyflow}.
      *
-     * @param userId            {@link UserID}
-     * @param preDefMoneyflowId
      */
     void setLastUsedDate(UserID userId, PreDefMoneyflowID preDefMoneyflowId);
 }

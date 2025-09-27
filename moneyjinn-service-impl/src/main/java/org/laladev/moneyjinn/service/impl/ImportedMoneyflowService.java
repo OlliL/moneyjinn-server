@@ -74,8 +74,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
         return null;
     }
 
-    private final List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
-                                                                       final List<ImportedMoneyflowData> importedMoneyflowDataList) {
+    private List<ImportedMoneyflow> mapImportedMoneyflowDataList(final UserID userId,
+                                                                 final List<ImportedMoneyflowData> importedMoneyflowDataList) {
         return importedMoneyflowDataList.stream().map(element -> this.mapImportedMoneyflowData(userId, element))
                 .toList();
     }

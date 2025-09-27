@@ -16,7 +16,6 @@ import org.laladev.moneyjinn.service.api.IUserService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,7 +85,7 @@ class CreateUserTest extends AbstractAdminUserControllerTest {
         assertEquals(UserTransportBuilder.NEXT_ID, actual.getUserId());
         assertTrue(this.userService.passwordMatches(UserTransportBuilder.IMPORTUSER_PASSWORD, user.getPassword()));
         // instead of NONE ---------------------------------vvvvvv
-        assertEquals(Arrays.asList(UserAttribute.IS_NEW), user.getAttributes());
+        assertEquals(List.of(UserAttribute.IS_NEW), user.getAttributes());
     }
 
     @Test

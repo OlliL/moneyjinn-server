@@ -78,6 +78,24 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
     private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
+    private static BigDecimal getAmount(final CompareDataFormat compareDataFormat, final String[] cmpDataRaw, final Pattern creditIndicator) {
+        String amountStr = cmpDataRaw[compareDataFormat.getPositionAmount() - 1];
+        if (compareDataFormat.getFormatAmountThousand() != null) {
+            amountStr = amountStr.replace(compareDataFormat.getFormatAmountThousand().toString(), "");
+        }
+        amountStr = amountStr.replace(compareDataFormat.getFormatAmountDecimal().toString(), ".");
+        amountStr = amountStr.replaceAll("[^\\-\\.0-9]*", "");
+        BigDecimal amount = new BigDecimal(amountStr);
+        if (compareDataFormat.getPositionCreditDebitIndicator() != null) {
+            final String keyword = cmpDataRaw[compareDataFormat.getPositionCreditDebitIndicator() - 1];
+            final Matcher creditIndicatorMatcher = creditIndicator.matcher(keyword);
+            if (creditIndicatorMatcher.find()) {
+                amount = amount.negate();
+            }
+        }
+        return amount;
+    }
+
     @Override
     public CompareDataFormat getCompareDataFormatById(final CompareDataFormatID compareDataFormatId) {
         final CompareDataFormatData compareDataFormatData = this.compareDataFormatDao
@@ -266,8 +284,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         final List<CompareDataDataset> compareDataDatasets = new ArrayList<>();
         final BankToCustomerAccountReportMapper xmlMapper = new BankToCustomerAccountReportMapper();
         final StringReader characterStream = new StringReader(fileContents);
-        final InputSource xml = new InputSource(characterStream);
-        try {
+        try (characterStream) {
+            final InputSource xml = new InputSource(characterStream);
             final BankToCustomerAccountReport bankToCustomerAccountReport = xmlMapper.mapXml(xml);
             for (final Entry entry : bankToCustomerAccountReport.getReport().getEntries()) {
                 final CompareDataDataset data = new CompareDataDataset();
@@ -287,8 +305,6 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             }
         } catch (final Exception e) {
             throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
-        } finally {
-            characterStream.close();
         }
         return compareDataDatasets;
     }
@@ -331,20 +347,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                     /*
                      * Amount
                      */
-                    String amountStr = cmpDataRaw[compareDataFormat.getPositionAmount() - 1];
-                    if (compareDataFormat.getFormatAmountThousand() != null) {
-                        amountStr = amountStr.replace(compareDataFormat.getFormatAmountThousand().toString(), "");
-                    }
-                    amountStr = amountStr.replace(compareDataFormat.getFormatAmountDecimal().toString(), ".");
-                    amountStr = amountStr.replaceAll("[^\\-\\.0-9]*", "");
-                    BigDecimal amount = new BigDecimal(amountStr);
-                    if (compareDataFormat.getPositionCreditDebitIndicator() != null) {
-                        final String keyword = cmpDataRaw[compareDataFormat.getPositionCreditDebitIndicator() - 1];
-                        final Matcher creditIndicatorMatcher = creditIndicator.matcher(keyword);
-                        if (creditIndicatorMatcher.find()) {
-                            amount = amount.negate();
-                        }
-                    }
+                    final BigDecimal amount = getAmount(compareDataFormat, cmpDataRaw, creditIndicator);
                     data.setAmount(amount);
                     /*
                      * Partner

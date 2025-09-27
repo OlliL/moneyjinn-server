@@ -85,7 +85,7 @@ public interface IImportedMoneyflowService {
                                     ImportedMoneyflowStatus status);
 
     /**
-     * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the
+     * Retrieves all {@link ImportedMoneyflow}s to be processed by the user for the
      * given {@link CapitalsourceID}s.
      *
      * @param userId           The {@link UserID}
@@ -98,7 +98,7 @@ public interface IImportedMoneyflowService {
                                                                        List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom, LocalDate dateTil);
 
     /**
-     * Retrives all {@link ImportedMoneyflow}s to be processed by the user for the
+     * Retrieves all {@link ImportedMoneyflow}s to be processed by the user for the
      * given {@link CapitalsourceID}s and {@link ImportedMoneyflowStatus}.
      *
      * @param userId           The {@link UserID}

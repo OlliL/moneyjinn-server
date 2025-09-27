@@ -106,7 +106,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
     public void handle() {
         final List<BalanceMonthly> balanceMonthlies = this.getBalanceMonthlyList(this.accountMovements,
                 this.balanceDaily);
-        balanceMonthlies.stream().forEach(this::insertBalanceMonthly);
+        balanceMonthlies.forEach(this::insertBalanceMonthly);
     }
 
     List<BalanceMonthly> getBalanceMonthlyList(final List<AccountMovement> accountMovements,

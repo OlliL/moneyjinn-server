@@ -22,6 +22,7 @@ import org.laladev.moneyjinn.server.model.*;
 import org.laladev.moneyjinn.service.api.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -372,8 +373,8 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
         final PreDefMoneyflow preDefMoneyflowOrig = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
                 preDefMoneyflowId);
         Assertions.assertNotNull(preDefMoneyflowOrig);
-        Assertions.assertEquals(true, preDefMoneyflowOrig.isOnceAMonth());
-        Assertions.assertEquals(null, preDefMoneyflowOrig.getLastUsedDate());
+        Assertions.assertTrue(preDefMoneyflowOrig.isOnceAMonth());
+        Assertions.assertNull(preDefMoneyflowOrig.getLastUsedDate());
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
         request.setMoneyflowTransport(transport);
         request.setUsedPreDefMoneyflowId(preDefMoneyflowId.getId());
@@ -401,8 +402,8 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
         final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
         PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId, preDefMoneyflowId);
         Assertions.assertNotNull(preDefMoneyflow);
-        Assertions.assertEquals(true, preDefMoneyflow.isOnceAMonth());
-        Assertions.assertEquals(null, preDefMoneyflow.getLastUsedDate());
+        Assertions.assertTrue(preDefMoneyflow.isOnceAMonth());
+        Assertions.assertNull(preDefMoneyflow.getLastUsedDate());
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forNewMoneyflow().build();
         request.setMoneyflowTransport(transport);
         request.setUsedPreDefMoneyflowId(preDefMoneyflowId.getId());
@@ -454,13 +455,13 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     private MoneyflowSplitEntryTransport getMseTransport2(final MoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment2").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)
                 .build();
     }
 
     private MoneyflowSplitEntryTransport getMseTransport1(final MoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment1").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID)
                 .build();
     }

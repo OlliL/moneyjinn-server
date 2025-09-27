@@ -122,13 +122,12 @@ public class BalanceMonthly extends AbstractAccountEntitiy implements Serializab
 
     @Override
     public String toString() {
-        final String builder = "BalanceMonthly [id=" + super.getId() + ", myIban=" + super.getMyIban() +
+        return "BalanceMonthly [id=" + super.getId() + ", myIban=" + super.getMyIban() +
                 ", myBic=" + super.getMyBic() + ", myAccountnumber=" +
                 super.getMyAccountnumber() + ", myBankcode=" + super.getMyBankcode() +
                 ", balanceYear=" + this.balanceYear + ", balanceMonth=" + this.balanceMonth +
                 ", balanceValue=" + this.balanceValue + ", balanceCurrency=" +
                 this.balanceCurrency + "]";
-        return builder;
     }
 
 }

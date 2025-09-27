@@ -71,7 +71,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
             final Integer requestMonth) {
         final Month month = Month.of(requestMonth);
         final Year year = Year.of(requestYear);
-        final LocalDateTime endOfMonth = LocalDateTime.of(requestYear.intValue(), month, 1, 23, 59, 59, 999999999)
+        final LocalDateTime endOfMonth = LocalDateTime.of(requestYear, month, 1, 23, 59, 59, 999999999)
                 .with(TemporalAdjusters.lastDayOfMonth());
         final UserID userId = super.getUserId();
         final ListEtfOverviewResponse response = new ListEtfOverviewResponse();
@@ -111,7 +111,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
 
         final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
                 this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
-        Collections.sort(etfEffectiveFlows, Collections.reverseOrder(new EtfFlowComparator()));
+        etfEffectiveFlows.sort(Collections.reverseOrder(new EtfFlowComparator()));
         final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = this.etfEffectiveFlowTransportMapper
                 .mapAToB(etfEffectiveFlows);
         response.setEtfEffectiveFlowTransports(etfEffectiveFlowTransports);

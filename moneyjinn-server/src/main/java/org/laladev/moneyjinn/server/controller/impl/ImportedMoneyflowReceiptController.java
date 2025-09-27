@@ -71,7 +71,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
         final ValidationResult validationResult = new ValidationResult();
         final List<ImportedMoneyflowReceipt> importedMoneyflowReceipts = this.importedMoneyflowReceiptTransportMapper
                 .mapBToA(request.getImportedMoneyflowReceiptTransports());
-        importedMoneyflowReceipts.stream().forEach(imr -> {
+        importedMoneyflowReceipts.forEach(imr -> {
             imr.setUser(user);
             imr.setGroup(group);
             imr.setId(null);
@@ -81,7 +81,7 @@ public class ImportedMoneyflowReceiptController extends AbstractController
 
         this.throwValidationExceptionIfInvalid(validationResult);
 
-        importedMoneyflowReceipts.stream()
+        importedMoneyflowReceipts
                 .forEach(this.importedMoneyflowReceiptService::createImportedMoneyflowReceipt);
 
         return ResponseEntity.noContent().build();

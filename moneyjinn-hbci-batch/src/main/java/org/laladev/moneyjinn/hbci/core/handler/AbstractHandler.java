@@ -30,7 +30,7 @@ import java.beans.PropertyChangeSupport;
 
 public abstract class AbstractHandler {
 
-    protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public abstract void handle();
 

@@ -22,6 +22,7 @@ import org.laladev.moneyjinn.server.model.*;
 import org.laladev.moneyjinn.service.api.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,8 +74,7 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
     @Test
     void test_standardRequest_Successfull() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = Arrays
-                .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
                 .forImportedMoneyflow1ToImport().build();
@@ -165,8 +165,7 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
 
     private void testBankAccount(final String accountNumber, final String bankCode) throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = Arrays
-                .asList(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
                 .forImportedMoneyflow1ToImport().build();
@@ -520,13 +519,15 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     private MoneyflowSplitEntryTransport getMseTransport2(final ImportedMoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+        return new MoneyflowSplitEntryTransportBuilder()
+                .withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment2").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)
                 .build();
     }
 
     private MoneyflowSplitEntryTransport getMseTransport1(final ImportedMoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2)))
+        return new MoneyflowSplitEntryTransportBuilder()
+                .withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment1").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID)
                 .build();
     }

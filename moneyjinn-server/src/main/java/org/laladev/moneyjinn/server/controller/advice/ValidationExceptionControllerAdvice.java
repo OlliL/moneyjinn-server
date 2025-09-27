@@ -57,6 +57,6 @@ public class ValidationExceptionControllerAdvice extends ResponseEntityException
                 result.getValidationResultItems().stream().map(this.mapper::mapBToA).toList());
 
         log.log(Level.SEVERE, "Validation error", ex);
-        return ResponseEntity.unprocessableEntity().body(response);
+        return ResponseEntity.unprocessableContent().body(response);
     }
 }

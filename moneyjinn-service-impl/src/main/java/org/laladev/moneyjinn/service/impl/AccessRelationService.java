@@ -171,7 +171,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
 
             // @formatter:off
 			// @non-java-start
-      /**
+      /*
        *============================================================================================
        * Time Frame changes which have to be supported
        *============================================================================================
@@ -236,7 +236,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
                         deleteAccessRelationItems.add(currentAccessRelation);
                         addAccessRelation = true;
                     } else if (currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
-                        // (e) if the new relation starts at the same day than the currently checked
+                        // (e) if the new relation starts at the same day as the currently checked
                         // one and is also for the same RefId - just ignore it
                         addAccessRelation = false;
                         break;

@@ -174,20 +174,20 @@ public abstract class AbstractControllerTest extends AbstractTest {
         return this.callUsecaseNew(null, clazz, HttpStatus.OK, null, uriVariables);
     }
 
-    protected <T> T callUsecaseExpect204(final Object body) throws Exception {
-        return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, null);
+    protected void callUsecaseExpect204(final Object body) throws Exception {
+        this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, null);
     }
 
     protected <T> T callUsecaseExpect500(final Object body, final Class<T> clazz) throws Exception {
         return this.callUsecaseNew(body, clazz, HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
-    protected <T> T callUsecaseExpect204Minimal(final Object body) throws Exception {
-        return this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, HEADER_RETURN_MINIMAL);
+    protected void callUsecaseExpect204Minimal(final Object body) throws Exception {
+        this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, HEADER_RETURN_MINIMAL);
     }
 
-    protected <T> T callUsecaseExpect204WithUriVariables(final Object... uriVariables) throws Exception {
-        return this.callUsecaseNew(null, null, HttpStatus.NO_CONTENT, null, uriVariables);
+    protected void callUsecaseExpect204WithUriVariables(final Object... uriVariables) throws Exception {
+        this.callUsecaseNew(null, null, HttpStatus.NO_CONTENT, null, uriVariables);
     }
 
     protected <T> T callUsecaseExpect400(final Object body, final Class<T> clazz) throws Exception {

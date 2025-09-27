@@ -123,7 +123,7 @@ public class AccountMovementMapper {
         }
 
         accountMovement.setCustomerReference(entry.customerref);
-        if (entry.instref != null && entry.instref.length() > 0) {
+        if (entry.instref != null && !entry.instref.isEmpty()) {
             accountMovement.setBankReference(entry.instref);
         }
 
@@ -152,7 +152,7 @@ public class AccountMovementMapper {
 
     private void setAccountnumber(final String number, String blz, final AccountMovement accountMovement) {
         // Ikano bank sends an empty blz as bankcode - I've no idea why?!
-        if (blz.equals("")) {
+        if (blz.isEmpty()) {
             blz = "0";
         }
         accountMovement.setOtherAccountnumber(Long.valueOf(number));
@@ -180,13 +180,13 @@ public class AccountMovementMapper {
      * analysing its usage text based on the used Business-AccountMovement-Code +
      * Text. <br>
      *
-     * @param {@link AccountMovement} accountMovement
+     * @param accountMovement {@link AccountMovement} accountMovement
      * @return {@link Date} invoiceDate (or null if not determinable)
      */
     private Timestamp getInvoiceTimestamp(final AccountMovement accountMovement) {
         java.util.Date invoiceDate = null;
         try {
-            if (accountMovement.getMovementReason() != null && accountMovement.getMovementReason().length() > 0
+            if (accountMovement.getMovementReason() != null && !accountMovement.getMovementReason().isEmpty()
                     && accountMovement.getMovementTypeCode() != null) {
                 final String movementReason = accountMovement.getMovementReason();
                 final Short movementTypeCode = accountMovement.getMovementTypeCode();
@@ -254,7 +254,7 @@ public class AccountMovementMapper {
                         invoiceDate = this.dateTimeWithoutYearSpaceFormatterDot.parse(taNrMatcher.group(1));
                     } else {
                         for (final String line : lines) {
-                            if (line.length() >= 16 && line.substring(11, 15).equals("UHR ")) {
+                            if (line.length() >= 16 && line.startsWith("UHR ", 11)) {
                                 // 16.02/07.49UHR XXXXXXXXXX
                                 invoiceDate = this.dateTimeWithoutYearSlashFormatter.parse(line.substring(0, 11));
                                 break;
@@ -283,7 +283,6 @@ public class AccountMovementMapper {
                 }
             }
         } catch (final Exception e) {
-            System.out.println(accountMovement);
             e.printStackTrace();
         }
 
