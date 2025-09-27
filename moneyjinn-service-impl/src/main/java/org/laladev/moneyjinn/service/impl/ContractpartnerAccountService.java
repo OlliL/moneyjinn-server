@@ -230,7 +230,8 @@ public class ContractpartnerAccountService extends AbstractService implements IC
     }
 
     private void evictContractpartnerAccountCache(final UserID userId,
-                                                  final ContractpartnerAccountID contractpartnerAccountIDd, final ContractpartnerID contractpartnerId) {
+                                                  final ContractpartnerAccountID contractpartnerAccountIDd,
+                                                  final ContractpartnerID contractpartnerId) {
         if (contractpartnerAccountIDd != null) {
             this.accessRelationService.getAllUserWithSameGroup(userId).forEach(evictingUserId -> {
                 super.evictFromCache(CacheNames.CONTRACTPARTNER_ACCOUNTS_BY_PARTNER,

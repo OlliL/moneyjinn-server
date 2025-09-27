@@ -50,7 +50,8 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     private void testError(final ImportedMoneyflowTransport transport,
-                           final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports, final ErrorCode... errorCodes)
+                           final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports,
+                           final ErrorCode... errorCodes)
             throws Exception {
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         request.setImportedMoneyflowTransport(transport);
@@ -74,7 +75,8 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
     @Test
     void test_standardRequest_Successfull() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
                 .forImportedMoneyflow1ToImport().build();
@@ -165,7 +167,8 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
 
     private void testBankAccount(final String accountNumber, final String bankCode) throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
                 .forImportedMoneyflow1ToImport().build();

@@ -76,8 +76,9 @@ public class BalanceDailyHandler extends AbstractHandler {
 
     @Override
     public void handle() {
-        if (this.balanceDaily == null)
+        if (this.balanceDaily == null) {
             return;
+        }
 
         final Connection con = MoneyjinnConnectionHolder.getConnection();
         try (final PreparedStatement stmt = con.prepareStatement(STATEMENT)) {

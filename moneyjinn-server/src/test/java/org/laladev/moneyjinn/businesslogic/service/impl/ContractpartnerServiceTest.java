@@ -24,7 +24,8 @@ class ContractpartnerServiceTest extends AbstractTest {
     @Test
     void test_validateNullUser_raisesException() {
         final Contractpartner contractpartner = new Contractpartner();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.contractpartnerService.validateContractpartner(contractpartner));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> this.contractpartnerService.validateContractpartner(contractpartner));
     }
 
     @Test
@@ -32,7 +33,8 @@ class ContractpartnerServiceTest extends AbstractTest {
         final Contractpartner contractpartner = new Contractpartner();
         contractpartner.setUser(new User(new UserID(1L)));
         contractpartner.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.contractpartnerService.createContractpartner(contractpartner));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.contractpartnerService.createContractpartner(contractpartner));
     }
 
     @Test
@@ -40,7 +42,8 @@ class ContractpartnerServiceTest extends AbstractTest {
         final Contractpartner contractpartner = new Contractpartner();
         contractpartner.setUser(new User(new UserID(1L)));
         contractpartner.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.contractpartnerService.updateContractpartner(contractpartner));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.contractpartnerService.updateContractpartner(contractpartner));
     }
 
     @Test

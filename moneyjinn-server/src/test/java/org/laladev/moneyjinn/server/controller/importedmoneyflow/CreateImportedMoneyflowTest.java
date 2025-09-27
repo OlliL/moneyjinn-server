@@ -32,7 +32,8 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
     @Test
     void test_standardRequestInsert_SuccessfullNoContent() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
                 .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
         Assertions.assertNotNull(importedMoneyflows);
@@ -56,7 +57,8 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
     @Test
     void test_insertwithDuplicateExternalId_NotSuccessfullButIgnored() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         final List<ImportedMoneyflow> importedMoneyflowsOrig = this.importedMoneyflowService
                 .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
         Assertions.assertNotNull(importedMoneyflowsOrig);
@@ -76,7 +78,8 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
     @Test
     void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
                 .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
         Assertions.assertNotNull(importedMoneyflows);
@@ -103,7 +106,8 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
     @Test
     void test_emptyContractpartnerBankAccount_SuccessfullNoContent() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
                 .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, ImportedMoneyflowStatus.CREATED);
         Assertions.assertNotNull(importedMoneyflows);

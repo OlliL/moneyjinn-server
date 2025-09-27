@@ -108,7 +108,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 
     @Override
     public ResponseEntity<EtfTransport> create(@RequestBody final EtfTransport etfTransport,
-                                               @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+                                               @RequestHeader(value = HEADER_PREFER,
+                                                       required = false) final List<String> prefer) {
         final UserID userId = super.getUserId();
         final Etf etf = this.etfTransportMapper.mapBToA(etfTransport);
         final User user = this.userService.getUserById(userId);
@@ -123,8 +124,9 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
         final EtfID etfId = this.etfService.createEtf(etf);
 
         etf.setId(etfId);
-        if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
+        if (Integer.valueOf(1).equals(etfTransport.getIsFavorite())) {
             this.settingService.setClientListEtfDepotDefaultEtfId(userId, new ClientListEtfDepotDefaultEtfId(etfId));
+        }
 
         return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
 
@@ -132,7 +134,8 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
 
     @Override
     public ResponseEntity<EtfTransport> update(@RequestBody final EtfTransport etfTransport,
-                                               @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+                                               @RequestHeader(value = HEADER_PREFER,
+                                                       required = false) final List<String> prefer) {
         final UserID userId = super.getUserId();
         final Etf etf = this.etfTransportMapper.mapBToA(etfTransport);
         final User user = this.userService.getUserById(userId);
@@ -144,9 +147,10 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
         this.throwValidationExceptionIfInvalid(validationResult);
 
         this.etfService.updateEtf(etf);
-        if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
+        if (Integer.valueOf(1).equals(etfTransport.getIsFavorite())) {
             this.settingService.setClientListEtfDepotDefaultEtfId(userId,
                     new ClientListEtfDepotDefaultEtfId(etf.getId()));
+        }
 
         return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
     }

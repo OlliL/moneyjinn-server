@@ -42,9 +42,10 @@ class ShowReportingFormTest extends AbstractWebUserControllerTest {
 
     @Test
     void test_witDefaultSelection_defaultsResponse() throws Exception {
-        final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-                Arrays.asList(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID),
-                        new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)));
+        final ClientReportingUnselectedPostingAccountIdsSetting setting =
+                new ClientReportingUnselectedPostingAccountIdsSetting(
+                        Arrays.asList(new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID),
+                                new PostingAccountID(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)));
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
         this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
         final ShowReportingFormResponse expected = this.getDefaultResponse();

@@ -104,19 +104,24 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
     @Override
     public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
-                                                                              final List<CapitalsourceID> capitalsourceIds, final LocalDate dateFrom, final LocalDate dateTil) {
+                                                                              final List<CapitalsourceID> capitalsourceIds,
+                                                                              final LocalDate dateFrom,
+                                                                              final LocalDate dateTil) {
         return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null, dateFrom, dateTil);
     }
 
     @Override
     public List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(final UserID userId,
-                                                                              final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status) {
+                                                                              final List<CapitalsourceID> capitalsourceIds,
+                                                                              final ImportedMoneyflowStatus status) {
         return this.getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, status, null, null);
     }
 
     private List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(@NonNull final UserID userId,
-                                                                               @NonNull final List<CapitalsourceID> capitalsourceIds, final ImportedMoneyflowStatus status,
-                                                                               final LocalDate dateFrom, final LocalDate dateTil) {
+                                                                               @NonNull final List<CapitalsourceID> capitalsourceIds,
+                                                                               final ImportedMoneyflowStatus status,
+                                                                               final LocalDate dateFrom,
+                                                                               final LocalDate dateTil) {
         final AccessRelation accessRelation = this.accessRelationService.getCurrentAccessRelationById(userId);
 
         final LocalDate firewalledDateFrom;

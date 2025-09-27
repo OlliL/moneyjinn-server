@@ -175,7 +175,9 @@ public interface IMoneyflowService {
      *
      */
     List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(UserID userId,
-                                                                                           List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
+                                                                                           List<PostingAccountID> postingAccountIds,
+                                                                                           LocalDate dateFrom,
+                                                                                           LocalDate dateTil);
 
     /**
      * Returns the amount of all recorded {@link Moneyflow}s grouped by
@@ -183,7 +185,9 @@ public interface IMoneyflowService {
      *
      */
     List<PostingAccountAmount> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(UserID userId,
-                                                                                      List<PostingAccountID> postingAccountIds, LocalDate dateFrom, LocalDate dateTil);
+                                                                                      List<PostingAccountID> postingAccountIds,
+                                                                                      LocalDate dateFrom,
+                                                                                      LocalDate dateTil);
 
     /**
      * Searches for {@link Moneyflow}s with the given amount and the given

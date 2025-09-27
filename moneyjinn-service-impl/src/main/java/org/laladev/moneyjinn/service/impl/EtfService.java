@@ -69,7 +69,8 @@ import static org.springframework.util.Assert.notNull;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class EtfService extends AbstractService implements IEtfService {
-    private static final String STILL_REFERENCED = "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
+    private static final String STILL_REFERENCED =
+            "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
     private static final BigDecimal BIG_DECIMAL_11 = new BigDecimal(11);
     private static final BigDecimal BIG_DECIMAL_12 = new BigDecimal(12);
 
@@ -110,8 +111,9 @@ public class EtfService extends AbstractService implements IEtfService {
         if (etf.getName() == null || etf.getName().isBlank()) {
             addResult.accept(ErrorCode.NAME_MUST_NOT_BE_EMPTY);
         }
-        if (etf.getChartUrl() != null && etf.getChartUrl().isBlank())
+        if (etf.getChartUrl() != null && etf.getChartUrl().isBlank()) {
             etf.setChartUrl(null);
+        }
 
         return validationResult;
     }
@@ -384,8 +386,9 @@ public class EtfService extends AbstractService implements IEtfService {
         };
 
         // TODO Test this if statement
-        if (BigDecimal.ZERO.compareTo(amount) == 0)
+        if (BigDecimal.ZERO.compareTo(amount) == 0) {
             return BigDecimal.ZERO;
+        }
 
         if (month.equals(Month.JANUARY)) {
             return this.calculatePieceTax(amount, relevantTaxFlows);

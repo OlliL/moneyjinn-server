@@ -45,14 +45,16 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
         request.setFileContents(base64FileContents);
         final CompareDataResponse expected = new CompareDataResponse();
-        final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
+        final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport =
+                new CompareDataWrongCapitalsourceTransport();
         compareDataWrongCapitalsourceTransport
                 .setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow19().build());
         compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset1().build());
         expected.setCompareDataWrongCapitalsourceTransports(
                 Collections.singletonList(compareDataWrongCapitalsourceTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -72,7 +74,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final String base64FileContents = this.getFileContents(this.postbankOnlineResource);
         request.setFileContents(base64FileContents);
         final CompareDataResponse expected = new CompareDataResponse();
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -109,7 +112,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         request.setFileContents(base64FileContents);
         final CompareDataResponse expected = new CompareDataResponse();
 
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -171,7 +175,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow14().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset4().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -250,7 +255,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow19().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2SpardaBank().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -280,7 +286,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -310,7 +317,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -340,7 +348,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -370,7 +379,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
         compareDataNotInFileTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
         expected.setCompareDataNotInFileTransports(Collections.singletonList(compareDataNotInFileTransport));
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
@@ -402,7 +412,8 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         expected.setCompareDataMatchingTransports(
                 Arrays.asList(compareDataMatchingTransport1, compareDataMatchingTransport2));
 
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                new CompareDataNotInDatabaseTransport();
         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataImportDataset2().build());
         expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));

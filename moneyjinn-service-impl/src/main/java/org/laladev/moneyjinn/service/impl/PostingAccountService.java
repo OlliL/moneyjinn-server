@@ -55,7 +55,8 @@ import java.util.logging.Level;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class PostingAccountService extends AbstractService implements IPostingAccountService {
-    private static final String STILL_REFERENCED = "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!";
+    private static final String STILL_REFERENCED =
+            "The posting account cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!";
     private final PostingAccountDao postingAccountDao;
     private final PostingAccountDataMapper postingAccountDataMapper;
 

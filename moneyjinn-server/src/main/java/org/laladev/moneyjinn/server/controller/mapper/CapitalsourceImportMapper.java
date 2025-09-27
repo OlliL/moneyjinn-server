@@ -44,8 +44,8 @@ public class CapitalsourceImportMapper {
                 case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
                 case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
                 case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
-                default ->
-                        throw new TechnicalException("Import " + capitalsourceImport + " not defined!", ErrorCode.UNKNOWN);
+                default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
+                        ErrorCode.UNKNOWN);
             };
         }
         return CapitalsourceImport.NOT_ALLOWED;

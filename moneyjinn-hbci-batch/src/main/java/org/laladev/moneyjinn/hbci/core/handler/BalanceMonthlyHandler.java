@@ -243,8 +243,9 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 
         } catch (final SQLException e) {
             // ignore: Column 'balance_value' cannot be null
-            if (e.getErrorCode() != 1048)
+            if (e.getErrorCode() != 1048) {
                 e.printStackTrace();
+            }
         }
     }
 }

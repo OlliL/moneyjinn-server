@@ -95,7 +95,8 @@ public interface IImportedMoneyflowService {
      * @return List of found {@link ImportedMoneyflow}
      */
     List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
-                                                                       List<CapitalsourceID> capitalsourceIds, LocalDate dateFrom, LocalDate dateTil);
+                                                                       List<CapitalsourceID> capitalsourceIds,
+                                                                       LocalDate dateFrom, LocalDate dateTil);
 
     /**
      * Retrieves all {@link ImportedMoneyflow}s to be processed by the user for the
@@ -107,7 +108,8 @@ public interface IImportedMoneyflowService {
      * @return List of found {@link ImportedMoneyflow}
      */
     List<ImportedMoneyflow> getAllImportedMoneyflowsByCapitalsourceIds(UserID userId,
-                                                                       List<CapitalsourceID> capitalsourceIds, ImportedMoneyflowStatus status);
+                                                                       List<CapitalsourceID> capitalsourceIds,
+                                                                       ImportedMoneyflowStatus status);
 
     /**
      * Persists the given {@link ImportedMoneyflow}.

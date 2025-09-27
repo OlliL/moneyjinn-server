@@ -56,7 +56,8 @@ import static org.springframework.util.Assert.isTrue;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class UserService extends AbstractService implements IUserService {
-    private static final String STILL_REFERENCED = "This user has already entered data and may therefore not be deleted!";
+    private static final String STILL_REFERENCED =
+            "This user has already entered data and may therefore not be deleted!";
     private final UserDao userDao;
     private final UserDataMapper userDataMapper;
     private final PasswordEncoder passwordEncoder;

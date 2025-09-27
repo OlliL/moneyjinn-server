@@ -25,14 +25,16 @@ class CapitalsourceServiceTest extends AbstractTest {
     @Test
     void test_validateNullUser_raisesException() {
         final Capitalsource capitalsource = new Capitalsource();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.capitalsourceService.validateCapitalsource(capitalsource));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> this.capitalsourceService.validateCapitalsource(capitalsource));
     }
 
     @Test
     void test_validateNullAccess_raisesException() {
         final Capitalsource capitalsource = new Capitalsource();
         capitalsource.setUser(new User(new UserID(1L)));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.capitalsourceService.validateCapitalsource(capitalsource));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> this.capitalsourceService.validateCapitalsource(capitalsource));
     }
 
     @Test
@@ -40,7 +42,8 @@ class CapitalsourceServiceTest extends AbstractTest {
         final Capitalsource capitalsource = new Capitalsource();
         capitalsource.setUser(new User(new UserID(1L)));
         capitalsource.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.capitalsourceService.createCapitalsource(capitalsource));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.capitalsourceService.createCapitalsource(capitalsource));
     }
 
     @Test
@@ -48,7 +51,8 @@ class CapitalsourceServiceTest extends AbstractTest {
         final Capitalsource capitalsource = new Capitalsource();
         capitalsource.setUser(new User(new UserID(1L)));
         capitalsource.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.capitalsourceService.updateCapitalsource(capitalsource));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.capitalsourceService.updateCapitalsource(capitalsource));
     }
 
     @Test

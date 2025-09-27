@@ -24,14 +24,16 @@ class ContractpartnerAccountServiceTest extends AbstractTest {
     void test_createWithInvalidEntity_raisesException() {
         final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
         final UserID userId = new UserID(1L);
-        Assertions.assertThrows(BusinessException.class, () -> this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount));
     }
 
     @Test
     void test_updateWithInvalidEntity_raisesException() {
         final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
         final UserID userId = new UserID(1L);
-        Assertions.assertThrows(BusinessException.class, () -> this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount));
     }
 
     @Test

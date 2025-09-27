@@ -127,29 +127,33 @@ public class AccountMovementHandler extends AbstractHandler {
                 stmt.setString(9, accountMovement.getOtherIban());
                 stmt.setString(10, accountMovement.getOtherBic());
 
-                if (accountMovement.getOtherAccountnumber() == null)
+                if (accountMovement.getOtherAccountnumber() == null) {
                     stmt.setNull(11, Types.BIGINT);
-                else
+                } else {
                     stmt.setLong(11, accountMovement.getOtherAccountnumber());
+                }
 
-                if (accountMovement.getOtherBankcode() == null)
+                if (accountMovement.getOtherBankcode() == null) {
                     stmt.setNull(12, Types.INTEGER);
-                else
+                } else {
                     stmt.setLong(12, accountMovement.getOtherBankcode());
+                }
 
                 stmt.setString(13, accountMovement.getOtherName());
 
-                if (accountMovement.getChargeValue() == null)
+                if (accountMovement.getChargeValue() == null) {
                     stmt.setNull(14, Types.DECIMAL);
-                else
+                } else {
                     stmt.setBigDecimal(14, accountMovement.getChargeValue());
+                }
 
                 stmt.setString(15, accountMovement.getChargeCurrency());
 
-                if (accountMovement.getOriginalValue() == null)
+                if (accountMovement.getOriginalValue() == null) {
                     stmt.setNull(16, Types.DECIMAL);
-                else
+                } else {
                     stmt.setBigDecimal(16, accountMovement.getOriginalValue());
+                }
 
                 stmt.setString(17, accountMovement.getOriginalCurrency());
                 stmt.setBigDecimal(18, accountMovement.getMovementValue());
@@ -162,10 +166,11 @@ public class AccountMovementHandler extends AbstractHandler {
                 stmt.setInt(25, Boolean.TRUE.equals(accountMovement.getCancellation()) ? 1 : 0);
                 stmt.setString(26, accountMovement.getAdditionalInformation());
 
-                if (accountMovement.getAdditionalKey() == null)
+                if (accountMovement.getAdditionalKey() == null) {
                     stmt.setNull(27, Types.INTEGER);
-                else
+                } else {
                     stmt.setInt(27, accountMovement.getAdditionalKey());
+                }
 
                 stmt.setString(28, accountMovement.getPrimaNota());
                 stmt.setDate(29, Date.valueOf(accountMovement.getBalanceDate()));
@@ -185,8 +190,9 @@ public class AccountMovementHandler extends AbstractHandler {
                     this.notifyObservers(accountMovement);
                 } catch (final SQLException e) {
                     // ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
-                    if (e.getErrorCode() != 1062)
+                    if (e.getErrorCode() != 1062) {
                         e.printStackTrace();
+                    }
                 }
             }
         } catch (final SQLException e1) {

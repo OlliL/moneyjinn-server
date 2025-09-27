@@ -117,7 +117,9 @@ public class BalanceMonthly extends AbstractAccountEntity implements Serializabl
         }
         if (this.balanceYear == null) {
             return other.balanceYear == null;
-        } else return this.balanceYear.equals(other.balanceYear);
+        } else {
+            return this.balanceYear.equals(other.balanceYear);
+        }
     }
 
     @Override

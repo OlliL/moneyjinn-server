@@ -94,8 +94,8 @@ public class ImportedMoneyflowReceiptController extends AbstractController
         final ShowImportImportedMoneyflowReceiptsResponse response = new ShowImportImportedMoneyflowReceiptsResponse();
         final List<ImportedMoneyflowReceipt> allImportedMoneyflowReceipts = this.importedMoneyflowReceiptService
                 .getAllImportedMoneyflowReceipts(userId, group.getId());
-        final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports = this.importedMoneyflowReceiptTransportMapper
-                .mapAToB(allImportedMoneyflowReceipts);
+        final List<ImportedMoneyflowReceiptTransport> allImportedMoneyflowReceiptTransports =
+                this.importedMoneyflowReceiptTransportMapper.mapAToB(allImportedMoneyflowReceipts);
         response.setImportedMoneyflowReceiptTransports(allImportedMoneyflowReceiptTransports);
         return ResponseEntity.ok(response);
     }

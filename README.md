@@ -7,8 +7,8 @@
 - create a MySQL DB
     - `create database moneyflow;`
 - create a MySQL user to be used by moneyflow (SELECT, INSERT, UPDATE, DELETE privileges are sufficient)
-    -
-    `GRANT SELECT,INSERT,UPDATE,DELETE ON moneyflow.* TO moneyflow@localhost IDENTIFIED BY 'moneyflow' WITH GRANT OPTION;`
+  -
+  `GRANT SELECT,INSERT,UPDATE,DELETE ON moneyflow.* TO moneyflow@localhost IDENTIFIED BY 'moneyflow' WITH GRANT OPTION;`
 - change DATASOURCE in moneyjinn-server/src/main/resources/application.properties
 - execute mysqldump.sql
     - `mysql -u root -p<password> -h <dbhost> <dbname> < mysqldump.sql`

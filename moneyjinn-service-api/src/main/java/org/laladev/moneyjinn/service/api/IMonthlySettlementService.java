@@ -118,5 +118,6 @@ public interface IMonthlySettlementService {
      * {@link CapitalsourceID}s.
      */
     List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(UserID userId, LocalDate begin,
-                                                                            LocalDate end, List<CapitalsourceID> capitalsourceIds);
+                                                                            LocalDate end,
+                                                                            List<CapitalsourceID> capitalsourceIds);
 }

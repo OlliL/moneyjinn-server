@@ -258,7 +258,8 @@ class UpdateUserTest extends AbstractAdminUserControllerTest {
     }
 
     private void help_AccessRelation_Testing(final UserTransport transport,
-                                             final AccessRelationTransport accessRelationTransport, final List<AccessRelation> expectedAccessRelations)
+                                             final AccessRelationTransport accessRelationTransport,
+                                             final List<AccessRelation> expectedAccessRelations)
             throws Exception {
         final UpdateUserRequest request = new UpdateUserRequest();
         request.setUserTransport(transport);

@@ -69,7 +69,8 @@ public class MoneyflowDao {
     }
 
     public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(final Long userId, final LocalDate validFrom,
-                                                                 final LocalDate validTil, final List<Long> capitalsourceIds) {
+                                                                 final LocalDate validTil,
+                                                                 final List<Long> capitalsourceIds) {
         return this.mapper.getSumAmountByDateRangeForCapitalsourceIds(userId, validFrom, validTil, capitalsourceIds);
     }
 
@@ -99,13 +100,17 @@ public class MoneyflowDao {
     }
 
     public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(final Long userId,
-                                                                                                      final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
+                                                                                                      final List<Long> postingAccountIdLongs,
+                                                                                                      final LocalDate dateFrom,
+                                                                                                      final LocalDate dateTil) {
         return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdLongs,
                 dateFrom, dateTil);
     }
 
     public List<PostingAccountAmountData> getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(final Long userId,
-                                                                                                 final List<Long> postingAccountIdLongs, final LocalDate dateFrom, final LocalDate dateTil) {
+                                                                                                 final List<Long> postingAccountIdLongs,
+                                                                                                 final LocalDate dateFrom,
+                                                                                                 final LocalDate dateTil) {
         return this.mapper.getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdLongs,
                 dateFrom, dateTil);
     }
@@ -121,7 +126,8 @@ public class MoneyflowDao {
     }
 
     public List<MoneyflowData> getAllMoneyflowsByDateRangeCapitalsourceId(final Long userId, final LocalDate dateFrom,
-                                                                          final LocalDate dateTil, final Long capitalsourceId) {
+                                                                          final LocalDate dateTil,
+                                                                          final Long capitalsourceId) {
         return this.mapper.getAllMoneyflowsByDateRangeCapitalsourceId(userId, dateFrom, dateTil, capitalsourceId);
     }
 

@@ -70,7 +70,8 @@ import java.util.regex.Pattern;
 @Named
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompareDataService extends AbstractService implements ICompareDataService {
-    private static final String WRONG_FILE_FORMAT_TEXT = "The specified file is not parseable! Maybe you've selected the wrong format or file?";
+    private static final String WRONG_FILE_FORMAT_TEXT =
+            "The specified file is not parseable! Maybe you've selected the wrong format or file?";
     private final CompareDataFormatDao compareDataFormatDao;
     private final IMoneyflowService moneyflowService;
     private final IContractpartnerAccountService contractpartnerAccountService;
@@ -78,13 +79,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
     private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
 
-    private static BigDecimal getAmount(final CompareDataFormat compareDataFormat, final String[] cmpDataRaw, final Pattern creditIndicator) {
+    private static BigDecimal getAmount(final CompareDataFormat compareDataFormat, final String[] cmpDataRaw,
+                                        final Pattern creditIndicator) {
         String amountStr = cmpDataRaw[compareDataFormat.getPositionAmount() - 1];
         if (compareDataFormat.getFormatAmountThousand() != null) {
             amountStr = amountStr.replace(compareDataFormat.getFormatAmountThousand().toString(), "");
         }
         amountStr = amountStr.replace(compareDataFormat.getFormatAmountDecimal().toString(), ".");
-        amountStr = amountStr.replaceAll("[^\\-\\.0-9]*", "");
+        amountStr = amountStr.replaceAll("[^-.0-9]*", "");
         BigDecimal amount = new BigDecimal(amountStr);
         if (compareDataFormat.getPositionCreditDebitIndicator() != null) {
             final String keyword = cmpDataRaw[compareDataFormat.getPositionCreditDebitIndicator() - 1];
@@ -111,7 +113,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
     @Override
     public CompareDataResult compareDataFile(final UserID userId, final CompareDataFormatID compareDataFormatId,
-                                             final CapitalsourceID capitalsourceId, final LocalDate startDate, final LocalDate endDate,
+                                             final CapitalsourceID capitalsourceId, final LocalDate startDate,
+                                             final LocalDate endDate,
                                              final String fileContents) {
         final CompareDataFormat compareDataFormat = this.getCompareDataFormatById(compareDataFormatId);
         List<CompareDataDataset> compareDataDatasets = null;
@@ -131,7 +134,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
     @Override
     public CompareDataResult compareDataImport(final UserID userId, final CapitalsourceID capitalsourceId,
-                                               final LocalDate startDate, final LocalDate endDate, final List<ImportedMoneyflow> importedMoneyflows) {
+                                               final LocalDate startDate, final LocalDate endDate,
+                                               final List<ImportedMoneyflow> importedMoneyflows) {
         List<CompareDataDataset> compareDataDatasets = null;
         if (importedMoneyflows != null) {
             compareDataDatasets = this.mapImportedMoneyflows(importedMoneyflows);
@@ -155,7 +159,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
     }
 
     private CompareDataResult doComparision(final UserID userId, final CapitalsourceID capitalsourceId,
-                                            final LocalDate startDate, final LocalDate endDate, final List<CompareDataDataset> compareDataDatasets) {
+                                            final LocalDate startDate, final LocalDate endDate,
+                                            final List<CompareDataDataset> compareDataDatasets) {
         final CompareDataResult result = new CompareDataResult();
         final Period searchFrame = Period.ofDays(5);
         // gather all recorded moneyflows in the given period of time to work on for
@@ -221,7 +226,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
     }
 
     private int rateMoneyflowToDataset(final UserID userId, final Moneyflow moneyflow,
-                                       final CompareDataDataset compareDataDataset, final CapitalsourceID capitalsourceId) {
+                                       final CompareDataDataset compareDataDataset,
+                                       final CapitalsourceID capitalsourceId) {
         int rating = 0;
         if (moneyflow.getBookingDate().equals(compareDataDataset.getBookingDate())) {
             rating += 10;
@@ -247,7 +253,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         final String partner = compareDataDataset.getPartner();
         if (partner != null && !partner.isEmpty()) {
             final String monPartner = moneyflow.getContractpartner().getName();
-            final String splitPattern = "[\\., -]";
+            final String splitPattern = "[., -]";
             int matchingWords = 0;
             int words = 0;
             for (final String cmpWord : partner.split(splitPattern)) {

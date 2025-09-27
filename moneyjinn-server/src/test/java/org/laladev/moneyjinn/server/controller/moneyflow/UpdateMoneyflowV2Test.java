@@ -50,7 +50,8 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
 
     private void testError(final MoneyflowTransport transport, final List<Long> deleteMoneyflowSplitEntryIds,
                            final List<MoneyflowSplitEntryTransport> updateMoneyflowSplitEntryTransports,
-                           final List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports, final Long validationId,
+                           final List<MoneyflowSplitEntryTransport> insertMoneyflowSplitEntryTransports,
+                           final Long validationId,
                            final ErrorCode... errorCodes) throws Exception {
         final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
         request.setMoneyflowTransport(transport);

@@ -60,7 +60,8 @@ import static org.springframework.util.Assert.notNull;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class ContractpartnerService extends AbstractService implements IContractpartnerService {
-    private static final String STILL_REFERENCED = "You may not delete a contractual partner who is still referenced by a flow of money!";
+    private static final String STILL_REFERENCED =
+            "You may not delete a contractual partner who is still referenced by a flow of money!";
     private final ContractpartnerDao contractpartnerDao;
     private final IUserService userService;
     private final IGroupService groupService;

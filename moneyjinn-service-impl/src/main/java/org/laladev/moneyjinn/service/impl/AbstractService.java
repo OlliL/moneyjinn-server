@@ -60,22 +60,25 @@ public abstract class AbstractService {
 
     protected void evictFromCache(final String cacheName, final Object key) {
         final var cache = this.cacheManager.getCache(cacheName);
-        if (cache != null)
+        if (cache != null) {
             cache.evict(key);
+        }
     }
 
     protected void clearCache(final String cacheName) {
         final var cache = this.cacheManager.getCache(cacheName);
-        if (cache != null)
+        if (cache != null) {
             cache.clear();
+        }
     }
 
     protected <T> T getFromCacheOrExecute(final String cacheName, final Object key, final Supplier<T> supplier,
                                           final Class<T> clazz) {
         final Cache cache = this.cacheManager.getCache(cacheName);
 
-        if (cache == null)
+        if (cache == null) {
             throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
+        }
 
         final T cacheValue = cache.get(key, clazz);
         if (cacheValue != null) {
@@ -91,8 +94,9 @@ public abstract class AbstractService {
                                                     final Supplier<List<T>> supplier) {
         final Cache cache = this.cacheManager.getCache(cacheName);
 
-        if (cache == null)
+        if (cache == null) {
             throw new TechnicalException("Cache " + cacheName + " not defined!", ErrorCode.UNKNOWN);
+        }
 
         @SuppressWarnings("unchecked") final List<T> cacheValue = cache.get(key, List.class);
         if (cacheValue != null) {

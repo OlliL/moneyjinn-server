@@ -46,5 +46,6 @@ public interface IContractpartnerDaoMapper {
     void deleteContractpartner(@Param("groupId") Long groupId, @Param("id") Long id);
 
     Boolean checkContractpartnerInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
-                                               @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+                                               @Param("validFrom") LocalDate validFrom,
+                                               @Param("validTil") LocalDate validTil);
 }

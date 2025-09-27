@@ -46,7 +46,8 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     private void testError(final MoneyflowTransport transport,
-                           final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports, final ErrorCode... errorCodes)
+                           final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports,
+                           final ErrorCode... errorCodes)
             throws Exception {
         final CreateMoneyflowRequest request = new CreateMoneyflowRequest();
         request.setMoneyflowTransport(transport);
@@ -455,13 +456,15 @@ class CreateMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     private MoneyflowSplitEntryTransport getMseTransport2(final MoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
+        return new MoneyflowSplitEntryTransportBuilder().withAmount(
+                        transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment2").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID)
                 .build();
     }
 
     private MoneyflowSplitEntryTransport getMseTransport1(final MoneyflowTransport transport) {
-        return new MoneyflowSplitEntryTransportBuilder().withAmount(transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
+        return new MoneyflowSplitEntryTransportBuilder().withAmount(
+                        transport.getAmount().divide(new BigDecimal(2), RoundingMode.HALF_UP))
                 .withComment("comment1").withPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID)
                 .build();
     }

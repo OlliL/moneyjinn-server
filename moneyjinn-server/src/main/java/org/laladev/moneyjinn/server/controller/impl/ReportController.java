@@ -107,15 +107,15 @@ public class ReportController extends AbstractController implements ReportContro
             if (request.getPostingAccountIdsNo() != null) {
                 final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
                         .map(PostingAccountID::new).toList();
-                final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-                        postingAccountIdsNo);
+                final ClientReportingUnselectedPostingAccountIdsSetting setting =
+                        new ClientReportingUnselectedPostingAccountIdsSetting(postingAccountIdsNo);
                 this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
             }
             final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
                     .getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount(userId, postingAccountIdsYes,
                             startDate, endDate);
-            final List<PostingAccountAmountTransport> responsePostingAccountAmount = this.postingAccountAmountTransportMapper
-                    .mapAToB(postingAccountAmounts);
+            final List<PostingAccountAmountTransport> responsePostingAccountAmount =
+                    this.postingAccountAmountTransportMapper.mapAToB(postingAccountAmounts);
             response.setPostingAccountAmountTransports(responsePostingAccountAmount);
         }
         return ResponseEntity.ok(response);
@@ -135,15 +135,17 @@ public class ReportController extends AbstractController implements ReportContro
             if (request.getPostingAccountIdsNo() != null) {
                 final List<PostingAccountID> postingAccountIdsNo = request.getPostingAccountIdsNo().stream()
                         .map(PostingAccountID::new).toList();
-                final ClientReportingUnselectedPostingAccountIdsSetting setting = new ClientReportingUnselectedPostingAccountIdsSetting(
-                        postingAccountIdsNo);
+                final ClientReportingUnselectedPostingAccountIdsSetting setting =
+                        new ClientReportingUnselectedPostingAccountIdsSetting(
+                                postingAccountIdsNo);
                 this.settingService.setClientReportingUnselectedPostingAccountIdsSetting(userId, setting);
             }
             final List<PostingAccountAmount> postingAccountAmounts = this.moneyflowService
                     .getAllMoneyflowsByDateRangeGroupedByYearPostingAccount(userId, postingAccountIdsYes, startDate,
                             endDate);
-            final List<PostingAccountAmountTransport> responsePostingAccountAmount = this.postingAccountAmountTransportMapper
-                    .mapAToB(postingAccountAmounts);
+            final List<PostingAccountAmountTransport> responsePostingAccountAmount =
+                    this.postingAccountAmountTransportMapper
+                            .mapAToB(postingAccountAmounts);
             response.setPostingAccountAmountTransports(responsePostingAccountAmount);
         }
         return ResponseEntity.ok(response);
@@ -195,8 +197,9 @@ public class ReportController extends AbstractController implements ReportContro
             final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
             final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
             this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
-            final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources = new ClientTrendActiveCapitalsourcesSetting(
-                    Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
+            final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources =
+                    new ClientTrendActiveCapitalsourcesSetting(
+                            Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
             this.settingService.setClientTrendActiveCapitalsourcesSetting(userId, settingActiveCapitalsources);
             final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting(
                     Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
@@ -228,8 +231,9 @@ public class ReportController extends AbstractController implements ReportContro
         final List<Etf> etfs = etfIds.stream().map(etfId -> this.etfService.getEtfById(super.getUserId(), etfId))
                 .toList();
 
-        if (etfs.isEmpty())
+        if (etfs.isEmpty()) {
             return Collections.emptyList();
+        }
 
         final List<TrendsTransport> trendsTransportList = new ArrayList<>();
 
@@ -242,8 +246,9 @@ public class ReportController extends AbstractController implements ReportContro
 
             final double etfSellValue = etfs.stream().mapToDouble(etf -> {
                 final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
-                if (etfValue == null)
+                if (etfValue == null) {
                     return 0;
+                }
 
                 final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(),
                         endOfMonth);
@@ -271,7 +276,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
 
     private List<TrendsTransport> prepareCalculatedTrends(final UserID userId, final LocalDate startDate,
-                                                          LocalDate endDate, final List<CapitalsourceID> capitalsourceIds,
+                                                          LocalDate endDate,
+                                                          final List<CapitalsourceID> capitalsourceIds,
                                                           final List<TrendsTransport> trendsSettledTransports) {
 
         final LocalDate lastSettledDay;
@@ -328,7 +334,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
 
     private List<TrendsTransport> prepareSettledTrends(final UserID userId, final LocalDate startDate,
-                                                       final LocalDate endDate, final List<CapitalsourceID> capitalsourceIds) {
+                                                       final LocalDate endDate,
+                                                       final List<CapitalsourceID> capitalsourceIds) {
         final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
                 .getAllMonthlySettlementsByRangeAndCapitalsource(userId, startDate, endDate, capitalsourceIds);
 
@@ -338,7 +345,8 @@ public class ReportController extends AbstractController implements ReportContro
             final LocalDate date = LocalDate.of(monthlySettlement.getYear(), monthlySettlement.getMonth(), 1);
 
             settlementAmounts.compute(date, (k, settlementAmount)
-                    -> monthlySettlement.getAmount().add(settlementAmount == null ? BigDecimal.ZERO : settlementAmount));
+                    -> monthlySettlement.getAmount().add(
+                    settlementAmount == null ? BigDecimal.ZERO : settlementAmount));
         }
 
         return this.mapTrendsTransports(settlementAmounts);
@@ -358,7 +366,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
 
     private List<CapitalsourceID> filterByValidity(final List<CapitalsourceID> capitalsourceIds,
-                                                   final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap, final LocalDate beginOfMonth) {
+                                                   final Map<CapitalsourceID, LocalDate> validTilCapitalsourceIdMap,
+                                                   final LocalDate beginOfMonth) {
         return capitalsourceIds.stream().filter(csi -> !validTilCapitalsourceIdMap.get(csi).isBefore(beginOfMonth))
                 .toList();
     }
@@ -524,7 +533,8 @@ public class ReportController extends AbstractController implements ReportContro
                         if (beginOfMonth.isAfter(lastSettlementCapitalsource.getValidTil())) {
                             continue;
                         }
-                        final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
+                        final ReportTurnoverCapitalsourceTransport turnoverCapitalsource =
+                                new ReportTurnoverCapitalsourceTransport();
                         turnoverCapitalsource.setCapitalsourceComment(lastSettlementCapitalsource.getComment());
                         turnoverCapitalsource.setCapitalsourceType(
                                 CapitalsourceTypeMapper.map(lastSettlementCapitalsource.getType()));
@@ -558,7 +568,8 @@ public class ReportController extends AbstractController implements ReportContro
                         for (final MonthlySettlement monthlySettlement : newCapitalsourcesSettled.values()) {
                             final Capitalsource settlementsThisMonthCapitalsource = monthlySettlement
                                     .getCapitalsource();
-                            final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
+                            final ReportTurnoverCapitalsourceTransport turnoverCapitalsource =
+                                    new ReportTurnoverCapitalsourceTransport();
                             turnoverCapitalsource
                                     .setCapitalsourceComment(settlementsThisMonthCapitalsource.getComment());
                             turnoverCapitalsource.setCapitalsourceType(
@@ -580,7 +591,8 @@ public class ReportController extends AbstractController implements ReportContro
                         // new capitalsource with neither a settlement in the current, nor in the
                         // previous month - assume a 0 settlement last month
                         for (final Capitalsource capitalsource : newCapitalsourcesUnsettled) {
-                            final ReportTurnoverCapitalsourceTransport turnoverCapitalsource = new ReportTurnoverCapitalsourceTransport();
+                            final ReportTurnoverCapitalsourceTransport turnoverCapitalsource =
+                                    new ReportTurnoverCapitalsourceTransport();
                             turnoverCapitalsource.setCapitalsourceComment(capitalsource.getComment());
                             turnoverCapitalsource
                                     .setCapitalsourceType(CapitalsourceTypeMapper.map(capitalsource.getType()));
@@ -621,7 +633,8 @@ public class ReportController extends AbstractController implements ReportContro
                         // In this case, use the earliest settlement of the current year for the
                         // annual turnover.
                         if (amountBeginOfYear == null) {
-                            final List<Month> allSettledMonth = this.monthlySettlementService.getAllMonth(userId, requestYear);
+                            final List<Month> allSettledMonth =
+                                    this.monthlySettlementService.getAllMonth(userId, requestYear);
                             amountBeginOfYear = this.getAssetAmountFromMonthlySettlements(userId, requestYear,
                                     allSettledMonth.getFirst(), yearlyAssetCapitalsourceIds);
                         }
@@ -656,7 +669,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
 
     private BigDecimal getMovementForCapitalsourceAndDateRange(final List<Moneyflow> moneyflows,
-                                                               final CapitalsourceID capitalsourceId, final LocalDate dateFrom, final LocalDate dateTil) {
+                                                               final CapitalsourceID capitalsourceId,
+                                                               final LocalDate dateFrom, final LocalDate dateTil) {
         return moneyflows.parallelStream().filter(mf -> mf.getCapitalsource().getId().equals(capitalsourceId))
                 .filter(mf -> !mf.getBookingDate().isBefore(dateFrom))
                 .filter(mf -> !mf.getBookingDate().isAfter(dateTil)).map(Moneyflow::getAmount)
@@ -680,7 +694,8 @@ public class ReportController extends AbstractController implements ReportContro
     }
 
     private void addCurrentAmount(final Capitalsource capitalsource, final LocalDate startOfMonth,
-                                  final BigDecimal startAmount, final ReportTurnoverCapitalsourceTransport turnoverCapitalsource,
+                                  final BigDecimal startAmount,
+                                  final ReportTurnoverCapitalsourceTransport turnoverCapitalsource,
                                   final List<Moneyflow> moneyflows, final List<ImportedBalance> importedBalances) {
         final LocalDate today = LocalDate.now();
         final CapitalsourceID capitalsourceId = capitalsource.getId();

@@ -166,11 +166,13 @@ public class AccountMovementMapper {
     }
 
     private String getIban(final String iban) {
-        if (iban == null || iban.isBlank())
+        if (iban == null || iban.isBlank()) {
             return null;
+        }
 
-        if (!iban.contains("/"))
+        if (!iban.contains("/")) {
             return iban;
+        }
 
         return iban.substring(0, iban.indexOf("/"));
     }

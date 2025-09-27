@@ -53,7 +53,8 @@ import java.util.logging.Level;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class GroupService extends AbstractService implements IGroupService {
-    private static final String STILL_REFERENCED = "You may not delete a group while there where/are users assigned to it!";
+    private static final String STILL_REFERENCED =
+            "You may not delete a group while there where/are users assigned to it!";
     private final GroupDao groupDao;
     private final GroupDataMapper groupDataMapper;
 

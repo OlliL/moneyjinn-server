@@ -431,8 +431,9 @@ public class MoneyflowController extends AbstractController implements Moneyflow
             if (!relevantMoneyflows.isEmpty()) {
                 final List<MoneyflowID> relevantMoneyflowIds = relevantMoneyflows.stream().map(Moneyflow::getId)
                         .toList();
-                final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries = this.moneyflowSplitEntryService
-                        .getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
+                final Map<MoneyflowID, List<MoneyflowSplitEntry>> moneyflowSplitEntries =
+                        this.moneyflowSplitEntryService
+                                .getMoneyflowSplitEntries(userId, relevantMoneyflowIds);
                 final List<MoneyflowTransport> moneyflowTransports = this.moneyflowTransportMapper
                         .mapAToB(relevantMoneyflows);
                 response.setMoneyflowTransports(moneyflowTransports);

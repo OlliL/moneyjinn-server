@@ -90,21 +90,24 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(final String token) {
-        if (token == null)
+        if (token == null) {
             return null;
+        }
 
         final var validatedTokenOptional = this.getValidatedToken(token);
 
-        if (validatedTokenOptional.isEmpty())
+        if (validatedTokenOptional.isEmpty()) {
             return null;
+        }
 
         final var validatedToken = validatedTokenOptional.get();
 
         final String username = this.getUsername(validatedToken);
         final Long userId = this.getUserId(validatedToken);
 
-        if (username == null || userId == null)
+        if (username == null || userId == null) {
             return null;
+        }
 
         final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         if (this.isRefreshToken(validatedToken)) {

@@ -67,7 +67,8 @@ public class LalaHBCICallback extends HBCICallbackConsole {
 
     @Override
     public synchronized void status(final HBCIPassport passport, final int statusTag, final Object[] o) {
-        if (statusTag != STATUS_MSG_RAW_RECV && statusTag != STATUS_MSG_RAW_SEND)
+        if (statusTag != STATUS_MSG_RAW_RECV && statusTag != STATUS_MSG_RAW_SEND) {
             super.status(passport, statusTag, o);
+        }
     }
 }

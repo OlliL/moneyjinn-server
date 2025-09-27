@@ -129,7 +129,8 @@ public class CompareDataController extends AbstractController implements Compare
                 if (compareDataNotInDatabaseList != null && !compareDataNotInDatabaseList.isEmpty()) {
                     final List<CompareDataNotInDatabaseTransport> transports = new ArrayList<>();
                     for (final CompareDataNotInDatabase compareDataNotInDatabase : compareDataNotInDatabaseList) {
-                        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport = new CompareDataNotInDatabaseTransport();
+                        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+                                new CompareDataNotInDatabaseTransport();
                         compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
                                 this.compareDataDatasetTransportMapper
                                         .mapAToB(compareDataNotInDatabase.getCompareDataDataset()));
@@ -140,7 +141,8 @@ public class CompareDataController extends AbstractController implements Compare
                 if (compareDataMatchingList != null && !compareDataMatchingList.isEmpty()) {
                     final List<CompareDataMatchingTransport> transports = new ArrayList<>();
                     for (final CompareDataMatching compareDataMatching : compareDataMatchingList) {
-                        final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
+                        final CompareDataMatchingTransport compareDataMatchingTransport =
+                                new CompareDataMatchingTransport();
                         compareDataMatchingTransport
                                 .setCompareDataDatasetTransport(this.compareDataDatasetTransportMapper
                                         .mapAToB(compareDataMatching.getCompareDataDataset()));
@@ -154,7 +156,8 @@ public class CompareDataController extends AbstractController implements Compare
                 if (compareDataWrongCapitalsourceList != null && !compareDataWrongCapitalsourceList.isEmpty()) {
                     final List<CompareDataWrongCapitalsourceTransport> transports = new ArrayList<>();
                     for (final CompareDataWrongCapitalsource compareDataWrongCapitalsource : compareDataWrongCapitalsourceList) {
-                        final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport = new CompareDataWrongCapitalsourceTransport();
+                        final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport =
+                                new CompareDataWrongCapitalsourceTransport();
                         compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
                                 this.compareDataDatasetTransportMapper
                                         .mapAToB(compareDataWrongCapitalsource.getCompareDataDataset()));
@@ -167,7 +170,8 @@ public class CompareDataController extends AbstractController implements Compare
                 if (compareDataNotInFileList != null && !compareDataNotInFileList.isEmpty()) {
                     final List<CompareDataNotInFileTransport> transports = new ArrayList<>();
                     for (final CompareDataNotInFile compareDataNotInFile : compareDataNotInFileList) {
-                        final CompareDataNotInFileTransport compareDataNotInFileTransport = new CompareDataNotInFileTransport();
+                        final CompareDataNotInFileTransport compareDataNotInFileTransport =
+                                new CompareDataNotInFileTransport();
                         compareDataNotInFileTransport.setMoneyflowTransport(
                                 this.moneyflowTransportMapper.mapAToB(compareDataNotInFile.getMoneyflow()));
                         transports.add(compareDataNotInFileTransport);
@@ -175,8 +179,8 @@ public class CompareDataController extends AbstractController implements Compare
                     response.setCompareDataNotInFileTransports(transports);
                 }
             }
-            final ClientCompareDataSelectedCapitalsource settingCapitalsource = new ClientCompareDataSelectedCapitalsource(
-                    capitalsourceId);
+            final ClientCompareDataSelectedCapitalsource settingCapitalsource =
+                    new ClientCompareDataSelectedCapitalsource(capitalsourceId);
             this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
         }
         return ResponseEntity.ok(response);

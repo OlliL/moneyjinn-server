@@ -36,7 +36,8 @@ public interface ICapitalsourceDaoMapper {
     List<CapitalsourceData> getAllCapitalsources(@Param("userId") Long userId);
 
     List<CapitalsourceData> getAllCapitalsourcesByDateRange(@Param("userId") Long userId,
-                                                            @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+                                                            @Param("validFrom") LocalDate validFrom,
+                                                            @Param("validTil") LocalDate validTil);
 
     CapitalsourceData getCapitalsourceById(@Param("userId") Long userId, @Param("magGroupId") Long magGroupId,
                                            @Param("id") Long id);
@@ -52,11 +53,14 @@ public interface ICapitalsourceDaoMapper {
                              @Param("id") Long id);
 
     Boolean checkCapitalsourceInUseOutOfDate(@Param("userId") Long userId, @Param("id") Long id,
-                                             @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+                                             @Param("validFrom") LocalDate validFrom,
+                                             @Param("validTil") LocalDate validTil);
 
     List<CapitalsourceData> getGroupCapitalsourcesByDateRange(@Param("userId") Long userId,
-                                                              @Param("validFrom") LocalDate validFrom, @Param("validTil") LocalDate validTil);
+                                                              @Param("validFrom") LocalDate validFrom,
+                                                              @Param("validTil") LocalDate validTil);
 
     CapitalsourceData getCapitalsourceByAccount(@Param("bankCode") String bankCode,
-                                                @Param("accountNumber") String accountNumber, @Param("date") LocalDate date);
+                                                @Param("accountNumber") String accountNumber,
+                                                @Param("date") LocalDate date);
 }

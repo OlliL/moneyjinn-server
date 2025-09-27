@@ -28,7 +28,8 @@ class DeleteImportedMoneyflowByIdTest extends AbstractWebUserControllerTest {
     @Test
     void test_standardRequest_emptyResponse() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final List<CapitalsourceID> capitalsourceIds = List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
+        final List<CapitalsourceID> capitalsourceIds =
+                List.of(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID));
         List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
                 .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds, null);
         Assertions.assertNotNull(importedMoneyflows);

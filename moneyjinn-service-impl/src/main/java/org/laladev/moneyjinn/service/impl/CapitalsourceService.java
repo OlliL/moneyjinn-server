@@ -70,7 +70,8 @@ import static org.springframework.util.Assert.notNull;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 @Log
 public class CapitalsourceService extends AbstractService implements ICapitalsourceService {
-    private static final String STILL_REFERENCED = "You may not delete a source of capital while it is referenced by a flow of money!";
+    private static final String STILL_REFERENCED =
+            "You may not delete a source of capital while it is referenced by a flow of money!";
     private final CapitalsourceDao capitalsourceDao;
     private final IUserService userService;
     private final IGroupService groupService;
@@ -179,7 +180,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
     @Override
     public List<Capitalsource> getAllCapitalsourcesByDateRange(@NonNull final UserID userId,
-                                                               @NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
+                                                               @NonNull final LocalDate validFrom,
+                                                               @NonNull final LocalDate validTil) {
         final List<CapitalsourceData> capitalsourceDataList = this.capitalsourceDao
                 .getAllCapitalsourcesByDateRange(userId.getId(), validFrom, validTil);
         return this.mapCapitalsourceDataList(capitalsourceDataList);
@@ -260,7 +262,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
     @Override
     public List<Capitalsource> getGroupCapitalsourcesByDateRange(@NonNull final UserID userId,
-                                                                 @NonNull final LocalDate validFrom, @NonNull final LocalDate validTil) {
+                                                                 @NonNull final LocalDate validFrom,
+                                                                 @NonNull final LocalDate validTil) {
         final Supplier<List<Capitalsource>> supplier = () -> this.mapCapitalsourceDataList(
                 this.capitalsourceDao.getGroupCapitalsourcesByDateRange(userId.getId(), validFrom, validTil));
 

@@ -32,7 +32,8 @@ class CreateImportedMoneyflowReceiptsTest extends AbstractWebUserControllerTest 
     }
 
     private void test_supportedFile_CreatedAndEmptyResponse(final ImportedMoneyflowReceiptTransport transport,
-                                                            final Long userIdLong, final Long groupIdLong) throws Exception {
+                                                            final Long userIdLong,
+                                                            final Long groupIdLong) throws Exception {
         final CreateImportedMoneyflowReceiptsRequest request = new CreateImportedMoneyflowReceiptsRequest();
         request.setImportedMoneyflowReceiptTransports(Collections.singletonList(transport));
 

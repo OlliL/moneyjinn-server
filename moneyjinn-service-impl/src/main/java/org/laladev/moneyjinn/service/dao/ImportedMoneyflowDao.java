@@ -49,7 +49,9 @@ public class ImportedMoneyflowDao {
     }
 
     public List<ImportedMoneyflowData> getAllImportedMoneyflowsByCapitalsourceIds(final List<Long> capitalsourceIdLongs,
-                                                                                  final Integer status, final LocalDate dateFrom, final LocalDate dateTil) {
+                                                                                  final Integer status,
+                                                                                  final LocalDate dateFrom,
+                                                                                  final LocalDate dateTil) {
         return this.mapper.getAllImportedMoneyflowsByCapitalsourceIds(capitalsourceIdLongs, status, dateFrom, dateTil);
     }
 

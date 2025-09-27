@@ -53,8 +53,9 @@ public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
             final String token = this.jwtTokenProvider.resolveToken(accessor);
             final Authentication auth = this.jwtTokenProvider.getAuthentication(token);
 
-            if (auth != null)
+            if (auth != null) {
                 accessor.setUser(auth);
+            }
         }
         return message;
     }

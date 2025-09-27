@@ -38,10 +38,13 @@ public class SettingNameConverter {
                 ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids",
                 ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources",
                 ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs",
-                ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(), "client_reporting_unselected_posting_account_ids",
-                ClientCompareDataSelectedCapitalsource.class.getSimpleName(), "client_compare_data_selected_capitalsource",
+                ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
+                "client_reporting_unselected_posting_account_ids",
+                ClientCompareDataSelectedCapitalsource.class.getSimpleName(),
+                "client_compare_data_selected_capitalsource",
                 ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format",
-                ClientCompareDataSelectedSourceIsFile.class.getSimpleName(), "client_compare_data_selected_source_is_file",
+                ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
+                "client_compare_data_selected_source_is_file",
                 ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid",
                 ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
     }

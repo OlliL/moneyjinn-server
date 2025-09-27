@@ -253,7 +253,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
     @Override
     public BigDecimal getSumAmountByDateRangeForCapitalsourceId(final UserID userId, final LocalDate dateFrom,
-                                                                final LocalDate dateTil, final CapitalsourceID capitalsourceId) {
+                                                                final LocalDate dateTil,
+                                                                final CapitalsourceID capitalsourceId) {
         return this.getSumAmountByDateRangeForCapitalsourceIds(userId, dateFrom, dateTil,
                 Collections.singletonList(capitalsourceId));
     }
@@ -300,7 +301,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     @Override
     public BigDecimal getSumAmountByDateRangeForCapitalsourceIds(@NonNull final UserID userId,
                                                                  @NonNull final LocalDate dateFrom,
-                                                                 @NonNull final LocalDate dateTil, @NonNull final List<CapitalsourceID> capitalsourceIds) {
+                                                                 @NonNull final LocalDate dateTil,
+                                                                 @NonNull final List<CapitalsourceID> capitalsourceIds) {
         final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();
         return this.moneyflowDao.getSumAmountByDateRangeForCapitalsourceIds(userId.getId(), dateFrom, dateTil,
                 capitalsourceIdLongs);
@@ -353,7 +355,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     @Override
     public List<Moneyflow> searchMoneyflowsByAbsoluteAmountDate(@NonNull final UserID userId,
                                                                 @NonNull final BigDecimal amount,
-                                                                @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil) {
+                                                                @NonNull final LocalDate dateFrom,
+                                                                @NonNull final LocalDate dateTil) {
         final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
                 .searchMoneyflowsByAbsoluteAmountDate(userId.getId(), dateFrom, dateTil, amount);
         return this.mapMoneyflowDataList(moneyflowDatas);
@@ -362,7 +365,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
     @Override
     public List<Moneyflow> searchMoneyflowsByAmountDate(@NonNull final UserID userId,
                                                         @NonNull final LocalDate bookingDate,
-                                                        @NonNull final BigDecimal amount, @NonNull final Period searchPeriod) {
+                                                        @NonNull final BigDecimal amount,
+                                                        @NonNull final Period searchPeriod) {
         final LocalDate beginOfMonth = bookingDate.with(TemporalAdjusters.firstDayOfMonth());
         final LocalDate endOfMonth = bookingDate.with(TemporalAdjusters.lastDayOfMonth());
         LocalDate dateFrom = bookingDate.minus(searchPeriod);
@@ -396,7 +400,8 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
 
     @Override
     public List<Moneyflow> getAllMoneyflowsByDateRangeCapitalsourceId(@NonNull final UserID userId,
-                                                                      @NonNull final LocalDate dateFrom, @NonNull final LocalDate dateTil,
+                                                                      @NonNull final LocalDate dateFrom,
+                                                                      @NonNull final LocalDate dateTil,
                                                                       @NonNull final CapitalsourceID capitalsourceId) {
         final List<MoneyflowData> moneyflowDatas = this.moneyflowDao
                 .getAllMoneyflowsByDateRangeCapitalsourceId(userId.getId(), dateFrom, dateTil, capitalsourceId.getId());

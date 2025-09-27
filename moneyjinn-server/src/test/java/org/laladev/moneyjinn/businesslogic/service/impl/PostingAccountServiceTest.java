@@ -15,12 +15,14 @@ class PostingAccountServiceTest extends AbstractTest {
     @Test
     void test_createWithInvalidEntity_raisesException() {
         final PostingAccount postingAccount = new PostingAccount();
-        Assertions.assertThrows(BusinessException.class, () -> this.postingAccountService.createPostingAccount(postingAccount));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.postingAccountService.createPostingAccount(postingAccount));
     }
 
     @Test
     void test_updateWithInvalidEntity_raisesException() {
         final PostingAccount postingAccount = new PostingAccount();
-        Assertions.assertThrows(BusinessException.class, () -> this.postingAccountService.updatePostingAccount(postingAccount));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.postingAccountService.updatePostingAccount(postingAccount));
     }
 }

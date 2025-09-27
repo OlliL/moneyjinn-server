@@ -70,7 +70,8 @@ public abstract class AbstractControllerTest extends AbstractTest {
     }
 
     protected <T> T getMock(final Class<T> clazz) {
-        return Mockito.mock(clazz, Mockito.withSettings().invocationListeners(methodInvocationReport -> this.method = ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod()));
+        return Mockito.mock(clazz, Mockito.withSettings().invocationListeners(methodInvocationReport -> this.method =
+                ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod()));
     }
 
     protected HttpHeaders getAuthorizationHeader() throws Exception {
@@ -94,7 +95,9 @@ public abstract class AbstractControllerTest extends AbstractTest {
         if (jwtToken == null) {
 
             final Method[] myMethod = new Method[1];
-            Mockito.mock(UserControllerApi.class, Mockito.withSettings().invocationListeners(methodInvocationReport -> myMethod[0] = ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod())).login(null);
+            Mockito.mock(UserControllerApi.class, Mockito.withSettings().invocationListeners(
+                    methodInvocationReport -> myMethod[0] =
+                            ((InvocationOnMock) methodInvocationReport.getInvocation()).getMethod())).login(null);
 
             final MockHttpServletRequestBuilder builder = this.createMockHttpServletRequestBuilder(myMethod[0],
                     loginRequest);

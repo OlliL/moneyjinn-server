@@ -38,7 +38,8 @@ public interface IMonthlySettlementDaoMapper {
     List<Integer> getAllMonth(@Param("userId") Long userId, @Param("year") Integer year);
 
     List<MonthlySettlementData> getAllMonthlySettlementsByYearMonth(@Param("userId") Long userId,
-                                                                    @Param("year") Integer year, @Param("month") Integer month);
+                                                                    @Param("year") Integer year,
+                                                                    @Param("month") Integer month);
 
     LocalDate getMaxSettlementDate(Long userId);
 
@@ -53,6 +54,9 @@ public interface IMonthlySettlementDaoMapper {
                                  @Param("month") Integer month);
 
     List<MonthlySettlementData> getAllMonthlySettlementsByRangeAndCapitalsource(@Param("userId") Long user,
-                                                                                @Param("startYear") int startYear, @Param("startMonth") int startMonth, @Param("endYear") int endYear,
-                                                                                @Param("endMonth") int endMonth, @Param("mcsCapitalsourceIds") List<Long> capitalsourceIdLongs);
+                                                                                @Param("startYear") int startYear,
+                                                                                @Param("startMonth") int startMonth,
+                                                                                @Param("endYear") int endYear,
+                                                                                @Param("endMonth") int endMonth,
+                                                                                @Param("mcsCapitalsourceIds") List<Long> capitalsourceIdLongs);
 }

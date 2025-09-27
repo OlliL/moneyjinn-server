@@ -127,7 +127,9 @@ public class AbstractAccountEntity {
         }
         if (this.myIban == null) {
             return other.myIban == null;
-        } else return this.myIban.equals(other.myIban);
+        } else {
+            return this.myIban.equals(other.myIban);
+        }
     }
 
 }

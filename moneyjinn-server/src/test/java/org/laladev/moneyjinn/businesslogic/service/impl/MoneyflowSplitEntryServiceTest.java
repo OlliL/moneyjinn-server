@@ -22,12 +22,14 @@ class MoneyflowSplitEntryServiceTest extends AbstractTest {
     void test_createWithInvalidEntity_raisesException() {
         final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
         final List<MoneyflowSplitEntry> list = Collections.singletonList(moneyflowSplitEntry);
-        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowSplitEntryService.createMoneyflowSplitEntries(this.user1Id, list));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.moneyflowSplitEntryService.createMoneyflowSplitEntries(this.user1Id, list));
     }
 
     @Test
     void test_updateWithInvalidEntity_raisesException() {
         final MoneyflowSplitEntry moneyflowSplitEntry = new MoneyflowSplitEntry();
-        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(this.user1Id, moneyflowSplitEntry));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.moneyflowSplitEntryService.updateMoneyflowSplitEntry(this.user1Id, moneyflowSplitEntry));
     }
 }

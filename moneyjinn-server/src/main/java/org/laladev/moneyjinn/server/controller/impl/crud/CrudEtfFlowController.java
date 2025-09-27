@@ -53,7 +53,8 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
     @Override
     public ResponseEntity<EtfFlowTransport> create(@RequestBody final EtfFlowTransport etfFlowTransport,
-                                                   @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+                                                   @RequestHeader(value = HEADER_PREFER,
+                                                           required = false) final List<String> prefer) {
         final UserID userId = super.getUserId();
         final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
         etfFlow.setId(null);
@@ -71,7 +72,8 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
     @Override
     public ResponseEntity<EtfFlowTransport> update(@RequestBody final EtfFlowTransport etfFlowTransport,
-                                                   @RequestHeader(value = HEADER_PREFER, required = false) final List<String> prefer) {
+                                                   @RequestHeader(value = HEADER_PREFER,
+                                                           required = false) final List<String> prefer) {
         final UserID userId = super.getUserId();
         final EtfFlow etfFlow = this.etfFlowTransportMapper.mapBToA(etfFlowTransport);
         final ValidationResult validationResult = this.etfService.validateEtfFlow(userId, etfFlow);

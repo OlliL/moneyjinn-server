@@ -127,7 +127,8 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
     @Override
     public List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(@NonNull final UserID userId,
-                                                                       @NonNull final Integer year, @NonNull final Month month) {
+                                                                       @NonNull final Integer year,
+                                                                       @NonNull final Month month) {
         final List<MonthlySettlementData> monthlySettlementDatas = this.monthlySettlementDao
                 .getAllMonthlySettlementsByYearMonth(userId.getId(), year, month.getValue());
         return this.mapMonthlySettlementDataList(monthlySettlementDatas);
@@ -170,7 +171,8 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
 
     @Override
     public List<MonthlySettlement> getAllMonthlySettlementsByRangeAndCapitalsource(@NonNull final UserID userId,
-                                                                                   @NonNull final LocalDate begin, @NonNull final LocalDate end,
+                                                                                   @NonNull final LocalDate begin,
+                                                                                   @NonNull final LocalDate end,
                                                                                    @NonNull final List<CapitalsourceID> capitalsourceIds) {
         notEmpty(capitalsourceIds, "CapitalsourceIds must not be empty!");
         final List<Long> capitalsourceIdLongs = capitalsourceIds.stream().map(CapitalsourceID::getId).toList();

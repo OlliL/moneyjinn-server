@@ -81,7 +81,8 @@ public interface ICompareDataService {
      *
      */
     CompareDataResult compareDataFile(UserID userId, CompareDataFormatID compareDataFormatId,
-                                      CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate, String fileContents);
+                                      CapitalsourceID capitalsourceId, LocalDate startDate, LocalDate endDate,
+                                      String fileContents);
 
     /**
      * Loads all {@link ImportedMoneyflow}s and tries to match them to stored

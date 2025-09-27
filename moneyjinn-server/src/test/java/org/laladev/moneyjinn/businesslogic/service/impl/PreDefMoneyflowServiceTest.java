@@ -17,20 +17,23 @@ class PreDefMoneyflowServiceTest extends AbstractTest {
     @Test
     void test_validateNullUser_raisesException() {
         final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> this.preDefMoneyflowService.validatePreDefMoneyflow(preDefMoneyflow));
     }
 
     @Test
     void test_createWithInvalidEntity_raisesException() {
         final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
         preDefMoneyflow.setUser(new User(new UserID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.preDefMoneyflowService.createPreDefMoneyflow(preDefMoneyflow));
     }
 
     @Test
     void test_updateWithInvalidEntity_raisesException() {
         final PreDefMoneyflow preDefMoneyflow = new PreDefMoneyflow();
         preDefMoneyflow.setUser(new User(new UserID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow));
+        Assertions.assertThrows(BusinessException.class,
+                () -> this.preDefMoneyflowService.updatePreDefMoneyflow(preDefMoneyflow));
     }
 }

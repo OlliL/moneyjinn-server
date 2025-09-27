@@ -96,12 +96,14 @@ class EtfServiceTest extends AbstractTest {
     @Test
     void test_createEtfPreliminaryLumpSumWithInvalidEntity_raisesException() {
         final EtfPreliminaryLumpSum etfPreliminaryLumpSum = new EtfPreliminaryLumpSum();
-        assertThrows(BusinessException.class, () -> this.etfService.createEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum));
+        assertThrows(BusinessException.class,
+                () -> this.etfService.createEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum));
     }
 
     @Test
     void test_updateEtfPreliminaryLumpSumWithInvalidEntity_raisesException() {
         final EtfPreliminaryLumpSum etfPreliminaryLumpSum = new EtfPreliminaryLumpSum();
-        assertThrows(BusinessException.class, () -> this.etfService.updateEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum));
+        assertThrows(BusinessException.class,
+                () -> this.etfService.updateEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum));
     }
 }
