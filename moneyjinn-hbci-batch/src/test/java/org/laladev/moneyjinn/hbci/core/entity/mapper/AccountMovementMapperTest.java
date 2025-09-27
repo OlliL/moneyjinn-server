@@ -3,6 +3,9 @@ package org.laladev.moneyjinn.hbci.core.entity.mapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
@@ -13,12 +16,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Stream;
 
 //TODO Migrate to Java 8 java.time.*
 class AccountMovementMapperTest {
     private final AccountMovementMapper accountMovementMapper = new AccountMovementMapper();
     private final Calendar expectedCalendar = Calendar.getInstance();
     private final Calendar currentCalendar = Calendar.getInstance();
+
+    static Stream<Arguments> test_InvoiceTimestampELVOLV() {
+        return Stream.of(
+                Arguments.of(List.of("123456789012345678901234567", "ELV12345678 10.06 01.03"), "5"),
+                Arguments.of(List.of("123456789012345678901234567", "ELV12345678 10.06 01.03 ME2"), "107"),
+                Arguments.of(List.of("123456789012345678901234567", "OLV12345678 10.06 01.03"), "5"),
+                Arguments.of(List.of("EREF+9999999999999999999999", "9999999999999", "MREF+G999999999999999999999", "CRED+DE9999999999999999", "SVWZ+9999999999999999999999", "99999 ELV99999999 10.06 01.", "03 ME4"), "5"),
+                Arguments.of(List.of("OLV12345678 10.06 01.03"), "5"),
+                Arguments.of(List.of("10.06 01.03 TA-NR. XXXXXX"), "83"),
+                Arguments.of(List.of("100601031885492151200031520"), "5"),
+                Arguments.of(List.of("10.06/01.03UHR XXXXXXXXXX"), "83"),
+                Arguments.of(List.of("2025-06-10T01:03:00"), "106"),
+                Arguments.of(List.of("BLAH BLAH 10-06-2025T01:03:00 BLAH"), "106"),
+                Arguments.of(List.of("BLAH", "BLAH BLAH 10-06-20", "25T01:03:00 BLAH", "BLAH"), "106"),
+                Arguments.of(List.of("EC XXXXXXXX 100625010300IC1"), "5")
+        );
+    }
 
     private void testInvoiceDate(final List<String> usage, final String gvcode) {
         final UmsLine entry = ObjectBuilder.getUmsLine(this.currentCalendar);
@@ -57,6 +78,12 @@ class AccountMovementMapperTest {
 
         this.currentCalendar.set(Calendar.MONTH, Calendar.JUNE);
         this.currentCalendar.set(Calendar.DAY_OF_MONTH, 20);
+    }
+
+    @ParameterizedTest
+    @MethodSource("test_InvoiceTimestampELVOLV")
+    void test_InvoiceTimestamps(final List<String> usage, final String gvCode) {
+        this.testInvoiceDate(usage, gvCode);
     }
 
     @Test
@@ -118,99 +145,12 @@ class AccountMovementMapperTest {
     @Test
     void test_correctDateUsed() {
         final List<String> usage = new ArrayList<>();
-        final String usageLine = "100601031885492151200031520";
-
         usage.add("304-2383932-4629952  0983583325674196");
         usage.add("Amazon .MktplceEU-DE");
         usage.add("0983583325674196"); // This line has to be ignored
-        usage.add(usageLine);
+        usage.add("100601031885492151200031520");
 
         this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5ELV() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "ELV12345678 10.06 01.03";
-        usage.add("123456789012345678901234567");
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp107ELV() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "ELV12345678 10.06 01.03 ME2";
-        usage.add("123456789012345678901234567");
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "107");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5OLV() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "OLV12345678 10.06 01.03";
-        usage.add("123456789012345678901234567");
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5OLVFirstLine() {
-        final List<String> usage = new ArrayList<>();
-        usage.add("EREF+9999999999999999999999");
-        usage.add("9999999999999");
-        usage.add("MREF+G999999999999999999999");
-        usage.add("CRED+DE9999999999999999");
-        usage.add("SVWZ+9999999999999999999999");
-
-        // usageLine:
-        usage.add("99999 ELV99999999 10.06 01.");
-        usage.add("03 ME4");
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5ELVInTheMiddle() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "OLV12345678 10.06 01.03";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5EC() {
-        this.expectedCalendar.set(Calendar.YEAR, 2015);
-        this.expectedCalendar.set(Calendar.SECOND, 22);
-
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "EC XXXXXXXX 100615010322IC1";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp5Lastschrift() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "100601031885492151200031520";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "5");
-    }
-
-    @Test
-    void test_InvoiceTimestamp83TaNr() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "10.06 01.03 TA-NR. XXXXXX";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "83");
     }
 
     @Test
@@ -226,15 +166,6 @@ class AccountMovementMapperTest {
     }
 
     @Test
-    void test_InvoiceTimestamp83Uhr() {
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "10.06/01.03UHR XXXXXXXXXX";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "83");
-    }
-
-    @Test
     void test_InvoiceTimestampPreviousYear() {
         this.expectedCalendar.set(Calendar.YEAR, this.currentCalendar.get(Calendar.YEAR) - 1);
         this.expectedCalendar.set(Calendar.MONTH, Calendar.DECEMBER);
@@ -243,43 +174,5 @@ class AccountMovementMapperTest {
         usage.add(usageLine);
 
         this.testInvoiceDate(usage, "83");
-    }
-
-    @Test
-    void test_InvoiceTimestamp106() {
-        this.expectedCalendar.set(Calendar.SECOND, 22);
-        this.expectedCalendar.set(Calendar.YEAR, 2015);
-
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "2015-06-10T01:03:22";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "106");
-    }
-
-    @Test
-    void test_InvoiceTimestampGermanOneLine106() {
-        this.expectedCalendar.set(Calendar.SECOND, 22);
-        this.expectedCalendar.set(Calendar.YEAR, 2015);
-
-        final List<String> usage = new ArrayList<>();
-        final String usageLine = "BLAH BLAH 10-06-2015T01:03:22 BLAH";
-        usage.add(usageLine);
-
-        this.testInvoiceDate(usage, "106");
-    }
-
-    @Test
-    void test_InvoiceTimestampGermanMultipleLines106() {
-        this.expectedCalendar.set(Calendar.SECOND, 22);
-        this.expectedCalendar.set(Calendar.YEAR, 2015);
-
-        final List<String> usage = new ArrayList<>();
-        usage.add("BLAH");
-        usage.add("BLAH BLAH 10-06-20");
-        usage.add("15T01:03:22 BLAH");
-        usage.add("BLAH");
-
-        this.testInvoiceDate(usage, "106");
     }
 }
