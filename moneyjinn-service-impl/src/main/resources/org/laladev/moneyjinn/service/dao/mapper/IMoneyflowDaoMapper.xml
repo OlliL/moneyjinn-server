@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper">
 
-            <sql id="moneyflowColumns">
+    <sql id="moneyflowColumns">
                  moneyflowid            AS id
                 ,mau_userid             AS mauUserId
                 ,mag_groupid            AS magGroupId
@@ -14,25 +14,25 @@
                 ,comment
                 ,mpa_postingaccountid   AS mpaPostingAccountId
                 ,private                AS privat
-        </sql>
-    
-            <select id="getMoneyflowById"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    </sql>
+
+    <select id="getMoneyflowById"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE moneyflowid     = #{id}
-                   AND mar_mau_userid          = #{userId}
+                   AND mar_mau_userid  = #{userId}
                    AND (
                         private        = 0
                           OR
                         mau_userid     = #{userId}
                        )
                  LIMIT 1
-        </select>
-            
-            <insert id="createMoneyflow"
-                parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
+    </select>
+
+    <insert id="createMoneyflow"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
                 INSERT
                   INTO moneyflows
                       (mau_userid
@@ -58,9 +58,9 @@
                       ,#{mpaPostingAccountId}
                       ,#{privat}
                       )
-        </insert>
+    </insert>
 
-        <update id="updateMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    <update id="updateMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 UPDATE moneyflows
                    SET bookingdate           = #{bookingdate}
                       ,invoicedate           = #{invoicedate}
@@ -73,18 +73,18 @@
                  WHERE mau_userid            = #{mauUserId}
                    AND moneyflowid           = #{id}
                  LIMIT 1
-        </update>
+    </update>
 
-        <delete id="deleteMoneyflow">
+    <delete id="deleteMoneyflow">
                 DELETE
                   FROM moneyflows
                  WHERE mau_userid  = #{userId}
                    AND moneyflowid = #{id}
                  LIMIT 1
-        </delete>
-        
-            <select id="getSumAmountByDateRangeForCapitalsourceIds"
-                resultType="java.math.BigDecimal">
+    </delete>
+
+    <select id="getSumAmountByDateRangeForCapitalsourceIds"
+            resultType="java.math.BigDecimal">
                 SELECT IFNULL(SUM(amount),0)
                   FROM vw_moneyflows
                  WHERE bookingdate BETWEEN #{validFrom} AND #{validTil}
@@ -94,9 +94,9 @@
                       open="(" separator="," close=")">
                         #{mcsCapitalsourceId}
                    </foreach>
-        </select>
-        
-            <select id="getAllYears" resultType="java.lang.Integer">
+    </select>
+
+    <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT YEAR(bookingdate)
                   FROM vw_moneyflows
                  WHERE mar_mau_userid          = #{userId}
@@ -106,9 +106,9 @@
                         mau_userid     = #{userId}
                        )
                  ORDER BY 1 ASC
-        </select>
-        
-            <select id="getAllMonth" resultType="java.lang.Integer">
+    </select>
+
+    <select id="getAllMonth" resultType="java.lang.Integer">
                 SELECT DISTINCT MONTH(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
@@ -119,17 +119,17 @@
                         mau_userid   = #{userId}
                        )
                  ORDER BY 1 ASC
-        </select>
+    </select>
 
-        <select id="getAllMoneyflowsByDateRangeIncludingPrivate"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    <select id="getAllMoneyflowsByDateRangeIncludingPrivate"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND mar_mau_userid              = #{userId}
-        </select>
-        
-        <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
+    </select>
+
+    <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM vw_moneyflows
                  WHERE bookingdate     BETWEEN #{dateFrom} AND #{dateTil}
@@ -140,9 +140,9 @@
                         mau_userid     = #{userId}
                        )
                  LIMIT 1
-        </select>
-        
-         <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
+    </select>
+
+    <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
                  WHERE mar_mau_userid          = #{userId}
@@ -151,9 +151,9 @@
                           OR
                         mau_userid     = #{userId}
                        )
-         </select>           
+    </select>
 
-         <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
+    <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
                  WHERE mar_mau_userid          = #{userId}
@@ -162,9 +162,9 @@
                           OR
                         mau_userid     = #{userId}
                        )
-         </select>           
+    </select>
 
-        <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
+    <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MAX(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate     <![CDATA[ < ]]> #{date}
@@ -174,9 +174,9 @@
                           OR
                         mau_userid     = #{userId}
                        )
-         </select>
+    </select>
 
-         <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
+    <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
                 SELECT MIN(bookingdate)
                   FROM vw_moneyflows
                  WHERE bookingdate     <![CDATA[ > ]]> #{date}
@@ -186,10 +186,10 @@
                           OR
                         mau_userid     = #{userId}
                        )
-         </select>
-         
-        <select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
-                resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
+    </select>
+
+    <select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
+            resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
                 SELECT MIN(mmf.invoicedate)                                       date
                       ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
                     ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
@@ -214,10 +214,10 @@
                   ORDER BY 1
                          ,2
                          ,3
-        </select>
+    </select>
 
-        <select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
-                resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
+    <select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
+            resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
                 SELECT CONCAT(YEAR(MIN(mmf.invoicedate)),'-01-01')                date
                       ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
                     ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
@@ -241,28 +241,28 @@
                   ORDER BY 1
                          ,2
                          ,3
-        </select>
-        
-        <select id="searchMoneyflowsByAmountDate"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    </select>
+
+    <select id="searchMoneyflowsByAmountDate"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND amount              = CAST(#{amount} AS DECIMAL(8,2))
                    AND mar_mau_userid              = #{userId}
-        </select>
+    </select>
 
-        <select id="searchMoneyflowsByAbsoluteAmountDate"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    <select id="searchMoneyflowsByAbsoluteAmountDate"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
                    AND ABS(amount)         = CAST(#{amount} AS DECIMAL(8,2))
                    AND mar_mau_userid              = #{userId}
-        </select>
+    </select>
 
-        <select id="getAllMoneyflowsByDateRangeCapitalsourceId"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
+    <select id="getAllMoneyflowsByDateRangeCapitalsourceId"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
                 SELECT <include refid="moneyflowColumns" />
                   FROM vw_moneyflows
                  WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
@@ -273,12 +273,12 @@
                           OR
                         mau_userid     = #{userId}
                        )
-        </select>
-        
+    </select>
 
-        <select id="searchMoneyflows"
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
-                parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData">
+
+    <select id="searchMoneyflows"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData">
                 SELECT mmf.moneyflowid                                            AS id
                       ,mmf.mau_userid                                             AS mauUserId
                       ,mmf.mag_groupid                                            AS magGroupId
@@ -339,6 +339,5 @@
                        <if test="postingAccountId != null">
                            AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) = #{postingAccountId}
                        </if>
-        </select>
+    </select>
 </mapper>
- 

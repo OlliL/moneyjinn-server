@@ -2,54 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper">
 
-            <sql id="contractpartnerColumns">
-                 mau_userid                AS mauUserId
-                ,mag_groupid        AS magGroupId
+    <sql id="contractpartnerColumns">
+                 mau_userid             AS mauUserId
+                ,mag_groupid            AS magGroupId
                 ,contractpartnerid      AS id
                 ,name
                 ,street
                 ,postcode
                 ,town
                 ,country
-                ,validtil                AS validTil
-                ,validfrom                AS validFrom
-                ,mmf_comment                AS mmfComment
-                ,mpa_postingaccountid        AS mpaPostingAccountId
-        </sql>
-    
-   
-        <select id="getAllContractpartners"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
+                ,validtil               AS validTil
+                ,validfrom              AS validFrom
+                ,mmf_comment            AS mmfComment
+                ,mpa_postingaccountid   AS mpaPostingAccountId
+    </sql>
+
+
+    <select id="getAllContractpartners"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
                  WHERE mar_mau_userid = #{userId}
                    AND NOW() BETWEEN maf_validfrom AND maf_validtil
                  ORDER BY name
-        </select>
-    
-        <select id="getContractpartnerById"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
+    </select>
+
+    <select id="getContractpartnerById"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
                  WHERE contractpartnerid = #{id}
-                   AND mar_mau_userid            = #{userId}
+                   AND mar_mau_userid    = #{userId}
                  LIMIT 1
-        </select>
+    </select>
 
-        <select id="getContractpartnerByName"
-                resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
+    <select id="getContractpartnerByName"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
 
                 SELECT <include refid="contractpartnerColumns" />
                   FROM vw_contractpartners
-                 WHERE mar_mau_userid    = #{userId}
-                   AND name      = #{name}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
+                 WHERE mar_mau_userid  = #{userId}
+                   AND name            = #{name}
+                   AND NOW()           BETWEEN maf_validfrom AND maf_validtil
                  LIMIT 1
-        </select>
+    </select>
 
-        <insert id="createContractpartner"
-                parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">
+    <insert id="createContractpartner"
+            parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">
                 INSERT
                   INTO contractpartners
                       (mau_userid
@@ -77,38 +77,37 @@
                       ,#{mmfComment}
                       ,#{mpaPostingAccountId}
                       )
-        </insert>
-        
-        <update id="updateContractpartner" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
+    </insert>
+
+    <update id="updateContractpartner" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
                 UPDATE contractpartners
-                   SET name                = #{name}
-                      ,street              = #{street}
-                      ,postcode            = #{postcode}
-                      ,town                = #{town}
-                      ,country             = #{country}
-                      ,validtil            = #{validTil}
-                      ,validfrom           = #{validFrom}
+                   SET name                 = #{name}
+                      ,street               = #{street}
+                      ,postcode             = #{postcode}
+                      ,town                 = #{town}
+                      ,country              = #{country}
+                      ,validtil             = #{validTil}
+                      ,validfrom            = #{validFrom}
                       ,mmf_comment          = #{mmfComment}
                       ,mpa_postingaccountid = #{mpaPostingAccountId}
-                 WHERE contractpartnerid = #{id}
-                   AND mag_groupid   = #{magGroupId}
+                 WHERE contractpartnerid    = #{id}
+                   AND mag_groupid          = #{magGroupId}
                  LIMIT 1
-        </update>
+    </update>
 
-        <delete id="deleteContractpartner">
+    <delete id="deleteContractpartner">
                 DELETE
                   FROM contractpartners
-                 WHERE mag_groupid   = #{groupId}
+                 WHERE mag_groupid       = #{groupId}
                    AND contractpartnerid = #{id}
                  LIMIT 1
-        </delete>
-        
-        <select id="checkContractpartnerInUseOutOfDate" resultType="java.lang.Boolean">
+    </delete>
+
+    <select id="checkContractpartnerInUseOutOfDate" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM moneyflows
                  WHERE mcp_contractpartnerid = #{id}
                    AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
                  LIMIT 1        
-        </select>
+    </select>
 </mapper>
- 

@@ -2,41 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper">
 
-        <sql id="userColumns">
+    <sql id="userColumns">
                  userid
                 ,name
                 ,password
                 ,role
                 ,change_password as changePassword
-        </sql>
+    </sql>
 
-        <select id="getUserById" parameterType="java.lang.Long"
-                resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+    <select id="getUserById" parameterType="java.lang.Long"
+            resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
                 SELECT <include refid="userColumns" />
                   FROM access_users
                  WHERE userid = #{userid}
                  LIMIT 1
-        </select>
+    </select>
 
-        <select id="getUserByName" parameterType="java.lang.String"
-                resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+    <select id="getUserByName" parameterType="java.lang.String"
+            resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
                 SELECT <include refid="userColumns" />
                   FROM access_users
                  WHERE name = #{name}
                  LIMIT 1
-        </select>
-        
-        <select id="getAllUsers" 
-                resultType="org.laladev.moneyjinn.service.dao.data.UserData">
+    </select>
+
+    <select id="getAllUsers"
+            resultType="org.laladev.moneyjinn.service.dao.data.UserData">
                 SELECT <include refid="userColumns" />
                   FROM access_users
-        </select>
+    </select>
 
-        <insert id="createUser"
-                parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
-                useGeneratedKeys="true" keyProperty="userid" keyColumn="userid">
+    <insert id="createUser"
+            parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
+            useGeneratedKeys="true" keyProperty="userid" keyColumn="userid">
                 INSERT
                   INTO access_users
                       (name
@@ -50,38 +50,37 @@
                       ,#{role}
                       ,1
                       )
-        </insert>
-        
-        <update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
+    </insert>
+
+    <update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
                 UPDATE access_users
                    SET name            = #{name}
 					  ,role            = #{role}
                       ,change_password = #{changePassword}
                  WHERE userid          = #{userid}
                  LIMIT 1
-        </update>
-        
-        <update id="setPassword">
+    </update>
+
+    <update id="setPassword">
                 UPDATE access_users
                    SET password        = #{password}
                       ,change_password = 0
                 WHERE userid           = #{userid}
                 LIMIT 1
-        </update>
-        
-        <update id="resetPassword">
+    </update>
+
+    <update id="resetPassword">
                 UPDATE access_users
                    SET password        = #{password}
                       ,change_password = 1
                  WHERE userid          = #{userid}
                  LIMIT 1            
-        </update>
-                
-        <delete id="deleteUser">
+    </update>
+
+    <delete id="deleteUser">
                 DELETE
                   FROM access_users
                  WHERE userid = #{userid}
                  LIMIT 1
-        </delete>
+    </delete>
 </mapper>
- 

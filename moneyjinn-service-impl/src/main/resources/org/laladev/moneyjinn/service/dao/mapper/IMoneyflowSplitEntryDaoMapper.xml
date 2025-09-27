@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowSplitEntryDaoMapper">
 
-            <sql id="moneyflowSplitEntryColumns">
+    <sql id="moneyflowSplitEntryColumns">
                  moneyflowsplitentryid AS id
                 ,mmf_moneyflowid       AS mmfMoneyflowId
                 ,amount                AS amount
                 ,comment               AS comment
                 ,mpa_postingaccountid  AS mpaPostingAccountId
-        </sql>
-            
-        <select id="getMoneyflowSplitEntries" 
-                resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData">
+    </sql>
+
+    <select id="getMoneyflowSplitEntries"
+            resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData">
                 SELECT <include refid="moneyflowSplitEntryColumns" />
                   FROM moneyflowsplitentries
                  WHERE mmf_moneyflowid  IN 
@@ -19,11 +19,11 @@
                         #{moneyflowId}
                    </foreach>
                  ORDER BY 2, 1
-        </select>
+    </select>
 
-        <insert id="createMoneyflowSplitEntry"
-                parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowsplitentryid">
+    <insert id="createMoneyflowSplitEntry"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowsplitentryid">
                 INSERT
                   INTO moneyflowsplitentries
                       (mmf_moneyflowid
@@ -37,9 +37,10 @@
                       ,#{mpaPostingAccountId}
                       ,#{comment}
                       )
-        </insert>
-        
-        <update id="updateMoneyflowSplitEntry" parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData">
+    </insert>
+
+    <update id="updateMoneyflowSplitEntry"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData">
                 UPDATE moneyflowsplitentries
                    SET amount                = #{amount}
                       ,mpa_postingaccountid  = #{mpaPostingAccountId}
@@ -47,20 +48,20 @@
                  WHERE mmf_moneyflowid       = #{mmfMoneyflowId}
                    AND moneyflowsplitentryid = #{id}
                  LIMIT 1
-        </update>
+    </update>
 
-        <delete id="deleteMoneyflowSplitEntry">
+    <delete id="deleteMoneyflowSplitEntry">
                 DELETE
                   FROM moneyflowsplitentries
                  WHERE mmf_moneyflowid       = #{moneyflowId}
                    AND moneyflowsplitentryid = #{id}
                  LIMIT 1
-                 
-        </delete>
-        <delete id="deleteMoneyflowSplitEntries">
+
+    </delete>
+
+    <delete id="deleteMoneyflowSplitEntries">
                 DELETE
                   FROM moneyflowsplitentries
                  WHERE mmf_moneyflowid = #{id}
-        </delete>
+    </delete>
 </mapper>
- 

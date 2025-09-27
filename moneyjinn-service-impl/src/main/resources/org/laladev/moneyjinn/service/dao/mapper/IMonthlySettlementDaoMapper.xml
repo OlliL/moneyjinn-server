@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper">
 
-            <sql id="monthlySettlementsColumns">
+    <sql id="monthlySettlementsColumns">
                  monthlysettlementid       AS id
                 ,mau_userid                AS mauUserId
                 ,mag_groupid               AS magGroupId
@@ -10,25 +10,25 @@
                 ,`month`
                 ,amount
                 ,mcs_capitalsourceid       AS mcsCapitalsourceId
-        </sql>
-    
-            <select id="getAllYears" resultType="java.lang.Integer">
+    </sql>
+
+    <select id="getAllYears" resultType="java.lang.Integer">
                 SELECT DISTINCT `year`
                   FROM vw_monthlysettlements
                  WHERE mar_mau_userid = #{userId}
                  ORDER BY `year` ASC
-        </select>
-        
-            <select id="getAllMonth" resultType="java.lang.Integer">
+    </select>
+
+    <select id="getAllMonth" resultType="java.lang.Integer">
                 SELECT DISTINCT `month`
                   FROM vw_monthlysettlements
                  WHERE mar_mau_userid = #{userId}
                    AND `year` = #{year}
                  ORDER BY `month` ASC
-        </select>
-                            
-             <select id="getAllMonthlySettlementsByYearMonth"
-                resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
+    </select>
+
+    <select id="getAllMonthlySettlementsByYearMonth"
+            resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
                 SELECT <include refid="monthlySettlementsColumns" />
                   FROM vw_monthlysettlements
                  WHERE `month`= #{month}
@@ -36,50 +36,50 @@
                    AND mar_mau_userid = #{userId}
                  ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
                       ,mcs_capitalsourceid
-        </select>
+    </select>
 
-        <select id="checkMonthlySettlementsExists" resultType="java.lang.Boolean">
+    <select id="checkMonthlySettlementsExists" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM monthlysettlements
                  WHERE mau_userid = #{userId}
                    AND `year`     = #{year}
                    AND `month`    = #{month}
                  LIMIT 1
-        </select>
+    </select>
 
-        <select id="getMaxSettlementDate" resultType="java.time.LocalDate">
+    <select id="getMaxSettlementDate" resultType="java.time.LocalDate">
                 SELECT CONCAT(
                               CONCAT(
                                      CONCAT(`year`
                                            ,'-')
                                     ,LPAD(`month`,2,'0'))
                              ,'-01')
-                           
+
                   FROM monthlysettlements
                  WHERE mau_userid = #{userId}
                  ORDER BY `year`  DESC
                         , `month` DESC
                  LIMIT 1
-        </select>
-        
-        <select id="getMinSettlementDate" resultType="java.time.LocalDate">
+    </select>
+
+    <select id="getMinSettlementDate" resultType="java.time.LocalDate">
                 SELECT CONCAT(
                               CONCAT(
                                      CONCAT(`year`
                                            ,'-')
                                     ,LPAD(`month`,2,'0'))
                              ,'-01')
-                           
+
                   FROM monthlysettlements
                  WHERE mau_userid = #{userId}
                  ORDER BY `year`  ASC
                         , `month` ASC
                  LIMIT 1
-        </select>
-        
-                <insert id="upsertMonthlySettlement"
-                parameterType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
+    </select>
+
+    <insert id="upsertMonthlySettlement"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
                 INSERT
                   INTO monthlysettlements
                       (mau_userid
@@ -99,18 +99,18 @@
                       )
                     ON DUPLICATE KEY
                 UPDATE amount = VALUES(amount)
-        </insert>
+    </insert>
 
-        <delete id="deleteMonthlySettlement">
+    <delete id="deleteMonthlySettlement">
                 DELETE
                   FROM monthlysettlements
                  WHERE mau_userid = #{userId}
                    AND `year`     = #{year}
                    AND `month`    = #{month}
-        </delete>
+    </delete>
 
-        <select id="getAllMonthlySettlementsByRangeAndCapitalsource"
-                resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
+    <select id="getAllMonthlySettlementsByRangeAndCapitalsource"
+            resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
                 SELECT <include refid="monthlySettlementsColumns" />
                   FROM vw_monthlysettlements
                  WHERE (
@@ -129,7 +129,5 @@
                          ,`month`
                          ,CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
                          ,mcs_capitalsourceid
-        </select>
-        
+    </select>
 </mapper>
- 

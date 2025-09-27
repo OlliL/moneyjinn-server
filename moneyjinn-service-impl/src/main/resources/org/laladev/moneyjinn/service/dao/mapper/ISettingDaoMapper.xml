@@ -3,22 +3,22 @@
 <mapper
         namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
 
-        <sql id="settingColumns">
+    <sql id="settingColumns">
                  mau_userid      as mauUserId
                 ,name
                 ,`value`
-        </sql>
-    
-        <select id="getSetting" 
-                resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
+    </sql>
+
+    <select id="getSetting"
+            resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
                 SELECT <include refid="settingColumns" />
                   FROM settings
                  WHERE mau_userid = #{mauUserId}
                    AND name = #{name}
                  LIMIT 1
-        </select>
+    </select>
 
-        <insert id="setSetting" >
+    <insert id="setSetting" >
                 INSERT
                   INTO settings
                       (mau_userid
@@ -32,21 +32,19 @@
                       )
                     ON DUPLICATE KEY
                 UPDATE `value` = VALUES(`value`)
-        </insert>
-        
-        <delete id="deleteSettings">
+    </insert>
+
+    <delete id="deleteSettings">
                 DELETE
                   FROM settings
                  WHERE mau_userid = #{mauUserId}
-        </delete>
-            
-        <delete id="deleteSetting">
+    </delete>
+
+    <delete id="deleteSetting">
                 DELETE
                   FROM settings
                  WHERE mau_userid = #{mauUserId}
                    AND name = #{name}
                  LIMIT 1
-        </delete>
-            
+    </delete>
 </mapper>
- 

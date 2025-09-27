@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IPreDefMoneyflowDaoMapper">
 
-            <sql id="preDefMoneyflowColumns">
+    <sql id="preDefMoneyflowColumns">
                  predefmoneyflowid        AS id
                 ,mau_userid               AS mauUserId
                 ,amount
@@ -13,28 +13,28 @@
                 ,once_a_month             AS onceAMonth
                 ,last_used                AS lastUsed
                 ,mpa_postingaccountid     AS mpaPostingAccountId
-        </sql>
-    
-            <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
-                resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
+    </sql>
+
+    <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
+            resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
                 SELECT <include refid="preDefMoneyflowColumns" />
                   FROM predefmoneyflows
                  WHERE predefmoneyflowid = #{id}
                    AND mau_userid        = #{userId}
                  LIMIT 1
-        </select>
+    </select>
 
-        <select id="getAllPreDefMoneyflows"
-                resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
+    <select id="getAllPreDefMoneyflows"
+            resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
                 SELECT <include refid="preDefMoneyflowColumns" />
                   FROM predefmoneyflows
                  WHERE mau_userid = #{userId}
                  ORDER BY predefmoneyflowid
-        </select>
+    </select>
 
-        <insert id="createPreDefMoneyflow"
-                parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
+    <insert id="createPreDefMoneyflow"
+            parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
                 INSERT
                   INTO predefmoneyflows
                       (mau_userid
@@ -54,9 +54,10 @@
                       ,#{onceAMonth}
                       ,#{mpaPostingAccountId}
                       )
-        </insert>
-        
-        <update id="updatePreDefMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
+    </insert>
+
+    <update id="updatePreDefMoneyflow"
+            parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
                 UPDATE predefmoneyflows
                    SET amount                = #{amount}
                       ,mcs_capitalsourceid   = #{mcsCapitalsourceId}
@@ -67,22 +68,21 @@
                  WHERE predefmoneyflowid     = #{id}
                    AND mau_userid            = #{mauUserId}
                  LIMIT 1
-        </update>
-        
-        <delete id="deletePreDefMoneyflow">
+    </update>
+
+    <delete id="deletePreDefMoneyflow">
                 DELETE
                   FROM predefmoneyflows
                  WHERE predefmoneyflowid = #{id}
                    AND mau_userid        = #{userId}
                  LIMIT 1
-        </delete>
-         
-        <update id="setLastUsed">
+    </delete>
+
+    <update id="setLastUsed">
                 UPDATE predefmoneyflows
                    SET last_used         = NOW()
                  WHERE predefmoneyflowid = #{id}
                    AND mau_userid        = #{userId}
                  LIMIT 1
-        </update>
+    </update>
 </mapper>
- 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper">
 
-        <sql id="importedMoneyflowColumns">
+    <sql id="importedMoneyflowColumns">
                  impmoneyflowid      AS id
                 ,externalid          AS externalId
                 ,mcs_capitalsourceid AS mcsCapitalsourceId
@@ -14,16 +14,16 @@
                 ,comment
                 ,amount
                 ,status
-        </sql>
+    </sql>
 
-        <select id="getImportedMoneyflowById" resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+    <select id="getImportedMoneyflowById" resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
                 SELECT <include refid="importedMoneyflowColumns" />
                   FROM impmoneyflows
                  WHERE impmoneyflowid = #{id}
                  LIMIT 1        
-        </select>
+    </select>
 
-        <select id="countImportedMoneyflows" resultType="java.lang.Integer">
+    <select id="countImportedMoneyflows" resultType="java.lang.Integer">
                 SELECT COUNT(*)
                   FROM impmoneyflows
                  WHERE mcs_capitalsourceid IN 
@@ -33,11 +33,10 @@
                    <if test="status != null">
                            AND status = #{status} 
                    </if>
-        </select>
-            
-            
-        <select id="getAllImportedMoneyflowsByCapitalsourceIds"
-                resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+    </select>
+
+    <select id="getAllImportedMoneyflowsByCapitalsourceIds"
+            resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
                 SELECT <include refid="importedMoneyflowColumns" />
                   FROM impmoneyflows
                  WHERE mcs_capitalsourceid IN 
@@ -50,24 +49,24 @@
                    <if test="dateFrom != null and dateTil != null">
                            AND bookingdate between #{dateFrom} AND #{dateTil} 
                    </if>
-        </select>
+    </select>
 
-        <delete id="deleteImportedMoneyflowById">
+    <delete id="deleteImportedMoneyflowById">
                 DELETE
                   FROM impmoneyflows
                  WHERE impmoneyflowid = #{id}
                  LIMIT 1
-        </delete>
-             
-        <update id="updateImportedMoneyflowStatus">
+    </delete>
+
+    <update id="updateImportedMoneyflowStatus">
                 UPDATE impmoneyflows
                    SET status = #{status}
                  WHERE impmoneyflowid = #{id}
                  LIMIT 1
-        </update>
-             
-        <insert id="createImportedMoneyflow"
-                parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
+    </update>
+
+    <insert id="createImportedMoneyflow"
+            parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
                 INSERT
                   INTO impmoneyflows
                       (externalid
@@ -93,14 +92,12 @@
                       ,#{amount}
                       ,0
                       )
-        </insert>
+    </insert>
 
-        <select id="checkIfExternalIdAlreadyExists" resultType="java.lang.Boolean">
+    <select id="checkIfExternalIdAlreadyExists" resultType="java.lang.Boolean">
                 SELECT 1
                   FROM impmoneyflows
                  WHERE externalId = #{externalId}
                  LIMIT 1        
-        </select>
-
+    </select>
 </mapper>
- 

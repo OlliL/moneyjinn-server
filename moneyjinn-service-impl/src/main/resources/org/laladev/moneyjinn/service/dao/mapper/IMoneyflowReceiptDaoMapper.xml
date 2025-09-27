@@ -3,45 +3,45 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowReceiptDaoMapper">
 
         <resultMap id="moneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData">
-                <result property="id"             javaType="java.lang.Long"  column="id"             />
-                <result property="mmfMoneyflowId" javaType="java.lang.Long"  column="mmfMoneyflowId" />
-                <result property="receipt"        javaType="_byte[]"         column="blob_Data"      jdbcType="BLOB"/>
-                <result property="receiptType"    javaType="java.lang.Integer" column="receiptType" />
+                <result property="id"             javaType="java.lang.Long"    column="id"             />
+                <result property="mmfMoneyflowId" javaType="java.lang.Long"    column="mmfMoneyflowId" />
+                <result property="receipt"        javaType="_byte[]"           column="blob_Data"      jdbcType="BLOB"/>
+                <result property="receiptType"    javaType="java.lang.Integer" column="receiptType"    />
         </resultMap>
-  
-        <sql id="moneyflowReceiptColumns">
+
+    <sql id="moneyflowReceiptColumns">
                  moneyflowreceiptid AS id
                 ,mmf_moneyflowid    AS mmfMoneyflowId
                 ,receipt            AS blob_Data
                 ,receipt_type       AS receiptType
-        </sql>
+    </sql>
 
-        <select id="getMoneyflowReceipt" 
+    <select id="getMoneyflowReceipt"
                 resultMap="moneyflowReceiptMap">
                 SELECT <include refid="moneyflowReceiptColumns" />
                   FROM moneyflowreceipts
                  WHERE mmf_moneyflowid = #{moneyflowId}
-        </select>
+    </select>
 
-        <select id="getMoneyflowIdsWithReceipt" resultType="java.lang.Long">
+    <select id="getMoneyflowIdsWithReceipt" resultType="java.lang.Long">
                 SELECT mmf_moneyflowid
                   FROM moneyflowreceipts
                  WHERE mmf_moneyflowid  IN 
                    <foreach item="moneyflowId" index="index" collection="moneyflowIds" open="(" separator="," close=")">
                         #{moneyflowId}
                    </foreach>
-        </select>
-        
-        <delete id="deleteMoneyflowReceipt">
+    </select>
+
+    <delete id="deleteMoneyflowReceipt">
                 DELETE
                   FROM moneyflowreceipts
                  WHERE mmf_moneyflowid = #{id}
                  LIMIT 1
-        </delete>
-        
-            <insert id="createMoneyflowReceipt"
-                parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData"
-                useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowreceiptid">
+    </delete>
+
+    <insert id="createMoneyflowReceipt"
+            parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowreceiptid">
                 INSERT INTO moneyflowreceipts
                       (mmf_moneyflowid
                       ,receipt
@@ -52,6 +52,5 @@
                       ,#{receipt}
                       ,#{receiptType}
                       )
-        </insert>
-
+    </insert>
 </mapper>
