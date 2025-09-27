@@ -9,11 +9,6 @@ public class ImportedMonthlySettlementTransportBuilder extends ImportedMonthlySe
     public static final Long NON_EXISTING_ID = 666L;
     public static final Long NEXT_ID = 2L;
 
-    public ImportedMonthlySettlementTransportBuilder withAmount(final BigDecimal amount) {
-        super.setAmount(amount);
-        return this;
-    }
-
     public ImportedMonthlySettlementTransportBuilder forImportedMonthlySettlement1() {
         super.setId(IMPORTED_MONTHLYSETTLEMENT1_ID);
         super.setExternalid("A");

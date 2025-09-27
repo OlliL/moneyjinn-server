@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.core.error.ErrorCode;
-import org.laladev.moneyjinn.model.exception.TechnicalException;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
 public class MoneyflowReceiptTypeMapper {
@@ -35,17 +33,6 @@ public class MoneyflowReceiptTypeMapper {
     private static final int PDF_INT = 2;
 
     private MoneyflowReceiptTypeMapper() {
-    }
-
-    public static MoneyflowReceiptType map(final Integer type) {
-        if (type != null) {
-            return switch (type) {
-                case JPEG_INT -> MoneyflowReceiptType.JPEG;
-                case PDF_INT -> MoneyflowReceiptType.PDF;
-                default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-            };
-        }
-        return null;
     }
 
     public static Integer map(final MoneyflowReceiptType type) {

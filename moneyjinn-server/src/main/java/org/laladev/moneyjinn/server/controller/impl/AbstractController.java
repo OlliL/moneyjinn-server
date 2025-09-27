@@ -62,7 +62,7 @@ public abstract class AbstractController {
         }
     }
 
-    protected <T> ResponseEntity<T> preferedReturn(final List<String> prefer, final Supplier<T> transportSupplier) {
+    protected <T> ResponseEntity<T> preferredReturn(final List<String> prefer, final Supplier<T> transportSupplier) {
 
         final String returnHeaderValue = Optional.ofNullable(prefer).orElse(Collections.emptyList()).stream()
                 .map(String::toLowerCase).filter(p -> p.startsWith(RETURN)).findFirst().orElse("");

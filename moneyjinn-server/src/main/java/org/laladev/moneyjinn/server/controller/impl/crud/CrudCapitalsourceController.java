@@ -98,7 +98,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
         final CapitalsourceID capitalsourceId = this.capitalsourceService.createCapitalsource(capitalsource);
 
         capitalsource.setId(capitalsourceId);
-        return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
+        return this.preferredReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
 
     }
 
@@ -118,7 +118,7 @@ public class CrudCapitalsourceController extends AbstractController implements C
 
         this.capitalsourceService.updateCapitalsource(capitalsource);
 
-        return this.preferedReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
+        return this.preferredReturn(prefer, () -> this.capitalsourceTransportMapper.mapAToB(capitalsource));
     }
 
     @Override

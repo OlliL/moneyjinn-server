@@ -220,7 +220,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
     }
 
     /**
-     * Creates a new moneyflow together with split entries if they where given.
+     * Creates a new moneyflow together with split entries if they were given.
      *
      * @param request The request which contains the moneyflow
      * @return ValidationResponse

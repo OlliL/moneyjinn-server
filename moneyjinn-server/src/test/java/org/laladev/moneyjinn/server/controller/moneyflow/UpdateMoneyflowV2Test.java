@@ -740,9 +740,8 @@ class UpdateMoneyflowV2Test extends AbstractWebUserControllerTest {
         final UpdateMoneyflowRequest request = new UpdateMoneyflowRequest();
         final MoneyflowTransport transport = new MoneyflowTransportBuilder().forMoneyflow2().build();
         request.setMoneyflowTransport(transport);
-        // Create a MSE Transport but for Moneyflow 1 - while we are going to make an
-        // Update to
-        // Moneyflow 2
+        // Create an MSE Transport but for Moneyflow 1 - while we are going to make an
+        // Update to Moneyflow 2
         final MoneyflowSplitEntryTransport insertTransport = new MoneyflowSplitEntryTransportBuilder()
                 .forMoneyflowSplitEntry1().build();
         insertTransport.setAmount(new BigDecimal("10.10"));

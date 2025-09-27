@@ -66,7 +66,7 @@ public interface IContractpartnerAccountService {
     ValidationResult validateContractpartnerAccount(UserID userId, ContractpartnerAccount contractpartnerAccount);
 
     /**
-     * This service returns the {@link ContractpartnerAccount} specified by its Id.
+     * This service returns the {@link ContractpartnerAccount} specified by its ID.
      *
      * @param userId                   {@link UserID}
      * @param contractpartnerAccountId {@link ContractpartnerAccountID}

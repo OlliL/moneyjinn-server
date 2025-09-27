@@ -90,7 +90,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
         this.etfService.createEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-        return this.preferedReturn(prefer,
+        return this.preferredReturn(prefer,
                 () -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
     }
 
@@ -108,7 +108,7 @@ public class CrudEtfPreliminaryLumpSumController extends AbstractController
 
         this.etfService.updateEtfPreliminaryLumpSum(userId, etfPreliminaryLumpSum);
 
-        return this.preferedReturn(prefer,
+        return this.preferredReturn(prefer,
                 () -> this.etfPreliminaryLumpSumTransportMapper.mapAToB(etfPreliminaryLumpSum));
     }
 

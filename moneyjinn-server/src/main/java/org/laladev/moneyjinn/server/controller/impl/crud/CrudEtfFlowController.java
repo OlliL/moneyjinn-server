@@ -65,7 +65,7 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
         etfFlow.setId(etfId);
 
-        return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
+        return this.preferredReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
 
     }
 
@@ -80,7 +80,7 @@ public class CrudEtfFlowController extends AbstractController implements CrudEtf
 
         this.etfService.updateEtfFlow(userId, etfFlow);
 
-        return this.preferedReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
+        return this.preferredReturn(prefer, () -> this.etfFlowTransportMapper.mapAToB(etfFlow));
     }
 
     @Override

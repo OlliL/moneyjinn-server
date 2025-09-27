@@ -126,7 +126,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
         if (Integer.valueOf(1).equals(etfTransport.getIsFavorite()))
             this.settingService.setClientListEtfDepotDefaultEtfId(userId, new ClientListEtfDepotDefaultEtfId(etfId));
 
-        return this.preferedReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
+        return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
 
     }
 
@@ -148,7 +148,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
             this.settingService.setClientListEtfDepotDefaultEtfId(userId,
                     new ClientListEtfDepotDefaultEtfId(etf.getId()));
 
-        return this.preferedReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
+        return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
     }
 
     @Override

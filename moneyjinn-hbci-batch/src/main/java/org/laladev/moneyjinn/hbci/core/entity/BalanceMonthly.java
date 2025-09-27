@@ -30,7 +30,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class BalanceMonthly extends AbstractAccountEntitiy implements Serializable {
+public class BalanceMonthly extends AbstractAccountEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

@@ -78,7 +78,7 @@ public interface IMoneyflowService {
     MoneyflowID createMoneyflow(Moneyflow moneyflow);
 
     /**
-     * This service returns the {@link Moneyflow} specified by its Id.
+     * This service returns the {@link Moneyflow} specified by its ID.
      *
      * @param userId      {@link UserID}
      * @param moneyflowId {@link MoneyflowID}

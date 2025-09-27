@@ -35,7 +35,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.structures.Konto;
 import org.laladev.moneyjinn.hbci.core.collector.AccountMovementCollector;
 import org.laladev.moneyjinn.hbci.core.collector.BalanceDailyCollector;
-import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy;
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntity;
 import org.laladev.moneyjinn.hbci.core.entity.AccountMovement;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceDaily;
 import org.laladev.moneyjinn.hbci.core.handler.AbstractHandler;
@@ -166,7 +166,7 @@ public final class LalaHBCI {
         hbciHandler.getPassport().saveChanges();
     }
 
-    private void addIbanBic(final AbstractAccountEntitiy accountEntity) {
+    private void addIbanBic(final AbstractAccountEntity accountEntity) {
         System.out.println("1===> MyIban: " + accountEntity.getMyIban());
         System.out.println("1===> MyBic: " + accountEntity.getMyBic());
         System.out.println("1===> MyAccountnumber: " + accountEntity.getMyAccountnumber());

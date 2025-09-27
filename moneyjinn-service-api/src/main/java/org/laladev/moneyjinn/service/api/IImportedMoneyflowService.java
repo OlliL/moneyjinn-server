@@ -65,7 +65,7 @@ public interface IImportedMoneyflowService {
     ValidationResult validateImportedMoneyflow(ImportedMoneyflow importedMoneyflow);
 
     /**
-     * This service returns the {@link ImportedMoneyflow} specified by its Id.
+     * This service returns the {@link ImportedMoneyflow} specified by its ID.
      *
      * @param userId      {@link UserID}
      * @param moneyflowId {@link ImportedMoneyflowID}

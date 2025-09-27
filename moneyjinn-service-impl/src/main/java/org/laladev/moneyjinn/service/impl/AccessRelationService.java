@@ -133,9 +133,9 @@ public class AccessRelationService extends AbstractService implements IAccessRel
     }
 
     @Override
-    public void deleteAllAccessRelation(@NonNull final UserID useriId) {
-        this.evictAccessRelationCache(useriId);
-        this.accessRelationDao.deleteAllAccessRelation(useriId.getId());
+    public void deleteAllAccessRelation(@NonNull final UserID userId) {
+        this.evictAccessRelationCache(userId);
+        this.accessRelationDao.deleteAllAccessRelation(userId.getId());
     }
 
     @Override
@@ -250,7 +250,7 @@ public class AccessRelationService extends AbstractService implements IAccessRel
                     }
                 } else if (currentAccessRelation.getValidFrom().isBefore(accessRelation.getValidFrom())) {
                     // (a, b, f, g) if the checked relation starts before the new relation, modify
-                    // its validtil to just straight before the new one starts if the RefId is
+                    // its validTil to just straight before the new one starts if the RefId is
                     // different
                     if (!currentAccessRelation.getGroupID().equals(accessRelation.getGroupID())) {
 

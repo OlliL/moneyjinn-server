@@ -49,7 +49,7 @@ public class BusinessExceptionControllerAdvice extends ResponseEntityExceptionHa
         final ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(ex.getErrorCode().getErrorCode());
         errorResponse.setMessage(ex.getErrorMessage());
-        HttpStatus httpStatus;
+        final HttpStatus httpStatus;
         if (ex.getErrorCode() == ErrorCode.USERNAME_PASSWORD_WRONG
                 || ex.getErrorCode() == ErrorCode.ACCOUNT_IS_LOCKED) {
             httpStatus = HttpStatus.FORBIDDEN;

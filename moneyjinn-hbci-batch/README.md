@@ -23,4 +23,4 @@ data processing.
           with [InitAndTest.java](https://github.com/hbci4j/hbci4java/blob/master/src/main/java/org/kapott/hbci/tools/InitAndTest.java)
           supplied with hbci4java
         * must contain the pin for logging in to the bank account specified in the passport file
-        * specify as much of this properties as you have passport files
+        * specify as much of these properties as you have passport files

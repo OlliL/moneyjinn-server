@@ -25,7 +25,6 @@
 package org.laladev.moneyjinn.core.error;
 
 public enum ErrorCode {
-    MAPPER_UNDEFINED(-1),
     UNKNOWN(0),
     CAPITALSOURCE_STILL_REFERENCED(120),
     CAPITALSOURCE_IN_USE_PERIOD(121),
@@ -40,7 +39,6 @@ public enum ErrorCode {
     ACCOUNT_IS_LOCKED(138),
     NO_SEARCH_CRITERIA_ENTERED(141),
     USER_HAS_DATA(151),
-    PASSWORD_MUST_BE_CHANGED(152),
     WRONG_FILE_FORMAT(199),
     AMOUNT_IS_ZERO(200),
     NAME_ALREADY_EXISTS(203),

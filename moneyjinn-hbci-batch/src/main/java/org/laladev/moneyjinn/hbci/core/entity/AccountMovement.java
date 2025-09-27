@@ -32,7 +32,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class AccountMovement extends AbstractAccountEntitiy implements Serializable {
+public class AccountMovement extends AbstractAccountEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

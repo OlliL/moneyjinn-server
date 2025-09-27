@@ -73,7 +73,7 @@ public interface IContractpartnerService {
     ValidationResult validateContractpartner(Contractpartner contractpartner);
 
     /**
-     * This service returns the {@link Contractpartner} specified by its Id.
+     * This service returns the {@link Contractpartner} specified by its ID.
      *
      * @param userId            {@link UserID}
      * @param contractpartnerId {@link ContractpartnerID}
@@ -115,7 +115,7 @@ public interface IContractpartnerService {
     ContractpartnerID createContractpartner(Contractpartner contractpartner);
 
     /**
-     * This method deletes the {@link Contractpartner} specified by its Id.
+     * This method deletes the {@link Contractpartner} specified by its ID.
      *
      * @param userId            {@link UserID}
      * @param groupId           {@link GroupID}

@@ -13,7 +13,6 @@ public class MonthlySettlementTransportBuilder extends MonthlySettlementTranspor
     public static final Long MONTHLYSETTLEMENT2_ID = 2L;
     public static final Long MONTHLYSETTLEMENT3_ID = 3L;
     public static final Long NON_EXISTING_ID = 666L;
-    public static final Long NEXT_ID = 52L;
 
     public MonthlySettlementTransportBuilder withCapitalsource(final CapitalsourceTransport capitalsourceTransport) {
         super.setCapitalsourcecomment(capitalsourceTransport.getComment());

@@ -79,7 +79,7 @@ public interface ICapitalsourceService {
     ValidationResult validateCapitalsource(Capitalsource capitalsource);
 
     /**
-     * This service returns the {@link Capitalsource} specified by its Id.
+     * This service returns the {@link Capitalsource} specified by its ID.
      *
      * @param userId          {@link UserID}
      * @param groupId         {@link GroupID}
@@ -136,7 +136,7 @@ public interface ICapitalsourceService {
     CapitalsourceID createCapitalsource(Capitalsource capitalsource);
 
     /**
-     * This method deletes the {@link Capitalsource} specified by its Id.
+     * This method deletes the {@link Capitalsource} specified by its ID.
      *
      * @param userId          {@link UserID}
      * @param groupId         {@link GroupID}

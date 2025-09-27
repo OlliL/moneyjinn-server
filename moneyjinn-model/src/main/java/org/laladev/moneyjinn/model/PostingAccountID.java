@@ -26,6 +26,8 @@
 
 package org.laladev.moneyjinn.model;
 
+import lombok.NoArgsConstructor;
+
 import java.io.Serial;
 
 /**
@@ -33,14 +35,12 @@ import java.io.Serial;
  *
  * @author Oliver Lehmann
  */
+// Is needed for Settings recovering from the JSON string which is stored in the
+// DB (Jackson Mapper).
+@NoArgsConstructor
 public class PostingAccountID extends AbstractEntityID<Long> {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    public PostingAccountID() {
-        // Is needed for Settings recovering from the JSON string which is stored in the
-        // DB (Jackson Mapper).
-    }
 
     public PostingAccountID(final Long id) {
         super(id);

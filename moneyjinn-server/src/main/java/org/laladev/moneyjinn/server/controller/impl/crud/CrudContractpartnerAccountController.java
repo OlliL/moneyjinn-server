@@ -81,7 +81,7 @@ public class CrudContractpartnerAccountController extends AbstractController
 
         contractpartnerAccount.setId(contractpartnerAccountId);
 
-        return this.preferedReturn(prefer,
+        return this.preferredReturn(prefer,
                 () -> this.contractpartnerAccountTransportMapper.mapAToB(contractpartnerAccount));
 
     }
@@ -100,7 +100,7 @@ public class CrudContractpartnerAccountController extends AbstractController
 
         this.contractpartnerAccountService.updateContractpartnerAccount(userId, contractpartnerAccount);
 
-        return this.preferedReturn(prefer,
+        return this.preferredReturn(prefer,
                 () -> this.contractpartnerAccountTransportMapper.mapAToB(contractpartnerAccount));
     }
 

@@ -8,8 +8,6 @@ public class CompareDataFormatTransportBuilder extends CompareDataFormatTranspor
     public static final Long COMPARE_DATA_FORMAT4_ID = 4L;
     public static final Long COMPARE_DATA_FORMAT5_ID = 5L;
     public static final Long COMPARE_DATA_FORMAT6_ID = 6L;
-    public static final Long NON_EXISTING_ID = 666L;
-    public static final Long NEXT_ID = 5L;
 
     public CompareDataFormatTransportBuilder forCompareDataFormat2() {
         super.setFormatId(COMPARE_DATA_FORMAT2_ID);

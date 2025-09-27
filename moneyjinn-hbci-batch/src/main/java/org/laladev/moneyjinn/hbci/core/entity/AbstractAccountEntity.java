@@ -26,7 +26,7 @@
 
 package org.laladev.moneyjinn.hbci.core.entity;
 
-public class AbstractAccountEntitiy {
+public class AbstractAccountEntity {
     private Integer id;
     private String myIban;
     private String myBic;
@@ -96,7 +96,7 @@ public class AbstractAccountEntitiy {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractAccountEntitiy other = (AbstractAccountEntitiy) obj;
+        final AbstractAccountEntity other = (AbstractAccountEntity) obj;
         if (this.id == null) {
             if (other.id != null) {
                 return false;

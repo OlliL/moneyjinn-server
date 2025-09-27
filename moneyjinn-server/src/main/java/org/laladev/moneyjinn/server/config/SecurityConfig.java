@@ -120,7 +120,7 @@ public class SecurityConfig {
         		.requestMatchers(api.matcher("/importedmoneyflow/createImportedMoneyflow")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
         		.requestMatchers(api.matcher("/importedmonthlysettlement/createImportedMonthlySettlement")).hasAnyAuthority(UserRole.IMPORT.name(), UserRole.ADMIN.name())
         		.requestMatchers(api.matcher("/**")).hasAnyAuthority(UserRole.STANDARD.name(), UserRole.ADMIN.name())
-        		// Whatever else you trying: deny
+        		// Whatever else you're trying: deny
         		.requestMatchers(root.matcher("/**")).denyAll()
         		.anyRequest().authenticated())
         	.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)

@@ -512,7 +512,7 @@ public class ReportController extends AbstractController implements ReportContro
                             .map(Capitalsource::getId).toList();
                     final List<ImportedBalance> importedBalances = this.importedBalanceService
                             .getAllImportedBalancesByCapitalsourceIds(userId, capitalsourceIds);
-                    // this will hold all capitalsources which will be removed later if they where
+                    // this will hold all capitalsources which will be removed later if they were
                     // processed it will then only contain new capitalsources which have no
                     // settlement in the previous nor in this month yet
                     final List<Capitalsource> newCapitalsourcesUnsettled = new ArrayList<>(validCapitalsources);
@@ -618,7 +618,7 @@ public class ReportController extends AbstractController implements ReportContro
                                 Month.DECEMBER, yearlyAssetCapitalsourceIds);
                         // Special case: The very first year of moneyflows in the system will most
                         // likely have no final settlement of the last year (December settlement).
-                        // In this case, use the the earliest settlement of the current year for the
+                        // In this case, use the earliest settlement of the current year for the
                         // annual turnover.
                         if (amountBeginOfYear == null) {
                             final List<Month> allSettledMonth = this.monthlySettlementService.getAllMonth(userId, requestYear);

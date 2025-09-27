@@ -25,14 +25,14 @@
 //
 package org.laladev.moneyjinn.hbci.core.entity.mapper;
 
-import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntitiy;
+import org.laladev.moneyjinn.hbci.core.entity.AbstractAccountEntity;
 import org.laladev.moneyjinn.hbci.core.entity.BalanceMonthly;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 
 public class BalanceMonthlyMapper {
-    public BalanceMonthly map(final AbstractAccountEntitiy accountEntitiy, final YearMonth yearMonth,
+    public BalanceMonthly map(final AbstractAccountEntity accountEntitiy, final YearMonth yearMonth,
                               final String balanceCurrency, final BigDecimal balanceValue) {
         final BalanceMonthly balanceMonthly = new BalanceMonthly();
         balanceMonthly.setMyIban(accountEntitiy.getMyIban());

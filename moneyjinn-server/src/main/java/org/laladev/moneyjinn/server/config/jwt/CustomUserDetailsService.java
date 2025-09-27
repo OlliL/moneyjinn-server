@@ -26,9 +26,9 @@
 
 package org.laladev.moneyjinn.server.config.jwt;
 
+import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.service.api.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,14 +40,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final IUserService userService;
-
-    @Autowired
-    public CustomUserDetailsService(final IUserService userService) {
-        super();
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
