@@ -136,19 +136,60 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
         final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
                 new ValidationResultItem(moneyflow.getId(), errorCode));
 
-        if (bookingDate == null) {
-            addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
+        this.validateBookingDate(moneyflow, bookingDate, addResult);
+        this.validateCapitalsource(moneyflow, addResult, userId, bookingDate);
+        this.validateContractpartner(moneyflow, addResult, userId, bookingDate);
+        this.validateComment(moneyflow, addResult);
+        this.validateAmount(moneyflow, addResult);
+        this.validatePostingAccount(moneyflow, addResult);
+
+        return validationResult;
+    }
+
+    private void validatePostingAccount(final Moneyflow moneyflow, final Consumer<ErrorCode> addResult) {
+        if (moneyflow.getPostingAccount() == null) {
+            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
         } else {
-            final AccessRelation accessRelation = this.accessRelationService
-                    .getCurrentAccessRelationById(moneyflow.getUser().getId());
-            // if this check is removed, make sure the group is evaluated for the
-            // bookingdate, not for today otherwise it will be created with the wrong
-            // group
-            if (accessRelation.dateIsOutsideValidPeriod(bookingDate)) {
-                addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
+            final PostingAccount postingAccount = this.postingAccountService
+                    .getPostingAccountById(moneyflow.getPostingAccount().getId());
+            if (postingAccount == null) {
+                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
             }
         }
+    }
 
+    private void validateAmount(final Moneyflow moneyflow, final Consumer<ErrorCode> addResult) {
+        final BigDecimal amount = moneyflow.getAmount();
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
+            addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
+        } else if (amount.precision() - amount.scale() > 6) {
+            addResult.accept(ErrorCode.AMOUNT_TO_BIG);
+        }
+    }
+
+    private void validateComment(final Moneyflow moneyflow, final Consumer<ErrorCode> addResult) {
+        if (moneyflow.getComment() == null || moneyflow.getComment().isBlank()) {
+            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
+        }
+    }
+
+    private void validateContractpartner(final Moneyflow moneyflow, final Consumer<ErrorCode> addResult,
+                                         final UserID userId, final LocalDate bookingDate) {
+        if (moneyflow.getContractpartner() == null) {
+            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+        } else {
+            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+                    moneyflow.getContractpartner().getId());
+            if (contractpartner == null) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+            } else if (contractpartner.dateIsOutsideValidPeriod(bookingDate)) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
+            }
+        }
+    }
+
+    private void validateCapitalsource(final Moneyflow moneyflow, final Consumer<ErrorCode> addResult,
+                                       final UserID userId, final LocalDate bookingDate) {
         if (moneyflow.getCapitalsource() == null) {
             addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
         } else {
@@ -164,41 +205,22 @@ public class MoneyflowService extends AbstractService implements IMoneyflowServi
                 addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
             }
         }
+    }
 
-        if (moneyflow.getContractpartner() == null) {
-            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+    private void validateBookingDate(final Moneyflow moneyflow, final LocalDate bookingDate,
+                                     final Consumer<ErrorCode> addResult) {
+        if (bookingDate == null) {
+            addResult.accept(ErrorCode.BOOKINGDATE_IN_WRONG_FORMAT);
         } else {
-            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-                    moneyflow.getContractpartner().getId());
-            if (contractpartner == null) {
-                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-            } else if (contractpartner.dateIsOutsideValidPeriod(bookingDate)) {
-                addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
+            final AccessRelation accessRelation = this.accessRelationService
+                    .getCurrentAccessRelationById(moneyflow.getUser().getId());
+            // if this check is removed, make sure the group is evaluated for the
+            // bookingdate, not for today otherwise it will be created with the wrong
+            // group
+            if (accessRelation.dateIsOutsideValidPeriod(bookingDate)) {
+                addResult.accept(ErrorCode.BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT);
             }
         }
-
-        if (moneyflow.getComment() == null || moneyflow.getComment().isBlank()) {
-            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
-        }
-
-        final BigDecimal amount = moneyflow.getAmount();
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
-            addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
-        } else if (amount.precision() - amount.scale() > 6) {
-            addResult.accept(ErrorCode.AMOUNT_TO_BIG);
-        }
-
-        if (moneyflow.getPostingAccount() == null) {
-            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-        } else {
-            final PostingAccount postingAccount = this.postingAccountService
-                    .getPostingAccountById(moneyflow.getPostingAccount().getId());
-            if (postingAccount == null) {
-                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-            }
-        }
-
-        return validationResult;
     }
 
     @Override

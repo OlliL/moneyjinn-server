@@ -97,6 +97,44 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
         final Consumer<ErrorCode> addResult = (final ErrorCode errorCode) -> validationResult.addValidationResultItem(
                 new ValidationResultItem(preDefMoneyflow.getId(), errorCode));
 
+        this.validateCapitalsource(preDefMoneyflow, addResult, userId, today);
+        this.validateContractpartner(preDefMoneyflow, addResult, userId, today);
+        this.validateComment(preDefMoneyflow, addResult);
+        this.validateAmount(preDefMoneyflow, addResult);
+        this.validatePostingAccount(preDefMoneyflow, addResult);
+
+        return validationResult;
+    }
+
+    private void validatePostingAccount(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult) {
+        if (preDefMoneyflow.getPostingAccount() == null) {
+            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+        } else {
+            final PostingAccount postingAccount = this.postingAccountService
+                    .getPostingAccountById(preDefMoneyflow.getPostingAccount().getId());
+            if (postingAccount == null) {
+                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+            }
+        }
+    }
+
+    private void validateContractpartner(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult,
+                                         final UserID userId, final LocalDate today) {
+        if (preDefMoneyflow.getContractpartner() == null) {
+            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+        } else {
+            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
+                    preDefMoneyflow.getContractpartner().getId());
+            if (contractpartner == null) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+            } else if (contractpartner.dateIsOutsideValidPeriod(today)) {
+                addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
+            }
+        }
+    }
+
+    private void validateCapitalsource(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult,
+                                       final UserID userId, final LocalDate today) {
         if (preDefMoneyflow.getCapitalsource() == null) {
             addResult.accept(ErrorCode.CAPITALSOURCE_IS_NOT_SET);
         } else {
@@ -113,41 +151,21 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
                 addResult.accept(ErrorCode.CAPITALSOURCE_INVALID);
             }
         }
+    }
 
-        if (preDefMoneyflow.getContractpartner() == null) {
-            addResult.accept(ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
-        } else {
-            final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-                    preDefMoneyflow.getContractpartner().getId());
-            if (contractpartner == null) {
-                addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-            } else if (contractpartner.dateIsOutsideValidPeriod(today)) {
-                addResult.accept(ErrorCode.CONTRACTPARTNER_NO_LONGER_VALID);
-            }
-        }
-
-        if (preDefMoneyflow.getComment() == null || preDefMoneyflow.getComment().isBlank()) {
-            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
-        }
-
+    private void validateAmount(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult) {
         final BigDecimal amount = preDefMoneyflow.getAmount();
         if (amount == null || amount.compareTo(BigDecimal.ZERO) == 0) {
             addResult.accept(ErrorCode.AMOUNT_IS_ZERO);
         } else if (amount.precision() - amount.scale() > 6) {
             addResult.accept(ErrorCode.AMOUNT_TO_BIG);
         }
+    }
 
-        if (preDefMoneyflow.getPostingAccount() == null) {
-            addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-        } else {
-            final PostingAccount postingAccount = this.postingAccountService
-                    .getPostingAccountById(preDefMoneyflow.getPostingAccount().getId());
-            if (postingAccount == null) {
-                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
-            }
+    private void validateComment(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult) {
+        if (preDefMoneyflow.getComment() == null || preDefMoneyflow.getComment().isBlank()) {
+            addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
         }
-
-        return validationResult;
     }
 
     @Override

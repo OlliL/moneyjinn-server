@@ -239,17 +239,28 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             rating += 10;
         }
         // does our source contain bank account information?
+        rating = this.rateBankAccount(userId, moneyflow, compareDataDataset, rating);
+        // does our input-file contain contractpartner information?
+        rating = this.rateContractpartner(moneyflow, compareDataDataset, rating);
+        return rating;
+    }
+
+    private int rateBankAccount(final UserID userId, final Moneyflow moneyflow,
+                                final CompareDataDataset compareDataDataset, int rating) {
         if (compareDataDataset.getPartnerBankAccount() != null) {
             final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-                    .getAllContractpartnerByAccounts(userId,
-                            Collections.singletonList(compareDataDataset.getPartnerBankAccount()));
-            if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty()
-                    && contractpartnerAccounts.getFirst()
-                    .getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
+                    .getAllContractpartnerByAccounts(userId, List.of(compareDataDataset.getPartnerBankAccount()));
+            if (contractpartnerAccounts != null && !contractpartnerAccounts.isEmpty() &&
+                    contractpartnerAccounts.getFirst().getContractpartner().getId().equals(
+                            moneyflow.getContractpartner().getId())) {
                 rating += 50;
             }
         }
-        // does our input-file contain contractpartner information?
+        return rating;
+    }
+
+    private int rateContractpartner(final Moneyflow moneyflow, final CompareDataDataset compareDataDataset,
+                                    int rating) {
         final String partner = compareDataDataset.getPartner();
         if (partner != null && !partner.isEmpty()) {
             final String monPartner = moneyflow.getContractpartner().getName();
@@ -325,10 +336,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
             final List<String[]> cvsLines = cvsReader.readAll();
             boolean match = false;
-            final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(compareDataFormat.getFormatDate());
             final List<String> startTrigger = compareDataFormat.getStartTrigger();
-            final Pattern partnerAlternativeIndicator = compareDataFormat.getPartnerAlternativeIndicator();
-            final Pattern creditIndicator = compareDataFormat.getCreditIndicator();
+
 
             for (final String[] cmpDataRaw : cvsLines) {
                 if (cmpDataRaw.length >= 3) {
@@ -343,49 +352,57 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                     break;
                 }
                 if (match) {
-                    final CompareDataDataset data = new CompareDataDataset();
-                    /*
-                     * Date
-                     */
-                    final String dateString = cmpDataRaw[compareDataFormat.getPositionDate() - 1];
-                    final LocalDate date = LocalDate.parse(dateString, dateFormat);
-                    data.setBookingDate(date);
-                    /*
-                     * Amount
-                     */
-                    final BigDecimal amount = getAmount(compareDataFormat, cmpDataRaw, creditIndicator);
-                    data.setAmount(amount);
-                    /*
-                     * Partner
-                     */
-                    String partner = null;
-                    if (compareDataFormat.getPositionPartner() != null) {
-                        partner = cmpDataRaw[compareDataFormat.getPositionPartner() - 1];
-                    }
-                    // alternative Partner overrules Partner if existant
-                    if (compareDataFormat.getPositionPartnerAlternative() != null) {
-                        final String keyword = cmpDataRaw[compareDataFormat.getPartnerAlternativeIndicatorPosition()
-                                - 1];
-                        final Matcher altPartnerMatcher = partnerAlternativeIndicator.matcher(keyword);
-                        if (altPartnerMatcher.find()) {
-                            partner = cmpDataRaw[compareDataFormat.getPositionPartnerAlternative() - 1];
-                        }
-                    }
-                    data.setPartner(partner);
-                    /*
-                     * Comment
-                     */
-                    final Integer posComment = compareDataFormat.getPositionComment();
-                    if (posComment != null) {
-                        final String comment = cmpDataRaw[posComment - 1];
-                        data.setComment(comment.trim());
-                    }
-                    compareDataDatasets.add(data);
+                    compareDataDatasets.add(mapCsvFileMainPart(compareDataFormat, cmpDataRaw));
                 }
             }
         } catch (final IOException | CsvException e) {
             throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
         }
         return compareDataDatasets;
+    }
+
+    private static CompareDataDataset mapCsvFileMainPart(final CompareDataFormat compareDataFormat,
+                                                         final String[] cmpDataRaw) {
+        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(compareDataFormat.getFormatDate());
+        final Pattern partnerAlternativeIndicator = compareDataFormat.getPartnerAlternativeIndicator();
+        final Pattern creditIndicator = compareDataFormat.getCreditIndicator();
+        final CompareDataDataset data = new CompareDataDataset();
+        /*
+         * Date
+         */
+        final String dateString = cmpDataRaw[compareDataFormat.getPositionDate() - 1];
+        final LocalDate date = LocalDate.parse(dateString, dateFormat);
+        data.setBookingDate(date);
+        /*
+         * Amount
+         */
+        final BigDecimal amount = getAmount(compareDataFormat, cmpDataRaw, creditIndicator);
+        data.setAmount(amount);
+        /*
+         * Partner
+         */
+        String partner = null;
+        if (compareDataFormat.getPositionPartner() != null) {
+            partner = cmpDataRaw[compareDataFormat.getPositionPartner() - 1];
+        }
+        // alternative Partner overrules Partner if existant
+        if (compareDataFormat.getPositionPartnerAlternative() != null) {
+            final String keyword = cmpDataRaw[compareDataFormat.getPartnerAlternativeIndicatorPosition()
+                    - 1];
+            final Matcher altPartnerMatcher = partnerAlternativeIndicator.matcher(keyword);
+            if (altPartnerMatcher.find()) {
+                partner = cmpDataRaw[compareDataFormat.getPositionPartnerAlternative() - 1];
+            }
+        }
+        data.setPartner(partner);
+        /*
+         * Comment
+         */
+        final Integer posComment = compareDataFormat.getPositionComment();
+        if (posComment != null) {
+            final String comment = cmpDataRaw[posComment - 1];
+            data.setComment(comment.trim());
+        }
+        return data;
     }
 }
