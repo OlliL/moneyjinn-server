@@ -1,12 +1,11 @@
 package org.laladev.moneyjinn.server.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.config.JwtCache;
 import org.laladev.moneyjinn.server.controller.api.UserControllerApi;
+import org.laladev.moneyjinn.server.model.ErrorResponse;
 import org.laladev.moneyjinn.server.model.LoginRequest;
 import org.laladev.moneyjinn.server.model.LoginResponse;
 import org.mockito.Mockito;
@@ -23,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import tools.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -181,8 +181,8 @@ public abstract class AbstractControllerTest extends AbstractTest {
         this.callUsecaseNew(body, null, HttpStatus.NO_CONTENT, null);
     }
 
-    protected <T> T callUsecaseExpect500(final Object body, final Class<T> clazz) throws Exception {
-        return this.callUsecaseNew(body, clazz, HttpStatus.INTERNAL_SERVER_ERROR, null);
+    protected ErrorResponse callUsecaseExpect500(final Object body) throws Exception {
+        return this.callUsecaseNew(body, ErrorResponse.class, HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     protected void callUsecaseExpect204Minimal(final Object body) throws Exception {
@@ -247,7 +247,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
     }
 
     private MockHttpServletRequestBuilder createMockHttpServletRequestBuilder(final Method method, final Object body,
-                                                                              final Object... uriVariables) throws JsonProcessingException {
+                                                                              final Object... uriVariables) {
         final RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 
         if (requestMapping == null) {

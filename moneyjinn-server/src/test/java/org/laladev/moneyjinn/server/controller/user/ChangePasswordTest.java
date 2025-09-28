@@ -54,7 +54,7 @@ class ChangePasswordTest extends AbstractWebUserControllerTest {
         expected.setCode(ErrorCode.UNKNOWN.getErrorCode());
         expected.setMessage("Password must not be empty!");
 
-        final ErrorResponse actual = super.callUsecaseExpect500(request, ErrorResponse.class);
+        final ErrorResponse actual = super.callUsecaseExpect500(request);
 
         assertEquals(expected, actual);
     }

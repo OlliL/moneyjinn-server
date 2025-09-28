@@ -1,18 +1,17 @@
 package org.laladev.moneyjinn.server.config;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
+import tools.jackson.databind.ObjectMapper;
 
 class MyObjectMapperTest extends AbstractTest {
     @Inject
     private ObjectMapper mapper;
 
     @Test
-    void test_nullAttribute_notInJson() throws JsonProcessingException {
+    void test_nullAttribute_notInJson() {
         final RestObject restObject = new RestObject();
         restObject.setAttribute1("l");
         final String json = this.mapper.writeValueAsString(restObject);

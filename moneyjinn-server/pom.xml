@@ -57,6 +57,10 @@
             <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -89,10 +93,6 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-core</artifactId>
         </dependency>
 
         <!-- TEST SCOPE -->
@@ -199,6 +199,8 @@
                                 <generateApiTests>false</generateApiTests>
                                 <generateModelTests>false</generateModelTests>
                                 <skipDefaultInterface>true</skipDefaultInterface>
+                                <annotationLibrary>none</annotationLibrary>
+                                <documentationProvider>none</documentationProvider>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -25,21 +25,19 @@
 package org.laladev.moneyjinn.server.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class ObjectMapperConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
-        final var mapper = new ObjectMapper();
-        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.registerModule(new JavaTimeModule());
-
-        return mapper;
+        return JsonMapper.builder()
+                .enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .changeDefaultPropertyInclusion(value -> value.withValueInclusion(JsonInclude.Include.NON_NULL))
+                .build();
     }
 }
