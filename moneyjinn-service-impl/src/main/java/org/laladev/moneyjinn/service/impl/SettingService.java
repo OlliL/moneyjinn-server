@@ -26,8 +26,6 @@
 
 package org.laladev.moneyjinn.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.NonNull;
@@ -39,10 +37,9 @@ import org.laladev.moneyjinn.service.api.ISettingService;
 import org.laladev.moneyjinn.service.dao.SettingDao;
 import org.laladev.moneyjinn.service.dao.data.SettingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.SettingNameConverter;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Level;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -69,29 +66,20 @@ public class SettingService extends AbstractService implements ISettingService {
     private void setSetting(@NonNull final UserID userId, @NonNull final AbstractSetting<?> setting) {
         notNull(setting.getSetting(), SETTING_GET_SETTING_MUST_NOT_BE_NULL);
 
-        try {
-            final String settingString = this.objectMapper.writeValueAsString(setting);
+        final String settingString = this.objectMapper.writeValueAsString(setting);
 
-            final SettingData settingData = new SettingData(userId.getId(),
-                    SettingNameConverter.getSettingNameByClassName(setting.getClass().getSimpleName()), settingString);
-            this.settingDao.setSetting(settingData);
-        } catch (final JsonProcessingException e) {
-            log.log(Level.SEVERE, "Setting-JSON can not be created!", e);
-        }
+        final SettingData settingData = new SettingData(userId.getId(),
+                SettingNameConverter.getSettingNameByClassName(setting.getClass().getSimpleName()), settingString);
+        this.settingDao.setSetting(settingData);
     }
 
     private <T> Optional<T> getSetting(@NonNull final UserID userId, final Class<T> clazz) {
         final SettingData settingData = this.settingDao.getSetting(userId.getId(),
                 SettingNameConverter.getSettingNameByClassName(clazz.getSimpleName()));
-        if (settingData != null) {
-            try {
-                final T setting = this.objectMapper.readValue(settingData.getValue(), clazz);
-                return Optional.of(setting);
-            } catch (final IOException e) {
-                log.log(Level.SEVERE, "Setting-JSON can not be mapped!", e);
-            }
-        }
-        return Optional.empty();
+
+        return settingData == null
+                ? Optional.empty()
+                : Optional.of(this.objectMapper.readValue(settingData.getValue(), clazz));
     }
 
     @Override

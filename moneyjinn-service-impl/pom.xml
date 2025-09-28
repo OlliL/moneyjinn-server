@@ -30,7 +30,7 @@
         </dependency>
         <!-- only used for the SettingService (store 2 settings as JSON in MySQL) -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <!-- only used for CompareDataService (SOUNDEX-like matching of strings) -->
