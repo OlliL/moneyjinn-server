@@ -1,6 +1,9 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
@@ -12,6 +15,7 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -151,58 +155,31 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         return expected;
     }
 
-    @Test
-    void test_preliminaryLumpSumBuyingMonthAndNextJanuary_LumpSumCorrectlySummedUp() throws Exception {
-
-        final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
-        request.setAskPrice(SETTING_SALE_ASK_PRICE);
-        request.setBidPrice(SETTING_SALE_BID_PRICE);
-        request.setEtfId(SETTING_ETF_ID);
-        request.setPieces(new BigDecimal("2"));
-        request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
-        request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
-
-        final BigDecimal expectedSum = new BigDecimal("6.19");
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
-
-        assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+    private static Stream<Arguments> test_preliminaryLumpSumB_LumpSumCorrectlySummedUp() {
+        return Stream.of(
+                Arguments.of(new BigDecimal("2"), new BigDecimal("6.19")),
+                // 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
+                // 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
+                // 76.766pcs -> (109.32€ / 110.000pcs) * 76.766pcs = 117.821€
+                // --> 6.909€ + 135.625€ + 117.821€ == 260.36€
+                Arguments.of(new BigDecimal("160"), new BigDecimal("260.36")),
+                Arguments.of(new BigDecimal("180"), new BigDecimal("291.06"))
+        );
     }
 
-    @Test
-    void test_preliminaryLumpSumBuyingMonthWithBuySaleBuyButOnlyFirstBuyedPiecesSold_LumpSumCorrectlySummedUp()
-            throws Exception {
+    @ParameterizedTest
+    @MethodSource
+    void test_preliminaryLumpSumB_LumpSumCorrectlySummedUp(final BigDecimal pieces,
+                                                           final BigDecimal expectedSum) throws Exception {
 
         final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
         request.setAskPrice(SETTING_SALE_ASK_PRICE);
         request.setBidPrice(SETTING_SALE_BID_PRICE);
         request.setEtfId(SETTING_ETF_ID);
-        request.setPieces(new BigDecimal("160"));
+        request.setPieces(pieces);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
         request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
-        // 02.234pcs -> (9.22€ / 6.5pcs + 156.11€ / 93.234pcs) * 2.234pcs = 6.909€
-        // 81.000pcs -> (156.11€ / 093.234pcs) * 81.000pcs = 135.625€
-        // 76.766pcs -> (109.32€ / 110.000pcs) * 76.766pcs = 117.821€
-        // --> 6.909€ + 135.625€ + 117.821€ == 260.36€
-        final BigDecimal expectedSum = new BigDecimal("260.36");
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
-
-        assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
-    }
-
-    @Test
-    void test_preliminaryLumpSumBuyingMonthWithBuySaleBuyPiecesSoldFromBothBuyStacks_LumpSumCorrectlySummedUp()
-            throws Exception {
-
-        final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
-        request.setAskPrice(SETTING_SALE_ASK_PRICE);
-        request.setBidPrice(SETTING_SALE_BID_PRICE);
-        request.setEtfId(SETTING_ETF_ID);
-        request.setPieces(new BigDecimal("180"));
-        request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
-        request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
-
-        final BigDecimal expectedSum = new BigDecimal("291.06");
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
         assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
