@@ -1,6 +1,5 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
@@ -13,6 +12,9 @@ import org.laladev.moneyjinn.server.model.ValidationResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
@@ -42,7 +44,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 
@@ -61,8 +63,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
         final BigDecimal maxRelative = new BigDecimal("9.01");
-        Assertions.assertEquals(maxRelative, actual.getTransactionCostsRelativeBuy());
-        Assertions.assertEquals(maxRelative, actual.getTransactionCostsRelativeSell());
+        assertEquals(maxRelative, actual.getTransactionCostsRelativeBuy());
+        assertEquals(maxRelative, actual.getTransactionCostsRelativeSell());
 
     }
 
@@ -78,10 +80,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(SETTING_SALE_PIECES);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.NO_ETF_SPECIFIED.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
 
     }
 
@@ -98,8 +102,8 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
         final ValidationResponse actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertFalse(actual.getResult());
-        Assertions.assertEquals(ErrorCode.AMOUNT_TO_HIGH.getErrorCode(),
+        assertFalse(actual.getResult());
+        assertEquals(ErrorCode.AMOUNT_TO_HIGH.getErrorCode(),
                 actual.getValidationItemTransports().getFirst().getError());
 
     }
@@ -118,7 +122,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final CalcEtfSaleResponse expected = this.getStandardRequestExpected();
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 
@@ -161,7 +165,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final BigDecimal expectedSum = new BigDecimal("6.19");
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+        assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
     }
 
     @Test
@@ -183,7 +187,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final BigDecimal expectedSum = new BigDecimal("260.36");
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+        assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
     }
 
     @Test
@@ -201,7 +205,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         final BigDecimal expectedSum = new BigDecimal("291.06");
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
+        assertEquals(expectedSum, actual.getAccumulatedPreliminaryLumpSum());
     }
 
     @Test
@@ -214,10 +218,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(SETTING_SALE_PIECES);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.NO_ETF_SPECIFIED.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
 
     }
 
@@ -230,10 +236,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(SETTING_SALE_PIECES);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.PRICE_NOT_SET.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
     }
 
     @Test
@@ -245,10 +253,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(SETTING_SALE_PIECES);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.PRICE_NOT_SET.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
     }
 
     @Test
@@ -260,10 +270,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(SETTING_SALE_PIECES);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.NO_ETF_SPECIFIED.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
     }
 
     @Test
@@ -275,10 +287,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setEtfId(SETTING_ETF_ID);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.PIECES_NOT_SET.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
     }
 
     @Test
@@ -299,11 +313,11 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         expected.setOverallCosts(new BigDecimal("5.00"));
         final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void test_invalidEtfIdWith0Pieces_emptyResponse() throws Exception {
+    void test_invalidEtfIdWith0Pieces_errorResponse() throws Exception {
 
         final CalcEtfSaleRequest request = new CalcEtfSaleRequest();
         request.setAskPrice(SETTING_SALE_ASK_PRICE);
@@ -312,10 +326,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setPieces(BigDecimal.ZERO);
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.NO_ETF_SPECIFIED.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
 
     }
 
@@ -331,10 +347,12 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
         request.setTransactionCostsAbsolute(SETTING_SALE_TRANSACTION_COSTS_ABSOLUTE);
         request.setTransactionCostsRelative(SETTING_SALE_TRANSACTION_COSTS_RELATIVE);
 
-        final CalcEtfSaleResponse expected = new CalcEtfSaleResponse();
-        final CalcEtfSaleResponse actual = super.callUsecaseExpect200(request, CalcEtfSaleResponse.class);
+        final var actual = super.callUsecaseExpect422(request, ValidationResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        assertFalse(actual.getResult());
+        assertEquals(1, actual.getValidationItemTransports().size());
+        assertEquals(ErrorCode.NO_ETF_SPECIFIED.getErrorCode(),
+                actual.getValidationItemTransports().getFirst().getError());
 
     }
 
@@ -345,7 +363,7 @@ class CalcEtfSaleTest extends AbstractWebUserControllerTest {
 
     @Override
     protected void callUsecaseEmptyDatabase() throws Exception {
-        super.callUsecaseExpect200(new CalcEtfSaleRequest(), CalcEtfSaleResponse.class);
+        super.callUsecaseExpect422(new CalcEtfSaleRequest(), ValidationResponse.class);
     }
 
 }

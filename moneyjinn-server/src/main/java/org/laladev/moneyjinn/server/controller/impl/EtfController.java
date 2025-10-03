@@ -25,6 +25,7 @@
 package org.laladev.moneyjinn.server.controller.impl;
 
 import jakarta.inject.Inject;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -35,6 +36,7 @@ import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.server.controller.api.EtfControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.EtfEffectiveFlowTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.EtfFlowTransportMapper;
+import org.laladev.moneyjinn.server.exception.ValidationException;
 import org.laladev.moneyjinn.server.model.*;
 import org.laladev.moneyjinn.service.api.IEtfService;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -54,6 +56,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNullElse;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -126,44 +131,61 @@ public class EtfController extends AbstractController implements EtfControllerAp
         return ResponseEntity.ok(response);
     }
 
-    @Override
-    public ResponseEntity<CalcEtfSaleResponse> calcEtfSale(@RequestBody final CalcEtfSaleRequest request) {
-        final CalcEtfSaleResponse response = new CalcEtfSaleResponse();
+    private record CalcEtfSaleParameters(@NonNull BigDecimal transactionCostsAbsolute,
+                                         @NonNull BigDecimal transactionCostsRelative,
+                                         BigDecimal transactionCostsMaximum,
+                                         @NonNull BigDecimal pieces,
+                                         @NonNull BigDecimal askPrice,
+                                         @NonNull BigDecimal bidPrice,
+                                         @NonNull UserID userId,
+                                         @NonNull Etf etf) {
+    }
 
-        final BigDecimal transactionCostsAbsolute = request.getTransactionCostsAbsolute() == null ? BigDecimal.ZERO
-                : request.getTransactionCostsAbsolute();
-        final BigDecimal transactionCostsRelative = request.getTransactionCostsRelative() == null ? BigDecimal.ZERO
-                : request.getTransactionCostsRelative();
-        final BigDecimal transactionCostsMaximum = request.getTransactionCostsMaximum();
+    private CalcEtfSaleParameters firewallCalcEtfSaleRequest(final CalcEtfSaleRequest request) {
+        final var transactionCostsAbsolute = requireNonNullElse(request.getTransactionCostsAbsolute(), BigDecimal.ZERO);
+        final var transactionCostsRelative = requireNonNullElse(request.getTransactionCostsRelative(), BigDecimal.ZERO);
+        final var transactionCostsMaximum = request.getTransactionCostsMaximum();
 
-        if (request.getAskPrice() == null || request.getBidPrice() == null || request.getEtfId() == null
-                || request.getPieces() == null) {
-            return ResponseEntity.ok(response);
+        final ValidationResult validationResult = new ValidationResult();
+        if (request.getAskPrice() == null || request.getBidPrice() == null) {
+            validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.PRICE_NOT_SET));
         }
+        if (request.getEtfId() == null) {
+            validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_ETF_SPECIFIED));
+        }
+        if (request.getPieces() == null) {
+            validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.PIECES_NOT_SET));
+        }
+        this.throwValidationExceptionIfInvalid(validationResult);
+
+        final BigDecimal pieces = requireNonNull(request.getPieces()).abs();
+        final BigDecimal askPrice = requireNonNull(request.getAskPrice()).abs();
+        final BigDecimal bidPrice = requireNonNull(request.getBidPrice()).abs();
 
         final UserID userId = this.getUserId();
         final EtfID etfId = new EtfID(request.getEtfId());
 
         final Etf etf = this.etfService.getEtfById(userId, etfId);
         if (etf == null) {
-            return ResponseEntity.ok(response);
+            validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.NO_ETF_SPECIFIED));
+            throw new ValidationException(validationResult);
         }
+        return new CalcEtfSaleParameters(transactionCostsAbsolute, transactionCostsRelative, transactionCostsMaximum,
+                pieces, askPrice, bidPrice, userId, etf);
+    }
 
-        final BigDecimal taxRelevantPercentage = etf.getPartialTaxExemption() == null ? BigDecimal.ONE
-                : BIG_DECIMAL_100.subtract(etf.getPartialTaxExemption()).scaleByPowerOfTen(-2); // transform 30% --> 0.7
+    @Override
+    public ResponseEntity<CalcEtfSaleResponse> calcEtfSale(@RequestBody final CalcEtfSaleRequest request) {
+        final var parms = this.firewallCalcEtfSaleRequest(request);
 
-        final BigDecimal pieces = request.getPieces().abs();
-        final BigDecimal askPrice = request.getAskPrice().abs();
-        final BigDecimal bidPrice = request.getBidPrice().abs();
-        this.settingService.setClientCalcEtfSalePieces(this.getUserId(), new ClientCalcEtfSalePieces(pieces));
+        this.settingService.setClientCalcEtfSalePieces(this.getUserId(), new ClientCalcEtfSalePieces(parms.pieces));
 
-        BigDecimal openPieces = pieces;
+        BigDecimal openPieces = parms.pieces;
         BigDecimal originalBuyPrice = BigDecimal.ZERO;
         BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
 
-        final List<EtfFlow> etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, LocalDateTime.now());
-        final List<EtfFlowWithTaxInfo> effectiveEtfFlows = new ArrayList<>(
-                this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
+        final var etfFlows = this.etfService.getAllEtfFlowsUntil(parms.userId, parms.etf.getId(), LocalDateTime.now());
+        final var effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(parms.userId, etfFlows);
 
         for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {
             BigDecimal useablePieces = etfFlow.getAmount();
@@ -179,54 +201,66 @@ public class EtfController extends AbstractController implements EtfControllerAp
                     .add(useablePieces.multiply(etfFlow.getPrice()).setScale(2, RoundingMode.HALF_UP));
         }
         overallPreliminaryLumpSum = overallPreliminaryLumpSum.setScale(2, RoundingMode.HALF_UP);
+
         if (BigDecimal.ZERO.compareTo(openPieces) != 0) {
             final ValidationResult validationResult = new ValidationResult();
             validationResult.addValidationResultItem(new ValidationResultItem(null, ErrorCode.AMOUNT_TO_HIGH));
-
-            this.throwValidationExceptionIfInvalid(validationResult);
-        } else {
-            final BigDecimal newBuyPrice = askPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
-            final BigDecimal sellPrice = bidPrice.multiply(pieces).setScale(2, RoundingMode.HALF_UP);
-
-            BigDecimal transactionCostsRelativeSell = sellPrice.multiply(transactionCostsRelative)
-                    .divide(BIG_DECIMAL_100, 2, RoundingMode.HALF_UP);
-            if (transactionCostsMaximum != null && transactionCostsMaximum
-                    .compareTo(transactionCostsRelativeSell.add(transactionCostsAbsolute)) < 0) {
-                transactionCostsRelativeSell = transactionCostsMaximum.subtract(transactionCostsAbsolute);
-            }
-            BigDecimal transactionCostsRelativeBuy = newBuyPrice.multiply(transactionCostsRelative)
-                    .divide(BIG_DECIMAL_100, 2, RoundingMode.HALF_UP);
-
-            if (transactionCostsMaximum != null && transactionCostsMaximum
-                    .compareTo(transactionCostsRelativeBuy.add(transactionCostsAbsolute)) < 0) {
-                transactionCostsRelativeBuy = transactionCostsMaximum.subtract(transactionCostsAbsolute);
-            }
-
-            final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
-            final BigDecimal chargeable = profit.multiply(taxRelevantPercentage).setScale(2, RoundingMode.UP)
-                    .subtract(overallPreliminaryLumpSum.multiply(taxRelevantPercentage).setScale(2, RoundingMode.UP));
-            final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
-
-            final BigDecimal overallCosts = rebuyLosses.add(transactionCostsAbsolute).add(transactionCostsRelativeSell)
-                    .add(transactionCostsAbsolute).add(transactionCostsRelativeBuy);
-
-            response.setNewBuyPrice(newBuyPrice);
-            response.setSellPrice(sellPrice);
-            response.setTransactionCostsAbsoluteBuy(transactionCostsAbsolute);
-            response.setTransactionCostsRelativeBuy(transactionCostsRelativeBuy);
-            response.setTransactionCostsAbsoluteSell(transactionCostsAbsolute);
-            response.setTransactionCostsRelativeSell(transactionCostsRelativeSell);
-            response.setEtfId(etfId.getId());
-            response.setPieces(pieces);
-            response.setOriginalBuyPrice(originalBuyPrice);
-            response.setProfit(profit);
-            response.setAccumulatedPreliminaryLumpSum(overallPreliminaryLumpSum);
-            response.setChargeable(chargeable);
-            response.setRebuyLosses(rebuyLosses);
-            response.setOverallCosts(overallCosts);
+            throw new ValidationException(validationResult);
         }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(executeCalculation(parms, originalBuyPrice, overallPreliminaryLumpSum));
+    }
+
+    private static CalcEtfSaleResponse executeCalculation(final CalcEtfSaleParameters parms,
+                                                          final BigDecimal originalBuyPrice,
+                                                          final BigDecimal overallPreliminaryLumpSum) {
+        final CalcEtfSaleResponse response = new CalcEtfSaleResponse();
+
+        final BigDecimal newBuyPrice = parms.askPrice.multiply(parms.pieces).setScale(2, RoundingMode.HALF_UP);
+        final BigDecimal sellPrice = parms.bidPrice.multiply(parms.pieces).setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal transactionCostsRelativeSell = sellPrice.multiply(parms.transactionCostsRelative)
+                .divide(BIG_DECIMAL_100, 2, RoundingMode.HALF_UP);
+        if (parms.transactionCostsMaximum != null && parms.transactionCostsMaximum
+                .compareTo(transactionCostsRelativeSell.add(parms.transactionCostsAbsolute)) < 0) {
+            transactionCostsRelativeSell = parms.transactionCostsMaximum.subtract(parms.transactionCostsAbsolute);
+        }
+        BigDecimal transactionCostsRelativeBuy = newBuyPrice.multiply(parms.transactionCostsRelative)
+                .divide(BIG_DECIMAL_100, 2, RoundingMode.HALF_UP);
+
+        if (parms.transactionCostsMaximum != null && parms.transactionCostsMaximum
+                .compareTo(transactionCostsRelativeBuy.add(parms.transactionCostsAbsolute)) < 0) {
+            transactionCostsRelativeBuy = parms.transactionCostsMaximum.subtract(parms.transactionCostsAbsolute);
+        }
+
+        final BigDecimal profit = sellPrice.subtract(originalBuyPrice);
+        final BigDecimal taxRelevantPercentage = parms.etf.getPartialTaxExemption() == null ? BigDecimal.ONE
+                : BIG_DECIMAL_100.subtract(parms.etf.getPartialTaxExemption()).scaleByPowerOfTen(
+                -2); // transform 30% --> 0.7
+
+        final BigDecimal chargeable = profit.multiply(taxRelevantPercentage).setScale(2, RoundingMode.UP)
+                .subtract(overallPreliminaryLumpSum.multiply(taxRelevantPercentage).setScale(2, RoundingMode.UP));
+        final BigDecimal rebuyLosses = newBuyPrice.subtract(sellPrice);
+
+        final BigDecimal overallCosts =
+                rebuyLosses.add(parms.transactionCostsAbsolute).add(transactionCostsRelativeSell)
+                        .add(parms.transactionCostsAbsolute).add(transactionCostsRelativeBuy);
+
+        response.setNewBuyPrice(newBuyPrice);
+        response.setSellPrice(sellPrice);
+        response.setTransactionCostsAbsoluteBuy(parms.transactionCostsAbsolute);
+        response.setTransactionCostsRelativeBuy(transactionCostsRelativeBuy);
+        response.setTransactionCostsAbsoluteSell(parms.transactionCostsAbsolute);
+        response.setTransactionCostsRelativeSell(transactionCostsRelativeSell);
+        response.setEtfId(parms.etf.getId().getId());
+        response.setPieces(parms.pieces);
+        response.setOriginalBuyPrice(originalBuyPrice);
+        response.setProfit(profit);
+        response.setAccumulatedPreliminaryLumpSum(overallPreliminaryLumpSum);
+        response.setChargeable(chargeable);
+        response.setRebuyLosses(rebuyLosses);
+        response.setOverallCosts(overallCosts);
+        return response;
     }
 
     private EtfSummaryTransport getEtfSummaryTransportForEtf(final Etf etf, final EtfValue etfValue,

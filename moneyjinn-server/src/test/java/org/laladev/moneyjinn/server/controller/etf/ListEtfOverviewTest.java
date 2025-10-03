@@ -1,6 +1,5 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.server.builder.EtfTransportBuilder;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
@@ -14,6 +13,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 
@@ -45,7 +46,7 @@ class ListEtfOverviewTest extends AbstractWebUserControllerTest {
 
         final ListEtfOverviewResponse actual = super.callUsecaseExpect200(ListEtfOverviewResponse.class, 2010, 1);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 

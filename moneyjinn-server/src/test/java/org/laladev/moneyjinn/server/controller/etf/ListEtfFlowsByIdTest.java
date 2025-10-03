@@ -1,7 +1,6 @@
 package org.laladev.moneyjinn.server.controller.etf;
 
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.setting.ClientCalcEtfSalePieces;
@@ -20,6 +19,8 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
     private static final BigDecimal SETTING_SALE_PIECES = new BigDecimal("10");
@@ -90,7 +91,7 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
         final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class,
                 EtfTransportBuilder.ETF_ID_1);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 
@@ -105,7 +106,7 @@ class ListEtfFlowsByIdTest extends AbstractWebUserControllerTest {
         final ListEtfFlowsResponse actual = super.callUsecaseExpect200(ListEtfFlowsResponse.class,
                 EtfTransportBuilder.ETF_ID_1);
 
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 
