@@ -40,6 +40,7 @@ import org.springframework.security.messaging.web.csrf.CsrfChannelInterceptor;
 public class WebSocketSecurityConfig {
 
     @Bean
+    @SuppressWarnings("java:S1452")
     AuthorizationManager<Message<?>> messageAuthorizationManager(
             final MessageMatcherDelegatingAuthorizationManager.Builder messages) {
         messages.nullDestMatcher().authenticated();

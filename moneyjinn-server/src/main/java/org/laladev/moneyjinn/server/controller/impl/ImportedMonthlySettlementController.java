@@ -28,15 +28,12 @@ import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.BusinessException;
-import org.laladev.moneyjinn.model.monthlysettlement.ImportedMonthlySettlement;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.server.controller.api.ImportedMonthlySettlementControllerApi;
 import org.laladev.moneyjinn.server.controller.mapper.ImportedMonthlySettlementTransportMapper;
 import org.laladev.moneyjinn.server.model.CreateImportedMonthlySettlementRequest;
-import org.laladev.moneyjinn.server.model.ImportedMonthlySettlementTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
 import org.laladev.moneyjinn.service.api.IImportedMonthlySettlementService;
 import org.springframework.http.ResponseEntity;
@@ -61,18 +58,21 @@ public class ImportedMonthlySettlementController extends AbstractController
     @Override
     public ResponseEntity<Void> createImportedMonthlySettlement(
             @RequestBody final CreateImportedMonthlySettlementRequest request) {
-        final ImportedMonthlySettlementTransport importedMonthlySettlementTransport = request
-                .getImportedMonthlySettlementTransport();
-        final ImportedMonthlySettlement importedMonthlySettlement = this.importedMonthlySettlementTransportMapper
-                .mapBToA(importedMonthlySettlementTransport);
+        final var importedMonthlySettlementTransport = request.getImportedMonthlySettlementTransport();
+        if (importedMonthlySettlementTransport == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        final var importedMonthlySettlement =
+                this.importedMonthlySettlementTransportMapper.mapBToA(importedMonthlySettlementTransport);
         final BankAccount bankAccount = new BankAccount(
                 importedMonthlySettlementTransport.getAccountNumberCapitalsource(),
                 importedMonthlySettlementTransport.getBankCodeCapitalsource());
         final LocalDate beginOfMonth = LocalDate.of(importedMonthlySettlement.getYear(),
                 importedMonthlySettlement.getMonth(), 1);
         final LocalDate endOfMonth = beginOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-        final Capitalsource capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount,
-                endOfMonth);
+        final var capitalsource = this.capitalsourceService.getCapitalsourceByAccount(null, bankAccount, endOfMonth);
+
         if (capitalsource != null) {
             if (capitalsource.getImportAllowed() == CapitalsourceImport.NOT_ALLOWED) {
                 throw new BusinessException("Import of this capitalsource is not allowed!",

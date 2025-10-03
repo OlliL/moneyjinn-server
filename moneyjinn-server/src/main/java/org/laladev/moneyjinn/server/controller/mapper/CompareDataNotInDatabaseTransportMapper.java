@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2025 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2025 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,38 +26,23 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.laladev.moneyjinn.converter.EtfFlowIdMapper;
-import org.laladev.moneyjinn.converter.EtfIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
-import org.laladev.moneyjinn.converter.javatypes.LocalDateTimeToOffsetDateTimeMapper;
-import org.laladev.moneyjinn.model.etf.EtfFlow;
-import org.laladev.moneyjinn.server.model.EtfFlowTransport;
-import org.mapstruct.AfterMapping;
+import org.laladev.moneyjinn.model.comparedata.CompareDataNotInDatabase;
+import org.laladev.moneyjinn.server.model.CompareDataNotInDatabaseTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class, uses = {EtfIdMapper.class, EtfFlowIdMapper.class,
-        LocalDateTimeToOffsetDateTimeMapper.class})
-public interface EtfFlowTransportMapper extends IMapstructMapper<EtfFlow, EtfFlowTransport> {
-    @Override
-    @Mapping(target = "id", source = "etfflowid")
-    @Mapping(target = "time", source = "timestamp")
-    EtfFlow mapBToA(EtfFlowTransport etfFlowTransport);
+@Mapper(config = MapStructConfig.class, uses = {CompareDataDatasetTransportMapper.class})
+public interface CompareDataNotInDatabaseTransportMapper
+        extends IMapstructMapper<CompareDataNotInDatabase, CompareDataNotInDatabaseTransport> {
 
     @Override
-    @Mapping(target = "etfflowid", source = "id")
-    @Mapping(target = "nanoseconds", source = "time.nano")
-    @Mapping(target = "timestamp", source = "time")
-    EtfFlowTransport mapAToB(EtfFlow etfFlow);
+    @Mapping(target = "compareDataDatasetTransport", source = "compareDataDataset")
+    CompareDataNotInDatabaseTransport mapAToB(CompareDataNotInDatabase compareDataNotInDatabase);
 
-    @AfterMapping
-    @SuppressWarnings("java:S2583")
-    default void doAfterMapping(final EtfFlowTransport source, @MappingTarget final EtfFlow entity) {
-        if (entity != null && source != null && entity.getTime() != null) {
-            final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;
-            entity.setTime(entity.getTime().withNano(nanos));
-        }
-    }
+    @Override
+    @InheritInverseConfiguration
+    CompareDataNotInDatabase mapBToA(CompareDataNotInDatabaseTransport transport);
 }

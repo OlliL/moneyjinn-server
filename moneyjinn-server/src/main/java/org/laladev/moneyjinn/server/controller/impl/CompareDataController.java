@@ -29,16 +29,18 @@ import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.model.comparedata.*;
-import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
+import org.laladev.moneyjinn.model.comparedata.CompareDataFormatID;
+import org.laladev.moneyjinn.model.comparedata.CompareDataResult;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedCapitalsource;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedFormat;
 import org.laladev.moneyjinn.model.setting.ClientCompareDataSelectedSourceIsFile;
 import org.laladev.moneyjinn.server.controller.api.CompareDataControllerApi;
-import org.laladev.moneyjinn.server.controller.mapper.CompareDataDatasetTransportMapper;
 import org.laladev.moneyjinn.server.controller.mapper.CompareDataFormatTransportMapper;
-import org.laladev.moneyjinn.server.controller.mapper.MoneyflowTransportMapper;
-import org.laladev.moneyjinn.server.model.*;
+import org.laladev.moneyjinn.server.controller.mapper.CompareDataResponseMapper;
+import org.laladev.moneyjinn.server.model.CompareDataRequest;
+import org.laladev.moneyjinn.server.model.CompareDataResponse;
+import org.laladev.moneyjinn.server.model.ShowCompareDataFormResponse;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
 import org.laladev.moneyjinn.service.api.ISettingService;
@@ -50,7 +52,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -63,9 +64,8 @@ public class CompareDataController extends AbstractController implements Compare
     private final ICompareDataService compareDataService;
     private final IImportedMoneyflowService importedMoneyflowService;
 
-    private final CompareDataDatasetTransportMapper compareDataDatasetTransportMapper;
+    private final CompareDataResponseMapper compareDataResponseMapper;
     private final CompareDataFormatTransportMapper compareDataFormatTransportMapper;
-    private final MoneyflowTransportMapper moneyflowTransportMapper;
     private final BooleanToIntegerMapper booleanToIntegerMapper;
 
     @Override
@@ -73,116 +73,71 @@ public class CompareDataController extends AbstractController implements Compare
         final UserID userId = super.getUserId();
         final ShowCompareDataFormResponse response = new ShowCompareDataFormResponse();
         final List<CompareDataFormat> compareDataFormats = this.compareDataService.getAllCompareDataFormats();
-        if (compareDataFormats != null && !compareDataFormats.isEmpty()) {
-            final List<CompareDataFormatTransport> responseCompareDataFormats = this.compareDataFormatTransportMapper
-                    .mapAToB(compareDataFormats);
-            response.setCompareDataFormatTransports(responseCompareDataFormats);
 
-            this.settingService.getClientCompareDataSelectedFormat(userId)
-                    .ifPresent(s -> response.setSelectedDataFormat(s.getSetting().getId()));
+        if (compareDataFormats != null && !compareDataFormats.isEmpty()) {
+            response.setCompareDataFormatTransports(this.compareDataFormatTransportMapper.mapAToB(compareDataFormats));
+
+            this.settingService.getClientCompareDataSelectedFormat(userId).ifPresent(
+                    s -> response.setSelectedDataFormat(s.getSetting().getId()));
             this.settingService.getClientCompareDataSelectedSourceIsFile(userId).ifPresent(
                     s -> response.setSelectedSourceIsFile(this.booleanToIntegerMapper.mapAToB(s.getSetting())));
-            this.settingService.getClientCompareDataSelectedCapitalsource(userId)
-                    .ifPresent(s -> response.setSelectedCapitalsourceId(s.getSetting().getId()));
+            this.settingService.getClientCompareDataSelectedCapitalsource(userId).ifPresent(
+                    s -> response.setSelectedCapitalsourceId(s.getSetting().getId()));
 
         }
+
         return ResponseEntity.ok(response);
     }
 
     @Override
+    @SuppressWarnings("java:S2589")
     public ResponseEntity<CompareDataResponse> compareData(@RequestBody final CompareDataRequest request) {
         final UserID userId = super.getUserId();
-        final CompareDataResponse response = new CompareDataResponse();
-        CompareDataResult compareDataResult = null;
-        if (request.getCapitalsourceId() != null && request.getEndDate() != null && request.getStartDate() != null) {
-            final CapitalsourceID capitalsourceId = new CapitalsourceID(request.getCapitalsourceId());
-            final LocalDate startDate = request.getStartDate();
-            final LocalDate endDate = request.getEndDate();
-            final boolean useImportedData = request.getUseImportedData() != null && request.getUseImportedData() == 1;
-            if (!useImportedData && request.getFileContents() != null && request.getFormatId() != null) {
-                final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(request.getFormatId());
-                final byte[] fileContentBytes = Base64.getMimeDecoder().decode(request.getFileContents());
-                final String fileContents = new String(fileContentBytes, StandardCharsets.UTF_8);
-                compareDataResult = this.compareDataService.compareDataFile(userId, compareDataFormatId,
-                        capitalsourceId, startDate, endDate, fileContents);
-                final ClientCompareDataSelectedFormat settingFormat = new ClientCompareDataSelectedFormat(
-                        compareDataFormatId);
-                this.settingService.setClientCompareDataSelectedFormat(userId, settingFormat);
-                this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
-                        new ClientCompareDataSelectedSourceIsFile(Boolean.FALSE));
-            } else if (useImportedData) {
-                final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
-                        .getAllImportedMoneyflowsByCapitalsourceIds(userId, Collections.singletonList(capitalsourceId),
-                                startDate, endDate);
-                compareDataResult = this.compareDataService.compareDataImport(userId, capitalsourceId, startDate,
-                        endDate, importedMoneyflows);
-                this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
-                        new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE));
-            }
-            if (compareDataResult != null) {
-                final List<CompareDataNotInDatabase> compareDataNotInDatabaseList = compareDataResult
-                        .getCompareDataNotInDatabase();
-                final List<CompareDataMatching> compareDataMatchingList = compareDataResult.getCompareDataMatching();
-                final List<CompareDataWrongCapitalsource> compareDataWrongCapitalsourceList = compareDataResult
-                        .getCompareDataWrongCapitalsource();
-                final List<CompareDataNotInFile> compareDataNotInFileList = compareDataResult.getCompareDataNotInFile();
-                if (compareDataNotInDatabaseList != null && !compareDataNotInDatabaseList.isEmpty()) {
-                    final List<CompareDataNotInDatabaseTransport> transports = new ArrayList<>();
-                    for (final CompareDataNotInDatabase compareDataNotInDatabase : compareDataNotInDatabaseList) {
-                        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
-                                new CompareDataNotInDatabaseTransport();
-                        compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
-                                this.compareDataDatasetTransportMapper
-                                        .mapAToB(compareDataNotInDatabase.getCompareDataDataset()));
-                        transports.add(compareDataNotInDatabaseTransport);
-                    }
-                    response.setCompareDataNotInDatabaseTransports(transports);
-                }
-                if (compareDataMatchingList != null && !compareDataMatchingList.isEmpty()) {
-                    final List<CompareDataMatchingTransport> transports = new ArrayList<>();
-                    for (final CompareDataMatching compareDataMatching : compareDataMatchingList) {
-                        final CompareDataMatchingTransport compareDataMatchingTransport =
-                                new CompareDataMatchingTransport();
-                        compareDataMatchingTransport
-                                .setCompareDataDatasetTransport(this.compareDataDatasetTransportMapper
-                                        .mapAToB(compareDataMatching.getCompareDataDataset()));
-                        compareDataMatchingTransport.setMoneyflowTransport(
-                                this.moneyflowTransportMapper.mapAToB(compareDataMatching.getMoneyflow()));
-                        transports.add(compareDataMatchingTransport);
-                    }
-                    response.setCompareDataMatchingTransports(transports);
+        final LocalDate startDate = request.getStartDate();
+        final LocalDate endDate = request.getEndDate();
+        final boolean useImportedData = request.getUseImportedData() != null && request.getUseImportedData() == 1;
 
-                }
-                if (compareDataWrongCapitalsourceList != null && !compareDataWrongCapitalsourceList.isEmpty()) {
-                    final List<CompareDataWrongCapitalsourceTransport> transports = new ArrayList<>();
-                    for (final CompareDataWrongCapitalsource compareDataWrongCapitalsource : compareDataWrongCapitalsourceList) {
-                        final CompareDataWrongCapitalsourceTransport compareDataWrongCapitalsourceTransport =
-                                new CompareDataWrongCapitalsourceTransport();
-                        compareDataWrongCapitalsourceTransport.setCompareDataDatasetTransport(
-                                this.compareDataDatasetTransportMapper
-                                        .mapAToB(compareDataWrongCapitalsource.getCompareDataDataset()));
-                        compareDataWrongCapitalsourceTransport.setMoneyflowTransport(
-                                this.moneyflowTransportMapper.mapAToB(compareDataWrongCapitalsource.getMoneyflow()));
-                        transports.add(compareDataWrongCapitalsourceTransport);
-                    }
-                    response.setCompareDataWrongCapitalsourceTransports(transports);
-                }
-                if (compareDataNotInFileList != null && !compareDataNotInFileList.isEmpty()) {
-                    final List<CompareDataNotInFileTransport> transports = new ArrayList<>();
-                    for (final CompareDataNotInFile compareDataNotInFile : compareDataNotInFileList) {
-                        final CompareDataNotInFileTransport compareDataNotInFileTransport =
-                                new CompareDataNotInFileTransport();
-                        compareDataNotInFileTransport.setMoneyflowTransport(
-                                this.moneyflowTransportMapper.mapAToB(compareDataNotInFile.getMoneyflow()));
-                        transports.add(compareDataNotInFileTransport);
-                    }
-                    response.setCompareDataNotInFileTransports(transports);
-                }
+        CompareDataResult compareDataResult = null;
+        if (request.getCapitalsourceId() != null && endDate != null && startDate != null) {
+            final CapitalsourceID capitalsourceId = new CapitalsourceID(request.getCapitalsourceId());
+            this.settingService.setClientCompareDataSelectedCapitalsource(userId,
+                    new ClientCompareDataSelectedCapitalsource(capitalsourceId));
+
+            if (useImportedData) {
+                compareDataResult = this.compareDataImport(userId, capitalsourceId, startDate, endDate);
+            } else if (request.getFileContents() != null && request.getFormatId() != null) {
+                compareDataResult = this.compareDataFile(userId, capitalsourceId, startDate, endDate,
+                        request.getFormatId(), request.getFileContents());
             }
-            final ClientCompareDataSelectedCapitalsource settingCapitalsource =
-                    new ClientCompareDataSelectedCapitalsource(capitalsourceId);
-            this.settingService.setClientCompareDataSelectedCapitalsource(userId, settingCapitalsource);
         }
-        return ResponseEntity.ok(response);
+
+        return ResponseEntity.ok(this.compareDataResponseMapper.mapAToB(compareDataResult));
+    }
+
+    private CompareDataResult compareDataImport(final UserID userId, final CapitalsourceID capitalsourceId,
+                                                final LocalDate startDate, final LocalDate endDate) {
+        this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
+                new ClientCompareDataSelectedSourceIsFile(Boolean.TRUE));
+
+        final var importedMoneyflows = this.importedMoneyflowService.getAllImportedMoneyflowsByCapitalsourceIds(userId,
+                Collections.singletonList(capitalsourceId), startDate, endDate);
+        return this.compareDataService.compareDataImport(userId, capitalsourceId, startDate, endDate,
+                importedMoneyflows);
+    }
+
+    private CompareDataResult compareDataFile(final UserID userId, final CapitalsourceID capitalsourceId,
+                                              final LocalDate startDate, final LocalDate endDate,
+                                              final Long formatId, final String fileContents1) {
+        final CompareDataFormatID compareDataFormatId = new CompareDataFormatID(formatId);
+        final byte[] fileContentBytes = Base64.getMimeDecoder().decode(fileContents1);
+        final String fileContents = new String(fileContentBytes, StandardCharsets.UTF_8);
+
+        this.settingService.setClientCompareDataSelectedFormat(userId,
+                new ClientCompareDataSelectedFormat(compareDataFormatId));
+        this.settingService.setClientCompareDataSelectedSourceIsFile(userId,
+                new ClientCompareDataSelectedSourceIsFile(Boolean.FALSE));
+
+        return this.compareDataService.compareDataFile(userId, compareDataFormatId, capitalsourceId, startDate, endDate,
+                fileContents);
     }
 }

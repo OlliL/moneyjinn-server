@@ -58,6 +58,7 @@ public interface EtfEffectiveFlowTransportMapper
     EtfEffectiveFlowTransport mapAToB(EtfFlowWithTaxInfo etfFlow);
 
     @AfterMapping
+    @SuppressWarnings("java:S2583")
     default void doAfterMapping(final EtfEffectiveFlowTransport source, @MappingTarget final EtfFlow entity) {
         if (entity != null && source != null && entity.getTime() != null) {
             final int nanos = source.getNanoseconds() != null ? source.getNanoseconds() : 0;

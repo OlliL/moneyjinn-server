@@ -144,6 +144,10 @@ public class ImportedMoneyflowController extends AbstractController implements I
     @Override
     public ResponseEntity<Void> createImportedMoneyflow(@RequestBody final CreateImportedMoneyflowRequest request) {
         final ImportedMoneyflowTransport importedMoneyflowTransport = request.getImportedMoneyflowTransport();
+        if (importedMoneyflowTransport == null) {
+            return ResponseEntity.noContent().build();
+        }
+        
         final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowTransportMapper
                 .mapBToA(importedMoneyflowTransport);
         final BankAccount bankAccount = new BankAccount(importedMoneyflowTransport.getAccountNumberCapitalsource(),
