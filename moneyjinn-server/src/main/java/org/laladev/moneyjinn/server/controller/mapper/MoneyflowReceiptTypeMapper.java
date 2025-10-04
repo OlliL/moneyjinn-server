@@ -26,22 +26,19 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowReceiptType;
 
+@UtilityClass
 public class MoneyflowReceiptTypeMapper {
     private static final int JPEG_INT = 1;
     private static final int PDF_INT = 2;
 
-    private MoneyflowReceiptTypeMapper() {
-    }
-
     public static Integer map(final MoneyflowReceiptType type) {
-        if (type != null) {
-            return switch (type) {
-                case JPEG -> JPEG_INT;
-                case PDF -> PDF_INT;
-            };
-        }
-        return null;
+        return type == null ? null :
+                switch (type) {
+                    case JPEG -> JPEG_INT;
+                    case PDF -> PDF_INT;
+                };
     }
 }

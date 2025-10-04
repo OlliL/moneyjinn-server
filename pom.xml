@@ -308,6 +308,7 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <configuration>
                     <!-- Exclude generated code -->
+                    <!-- jakarta.annotation.Generated annotation not working because retention is set to SOURCE -->
                     <excludes>
                         <!-- Mapstruct generated mapper -->
                         <exclude>org/laladev/moneyjinn/converter/*Impl.class</exclude>
@@ -319,6 +320,8 @@
                         <exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
                         <!-- Complete HBCI module -->
                         <exclude>org/laladev/moneyjinn/hbci/**/*</exclude>
+                        <!-- Main class -->
+                        <exclude>org/laladev/moneyjinn/server/main/MoneyjinnServer.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>

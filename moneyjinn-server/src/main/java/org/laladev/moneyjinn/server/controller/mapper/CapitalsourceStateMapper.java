@@ -26,35 +26,32 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceState;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
+@UtilityClass
 public class CapitalsourceStateMapper {
     private static final int NON_CASH_INT = 1;
     private static final int CASH_INT = 2;
 
-    private CapitalsourceStateMapper() {
-    }
 
     public static CapitalsourceState map(final Integer state) {
-        if (state != null) {
-            return switch (state) {
-                case NON_CASH_INT -> CapitalsourceState.NON_CASH;
-                case CASH_INT -> CapitalsourceState.CASH;
-                default -> throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
-            };
-        }
-        return null;
+        return state == null ? null :
+                switch (state) {
+                    case NON_CASH_INT -> CapitalsourceState.NON_CASH;
+                    case CASH_INT -> CapitalsourceState.CASH;
+                    default -> throw new TechnicalException("State " + state + " not defined!", ErrorCode.UNKNOWN);
+                };
+
     }
 
     public static Integer map(final CapitalsourceState state) {
-        if (state != null) {
-            return switch (state) {
-                case NON_CASH -> NON_CASH_INT;
-                case CASH -> CASH_INT;
-            };
-        }
-        return null;
+        return state == null ? null :
+                switch (state) {
+                    case NON_CASH -> NON_CASH_INT;
+                    case CASH -> CASH_INT;
+                };
     }
 }

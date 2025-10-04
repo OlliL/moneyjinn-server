@@ -26,35 +26,31 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.etf.EtfPreliminaryLumpSumType;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
+@UtilityClass
 public class EtfPreliminaryLumpSumTypeMapper {
     private static final int AMOUNT_PER_MONTH = 1;
     private static final int AMOUNT_PER_PIECE = 2;
 
-    private EtfPreliminaryLumpSumTypeMapper() {
-    }
-
     public static EtfPreliminaryLumpSumType map(final Integer type) {
-        if (type != null) {
-            return switch (type) {
-                case AMOUNT_PER_MONTH -> EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH;
-                case AMOUNT_PER_PIECE -> EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE;
-                default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-            };
-        }
-        return null;
+        return type == null ? null :
+                switch (type) {
+                    case AMOUNT_PER_MONTH -> EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH;
+                    case AMOUNT_PER_PIECE -> EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE;
+                    default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+                };
+
     }
 
     public static Integer map(final EtfPreliminaryLumpSumType type) {
-        if (type != null) {
-            return switch (type) {
-                case AMOUNT_PER_MONTH -> AMOUNT_PER_MONTH;
-                case AMOUNT_PER_PIECE -> AMOUNT_PER_PIECE;
-            };
-        }
-        return null;
+        return type == null ? null :
+                switch (type) {
+                    case AMOUNT_PER_MONTH -> AMOUNT_PER_MONTH;
+                    case AMOUNT_PER_PIECE -> AMOUNT_PER_PIECE;
+                };
     }
 }

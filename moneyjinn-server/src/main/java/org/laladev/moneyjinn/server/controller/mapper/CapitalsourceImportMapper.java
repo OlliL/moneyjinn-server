@@ -26,39 +26,34 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
+@UtilityClass
 public class CapitalsourceImportMapper {
     private static final int NOT_ALLOWED_INT = 0;
     private static final int ALL_ALLOWED_INT = 1;
     private static final int BALANCE_ALLOWED_INT = 2;
 
-    private CapitalsourceImportMapper() {
-    }
-
     public static CapitalsourceImport map(final Integer capitalsourceImport) {
-        if (capitalsourceImport != null) {
-            return switch (capitalsourceImport) {
-                case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
-                case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
-                case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
-                default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
-                        ErrorCode.UNKNOWN);
-            };
-        }
-        return CapitalsourceImport.NOT_ALLOWED;
+        return capitalsourceImport == null ? CapitalsourceImport.NOT_ALLOWED :
+                switch (capitalsourceImport) {
+                    case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
+                    case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
+                    case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
+                    default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
+                            ErrorCode.UNKNOWN);
+                };
     }
 
     public static Integer map(final CapitalsourceImport capitalsourceImport) {
-        if (capitalsourceImport != null) {
-            return switch (capitalsourceImport) {
-                case NOT_ALLOWED -> null;
-                case ALL_ALLOWED -> ALL_ALLOWED_INT;
-                case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
-            };
-        }
-        return null;
+        return capitalsourceImport == null ? null :
+                switch (capitalsourceImport) {
+                    case NOT_ALLOWED -> null;
+                    case ALL_ALLOWED -> ALL_ALLOWED_INT;
+                    case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
+                };
     }
 }
