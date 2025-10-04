@@ -39,9 +39,4 @@ import org.mapstruct.Mapper;
         YearToIntegerMapper.class, EtfPreliminaryLumpSumTypeMapper.class})
 public interface EtfPreliminaryLumpSumTransportMapper
         extends IMapstructMapper<EtfPreliminaryLumpSum, EtfPreliminaryLumpSumTransport> {
-    @Override
-    EtfPreliminaryLumpSum mapBToA(EtfPreliminaryLumpSumTransport etfPreliminaryLumpSumData);
-
-    @Override
-    EtfPreliminaryLumpSumTransport mapAToB(EtfPreliminaryLumpSum etfPreliminaryLumpSum);
 }

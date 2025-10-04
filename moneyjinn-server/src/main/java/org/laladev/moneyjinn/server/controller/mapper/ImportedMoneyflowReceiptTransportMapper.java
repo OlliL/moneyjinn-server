@@ -34,9 +34,9 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowReceipt;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowReceiptTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import java.util.Base64;
 
@@ -44,16 +44,15 @@ import java.util.Base64;
 public interface ImportedMoneyflowReceiptTransportMapper
         extends IMapstructMapper<ImportedMoneyflowReceipt, ImportedMoneyflowReceiptTransport> {
     @Override
+    @InheritInverseConfiguration
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "group", ignore = true)
-    @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
     ImportedMoneyflowReceipt mapBToA(ImportedMoneyflowReceiptTransport importedMoneyflowReceiptTransport);
 
     @Override
-    @Mapping(target = "receipt", source = "receipt", qualifiedByName = "mapReceiptToModel")
+    @Mapping(target = "receipt", source = "receipt")
     ImportedMoneyflowReceiptTransport mapAToB(ImportedMoneyflowReceipt importedMoneyflowReceipt);
 
-    @Named("mapReceiptToModel")
     default byte[] mapReceiptToModel(final String receipt) {
         try {
             return Base64.getDecoder().decode(receipt);
@@ -62,7 +61,6 @@ public interface ImportedMoneyflowReceiptTransportMapper
         }
     }
 
-    @Named("mapReceiptToModel")
     default String mapReceiptToModel(final byte[] receipt) {
         return Base64.getEncoder().encodeToString(receipt);
     }

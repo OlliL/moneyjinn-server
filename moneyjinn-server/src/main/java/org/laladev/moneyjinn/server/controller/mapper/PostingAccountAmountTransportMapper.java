@@ -31,19 +31,20 @@ import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.PostingAccountAmount;
 import org.laladev.moneyjinn.server.model.PostingAccountAmountTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = PostingAccountIdMapper.class)
 public interface PostingAccountAmountTransportMapper
         extends IMapstructMapper<PostingAccountAmount, PostingAccountAmountTransport> {
-    @Override
-    default PostingAccountAmount mapBToA(final PostingAccountAmountTransport postingAccountAmountTransport) {
-        throw new UnsupportedOperationException("Mapping not supported!");
-    }
 
     @Override
     @Mapping(target = "postingaccountid", source = "postingAccount.id")
     @Mapping(target = "postingaccountname", source = "postingAccount.name")
     PostingAccountAmountTransport mapAToB(PostingAccountAmount postingAccountAmount);
+
+    @Override
+    @InheritInverseConfiguration
+    PostingAccountAmount mapBToA(PostingAccountAmountTransport transport);
 }

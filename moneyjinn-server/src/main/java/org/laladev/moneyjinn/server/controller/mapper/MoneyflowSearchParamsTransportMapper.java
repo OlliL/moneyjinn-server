@@ -40,8 +40,4 @@ import org.mapstruct.Mapper;
 public interface MoneyflowSearchParamsTransportMapper
         extends IMapstructMapper<MoneyflowSearchParams, MoneyflowSearchParamsTransport> {
 
-    @Override
-    default MoneyflowSearchParamsTransport mapAToB(final MoneyflowSearchParams moneyflowSearchParams) {
-        throw new UnsupportedOperationException("Mapping not supported!");
-    }
 }

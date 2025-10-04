@@ -31,6 +31,7 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.server.model.ImportedMoneyflowTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -40,14 +41,7 @@ import org.mapstruct.Mapping;
 public interface ImportedMoneyflowTransportMapper
         extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowTransport> {
     @Override
-    @Mapping(target = "bookingDate", source = "bookingdate")
-    @Mapping(target = "invoiceDate", source = "invoicedate")
-    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
-    @Mapping(target = "contractpartner.id", source = "contractpartnerid")
-    @Mapping(target = "postingAccount.id", source = "postingaccountid")
-    @Mapping(target = "externalId", source = "externalid")
-    @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-    @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+    @InheritInverseConfiguration
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "group", ignore = true)
     @Mapping(target = "status", ignore = true)

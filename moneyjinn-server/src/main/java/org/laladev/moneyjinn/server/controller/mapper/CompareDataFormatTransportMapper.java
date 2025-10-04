@@ -31,16 +31,15 @@ import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.comparedata.CompareDataFormat;
 import org.laladev.moneyjinn.server.model.CompareDataFormatTransport;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(config = MapStructConfig.class, uses = CompareDataFormatIdMapper.class)
 public interface CompareDataFormatTransportMapper
         extends IMapstructMapper<CompareDataFormat, CompareDataFormatTransport> {
     @Override
-    default CompareDataFormat mapBToA(final CompareDataFormatTransport compareDataFormatTransport) {
-        throw new UnsupportedOperationException("Mapping not supported!");
-    }
+    @InheritInverseConfiguration
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    CompareDataFormat mapBToA(CompareDataFormatTransport transport);
 
     @Override
     @Mapping(target = "formatId", source = "id")

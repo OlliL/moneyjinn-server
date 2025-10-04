@@ -35,6 +35,7 @@ import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.converter.javatypes.MonthToIntegerMapper;
 import org.laladev.moneyjinn.model.monthlysettlement.MonthlySettlement;
 import org.laladev.moneyjinn.server.model.MonthlySettlementTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -43,9 +44,9 @@ import org.mapstruct.Mapping;
 public interface MonthlySettlementTransportMapper
         extends IMapstructMapper<MonthlySettlement, MonthlySettlementTransport> {
     @Override
+    @InheritInverseConfiguration
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "group", ignore = true)
-    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
     MonthlySettlement mapBToA(MonthlySettlementTransport monthlySettlementTransport);
 
     @Override

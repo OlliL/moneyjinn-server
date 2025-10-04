@@ -55,6 +55,11 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
     }
 
     @Test
+    void test_noTransport_SuccessfullNoContent() throws Exception {
+        super.callUsecaseExpect204(new CreateImportedMoneyflowRequest());
+    }
+
+    @Test
     void test_insertwithDuplicateExternalId_NotSuccessfullButIgnored() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
         final List<CapitalsourceID> capitalsourceIds =
@@ -203,17 +208,6 @@ class CreateImportedMoneyflowTest extends AbstractImportUserControllerTest {
 
     @Override
     protected void callUsecaseEmptyDatabase() throws Exception {
-        final CreateImportedMoneyflowRequest request = new CreateImportedMoneyflowRequest();
-        final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder().forNewImportedMoneyflow()
-                .build();
-        transport.setBankCodeCapitalsource("1");
-        request.setImportedMoneyflowTransport(transport);
-        final ErrorResponse expected = new ErrorResponse();
-        expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
-        expected.setMessage("No matching capitalsource found!");
-
-        final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-
-        Assertions.assertEquals(expected, actual);
+        this.test_unknownBankCode_errorResponse();
     }
 }

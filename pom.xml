@@ -39,9 +39,9 @@
         <lombok.version>1.18.42</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
-        <swagger.version>2.2.37</swagger.version>
+        <swagger.version>2.2.38</swagger.version>
 
-        <openapi-generator.version>7.15.0</openapi-generator.version>
+        <openapi-generator.version>7.16.0</openapi-generator.version>
 
         <!--for hbci-batch only-->
         <hbci4j-core.version>4.0.0</hbci4j-core.version>
@@ -52,16 +52,16 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
-        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
         <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <versions-maven-plugin.version>2.19.1</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>4.7.0</coveralls-maven-plugin.version>
-        <pitest-maven.version>1.20.3</pitest-maven.version>
+        <pitest-maven.version>1.20.4</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
         <!-- Test Scope -->
-        <junit.version>6.0.0-RC3</junit.version>
+        <junit.version>6.0.0</junit.version>
         <mockito.version>5.20.0</mockito.version>
         <juniversalchardet.version>2.5.0</juniversalchardet.version>
 

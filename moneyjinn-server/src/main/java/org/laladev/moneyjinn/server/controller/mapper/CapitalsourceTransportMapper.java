@@ -33,6 +33,7 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.server.model.CapitalsourceTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -42,9 +43,7 @@ import org.mapstruct.Mapping;
 public interface CapitalsourceTransportMapper extends IMapstructMapper<Capitalsource, CapitalsourceTransport> {
 
     @Override
-    @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-    @Mapping(target = "bankAccount.bankCode", source = "bankCode")
-    @Mapping(target = "user.id", source = "userid")
+    @InheritInverseConfiguration
     @Mapping(target = "group", ignore = true)
     Capitalsource mapBToA(final CapitalsourceTransport b);
 

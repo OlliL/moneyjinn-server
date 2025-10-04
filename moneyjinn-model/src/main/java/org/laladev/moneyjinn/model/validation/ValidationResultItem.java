@@ -2,6 +2,7 @@ package org.laladev.moneyjinn.model.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.AbstractEntityID;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ValidationResultItem implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

@@ -32,6 +32,7 @@ import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.server.model.ContractpartnerAccountTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -40,9 +41,7 @@ public interface ContractpartnerAccountTransportMapper
         extends IMapstructMapper<ContractpartnerAccount, ContractpartnerAccountTransport> {
 
     @Override
-    @Mapping(target = "contractpartner.id", source = "contractpartnerid")
-    @Mapping(target = "bankAccount.accountNumber", source = "accountNumber")
-    @Mapping(target = "bankAccount.bankCode", source = "bankCode")
+    @InheritInverseConfiguration
     ContractpartnerAccount mapBToA(final ContractpartnerAccountTransport b);
 
     @Override

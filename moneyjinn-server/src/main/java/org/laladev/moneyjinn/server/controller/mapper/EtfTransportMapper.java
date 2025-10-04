@@ -34,6 +34,7 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.etf.Etf;
 import org.laladev.moneyjinn.server.model.EtfTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -41,8 +42,7 @@ import org.mapstruct.Mapping;
         BooleanToIntegerMapper.class})
 public interface EtfTransportMapper extends IMapstructMapper<Etf, EtfTransport> {
     @Override
-    @Mapping(target = "id", source = "etfId")
-    @Mapping(target = "user.id", source = "userid")
+    @InheritInverseConfiguration
     @Mapping(target = "group", ignore = true)
     Etf mapBToA(EtfTransport b);
 

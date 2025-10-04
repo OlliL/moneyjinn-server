@@ -31,6 +31,7 @@ import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.server.model.PreDefMoneyflowTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -38,11 +39,7 @@ import org.mapstruct.Mapping;
         PostingAccountIdMapper.class, PreDefMoneyflowIdMapper.class, BooleanToIntegerMapper.class, UserIdMapper.class})
 public interface PreDefMoneyflowTransportMapper extends IMapstructMapper<PreDefMoneyflow, PreDefMoneyflowTransport> {
     @Override
-    @Mapping(target = "capitalsource.id", source = "capitalsourceid")
-    @Mapping(target = "contractpartner.id", source = "contractpartnerid")
-    @Mapping(target = "postingAccount.id", source = "postingaccountid")
-    @Mapping(target = "creationDate", source = "createdate")
-    @Mapping(target = "lastUsedDate", source = "lastUsed")
+    @InheritInverseConfiguration
     @Mapping(target = "user", ignore = true)
     PreDefMoneyflow mapBToA(PreDefMoneyflowTransport preDefMoneyflowTransport);
 

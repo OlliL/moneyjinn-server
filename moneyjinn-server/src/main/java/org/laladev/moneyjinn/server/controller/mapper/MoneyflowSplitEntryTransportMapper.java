@@ -33,6 +33,7 @@ import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.moneyflow.MoneyflowSplitEntry;
 import org.laladev.moneyjinn.server.model.MoneyflowSplitEntryTransport;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -41,8 +42,7 @@ import org.mapstruct.Mapping;
 public interface MoneyflowSplitEntryTransportMapper
         extends IMapstructMapper<MoneyflowSplitEntry, MoneyflowSplitEntryTransport> {
     @Override
-    @Mapping(target = "moneyflowId", source = "moneyflowid")
-    @Mapping(target = "postingAccount.id", source = "postingaccountid")
+    @InheritInverseConfiguration
     MoneyflowSplitEntry mapBToA(MoneyflowSplitEntryTransport moneyflowSplitEntryTransport);
 
     @Override

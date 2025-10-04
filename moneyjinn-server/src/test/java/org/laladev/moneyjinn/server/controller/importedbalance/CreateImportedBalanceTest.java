@@ -57,6 +57,11 @@ class CreateImportedBalanceTest extends AbstractImportUserControllerTest {
     }
 
     @Test
+    void test_noTransport_SuccessfullNoContent() throws Exception {
+        super.callUsecaseExpect204(new CreateImportedBalanceRequest());
+    }
+
+    @Test
     void test_standardRequestUpdate_SuccessfullNoContent() throws Exception {
         final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
         final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder().forImportedBalance1()
@@ -159,17 +164,6 @@ class CreateImportedBalanceTest extends AbstractImportUserControllerTest {
 
     @Override
     protected void callUsecaseEmptyDatabase() throws Exception {
-        final CreateImportedBalanceRequest request = new CreateImportedBalanceRequest();
-        final ImportedBalanceTransport transport = new ImportedBalanceTransportBuilder().forNewImportedBalance()
-                .build();
-        transport.setBankCodeCapitalsource("1");
-        request.setImportedBalanceTransport(transport);
-        final ErrorResponse expected = new ErrorResponse();
-        expected.setCode(ErrorCode.CAPITALSOURCE_NOT_FOUND.getErrorCode());
-        expected.setMessage("No matching capitalsource found!");
-
-        final ErrorResponse actual = super.callUsecaseExpect400(request, ErrorResponse.class);
-
-        Assertions.assertEquals(expected, actual);
+        this.test_unknownBankCode_errorResponse();
     }
 }

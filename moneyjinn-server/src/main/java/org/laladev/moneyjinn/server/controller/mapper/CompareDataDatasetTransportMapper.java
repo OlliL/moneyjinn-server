@@ -39,7 +39,4 @@ public interface CompareDataDatasetTransportMapper
     @Override
     @Mapping(target = "partnerBankAccount", ignore = true)
     CompareDataDataset mapBToA(CompareDataDatasetTransport compareDataDatasetTransport);
-
-    @Override
-    CompareDataDatasetTransport mapAToB(CompareDataDataset compareDataDataset);
 }
