@@ -51,4 +51,9 @@ public interface EtfTransportMapper extends IMapstructMapper<Etf, EtfTransport> 
     @Mapping(target = "userid", source = "user.id")
     @Mapping(target = "isFavorite", ignore = true)
     EtfTransport mapAToB(Etf a);
+
+    @Mapping(target = "etfId", source = "a.id")
+    @Mapping(target = "userid", source = "a.user.id")
+    @Mapping(target = "isFavorite", source = "isFavorite")
+    EtfTransport mapAToB(Etf a, boolean isFavorite);
 }

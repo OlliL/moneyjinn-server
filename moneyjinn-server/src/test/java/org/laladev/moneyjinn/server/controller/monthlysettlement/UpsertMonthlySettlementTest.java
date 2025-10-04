@@ -129,8 +129,6 @@ class UpsertMonthlySettlementTest extends AbstractWebUserControllerTest {
 
     @Override
     protected void callUsecaseEmptyDatabase() throws Exception {
-        final MonthlySettlementTransport monthlySettlementTransport = new MonthlySettlementTransportBuilder()
-                .forMonthlySettlement3().build();
-        this.testError(Collections.singletonList(monthlySettlementTransport), ErrorCode.CAPITALSOURCE_DOES_NOT_EXIST);
+        this.test_MonthlySettlementForOtherUserUpdate_Error();
     }
 }

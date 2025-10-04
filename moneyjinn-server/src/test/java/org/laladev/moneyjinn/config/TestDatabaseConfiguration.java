@@ -33,6 +33,7 @@ public class TestDatabaseConfiguration {
         return dataSource;
     }
 
+    @SuppressWarnings("java:S125")
     private SimpleDriverDataSource simpleDriverDataSource() {
         // final Mode mode = Mode.getInstance("MYSQL");
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();

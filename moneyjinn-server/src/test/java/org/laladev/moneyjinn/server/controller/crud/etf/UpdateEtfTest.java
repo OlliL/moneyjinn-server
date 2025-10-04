@@ -69,8 +69,6 @@ class UpdateEtfTest extends AbstractEtfTest {
         transport.setName("hugo");
         final EtfTransport actualTransport = super.callUsecaseExpect200Representation(transport, EtfTransport.class);
 
-        // TODO preferedReturn can't handle this currently
-        transport.setIsFavorite(null);
         assertEquals(transport, actualTransport);
 
         final var etf = this.etfService.getEtfById(userId, etfId);

@@ -143,7 +143,7 @@ class UpdateContractpartnerAccountTest extends AbstractContractpartnerAccountTes
         transport.setAccountNumber("1");
         transport.setBankCode("2");
 
-        super.callUsecaseExpect204(transport);
+        super.callUsecaseExpect204Minimal(transport);
 
         final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
                 .getContractpartnerAccountById(userId, contractpartnerAccountId);

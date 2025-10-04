@@ -26,6 +26,7 @@ package org.laladev.moneyjinn.server.controller.impl.crud;
 
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
+import org.laladev.moneyjinn.converter.javatypes.BooleanToIntegerMapper;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
 import org.laladev.moneyjinn.model.access.UserID;
@@ -61,6 +62,7 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
     private final IUserService userService;
     private final ISettingService settingService;
     private final EtfTransportMapper etfTransportMapper;
+    private final BooleanToIntegerMapper booleanToIntegerMapper;
 
     @Override
     public ResponseEntity<List<EtfTransport>> readAll() {
@@ -147,12 +149,13 @@ public class CrudEtfController extends AbstractController implements CrudEtfCont
         this.throwValidationExceptionIfInvalid(validationResult);
 
         this.etfService.updateEtf(etf);
-        if (Integer.valueOf(1).equals(etfTransport.getIsFavorite())) {
+        final var isFavorite = this.booleanToIntegerMapper.mapBToA(etfTransport.getIsFavorite());
+        if (isFavorite) {
             this.settingService.setClientListEtfDepotDefaultEtfId(userId,
                     new ClientListEtfDepotDefaultEtfId(etf.getId()));
         }
 
-        return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf));
+        return this.preferredReturn(prefer, () -> this.etfTransportMapper.mapAToB(etf, isFavorite));
     }
 
     @Override

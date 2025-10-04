@@ -4,6 +4,7 @@ import org.laladev.moneyjinn.server.model.ReportTurnoverCapitalsourceTransport;
 
 import java.math.BigDecimal;
 
+@SuppressWarnings("java:S4144")
 public class ReportTurnoverCapitalsourceTransportBuilder extends ReportTurnoverCapitalsourceTransport {
     public ReportTurnoverCapitalsourceTransportBuilder forReport_Capitalsource6() {
         super.setCapitalsourceType(CapitalsourceTransportBuilder.CAPITALSOURCE6_TYPE);
