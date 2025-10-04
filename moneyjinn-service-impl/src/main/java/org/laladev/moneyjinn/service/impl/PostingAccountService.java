@@ -115,7 +115,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
         this.postingAccountDao.updatePostingAccount(postingAccountData);
         this.evictPostingAccountCache(postingAccount.getId());
 
-        final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.UPDATE, postingAccount);
+        final var event = new PostingAccountChangedEvent(this, EventType.UPDATE, postingAccount);
         super.publishEvent(event);
     }
 
@@ -134,7 +134,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
         this.evictPostingAccountCache(postingAccountId);
 
-        final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.CREATE, postingAccount);
+        final var event = new PostingAccountChangedEvent(this, EventType.CREATE, postingAccount);
         super.publishEvent(event);
 
         return postingAccountId;
@@ -149,8 +149,7 @@ public class PostingAccountService extends AbstractService implements IPostingAc
 
                 this.evictPostingAccountCache(postingAccountId);
 
-                final PostingAccountChangedEvent event = new PostingAccountChangedEvent(this, EventType.DELETE,
-                        postingAccount);
+                final var event = new PostingAccountChangedEvent(this, EventType.DELETE, postingAccount);
                 super.publishEvent(event);
             } catch (final Exception e) {
                 log.log(Level.INFO, STILL_REFERENCED, e);

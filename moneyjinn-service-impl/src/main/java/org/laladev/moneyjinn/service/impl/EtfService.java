@@ -63,6 +63,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.abs;
 import static org.springframework.util.Assert.notNull;
 
 @Named
@@ -71,8 +72,6 @@ import static org.springframework.util.Assert.notNull;
 public class EtfService extends AbstractService implements IEtfService {
     private static final String STILL_REFERENCED =
             "You may not delete an ETF while it is referenced by a flows or preliminary lump sums!";
-    private static final BigDecimal BIG_DECIMAL_11 = new BigDecimal(11);
-    private static final BigDecimal BIG_DECIMAL_12 = new BigDecimal(12);
 
     private final EtfDao etfDao;
     private final EtfFlowDataMapper etfFlowDataMapper;
@@ -343,24 +342,10 @@ public class EtfService extends AbstractService implements IEtfService {
         return relevantEtfFlows;
     }
 
-    private BigDecimal getPieceTaxAmountPerPiece(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
+    private BigDecimal getPieceTaxAmountPerPiece(@NonNull final Month month,
+                                                 @NonNull final EtfPreliminaryLumpSum etfPreliminaryLumpSum) {
         final var fullAmount = etfPreliminaryLumpSum.getAmountPerPiece();
-        final var oneTwelfthAmount = fullAmount.divide(BIG_DECIMAL_12, 10, RoundingMode.HALF_UP);
-
-        return switch (month) {
-            case JANUARY -> fullAmount;
-            case FEBRUARY -> oneTwelfthAmount.multiply(BIG_DECIMAL_11);
-            case MARCH -> oneTwelfthAmount.multiply(BigDecimal.valueOf(10));
-            case APRIL -> oneTwelfthAmount.multiply(BigDecimal.valueOf(9));
-            case MAY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(8));
-            case JUNE -> oneTwelfthAmount.multiply(BigDecimal.valueOf(7));
-            case JULY -> oneTwelfthAmount.multiply(BigDecimal.valueOf(6));
-            case AUGUST -> oneTwelfthAmount.multiply(BigDecimal.valueOf(5));
-            case SEPTEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(4));
-            case OCTOBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(3));
-            case NOVEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(2));
-            case DECEMBER -> oneTwelfthAmount.multiply(BigDecimal.valueOf(1));
-        };
+        return fullAmount.multiply(BigDecimal.valueOf(abs(month.ordinal() - 12) / (double) 12));
     }
 
     private BigDecimal getPieceTaxAmountPerMonth(final Month month, final EtfPreliminaryLumpSum etfPreliminaryLumpSum,

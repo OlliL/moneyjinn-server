@@ -190,8 +190,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
     @Override
     public Capitalsource getCapitalsourceByComment(@NonNull final UserID userId, @NonNull final String name,
                                                    @NonNull final LocalDate date) {
-        final CapitalsourceData capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(),
-                name, date);
+        final var capitalsourceData = this.capitalsourceDao.getCapitalsourceByComment(userId.getId(), name, date);
         return this.mapCapitalsourceData(capitalsourceData);
     }
 
@@ -206,7 +205,8 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
         this.capitalsourceDao.updateCapitalsource(capitalsourceData);
         this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
                 capitalsource.getId());
-        final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
+
+        final var event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
         super.publishEvent(event);
     }
 
@@ -226,7 +226,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
         this.evictCapitalsourceCache(capitalsource.getUser().getId(), capitalsource.getGroup().getId(),
                 capitalsourceId);
 
-        final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.UPDATE, capitalsource);
+        final var event = new CapitalsourceChangedEvent(this, EventType.CREATE, capitalsource);
         super.publishEvent(event);
 
         return capitalsourceId;
@@ -242,8 +242,7 @@ public class CapitalsourceService extends AbstractService implements ICapitalsou
 
                 this.evictCapitalsourceCache(userId, groupId, capitalsourceId);
 
-                final CapitalsourceChangedEvent event = new CapitalsourceChangedEvent(this, EventType.DELETE,
-                        capitalsource);
+                final var event = new CapitalsourceChangedEvent(this, EventType.DELETE, capitalsource);
                 super.publishEvent(event);
 
             } catch (final Exception e) {

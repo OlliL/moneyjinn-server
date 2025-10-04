@@ -184,8 +184,8 @@ public class ContractpartnerService extends AbstractService implements IContract
         final ContractpartnerData contractpartnerData = this.contractpartnerDataMapper.mapAToB(contractpartner);
         this.contractpartnerDao.updateContractpartner(contractpartnerData);
         this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartner.getId());
-        final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.UPDATE,
-                contractpartner);
+
+        final var event = new ContractpartnerChangedEvent(this, EventType.UPDATE, contractpartner);
         super.publishEvent(event);
     }
 
@@ -205,8 +205,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
         this.evictContractpartnerCache(contractpartner.getUser().getId(), contractpartnerId);
 
-        final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.CREATE,
-                contractpartner);
+        final var event = new ContractpartnerChangedEvent(this, EventType.CREATE, contractpartner);
         super.publishEvent(event);
 
         return contractpartnerId;
@@ -222,8 +221,7 @@ public class ContractpartnerService extends AbstractService implements IContract
 
                 this.evictContractpartnerCache(userId, contractpartnerId);
 
-                final ContractpartnerChangedEvent event = new ContractpartnerChangedEvent(this, EventType.DELETE,
-                        contractpartner);
+                final var event = new ContractpartnerChangedEvent(this, EventType.DELETE, contractpartner);
                 super.publishEvent(event);
             } catch (final Exception e) {
                 log.log(Level.INFO, STILL_REFERENCED, e);

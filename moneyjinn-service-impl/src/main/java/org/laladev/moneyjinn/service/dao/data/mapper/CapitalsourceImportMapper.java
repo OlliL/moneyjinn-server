@@ -38,26 +38,22 @@ public class CapitalsourceImportMapper {
     private static final int BALANCE_ALLOWED_INT = 2;
 
     public static CapitalsourceImport map(final Integer capitalsourceImport) {
-        if (capitalsourceImport != null) {
-            return switch (capitalsourceImport) {
-                case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
-                case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
-                case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
-                default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
-                        ErrorCode.UNKNOWN);
-            };
-        }
-        return null;
+        return capitalsourceImport == null ? null :
+                switch (capitalsourceImport) {
+                    case NOT_ALLOWED_INT -> CapitalsourceImport.NOT_ALLOWED;
+                    case ALL_ALLOWED_INT -> CapitalsourceImport.ALL_ALLOWED;
+                    case BALANCE_ALLOWED_INT -> CapitalsourceImport.BALANCE_ALLOWED;
+                    default -> throw new TechnicalException("Import " + capitalsourceImport + " not defined!",
+                            ErrorCode.UNKNOWN);
+                };
     }
 
     public static Integer map(final CapitalsourceImport capitalsourceImport) {
-        if (capitalsourceImport != null) {
-            return switch (capitalsourceImport) {
-                case NOT_ALLOWED -> NOT_ALLOWED_INT;
-                case ALL_ALLOWED -> ALL_ALLOWED_INT;
-                case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
-            };
-        }
-        return null;
+        return capitalsourceImport == null ? null :
+                switch (capitalsourceImport) {
+                    case NOT_ALLOWED -> NOT_ALLOWED_INT;
+                    case ALL_ALLOWED -> ALL_ALLOWED_INT;
+                    case BALANCE_ALLOWED -> BALANCE_ALLOWED_INT;
+                };
     }
 }
