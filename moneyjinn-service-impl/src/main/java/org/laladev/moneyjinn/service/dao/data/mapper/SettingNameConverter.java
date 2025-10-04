@@ -24,32 +24,37 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.model.setting.*;
 
 import java.util.Map;
 
+@UtilityClass
 public class SettingNameConverter {
     private static final Map<String, String> lookupMap;
 
     static {
-
         lookupMap = Map.of(
-                ClientTrendCapitalsourceIDsSetting.class.getSimpleName(), "client_trend_capitalsource_ids",
-                ClientTrendEtfIDsSetting.class.getSimpleName(), "client_trend_etf_ids",
-                ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(), "client_trend_active_capitalsources",
-                ClientTrendActiveEtfsSetting.class.getSimpleName(), "client_trend_active_etfs",
+                ClientTrendCapitalsourceIDsSetting.class.getSimpleName(),
+                "client_trend_capitalsource_ids",
+                ClientTrendEtfIDsSetting.class.getSimpleName(),
+                "client_trend_etf_ids",
+                ClientTrendActiveCapitalsourcesSetting.class.getSimpleName(),
+                "client_trend_active_capitalsources",
+                ClientTrendActiveEtfsSetting.class.getSimpleName(),
+                "client_trend_active_etfs",
                 ClientReportingUnselectedPostingAccountIdsSetting.class.getSimpleName(),
                 "client_reporting_unselected_posting_account_ids",
                 ClientCompareDataSelectedCapitalsource.class.getSimpleName(),
                 "client_compare_data_selected_capitalsource",
-                ClientCompareDataSelectedFormat.class.getSimpleName(), "client_compare_data_selected_format",
+                ClientCompareDataSelectedFormat.class.getSimpleName(),
+                "client_compare_data_selected_format",
                 ClientCompareDataSelectedSourceIsFile.class.getSimpleName(),
                 "client_compare_data_selected_source_is_file",
-                ClientListEtfDepotDefaultEtfId.class.getSimpleName(), "client_list_etf_depot_default_etfid",
-                ClientCalcEtfSalePieces.class.getSimpleName(), "client_calc_etf_sale_pieces");
-    }
-
-    private SettingNameConverter() {
+                ClientListEtfDepotDefaultEtfId.class.getSimpleName(),
+                "client_list_etf_depot_default_etfid",
+                ClientCalcEtfSalePieces.class.getSimpleName(),
+                "client_calc_etf_sale_pieces");
     }
 
     public static String getSettingNameByClassName(final String settingClassName) {

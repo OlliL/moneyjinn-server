@@ -26,17 +26,16 @@
 
 package org.laladev.moneyjinn.service.dao.data.mapper;
 
+import lombok.experimental.UtilityClass;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceImport;
 import org.laladev.moneyjinn.model.exception.TechnicalException;
 
+@UtilityClass
 public class CapitalsourceImportMapper {
     private static final int NOT_ALLOWED_INT = 0;
     private static final int ALL_ALLOWED_INT = 1;
     private static final int BALANCE_ALLOWED_INT = 2;
-
-    private CapitalsourceImportMapper() {
-    }
 
     public static CapitalsourceImport map(final Integer capitalsourceImport) {
         if (capitalsourceImport != null) {

@@ -1,7 +1,6 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.access.Group;
@@ -24,6 +23,8 @@ import java.time.Month;
 import java.time.Period;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class MoneyflowServiceTest extends AbstractTest {
     private static final UserID USER_ID_1 = new UserID(UserTransportBuilder.USER1_ID);
     @Inject
@@ -32,50 +33,50 @@ class MoneyflowServiceTest extends AbstractTest {
     @Test
     void monthHasMoneyflows_true() {
         final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, 2010, Month.JANUARY);
-        Assertions.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
     void monthHasMoneyflows_false() {
         final boolean result = this.moneyflowService.monthHasMoneyflows(USER_ID_1, 2010, Month.DECEMBER);
-        Assertions.assertFalse(result);
+        assertFalse(result);
     }
 
     @Test
     void getPreviousMoneyflowDate_notExisting() {
         final LocalDate date = this.moneyflowService.getPreviousMoneyflowDate(USER_ID_1,
                 LocalDate.of(2008, Month.DECEMBER, 1));
-        Assertions.assertNull(date);
+        assertNull(date);
     }
 
     @Test
     void getNextMoneyflowDate_notExisting() {
         final LocalDate date = this.moneyflowService.getNextMoneyflowDate(USER_ID_1, LocalDate.of(2010, Month.MAY, 31));
-        Assertions.assertNull(date);
+        assertNull(date);
     }
 
     @Test
     void searchMoneyflowsByAmountDate_matchFound() {
         final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
                 LocalDate.of(2010, Month.MAY, 3), new BigDecimal("-5.00"), Period.ofDays(5));
-        Assertions.assertNotNull(moneyflows);
-        Assertions.assertEquals(2, moneyflows.size());
+        assertNotNull(moneyflows);
+        assertEquals(2, moneyflows.size());
     }
 
     @Test
     void searchMoneyflowsByAmountDate_noMatchFound() {
         final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
                 LocalDate.of(2010, Month.MAY, 20), new BigDecimal("-5.00"), Period.ofDays(5));
-        Assertions.assertNotNull(moneyflows);
-        Assertions.assertEquals(0, moneyflows.size());
+        assertNotNull(moneyflows);
+        assertEquals(0, moneyflows.size());
     }
 
     @Test
     void searchMoneyflowsByAmountDate_matchFoundOnlyInMonthOfBookingDateNotInTheWhole200DayPeriod() {
         final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflowsByAmountDate(USER_ID_1,
                 LocalDate.of(2010, Month.JANUARY, 3), new BigDecimal("-10.00"), Period.ofDays(200));
-        Assertions.assertNotNull(moneyflows);
-        Assertions.assertEquals(1, moneyflows.size());
+        assertNotNull(moneyflows);
+        assertEquals(1, moneyflows.size());
     }
 
     @Test
@@ -83,8 +84,8 @@ class MoneyflowServiceTest extends AbstractTest {
         final List<Moneyflow> moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeCapitalsourceId(USER_ID_1,
                 LocalDate.of(2010, Month.JANUARY, 1), LocalDate.of(2010, Month.JANUARY, 30),
                 new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID));
-        Assertions.assertNotNull(moneyflows);
-        Assertions.assertEquals(1, moneyflows.size());
+        assertNotNull(moneyflows);
+        assertEquals(1, moneyflows.size());
     }
 
     @Test
@@ -92,22 +93,22 @@ class MoneyflowServiceTest extends AbstractTest {
         final List<Moneyflow> moneyflows = this.moneyflowService.getAllMoneyflowsByDateRangeCapitalsourceId(USER_ID_1,
                 LocalDate.of(2011, Month.JANUARY, 1), LocalDate.of(2011, Month.JANUARY, 30),
                 new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID));
-        Assertions.assertNotNull(moneyflows);
-        Assertions.assertEquals(0, moneyflows.size());
+        assertNotNull(moneyflows);
+        assertEquals(0, moneyflows.size());
     }
 
     @Test
     void getAllMonth_noMonthFound() {
         final List<Month> month = this.moneyflowService.getAllMonth(USER_ID_1, 2011);
-        Assertions.assertNotNull(month);
-        Assertions.assertEquals(0, month.size());
+        assertNotNull(month);
+        assertEquals(0, month.size());
     }
 
     @Test
     void test_validateNullUser_raisesException() {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> this.moneyflowService.validateMoneyflow(moneyflow));
     }
 
@@ -115,7 +116,7 @@ class MoneyflowServiceTest extends AbstractTest {
     void test_validateNullGroup_raisesException() {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> this.moneyflowService.validateMoneyflow(moneyflow));
     }
 
@@ -124,7 +125,7 @@ class MoneyflowServiceTest extends AbstractTest {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowService.createMoneyflow(moneyflow));
+        assertThrows(BusinessException.class, () -> this.moneyflowService.createMoneyflow(moneyflow));
     }
 
     @Test
@@ -132,13 +133,14 @@ class MoneyflowServiceTest extends AbstractTest {
         final Moneyflow moneyflow = new Moneyflow();
         moneyflow.setUser(new User(new UserID(1L)));
         moneyflow.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class, () -> this.moneyflowService.updateMoneyflow(moneyflow));
+        assertThrows(BusinessException.class, () -> this.moneyflowService.updateMoneyflow(moneyflow));
     }
 
     @Test
     void test_userAeditsMoneyflow_userBsameGroupSeesCachedChange() {
         final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
         final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
+
         // this caches
         this.moneyflowService.getMoneyflowById(user2Id, new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
         Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user1Id,
@@ -146,18 +148,21 @@ class MoneyflowServiceTest extends AbstractTest {
         final String comment = String.valueOf(System.currentTimeMillis());
         moneyflow.getUser().setId(user1Id);
         moneyflow.setComment(comment);
+
         // this should also modify the cache of user 1!
         this.moneyflowService.updateMoneyflow(moneyflow);
+
         // this should now retrieve the changed cache entry!
         moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
                 new MoneyflowID(MoneyflowTransportBuilder.MONEYFLOW1_ID));
-        Assertions.assertEquals(comment, moneyflow.getComment());
+        assertEquals(comment, moneyflow.getComment());
     }
 
     @Test
     void test_userAaddsAMoneyflow_userBsameGroupSeessItTooBecauseCacheWasReset() {
         final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
         final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
+
         // this caches
         final List<Integer> allYears1 = this.moneyflowService.getAllYears(user1Id);
         final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(user2Id,
@@ -166,11 +171,13 @@ class MoneyflowServiceTest extends AbstractTest {
         moneyflow.setBookingDate(LocalDate.now());
         moneyflow.setCapitalsource(
                 new Capitalsource(new CapitalsourceID(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID)));
+
         // this should also modify the cache of user 1!
         this.moneyflowService.createMoneyflow(moneyflow);
         final List<Integer> allYears2 = this.moneyflowService.getAllYears(user1Id);
+
         // Cache of user1 should have been invalidated and the added Moneyflow should be
         // now in the List of all years.
-        Assertions.assertNotEquals(allYears1.size(), allYears2.size());
+        assertNotEquals(allYears1.size(), allYears2.size());
     }
 }

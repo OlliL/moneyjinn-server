@@ -1,7 +1,6 @@
 package org.laladev.moneyjinn.businesslogic.service.impl;
 
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.AbstractTest;
 import org.laladev.moneyjinn.model.Contractpartner;
@@ -17,6 +16,8 @@ import org.laladev.moneyjinn.service.api.IContractpartnerService;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class ContractpartnerServiceTest extends AbstractTest {
     @Inject
     private IContractpartnerService contractpartnerService;
@@ -24,7 +25,7 @@ class ContractpartnerServiceTest extends AbstractTest {
     @Test
     void test_validateNullUser_raisesException() {
         final Contractpartner contractpartner = new Contractpartner();
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> this.contractpartnerService.validateContractpartner(contractpartner));
     }
 
@@ -33,7 +34,7 @@ class ContractpartnerServiceTest extends AbstractTest {
         final Contractpartner contractpartner = new Contractpartner();
         contractpartner.setUser(new User(new UserID(1L)));
         contractpartner.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class,
+        assertThrows(BusinessException.class,
                 () -> this.contractpartnerService.createContractpartner(contractpartner));
     }
 
@@ -42,7 +43,7 @@ class ContractpartnerServiceTest extends AbstractTest {
         final Contractpartner contractpartner = new Contractpartner();
         contractpartner.setUser(new User(new UserID(1L)));
         contractpartner.setGroup(new Group(new GroupID(1L)));
-        Assertions.assertThrows(BusinessException.class,
+        assertThrows(BusinessException.class,
                 () -> this.contractpartnerService.updateContractpartner(contractpartner));
     }
 
@@ -50,6 +51,7 @@ class ContractpartnerServiceTest extends AbstractTest {
     void test_userAeditsContractpartner_userBsameGroupSeesCachedChange() {
         final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
         final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
+
         // this caches
         this.contractpartnerService.getContractpartnerById(user1Id,
                 new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
@@ -58,18 +60,21 @@ class ContractpartnerServiceTest extends AbstractTest {
         final String name = String.valueOf(System.currentTimeMillis());
         contractpartner.getUser().setId(user2Id);
         contractpartner.setName(name);
+
         // this should also modify the cache of user 1!
         this.contractpartnerService.updateContractpartner(contractpartner);
+
         // this should now retrieve the changed cache entry!
         contractpartner = this.contractpartnerService.getContractpartnerById(user1Id,
                 new ContractpartnerID(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID));
-        Assertions.assertEquals(name, contractpartner.getName());
+        assertEquals(name, contractpartner.getName());
     }
 
     @Test
     void test_userAaddsAContractpartner_userBsameGroupSeessItTooBecauseCacheWasReset() {
         final UserID user1Id = new UserID(UserTransportBuilder.USER1_ID);
         final UserID user2Id = new UserID(UserTransportBuilder.USER2_ID);
+
         // this caches
         final List<Contractpartner> allContractpartners1 = this.contractpartnerService.getAllContractpartners(user1Id);
         final Contractpartner contractpartner = this.contractpartnerService.getContractpartnerById(user2Id,
@@ -77,13 +82,13 @@ class ContractpartnerServiceTest extends AbstractTest {
         final String name = String.valueOf(System.currentTimeMillis());
         contractpartner.getUser().setId(user2Id);
         contractpartner.setName(name);
+
         // this should also modify the cache of user 1!
         this.contractpartnerService.createContractpartner(contractpartner);
         final List<Contractpartner> allContractpartners2 = this.contractpartnerService.getAllContractpartners(user1Id);
-        // Cache of user1 should have been invalidated and the added Contractpartner
-        // should be now
-        // in
+
+        // Cache of user1 should have been invalidated and the added Contractpartner should be now in
         // the List of all partners.
-        Assertions.assertNotEquals(allContractpartners1.size(), allContractpartners2.size());
+        assertNotEquals(allContractpartners1.size(), allContractpartners2.size());
     }
 }

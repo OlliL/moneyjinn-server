@@ -38,23 +38,19 @@ public class MoneyflowReceiptTypeMapper {
     }
 
     public static MoneyflowReceiptType map(final Integer type) {
-        if (type != null) {
-            return switch (type) {
-                case JPEG_INT -> MoneyflowReceiptType.JPEG;
-                case PDF_INT -> MoneyflowReceiptType.PDF;
-                default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
-            };
-        }
-        return null;
+        return type == null ? null :
+                switch (type) {
+                    case JPEG_INT -> MoneyflowReceiptType.JPEG;
+                    case PDF_INT -> MoneyflowReceiptType.PDF;
+                    default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
+                };
     }
 
     public static Integer map(final MoneyflowReceiptType type) {
-        if (type != null) {
-            return switch (type) {
-                case JPEG -> JPEG_INT;
-                case PDF -> PDF_INT;
-            };
-        }
-        return null;
+        return type == null ? null :
+                switch (type) {
+                    case JPEG -> JPEG_INT;
+                    case PDF -> PDF_INT;
+                };
     }
 }
