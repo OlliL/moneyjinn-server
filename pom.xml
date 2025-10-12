@@ -55,9 +55,9 @@
         <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
         <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <versions-maven-plugin.version>2.19.1</versions-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-        <coveralls-maven-plugin.version>4.7.0</coveralls-maven-plugin.version>
-        <pitest-maven.version>1.20.4</pitest-maven.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <coveralls-maven-plugin.version>5.0.0</coveralls-maven-plugin.version>
+        <pitest-maven.version>1.21.0</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
         <!-- Test Scope -->
