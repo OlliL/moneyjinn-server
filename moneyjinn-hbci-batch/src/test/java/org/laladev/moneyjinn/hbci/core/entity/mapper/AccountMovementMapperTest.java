@@ -35,7 +35,12 @@ class AccountMovementMapperTest {
                 Arguments.of(List.of("OLV12345678 10.06 01.03"), "5"),
                 Arguments.of(List.of("10.06 01.03 TA-NR. XXXXXX"), "83"),
                 Arguments.of(List.of("100601031885492151200031520"), "5"),
-                Arguments.of(List.of("10.06/01.03UHR XXXXXXXXXX"), "83"),
+                Arguments.of(List.of("10.06/01.03UHR XXXXXXXXXX"), "83")
+        );
+    }
+
+    static Stream<Arguments> test_InvoiceTimestampELVOLV_withYear() {
+        return Stream.of(
                 Arguments.of(List.of("2025-06-10T01:03:00"), "106"),
                 Arguments.of(List.of("BLAH BLAH 10-06-2025T01:03:00 BLAH"), "106"),
                 Arguments.of(List.of("BLAH", "BLAH BLAH 10-06-20", "25T01:03:00 BLAH", "BLAH"), "106"),
@@ -85,6 +90,13 @@ class AccountMovementMapperTest {
     @ParameterizedTest
     @MethodSource("test_InvoiceTimestampELVOLV")
     void test_InvoiceTimestamps(final List<String> usage, final String gvCode) {
+        this.testInvoiceDate(usage, gvCode);
+    }
+
+    @ParameterizedTest
+    @MethodSource("test_InvoiceTimestampELVOLV_withYear")
+    void test_InvoiceTimestampsWithYear(final List<String> usage, final String gvCode) {
+        this.expectedCalendar.set(Calendar.YEAR, 2025);
         this.testInvoiceDate(usage, gvCode);
     }
 
